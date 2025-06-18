@@ -122,7 +122,7 @@ export default function RootLayout({
                 <a href="/" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">연봉 계산기</a>
                 <a href="/loan-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">대출 계산기</a>
                 <a href="/savings-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">적금 계산기</a>
-                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">더 많은 도구</a>
+                <a href="/retirement-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">퇴직금 계산기</a>
               </nav>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function RootLayout({
                   <li><a href="/" className="hover:text-white transition-colors">연봉 계산기</a></li>
                   <li><a href="/loan-calculator" className="hover:text-white transition-colors">대출 계산기</a></li>
                   <li><a href="/savings-calculator" className="hover:text-white transition-colors">적금 계산기</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">BMI 계산기</a></li>
+                  <li><a href="/retirement-calculator" className="hover:text-white transition-colors">퇴직금 계산기</a></li>
                 </ul>
               </div>
               <div>

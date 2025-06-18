@@ -1,0 +1,294 @@
+'use client'
+
+import React, { useState, useEffect } from 'react';
+import { Briefcase, Calendar, TrendingUp, Calculator } from 'lucide-react';
+
+const RetirementCalculator = () => {
+  const [avgSalary, setAvgSalary] = useState('');
+  const [workYears, setWorkYears] = useState('');
+  const [workMonths, setWorkMonths] = useState('');
+  const [result, setResult] = useState<ReturnType<typeof calculateRetirement>>(null);
+
+  // 퇴직금 계산 함수 (근로기준법 기준)
+  const calculateRetirement = (avgSalaryStr: string, yearsStr: string, monthsStr: string) => {
+    const avgSal = parseInt(avgSalaryStr.replace(/,/g, ''));
+    const years = parseInt(yearsStr) || 0;
+    const months = parseInt(monthsStr) || 0;
+    
+    if (!avgSal || avgSal <= 0 || (years === 0 && months === 0)) return null;
+
+    // 총 근무일수 계산 (1년 = 365일)
+    const totalDays = (years * 365) + (months * 30);
+    const totalYears = totalDays / 365;
+    
+    // 퇴직금 계산: 1일 평균임금 × 30일 × 재직연수
+    // 1일 평균임금 = 연봉 ÷ 12개월 ÷ 30일
+    const dailyWage = Math.floor(avgSal / 12 / 30);
+    const retirementPay = Math.floor(dailyWage * 30 * totalYears);
+    
+    // 퇴직소득세 계산 (2024년 기준)
+    let tax = 0;
+    
+    if (totalYears >= 1) {
+      // 퇴직소득공제 계산
+      let deduction = 0;
+      if (totalYears <= 5) {
+        deduction = totalYears * 3000000; // 5년 이하: 연 300만원
+      } else if (totalYears <= 10) {
+        deduction = 15000000 + (totalYears - 5) * 4500000; // 6~10년: 5년분 + 연 450만원
+      } else if (totalYears <= 20) {
+        deduction = 37500000 + (totalYears - 10) * 6000000; // 11~20년: 10년분 + 연 600만원
+      } else {
+        deduction = 97500000 + (totalYears - 20) * 7500000; // 21년 이상: 20년분 + 연 750만원
+      }
+      
+      const taxableAmount = Math.max(0, retirementPay - deduction);
+      const taxableBase = Math.floor(taxableAmount / 12); // 연분연승법 (12등분)
+      
+      // 종합소득세율 적용
+      let monthlyTax = 0;
+      if (taxableBase <= 14000000) {
+        monthlyTax = Math.floor(taxableBase * 0.06);
+      } else if (taxableBase <= 50000000) {
+        monthlyTax = Math.floor(840000 + (taxableBase - 14000000) * 0.15);
+      } else if (taxableBase <= 88000000) {
+        monthlyTax = Math.floor(6240000 + (taxableBase - 50000000) * 0.24);
+      } else if (taxableBase <= 150000000) {
+        monthlyTax = Math.floor(15360000 + (taxableBase - 88000000) * 0.35);
+      } else if (taxableBase <= 300000000) {
+        monthlyTax = Math.floor(37060000 + (taxableBase - 150000000) * 0.38);
+      } else if (taxableBase <= 500000000) {
+        monthlyTax = Math.floor(94060000 + (taxableBase - 300000000) * 0.40);
+      } else {
+        monthlyTax = Math.floor(174060000 + (taxableBase - 500000000) * 0.42);
+      }
+      
+      tax = monthlyTax * 12; // 연분연승법으로 계산된 세액에 12를 곱함
+    }
+    
+    const localTax = Math.floor(tax * 0.1); // 지방소득세
+    const totalTax = tax + localTax;
+    const netRetirementPay = retirementPay - totalTax;
+    
+    return {
+      avgSalary: avgSal,
+      dailyWage,
+      totalDays,
+      totalYears: Math.round(totalYears * 100) / 100,
+      retirementPay,
+      tax,
+      localTax,
+      totalTax,
+      netRetirementPay
+    };
+  };
+
+  const handleCalculate = React.useCallback(() => {
+    const calculation = calculateRetirement(avgSalary, workYears, workMonths);
+    setResult(calculation);
+  }, [avgSalary, workYears, workMonths]);
+
+  const formatNumber = (num: number) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/,/g, '');
+    if (/^\d*$/.test(value)) {
+      setAvgSalary(formatNumber(Number(value)));
+    }
+  };
+
+  const handleYearsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && Number(value) <= 50) {
+      setWorkYears(value);
+    }
+  };
+
+  const handleMonthsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && Number(value) <= 11) {
+      setWorkMonths(value);
+    }
+  };
+
+  useEffect(() => {
+    if (avgSalary && (workYears || workMonths)) {
+      handleCalculate();
+    } else {
+      setResult(null);
+    }
+  }, [avgSalary, workYears, workMonths, handleCalculate]);
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-4">
+          <Briefcase className="w-8 h-8 text-orange-600" />
+        </div>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">퇴직금 계산기</h1>
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          평균임금과 근무기간을 입력하시면 퇴직금과 퇴직소득세를 계산해드립니다.
+        </p>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-8">
+        {/* Input Section */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">퇴직금 정보 입력</h2>
+          
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                평균임금 (연봉)
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={avgSalary}
+                  onChange={handleSalaryChange}
+                  placeholder="예: 50,000,000"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 dark:text-white"
+                />
+                <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+              </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                퇴직 전 3개월 평균임금 기준
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  근무 년수
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={workYears}
+                    onChange={handleYearsChange}
+                    placeholder="0"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 dark:text-white"
+                  />
+                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">년</span>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  근무 개월수
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={workMonths}
+                    onChange={handleMonthsChange}
+                    placeholder="0"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 dark:text-white"
+                  />
+                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">개월</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-orange-800 dark:text-orange-200 mb-2">
+                <Calculator className="w-4 h-4 inline mr-1" />
+                계산 기준
+              </h3>
+              <ul className="text-sm text-orange-700 dark:text-orange-300 space-y-1">
+                <li>• 퇴직금 = 1일 평균임금 × 30일 × 재직연수</li>
+                <li>• 1년 미만 근무시 월할 계산</li>
+                <li>• 퇴직소득공제: 5년 이하 연300만원, 이후 단계별 증가</li>
+                <li>• 연분연승법 적용 (과세표준÷12)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Result Section */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">계산 결과</h2>
+          
+          {result ? (
+            <div className="space-y-6">
+              <div className="text-center p-6 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl text-white">
+                <div className="text-sm opacity-90 mb-1">세후 퇴직금</div>
+                <div className="text-3xl font-bold">{formatNumber(result.netRetirementPay)}원</div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                  <div className="text-sm text-gray-600 dark:text-gray-400">1일 평균임금</div>
+                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {formatNumber(result.dailyWage)}원
+                  </div>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                  <div className="text-sm text-gray-600 dark:text-gray-400">총 근무기간</div>
+                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {result.totalYears}년
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">세전 퇴직금</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {formatNumber(result.retirementPay)}원
+                  </span>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">퇴직소득세</span>
+                    <span className="text-red-600 dark:text-red-400">
+                      -{formatNumber(result.tax)}원
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">지방소득세</span>
+                    <span className="text-red-600 dark:text-red-400">
+                      -{formatNumber(result.localTax)}원
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center py-2 border-t border-gray-200 dark:border-gray-600 font-semibold">
+                  <span className="text-gray-900 dark:text-white">실수령 퇴직금</span>
+                  <span className="text-orange-600 dark:text-orange-400">
+                    {formatNumber(result.netRetirementPay)}원
+                  </span>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+                  <TrendingUp className="w-4 h-4 inline mr-1" />
+                  참고사항
+                </h3>
+                <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                  <li>• 실제 퇴직금은 회사 규정에 따라 다를 수 있습니다</li>
+                  <li>• 중간정산을 받은 경우 별도 계산이 필요합니다</li>
+                  <li>• 퇴직연금 가입시 산정 방식이 다를 수 있습니다</li>
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Calendar className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <p className="text-gray-500 dark:text-gray-400">
+                평균임금과 근무기간을 입력하면<br />
+                퇴직금을 계산해드립니다.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RetirementCalculator;
