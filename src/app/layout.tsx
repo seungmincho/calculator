@@ -139,6 +139,8 @@ export default function RootLayout({
                   <li><a href="/loan-calculator" className="hover:text-white transition-colors">대출 계산기</a></li>
                   <li><a href="/savings-calculator" className="hover:text-white transition-colors">적금 계산기</a></li>
                   <li><a href="/retirement-calculator" className="hover:text-white transition-colors">퇴직금 계산기</a></li>
+                  <li><a href="/tax-calculator" className="hover:text-white transition-colors">세금 계산기</a></li>
+                  <li><a href="/exchange-calculator" className="hover:text-white transition-colors">환율 계산기</a></li>
                 </ul>
               </div>
               <div>
