@@ -101,16 +101,53 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800`}>
+        
+        {/* AdSense Script in Head */}
         {adsenseId && (
-          <Script
+          <script
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
             crossOrigin="anonymous"
-            strategy="afterInteractive"
           />
         )}
+      </head>
+      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800`}>
+        {/* Axeptio Cookie Consent Script with Google Consent Mode */}
+        <Script
+          id="axeptio-settings"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.axeptioSettings = {
+                clientId: "6852548e237197d2502e4208",
+                cookiesVersion: "toolhub-en-EU-2",
+                googleConsentMode: {
+                  default: {
+                    analytics_storage: "denied",
+                    ad_storage: "denied",
+                    ad_user_data: "denied",
+                    ad_personalization: "denied",
+                    wait_for_update: 500
+                  }
+                }
+              };
+            `
+          }}
+        />
+        <Script
+          id="axeptio-sdk"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(d, s) {
+                var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+                e.async = true; 
+                e.src = "//static.axept.io/sdk.js";
+                t.parentNode.insertBefore(e, t);
+              })(document, "script");
+            `
+          }}
+        />
         
         <Header />
 
@@ -141,6 +178,7 @@ export default function RootLayout({
                   <li><a href="/retirement-calculator" className="hover:text-white transition-colors">퇴직금 계산기</a></li>
                   <li><a href="/tax-calculator" className="hover:text-white transition-colors">세금 계산기</a></li>
                   <li><a href="/exchange-calculator" className="hover:text-white transition-colors">환율 계산기</a></li>
+                  <li><a href="/real-estate-calculator" className="hover:text-white transition-colors">부동산 계산기</a></li>
                 </ul>
               </div>
               <div>

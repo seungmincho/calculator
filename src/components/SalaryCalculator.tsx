@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { DollarSign, TrendingUp, Calculator, Share2, Check } from 'lucide-react';
+import { DollarSign, TrendingUp, Calculator, Share2, Check, Table } from 'lucide-react';
 
 const SalaryCalculatorContent = () => {
   const router = useRouter();
@@ -10,6 +10,7 @@ const SalaryCalculatorContent = () => {
   const [annualSalary, setAnnualSalary] = useState('');
   const [result, setResult] = useState<ReturnType<typeof calculateNetSalary>>(null);
   const [isCopied, setIsCopied] = useState(false);
+  const [showTable, setShowTable] = useState(false);
 
   // 실수령액 계산 함수 (간소화된 버전)
   const calculateNetSalary = (grossAnnual: string) => {
@@ -70,30 +71,11 @@ const SalaryCalculatorContent = () => {
   const handleShare = async () => {
     try {
       const currentUrl = window.location.href;
-      
-      // Modern clipboard API
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(currentUrl);
-      } else {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = currentUrl;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-      }
-      
+      await navigator.clipboard.writeText(currentUrl);
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy URL:', err);
-      // 복사 실패시에도 사용자에게 피드백
-      alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
     }
   };
 
@@ -129,6 +111,23 @@ const SalaryCalculatorContent = () => {
       setResult(null);
     }
   }, [annualSalary, handleCalculate]);
+
+  // 연봉별 표 데이터 생성
+  const generateSalaryTable = () => {
+    const tableData = [];
+    for (let salary = 20000000; salary <= 200000000; salary += 1000000) {
+      const calculation = calculateNetSalary(salary.toString());
+      if (calculation) {
+        tableData.push({
+          grossAnnual: salary,
+          netAnnual: calculation.netAnnual,
+          netMonthly: calculation.netMonthly,
+          totalDeductions: calculation.deductions.total
+        });
+      }
+    }
+    return tableData;
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -273,6 +272,75 @@ const SalaryCalculatorContent = () => {
             </p>
           </div>
         </div>
+      </div>
+
+      {/* 연봉별 실수령액 표 섹션 */}
+      <div className="mt-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">연봉별 실수령액 표</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">2천만원부터 2억원까지 100만원 단위</p>
+          </div>
+          <button
+            onClick={() => setShowTable(!showTable)}
+            className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white transition-colors"
+          >
+            <Table className="w-4 h-4" />
+            <span>{showTable ? '표 숨기기' : '표 보기'}</span>
+          </button>
+        </div>
+
+        {showTable && (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-white">연봉</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">실수령액(연)</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">실수령액(월)</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">총 공제액</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">실수령 비율</th>
+                </tr>
+              </thead>
+              <tbody>
+                {generateSalaryTable().map((row, index) => (
+                  <tr key={row.grossAnnual} className={`border-b border-gray-100 dark:border-gray-700 ${index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800' : 'bg-white dark:bg-gray-900'} hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors`}>
+                    <td className="py-3 px-4 font-medium text-gray-900 dark:text-white">
+                      {formatNumber(row.grossAnnual)}원
+                    </td>
+                    <td className="py-3 px-4 text-right text-gray-900 dark:text-white">
+                      {formatNumber(row.netAnnual)}원
+                    </td>
+                    <td className="py-3 px-4 text-right font-medium text-blue-600 dark:text-blue-400">
+                      {formatNumber(row.netMonthly)}원
+                    </td>
+                    <td className="py-3 px-4 text-right text-red-600 dark:text-red-400">
+                      {formatNumber(row.totalDeductions)}원
+                    </td>
+                    <td className="py-3 px-4 text-right font-medium text-gray-900 dark:text-white">
+                      {((row.netAnnual / row.grossAnnual) * 100).toFixed(1)}%
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {showTable && (
+          <div className="mt-6 bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
+            <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-2">
+              <Calculator className="w-4 h-4 inline mr-1" />
+              표 사용법
+            </h3>
+            <ul className="text-sm text-amber-700 dark:text-amber-300 space-y-1">
+              <li>• 2천만원부터 2억원까지 100만원 단위로 계산됩니다</li>
+              <li>• 실수령 비율이 높을수록 세금 부담이 적습니다</li>
+              <li>• 고소득일수록 누진세율로 인해 실수령 비율이 감소합니다</li>
+              <li>• 실제 연말정산시 추가 공제로 실수령액이 더 늘어날 수 있습니다</li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
