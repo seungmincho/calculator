@@ -21,6 +21,7 @@ const Header = () => {
             <a href="/loan-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">대출 계산기</a>
             <a href="/savings-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">적금 계산기</a>
             <a href="/retirement-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">퇴직금 계산기</a>
+            <a href="/tax-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">세금 계산기</a>
           </nav>
 
           {/* Mobile menu button */}
@@ -67,6 +68,13 @@ const Header = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 퇴직금 계산기
+              </a>
+              <a 
+                href="/tax-calculator" 
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors px-2 py-1"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                세금 계산기
               </a>
             </nav>
           </div>

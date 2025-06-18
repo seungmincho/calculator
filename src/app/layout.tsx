@@ -68,7 +68,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID
+  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-2070759131396958'
 
   const jsonLd = {
     '@context': 'https://schema.org',
