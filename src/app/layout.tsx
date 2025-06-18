@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
-import { Calculator, Menu, X } from 'lucide-react'
+import { Calculator } from 'lucide-react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -45,8 +45,8 @@ export default function RootLayout({
               
               <nav className="hidden md:flex space-x-8">
                 <a href="/" className="text-blue-600 font-medium">연봉 계산기</a>
-                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">대출 계산기</a>
-                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">적금 계산기</a>
+                <a href="/loan-calculator" className="text-blue-600 font-medium">대출 계산기</a>
+                <a href="/savings-calculator" className="text-blue-600 font-medium">적금 계산기</a>
                 <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">더 많은 도구</a>
               </nav>
             </div>

@@ -5,7 +5,7 @@ import { DollarSign, TrendingUp, Calculator } from 'lucide-react';
 
 const SalaryCalculator = () => {
   const [annualSalary, setAnnualSalary] = useState('');
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState<ReturnType<typeof calculateNetSalary>>(null);
 
   // 실수령액 계산 함수 (간소화된 버전)
   const calculateNetSalary = (grossAnnual: string) => {
@@ -66,7 +66,7 @@ const SalaryCalculator = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
     if (/^\d*$/.test(value)) {
-      setAnnualSalary(formatNumber(value));
+      setAnnualSalary(formatNumber(Number(value)));
     }
   };
 
@@ -203,17 +203,6 @@ const SalaryCalculator = () => {
             <p className="text-amber-800 dark:text-amber-300 text-sm">
               IRP, 연금저축 등의 세액공제 혜택을 활용하면 실수령액을 늘릴 수 있습니다.
             </p>
-          </div>
-        </div>
-      </div>
-
-      {/* AdSense 광고 영역 */}
-      <div className="mt-8 flex justify-center">
-        <div className="w-full max-w-2xl bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">광고</p>
-          {/* 여기에 AdSense 컴포넌트가 들어갈 예정 */}
-          <div className="h-32 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center">
-            <span className="text-gray-400 dark:text-gray-500">AdSense 광고 영역</span>
           </div>
         </div>
       </div>
