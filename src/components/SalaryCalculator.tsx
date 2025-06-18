@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import { Calculator, DollarSign, TrendingUp, Menu, X } from 'lucide-react';
 
@@ -7,7 +9,7 @@ const SalaryCalculator = () => {
   const [result, setResult] = useState(null);
 
   // 실수령액 계산 함수 (간소화된 버전)
-  const calculateNetSalary = (grossAnnual) => {
+  const calculateNetSalary = (grossAnnual: string) => {
     const gross = parseInt(grossAnnual.replace(/,/g, ''));
     if (!gross || gross <= 0) return null;
 
@@ -53,16 +55,16 @@ const SalaryCalculator = () => {
     };
   };
 
-  const handleCalculate = () => {
+  const handleCalculate = React.useCallback(() => {
     const calculation = calculateNetSalary(annualSalary);
     setResult(calculation);
-  };
+  }, [annualSalary]);
 
-  const formatNumber = (num) => {
+  const formatNumber = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
     if (/^\d*$/.test(value)) {
       setAnnualSalary(formatNumber(value));
@@ -75,7 +77,7 @@ const SalaryCalculator = () => {
     } else {
       setResult(null);
     }
-  }, [annualSalary]);
+  }, [annualSalary, handleCalculate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
