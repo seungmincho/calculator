@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Target, Coins, BarChart3, Calculator, Share2, Check } from 'lucide-react';
 
@@ -21,7 +21,7 @@ interface SavingsResult {
   }>;
 }
 
-const SavingsCalculator = () => {
+const SavingsCalculatorContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [monthlyAmount, setMonthlyAmount] = useState('');
@@ -905,6 +905,14 @@ const SavingsCalculator = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const SavingsCalculator = () => {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
+      <SavingsCalculatorContent />
+    </Suspense>
   );
 };
 

@@ -4,6 +4,7 @@ import './globals.css'
 import Script from 'next/script'
 import { Calculator } from 'lucide-react'
 import { Analytics } from "@vercel/analytics/next"
+import Header from '@/components/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -95,6 +96,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/logo.png" type="image/png" />
         <meta name="google-adsense-account" content={adsenseId} />
+        <meta name="naver-site-verification" content="8cdcacf38562d4fa1ee11f4f77a8a0f15f11d532" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -110,24 +112,7 @@ export default function RootLayout({
           />
         )}
         
-        {/* Header */}
-        <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-2">
-                <Calculator className="w-8 h-8 text-blue-600" />
-                <span className="text-xl font-bold text-gray-900 dark:text-white">툴허브</span>
-              </div>
-              
-              <nav className="hidden md:flex space-x-8">
-                <a href="/" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">연봉 계산기</a>
-                <a href="/loan-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">대출 계산기</a>
-                <a href="/savings-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">적금 계산기</a>
-                <a href="/retirement-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">퇴직금 계산기</a>
-              </nav>
-            </div>
-          </div>
-        </header>
+        <Header />
 
         {/* Main Content */}
         <main>

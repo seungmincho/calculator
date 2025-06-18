@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Briefcase, Calendar, TrendingUp, Calculator, Share2, Check } from 'lucide-react';
 
-const RetirementCalculator = () => {
+const RetirementCalculatorContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [avgSalary, setAvgSalary] = useState('');
@@ -371,6 +371,14 @@ const RetirementCalculator = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const RetirementCalculator = () => {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-600"></div></div>}>
+      <RetirementCalculatorContent />
+    </Suspense>
   );
 };
 

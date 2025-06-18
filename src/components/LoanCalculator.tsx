@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Calculator, TrendingDown, PiggyBank, BarChart3, CompassIcon, Share2, Check } from 'lucide-react';
 
@@ -20,7 +20,7 @@ interface LoanResult {
   }>;
 }
 
-const LoanCalculator = () => {
+const LoanCalculatorContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loanAmount, setLoanAmount] = useState('');
@@ -686,6 +686,14 @@ const LoanCalculator = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const LoanCalculator = () => {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
+      <LoanCalculatorContent />
+    </Suspense>
   );
 };
 
