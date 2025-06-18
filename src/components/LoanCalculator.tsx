@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { Calculator, TrendingDown, PiggyBank, BarChart3, CompassIcon } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Calculator, TrendingDown, PiggyBank, BarChart3, CompassIcon, Share2, Check } from 'lucide-react';
 
 type LoanType = 'equal-payment' | 'equal-principal' | 'interest-only' | 'balloon';
 
@@ -20,12 +21,15 @@ interface LoanResult {
 }
 
 const LoanCalculator = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [loanAmount, setLoanAmount] = useState('');
   const [interestRate, setInterestRate] = useState('');
   const [loanTerm, setLoanTerm] = useState('');
   const [selectedTypes, setSelectedTypes] = useState<LoanType[]>(['equal-payment']);
   const [results, setResults] = useState<LoanResult[]>([]);
   const [activeTab, setActiveTab] = useState<'calculator' | 'CompassIcon'>('calculator');
+  const [isCopied, setIsCopied] = useState(false);
 
   const loanTypes = {
     'equal-payment': '원리금균등상환',
@@ -227,10 +231,54 @@ const LoanCalculator = () => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
+  const handleShare = async () => {
+    try {
+      const currentUrl = window.location.href;
+      
+      // Modern clipboard API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(currentUrl);
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = currentUrl;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy URL:', err);
+      // 복사 실패시에도 사용자에게 피드백
+      alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
+    }
+  };
+
+  const updateURL = (newParams: Record<string, string>) => {
+    const params = new URLSearchParams(searchParams);
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+    });
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+
   const handleLoanAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
     if (/^\d*$/.test(value)) {
-      setLoanAmount(formatNumber(Number(value)));
+      const formattedValue = formatNumber(Number(value));
+      setLoanAmount(formattedValue);
+      updateURL({ amount: value });
     }
   };
 
@@ -238,6 +286,7 @@ const LoanCalculator = () => {
     const value = e.target.value;
     if (/^\d*\.?\d*$/.test(value)) {
       setInterestRate(value);
+      updateURL({ rate: value });
     }
   };
 
@@ -245,6 +294,7 @@ const LoanCalculator = () => {
     const value = e.target.value;
     if (/^\d*$/.test(value)) {
       setLoanTerm(value);
+      updateURL({ term: value });
     }
   };
 
@@ -257,6 +307,23 @@ const LoanCalculator = () => {
       }
     });
   };
+
+  // URL에서 초기값 로드
+  useEffect(() => {
+    const amountParam = searchParams.get('amount');
+    const rateParam = searchParams.get('rate');
+    const termParam = searchParams.get('term');
+
+    if (amountParam && /^\d+$/.test(amountParam)) {
+      setLoanAmount(formatNumber(Number(amountParam)));
+    }
+    if (rateParam && /^\d*\.?\d*$/.test(rateParam)) {
+      setInterestRate(rateParam);
+    }
+    if (termParam && /^\d+$/.test(termParam)) {
+      setLoanTerm(termParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (loanAmount && interestRate && loanTerm && selectedTypes.length > 0) {
@@ -397,9 +464,27 @@ const LoanCalculator = () => {
             {results.length > 0 ? (
               results.map((result) => (
                 <div key={result.type} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                    {loanTypes[result.type]}
-                  </h3>
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      {loanTypes[result.type]}
+                    </h3>
+                    <button
+                      onClick={handleShare}
+                      className="inline-flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 transition-colors"
+                    >
+                      {isCopied ? (
+                        <>
+                          <Check className="w-4 h-4" />
+                          <span className="text-sm">복사됨!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Share2 className="w-4 h-4" />
+                          <span className="text-sm">공유</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                   
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className={`${getTypeColor(result.type)} rounded-xl p-4 text-white`}>

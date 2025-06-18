@@ -1,13 +1,17 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { Briefcase, Calendar, TrendingUp, Calculator } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Briefcase, Calendar, TrendingUp, Calculator, Share2, Check } from 'lucide-react';
 
 const RetirementCalculator = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [avgSalary, setAvgSalary] = useState('');
   const [workYears, setWorkYears] = useState('');
   const [workMonths, setWorkMonths] = useState('');
   const [result, setResult] = useState<ReturnType<typeof calculateRetirement>>(null);
+  const [isCopied, setIsCopied] = useState(false);
 
   // 퇴직금 계산 함수 (근로기준법 기준)
   const calculateRetirement = (avgSalaryStr: string, yearsStr: string, monthsStr: string) => {
@@ -92,10 +96,54 @@ const RetirementCalculator = () => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
+  const handleShare = async () => {
+    try {
+      const currentUrl = window.location.href;
+      
+      // Modern clipboard API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(currentUrl);
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = currentUrl;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy URL:', err);
+      // 복사 실패시에도 사용자에게 피드백
+      alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
+    }
+  };
+
+  const updateURL = (newParams: Record<string, string>) => {
+    const params = new URLSearchParams(searchParams);
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+    });
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+
   const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
     if (/^\d*$/.test(value)) {
-      setAvgSalary(formatNumber(Number(value)));
+      const formattedValue = formatNumber(Number(value));
+      setAvgSalary(formattedValue);
+      updateURL({ salary: value });
     }
   };
 
@@ -103,6 +151,7 @@ const RetirementCalculator = () => {
     const value = e.target.value;
     if (/^\d*$/.test(value) && Number(value) <= 50) {
       setWorkYears(value);
+      updateURL({ years: value });
     }
   };
 
@@ -110,8 +159,26 @@ const RetirementCalculator = () => {
     const value = e.target.value;
     if (/^\d*$/.test(value) && Number(value) <= 11) {
       setWorkMonths(value);
+      updateURL({ months: value });
     }
   };
+
+  // URL에서 초기값 로드
+  useEffect(() => {
+    const salaryParam = searchParams.get('salary');
+    const yearsParam = searchParams.get('years');
+    const monthsParam = searchParams.get('months');
+
+    if (salaryParam && /^\d+$/.test(salaryParam)) {
+      setAvgSalary(formatNumber(Number(salaryParam)));
+    }
+    if (yearsParam && /^\d+$/.test(yearsParam) && Number(yearsParam) <= 50) {
+      setWorkYears(yearsParam);
+    }
+    if (monthsParam && /^\d+$/.test(monthsParam) && Number(monthsParam) <= 11) {
+      setWorkMonths(monthsParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (avgSalary && (workYears || workMonths)) {
@@ -216,6 +283,22 @@ const RetirementCalculator = () => {
               <div className="text-center p-6 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl text-white">
                 <div className="text-sm opacity-90 mb-1">세후 퇴직금</div>
                 <div className="text-3xl font-bold">{formatNumber(result.netRetirementPay)}원</div>
+                <button
+                  onClick={handleShare}
+                  className="mt-4 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
+                >
+                  {isCopied ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span>복사됨!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="w-4 h-4" />
+                      <span>결과 공유</span>
+                    </>
+                  )}
+                </button>
               </div>
 
               <div className="grid grid-cols-2 gap-4">

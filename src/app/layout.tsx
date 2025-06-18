@@ -93,6 +93,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        <link rel="icon" href="/logo.png" type="image/png" />
         <meta name="google-adsense-account" content={adsenseId} />
         <script
           type="application/ld+json"

@@ -1,11 +1,15 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { DollarSign, TrendingUp, Calculator } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { DollarSign, TrendingUp, Calculator, Share2, Check } from 'lucide-react';
 
 const SalaryCalculator = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [annualSalary, setAnnualSalary] = useState('');
   const [result, setResult] = useState<ReturnType<typeof calculateNetSalary>>(null);
+  const [isCopied, setIsCopied] = useState(false);
 
   // 실수령액 계산 함수 (간소화된 버전)
   const calculateNetSalary = (grossAnnual: string) => {
@@ -63,12 +67,60 @@ const SalaryCalculator = () => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
+  const handleShare = async () => {
+    try {
+      const currentUrl = window.location.href;
+      
+      // Modern clipboard API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(currentUrl);
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = currentUrl;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy URL:', err);
+      // 복사 실패시에도 사용자에게 피드백
+      alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
     if (/^\d*$/.test(value)) {
-      setAnnualSalary(formatNumber(Number(value)));
+      const formattedValue = formatNumber(Number(value));
+      setAnnualSalary(formattedValue);
+      
+      // URL 업데이트
+      const params = new URLSearchParams(searchParams);
+      if (value) {
+        params.set('salary', value);
+      } else {
+        params.delete('salary');
+      }
+      router.replace(`?${params.toString()}`, { scroll: false });
     }
   };
+
+  // URL에서 초기값 로드
+  useEffect(() => {
+    const salaryParam = searchParams.get('salary');
+    if (salaryParam && /^\d+$/.test(salaryParam)) {
+      setAnnualSalary(formatNumber(Number(salaryParam)));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (annualSalary) {
@@ -141,6 +193,22 @@ const SalaryCalculator = () => {
                 <div className="text-blue-100 text-lg font-medium">
                   연 {formatNumber(result.netAnnual)}원
                 </div>
+                <button
+                  onClick={handleShare}
+                  className="mt-4 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
+                >
+                  {isCopied ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span>복사됨!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="w-4 h-4" />
+                      <span>결과 공유</span>
+                    </>
+                  )}
+                </button>
               </div>
 
               {/* Deduction Breakdown */}

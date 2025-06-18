@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { Target, Coins, BarChart3, Calculator } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Target, Coins, BarChart3, Calculator, Share2, Check } from 'lucide-react';
 
 type SavingsType = 'regular' | 'free' | 'target' | 'compound';
 
@@ -21,6 +22,8 @@ interface SavingsResult {
 }
 
 const SavingsCalculator = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [monthlyAmount, setMonthlyAmount] = useState('');
   const [interestRate, setInterestRate] = useState('');
   const [savingsPeriod, setSavingsPeriod] = useState('');
@@ -29,6 +32,7 @@ const SavingsCalculator = () => {
   const [selectedTypes, setSelectedTypes] = useState<SavingsType[]>(['regular']);
   const [results, setResults] = useState<SavingsResult[]>([]);
   const [activeTab, setActiveTab] = useState<'calculator' | 'goal' | 'comparison'>('calculator');
+  const [isCopied, setIsCopied] = useState(false);
 
   const savingsTypes = {
     'regular': '정기적금',
@@ -263,17 +267,63 @@ const SavingsCalculator = () => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
+  const handleShare = async () => {
+    try {
+      const currentUrl = window.location.href;
+      
+      // Modern clipboard API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(currentUrl);
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = currentUrl;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy URL:', err);
+      // 복사 실패시에도 사용자에게 피드백
+      alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
+    }
+  };
+
+  const updateURL = (newParams: Record<string, string>) => {
+    const params = new URLSearchParams(searchParams);
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+    });
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+
   const handleMonthlyAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
     if (/^\d*$/.test(value)) {
-      setMonthlyAmount(formatNumber(Number(value)));
+      const formattedValue = formatNumber(Number(value));
+      setMonthlyAmount(formattedValue);
+      updateURL({ monthly: value });
     }
   };
 
   const handleTargetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
     if (/^\d*$/.test(value)) {
-      setTargetAmount(formatNumber(Number(value)));
+      const formattedValue = formatNumber(Number(value));
+      setTargetAmount(formattedValue);
+      updateURL({ target: value });
     }
   };
 
@@ -281,6 +331,7 @@ const SavingsCalculator = () => {
     const value = e.target.value;
     if (/^\d*\.?\d*$/.test(value)) {
       setInterestRate(value);
+      updateURL({ rate: value });
     }
   };
 
@@ -288,6 +339,7 @@ const SavingsCalculator = () => {
     const value = e.target.value;
     if (/^\d*$/.test(value)) {
       setSavingsPeriod(value);
+      updateURL({ period: value });
     }
   };
 
@@ -300,6 +352,31 @@ const SavingsCalculator = () => {
       }
     });
   };
+
+  // URL에서 초기값 로드
+  useEffect(() => {
+    const monthlyParam = searchParams.get('monthly');
+    const targetParam = searchParams.get('target');
+    const rateParam = searchParams.get('rate');
+    const periodParam = searchParams.get('period');
+    const unitParam = searchParams.get('unit');
+
+    if (monthlyParam && /^\d+$/.test(monthlyParam)) {
+      setMonthlyAmount(formatNumber(Number(monthlyParam)));
+    }
+    if (targetParam && /^\d+$/.test(targetParam)) {
+      setTargetAmount(formatNumber(Number(targetParam)));
+    }
+    if (rateParam && /^\d*\.?\d*$/.test(rateParam)) {
+      setInterestRate(rateParam);
+    }
+    if (periodParam && /^\d+$/.test(periodParam)) {
+      setSavingsPeriod(periodParam);
+    }
+    if (unitParam && (unitParam === 'year' || unitParam === 'month')) {
+      setPeriodUnit(unitParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -426,7 +503,10 @@ const SavingsCalculator = () => {
                   <div className="flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
                     <button
                       type="button"
-                      onClick={() => setPeriodUnit('year')}
+                      onClick={() => {
+                        setPeriodUnit('year');
+                        updateURL({ unit: 'year' });
+                      }}
                       className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                         periodUnit === 'year'
                           ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
@@ -437,7 +517,10 @@ const SavingsCalculator = () => {
                     </button>
                     <button
                       type="button"
-                      onClick={() => setPeriodUnit('month')}
+                      onClick={() => {
+                        setPeriodUnit('month');
+                        updateURL({ unit: 'month' });
+                      }}
                       className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                         periodUnit === 'month'
                           ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
@@ -492,9 +575,27 @@ const SavingsCalculator = () => {
             {results.length > 0 ? (
               results.map((result) => (
                 <div key={result.type} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                    {savingsTypes[result.type]}
-                  </h3>
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      {savingsTypes[result.type]}
+                    </h3>
+                    <button
+                      onClick={handleShare}
+                      className="inline-flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 transition-colors"
+                    >
+                      {isCopied ? (
+                        <>
+                          <Check className="w-4 h-4" />
+                          <span className="text-sm">복사됨!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Share2 className="w-4 h-4" />
+                          <span className="text-sm">공유</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                   
                   <div className="grid md:grid-cols-4 gap-4">
                     <div className={`${getTypeColor(result.type)} rounded-xl p-4 text-white`}>
