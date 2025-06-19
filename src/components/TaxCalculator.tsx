@@ -606,7 +606,7 @@ const TaxCalculatorContent = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
           <Receipt className="w-8 h-8 text-green-600" />
@@ -853,7 +853,7 @@ const TaxCalculatorContent = () => {
       {/* 상세 가이드 섹션 */}
       <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
         <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 세금 계산 마스터 가이드</h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
           개인사업자부터 직장인까지! 세금의 모든 것을 마스터하는 완전한 가이드입니다. 
           소득세부터 양도소득세까지, 절세 전략으로 내 돈을 지키세요!
         </p>

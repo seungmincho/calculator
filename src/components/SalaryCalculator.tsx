@@ -303,7 +303,7 @@ const SalaryCalculatorContent = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
           <DollarSign className="w-8 h-8 text-blue-600" />
@@ -681,7 +681,7 @@ const SalaryCalculatorContent = () => {
       {/* 상세 가이드 섹션 */}
       <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
         <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 연봉 계산 마스터 가이드</h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
           신입사원부터 임원까지! 연봉 계산의 모든 것을 마스터하는 완전한 가이드입니다. 
           4대보험부터 연말정산까지, 실수령액을 늘리는 모든 비법을 알려드립니다!
         </p>

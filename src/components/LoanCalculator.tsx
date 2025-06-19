@@ -733,7 +733,7 @@ const LoanCalculatorContent = () => {
       {/* 상세 가이드 섹션 */}
       <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
         <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 대출 계산 마스터 가이드</h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
           대출 초보자부터 재테크 전문가까지! 대출의 모든 것을 마스터하는 완전한 가이드입니다. 
           똑똑한 대출로 내 집 마련부터 투자까지, 모든 금융 목표를 달성하세요!
         </p>

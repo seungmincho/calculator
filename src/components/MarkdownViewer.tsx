@@ -470,7 +470,7 @@ const MarkdownViewer = () => {
       {/* 도움말 섹션 */}
       <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
         <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 마크다운 뷰어 마스터 가이드</h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
           기술 블로거부터 문서 관리자까지! 마크다운의 모든 것을 마스터하는 완전한 가이드입니다. 
           GitHub README부터 기술 문서까지, 프로처럼 작성하고 관리하세요!
         </p>

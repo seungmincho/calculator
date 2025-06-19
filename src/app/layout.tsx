@@ -188,6 +188,8 @@ export default function RootLayout({
                   <li><a href="/json-formatter" className="hover:text-white transition-colors">JSON 포맷터</a></li>
                   <li><a href="/sql-formatter" className="hover:text-white transition-colors">SQL 포맷터</a></li>
                   <li><a href="/markdown-viewer" className="hover:text-white transition-colors">마크다운 뷰어</a></li>
+                  <li><a href="/image-resizer" className="hover:text-white transition-colors">이미지 리사이저</a></li>
+                  <li><a href="/image-editor" className="hover:text-white transition-colors">이미지 편집기</a></li>
                   {/* <li><a href="#" className="hover:text-white transition-colors">오늘의 팁</a></li> */}
                   {/* <li><a href="#" className="hover:text-white transition-colors">이용약관</a></li> */}
                   {/* <li><a href="#" className="hover:text-white transition-colors">개인정보처리방침</a></li> */}

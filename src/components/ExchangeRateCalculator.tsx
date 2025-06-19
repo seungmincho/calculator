@@ -273,7 +273,7 @@ const ExchangeRateCalculatorContent = () => {
   }, [amount, fromCurrency, toCurrency, exchangeRates]);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
           <Globe className="w-8 h-8 text-blue-600" />
@@ -497,6 +497,463 @@ const ExchangeRateCalculatorContent = () => {
               </p>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* 상세 가이드 섹션 */}
+      <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+        <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 환율 계산 마스터 가이드</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
+          해외여행부터 무역업무까지! 환율의 모든 것을 마스터하는 완전한 가이드입니다. 
+          환전 수수료부터 환율 예측까지, 똑똑한 환전으로 내 돈을 지키세요!
+        </p>
+        
+        {/* 핵심 기능 소개 */}
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-blue-600 p-3 rounded-full mr-3">
+                <Globe className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-blue-900 dark:text-blue-200">💎 실시간 환율 정보</h3>
+            </div>
+            <p className="text-blue-800 dark:text-blue-300 mb-4 leading-relaxed">
+              전 세계 주요 12개 통화의 실시간 환율을 제공! 정확하고 빠른 환전 계산으로 최적의 타이밍을 잡으세요.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">🌍 주요 12개 통화</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">USD, EUR, JPY, GBP, CNY 등 주요국 통화 완벽 지원</p>
+              </div>
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">⚡ 실시간 업데이트</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">원클릭 환율 갱신으로 최신 정보 반영</p>
+              </div>
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">🎯 정확한 계산</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">소수점 4자리까지 정밀한 환율 계산</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-green-600 p-3 rounded-full mr-3">
+                <Calculator className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-green-900 dark:text-green-200">📊 스마트 환전 계산</h3>
+            </div>
+            <p className="text-green-800 dark:text-green-300 mb-4 leading-relaxed">
+              단순 계산을 넘어선 똑똑한 환전 분석! 수수료부터 환율 변동까지 모든 요소를 고려한 맞춤형 가이드.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">💰 수수료 고려</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">은행별 환전 수수료 정보 제공</p>
+              </div>
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">📈 환율 트렌드</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">과거 환율 데이터 기반 변동 예측</p>
+              </div>
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">🎯 최적 타이밍</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">환전하기 좋은 시점 알림 서비스</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-purple-600 p-3 rounded-full mr-3">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-purple-900 dark:text-purple-200">⚡ 여행자 전용 도구</h3>
+            </div>
+            <p className="text-purple-800 dark:text-purple-300 mb-4 leading-relaxed">
+              해외여행부터 유학생까지! 실무에서 바로 쓸 수 있는 전문가급 환전 도구와 여행 팁을 제공합니다.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">✈️ 여행 예산 계산</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">국가별 물가 정보로 여행 예산 산출</p>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">🔗 계산 이력 저장</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">환전 계산 결과를 저장하고 비교</p>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">📱 모바일 최적화</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">해외에서도 쉽게 사용할 수 있는 인터페이스</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 주요 통화별 완전 분석 */}
+        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">🌍 주요 통화별 완전 분석</h3>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">각 통화의 특징과 환전 전략을 상세히 알려드립니다</p>
+          
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4 flex items-center">
+                <span className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full mr-3">💵</span>
+                미국 달러 (USD) & 유로 (EUR)
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">🇺🇸 미국 달러 (USD)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">세계 기축통화, 가장 안전한 환전 선택</p>
+                  <div className="mt-2 text-xs text-blue-500 space-y-1">
+                    <p>• 장점: 전 세계 어디서나 환전 가능, 높은 유동성</p>
+                    <p>• 환전 팁: 은행보다 공항이 비쌈, 온라인 환전 활용</p>
+                    <p>• 추천: 미국, 동남아시아, 남미 여행시 필수</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">🇪🇺 유로 (EUR)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">유럽연합 공통통화, 27개국에서 사용</p>
+                  <div className="mt-2 text-xs text-green-500 space-y-1">
+                    <p>• 장점: 유럽 여행시 여러 나라에서 사용 가능</p>
+                    <p>• 환전 팁: 독일, 프랑스 은행에서 수수료 저렴</p>
+                    <p>• 추천: 유럽 배낭여행, 장기 유럽 체류시</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-orange-600 dark:text-orange-400 mb-4 flex items-center">
+                <span className="bg-orange-100 dark:bg-orange-900 p-2 rounded-full mr-3">🏮</span>
+                일본 엔 (JPY) & 중국 위안 (CNY)
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h5 className="font-semibold text-orange-600">🇯🇵 일본 엔 (JPY)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">아시아 3대 통화, 한국인 최다 방문국</p>
+                  <div className="mt-2 text-xs text-orange-500 space-y-1">
+                    <p>• 특징: 소액 단위가 크므로 큰 숫자로 계산</p>
+                    <p>• 환전 팁: 한국에서 미리 환전이 유리</p>
+                    <p>• 추천: 일본 여행, 온천 여행, 쇼핑 여행시</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-red-400 pl-4">
+                  <h5 className="font-semibold text-red-600">🇨🇳 중국 위안 (CNY)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">중국 본토 통화, 최근 국제화 진행</p>
+                  <div className="mt-2 text-xs text-red-500 space-y-1">
+                    <p>• 특징: 홍콩달러(HKD)와 다른 통화임에 주의</p>
+                    <p>• 환전 팁: 중국 현지 은행에서 환전 추천</p>
+                    <p>• 추천: 중국 본토 여행, 비즈니스 출장시</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
+                <span className="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">👑</span>
+                영국 파운드 (GBP) & 스위스 프랑 (CHF)
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">🇬🇧 영국 파운드 (GBP)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">세계에서 가장 오래된 통화 중 하나</p>
+                  <div className="mt-2 text-xs text-purple-500 space-y-1">
+                    <p>• 특징: 높은 환율로 소액으로도 큰 금액 환전</p>
+                    <p>• 환전 팁: 런던 시내 환전소가 은행보다 유리</p>
+                    <p>• 추천: 영국, 스코틀랜드, 아일랜드 여행시</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-gray-400 pl-4">
+                  <h5 className="font-semibold text-gray-600">🇨🇭 스위스 프랑 (CHF)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">안전자산으로 인정받는 강한 통화</p>
+                  <div className="mt-2 text-xs text-gray-500 space-y-1">
+                    <p>• 특징: 물가가 비싸므로 충분한 환전 필요</p>
+                    <p>• 환전 팁: 스위스 현지보다 한국에서 미리 환전</p>
+                    <p>• 추천: 스위스 여행, 스키 여행, 명품 쇼핑시</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-green-600 dark:text-green-400 mb-4 flex items-center">
+                <span className="bg-green-100 dark:bg-green-900 p-2 rounded-full mr-3">🦘</span>
+                호주/캐나다 달러 & 아시아 통화들
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">🇦🇺🇨🇦 호주/캐나다 달러 (AUD/CAD)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">자원부국 통화, 상품가격에 민감</p>
+                  <div className="mt-2 text-xs text-green-500 space-y-1">
+                    <p>• 특징: 원자재 가격 변동에 따라 환율 변동</p>
+                    <p>• 환전 팁: 워킹홀리데이는 현지 계좌 개설 추천</p>
+                    <p>• 추천: 워킹홀리데이, 어학연수, 이민시</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">🇸🇬🇭🇰 싱가포르/홍콩 달러 (SGD/HKD)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">아시아 금융허브의 안정적 통화</p>
+                  <div className="mt-2 text-xs text-blue-500 space-y-1">
+                    <p>• 특징: 미달러와 연동되어 안정적</p>
+                    <p>• 환전 팁: 현지 환전상이 은행보다 유리</p>
+                    <p>• 추천: 동남아 허브, 경유지 여행시</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 환전 수수료 완벽 가이드 */}
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">💰 환전 수수료 완벽 가이드</h3>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">똑똑한 환전으로 수수료를 절약하는 모든 방법을 알려드립니다!</p>
+          
+          <div className="grid lg:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🏦</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">은행 환전</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">📊 수수료: 1.5~3%</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">안전하지만 상대적으로 높은 수수료</p>
+                </div>
+                <div className="text-xs text-blue-500 space-y-1">
+                  <p>• 장점: 안전성, 위조지폐 걱정 없음</p>
+                  <p>• 단점: 높은 수수료, 영업시간 제한</p>
+                  <p>• 팁: VIP 고객은 우대 환율 적용</p>
+                  <p>• 추천: 대량 환전시 안전성 중시</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">💻</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">온라인 환전</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">📊 수수료: 0.5~1.5%</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">가장 저렴한 환전 방법</p>
+                </div>
+                <div className="text-xs text-green-500 space-y-1">
+                  <p>• 장점: 낮은 수수료, 24시간 신청</p>
+                  <p>• 단점: 배송 시간, 최소 금액 제한</p>
+                  <p>• 팁: 여행 1주일 전 미리 신청</p>
+                  <p>• 추천: 계획적인 환전, 대량 환전</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-amber-100 dark:bg-amber-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">✈️</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">공항 환전</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-amber-400 pl-4">
+                  <h5 className="font-semibold text-amber-600">📊 수수료: 3~5%</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">편리하지만 가장 비싼 방법</p>
+                </div>
+                <div className="text-xs text-amber-500 space-y-1">
+                  <p>• 장점: 24시간 이용, 즉시 환전</p>
+                  <p>• 단점: 높은 수수료, 제한된 통화</p>
+                  <p>• 팁: 급할 때만 최소 금액만 환전</p>
+                  <p>• 추천: 응급상황, 소액 환전</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg">
+            <h5 className="font-semibold text-green-900 dark:text-green-200 mb-3">💡 환전 수수료 절약 황금팁</h5>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <h6 className="font-bold text-green-600 mb-2">📅 타이밍 전략</h6>
+                <p className="text-green-800 dark:text-green-300">환율이 유리할 때 미리 환전</p>
+                <div className="text-xs text-green-600 mt-1">💡 급등락 시기 피하기</div>
+              </div>
+              <div>
+                <h6 className="font-bold text-green-600 mb-2">💳 카드 활용</h6>
+                <p className="text-green-800 dark:text-green-300">해외 수수료 무료 카드 사용</p>
+                <div className="text-xs text-green-600 mt-1">💡 현금+카드 병행 사용</div>
+              </div>
+              <div>
+                <h6 className="font-bold text-green-600 mb-2">🔄 현지 환전</h6>
+                <p className="text-green-800 dark:text-green-300">일부 국가는 현지가 더 유리</p>
+                <div className="text-xs text-green-600 mt-1">💡 환전소 가격 비교</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 여행 목적별 환전 전략 */}
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">🎯 여행 목적별 맞춤 환전 전략</h3>
+          <div className="grid lg:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🏖️</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">단기 관광 (3~7일)</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">💰 추천 금액: 500~1,000달러</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">현금 + 카드 병행 사용</p>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="bg-blue-50 dark:bg-blue-900/50 p-2 rounded">
+                    <strong>환전 전략:</strong> 80% 온라인 + 20% 공항
+                  </div>
+                  <div className="text-xs text-blue-600 space-y-1">
+                    <p>• 주요 비용: 교통비, 식비, 쇼핑</p>
+                    <p>• 카드 위주 + 팁용 현금 소량</p>
+                    <p>• 여행 3일 전 온라인 환전</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🎒</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">장기 여행 (1~3개월)</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">💰 추천 금액: 2,000~5,000달러</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">현지 계좌 개설 고려</p>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="bg-green-50 dark:bg-green-900/50 p-2 rounded">
+                    <strong>환전 전략:</strong> 분할 환전 + 현지 송금
+                  </div>
+                  <div className="text-xs text-green-600 space-y-1">
+                    <p>• 1차: 초기 정착 자금 (30%)</p>
+                    <p>• 2차: 현지 환율 보고 추가 환전</p>
+                    <p>• 송금: 웨스턴유니온 등 활용</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">💼</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">비즈니스 출장</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">💰 추천 금액: 1,000~3,000달러</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">법인카드 + 개인 현금</p>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="bg-purple-50 dark:bg-purple-900/50 p-2 rounded">
+                    <strong>환전 전략:</strong> 100% 은행 환전 (영수증 보관)
+                  </div>
+                  <div className="text-xs text-purple-600 space-y-1">
+                    <p>• 법인카드로 대부분 결제</p>
+                    <p>• 현금: 택시, 팁, 소액 결제용</p>
+                    <p>• 환전 영수증 반드시 보관</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 환율 변동 이해하기 */}
+        <div className="bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/30 dark:to-pink-900/30 rounded-2xl p-8">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">📈 환율 변동의 모든 것</h3>
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div>
+              <h4 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-4 flex items-center">
+                <span className="bg-red-100 dark:bg-red-900 p-2 rounded-full mr-2">📊</span>
+                환율에 영향을 주는 요인들
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-red-600 mb-2">🏛️ 경제 지표</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p><strong>GDP 성장률:</strong> 경제 성장이 좋으면 통화 강세</p>
+                    <p><strong>인플레이션:</strong> 물가상승률이 높으면 통화 약세</p>
+                    <p><strong>고용지표:</strong> 실업률 하락시 통화 강세</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-red-600 mb-2">💰 금리 정책</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p><strong>기준금리:</strong> 금리 인상시 해당 통화 강세</p>
+                    <p><strong>양적완화:</strong> 돈 공급 증가시 통화 약세</p>
+                    <p><strong>금리 차이:</strong> 국가간 금리차가 환율 결정</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold text-green-600 dark:text-green-400 mb-4 flex items-center">
+                <span className="bg-green-100 dark:bg-green-900 p-2 rounded-full mr-2">🎯</span>
+                환율 예측하는 방법
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-green-600 mb-2">📰 뉴스 모니터링</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 중앙은행 발표 (한국은행, 연준, ECB 등)</p>
+                    <p>• 주요 경제지표 발표 일정 확인</p>
+                    <p>• 국제 정치 상황 (전쟁, 선거 등)</p>
+                    <p>• 무역 분쟁, 제재 뉴스 주의</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-green-600 mb-2">📊 기술적 분석</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 과거 환율 차트 패턴 분석</p>
+                    <p>• 지지선과 저항선 파악</p>
+                    <p>• 이동평균선 추세 확인</p>
+                    <p>• 변동성이 큰 시기 피하기</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-8 bg-amber-50 dark:bg-amber-900/20 p-6 rounded-lg">
+            <h5 className="font-semibold text-amber-900 dark:text-amber-200 mb-3">⚠️ 환율 변동 대응 전략</h5>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <h6 className="font-bold text-amber-600 mb-2">📅 분할 환전</h6>
+                <p className="text-amber-800 dark:text-amber-300">한 번에 몰아서 하지 말고 나누어서</p>
+                <div className="text-xs text-amber-600 mt-1">💡 리스크 분산 효과</div>
+              </div>
+              <div>
+                <h6 className="font-bold text-amber-600 mb-2">🎯 목표 환율 설정</h6>
+                <p className="text-amber-800 dark:text-amber-300">원하는 환율에 도달하면 환전</p>
+                <div className="text-xs text-amber-600 mt-1">💡 감정적 판단 배제</div>
+              </div>
+              <div>
+                <h6 className="font-bold text-amber-600 mb-2">⏰ 급하지 않을 때</h6>
+                <p className="text-amber-800 dark:text-amber-300">여유를 두고 좋은 타이밍 기다리기</p>
+                <div className="text-xs text-amber-600 mt-1">💡 조급함은 손실의 지름길</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

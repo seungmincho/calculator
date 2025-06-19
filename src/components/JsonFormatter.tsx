@@ -633,7 +633,7 @@ const JsonFormatter = () => {
       {/* 도움말 섹션 */}
       <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
         <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 JSON 포맷터 마스터 가이드</h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
           웹개발자부터 API 설계자까지! JSON 데이터를 프로처럼 다루는 완전한 가이드입니다. 
           복잡한 중첩 구조도 트리뷰로 한눈에, 압축으로 성능까지 챙기세요!
         </p>

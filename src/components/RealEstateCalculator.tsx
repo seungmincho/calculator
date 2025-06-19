@@ -863,6 +863,431 @@ const RealEstateCalculatorContent = () => {
           )}
         </div>
       </div>
+
+      {/* 상세 가이드 섹션 */}
+      <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+        <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 부동산 계산 마스터 가이드</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
+          내 집 마련부터 투자까지! 부동산의 모든 것을 마스터하는 완전한 가이드입니다. 
+          대출부터 세금까지, 똑똑한 부동산 거래로 최고의 선택을 하세요!
+        </p>
+        
+        {/* 핵심 기능 소개 */}
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-purple-600 p-3 rounded-full mr-3">
+                <Home className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-purple-900 dark:text-purple-200">💎 3가지 필수 계산</h3>
+            </div>
+            <p className="text-purple-800 dark:text-purple-300 mb-4 leading-relaxed">
+              전세자금대출, 주택담보대출, 취득세를 하나의 도구로! 내 집 마련의 모든 단계를 완벽하게 계산해드립니다.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">🏠 전세자금대출</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">LTV 80% 기준 정확한 월 상환액 계산</p>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">🏦 주택담보대출</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">LTV, DSR 고려한 현실적 대출 계산</p>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">📋 취득세 계산</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">2025년 최신 세법 기준 정확한 세금 산출</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-blue-600 p-3 rounded-full mr-3">
+                <Calculator className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-blue-900 dark:text-blue-200">📊 스마트 자금 계획</h3>
+            </div>
+            <p className="text-blue-800 dark:text-blue-300 mb-4 leading-relaxed">
+              단순 계산을 넘어선 똑똑한 부동산 자금 분석! LTV부터 DTI까지 모든 규제를 고려한 맞춤형 플랜.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">🎯 LTV/DTI 분석</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">대출 규제에 맞는 최적 자금 계획</p>
+              </div>
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">💰 세금 절약 전략</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">1주택자 감면부터 다양한 혜택까지</p>
+              </div>
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">📈 총비용 산출</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">대출 이자부터 각종 세금까지 총 비용 계산</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-green-600 p-3 rounded-full mr-3">
+                <Building className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-green-900 dark:text-green-200">⚡ 실무 최적화 도구</h3>
+            </div>
+            <p className="text-green-800 dark:text-green-300 mb-4 leading-relaxed">
+              공인중개사부터 일반인까지! 실무에서 바로 쓸 수 있는 전문가급 부동산 계산 도구입니다.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">📂 계산 이력 관리</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">여러 매물 계산 결과를 저장하고 비교</p>
+              </div>
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">🔗 URL 공유</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">계산 결과를 가족이나 상담사와 공유</p>
+              </div>
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">📱 언제 어디서나</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">매물 현장에서도 즉시 계산 가능</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 부동산 대출 완전정복 */}
+        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">🏦 부동산 대출 완전정복</h3>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">내 집 마련의 핵심! 각 대출의 특징과 선택 기준을 상세히 알려드립니다</p>
+          
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
+                <span className="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">🏠</span>
+                전세자금대출 (전세 보증금 마련용)
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">💡 대출 조건</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">전세 보증금의 최대 80%까지 대출 가능</p>
+                  <div className="mt-2 text-xs text-purple-500 space-y-1">
+                    <p>• LTV 한도: 최대 80% (조정지역은 70%)</p>
+                    <p>• 대출기간: 최대 2년 (전세계약 기간 내)</p>
+                    <p>• 금리: 연 3.0~4.5% (은행별 차이)</p>
+                    <p>• 상환방식: 만기일시상환 or 원리금균등상환</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">🎯 대출 조건</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">소득 증빙과 신용등급이 핵심</p>
+                  <div className="mt-2 text-xs text-blue-500 space-y-1">
+                    <p>• 연소득: 5천만원 이상 (은행별 차이)</p>
+                    <p>• 신용등급: 1~4등급 (5등급 이하는 제한)</p>
+                    <p>• DSR: 총 부채 연간 원리금 ÷ 연소득 ≤ 40%</p>
+                    <p>• 필요서류: 소득증명, 전세계약서, 등기부등본</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">💰 금리 우대 조건</h5>
+                  <div className="mt-2 text-xs text-green-500 space-y-1">
+                    <p>• 신혼부부: -0.2%p (결혼 7년 이내)</p>
+                    <p>• 청년층: -0.2%p (만 34세 이하)</p>
+                    <p>• 자동이체: -0.1%p</p>
+                    <p>• 급여이체: -0.1%p</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4 flex items-center">
+                <span className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full mr-3">🏦</span>
+                주택담보대출 (내 집 마련용)
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">💡 대출 조건</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">주택 가격의 70~80%까지 대출 가능</p>
+                  <div className="mt-2 text-xs text-blue-500 space-y-1">
+                    <p>• LTV 한도: 최대 70% (조정지역), 80% (비조정지역)</p>
+                    <p>• 대출기간: 최대 30년 (일부 은행 40년)</p>
+                    <p>• 금리: 연 3.5~5.5% (변동/고정금리 선택)</p>
+                    <p>• 상환방식: 원리금균등, 원금균등, 만기일시상환</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h5 className="font-semibold text-orange-600">📊 DTI/DSR 규제</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">소득 대비 대출 상환 능력 평가</p>
+                  <div className="mt-2 text-xs text-orange-500 space-y-1">
+                    <p>• DTI: 담보대출 연간 원리금 ÷ 연소득 ≤ 40%</p>
+                    <p>• DSR: 모든 대출 연간 원리금 ÷ 연소득 ≤ 40%</p>
+                    <p>• 투기지역: DTI 40%, DSR 40% (더 강화)</p>
+                    <p>• 소득 증빙: 근로소득증명원, 사업자등록증명원</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">🎯 금리 유형 선택</h5>
+                  <div className="mt-2 text-xs text-purple-500 space-y-1">
+                    <p>• 변동금리: 시장금리 연동, 금리 변동 위험</p>
+                    <p>• 고정금리: 일정 기간 금리 고정, 안정성</p>
+                    <p>• 혼합금리: 초기 고정 → 후반 변동</p>
+                    <p>• 추천: 금리 상승기에는 고정금리 유리</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 부동산 취득세 완벽 가이드 */}
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">📋 부동산 취득세 완벽 가이드</h3>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">똑똑한 취득세 절약으로 부동산 구입 비용을 줄이는 모든 방법을 알려드립니다!</p>
+          
+          <div className="grid lg:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🏠</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">1주택자 (무주택 포함)</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">📊 세율: 1~3% (누진)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">6억원 이하 주택 구매시 감면 혜택</p>
+                </div>
+                <div className="text-xs text-green-500 space-y-1">
+                  <p>• 6천만원 이하: 1%</p>
+                  <p>• 6천만원~6억원: 1~3% 누진</p>
+                  <p>• 6억원 초과: 3%</p>
+                  <p>• 추가 감면: 신혼부부, 생애최초 등</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🏘️</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">다주택자</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">📊 세율: 1~3% (누진)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">감면 혜택 없는 일반 세율 적용</p>
+                </div>
+                <div className="text-xs text-blue-500 space-y-1">
+                  <p>• 6천만원 이하: 1%</p>
+                  <p>• 6천만원~6억원: 1~3% 누진</p>
+                  <p>• 6억원 초과: 3%</p>
+                  <p>• 조정대상지역: 중과세 가능</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-amber-100 dark:bg-amber-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🌳</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">토지</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-amber-400 pl-4">
+                  <h5 className="font-semibold text-amber-600">📊 세율: 2~4% (누진)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">주택용지보다 높은 세율 적용</p>
+                </div>
+                <div className="text-xs text-amber-500 space-y-1">
+                  <p>• 6천만원 이하: 2%</p>
+                  <p>• 6천만원~6억원: 2~4% 누진</p>
+                  <p>• 6억원 초과: 4%</p>
+                  <p>• 농지: 별도 감면 제도 있음</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg">
+            <h5 className="font-semibold text-green-900 dark:text-green-200 mb-3">💡 취득세 절약 황금팁</h5>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <h6 className="font-bold text-green-600 mb-2">👥 신혼부부 특례</h6>
+                <p className="text-green-800 dark:text-green-300">결혼 7년 이내 1억원까지 50% 감면</p>
+                <div className="text-xs text-green-600 mt-1">💡 혼인신고일 기준</div>
+              </div>
+              <div>
+                <h6 className="font-bold text-green-600 mb-2">🏠 생애최초 특례</h6>
+                <p className="text-green-800 dark:text-green-300">무주택 5년 이상시 3억원까지 50% 감면</p>
+                <div className="text-xs text-green-600 mt-1">💡 소득 요건 있음</div>
+              </div>
+              <div>
+                <h6 className="font-bold text-green-600 mb-2">📅 취득 시기 조절</h6>
+                <p className="text-green-800 dark:text-green-300">다주택 규제 변경 전후 고려</p>
+                <div className="text-xs text-green-600 mt-1">💡 법 개정 일정 확인</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 부동산 투자 전략 */}
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">🎯 상황별 맞춤 부동산 전략</h3>
+          <div className="grid lg:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🏠</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">내 집 마련 (생애 첫 주택)</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">💰 추천 예산: 3~6억원</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">소득 대비 무리하지 않는 선에서</p>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="bg-blue-50 dark:bg-blue-900/50 p-2 rounded">
+                    <strong>자금 계획:</strong> 자기자금 30% + 대출 70%
+                  </div>
+                  <div className="text-xs text-blue-600 space-y-1">
+                    <p>• 자기자금: 계약금 10% + 중도금 20%</p>
+                    <p>• 잔금 대출: 주택담보대출 활용</p>
+                    <p>• 세금 절약: 생애최초 특례 적극 활용</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">📈</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">갈아타기 (기존 주택 보유)</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">💰 추천 예산: 현재 주택가 × 1.5배</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">기존 주택 매각 자금 활용</p>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="bg-green-50 dark:bg-green-900/50 p-2 rounded">
+                    <strong>전략:</strong> 매도 → 임시 거주 → 매수
+                  </div>
+                  <div className="text-xs text-green-600 space-y-1">
+                    <p>• 1단계: 기존 주택 매도 (양도세 고려)</p>
+                    <p>• 2단계: 전세 또는 임시 거주</p>
+                    <p>• 3단계: 신규 주택 매수</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">💼</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">부동산 투자</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">💰 추천 예산: 10억원 이상</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">충분한 자금력과 세금 부담 고려</p>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="bg-purple-50 dark:bg-purple-900/50 p-2 rounded">
+                    <strong>전략:</strong> 수익률 vs 세금 부담 분석
+                  </div>
+                  <div className="text-xs text-purple-600 space-y-1">
+                    <p>• 임대수익률: 연 3~5% 목표</p>
+                    <p>• 종합부동산세 부담 계산</p>
+                    <p>• 양도소득세 중과세 고려</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 부동산 시장 이해하기 */}
+        <div className="bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/30 dark:to-pink-900/30 rounded-2xl p-8">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">📈 부동산 시장의 모든 것</h3>
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div>
+              <h4 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-4 flex items-center">
+                <span className="bg-red-100 dark:bg-red-900 p-2 rounded-full mr-2">📊</span>
+                부동산 가격에 영향을 주는 요인들
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-red-600 mb-2">🏛️ 정책적 요인</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p><strong>LTV/DTI 규제:</strong> 대출 제한으로 수요 조절</p>
+                    <p><strong>공급 정책:</strong> 신규 분양, 재개발·재건축</p>
+                    <p><strong>세금 정책:</strong> 취득세, 보유세, 양도세 변화</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-red-600 mb-2">💰 경제적 요인</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p><strong>금리 변동:</strong> 기준금리 인상/인하가 대출수요 좌우</p>
+                    <p><strong>경기 전망:</strong> GDP 성장률, 고용률 등</p>
+                    <p><strong>인플레이션:</strong> 물가상승시 부동산 선호 증가</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold text-green-600 dark:text-green-400 mb-4 flex items-center">
+                <span className="bg-green-100 dark:bg-green-900 p-2 rounded-full mr-2">🎯</span>
+                좋은 부동산 고르는 방법
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-green-600 mb-2">📍 입지 분석</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 지하철역 도보 10분 이내 (대중교통 접근성)</p>
+                    <p>• 학군 우수 지역 (교육 환경)</p>
+                    <p>• 대형마트, 병원 등 생활 인프라</p>
+                    <p>• 향후 개발 계획 (GTX, 신도시 등)</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-green-600 mb-2">🏠 건물 조건</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 건축연도 15년 이내 (관리 상태 양호)</p>
+                    <p>• 세대수 300세대 이상 (유동성 확보)</p>
+                    <p>• 브랜드 아파트 (재매매시 유리)</p>
+                    <p>• 향, 층수, 구조 등 물리적 조건</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-8 bg-amber-50 dark:bg-amber-900/20 p-6 rounded-lg">
+            <h5 className="font-semibold text-amber-900 dark:text-amber-200 mb-3">⚠️ 부동산 투자 주의사항</h5>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <h6 className="font-bold text-amber-600 mb-2">💰 과도한 레버리지 금지</h6>
+                <p className="text-amber-800 dark:text-amber-300">대출 비중이 너무 높으면 위험</p>
+                <div className="text-xs text-amber-600 mt-1">💡 자기자금 30% 이상 권장</div>
+              </div>
+              <div>
+                <h6 className="font-bold text-amber-600 mb-2">📊 시장 타이밍 오해</h6>
+                <p className="text-amber-800 dark:text-amber-300">단기 차익보다 장기 보유 관점</p>
+                <div className="text-xs text-amber-600 mt-1">💡 최소 5년 이상 보유 계획</div>
+              </div>
+              <div>
+                <h6 className="font-bold text-amber-600 mb-2">🔍 실사 부족</h6>
+                <p className="text-amber-800 dark:text-amber-300">등기부, 관리비, 하자 등 꼼꼼히 확인</p>
+                <div className="text-xs text-amber-600 mt-1">💡 전문가 조언 적극 활용</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

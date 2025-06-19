@@ -979,6 +979,383 @@ const SavingsCalculatorContent = () => {
           </div>
         </div>
       </div>
+
+      {/* 상세 가이드 섹션 */}
+      <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+        <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 적금 마스터 가이드</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
+          적금 초보부터 전문가까지! 성공적인 저축을 위한 완전한 가이드입니다. 
+          적금 상품 선택부터 목표 달성까지, 모든 노하우를 알려드립니다!
+        </p>
+        
+        {/* 핵심 기능 소개 */}
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-emerald-600 p-3 rounded-full mr-3">
+                <Calculator className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-emerald-900 dark:text-emerald-200">💎 정확한 적금 계산</h3>
+            </div>
+            <p className="text-emerald-800 dark:text-emerald-300 mb-4 leading-relaxed">
+              실제 은행 적금 상품과 동일한 계산법으로 정확한 만기 수령액을 계산해드립니다!
+            </p>
+            <div className="space-y-3">
+              <div className="bg-emerald-100 dark:bg-emerald-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-emerald-900 dark:text-emerald-200 mb-1">📋 4가지 적금 유형</h4>
+                <p className="text-sm text-emerald-700 dark:text-emerald-300">정기적금, 자유적금, 목표적금, 복리적금 완벽 지원</p>
+              </div>
+              <div className="bg-emerald-100 dark:bg-emerald-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-emerald-900 dark:text-emerald-200 mb-1">💰 실제 이자율 반영</h4>
+                <p className="text-sm text-emerald-700 dark:text-emerald-300">은행별 금리 변동에 맞춘 정확한 수익률 계산</p>
+              </div>
+              <div className="bg-emerald-100 dark:bg-emerald-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-emerald-900 dark:text-emerald-200 mb-1">🏷️ 월별 상세 스케줄</h4>
+                <p className="text-sm text-emerald-700 dark:text-emerald-300">매월 납입액과 누적 잔액을 한눈에 확인</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-blue-600 p-3 rounded-full mr-3">
+                <Target className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-blue-900 dark:text-blue-200">📊 스마트 목표 설정</h3>
+            </div>
+            <p className="text-blue-800 dark:text-blue-300 mb-4 leading-relaxed">
+              목표 금액부터 역산해서 필요한 월 납입액을 자동으로 계산해드립니다.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">📈 목표별 맞춤 계산</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">집 마련, 결혼, 노후 준비 등 목적별 최적 플랜</p>
+              </div>
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">💡 실현 가능성 분석</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">소득 대비 저축률을 고려한 현실적인 계획 제안</p>
+              </div>
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">📋 진도 체크</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">월별 목표 달성률과 남은 기간 실시간 확인</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-purple-600 p-3 rounded-full mr-3">
+                <BarChart3 className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-purple-900 dark:text-purple-200">⚡ 상품 비교 분석</h3>
+            </div>
+            <p className="text-purple-800 dark:text-purple-300 mb-4 leading-relaxed">
+              여러 적금 상품을 동시에 비교해서 가장 유리한 상품을 찾아드립니다.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">📂 상품별 수익률 비교</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">정기, 자유, 복리적금의 장단점 한눈에 파악</p>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">🔗 계산 결과 저장/공유</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">여러 시나리오를 저장하고 가족과 공유</p>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">📱 언제 어디서나</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">모바일 최적화로 은행 방문 전 미리 계산</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 적금 상품별 완전 분석 */}
+        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">🏦 적금 상품별 완전 분석</h3>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">각 적금 상품의 특징과 선택 기준을 상세히 알려드립니다</p>
+          
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4 flex items-center">
+                <span className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full mr-3">💰</span>
+                정기적금 & 자유적금
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">📊 정기적금 (일정 납입형)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">매월 정해진 날짜에 동일한 금액 납입</p>
+                  <div className="mt-2 text-xs text-blue-500 space-y-1">
+                    <p>• 장점: 가장 높은 기본 금리, 강제 저축 효과</p>
+                    <p>• 단점: 납입액 변경 불가, 중도해지시 불이익</p>
+                    <p>• 추천: 안정적인 소득이 있는 직장인</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">🔄 자유적금 (변동 납입형)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">납입 금액과 횟수를 자유롭게 조절</p>
+                  <div className="mt-2 text-xs text-green-500 space-y-1">
+                    <p>• 장점: 납입 유연성, 보너스 추가 납입 가능</p>
+                    <p>• 단점: 정기적금보다 낮은 금리 (보통 90% 수준)</p>
+                    <p>• 추천: 수입이 불규칙한 프리랜서, 사업자</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
+                <span className="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">🎯</span>
+                목표적금 & 복리적금
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">🏆 목표적금 (역산 계산형)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">목표 금액에서 역산해서 월 납입액 계산</p>
+                  <div className="mt-2 text-xs text-purple-500 space-y-1">
+                    <p>• 장점: 명확한 목표 의식, 계획적 저축</p>
+                    <p>• 단점: 목표 달성 실패시 부담감</p>
+                    <p>• 추천: 집 마련, 결혼 자금 등 구체적 목표가 있는 분</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h5 className="font-semibold text-orange-600">📈 복리적금 (이자 재투자형)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">매월 발생한 이자를 원금에 합쳐서 재투자</p>
+                  <div className="mt-2 text-xs text-orange-500 space-y-1">
+                    <p>• 장점: 복리 효과로 장기적으로 높은 수익</p>
+                    <p>• 단점: 중간 인출 불가, 장기 가입 필수</p>
+                    <p>• 추천: 장기 목표(5년 이상)가 있는 투자자</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 금리 이해하기 */}
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">📊 적금 금리의 모든 것</h3>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">단순 금리부터 우대 금리까지, 적금 금리를 완벽하게 이해하세요!</p>
+          
+          <div className="grid lg:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-amber-100 dark:bg-amber-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">💸</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">기본 금리</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-amber-400 pl-4">
+                  <h5 className="font-semibold text-amber-600">📊 연 2.5% ~ 4.5%</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">은행별, 상품별 기본 제공 금리</p>
+                </div>
+                <div className="text-xs text-amber-500 space-y-1">
+                  <p>• 시중은행: 연 2.5% ~ 3.5%</p>
+                  <p>• 인터넷은행: 연 3.0% ~ 4.0%</p>
+                  <p>• 지방은행: 연 3.5% ~ 4.5%</p>
+                  <p>• 상호저축은행: 연 4.0% ~ 5.0%</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">⭐</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">우대 금리</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">🎁 +0.1% ~ +1.0%</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">조건 충족시 추가 금리 제공</p>
+                </div>
+                <div className="text-xs text-blue-500 space-y-1">
+                  <p>• 급여이체: +0.2% ~ +0.5%</p>
+                  <p>• 카드사용: +0.1% ~ +0.3%</p>
+                  <p>• 인터넷뱅킹: +0.1% ~ +0.2%</p>
+                  <p>• 신규고객: +0.2% ~ +0.5%</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">📈</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">실질 수익률</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">💰 세후 기준</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">이자소득세 15.4% 제외</p>
+                </div>
+                <div className="text-xs text-green-500 space-y-1">
+                  <p>• 연 4.0% → 실수령 3.38%</p>
+                  <p>• 연 5.0% → 실수령 4.23%</p>
+                  <p>• 비과세 상품 우선 고려</p>
+                  <p>• 분리과세 vs 종합과세 선택</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-amber-50 dark:bg-amber-900/30 p-4 rounded-lg">
+            <h5 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">💡 금리 선택 팁</h5>
+            <div className="grid md:grid-cols-2 gap-4 text-sm text-amber-800 dark:text-amber-300">
+              <ul className="space-y-1">
+                <li>✅ 우대조건을 모두 충족할 수 있는지 확인</li>
+                <li>✅ 중도해지시 금리 조건 꼼꼼히 체크</li>
+                <li>✅ 비과세 한도(연 2천만원) 활용</li>
+                <li>✅ 변동금리 vs 고정금리 신중 선택</li>
+              </ul>
+              <ul className="space-y-1">
+                <li>📊 인터넷은행의 높은 금리 활용</li>
+                <li>📊 지역 특화 상품 발굴</li>
+                <li>📊 계절별 이벤트 상품 노려보기</li>
+                <li>📊 만기 후 자동 연장 조건 확인</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* 목표별 적금 전략 */}
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">🎯 목표별 맞춤 적금 전략</h3>
+          <div className="grid lg:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🏠</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">주택 구매 자금</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">💰 목표: 1억원 (5년)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">월 150만원 × 60개월</p>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="bg-green-50 dark:bg-green-900/50 p-2 rounded">
+                    <strong>추천 전략:</strong> 정기적금 + 주택청약종합저축
+                  </div>
+                  <div className="text-xs text-green-600 space-y-1">
+                    <p>• 주택청약 우선 개설 (월 50만원)</p>
+                    <p>• 고금리 정기적금 병행 (월 100만원)</p>
+                    <p>• 보너스 시기 추가 납입</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-pink-100 dark:bg-pink-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">💒</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">결혼 자금</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-pink-400 pl-4">
+                  <h5 className="font-semibold text-pink-600">💰 목표: 5천만원 (3년)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">월 130만원 × 36개월</p>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="bg-pink-50 dark:bg-pink-900/50 p-2 rounded">
+                    <strong>추천 전략:</strong> 자유적금 + 목표적금
+                  </div>
+                  <div className="text-xs text-pink-600 space-y-1">
+                    <p>• 기본 자유적금 (월 80만원)</p>
+                    <p>• 목표적금으로 부족분 보완</p>
+                    <p>• 양가 지원금 별도 관리</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">👴</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">노후 준비</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">💰 목표: 3억원 (20년)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">월 100만원 × 240개월</p>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="bg-blue-50 dark:bg-blue-900/50 p-2 rounded">
+                    <strong>추천 전략:</strong> 복리적금 + 연금저축
+                  </div>
+                  <div className="text-xs text-blue-600 space-y-1">
+                    <p>• 장기 복리적금 (월 70만원)</p>
+                    <p>• 세액공제 연금저축 (월 30만원)</p>
+                    <p>• 10년마다 금리 재검토</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 적금 실패 사례와 해결책 */}
+        <div className="bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/30 dark:to-pink-900/30 rounded-2xl p-8">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">⚠️ 적금 실패 사례와 해결책</h3>
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div>
+              <h4 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-4 flex items-center">
+                <span className="bg-red-100 dark:bg-red-900 p-2 rounded-full mr-2">❌</span>
+                흔한 실패 사례들
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-red-600 mb-2">🚫 무리한 목표 설정</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p><strong>사례:</strong> 월급 200만원인데 월 100만원 적금</p>
+                    <p><strong>결과:</strong> 3개월 만에 중도해지, 이자 손실</p>
+                    <p><strong>교훈:</strong> 소득의 30% 이내로 계획하기</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-red-600 mb-2">🚫 우대조건 미확인</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p><strong>사례:</strong> 높은 금리만 보고 가입</p>
+                    <p><strong>결과:</strong> 조건 미충족으로 기본 금리만 적용</p>
+                    <p><strong>교훈:</strong> 우대조건 꼼꼼히 체크하기</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold text-green-600 dark:text-green-400 mb-4 flex items-center">
+                <span className="bg-green-100 dark:bg-green-900 p-2 rounded-full mr-2">✅</span>
+                성공하는 적금 노하우
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-green-600 mb-2">✅ 점진적 목표 증액</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p><strong>방법:</strong> 월 30만원 → 50만원 → 70만원</p>
+                    <p><strong>효과:</strong> 부담 없이 저축 습관 형성</p>
+                    <p><strong>팁:</strong> 연봉 인상시마다 10만원씩 증액</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-green-600 mb-2">✅ 다계좌 분산 전략</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p><strong>방법:</strong> 단기(1년) + 중기(3년) + 장기(5년)</p>
+                    <p><strong>효과:</strong> 유동성 확보와 고수익 동시 달성</p>
+                    <p><strong>팁:</strong> 각각 다른 은행에서 최고 금리 추구</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
