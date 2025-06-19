@@ -29,7 +29,7 @@ const SalaryCalculatorContent = () => {
     loadFromHistory
   } = useCalculationHistory('salary');
 
-  // 개선된 실수령액 계산 함수
+  // 2024년 기준 정확한 실수령액 계산 함수
   const calculateNetSalary = (inputSalary: string, type: 'annual' | 'monthly', nonTaxable: string, dependentCount: string, childrenCount: string) => {
     const salaryNum = parseInt(inputSalary.replace(/,/g, ''));
     const nonTaxableNum = parseInt(nonTaxable.replace(/,/g, '')) || 0;
@@ -40,23 +40,49 @@ const SalaryCalculatorContent = () => {
 
     // 연봉으로 변환
     const grossAnnual = type === 'monthly' ? salaryNum * 12 : salaryNum;
+    
+    // 과세대상소득 = 총급여 - 비과세소득
     const taxableAnnual = grossAnnual - nonTaxableNum;
 
-    // 4대보험료 계산 (2024년 기준) - 비과세액 제외하고 계산
-    const insuranceBase = Math.min(taxableAnnual, 63600000); // 국민연금 상한선
+    // 4대보험료 계산 (2024년 기준)
+    // 건강보험료: 과세대상소득 기준, 상한액 없음
     const healthInsurance = Math.floor(taxableAnnual * 0.03545); // 건강보험 3.545%
-    const longTermCare = Math.floor(healthInsurance * 0.1227); // 장기요양보험 12.27%
-    const nationalPension = Math.floor(insuranceBase * 0.045); // 국민연금 4.5%
+    const longTermCare = Math.floor(healthInsurance * 0.1227); // 장기요양보험 12.27% (건강보험료의 12.27%)
+    
+    // 국민연금: 과세대상소득 기준, 상한 636만원/월 (7632만원/년)
+    const pensionBase = Math.min(taxableAnnual, 76320000); // 2024년 국민연금 상한선
+    const nationalPension = Math.floor(pensionBase * 0.045); // 국민연금 4.5%
+    
+    // 고용보험: 과세대상소득 기준, 상한 없음
     const employmentInsurance = Math.floor(taxableAnnual * 0.009); // 고용보험 0.9%
 
     // 소득공제 계산
+    // 1. 근로소득공제 (총급여액 기준)
+    let workIncomeDeduction = 0;
+    if (grossAnnual <= 5000000) {
+      workIncomeDeduction = grossAnnual * 0.7;
+    } else if (grossAnnual <= 15000000) {
+      workIncomeDeduction = 3500000 + (grossAnnual - 5000000) * 0.4;
+    } else if (grossAnnual <= 45000000) {
+      workIncomeDeduction = 7500000 + (grossAnnual - 15000000) * 0.15;
+    } else if (grossAnnual <= 100000000) {
+      workIncomeDeduction = 12000000 + (grossAnnual - 45000000) * 0.05;
+    } else {
+      workIncomeDeduction = 14750000 + (grossAnnual - 100000000) * 0.02;
+    }
+    workIncomeDeduction = Math.min(workIncomeDeduction, 20000000); // 상한 2천만원
+
+    // 2. 인적공제
     const basicDeduction = 1500000; // 기본공제 150만원
     const dependentDeduction = (dependentNum - 1) * 1500000; // 부양가족공제 (본인 제외)
     const childDeduction = childrenNum * 1500000; // 20세 이하 자녀 추가공제
     const totalPersonalDeduction = basicDeduction + dependentDeduction + childDeduction;
 
-    // 과세표준 계산
-    const taxableIncome = Math.max(0, taxableAnnual - nationalPension - totalPersonalDeduction);
+    // 근로소득금액 = 총급여 - 근로소득공제
+    const workIncome = grossAnnual - workIncomeDeduction;
+    
+    // 과세표준 = 근로소득금액 - 인적공제 - 국민연금보험료
+    const taxableIncome = Math.max(0, workIncome - totalPersonalDeduction - nationalPension);
     
     // 소득세 계산 (2024년 누진세율)
     let incomeTax = 0;
@@ -79,18 +105,25 @@ const SalaryCalculatorContent = () => {
     }
 
     // 근로소득세액공제 적용
-    let taxCredit = 0;
+    let workIncomeTaxCredit = 0;
     if (incomeTax <= 1300000) {
-      taxCredit = Math.min(incomeTax * 0.55, 740000);
+      workIncomeTaxCredit = Math.min(incomeTax * 0.55, 740000);
     } else {
-      taxCredit = Math.min(740000 - (incomeTax - 1300000) * 0.05, 740000);
+      workIncomeTaxCredit = Math.max(740000 - (incomeTax - 1300000) * 0.05, 660000);
     }
-    taxCredit = Math.max(taxCredit, 0);
 
     // 자녀세액공제 (20세 이하)
-    const childTaxCredit = childrenNum * 150000;
+    let childTaxCredit = 0;
+    if (childrenNum >= 1) {
+      childTaxCredit = childrenNum * 150000;
+      // 셋째 자녀부터 추가 공제
+      if (childrenNum >= 3) {
+        childTaxCredit += (childrenNum - 2) * 150000;
+      }
+    }
 
-    incomeTax = Math.floor(Math.max(0, incomeTax - taxCredit - childTaxCredit));
+    const totalTaxCredit = workIncomeTaxCredit + childTaxCredit;
+    incomeTax = Math.floor(Math.max(0, incomeTax - totalTaxCredit));
     const localIncomeTax = Math.floor(incomeTax * 0.1); // 지방소득세 10%
 
     const totalDeductions = healthInsurance + longTermCare + nationalPension + employmentInsurance + incomeTax + localIncomeTax;
@@ -100,6 +133,8 @@ const SalaryCalculatorContent = () => {
     return {
       gross: grossAnnual,
       taxable: taxableAnnual,
+      workIncome,
+      workIncomeDeduction,
       netAnnual,
       netMonthly,
       deductions: {
@@ -114,7 +149,7 @@ const SalaryCalculatorContent = () => {
       taxInfo: {
         taxableIncome,
         personalDeduction: totalPersonalDeduction,
-        taxCredit: taxCredit + childTaxCredit,
+        taxCredit: totalTaxCredit,
         effectiveTaxRate: grossAnnual > 0 ? ((incomeTax + localIncomeTax) / grossAnnual * 100) : 0
       }
     };
@@ -405,12 +440,14 @@ const SalaryCalculatorContent = () => {
             </div>
 
             <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
-              <h3 className="font-medium text-blue-900 dark:text-blue-200 mb-2">💡 계산 기준</h3>
+              <h3 className="font-medium text-blue-900 dark:text-blue-200 mb-2">💡 계산 기준 (2024년)</h3>
               <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">
-                <li>• 2024년 기준 세율 및 공제 적용</li>
+                <li>• 근로소득공제: 총급여에 따른 누진 공제 적용</li>
+                <li>• 4대보험: 건강보험 3.545%, 국민연금 4.5% (상한 7,632만원), 고용보험 0.9%</li>
+                <li>• 장기요양보험: 건강보험료의 12.27%</li>
+                <li>• 소득세 누진세율: 6%~45% (6구간)</li>
                 <li>• 근로소득세액공제 및 자녀세액공제 반영</li>
-                <li>• 4대보험료 자동 계산</li>
-                <li>• 실제 연말정산시 추가 공제로 환급 가능</li>
+                <li>• 연말정산시 추가 공제로 환급 가능</li>
               </ul>
             </div>
           </div>
@@ -481,8 +518,20 @@ const SalaryCalculatorContent = () => {
                       <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.taxable)}원</span>
                     </div>
                     <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">근로소득공제</span>
+                      <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.workIncomeDeduction)}원</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">근로소득금액</span>
+                      <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.workIncome)}원</span>
+                    </div>
+                    <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">인적공제 ({dependents}명 + 자녀 {childrenUnder20}명)</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.taxInfo.personalDeduction)}원</span>
+                      <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.taxInfo.personalDeduction)}원</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">국민연금 소득공제</span>
+                      <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.deductions.nationalPension)}원</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">과세표준</span>
