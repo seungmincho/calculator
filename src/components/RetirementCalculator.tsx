@@ -43,7 +43,7 @@ const RetirementCalculatorContent = () => {
     const dailyWage = Math.floor(avgSal / 12 / 30);
     const retirementPay = Math.floor(dailyWage * 30 * totalYears);
     
-    // 퇴직소득세 계산 (2024년 기준)
+    // 퇴직소득세 계산 (2025년 기준)
     let tax = 0;
     
     if (totalYears >= 1) {

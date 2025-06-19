@@ -66,7 +66,7 @@ const TaxCalculatorContent = () => {
     'capital-gains': '양도소득세'
   };
 
-  // 소득세 계산 (2024년 기준)
+  // 소득세 계산 (2025년 기준)
   const calculateIncomeTax = (income: number, deps: number, medical: number, education: number) => {
     // 기본공제: 본인 + 부양가족 × 150만원
     const basicDeduction = (1 + deps) * 1500000;
@@ -664,7 +664,7 @@ const TaxCalculatorContent = () => {
             <ul className="text-sm text-green-700 dark:text-green-300 space-y-1">
               {activeTab === 'income' && (
                 <>
-                  <li>• 2024년 소득세법 기준</li>
+                  <li>• 2025년 소득세법 기준</li>
                   <li>• 기본공제: 본인+부양가족×150만원</li>
                   <li>• 표준공제 60만원 vs 특별공제 중 선택</li>
                 </>
@@ -678,7 +678,7 @@ const TaxCalculatorContent = () => {
               )}
               {activeTab === 'capital-gains' && (
                 <>
-                  <li>• 2024년 양도소득세법 기준</li>
+                  <li>• 2025년 양도소득세법 기준</li>
                   <li>• 장기보유특별공제 적용</li>
                   <li>• 부동산 유형별 차등세율</li>
                 </>

@@ -105,7 +105,7 @@ const RealEstateCalculatorContent = () => {
     };
   };
 
-  // 취득세 계산 (2024년 기준)
+  // 취득세 계산 (2025년 기준)
   const calculateAcquisitionTax = (price: number, type: string, firstHome: boolean, propertyArea: number) => {
     let taxRate = 0;
     
@@ -808,7 +808,7 @@ const RealEstateCalculatorContent = () => {
               )}
               {activeTab === 'acquisition-tax' && (
                 <>
-                  <li>• 2024년 취득세법 기준</li>
+                  <li>• 2025년 취득세법 기준</li>
                   <li>• 1주택자 감면 혜택 적용</li>
                   <li>• 지방교육세, 인지세, 등록세 포함</li>
                 </>
