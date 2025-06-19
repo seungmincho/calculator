@@ -24,6 +24,9 @@ const Header = () => {
             <a href="/tax-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">세금 계산기</a>
             <a href="/exchange-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">환율 계산기</a>
             <a href="/real-estate-calculator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">부동산 계산기</a>
+            <a href="/json-formatter" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">JSON 포맷터</a>
+            <a href="/sql-formatter" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">SQL 포맷터</a>
+            <a href="/markdown-viewer" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">마크다운 뷰어</a>
           </nav>
 
           {/* Mobile menu button */}
@@ -91,6 +94,27 @@ const Header = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 부동산 계산기
+              </a>
+              <a 
+                href="/json-formatter" 
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors px-2 py-1"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                JSON 포맷터
+              </a>
+              <a 
+                href="/sql-formatter" 
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors px-2 py-1"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                SQL 포맷터
+              </a>
+              <a 
+                href="/markdown-viewer" 
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors px-2 py-1"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                마크다운 뷰어
               </a>
             </nav>
           </div>

@@ -183,11 +183,14 @@ export default function RootLayout({
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold mb-4">정보</h3>
+                <h3 className="font-semibold mb-4">도구</h3>
                 <ul className="space-y-2 text-gray-400 dark:text-gray-500">
-                  <li><a href="#" className="hover:text-white transition-colors">오늘의 팁</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">이용약관</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">개인정보처리방침</a></li>
+                  <li><a href="/json-formatter" className="hover:text-white transition-colors">JSON 포맷터</a></li>
+                  <li><a href="/sql-formatter" className="hover:text-white transition-colors">SQL 포맷터</a></li>
+                  <li><a href="/markdown-viewer" className="hover:text-white transition-colors">마크다운 뷰어</a></li>
+                  {/* <li><a href="#" className="hover:text-white transition-colors">오늘의 팁</a></li> */}
+                  {/* <li><a href="#" className="hover:text-white transition-colors">이용약관</a></li> */}
+                  {/* <li><a href="#" className="hover:text-white transition-colors">개인정보처리방침</a></li> */}
                 </ul>
               </div>
             </div>
