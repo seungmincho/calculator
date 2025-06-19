@@ -24,9 +24,10 @@ async function getTip(id: string): Promise<Tip | null> {
 }
 
 export async function generateMetadata(
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<Metadata> {
-  const tip = await getTip(params.id);
+  const resolvedParams = await params;
+  const tip = await getTip(resolvedParams.id);
   
   if (!tip) {
     return {
@@ -35,7 +36,7 @@ export async function generateMetadata(
       openGraph: {
         title: '팁을 찾을 수 없습니다 | 툴허브',
         description: '요청하신 금융 팁을 찾을 수 없습니다.',
-        url: `https://toolhub.ai.kr/tips/${params.id}`,
+        url: `https://toolhub.ai.kr/tips/${resolvedParams.id}`,
         siteName: '툴허브',
         locale: 'ko_KR',
         type: 'website',

@@ -390,7 +390,7 @@ const JsonFormatter = () => {
   }, []);
 
   return (
-    <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900 p-4 overflow-auto' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'}`}>
+    <div className={isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900 p-4 overflow-auto' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'}>
       {/* 헤더 */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
@@ -632,31 +632,223 @@ const JsonFormatter = () => {
 
       {/* 도움말 섹션 */}
       <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">💡 사용법</h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 JSON 포맷터 마스터 가이드</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto">
+          웹개발자부터 API 설계자까지! JSON 데이터를 프로처럼 다루는 완전한 가이드입니다. 
+          복잡한 중첩 구조도 트리뷰로 한눈에, 압축으로 성능까지 챙기세요!
+        </p>
+        
+        {/* 주요 기능 */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
           <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
-            <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">포맷팅 모드</h3>
-            <p className="text-green-800 dark:text-green-300 text-sm">
-              JSON을 읽기 쉽게 들여쓰기하고 정렬합니다. 개발 및 디버깅에 유용합니다.
+            <div className="flex items-center mb-3">
+              <Code className="w-5 h-5 text-green-600 mr-2" />
+              <h3 className="font-semibold text-green-900 dark:text-green-200">포맷팅 모드</h3>
+            </div>
+            <p className="text-green-800 dark:text-green-300 text-sm mb-3">
+              JSON 데이터를 읽기 쉽게 정리하고 구조화합니다.
             </p>
+            <ul className="text-green-700 dark:text-green-400 text-xs space-y-1">
+              <li>• 자동 들여쓰기와 줄바꿈</li>
+              <li>• 키 정렬 옵션</li>
+              <li>• 중첩 구조 시각화</li>
+              <li>• 문법 오류 실시간 검증</li>
+            </ul>
           </div>
+          
           <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">압축 모드</h3>
-            <p className="text-blue-800 dark:text-blue-300 text-sm">
-              JSON에서 불필요한 공백을 제거하여 파일 크기를 최소화합니다.
+            <div className="flex items-center mb-3">
+              <Zap className="w-5 h-5 text-blue-600 mr-2" />
+              <h3 className="font-semibold text-blue-900 dark:text-blue-200">압축 모드</h3>
+            </div>
+            <p className="text-blue-800 dark:text-blue-300 text-sm mb-3">
+              JSON 파일 크기를 최소화하여 API 전송을 최적화합니다.
             </p>
+            <ul className="text-blue-700 dark:text-blue-400 text-xs space-y-1">
+              <li>• 모든 공백과 줄바꿈 제거</li>
+              <li>• 데이터 무결성 보장</li>
+              <li>• 프로덕션 배포에 적합</li>
+              <li>• 네트워크 대역폭 절약</li>
+            </ul>
           </div>
+          
           <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-6">
-            <h3 className="font-semibold text-purple-900 dark:text-purple-200 mb-2">트리 뷰</h3>
-            <p className="text-purple-800 dark:text-purple-300 text-sm">
-              JSON 구조를 트리 형태로 시각화하여 복잡한 데이터를 쉽게 탐색할 수 있습니다.
+            <div className="flex items-center mb-3">
+              <TreePine className="w-5 h-5 text-purple-600 mr-2" />
+              <h3 className="font-semibold text-purple-900 dark:text-purple-200">트리 뷰</h3>
+            </div>
+            <p className="text-purple-800 dark:text-purple-300 text-sm mb-3">
+              복잡한 JSON 구조를 트리 형태로 시각화합니다.
             </p>
+            <ul className="text-purple-700 dark:text-purple-400 text-xs space-y-1">
+              <li>• 계층 구조 한눈에 파악</li>
+              <li>• 접기/펼치기 기능</li>
+              <li>• 데이터 타입 표시</li>
+              <li>• 경로 추적 가능</li>
+            </ul>
           </div>
-          <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-6">
-            <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">실시간 검증</h3>
-            <p className="text-amber-800 dark:text-amber-300 text-sm">
-              입력과 동시에 JSON 문법을 검사하고 오류 위치를 표시합니다.
-            </p>
+        </div>
+
+        {/* 상세 기능 설명 */}
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">✨ 주요 기능</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2">실시간 문법 검증</h4>
+                <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  <p>• JSON 문법 실시간 검사</p>
+                  <p>• 오류 위치 정확한 표시</p>
+                  <p>• 누락된 괄호/쉼표 탐지</p>
+                  <p>• 잘못된 문자열 인코딩 확인</p>
+                </div>
+              </div>
+              
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2">고급 포맷팅 옵션</h4>
+                <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  <p>• 들여쓰기 크기 조정 (2/4/8 스페이스)</p>
+                  <p>• 키 알파벳 순 정렬</p>
+                  <p>• 줄 번호 표시</p>
+                  <p>• 다크 모드 지원</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">🛠️ 편의 기능</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-3">파일 처리</h4>
+                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                  <div className="flex items-start">
+                    <span className="font-medium min-w-[80px]">업로드:</span>
+                    <span>.json, .txt 파일 지원</span>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="font-medium min-w-[80px]">다운로드:</span>
+                    <span>포맷팅된 결과를 파일로 저장</span>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="font-medium min-w-[80px]">복사:</span>
+                    <span>클립보드에 원클릭 복사</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-3">사용자 경험</h4>
+                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                  <div className="flex items-start">
+                    <span className="font-medium min-w-[80px]">예제:</span>
+                    <span>다양한 JSON 패턴 샘플</span>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="font-medium min-w-[80px]">전체화면:</span>
+                    <span>큰 데이터 작업시 화면 확장</span>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="font-medium min-w-[80px]">초기화:</span>
+                    <span>입력 영역 빠른 리셋</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">📚 사용 예시</h3>
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Before (압축된 JSON)</h4>
+              <pre className="text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 p-3 rounded border overflow-x-auto">
+{`{"name":"John","age":30,"address":{"street":"123 Main St","city":"Seoul"},"hobbies":["reading","coding"]}`}
+              </pre>
+              
+              <h4 className="font-medium text-gray-900 dark:text-white mt-4 mb-2">After (포맷팅 후)</h4>
+              <pre className="text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 p-3 rounded border overflow-x-auto">
+{`{
+  "name": "John",
+  "age": 30,
+  "address": {
+    "street": "123 Main St",
+    "city": "Seoul"
+  },
+  "hobbies": [
+    "reading",
+    "coding"
+  ]
+}`}
+              </pre>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">🎯 활용 사례</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-4">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-2">개발 및 디버깅</h4>
+                <ul className="text-green-800 dark:text-green-300 text-sm space-y-1">
+                  <li>• API 응답 데이터 분석</li>
+                  <li>• 설정 파일 정리</li>
+                  <li>• 로그 데이터 구조화</li>
+                  <li>• 테스트 데이터 생성</li>
+                </ul>
+              </div>
+              
+              <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">데이터 분석</h4>
+                <ul className="text-blue-800 dark:text-blue-300 text-sm space-y-1">
+                  <li>• 복잡한 JSON 구조 탐색</li>
+                  <li>• 데이터 검증 및 정제</li>
+                  <li>• 스키마 분석</li>
+                  <li>• 중첩 객체 이해</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">💡 유용한 팁</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-4">
+                <h4 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">✅ 권장사항</h4>
+                <ul className="text-amber-800 dark:text-amber-300 text-sm space-y-1">
+                  <li>• 큰 파일은 트리 뷰로 구조 파악</li>
+                  <li>• 프로덕션 배포 전 압축 모드 사용</li>
+                  <li>• 키 정렬로 일관된 형식 유지</li>
+                  <li>• 정기적인 JSON 스키마 검증</li>
+                </ul>
+              </div>
+              
+              <div className="bg-red-50 dark:bg-red-900/30 rounded-lg p-4">
+                <h4 className="font-semibold text-red-900 dark:text-red-200 mb-2">⚠️ 주의사항</h4>
+                <ul className="text-red-800 dark:text-red-300 text-sm space-y-1">
+                  <li>• 민감한 데이터는 로컬에서만 처리</li>
+                  <li>• 매우 큰 파일은 메모리 사용량 확인</li>
+                  <li>• 특수 문자 인코딩 주의</li>
+                  <li>• 순환 참조 구조 방지</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
+            <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-3">🎯 이런 분들께 추천</h3>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <h4 className="font-medium text-blue-800 dark:text-blue-300 mb-1">웹 개발자</h4>
+                <p className="text-blue-700 dark:text-blue-400">API 데이터 처리 및 디버깅</p>
+              </div>
+              <div>
+                <h4 className="font-medium text-blue-800 dark:text-blue-300 mb-1">데이터 엔지니어</h4>
+                <p className="text-blue-700 dark:text-blue-400">데이터 파이프라인 검증</p>
+              </div>
+              <div>
+                <h4 className="font-medium text-blue-800 dark:text-blue-300 mb-1">시스템 관리자</h4>
+                <p className="text-blue-700 dark:text-blue-400">설정 파일 관리</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

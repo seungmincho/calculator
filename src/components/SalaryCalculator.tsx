@@ -29,7 +29,7 @@ const SalaryCalculatorContent = () => {
     loadFromHistory
   } = useCalculationHistory('salary');
 
-  // 2024년 기준 정확한 실수령액 계산 함수
+  // 2025년 기준 정확한 실수령액 계산 함수
   const calculateNetSalary = (inputSalary: string, type: 'annual' | 'monthly', nonTaxable: string, dependentCount: string, childrenCount: string) => {
     const salaryNum = parseInt(inputSalary.replace(/,/g, ''));
     const nonTaxableNum = parseInt(nonTaxable.replace(/,/g, '')) || 0;
@@ -44,13 +44,13 @@ const SalaryCalculatorContent = () => {
     // 과세대상소득 = 총급여 - 비과세소득
     const taxableAnnual = grossAnnual - nonTaxableNum;
 
-    // 4대보험료 계산 (2024년 기준)
+    // 4대보험료 계산 (2025년 기준)
     // 건강보험료: 과세대상소득 기준, 상한액 없음
     const healthInsurance = Math.floor(taxableAnnual * 0.03545); // 건강보험 3.545%
     const longTermCare = Math.floor(healthInsurance * 0.1227); // 장기요양보험 12.27% (건강보험료의 12.27%)
     
-    // 국민연금: 과세대상소득 기준, 상한 636만원/월 (7632만원/년)
-    const pensionBase = Math.min(taxableAnnual, 76320000); // 2024년 국민연금 상한선
+    // 국민연금: 과세대상소득 기준, 상한 671만원/월 (8052만원/년)
+    const pensionBase = Math.min(taxableAnnual, 80520000); // 2025년 국민연금 상한선
     const nationalPension = Math.floor(pensionBase * 0.045); // 국민연금 4.5%
     
     // 고용보험: 과세대상소득 기준, 상한 없음
@@ -84,7 +84,7 @@ const SalaryCalculatorContent = () => {
     // 과세표준 = 근로소득금액 - 인적공제 - 국민연금보험료
     const taxableIncome = Math.max(0, workIncome - totalPersonalDeduction - nationalPension);
     
-    // 소득세 계산 (2024년 누진세율)
+    // 소득세 계산 (2025년 누진세율)
     let incomeTax = 0;
     if (taxableIncome <= 14000000) {
       incomeTax = taxableIncome * 0.06;
@@ -440,12 +440,12 @@ const SalaryCalculatorContent = () => {
             </div>
 
             <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
-              <h3 className="font-medium text-blue-900 dark:text-blue-200 mb-2">💡 계산 기준 (2024년)</h3>
+              <h3 className="font-medium text-blue-900 dark:text-blue-200 mb-2">💡 계산 기준 (2025년)</h3>
               <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">
                 <li>• 근로소득공제: 총급여에 따른 누진 공제 적용</li>
-                <li>• 4대보험: 건강보험 3.545%, 국민연금 4.5% (상한 7,632만원), 고용보험 0.9%</li>
+                <li>• 4대보험: 건강보험 3.545%, 국민연금 4.5% (상한 8,052만원), 고용보험 0.9%</li>
                 <li>• 장기요양보험: 건강보험료의 12.27%</li>
-                <li>• 소득세 누진세율: 6%~45% (6구간)</li>
+                <li>• 소득세 누진세율: 6%~45% (7구간)</li>
                 <li>• 근로소득세액공제 및 자녀세액공제 반영</li>
                 <li>• 연말정산시 추가 공제로 환급 가능</li>
               </ul>
@@ -676,6 +676,367 @@ const SalaryCalculatorContent = () => {
             </ul>
           </div>
         )}
+      </div>
+
+      {/* 상세 가이드 섹션 */}
+      <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+        <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 연봉 계산 마스터 가이드</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto">
+          신입사원부터 임원까지! 연봉 계산의 모든 것을 마스터하는 완전한 가이드입니다. 
+          4대보험부터 연말정산까지, 실수령액을 늘리는 모든 비법을 알려드립니다!
+        </p>
+        
+        {/* 핵심 기능 소개 */}
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-blue-600 p-3 rounded-full mr-3">
+                <Calculator className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-blue-900 dark:text-blue-200">💎 2025년 최신 세법</h3>
+            </div>
+            <p className="text-blue-800 dark:text-blue-300 mb-4 leading-relaxed">
+              국세청 공식 자료 기반으로 4대보험료, 소득세율, 각종 공제를 실시간 반영한 정확한 계산!
+            </p>
+            <div className="space-y-3">
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">📋 정확한 4대보험료</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">건강보험 3.545%, 국민연금 4.5%, 고용보험 0.9% 정확 반영</p>
+              </div>
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">💰 6단계 누진세율</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">6%~45%까지 소득 구간별 정확한 세율 적용</p>
+              </div>
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">🏷️ 각종 세액공제</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">근로소득세액공제, 자녀세액공제까지 완벽 계산</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-green-600 p-3 rounded-full mr-3">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-green-900 dark:text-green-200">📊 스마트 분석 시스템</h3>
+            </div>
+            <p className="text-green-800 dark:text-green-300 mb-4 leading-relaxed">
+              단순 계산을 넘어선 똑똑한 연봉 분석! 실효세율부터 절세 포인트까지 한눈에 파악하세요.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">📈 실효세율 분석</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">실제 납부하는 세금 비율을 한눈에 확인</p>
+              </div>
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">💡 절세 가이드</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">비과세소득, 소득공제 활용법 맞춤 제안</p>
+              </div>
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">📋 연봉별 비교표</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">2천만원~2억원까지 구간별 실수령액 한눈에</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-purple-600 p-3 rounded-full mr-3">
+                <DollarSign className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-purple-900 dark:text-purple-200">⚡ 실무 최적화 도구</h3>
+            </div>
+            <p className="text-purple-800 dark:text-purple-300 mb-4 leading-relaxed">
+              HR팀부터 개인까지! 실무에서 바로 쓸 수 있는 편리한 기능들로 업무 효율성을 극대화하세요.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">📂 계산 이력 관리</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">여러 시나리오 저장하고 비교 분석 가능</p>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">🔗 URL 공유</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">계산 결과를 URL로 간편하게 공유</p>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">📱 반응형 디자인</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">PC, 태블릿, 모바일 어디서든 완벽하게</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 4대보험 완전정복 */}
+        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">🛡️ 4대보험 완전정복 가이드</h3>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">신입사원도 이해하는 4대보험의 모든 것! 보험료 계산부터 혜택까지 완벽 해설</p>
+          
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4 flex items-center">
+                <span className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full mr-3">🏥</span>
+                건강보험 & 장기요양보험
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">💊 건강보험 (3.545%)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">병원비, 약값 등 의료비 지원</p>
+                  <div className="mt-2 text-xs text-blue-500 space-y-1">
+                    <p>• 본인부담: 1.773%, 회사부담: 1.772%</p>
+                    <p>• 소득 상한선 없음 (고소득자도 동일 비율)</p>
+                    <p>• 피부양자는 별도 보험료 없이 혜택 동일</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">🏠 장기요양보험 (12.27%)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">노인장기요양서비스 지원</p>
+                  <div className="mt-2 text-xs text-green-500 space-y-1">
+                    <p>• 건강보험료의 12.27%로 자동 계산</p>
+                    <p>• 65세 이상 또는 노인성 질병자 대상</p>
+                    <p>• 재가급여, 시설급여, 특별현금급여 제공</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
+                <span className="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">👴</span>
+                국민연금 & 고용보험
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">💰 국민연금 (4.5%)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">노후 연금 및 각종 급여 지원</p>
+                  <div className="mt-2 text-xs text-purple-500 space-y-1">
+                    <p>• 본인: 2.25%, 회사: 2.25%</p>
+                    <p>• 상한선: 월 636만원 (연 7,632만원)</p>
+                    <p>• 노령연금, 장애연금, 유족연금 지급</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h5 className="font-semibold text-orange-600">🏢 고용보험 (0.9%)</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">실업급여 및 직업훈련 지원</p>
+                  <div className="mt-2 text-xs text-orange-500 space-y-1">
+                    <p>• 근로자: 0.9%, 사업주: 0.25%~0.85%</p>
+                    <p>• 소득 상한선 없음</p>
+                    <p>• 실업급여, 육아휴직급여, 직업훈련비 지원</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 소득세 누진세율 상세 설명 */}
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">📊 소득세 누진세율 완벽 분석</h3>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">내 연봉은 몇 구간? 세율별 실수령액 변화를 한눈에 파악하세요!</p>
+          
+          <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+            <table className="w-full">
+              <thead className="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">과세표준</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white">세율</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white">누진공제</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">해당 연봉대</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">1,400만원 이하</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-green-600">6%</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">-</td>
+                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">~3,000만원</td>
+                </tr>
+                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">1,400~5,000만원</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-blue-600">15%</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">126만원</td>
+                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">3,000~7,000만원</td>
+                </tr>
+                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">5,000~8,800만원</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-purple-600">24%</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">576만원</td>
+                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">7,000~1억원</td>
+                </tr>
+                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">8,800만원~1.5억원</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-orange-600">35%</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">1,544만원</td>
+                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">1억~2억원</td>
+                </tr>
+                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">1.5억~3억원</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-red-600">38%</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">1,994만원</td>
+                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">2억~4억원</td>
+                </tr>
+                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">3억원 초과</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-red-700">40%+</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">다양</td>
+                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">4억원 이상</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/30 rounded-lg">
+            <h5 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">💡 누진세율 이해하기</h5>
+            <div className="grid md:grid-cols-2 gap-4 text-sm text-amber-800 dark:text-amber-300">
+              <ul className="space-y-1">
+                <li>✅ 전체 소득에 높은 세율이 적용되는 것이 아님</li>
+                <li>✅ 구간별로 해당하는 세율만 적용됨</li>
+                <li>✅ 연봉이 높아져도 손해보는 일은 없음</li>
+                <li>✅ 누진공제로 계산이 간단해짐</li>
+              </ul>
+              <ul className="space-y-1">
+                <li>📊 예: 연봉 5천만원 → 최고세율 15%</li>
+                <li>📊 예: 연봉 1억원 → 최고세율 24%</li>
+                <li>📊 실효세율은 최고세율보다 항상 낮음</li>
+                <li>📊 각종 공제로 실제 세부담은 더 적음</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* 절세 전략 가이드 */}
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">💰 실수령액 늘리는 절세 전략</h3>
+          <div className="grid lg:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">💼</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">소득공제 활용</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">📱 신용카드 등 사용</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">연 300만원까지 15~30% 공제</p>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">🏠 주택자금 공제</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">주택청약 연 240만원, 주택담보대출 이자</p>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">👶 출산·양육 공제</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">첫째 30만원, 둘째 50만원, 셋째+ 70만원</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">💊</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">세액공제 활용</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">🏥 의료비 공제</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">총급여 3% 초과분의 15% 공제</p>
+                </div>
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">📚 교육비 공제</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">본인 전액, 자녀 1인당 300만원 15%</p>
+                </div>
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">💝 기부금 공제</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">15~30%, 이월공제 5년</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🏦</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">연금저축 활용</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">💰 연금저축펀드</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">연 600만원까지 세액공제 16.5%</p>
+                </div>
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">🏢 퇴직연금 IRP</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">추가 300만원까지 세액공제</p>
+                </div>
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">📈 ISA 계좌</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">비과세 한도 늘리고 연금계좌 이체시 추가공제</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 연말정산 준비 가이드 */}
+        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-2xl p-8">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">📋 연말정산 완벽 준비 가이드</h3>
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div>
+              <h4 className="text-lg font-semibold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center">
+                <span className="bg-indigo-100 dark:bg-indigo-900 p-2 rounded-full mr-2">📅</span>
+                연말정산 일정 & 준비사항
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-indigo-600 mb-2">🗓️ 주요 일정</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 1월: 소득·세액공제 신청서 제출</p>
+                    <p>• 2월: 회사에서 연말정산 계산</p>
+                    <p>• 3월: 환급금 지급 또는 추가납부</p>
+                    <p>• 5월: 종합소득세 신고 (필요시)</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-indigo-600 mb-2">📄 필수 준비서류</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 소득·세액공제 신고서 (회사 제공)</p>
+                    <p>• 부양가족 관계증명서</p>
+                    <p>• 각종 공제 관련 영수증</p>
+                    <p>• 주택자금 공제 관련 서류</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
+                <span className="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-2">💡</span>
+                환급금 늘리는 핵심 팁
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-purple-600 mb-2">✅ 꼼꼼한 영수증 관리</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 홈택스 자동 수집되지 않는 항목 체크</p>
+                    <p>• 의료비는 미용·성형 제외한 모든 항목</p>
+                    <p>• 교육비는 학원비, 교재비까지 포함</p>
+                    <p>• 현금영수증은 반드시 발급받기</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-purple-600 mb-2">⚡ 절세 상품 적극 활용</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 연금저축: 연 600만원까지 16.5% 공제</p>
+                    <p>• 주택청약: 연 240만원까지 40% 공제</p>
+                    <p>• 소상공인 도움: 신용카드보다 높은 공제율</p>
+                    <p>• 기부금: 정치후원금은 10만원까지 100%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

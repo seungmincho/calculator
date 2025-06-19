@@ -21,11 +21,11 @@ export default function TipsPage() {
     const fetchTips = async () => {
       try {
         const response = await fetch('/tips.json');
-        const data = await response.json();
+        const data: Tip[] = await response.json();
         setTips(data);
         setFilteredTips(data);
         
-        const uniqueCategories = ['전체', ...Array.from(new Set(data.map((tip: Tip) => tip.category)))];
+        const uniqueCategories: string[] = ['전체', ...Array.from(new Set(data.map((tip: Tip) => tip.category)))];
         setCategories(uniqueCategories);
       } catch (error) {
         console.error('Failed to fetch tips:', error);

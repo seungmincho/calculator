@@ -35,13 +35,14 @@ async function getTip(id: string): Promise<Tip | null> {
 export default async function TipDetailPage({ 
   params 
 }: { 
-  params: { id: string } 
+  params: Promise<{ id: string }> 
 }) {
-  const tip = await getTip(params.id);
+  const resolvedParams = await params;
+  const tip = await getTip(resolvedParams.id);
   
   if (!tip) {
     notFound();
   }
 
-  return <TipDetailClient tipId={params.id} />;
+  return <TipDetailClient tipId={resolvedParams.id} />;
 }

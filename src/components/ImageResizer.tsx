@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useCallback } from 'react';
-import { Upload, Download, RotateCcw, Maximize, Image as ImageIcon, Info, Settings } from 'lucide-react';
+import { Upload, Download, RotateCcw, Maximize, Image as ImageIcon, Info, Settings, X } from 'lucide-react';
 
 interface ImageDimensions {
   width: number;

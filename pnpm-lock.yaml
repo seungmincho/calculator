@@ -24,9 +24,6 @@ importers:
         specifier: ^19.0.0
         version: 19.1.0(react@19.1.0)
     devDependencies:
-      '@cloudflare/kv-asset-handler':
-        specifier: ^0.3.0
-        version: 0.3.4
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.3.1

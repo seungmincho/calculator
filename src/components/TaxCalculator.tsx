@@ -849,6 +849,454 @@ const TaxCalculatorContent = () => {
           )}
         </div>
       </div>
+
+      {/* 상세 가이드 섹션 */}
+      <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+        <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 세금 계산 마스터 가이드</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto">
+          개인사업자부터 직장인까지! 세금의 모든 것을 마스터하는 완전한 가이드입니다. 
+          소득세부터 양도소득세까지, 절세 전략으로 내 돈을 지키세요!
+        </p>
+        
+        {/* 핵심 기능 소개 */}
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-green-600 p-3 rounded-full mr-3">
+                <Receipt className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-green-900 dark:text-green-200">💎 3종 세금 통합 계산</h3>
+            </div>
+            <p className="text-green-800 dark:text-green-300 mb-4 leading-relaxed">
+              소득세, 부가세, 양도소득세를 하나의 도구로! 국세청 기준 정확한 계산과 절세 포인트까지 제공합니다.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">💼 소득세 계산</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">누진세율, 인적공제, 특별공제까지 완벽 반영</p>
+              </div>
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">🏪 부가가치세</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">사업자를 위한 정확한 부가세 계산</p>
+              </div>
+              <div className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1">🏠 양도소득세</h4>
+                <p className="text-sm text-green-700 dark:text-green-300">부동산 거래시 필수 양도세 시뮬레이션</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-blue-600 p-3 rounded-full mr-3">
+                <Calculator className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-blue-900 dark:text-blue-200">📊 스마트 절세 분석</h3>
+            </div>
+            <p className="text-blue-800 dark:text-blue-300 mb-4 leading-relaxed">
+              단순 계산을 넘어선 똑똑한 세무 분석! 공제 항목부터 절세 전략까지 맞춤형 가이드를 제공합니다.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">🎯 최적화 공제</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">표준공제 vs 특별공제 자동 선택</p>
+              </div>
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">💡 절세 포인트</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">세금 부담을 줄이는 실용적 팁 제공</p>
+              </div>
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">📈 세부담률 분석</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">소득 구간별 실효세율 상세 분석</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+            <div className="flex items-center mb-4">
+              <div className="bg-purple-600 p-3 rounded-full mr-3">
+                <Building2 className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-purple-900 dark:text-purple-200">⚡ 실무 최적화 도구</h3>
+            </div>
+            <p className="text-purple-800 dark:text-purple-300 mb-4 leading-relaxed">
+              세무사부터 개인사업자까지! 실무에서 바로 쓸 수 있는 전문가급 세무 계산 도구입니다.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">📂 계산 이력 관리</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">다양한 세금 시나리오 저장하고 비교</p>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">🔗 URL 공유</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">계산 결과를 고객이나 동료와 간편 공유</p>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1">📱 반응형 디자인</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-300">PC, 태블릿, 모바일 어디서든 완벽하게</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 세금 종류별 완전정복 */}
+        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">🏛️ 세금 종류별 완전정복</h3>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">내가 내야 할 세금의 정체를 정확히 파악하고 절세 전략을 세우세요!</p>
+          
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-green-600 dark:text-green-400 mb-4 flex items-center">
+                <span className="bg-green-100 dark:bg-green-900 p-2 rounded-full mr-3">💼</span>
+                소득세 (개인소득에 대한 세금)
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">💡 과세 대상</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">근로소득, 사업소득, 기타소득 등 모든 개인소득</p>
+                  <div className="mt-2 text-xs text-green-500 space-y-1">
+                    <p>• 근로소득: 급여, 상여금, 인정상여 등</p>
+                    <p>• 사업소득: 개인사업, 프리랜서 수입</p>
+                    <p>• 기타소득: 강의료, 원고료, 상금 등</p>
+                    <p>• 연금소득: 국민연금, 퇴직연금 등</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">📊 세율 구조</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">6%~45% 누진세율 (소득이 높을수록 세율 증가)</p>
+                  <div className="mt-2 text-xs text-blue-500 space-y-1">
+                    <p>• 1,400만원 이하: 6%</p>
+                    <p>• 1,400~5,000만원: 15%</p>
+                    <p>• 5,000~8,800만원: 24%</p>
+                    <p>• 8,800만원 이상: 35%~45%</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">🎯 주요 공제</h5>
+                  <div className="mt-2 text-xs text-purple-500 space-y-1">
+                    <p>• 인적공제: 본인+부양가족 1인당 150만원</p>
+                    <p>• 표준공제: 60만원 (특별공제와 선택)</p>
+                    <p>• 의료비공제: 소득의 3% 초과분</p>
+                    <p>• 교육비공제: 1인당 연 300만원 한도</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4 flex items-center">
+                <span className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full mr-3">🏪</span>
+                부가가치세 (상품·서비스 거래세)
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">💡 과세 대상</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">재화와 용역의 공급, 수입에 부과되는 간접세</p>
+                  <div className="mt-2 text-xs text-blue-500 space-y-1">
+                    <p>• 일반과세자: 연매출 4,800만원 초과</p>
+                    <p>• 간이과세자: 연매출 4,800만원 이하</p>
+                    <p>• 면세사업자: 생필품, 의료서비스 등</p>
+                    <p>• 최종 소비자가 실질적 부담</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">📊 세율 구조</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">일반세율 10%, 간이세율 1~4%</p>
+                  <div className="mt-2 text-xs text-green-500 space-y-1">
+                    <p>• 일반세율: 10% (대부분의 재화와 용역)</p>
+                    <p>• 영세율: 0% (수출, 국제운송 등)</p>
+                    <p>• 면세: 부가세 없음 (생필품, 의료 등)</p>
+                    <p>• 간이세율: 업종별 1~4%</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h5 className="font-semibold text-orange-600">🎯 신고·납부</h5>
+                  <div className="mt-2 text-xs text-orange-500 space-y-1">
+                    <p>• 신고시기: 1월, 7월 (연 2회)</p>
+                    <p>• 예정신고: 4월, 10월</p>
+                    <p>• 세금계산서 발급 의무</p>
+                    <p>• 매입세액 공제 가능</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-orange-600 dark:text-orange-400 mb-4 flex items-center">
+                <span className="bg-orange-100 dark:bg-orange-900 p-2 rounded-full mr-3">🏠</span>
+                양도소득세 (자산 매매 차익세)
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h5 className="font-semibold text-orange-600">💡 과세 대상</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">부동산, 주식 등 자산 양도시 발생하는 소득</p>
+                  <div className="mt-2 text-xs text-orange-500 space-y-1">
+                    <p>• 부동산: 토지, 건물, 아파트 등</p>
+                    <p>• 주식: 대주주 지분, 비상장주식</p>
+                    <p>• 기타: 골프회원권, 분양권 등</p>
+                    <p>• 양도가액 - 취득가액 = 양도차익</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-red-400 pl-4">
+                  <h5 className="font-semibold text-red-600">📊 세율 구조</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">6%~75% (보유기간, 주택수에 따라 차등)</p>
+                  <div className="mt-2 text-xs text-red-500 space-y-1">
+                    <p>• 일반주택: 6~45% (보유기간별)</p>
+                    <p>• 고급주택: 60~75%</p>
+                    <p>• 다주택자: 20~75%</p>
+                    <p>• 1세대1주택: 비과세 가능</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">🎯 주요 공제</h5>
+                  <div className="mt-2 text-xs text-purple-500 space-y-1">
+                    <p>• 장기보유특별공제: 3년 이상 보유시</p>
+                    <p>• 기본공제: 연 250만원</p>
+                    <p>• 거주주택 양도소득공제</p>
+                    <p>• 1세대1주택 비과세 혜택</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <h4 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
+                <span className="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">⚖️</span>
+                지방소득세 (소득세의 10%)
+              </h4>
+              <div className="space-y-4">
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <h5 className="font-semibold text-purple-600">💡 과세 대상</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">소득세, 법인세에 연동하여 부과되는 지방세</p>
+                  <div className="mt-2 text-xs text-purple-500 space-y-1">
+                    <p>• 개인지방소득세: 소득세의 10%</p>
+                    <p>• 법인지방소득세: 법인세의 10%</p>
+                    <p>• 별도 신고 불필요 (자동 계산)</p>
+                    <p>• 지방자치단체 재정 확충 목적</p>
+                  </div>
+                </div>
+                <div className="border-l-4 border-gray-400 pl-4">
+                  <h5 className="font-semibold text-gray-600">📊 계산 방법</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">소득세액 × 10% = 지방소득세</p>
+                  <div className="mt-2 text-xs text-gray-500 space-y-1">
+                    <p>• 소득세와 동시에 자동 계산</p>
+                    <p>• 별도 신고서 작성 불필요</p>
+                    <p>• 소득세 환급시 함께 환급</p>
+                    <p>• 원천징수시에도 함께 징수</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 절세 전략 완벽 가이드 */}
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">💰 절세 전략 완벽 가이드</h3>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">합법적인 절세로 내 돈을 지키는 똑똑한 방법들을 알아보세요!</p>
+          
+          <div className="grid lg:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">💼</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">소득세 절세 전략</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">📋 소득공제 극대화</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">과세표준을 줄여서 세율 구간 낮추기</p>
+                  <div className="text-xs text-green-500 mt-1">
+                    • 연금저축 600만원 + IRP 300만원 = 연 최대 165만원 세액공제
+                  </div>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">🏠 주택자금 공제</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">주택청약, 주택담보대출 이자 활용</p>
+                  <div className="text-xs text-green-500 mt-1">
+                    • 주택청약 연 240만원까지 40% 세액공제
+                  </div>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h5 className="font-semibold text-green-600">💳 신용카드 사용</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">소득공제 한도 내에서 최대 활용</p>
+                  <div className="text-xs text-green-500 mt-1">
+                    • 전통시장·대중교통 40%, 신용카드 15% 공제
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🏪</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">부가세 절세 전략</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">📊 매입세액 공제</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">사업용 지출의 부가세를 매출세액에서 차감</p>
+                  <div className="text-xs text-blue-500 mt-1">
+                    • 사업자등록증 명의로 구매한 모든 지출
+                  </div>
+                </div>
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">🧾 세금계산서 관리</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">정확한 세금계산서 수취·발급으로 공제 최대화</p>
+                  <div className="text-xs text-blue-500 mt-1">
+                    • 전자세금계산서 시스템 적극 활용
+                  </div>
+                </div>
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h5 className="font-semibold text-blue-600">⚖️ 간이과세 선택</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">연매출 4,800만원 이하시 간이과세 고려</p>
+                  <div className="text-xs text-blue-500 mt-1">
+                    • 업종별 부가가치율 적용으로 세부담 경감
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+              <div className="text-center mb-4">
+                <div className="bg-orange-100 dark:bg-orange-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-2xl">🏠</span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 dark:text-white">양도소득세 절세</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h5 className="font-semibold text-orange-600">🏡 1세대1주택 비과세</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">2년 이상 보유·거주시 양도소득세 비과세</p>
+                  <div className="text-xs text-orange-500 mt-1">
+                    • 조정대상지역은 보유·거주 기간 연장
+                  </div>
+                </div>
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h5 className="font-semibold text-orange-600">📅 장기보유특별공제</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">3년 이상 보유시 연 10%씩 공제 (최대 30%)</p>
+                  <div className="text-xs text-orange-500 mt-1">
+                    • 거주주택은 더 높은 공제율 적용
+                  </div>
+                </div>
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h5 className="font-semibold text-orange-600">💰 분할납부 활용</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">세액 2천만원 초과시 3년간 분할납부 가능</p>
+                  <div className="text-xs text-orange-500 mt-1">
+                    • 자금 부담 완화 및 이자비용 고려
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-lg">
+            <h5 className="font-semibold text-red-900 dark:text-red-200 mb-3">⚠️ 절세의 황금법칙</h5>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <h6 className="font-bold text-red-600 mb-2">합법성 우선</h6>
+                <p className="text-red-800 dark:text-red-300">세법에 따른 정당한 절세만 추진</p>
+                <div className="text-xs text-red-600 mt-1">💡 탈세와 절세는 완전히 다름</div>
+              </div>
+              <div>
+                <h6 className="font-bold text-red-600 mb-2">증빙서류 보관</h6>
+                <p className="text-red-800 dark:text-red-300">모든 공제 관련 서류 5년간 보관</p>
+                <div className="text-xs text-red-600 mt-1">💡 세무조사 대비 필수</div>
+              </div>
+              <div>
+                <h6 className="font-bold text-red-600 mb-2">전문가 상담</h6>
+                <p className="text-red-800 dark:text-red-300">복잡한 사안은 세무사 상담 필수</p>
+                <div className="text-xs text-red-600 mt-1">💡 정확한 판단으로 위험 방지</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 세무 달력 및 신고 일정 */}
+        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-2xl p-8">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">📅 세무 달력 및 신고 일정</h3>
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div>
+              <h4 className="text-lg font-semibold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center">
+                <span className="bg-indigo-100 dark:bg-indigo-900 p-2 rounded-full mr-2">📋</span>
+                연간 세무 일정표
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-indigo-600 mb-2">1~2월: 연말정산</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 근로소득 연말정산 신고</p>
+                    <p>• 소득공제·세액공제 서류 제출</p>
+                    <p>• 환급세액 수령 또는 추가납부</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-indigo-600 mb-2">3~5월: 종합소득세</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 사업소득·기타소득 신고</p>
+                    <p>• 종합소득세 신고 및 납부</p>
+                    <p>• 예정신고 납부세액 정산</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-indigo-600 mb-2">6~7월: 부가세 신고</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 1기 부가가치세 확정신고</p>
+                    <p>• 세금계산서 합계표 제출</p>
+                    <p>• 2기 부가세 예정신고</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-indigo-600 mb-2">9~11월: 종소세 예정</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 종합소득세 예정신고</p>
+                    <p>• 사업소득 중간예납</p>
+                    <p>• 양도소득세 신고 (발생시)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
+                <span className="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-2">💡</span>
+                세무신고 성공 팁
+              </h4>
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-purple-600 mb-2">📱 전자신고 활용</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 홈택스, 손택스 앱 적극 활용</p>
+                    <p>• 자동계산 기능으로 오류 방지</p>
+                    <p>• 전자신고시 세액공제 혜택</p>
+                    <p>• 24시간 언제든 신고 가능</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-purple-600 mb-2">📊 사전 준비사항</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 소득금액증명원 등 서류 미리 발급</p>
+                    <p>• 공제 관련 영수증 정리</p>
+                    <p>• 금융계좌 잔액 충분히 확보</p>
+                    <p>• 신고기한 여유를 두고 준비</p>
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                  <h5 className="font-semibold text-purple-600 mb-2">⚡ 신고 후 주의사항</h5>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p>• 신고서 및 첨부서류 5년간 보관</p>
+                    <p>• 수정신고 가능 기간 확인</p>
+                    <p>• 환급금 입금계좌 정확성 확인</p>
+                    <p>• 세무조사 대비 서류 정리</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
