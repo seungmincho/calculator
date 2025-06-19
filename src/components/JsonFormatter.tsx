@@ -130,25 +130,22 @@ const JsonFormatter = () => {
     try {
       let result = '';
       
-      switch (mode) {
-        case 'format':
-          result = JSON.stringify(parsed, null, indentSize);
-          break;
-        case 'minify':
-          result = JSON.stringify(parsed);
-          break;
-        case 'tree':
-          const nodes = createTreeNodes(parsed);
-          setTreeNodes(nodes);
-          return;
+      if (mode === 'tree') {
+        const nodes = createTreeNodes(parsed);
+        setTreeNodes(nodes);
+        setOutput('');
+        return;
+      }
+      
+      // format 또는 minify 모드
+      if (mode === 'format') {
+        result = JSON.stringify(parsed, null, indentSize);
+      } else if (mode === 'minify') {
+        result = JSON.stringify(parsed);
       }
       
       setOutput(result);
-      
-      // 트리 모드가 아닐 때는 트리 노드 초기화
-      if (mode !== 'tree') {
-        setTreeNodes([]);
-      }
+      setTreeNodes([]);
     } catch (err) {
       setError('Processing failed');
     }

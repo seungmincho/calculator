@@ -94,7 +94,7 @@ const SqlFormatter = () => {
     let formatted = sql;
 
     // CREATE TABLE 부분 추출
-    const createTableMatch = formatted.match(/(CREATE\s+TABLE\s+\w+)\s*\((.*)\)\s*;?/is);
+    const createTableMatch = formatted.match(/(CREATE\s+TABLE\s+\w+)\s*\(([\s\S]*)\)\s*;?/i);
     if (!createTableMatch) return formatted;
 
     const [, createPart, columnsPart] = createTableMatch;
@@ -163,7 +163,7 @@ const SqlFormatter = () => {
     let formatted = sql;
 
     // INSERT INTO table (columns) VALUES 패턴
-    const insertMatch = formatted.match(/(INSERT\s+INTO\s+\w+)\s*(\([^)]+\))?\s*(VALUES)\s*(\(.*\))\s*;?/is);
+    const insertMatch = formatted.match(/(INSERT\s+INTO\s+\w+)\s*(\([^)]+\))?\s*(VALUES)\s*(\([\s\S]*\))\s*;?/i);
     if (insertMatch) {
       const [, insertPart, columnsPart, valuesPart, valuesData] = insertMatch;
       
@@ -206,10 +206,10 @@ const SqlFormatter = () => {
     });
 
     // SELECT 절의 컬럼들 포맷팅
-    formatted = formatted.replace(/\nSELECT\s+(.+?)(?=\nFROM|\nWHERE|\n|$)/is, (match, selectPart) => {
-      const columns = selectPart.split(',').map(col => col.trim());
+    formatted = formatted.replace(/\nSELECT\s+([\s\S]+?)(?=\nFROM|\nWHERE|\n|$)/i, (match, selectPart) => {
+      const columns = selectPart.split(',').map((col: string) => col.trim());
       if (columns.length > 1) {
-        const formattedColumns = columns.map((col, index) => 
+        const formattedColumns = columns.map((col: string, index: number) => 
           index === 0 ? col : indentStr + col
         ).join(',\n');
         return `\n${uppercaseKeywords ? 'SELECT' : 'select'} ${formattedColumns}`;
@@ -697,7 +697,7 @@ const SqlFormatter = () => {
                   <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
                     <h4 className="font-medium text-amber-900 dark:text-amber-200 mb-2">최적화 제안</h4>
                     <ul className="text-sm text-amber-800 dark:text-amber-300 space-y-1">
-                      {analysis.suggestions.map((suggestion, index) => (
+                      {analysis.suggestions.map((suggestion: string, index: number) => (
                         <li key={index}>• {suggestion}</li>
                       ))}
                     </ul>

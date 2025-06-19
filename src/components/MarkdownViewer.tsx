@@ -88,11 +88,11 @@ const MarkdownViewer = () => {
 
     // 순서 있는 목록
     html = html.replace(/^(\d+)\.\s+(.+)$/gm, '<li class="markdown-ol-item">$2</li>');
-    html = html.replace(/(<li class="markdown-ol-item">.*<\/li>)/s, '<ol class="markdown-ol">$1</ol>');
+    html = html.replace(/(<li class="markdown-ol-item">[\s\S]*?<\/li>)/g, '<ol class="markdown-ol">$1</ol>');
 
     // 순서 없는 목록
     html = html.replace(/^[-*+]\s+(.+)$/gm, '<li class="markdown-ul-item">$1</li>');
-    html = html.replace(/(<li class="markdown-ul-item">.*<\/li>)/s, '<ul class="markdown-ul">$1</ul>');
+    html = html.replace(/(<li class="markdown-ul-item">[\s\S]*?<\/li>)/g, '<ul class="markdown-ul">$1</ul>');
 
     // 테이블
     html = html.replace(/\|(.+)\|\n\|[-:| ]+\|\n((\|.+\|\n?)*)/g, (match, header, separator, rows) => {
