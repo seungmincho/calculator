@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Calculator, TrendingDown, PiggyBank, BarChart3, CompassIcon, Share2, Check } from 'lucide-react';
+import { Calculator, TrendingDown, PiggyBank, BarChart3, CompassIcon, Share2, Check, Save } from 'lucide-react';
+import { useCalculationHistory } from '@/hooks/useCalculationHistory';
+import CalculationHistory from '@/components/CalculationHistory';
 
 type LoanType = 'equal-payment' | 'equal-principal' | 'interest-only' | 'balloon';
 
@@ -30,6 +32,17 @@ const LoanCalculatorContent = () => {
   const [results, setResults] = useState<LoanResult[]>([]);
   const [activeTab, setActiveTab] = useState<'calculator' | 'CompassIcon'>('calculator');
   const [isCopied, setIsCopied] = useState(false);
+  const [showSaveButton, setShowSaveButton] = useState(false);
+
+  // 계산 이력 관리
+  const {
+    histories,
+    isLoading: historyLoading,
+    saveCalculation,
+    removeHistory,
+    clearHistories,
+    loadFromHistory
+  } = useCalculationHistory('loan');
 
   const loanTypes = {
     'equal-payment': '원리금균등상환',
@@ -225,6 +238,7 @@ const LoanCalculatorContent = () => {
   const handleCalculate = React.useCallback(() => {
     const calculations = calculateLoan(loanAmount, interestRate, loanTerm, selectedTypes);
     setResults(calculations);
+    setShowSaveButton(calculations.length > 0);
   }, [loanAmount, interestRate, loanTerm, selectedTypes]);
 
   const formatNumber = (num: number) => {
@@ -259,6 +273,49 @@ const LoanCalculatorContent = () => {
       // 복사 실패시에도 사용자에게 피드백
       alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
     }
+  };
+
+  // 계산 결과 저장
+  const handleSaveCalculation = () => {
+    if (results.length === 0) return;
+
+    const inputs = {
+      loanAmount,
+      interestRate,
+      loanTerm,
+      selectedTypes
+    };
+
+    const success = saveCalculation(inputs, { results });
+    if (success) {
+      setShowSaveButton(false);
+    }
+  };
+
+  // 이력에서 불러오기
+  const handleLoadFromHistory = (historyId: string) => {
+    const inputs = loadFromHistory(historyId);
+    if (inputs) {
+      setLoanAmount(inputs.loanAmount || '');
+      setInterestRate(inputs.interestRate || '');
+      setLoanTerm(inputs.loanTerm || '');
+      setSelectedTypes(inputs.selectedTypes || ['equal-payment']);
+      
+      // URL도 업데이트
+      updateURL({
+        amount: inputs.loanAmount?.replace(/,/g, '') || '',
+        rate: inputs.interestRate || '',
+        term: inputs.loanTerm || '',
+        types: inputs.selectedTypes?.join(',') || 'equal-payment'
+      });
+    }
+  };
+
+  // 이력 결과 포맷팅
+  const formatHistoryResult = (result: any) => {
+    if (!result?.results || result.results.length === 0) return '';
+    const firstResult = result.results[0];
+    return `월 ${formatNumber(Math.round(firstResult.monthlyPayment))}원 (총 ${formatNumber(Math.round(firstResult.totalPayment))}원)`;
   };
 
   const updateURL = (newParams: Record<string, string>) => {
@@ -350,9 +407,19 @@ const LoanCalculatorContent = () => {
           <PiggyBank className="w-8 h-8 text-green-600" />
         </div>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">대출 계산기</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
           다양한 대출 방식을 비교하여 가장 적합한 상환 방법을 찾아보세요.
         </p>
+        
+        {/* 계산 이력 버튼 */}
+        <CalculationHistory
+          histories={histories}
+          isLoading={historyLoading}
+          onLoadHistory={handleLoadFromHistory}
+          onRemoveHistory={removeHistory}
+          onClearHistories={clearHistories}
+          formatResult={formatHistoryResult}
+        />
       </div>
 
       {/* Tab Navigation */}
@@ -468,22 +535,34 @@ const LoanCalculatorContent = () => {
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                       {loanTypes[result.type]}
                     </h3>
-                    <button
-                      onClick={handleShare}
-                      className="inline-flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 transition-colors"
-                    >
-                      {isCopied ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span className="text-sm">복사됨!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Share2 className="w-4 h-4" />
-                          <span className="text-sm">공유</span>
-                        </>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={handleShare}
+                        className="inline-flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 transition-colors"
+                      >
+                        {isCopied ? (
+                          <>
+                            <Check className="w-4 h-4" />
+                            <span className="text-sm">복사됨!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Share2 className="w-4 h-4" />
+                            <span className="text-sm">공유</span>
+                          </>
+                        )}
+                      </button>
+                      
+                      {showSaveButton && (
+                        <button
+                          onClick={handleSaveCalculation}
+                          className="inline-flex items-center space-x-2 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 px-3 py-2 rounded-lg text-blue-700 dark:text-blue-300 transition-colors"
+                        >
+                          <Save className="w-4 h-4" />
+                          <span className="text-sm">저장</span>
+                        </button>
                       )}
-                    </button>
+                    </div>
                   </div>
                   
                   <div className="grid md:grid-cols-3 gap-4">

@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Receipt, Building2, TrendingUp, Calculator, Share2, Check } from 'lucide-react';
+import { Receipt, Building2, TrendingUp, Calculator, Share2, Check, Save } from 'lucide-react';
+import { useCalculationHistory } from '@/hooks/useCalculationHistory';
+import CalculationHistory from '@/components/CalculationHistory';
 
 type TaxType = 'income' | 'vat' | 'capital-gains';
 
@@ -46,6 +48,17 @@ const TaxCalculatorContent = () => {
   const [propertyType, setPropertyType] = useState<'general' | 'luxury' | 'multiple'>('general');
 
   const [result, setResult] = useState<TaxResult | null>(null);
+  const [showSaveButton, setShowSaveButton] = useState(false);
+
+  // 계산 이력 관리
+  const {
+    histories,
+    isLoading: historyLoading,
+    saveCalculation,
+    removeHistory,
+    clearHistories,
+    loadFromHistory
+  } = useCalculationHistory('tax');
 
   const taxTypes = {
     'income': '소득세',
@@ -171,6 +184,86 @@ const TaxCalculatorContent = () => {
     return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
+  // 계산 저장
+  const handleSaveCalculation = () => {
+    if (!result) return;
+
+    const inputs = {
+      activeTab,
+      annualIncome,
+      dependents,
+      medicalExpenses,
+      educationExpenses,
+      saleAmount,
+      vatRate,
+      salePrice,
+      purchasePrice,
+      holdingPeriod,
+      propertyType
+    };
+
+    const success = saveCalculation(inputs, result);
+    if (success) {
+      setShowSaveButton(false);
+      // 저장 성공 피드백 (선택사항)
+    }
+  };
+
+  // 이력에서 불러오기
+  const handleLoadFromHistory = (historyId: string) => {
+    const inputs = loadFromHistory(historyId);
+    if (inputs) {
+      setActiveTab(inputs.activeTab || 'income');
+      setAnnualIncome(inputs.annualIncome || '');
+      setDependents(inputs.dependents || '0');
+      setMedicalExpenses(inputs.medicalExpenses || '');
+      setEducationExpenses(inputs.educationExpenses || '');
+      setSaleAmount(inputs.saleAmount || '');
+      setVatRate(inputs.vatRate || '10');
+      setSalePrice(inputs.salePrice || '');
+      setPurchasePrice(inputs.purchasePrice || '');
+      setHoldingPeriod(inputs.holdingPeriod || '');
+      setPropertyType(inputs.propertyType || 'general');
+      
+      // URL도 업데이트
+      const urlParams: Record<string, string> = {
+        tab: inputs.activeTab || 'income'
+      };
+      
+      if (inputs.activeTab === 'income') {
+        urlParams.income = inputs.annualIncome?.replace(/,/g, '') || '';
+        urlParams.dependents = inputs.dependents || '0';
+        urlParams.medical = inputs.medicalExpenses?.replace(/,/g, '') || '';
+        urlParams.education = inputs.educationExpenses?.replace(/,/g, '') || '';
+      } else if (inputs.activeTab === 'vat') {
+        urlParams.sale = inputs.saleAmount?.replace(/,/g, '') || '';
+        urlParams.rate = inputs.vatRate || '10';
+      } else if (inputs.activeTab === 'capital-gains') {
+        urlParams.sellPrice = inputs.salePrice?.replace(/,/g, '') || '';
+        urlParams.buyPrice = inputs.purchasePrice?.replace(/,/g, '') || '';
+        urlParams.period = inputs.holdingPeriod || '';
+        urlParams.propertyType = inputs.propertyType || 'general';
+      }
+      
+      updateURL(urlParams);
+    }
+  };
+
+  // 이력 결과 포맷팅
+  const formatHistoryResult = (result: any) => {
+    if (!result) return '';
+    
+    if (result.type === 'income') {
+      return `실수령액 ${formatNumber(result.netAmount)}원 (세금 ${formatNumber(result.totalTax)}원)`;
+    } else if (result.type === 'vat') {
+      return `부가세 포함 ${formatNumber(result.netAmount + result.totalTax)}원 (부가세 ${formatNumber(result.totalTax)}원)`;
+    } else if (result.type === 'capital-gains') {
+      return `실수령액 ${formatNumber(result.netAmount)}원 (세금 ${formatNumber(result.totalTax)}원)`;
+    }
+    
+    return `세금 ${formatNumber(result.totalTax)}원`;
+  };
+
   const handleShare = async () => {
     try {
       const currentUrl = window.location.href;
@@ -245,6 +338,7 @@ const TaxCalculatorContent = () => {
     }
 
     setResult(calculation);
+    setShowSaveButton(!!calculation); // 계산 결과가 있으면 저장 버튼 표시
   };
 
   // 입력 핸들러들
@@ -518,9 +612,19 @@ const TaxCalculatorContent = () => {
           <Receipt className="w-8 h-8 text-green-600" />
         </div>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">세금 계산기</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
           소득세, 부가가치세, 양도소득세를 정확하게 계산해보세요.
         </p>
+        
+        {/* 계산 이력 버튼 */}
+        <CalculationHistory
+          histories={histories}
+          isLoading={historyLoading}
+          onLoadHistory={handleLoadFromHistory}
+          onRemoveHistory={removeHistory}
+          onClearHistories={clearHistories}
+          formatResult={formatHistoryResult}
+        />
       </div>
 
       {/* 탭 메뉴 */}
@@ -598,22 +702,34 @@ const TaxCalculatorContent = () => {
                     ? formatNumber(result.netAmount + result.totalTax)
                     : formatNumber(result.netAmount)}원
                 </div>
-                <button
-                  onClick={handleShare}
-                  className="mt-4 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                >
-                  {isCopied ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      <span>복사됨!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Share2 className="w-4 h-4" />
-                      <span>결과 공유</span>
-                    </>
+                <div className="mt-4 flex gap-2">
+                  <button
+                    onClick={handleShare}
+                    className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
+                  >
+                    {isCopied ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        <span>복사됨!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Share2 className="w-4 h-4" />
+                        <span>결과 공유</span>
+                      </>
+                    )}
+                  </button>
+                  
+                  {showSaveButton && (
+                    <button
+                      onClick={handleSaveCalculation}
+                      className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
+                    >
+                      <Save className="w-4 h-4" />
+                      <span>저장</span>
+                    </button>
                   )}
-                </button>
+                </div>
               </div>
 
               <div className="space-y-4">

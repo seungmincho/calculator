@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack -p 3030",
     "build": "next build",
+    "export": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },

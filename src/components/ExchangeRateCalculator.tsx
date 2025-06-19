@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowUpDown, Globe, TrendingUp, Calculator, Share2, Check, RefreshCw } from 'lucide-react';
+import { ArrowUpDown, Globe, TrendingUp, Calculator, Share2, Check, RefreshCw, Save } from 'lucide-react';
+import { useCalculationHistory } from '@/hooks/useCalculationHistory';
+import CalculationHistory from '@/components/CalculationHistory';
 
 interface ExchangeRate {
   [key: string]: number;
@@ -26,6 +28,17 @@ const ExchangeRateCalculatorContent = () => {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [result, setResult] = useState<number | null>(null);
   const [isCopied, setIsCopied] = useState(false);
+  const [showSaveButton, setShowSaveButton] = useState(false);
+
+  // 계산 이력 관리
+  const {
+    histories,
+    isLoading: historyLoading,
+    saveCalculation,
+    removeHistory,
+    clearHistories,
+    loadFromHistory
+  } = useCalculationHistory('exchange');
 
   // 주요 통화 정보
   const currencies: CurrencyInfo[] = [
@@ -114,6 +127,7 @@ const ExchangeRateCalculatorContent = () => {
     
     console.log('Calculation result:', convertedAmount);
     setResult(convertedAmount);
+    setShowSaveButton(true); // 계산 결과가 있으면 저장 버튼 표시
   };
 
   const formatNumber = (num: number, decimals: number = 2) => {
@@ -125,6 +139,45 @@ const ExchangeRateCalculatorContent = () => {
 
   const formatAmount = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  // 계산 결과 저장
+  const handleSaveCalculation = () => {
+    if (!result) return;
+
+    const inputs = {
+      amount,
+      fromCurrency,
+      toCurrency
+    };
+
+    const success = saveCalculation(inputs, { convertedAmount: result, exchangeRate: getExchangeRate() });
+    if (success) {
+      setShowSaveButton(false);
+    }
+  };
+
+  // 이력에서 불러오기
+  const handleLoadFromHistory = (historyId: string) => {
+    const inputs = loadFromHistory(historyId);
+    if (inputs) {
+      setAmount(inputs.amount || '1');
+      setFromCurrency(inputs.fromCurrency || 'USD');
+      setToCurrency(inputs.toCurrency || 'KRW');
+      
+      // URL도 업데이트
+      updateURL({
+        amount: inputs.amount || '1',
+        from: inputs.fromCurrency || 'USD',
+        to: inputs.toCurrency || 'KRW'
+      });
+    }
+  };
+
+  // 이력 결과 포맷팅
+  const formatHistoryResult = (result: any) => {
+    if (!result) return '';
+    return `${formatNumber(result.convertedAmount)} (환율: ${formatNumber(result.exchangeRate, 4)})`;
   };
 
   const handleShare = async () => {
@@ -234,6 +287,16 @@ const ExchangeRateCalculatorContent = () => {
             마지막 업데이트: {lastUpdated.toLocaleString('ko-KR')}
           </p>
         )}
+        
+        {/* 계산 이력 버튼 */}
+        <CalculationHistory
+          histories={histories}
+          isLoading={historyLoading}
+          onLoadHistory={handleLoadFromHistory}
+          onRemoveHistory={removeHistory}
+          onClearHistories={clearHistories}
+          formatResult={formatHistoryResult}
+        />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
@@ -378,6 +441,16 @@ const ExchangeRateCalculatorContent = () => {
                     </>
                   )}
                 </button>
+                
+                {showSaveButton && (
+                  <button
+                    onClick={handleSaveCalculation}
+                    className="ml-2 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>저장</span>
+                  </button>
+                )}
               </div>
 
               <div className="space-y-4">

@@ -3,8 +3,9 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
 import { Calculator } from 'lucide-react'
-import { Analytics } from "@vercel/analytics/next"
+// import { Analytics } from "@vercel/analytics/next" // Removed for Cloudflare Pages
 import Header from '@/components/Header'
+import DailyTips from '@/components/DailyTips'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     description: '연봉부터 대출까지, 모든 계산을 한 곳에서',
     images: [
       {
-        url: '/og-image.png', // 추후 이미지 추가
+        url: '/logo.png', // 추후 이미지 추가
         width: 1200,
         height: 630,
         alt: '툴허브 - 온라인 계산기 모음',
@@ -112,7 +113,7 @@ export default function RootLayout({
         )}
       </head>
       <body className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800`}>
-        {/* Axeptio Cookie Consent Script with Google Consent Mode */}
+        {/* Axeptio Cookie Consent Script with Google Consent Mode 
         <Script
           id="axeptio-settings"
           strategy="beforeInteractive"
@@ -149,8 +150,8 @@ export default function RootLayout({
           }}
         />
         
+        */}
         <Header />
-
         {/* Main Content */}
         <main>
           {children}
@@ -195,7 +196,11 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-        <Analytics/>
+        
+        {/* Daily Tips Component */}
+        <DailyTips />
+        
+        {/* <Analytics/> Removed for Cloudflare Pages */}
       </body>
     </html>
   )

@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Target, Coins, BarChart3, Calculator, Share2, Check } from 'lucide-react';
+import { Target, Coins, BarChart3, Calculator, Share2, Check, Save } from 'lucide-react';
+import { useCalculationHistory } from '@/hooks/useCalculationHistory';
+import CalculationHistory from '@/components/CalculationHistory';
 
 type SavingsType = 'regular' | 'free' | 'target' | 'compound';
 
@@ -33,6 +35,17 @@ const SavingsCalculatorContent = () => {
   const [results, setResults] = useState<SavingsResult[]>([]);
   const [activeTab, setActiveTab] = useState<'calculator' | 'goal' | 'comparison'>('calculator');
   const [isCopied, setIsCopied] = useState(false);
+  const [showSaveButton, setShowSaveButton] = useState(false);
+
+  // 계산 이력 관리
+  const {
+    histories,
+    isLoading: historyLoading,
+    saveCalculation,
+    removeHistory,
+    clearHistories,
+    loadFromHistory
+  } = useCalculationHistory('savings');
 
   const savingsTypes = {
     'regular': '정기적금',
@@ -261,7 +274,8 @@ const SavingsCalculatorContent = () => {
     
     const calculations = calculateSavings(monthlyAmount, interestRate, savingsPeriod, periodUnit, targetAmount, selectedTypes);
     setResults(calculations);
-  }, [monthlyAmount, interestRate, savingsPeriod, targetAmount, selectedTypes]);
+    setShowSaveButton(calculations.length > 0);
+  }, [monthlyAmount, interestRate, savingsPeriod, periodUnit, targetAmount, selectedTypes, calculateSavings]);
 
   const formatNumber = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -295,6 +309,55 @@ const SavingsCalculatorContent = () => {
       // 복사 실패시에도 사용자에게 피드백
       alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
     }
+  };
+
+  // 계산 결과 저장
+  const handleSaveCalculation = () => {
+    if (results.length === 0) return;
+
+    const inputs = {
+      monthlyAmount,
+      interestRate,
+      savingsPeriod,
+      periodUnit,
+      targetAmount,
+      selectedTypes
+    };
+
+    const success = saveCalculation(inputs, { results });
+    if (success) {
+      setShowSaveButton(false);
+    }
+  };
+
+  // 이력에서 불러오기
+  const handleLoadFromHistory = (historyId: string) => {
+    const inputs = loadFromHistory(historyId);
+    if (inputs) {
+      setMonthlyAmount(inputs.monthlyAmount || '');
+      setInterestRate(inputs.interestRate || '');
+      setSavingsPeriod(inputs.savingsPeriod || '');
+      setPeriodUnit(inputs.periodUnit || 'year');
+      setTargetAmount(inputs.targetAmount || '');
+      setSelectedTypes(inputs.selectedTypes || ['regular']);
+      
+      // URL도 업데이트
+      updateURL({
+        monthly: inputs.monthlyAmount?.replace(/,/g, '') || '',
+        rate: inputs.interestRate || '',
+        period: inputs.savingsPeriod || '',
+        unit: inputs.periodUnit || 'year',
+        target: inputs.targetAmount?.replace(/,/g, '') || '',
+        types: inputs.selectedTypes?.join(',') || 'regular'
+      });
+    }
+  };
+
+  // 이력 결과 포맷팅
+  const formatHistoryResult = (result: any) => {
+    if (!result?.results || result.results.length === 0) return '';
+    const firstResult = result.results[0];
+    return `월 ${formatNumber(Math.round(firstResult.totalSaved / (firstResult.schedule?.length || 12)))}원 → ${formatNumber(Math.round(firstResult.finalAmount))}원`;
   };
 
   const updateURL = (newParams: Record<string, string>) => {
@@ -403,9 +466,19 @@ const SavingsCalculatorContent = () => {
           <Coins className="w-8 h-8 text-emerald-600" />
         </div>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">적금 계산기</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
           다양한 적금 상품을 비교하고 목표 금액 달성을 위한 최적의 저축 계획을 세워보세요.
         </p>
+        
+        {/* 계산 이력 버튼 */}
+        <CalculationHistory
+          histories={histories}
+          isLoading={historyLoading}
+          onLoadHistory={handleLoadFromHistory}
+          onRemoveHistory={removeHistory}
+          onClearHistories={clearHistories}
+          formatResult={formatHistoryResult}
+        />
       </div>
 
       {/* Tab Navigation */}
@@ -579,22 +652,34 @@ const SavingsCalculatorContent = () => {
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                       {savingsTypes[result.type]}
                     </h3>
-                    <button
-                      onClick={handleShare}
-                      className="inline-flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 transition-colors"
-                    >
-                      {isCopied ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span className="text-sm">복사됨!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Share2 className="w-4 h-4" />
-                          <span className="text-sm">공유</span>
-                        </>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={handleShare}
+                        className="inline-flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 transition-colors"
+                      >
+                        {isCopied ? (
+                          <>
+                            <Check className="w-4 h-4" />
+                            <span className="text-sm">복사됨!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Share2 className="w-4 h-4" />
+                            <span className="text-sm">공유</span>
+                          </>
+                        )}
+                      </button>
+                      
+                      {showSaveButton && (
+                        <button
+                          onClick={handleSaveCalculation}
+                          className="inline-flex items-center space-x-2 bg-emerald-100 dark:bg-emerald-900 hover:bg-emerald-200 dark:hover:bg-emerald-800 px-3 py-2 rounded-lg text-emerald-700 dark:text-emerald-300 transition-colors"
+                        >
+                          <Save className="w-4 h-4" />
+                          <span className="text-sm">저장</span>
+                        </button>
                       )}
-                    </button>
+                    </div>
                   </div>
                   
                   <div className="grid md:grid-cols-4 gap-4">
@@ -891,16 +976,6 @@ const SavingsCalculatorContent = () => {
             <p className="text-purple-800 dark:text-purple-300 text-sm">
               적금과 별도로 생활비 3-6개월분의 비상금을 예금으로 준비하세요.
             </p>
-          </div>
-        </div>
-      </div>
-
-      {/* AdSense 광고 영역 */}
-      <div className="mt-8 flex justify-center">
-        <div className="w-full max-w-2xl bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">광고</p>
-          <div className="h-32 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center">
-            <span className="text-gray-400 dark:text-gray-500">AdSense 광고 영역</span>
           </div>
         </div>
       </div>

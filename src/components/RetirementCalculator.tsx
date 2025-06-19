@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Briefcase, Calendar, TrendingUp, Calculator, Share2, Check } from 'lucide-react';
+import { Briefcase, Calendar, TrendingUp, Calculator, Share2, Check, Save } from 'lucide-react';
+import { useCalculationHistory } from '@/hooks/useCalculationHistory';
+import CalculationHistory from '@/components/CalculationHistory';
 
 const RetirementCalculatorContent = () => {
   const router = useRouter();
@@ -12,6 +14,17 @@ const RetirementCalculatorContent = () => {
   const [workMonths, setWorkMonths] = useState('');
   const [result, setResult] = useState<ReturnType<typeof calculateRetirement>>(null);
   const [isCopied, setIsCopied] = useState(false);
+  const [showSaveButton, setShowSaveButton] = useState(false);
+
+  // 계산 이력 관리
+  const {
+    histories,
+    isLoading: historyLoading,
+    saveCalculation,
+    removeHistory,
+    clearHistories,
+    loadFromHistory
+  } = useCalculationHistory('retirement');
 
   // 퇴직금 계산 함수 (근로기준법 기준)
   const calculateRetirement = (avgSalaryStr: string, yearsStr: string, monthsStr: string) => {
@@ -90,6 +103,7 @@ const RetirementCalculatorContent = () => {
   const handleCalculate = React.useCallback(() => {
     const calculation = calculateRetirement(avgSalary, workYears, workMonths);
     setResult(calculation);
+    setShowSaveButton(!!calculation); // 계산 결과가 있으면 저장 버튼 표시
   }, [avgSalary, workYears, workMonths]);
 
   const formatNumber = (num: number) => {
@@ -136,6 +150,46 @@ const RetirementCalculatorContent = () => {
       }
     });
     router.replace(`?${params.toString()}`, { scroll: false });
+  };
+
+  // 계산 결과 저장
+  const handleSaveCalculation = () => {
+    if (!result) return;
+
+    const inputs = {
+      avgSalary,
+      workYears,
+      workMonths
+    };
+
+    const success = saveCalculation(inputs, result);
+    if (success) {
+      setShowSaveButton(false);
+      // 저장 성공 피드백 (선택사항)
+    }
+  };
+
+  // 이력에서 불러오기
+  const handleLoadFromHistory = (historyId: string) => {
+    const inputs = loadFromHistory(historyId);
+    if (inputs) {
+      setAvgSalary(inputs.avgSalary || '');
+      setWorkYears(inputs.workYears || '');
+      setWorkMonths(inputs.workMonths || '');
+      
+      // URL도 업데이트
+      updateURL({
+        salary: inputs.avgSalary?.replace(/,/g, '') || '',
+        years: inputs.workYears || '',
+        months: inputs.workMonths || ''
+      });
+    }
+  };
+
+  // 이력 결과 포맷팅
+  const formatHistoryResult = (result: any) => {
+    if (!result) return '';
+    return `퇴직금 ${formatNumber(result.netRetirementPay)}원 (${result.totalYears}년 근무)`;
   };
 
   const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,9 +249,19 @@ const RetirementCalculatorContent = () => {
           <Briefcase className="w-8 h-8 text-orange-600" />
         </div>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">퇴직금 계산기</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
           평균임금과 근무기간을 입력하시면 퇴직금과 퇴직소득세를 계산해드립니다.
         </p>
+        
+        {/* 계산 이력 버튼 */}
+        <CalculationHistory
+          histories={histories}
+          isLoading={historyLoading}
+          onLoadHistory={handleLoadFromHistory}
+          onRemoveHistory={removeHistory}
+          onClearHistories={clearHistories}
+          formatResult={formatHistoryResult}
+        />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
@@ -283,22 +347,34 @@ const RetirementCalculatorContent = () => {
               <div className="text-center p-6 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl text-white">
                 <div className="text-sm opacity-90 mb-1">세후 퇴직금</div>
                 <div className="text-3xl font-bold">{formatNumber(result.netRetirementPay)}원</div>
-                <button
-                  onClick={handleShare}
-                  className="mt-4 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                >
-                  {isCopied ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      <span>복사됨!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Share2 className="w-4 h-4" />
-                      <span>결과 공유</span>
-                    </>
+                <div className="flex space-x-2 mt-4">
+                  <button
+                    onClick={handleShare}
+                    className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
+                  >
+                    {isCopied ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        <span>복사됨!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Share2 className="w-4 h-4" />
+                        <span>결과 공유</span>
+                      </>
+                    )}
+                  </button>
+                  
+                  {showSaveButton && (
+                    <button
+                      onClick={handleSaveCalculation}
+                      className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
+                    >
+                      <Save className="w-4 h-4" />
+                      <span>저장</span>
+                    </button>
                   )}
-                </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">

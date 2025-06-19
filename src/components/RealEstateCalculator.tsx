@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Home, Calculator, TrendingUp, Share2, Check, Building } from 'lucide-react';
+import { Home, Calculator, TrendingUp, Share2, Check, Building, Save } from 'lucide-react';
+import { useCalculationHistory } from '@/hooks/useCalculationHistory';
+import CalculationHistory from '@/components/CalculationHistory';
 
 type CalculatorType = 'jeonse-loan' | 'mortgage-loan' | 'acquisition-tax';
 
@@ -45,6 +47,17 @@ const RealEstateCalculatorContent = () => {
   const [area, setArea] = useState('');
 
   const [result, setResult] = useState<LoanResult | TaxResult | null>(null);
+  const [showSaveButton, setShowSaveButton] = useState(false);
+
+  // 계산 이력 관리
+  const {
+    histories,
+    isLoading: historyLoading,
+    saveCalculation,
+    removeHistory,
+    clearHistories,
+    loadFromHistory
+  } = useCalculationHistory('real-estate');
 
   const calculatorTypes = {
     'jeonse-loan': '전세자금대출',
@@ -145,6 +158,75 @@ const RealEstateCalculatorContent = () => {
     return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
+  // 계산 결과 저장
+  const handleSaveCalculation = () => {
+    if (!result) return;
+
+    let inputs: any = { activeTab };
+    
+    switch (activeTab) {
+      case 'jeonse-loan':
+        inputs = { ...inputs, jeonseDeposit, jeonseInterestRate, jeonseLoanTerm };
+        break;
+      case 'mortgage-loan':
+        inputs = { ...inputs, housePrice, downPayment, mortgageRate, mortgageTerm };
+        break;
+      case 'acquisition-tax':
+        inputs = { ...inputs, acquisitionPrice, propertyType, isFirstHome, area };
+        break;
+    }
+
+    const success = saveCalculation(inputs, result);
+    if (success) {
+      setShowSaveButton(false);
+    }
+  };
+
+  // 이력에서 불러오기
+  const handleLoadFromHistory = (historyId: string) => {
+    const inputs = loadFromHistory(historyId);
+    if (inputs) {
+      if (inputs.activeTab) {
+        setActiveTab(inputs.activeTab);
+        
+        switch (inputs.activeTab) {
+          case 'jeonse-loan':
+            if (inputs.jeonseDeposit) setJeonseDeposit(inputs.jeonseDeposit);
+            if (inputs.jeonseInterestRate) setJeonseInterestRate(inputs.jeonseInterestRate);
+            if (inputs.jeonseLoanTerm) setJeonseLoanTerm(inputs.jeonseLoanTerm);
+            break;
+          case 'mortgage-loan':
+            if (inputs.housePrice) setHousePrice(inputs.housePrice);
+            if (inputs.downPayment) setDownPayment(inputs.downPayment);
+            if (inputs.mortgageRate) setMortgageRate(inputs.mortgageRate);
+            if (inputs.mortgageTerm) setMortgageTerm(inputs.mortgageTerm);
+            break;
+          case 'acquisition-tax':
+            if (inputs.acquisitionPrice) setAcquisitionPrice(inputs.acquisitionPrice);
+            if (inputs.propertyType) setPropertyType(inputs.propertyType);
+            if (inputs.isFirstHome !== undefined) setIsFirstHome(inputs.isFirstHome);
+            if (inputs.area) setArea(inputs.area);
+            break;
+        }
+        
+        // URL도 업데이트
+        updateURL({ tab: inputs.activeTab });
+      }
+    }
+  };
+
+  // 이력 결과 포맷팅
+  const formatHistoryResult = (result: any) => {
+    if (!result) return '';
+    
+    if ('totalTax' in result) {
+      return `취득세: ${formatNumber(result.totalTax)}원`;
+    } else if ('monthlyPayment' in result) {
+      return `월 상환: ${formatNumber(result.monthlyPayment)}원`;
+    }
+    return '';
+  };
+
   const handleShare = async () => {
     try {
       const currentUrl = window.location.href;
@@ -220,6 +302,7 @@ const RealEstateCalculatorContent = () => {
     }
 
     setResult(calculation);
+    setShowSaveButton(!!calculation); // 계산 결과가 있으면 저장 버튼 표시
   };
 
   // 입력 핸들러들
@@ -553,6 +636,16 @@ const RealEstateCalculatorContent = () => {
                 </>
               )}
             </button>
+            
+            {showSaveButton && (
+              <button
+                onClick={handleSaveCalculation}
+                className="ml-2 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
+              >
+                <Save className="w-4 h-4" />
+                <span>저장</span>
+              </button>
+            )}
           </div>
 
           <div className="space-y-4">
@@ -611,6 +704,16 @@ const RealEstateCalculatorContent = () => {
                 </>
               )}
             </button>
+            
+            {showSaveButton && (
+              <button
+                onClick={handleSaveCalculation}
+                className="ml-2 inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
+              >
+                <Save className="w-4 h-4" />
+                <span>저장</span>
+              </button>
+            )}
           </div>
 
           <div className="space-y-4">
@@ -639,9 +742,19 @@ const RealEstateCalculatorContent = () => {
           <Home className="w-8 h-8 text-purple-600" />
         </div>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">부동산 계산기</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
           전세자금대출, 주택담보대출, 취득세를 정확하게 계산해보세요.
         </p>
+        
+        {/* 계산 이력 버튼 */}
+        <CalculationHistory
+          histories={histories}
+          isLoading={historyLoading}
+          onLoadHistory={handleLoadFromHistory}
+          onRemoveHistory={removeHistory}
+          onClearHistories={clearHistories}
+          formatResult={formatHistoryResult}
+        />
       </div>
 
       {/* 탭 메뉴 */}
