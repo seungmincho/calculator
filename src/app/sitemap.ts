@@ -54,6 +54,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: 'https://toolhub.ai.kr/car-loan-calculator',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/car-tax-calculator',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
       url: 'https://toolhub.ai.kr/json-formatter',
       lastModified: new Date(),
       changeFrequency: 'monthly',

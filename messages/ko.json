@@ -289,6 +289,127 @@
       "roi": "투자 수익률"
     }
   },
+  "carLoan": {
+    "title": "자동차 할부 계산기",
+    "description": "자동차 할부 시 월 납입금과 총 이자를 계산해보세요",
+    "input": {
+      "carPrice": "차량 가격 (원)",
+      "downPayment": "선수금 (원)",
+      "loanTerm": "할부 기간 (개월)",
+      "interestRate": "연 금리 (%)",
+      "term12": "12개월 (1년)",
+      "term24": "24개월 (2년)",
+      "term36": "36개월 (3년)",
+      "term48": "48개월 (4년)",
+      "term60": "60개월 (5년)",
+      "term72": "72개월 (6년)",
+      "term84": "84개월 (7년)"
+    },
+    "result": {
+      "monthlyPayment": "월 납입금",
+      "totalPayment": "총 납입금",
+      "totalInterest": "총 이자",
+      "loanAmount": "할부 원금",
+      "loanPeriod": "할부 기간"
+    },
+    "guide": {
+      "title": "자동차 할부 가이드",
+      "considerationsTitle": "할부 선택 시 고려사항",
+      "considerations": {
+        "0": "월 소득의 30% 이내로 월납입금 설정",
+        "1": "선수금이 많을수록 월납입금 감소",
+        "2": "할부 기간이 길수록 총 이자 증가",
+        "3": "금리 비교를 통한 최적 조건 선택"
+      },
+      "ratesTitle": "할부 금리 현황 (2024년 기준)",
+      "rates": {
+        "0": "신차 할부: 연 3~7%",
+        "1": "중고차 할부: 연 5~10%",
+        "2": "캐피탈 할부: 연 7~15%",
+        "3": "은행 자동차대출: 연 3~6%"
+      }
+    }
+  },
+  "carTax": {
+    "title": "자동차 취등록세 계산기",
+    "description": "자동차 구매 시 납부해야 할 각종 세금을 정확하게 계산해보세요",
+    "input": {
+      "carPrice": "차량 가격 (원)",
+      "carType": "차종",
+      "fuelType": "연료 타입",
+      "displacement": "배기량 (cc)",
+      "carStatus": "차량 상태",
+      "region": "등록 지역",
+      "passenger": "승용차",
+      "truck": "화물차",
+      "van": "승합차",
+      "motorcycle": "이륜차",
+      "gasoline": "휘발유",
+      "diesel": "경유",
+      "lpg": "LPG",
+      "electric": "전기",
+      "hybrid": "하이브리드",
+      "newCar": "신차",
+      "usedCar": "중고차",
+      "seoul": "서울특별시",
+      "busan": "부산광역시",
+      "incheon": "인천광역시",
+      "gyeonggi": "경기도",
+      "other": "기타 지역"
+    },
+    "result": {
+      "acquisitionTax": "취득세",
+      "registrationTax": "등록세",
+      "bondPurchase": "공채매수",
+      "stampDuty": "인지세",
+      "totalTax": "총 세금",
+      "totalCostWithTax": "차량가격 + 세금"
+    },
+    "guide": {
+      "title": "취등록세 안내",
+      "taxTypesTitle": "주요 세금 종류",
+      "taxTypes": {
+        "0": {
+          "title": "취득세",
+          "content": "차량 취득 시 납부 (3~7%)"
+        },
+        "1": {
+          "title": "등록세",
+          "content": "차량 등록 시 납부 (2~5%)"
+        },
+        "2": {
+          "title": "공채매수",
+          "content": "지역별 공채 매수 (3~8%)"
+        },
+        "3": {
+          "title": "인지세",
+          "content": "등록 서류에 대한 세금"
+        }
+      },
+      "benefitsTitle": "환경차 혜택",
+      "benefits": {
+        "0": {
+          "title": "전기차",
+          "content": "취득세·등록세 50% 감면"
+        },
+        "1": {
+          "title": "하이브리드",
+          "content": "취득세·등록세 50% 감면"
+        },
+        "2": {
+          "title": "수소차",
+          "content": "취득세·등록세 100% 감면"
+        },
+        "3": {
+          "title": "주의사항",
+          "content": "감면 혜택은 정부 정책에 따라 변동"
+        }
+      },
+      "ecoCarBenefitTitle": "환경차 세제 혜택 적용",
+      "ecoCarBenefitElectric": "전기차로 취득세·등록세 50% 감면이 적용되었습니다.",
+      "ecoCarBenefitHybrid": "하이브리드차로 취득세·등록세 50% 감면이 적용되었습니다."
+    }
+  },
   "jsonFormatter": {
     "title": "JSON 포맷터",
     "description": "JSON 데이터를 검증하고 예쁘게 포맷팅하거나 압축하세요.",
@@ -380,6 +501,8 @@
       "taxCalculator": "세금 계산기",
       "exchangeCalculator": "환율 계산기",
       "realEstateCalculator": "부동산 계산기",
+      "carLoanCalculator": "자동차 할부 계산기",
+      "carTaxCalculator": "자동차 취등록세 계산기",
       "jsonFormatter": "JSON 포맷터",
       "sqlFormatter": "SQL 포맷터",
       "markdownViewer": "마크다운 뷰어",

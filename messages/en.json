@@ -380,6 +380,8 @@
       "taxCalculator": "Tax Calculator",
       "exchangeCalculator": "Exchange Calculator",
       "realEstateCalculator": "Real Estate Calculator",
+      "carLoanCalculator": "Car Loan Calculator",
+      "carTaxCalculator": "Car Tax Calculator",
       "jsonFormatter": "JSON Formatter",
       "sqlFormatter": "SQL Formatter",
       "markdownViewer": "Markdown Viewer",

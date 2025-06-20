@@ -31,6 +31,8 @@ const Footer = () => {
               <li><a href="/tax-calculator" className="hover:text-white transition-colors">{t('footer.links.taxCalculator')}</a></li>
               <li><a href="/exchange-calculator" className="hover:text-white transition-colors">{t('footer.links.exchangeCalculator')}</a></li>
               <li><a href="/real-estate-calculator" className="hover:text-white transition-colors">{t('footer.links.realEstateCalculator')}</a></li>
+              <li><a href="/car-loan-calculator" className="hover:text-white transition-colors">{t('footer.links.carLoanCalculator')}</a></li>
+              <li><a href="/car-tax-calculator" className="hover:text-white transition-colors">{t('footer.links.carTaxCalculator')}</a></li>
             </ul>
           </div>
           <div>

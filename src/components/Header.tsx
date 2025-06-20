@@ -22,7 +22,9 @@ const Header = () => {
         { href: '/retirement-calculator', label: t('footer.links.retirementCalculator'), icon: '👴' },
         { href: '/tax-calculator', label: t('footer.links.taxCalculator'), icon: '📋' },
         { href: '/exchange-calculator', label: t('footer.links.exchangeCalculator'), icon: '💱' },
-        { href: '/real-estate-calculator', label: t('footer.links.realEstateCalculator'), icon: '🏠' }
+        { href: '/real-estate-calculator', label: t('footer.links.realEstateCalculator'), icon: '🏠' },
+        { href: '/car-loan-calculator', label: t('footer.links.carLoanCalculator'), icon: '🚗' },
+        { href: '/car-tax-calculator', label: t('footer.links.carTaxCalculator'), icon: '🚘' }
       ]
     },
     tools: {
