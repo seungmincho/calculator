@@ -3,14 +3,12 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { TrendingUp, TrendingDown, Calculator, Share2, Check, Save, BarChart3 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 
 const StockCalculatorContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tc = useTranslations('common');
   
   const [purchasePrice, setPurchasePrice] = useState('');
   const [currentPrice, setCurrentPrice] = useState('');
@@ -266,7 +264,7 @@ const StockCalculatorContent = () => {
 
         {/* Result Section */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">{tc('result')}</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">계산 결과</h2>
           
           {result ? (
             <div className="space-y-6">
@@ -293,7 +291,7 @@ const StockCalculatorContent = () => {
                     {isCopied ? (
                       <>
                         <Check className="w-4 h-4" />
-                        <span>{tc('copied')}</span>
+                        <span>복사됨</span>
                       </>
                     ) : (
                       <>
@@ -309,7 +307,7 @@ const StockCalculatorContent = () => {
                       className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
                     >
                       <Save className="w-4 h-4" />
-                      <span>{tc('save')}</span>
+                      <span>저장</span>
                     </button>
                   )}
                 </div>

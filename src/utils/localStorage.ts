@@ -2,7 +2,7 @@
 
 export interface CalculationHistory {
   id: string;
-  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate';
+  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock';
   timestamp: number;
   inputs: Record<string, any>;
   result: Record<string, any>;
@@ -163,5 +163,13 @@ export const generateHistoryTitle = {
       'acquisition-tax': '취득세' 
     };
     return typeNames[type as keyof typeof typeNames] || '부동산';
+  },
+
+  stock: (inputs: any): string => {
+    const purchasePrice = parseInt(inputs.purchasePrice?.replace(/,/g, '') || '0');
+    const currentPrice = parseInt(inputs.currentPrice?.replace(/,/g, '') || '0');
+    const shares = parseInt(inputs.shares?.replace(/,/g, '') || '1');
+    const priceRange = Math.floor(purchasePrice / 1000);
+    return `주식 ${priceRange}천원 ${shares}주`;
   }
 };

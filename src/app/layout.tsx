@@ -7,6 +7,7 @@ import { Calculator } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import DailyTips from '@/components/DailyTips'
+import ProgressBar from '@/components/ProgressBar'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import I18nWrapper from '@/components/I18nWrapper'
 
@@ -156,6 +157,7 @@ export default function RootLayout({
         */}
         <LanguageProvider>
           <I18nWrapper>
+            <ProgressBar />
             <Header />
             {/* Main Content */}
             <main>

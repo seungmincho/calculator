@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import I18nWrapper from '@/components/I18nWrapper'
 import StockCalculator from '@/components/StockCalculator'
 
 export const metadata: Metadata = {
@@ -57,9 +56,7 @@ export default function StockCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <I18nWrapper>
-        <StockCalculator />
-      </I18nWrapper>
+      <StockCalculator />
     </>
   )
 }
