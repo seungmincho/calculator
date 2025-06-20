@@ -387,6 +387,7 @@
       "calorieCalculator": "Calorie Calculator",
       "bodyFatCalculator": "Body Fat Calculator",
       "workHoursCalculator": "Work Hours Calculator",
+      "lottoGenerator": "Lotto Number Generator",
       "jsonFormatter": "JSON Formatter",
       "sqlFormatter": "SQL Formatter",
       "markdownViewer": "Markdown Viewer",
@@ -968,6 +969,68 @@
       "format": "Total Pay {totalPay} KRW ({totalHours} hours)"
     },
     "placeholder": "Salary calculation results will appear when you enter hourly wage and work schedule"
+  },
+  "lotto": {
+    "title": "Lotto Number Generator",
+    "description": "Generate lottery 6/45 numbers automatically and create better number combinations with past winning number analysis",
+    "settings": {
+      "title": "Generation Settings",
+      "method": "Generation Method",
+      "numberOfSets": "Number of Games",
+      "sets": "games",
+      "excludeNumbers": "Exclude Numbers",
+      "excludeDesc": "Click to select numbers to exclude"
+    },
+    "methods": {
+      "random": "Complete Random",
+      "randomDesc": "Completely random selection from numbers 1-45",
+      "statistics": "Statistics Based",
+      "statisticsDesc": "Apply weights based on past winning number frequency analysis",
+      "mixed": "Mixed Method",
+      "mixedDesc": "Balanced selection combining random and statistical methods"
+    },
+    "generate": "🎲 Generate Numbers",
+    "generating": "Generating Numbers...",
+    "gameNumber": "Game",
+    "result": {
+      "title": "Recommended Numbers",
+      "bonusNumber": "Bonus Number",
+      "share": "Share Numbers"
+    },
+    "guide": {
+      "title": "Lotto Number Generation Guide",
+      "methodsTitle": "Generation Method Explanation",
+      "methods": {
+        "0": "Complete Random: All numbers are selected with equal probability",
+        "1": "Statistics Based: Higher weights given to numbers with higher past winning frequency",
+        "2": "Mixed Method: Combines random and statistical methods for balance"
+      },
+      "tipsTitle": "Usage Tips",
+      "tips": {
+        "0": "Use the exclude numbers feature to remove unwanted numbers",
+        "1": "Generate multiple games at once to see various combinations",
+        "2": "Save generation history to review later"
+      },
+      "remindersTitle": "Important Notes",
+      "reminders": {
+        "0": "All number combinations have equal winning probability",
+        "1": "Past statistics do not guarantee future results",
+        "2": "Play responsibly with appropriate amounts"
+      }
+    },
+    "stats": {
+      "title": "Winning Probability Information",
+      "firstPrize": "1st Prize Probability",
+      "secondPrize": "2nd Prize Probability",
+      "thirdPrize": "3rd Prize Probability",
+      "disclaimer": "* All number combinations have equal winning probability, and past statistics do not guarantee future results."
+    },
+    "history": {
+      "title": "Generation History",
+      "empty": "No saved generation history",
+      "format": "{method} {sets} games"
+    },
+    "placeholder": "Select settings and press the generate numbers button"
   },
   "navigation": {
     "financialCalculators": "Financial Calculators",

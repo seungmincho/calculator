@@ -2,7 +2,7 @@
 
 export interface CalculationHistory {
   id: string;
-  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock' | 'car-loan' | 'car-tax' | 'bmi' | 'calorie' | 'bodyFat' | 'workHours';
+  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock' | 'car-loan' | 'car-tax' | 'bmi' | 'calorie' | 'bodyFat' | 'workHours' | 'lotto';
   timestamp: number;
   inputs: Record<string, any>;
   result: Record<string, any>;
@@ -275,5 +275,22 @@ export const generateHistoryTitle = {
     const hoursText = totalHours.toFixed(1);
     
     return `시급 ${wageText}천원 ${hoursText}시간 ${workDays}일`;
+  },
+
+  lotto: (inputs: any): string => {
+    const generateMethod = inputs.generateMethod || 'random';
+    const numberOfSets = inputs.numberOfSets || 1;
+    const excludedCount = inputs.excludedNumbers?.length || 0;
+    
+    const methodLabels = {
+      random: '랜덤',
+      statistics: '통계기반',
+      mixed: '혼합방식'
+    };
+    
+    const methodLabel = methodLabels[generateMethod as keyof typeof methodLabels] || '랜덤';
+    const excludeText = excludedCount > 0 ? ` 제외${excludedCount}개` : '';
+    
+    return `${methodLabel} ${numberOfSets}게임${excludeText}`;
   }
 };
