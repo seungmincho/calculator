@@ -117,11 +117,20 @@
         "accurate": {
           "title": "Latest 2025 Tax Law",
           "description": "Accurate calculation based on National Tax Service official data, reflecting 4 major insurance premiums, income tax rates, and various deductions in real-time!",
-          "points": [
-            "Accurate 4 major insurance premiums: Health insurance 3.545%, National pension 4.5%, Employment insurance 0.9% accurately reflected",
-            "6-tier progressive tax rate: Accurate tax rate application by income bracket from 6% to 45%",
-            "Various tax credits: Perfect calculation including work income tax credit and child tax credit"
-          ]
+          "points":{
+            "0": {
+              "title": "Accurate 4 major insurance premiums",
+              "content": "Health insurance 3.545%, National pension 4.5%, Employment insurance 0.9% accurately reflected"
+            },
+            "1": {
+              "title": "6-tier progressive tax rate",
+              "content": "Accurate tax rate application by income bracket from 6% to 45%"
+            },
+            "2": {
+              "title": "Various tax credits",
+              "content": "Perfect calculation including work income tax credit and child tax credit"
+            }
+          }
         },
         "smart": {
           "title": "Smart Analysis System",
@@ -366,6 +375,7 @@
       "salaryCalculator": "Salary Calculator",
       "loanCalculator": "Loan Calculator", 
       "savingsCalculator": "Savings Calculator",
+      "stockCalculator": "Stock Calculator",
       "retirementCalculator": "Retirement Calculator",
       "taxCalculator": "Tax Calculator",
       "exchangeCalculator": "Exchange Calculator",

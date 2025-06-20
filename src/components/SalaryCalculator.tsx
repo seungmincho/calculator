@@ -691,23 +691,23 @@ const SalaryCalculatorContent = () => {
               <div className="bg-blue-600 p-3 rounded-full mr-3">
                 <Calculator className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-blue-900 dark:text-blue-200">💎 2025년 최신 세법</h3>
+              <h3 className="text-xl font-bold text-blue-900 dark:text-blue-200">💎 {t('guide.features.accurate.title')}</h3>
             </div>
             <p className="text-blue-800 dark:text-blue-300 mb-4 leading-relaxed">
-              국세청 공식 자료 기반으로 4대보험료, 소득세율, 각종 공제를 실시간 반영한 정확한 계산!
+              {t('guide.features.accurate.description')}
             </p>
             <div className="space-y-3">
               <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">📋 정확한 4대보험료</h4>
-                <p className="text-sm text-blue-700 dark:text-blue-300">건강보험 3.545%, 국민연금 4.5%, 고용보험 0.9% 정확 반영</p>
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">📋 {t('guide.features.accurate.points.0.title')}</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.0.content')}</p>
               </div>
               <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">💰 6단계 누진세율</h4>
-                <p className="text-sm text-blue-700 dark:text-blue-300">6%~45%까지 소득 구간별 정확한 세율 적용</p>
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">💰 {t('guide.features.accurate.points.1.title')}</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.1.content')}</p>
               </div>
               <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">🏷️ 각종 세액공제</h4>
-                <p className="text-sm text-blue-700 dark:text-blue-300">근로소득세액공제, 자녀세액공제까지 완벽 계산</p>
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">🏷️ {t('guide.features.accurate.points.2.title')}</h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.2.content')}</p>
               </div>
             </div>
           </div>

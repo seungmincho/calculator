@@ -44,26 +44,26 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     localStorage.setItem('language', newLang);
     
     // URL 업데이트 (히스토리 변경 없이)
-    const currentPath = window.location.pathname;
-    let newPath = '';
+    // const currentPath = window.location.pathname;
+    // let newPath = '';
     
-    if (newLang === 'en') {
-      // 영어로 변경
-      if (currentPath.startsWith('/en')) {
-        newPath = currentPath;
-      } else {
-        newPath = `/en${currentPath}`;
-      }
-    } else {
-      // 한국어로 변경
-      if (currentPath.startsWith('/en')) {
-        newPath = currentPath.replace('/en', '') || '/';
-      } else {
-        newPath = currentPath;
-      }
-    }
+    // if (newLang === 'en') {
+    //   // 영어로 변경
+    //   if (currentPath.startsWith('/en')) {
+    //     newPath = currentPath;
+    //   } else {
+    //     newPath = `/en${currentPath}`;
+    //   }
+    // } else {
+    //   // 한국어로 변경
+    //   if (currentPath.startsWith('/en')) {
+    //     newPath = currentPath.replace('/en', '') || '/';
+    //   } else {
+    //     newPath = currentPath;
+    //   }
+    // }
     
-    window.history.replaceState({}, '', newPath);
+    // window.history.replaceState({}, '', newPath);
   };
 
   const value = {

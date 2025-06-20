@@ -18,6 +18,7 @@ const Header = () => {
         { href: '/', label: t('footer.links.salaryCalculator'), icon: '💰' },
         { href: '/loan-calculator', label: t('footer.links.loanCalculator'), icon: '🏦' },
         { href: '/savings-calculator', label: t('footer.links.savingsCalculator'), icon: '📈' },
+        { href: '/stock-calculator', label: t('footer.links.stockCalculator'), icon: '📊' },
         { href: '/retirement-calculator', label: t('footer.links.retirementCalculator'), icon: '👴' },
         { href: '/tax-calculator', label: t('footer.links.taxCalculator'), icon: '📋' },
         { href: '/exchange-calculator', label: t('footer.links.exchangeCalculator'), icon: '💱' },
