@@ -17,7 +17,7 @@ interface CarTaxResult {
   appliedBenefits: string[] // 적용된 감면 혜택
 }
 
-type CarType = 'passenger' | 'truck' | 'van' | 'motorcycle' | 'compact'
+type CarType = 'passenger' | 'truck' | 'van' | 'motorcycle' | 'compact' | 'electric'
 type FuelType = 'gasoline' | 'diesel' | 'lpg' | 'electric' | 'hybrid'
 type Usage = 'personal' | 'business' // 비영업용/영업용
 type VanSeats = '7-10' | '11+' // 승합차 인승
@@ -183,32 +183,7 @@ export default function CarTaxCalculator() {
     setResult(calculationResult)
     setShowSaveButton(true)
 
-    // 계산 기록 저장
-    saveCalculation(
-      {
-        carPrice: price,
-        carType,
-        fuelType,
-        displacement: disp,
-        isNew,
-        region,
-        usage,
-        vanSeats,
-        motorcycleSize,
-        isMultiChild,
-        childCount,
-        isDisabled,
-        isVeteran
-      },
-      {
-        acquisitionTax,
-        registrationTax,
-        railroadBond,
-        licenseRegistrationTax,
-        totalTax,
-        appliedBenefits
-      }
-    )
+    // 계산 기록은 저장 버튼을 눌렀을 때만 저장하도록 제거
   }
 
   useEffect(() => {
@@ -232,9 +207,11 @@ export default function CarTaxCalculator() {
     }
   }, [carPrice, carType, fuelType, displacement, isNew, region, usage, vanSeats, motorcycleSize, isMultiChild, childCount, isDisabled, isVeteran])
 
-  // URL 파라미터에서 입력값 복원
+  // URL 파라미터에서 입력값 복원 (초기 로드시에만)
   useEffect(() => {
     const priceParam = searchParams.get('carPrice')
+    if (!priceParam) return // URL 파라미터가 없으면 복원하지 않음
+    
     const typeParam = searchParams.get('carType')
     const fuelParam = searchParams.get('fuelType')
     const dispParam = searchParams.get('displacement')
@@ -287,7 +264,7 @@ export default function CarTaxCalculator() {
     if (veteranParam) {
       setIsVeteran(veteranParam === 'true')
     }
-  }, [searchParams])
+  }, []) // 의존성 배열을 빈 배열로 변경하여 초기 로드시에만 실행
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('ko-KR').format(Math.round(amount))
@@ -336,8 +313,38 @@ export default function CarTaxCalculator() {
   }
 
   const handleSaveCalculation = () => {
+    if (!result) return
+    
+    const price = parseFloat(carPrice)
+    const disp = parseFloat(displacement) || 0
+    
+    saveCalculation(
+      {
+        carPrice: price,
+        carType,
+        fuelType,
+        displacement: disp,
+        isNew,
+        region,
+        usage,
+        vanSeats,
+        motorcycleSize,
+        isMultiChild,
+        childCount,
+        isDisabled,
+        isVeteran
+      },
+      {
+        acquisitionTax: result.acquisitionTax,
+        registrationTax: result.registrationTax,
+        railroadBond: result.railroadBond,
+        licenseRegistrationTax: result.licenseRegistrationTax,
+        totalTax: result.totalTax,
+        appliedBenefits: result.appliedBenefits
+      }
+    )
+    
     setShowSaveButton(false)
-    // saveCalculation is already called in calculateCarTax
   }
 
   const getCarTypeLabel = (type: CarType) => {
@@ -346,7 +353,8 @@ export default function CarTaxCalculator() {
       passenger: '승용차',
       truck: '화물차',
       van: '승합차',
-      motorcycle: '이륜차'
+      motorcycle: '이륜차',
+      electric: '전기차'
     }
     return labels[type]
   }
@@ -400,9 +408,12 @@ export default function CarTaxCalculator() {
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(history: any) => 
-            `차량가격: ${formatCurrency(history.inputs.carPrice)}원, 총 세금: ${formatCurrency(history.result.totalTax)}원`
-          }
+          formatResult={(history: any) => {
+            if (!history.inputs || !history.result) return '계산 정보 없음'
+            const carPrice = history.inputs.carPrice || 0
+            const totalTax = history.result.totalTax || 0
+            return `차량가격: ${formatCurrency(carPrice)}원, 총 세금: ${formatCurrency(totalTax)}원`
+          }}
         />
       </div>
 

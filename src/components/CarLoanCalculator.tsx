@@ -91,20 +91,7 @@ export default function CarLoanCalculator() {
     setResult(calculationResult)
     setShowSaveButton(true)
 
-    // 계산 기록 저장
-    saveCalculation(
-      {
-        carPrice: price,
-        downPayment: down,
-        loanTerm: term,
-        interestRate: rate
-      },
-      {
-        monthlyPayment,
-        totalPayment,
-        totalInterest
-      }
-    )
+    // 계산 기록은 저장 버튼을 눌렀을 때만 저장하도록 제거
   }
 
   useEffect(() => {
@@ -119,9 +106,11 @@ export default function CarLoanCalculator() {
     }
   }, [carPrice, downPayment, loanTerm, interestRate])
 
-  // URL 파라미터에서 입력값 복원
+  // URL 파라미터에서 입력값 복원 (초기 로드시에만)
   useEffect(() => {
     const priceParam = searchParams.get('carPrice')
+    if (!priceParam) return // URL 파라미터가 없으면 복원하지 않음
+    
     const downParam = searchParams.get('downPayment')
     const termParam = searchParams.get('loanTerm')
     const rateParam = searchParams.get('interestRate')
@@ -138,7 +127,7 @@ export default function CarLoanCalculator() {
     if (rateParam && /^\d+(\.\d+)?$/.test(rateParam)) {
       setInterestRate(rateParam)
     }
-  }, [searchParams])
+  }, []) // 의존성 배열을 빈 배열로 변경하여 초기 로드시에만 실행
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('ko-KR').format(Math.round(amount))
@@ -187,8 +176,28 @@ export default function CarLoanCalculator() {
   }
 
   const handleSaveCalculation = () => {
+    if (!result) return
+    
+    const price = parseFloat(carPrice)
+    const down = parseFloat(downPayment) || 0
+    const term = parseInt(loanTerm)
+    const rate = parseFloat(interestRate)
+    
+    saveCalculation(
+      {
+        carPrice: price,
+        downPayment: down,
+        loanTerm: term,
+        interestRate: rate
+      },
+      {
+        monthlyPayment: result.monthlyPayment,
+        totalPayment: result.totalPayment,
+        totalInterest: result.totalInterest
+      }
+    )
+    
     setShowSaveButton(false)
-    // saveCalculation is already called in calculateCarLoan
   }
 
   return (
@@ -220,9 +229,12 @@ export default function CarLoanCalculator() {
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(history: any) => 
-            `차량가격: ${formatCurrency(history.inputs.carPrice)}원, 월납입금: ${formatCurrency(history.result.monthlyPayment)}원`
-          }
+          formatResult={(history: any) => {
+            if (!history.inputs || !history.result) return '계산 정보 없음'
+            const carPrice = history.inputs.carPrice || 0
+            const monthlyPayment = history.result.monthlyPayment || 0
+            return `차량가격: ${formatCurrency(carPrice)}원, 월납입금: ${formatCurrency(monthlyPayment)}원`
+          }}
         />
       </div>
 

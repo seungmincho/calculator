@@ -2,7 +2,7 @@
 
 export interface CalculationHistory {
   id: string;
-  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock';
+  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock' | 'car-loan' | 'car-tax';
   timestamp: number;
   inputs: Record<string, any>;
   result: Record<string, any>;
@@ -171,5 +171,40 @@ export const generateHistoryTitle = {
     const shares = parseInt(inputs.shares?.replace(/,/g, '') || '1');
     const priceRange = Math.floor(purchasePrice / 1000);
     return `주식 ${priceRange}천원 ${shares}주`;
+  },
+
+  'car-loan': (inputs: any): string => {
+    const carPrice = parseInt(inputs.carPrice?.toString().replace(/,/g, '') || '0');
+    const loanTerm = inputs.loanTerm || '60';
+    const priceRange = Math.floor(carPrice / 10000000);
+    return `자동차할부 ${priceRange}천만원 ${loanTerm}개월`;
+  },
+
+  'car-tax': (inputs: any): string => {
+    const carPrice = parseInt(inputs.carPrice?.toString().replace(/,/g, '') || '0');
+    const carType = inputs.carType || 'passenger';
+    const fuelType = inputs.fuelType || 'gasoline';
+    const priceRange = Math.floor(carPrice / 10000000);
+    
+    const typeLabels = {
+      compact: '경차',
+      passenger: '승용차',
+      van: '승합차',
+      truck: '화물차',
+      motorcycle: '이륜차'
+    };
+    
+    const fuelLabels = {
+      gasoline: '휘발유',
+      diesel: '경유',
+      lpg: 'LPG',
+      electric: '전기',
+      hybrid: '하이브리드'
+    };
+    
+    const typeLabel = typeLabels[carType as keyof typeof typeLabels] || '승용차';
+    const fuelLabel = fuelLabels[fuelType as keyof typeof fuelLabels] || '휘발유';
+    
+    return `${typeLabel}(${fuelLabel}) ${priceRange}천만원`;
   }
 };
