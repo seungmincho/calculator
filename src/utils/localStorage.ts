@@ -2,7 +2,7 @@
 
 export interface CalculationHistory {
   id: string;
-  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock' | 'car-loan' | 'car-tax' | 'bmi' | 'calorie' | 'bodyFat' | 'workHours' | 'lotto';
+  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock' | 'car-loan' | 'car-tax' | 'bmi' | 'calorie' | 'bodyFat' | 'workHours' | 'lotto' | 'ladder';
   timestamp: number;
   inputs: Record<string, any>;
   result: Record<string, any>;
@@ -292,5 +292,16 @@ export const generateHistoryTitle = {
     const excludeText = excludedCount > 0 ? ` 제외${excludedCount}개` : '';
     
     return `${methodLabel} ${numberOfSets}게임${excludeText}`;
+  },
+
+  ladder: (inputs: any): string => {
+    const participantCount = inputs.participants?.length || 0;
+    const ladderLinesCount = inputs.ladderLinesCount || 0;
+    const participants = inputs.participants || [];
+    
+    const participantNames = participants.slice(0, 3).join(', ');
+    const moreText = participantCount > 3 ? ` 외 ${participantCount - 3}명` : '';
+    
+    return `${participantNames}${moreText} (${participantCount}명)`;
   }
 };

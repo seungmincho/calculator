@@ -25,7 +25,6 @@ const Header = () => {
         { href: '/real-estate-calculator', label: t('footer.links.realEstateCalculator'), icon: '🏠' },
         { href: '/car-loan-calculator', label: t('footer.links.carLoanCalculator'), icon: '🚗' },
         { href: '/car-tax-calculator', label: t('footer.links.carTaxCalculator'), icon: '🚘' },
-        { href: '/lotto-generator', label: t('footer.links.lottoGenerator'), icon: '🎲' },
       ]
     },
     tools: {
@@ -45,6 +44,13 @@ const Header = () => {
         { href: '/calorie-calculator', label: t('footer.links.calorieCalculator'), icon: '🍎' },
         { href: '/body-fat-calculator', label: t('footer.links.bodyFatCalculator'), icon: '💪' },
         { href: '/work-hours-calculator', label: t('footer.links.workHoursCalculator'), icon: '⏰' }
+      ]
+    },
+    games: {
+      title: t('navigation.simpleGames'),
+      items: [
+        { href: '/lotto-generator', label: t('footer.links.lottoGenerator'), icon: '🎲' },
+        { href: '/ladder-game', label: t('footer.links.ladderGame'), icon: '🪜' }
       ]
     }
   };
@@ -163,6 +169,33 @@ const Header = () => {
               )}
             </div>
 
+            {/* 간단 게임 드롭다운 */}
+            <div className="relative">
+              <button
+                onClick={() => handleDropdownToggle('games')}
+                className="flex items-center space-x-1 px-3 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              >
+                <span>{menuItems.games.title}</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === 'games' ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {openDropdown === 'games' && (
+                <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                  {menuItems.games.items.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      onClick={closeDropdown}
+                      className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-600 transition-colors"
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <span>{item.label}</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* 금융 팁 */}
             <a 
               href="/tips" 
@@ -242,6 +275,26 @@ const Header = () => {
                 </h3>
                 <div className="space-y-1">
                   {menuItems.health.items.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center space-x-3 px-6 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <span>{item.label}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* 간단 게임 섹션 */}
+              <div>
+                <h3 className="px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
+                  🎮 {menuItems.games.title}
+                </h3>
+                <div className="space-y-1">
+                  {menuItems.games.items.map((item) => (
                     <a
                       key={item.href}
                       href={item.href}

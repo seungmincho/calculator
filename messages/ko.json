@@ -509,6 +509,7 @@
       "bodyFatCalculator": "체지방률 계산기",
       "workHoursCalculator": "근무시간 계산기",
       "lottoGenerator": "로또번호 생성기",
+      "ladderGame": "사다리 타기 게임",
       "jsonFormatter": "JSON 포맷터",
       "sqlFormatter": "SQL 포맷터",
       "markdownViewer": "마크다운 뷰어",
@@ -1032,10 +1033,72 @@
     },
     "placeholder": "설정을 선택하고 번호 생성 버튼을 눌러주세요"
   },
+  "ladder": {
+    "title": "사다리 타기 게임",
+    "description": "친구들과 함께 즐기는 온라인 사다리 타기 게임! 순서 정하기, 벌칙 정하기, 팀 나누기 등 다양한 상황에서 공정하게 결정하세요",
+    "settings": {
+      "title": "게임 설정",
+      "participants": "참가자",
+      "addParticipant": "참가자 추가",
+      "outcomes": "결과",
+      "complexity": "사다리 복잡도",
+      "complexities": {
+        "simple": "단순",
+        "normal": "보통", 
+        "complex": "복잡",
+        "veryComplex": "매우복잡"
+      },
+      "speed": "애니메이션 속도",
+      "speeds": {
+        "slow": "느림",
+        "normal": "보통",
+        "fast": "빠름"
+      }
+    },
+    "generateLadder": "🪜 사다리 생성하기",
+    "startGame": "▶️ 게임 시작!",
+    "playing": "게임 진행 중...",
+    "ladder": {
+      "title": "사다리",
+      "placeholder": "먼저 사다리를 생성해주세요"
+    },
+    "result": {
+      "title": "게임 결과",
+      "share": "결과 공유하기"
+    },
+    "guide": {
+      "title": "사다리 타기 이용 가이드",
+      "usageTitle": "사용법",
+      "usage": {
+        "0": "참가자와 결과를 입력하고 사다리를 생성하세요",
+        "1": "게임 시작 버튼을 눌러 애니메이션을 감상하세요",
+        "2": "결과를 확인하고 공유할 수 있습니다"
+      },
+      "examplesTitle": "활용 예시",
+      "examples": {
+        "0": "순서 정하기: 발표 순서, 청소 당번 정하기",
+        "1": "벌칙 정하기: 술게임, 파티 게임에서 벌칙 결정",
+        "2": "팀 나누기: 운동 팀, 조별 과제 팀 구성"
+      },
+      "tipsTitle": "팁",
+      "tips": {
+        "0": "참가자는 최대 8명까지 가능합니다",
+        "1": "애니메이션 속도를 조절하여 재미를 더하세요",
+        "2": "결과를 저장하여 나중에 다시 확인할 수 있습니다"
+      }
+    },
+    "history": {
+      "title": "게임 이력",
+      "empty": "저장된 게임 이력이 없습니다",
+      "format": "{participants}명 참가, {results}개 결과"
+    },
+    "placeholder": "참가자와 결과를 설정한 후 사다리를 생성해주세요"
+  },
   "navigation": {
     "financialCalculators": "금융 계산기",
     "developmentTools": "개발 도구",
     "healthTools": "건강 도구",
+    "simpleGames": "간단 게임",
     "financialTips": "💡 금융 팁"
   }
 }

@@ -388,6 +388,7 @@
       "bodyFatCalculator": "Body Fat Calculator",
       "workHoursCalculator": "Work Hours Calculator",
       "lottoGenerator": "Lotto Number Generator",
+      "ladderGame": "Ladder Game",
       "jsonFormatter": "JSON Formatter",
       "sqlFormatter": "SQL Formatter",
       "markdownViewer": "Markdown Viewer",
@@ -1032,10 +1033,72 @@
     },
     "placeholder": "Select settings and press the generate numbers button"
   },
+  "ladder": {
+    "title": "Ladder Game",
+    "description": "Enjoy online ladder game with friends! Make fair decisions for various situations like determining order, penalties, and team division",
+    "settings": {
+      "title": "Game Settings",
+      "participants": "Participants",
+      "addParticipant": "Add Participant",
+      "outcomes": "Outcomes",
+      "complexity": "Ladder Complexity",
+      "complexities": {
+        "simple": "Simple",
+        "normal": "Normal",
+        "complex": "Complex", 
+        "veryComplex": "Very Complex"
+      },
+      "speed": "Animation Speed",
+      "speeds": {
+        "slow": "Slow",
+        "normal": "Normal", 
+        "fast": "Fast"
+      }
+    },
+    "generateLadder": "🪜 Generate Ladder",
+    "startGame": "▶️ Start Game!",
+    "playing": "Game in Progress...",
+    "ladder": {
+      "title": "Ladder",
+      "placeholder": "Please generate a ladder first"
+    },
+    "result": {
+      "title": "Game Results",
+      "share": "Share Results"
+    },
+    "guide": {
+      "title": "Ladder Game Usage Guide",
+      "usageTitle": "How to Use",
+      "usage": {
+        "0": "Enter participants and outcomes, then generate a ladder",
+        "1": "Press the start game button to watch the animation",
+        "2": "Check the results and share them"
+      },
+      "examplesTitle": "Usage Examples",
+      "examples": {
+        "0": "Determine order: Presentation order, cleaning duty assignment",
+        "1": "Set penalties: Decide penalties in drinking games and party games",
+        "2": "Team division: Form sports teams, group project teams"
+      },
+      "tipsTitle": "Tips",
+      "tips": {
+        "0": "Maximum 8 participants allowed",
+        "1": "Adjust animation speed for more fun",
+        "2": "Save results to check them later"
+      }
+    },
+    "history": {
+      "title": "Game History",
+      "empty": "No saved game history",
+      "format": "{participants} participants, {results} results"
+    },
+    "placeholder": "Set participants and outcomes, then generate a ladder"
+  },
   "navigation": {
     "financialCalculators": "Financial Calculators",
     "developmentTools": "Development Tools",
     "healthTools": "Health Tools",
+    "simpleGames": "Simple Games",
     "financialTips": "💡 Financial Tips"
   }
 }

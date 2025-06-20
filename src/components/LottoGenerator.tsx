@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Sparkles, RefreshCw, Share2, Check, Save, Dice6, BarChart3, Star } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
@@ -15,6 +16,8 @@ interface LottoResult {
 }
 
 export default function LottoGenerator() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const t = useTranslations('lotto')
   const tCommon = useTranslations('common')
   
@@ -29,6 +32,19 @@ export default function LottoGenerator() {
   const [isGenerating, setIsGenerating] = useState(false)
 
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('lotto')
+
+  // URL 업데이트 함수
+  const updateURL = (newParams: Record<string, string>) => {
+    const params = new URLSearchParams(searchParams)
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value) {
+        params.set(key, value)
+      } else {
+        params.delete(key)
+      }
+    })
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }
 
   // 통계 기반 가중치 (실제 로또 데이터 기반 시뮬레이션)
   const numberFrequency: { [key: number]: number } = {
@@ -154,16 +170,20 @@ export default function LottoGenerator() {
 
   // 제외 번호 토글
   const toggleExcludeNumber = (number: number) => {
+    let newExcluded: number[]
     if (excludedNumbers.includes(number)) {
-      setExcludedNumbers(excludedNumbers.filter(n => n !== number))
+      newExcluded = excludedNumbers.filter(n => n !== number)
     } else {
-      setExcludedNumbers([...excludedNumbers, number])
+      newExcluded = [...excludedNumbers, number]
     }
+    setExcludedNumbers(newExcluded)
+    updateURL({ excluded: JSON.stringify(newExcluded) })
   }
 
   // 제외 번호 초기화
   const clearExcludedNumbers = () => {
     setExcludedNumbers([])
+    updateURL({ excluded: '' })
   }
 
   const formatNumbers = (numbers: number[]) => {
@@ -171,22 +191,25 @@ export default function LottoGenerator() {
   }
 
   const handleShare = async () => {
-    if (generatedSets.length === 0) return
-    
-    const numbersText = generatedSets.map((set, index) => 
-      `${index + 1}게임: ${formatNumbers(set.numbers)}${set.bonusNumber ? ` (+${set.bonusNumber})` : ''}`
-    ).join('\n')
-    
-    const shareText = `로또 번호 추천\n\n${numbersText}\n\n생성방식: ${getMethodName(generateMethod)}\n\n🍀 행운을 빌어요! - 툴허브`
-    
     try {
+      const currentUrl = window.location.href
       if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(shareText)
+        await navigator.clipboard.writeText(currentUrl)
+        setIsCopied(true)
+        setTimeout(() => setIsCopied(false), 2000)
+      } else {
+        // Fallback for older browsers or non-HTTPS
+        const textArea = document.createElement('textarea')
+        textArea.value = currentUrl
+        document.body.appendChild(textArea)
+        textArea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textArea)
         setIsCopied(true)
         setTimeout(() => setIsCopied(false), 2000)
       }
     } catch (err) {
-      console.error('Failed to copy text: ', err)
+      console.error('Failed to copy URL:', err)
     }
   }
 
@@ -217,6 +240,35 @@ export default function LottoGenerator() {
     
     setShowSaveButton(false)
   }
+
+  // URL에서 초기값 로드
+  useEffect(() => {
+    const methodParam = searchParams.get('method')
+    const excludedParam = searchParams.get('excluded')
+    const setsParam = searchParams.get('sets')
+
+    if (methodParam && ['random', 'statistics', 'mixed'].includes(methodParam)) {
+      setGenerateMethod(methodParam as 'random' | 'statistics' | 'mixed')
+    }
+
+    if (excludedParam) {
+      try {
+        const parsedExcluded = JSON.parse(excludedParam)
+        if (Array.isArray(parsedExcluded)) {
+          setExcludedNumbers(parsedExcluded)
+        }
+      } catch (err) {
+        console.warn('Failed to parse excluded numbers from URL:', err)
+      }
+    }
+
+    if (setsParam) {
+      const sets = parseInt(setsParam)
+      if ([1, 2, 3, 4, 5].includes(sets)) {
+        setNumberOfSets(sets)
+      }
+    }
+  }, [searchParams])
 
   // 번호 색상 결정
   const getNumberColor = (number: number) => {
@@ -284,7 +336,11 @@ export default function LottoGenerator() {
                     type="radio"
                     value="random"
                     checked={generateMethod === 'random'}
-                    onChange={(e) => setGenerateMethod(e.target.value as any)}
+                    onChange={(e) => {
+                      const value = e.target.value as 'random' | 'statistics' | 'mixed'
+                      setGenerateMethod(value)
+                      updateURL({ method: value })
+                    }}
                     className="text-purple-600"
                   />
                   <div>
@@ -298,7 +354,11 @@ export default function LottoGenerator() {
                     type="radio"
                     value="statistics"
                     checked={generateMethod === 'statistics'}
-                    onChange={(e) => setGenerateMethod(e.target.value as any)}
+                    onChange={(e) => {
+                      const value = e.target.value as 'random' | 'statistics' | 'mixed'
+                      setGenerateMethod(value)
+                      updateURL({ method: value })
+                    }}
                     className="text-purple-600"
                   />
                   <div>
@@ -312,7 +372,11 @@ export default function LottoGenerator() {
                     type="radio"
                     value="mixed"
                     checked={generateMethod === 'mixed'}
-                    onChange={(e) => setGenerateMethod(e.target.value as any)}
+                    onChange={(e) => {
+                      const value = e.target.value as 'random' | 'statistics' | 'mixed'
+                      setGenerateMethod(value)
+                      updateURL({ method: value })
+                    }}
                     className="text-purple-600"
                   />
                   <div>
@@ -330,7 +394,11 @@ export default function LottoGenerator() {
               </label>
               <select
                 value={numberOfSets}
-                onChange={(e) => setNumberOfSets(parseInt(e.target.value))}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value)
+                  setNumberOfSets(value)
+                  updateURL({ sets: value.toString() })
+                }}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               >
                 {[1, 2, 3, 4, 5].map(num => (
