@@ -31,7 +31,8 @@
     "about": "About",
     "contact": "Contact",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "load": "Load"
   },
   "header": {
     "title": "ToolHub",
@@ -383,6 +384,9 @@
       "carLoanCalculator": "Car Loan Calculator",
       "carTaxCalculator": "Car Tax Calculator",
       "bmiCalculator": "BMI Calculator",
+      "calorieCalculator": "Calorie Calculator",
+      "bodyFatCalculator": "Body Fat Calculator",
+      "workHoursCalculator": "Work Hours Calculator",
       "jsonFormatter": "JSON Formatter",
       "sqlFormatter": "SQL Formatter",
       "markdownViewer": "Markdown Viewer",
@@ -568,6 +572,84 @@
         "3": "Stress management and adequate sleep are also necessary"
       }
     },
+    "usage": {
+      "title": "BMI Calculator Usage Guide",
+      "steps": {
+        "1": {
+          "title": "Accurate Measurement",
+          "content": "Measure in the morning on an empty stomach for the most accurate results."
+        },
+        "2": {
+          "title": "Regular Check",
+          "content": "Measure regularly 1-2 times per month to observe change trends."
+        },
+        "3": {
+          "title": "Goal Setting",
+          "content": "Set a step-by-step plan targeting a healthy BMI range."
+        }
+      }
+    },
+    "healthTips": {
+      "title": "Healthy Weight Management Tips",
+      "diet": {
+        "title": "Balanced Diet",
+        "content": "Properly distribute protein, carbohydrates, and fats in your intake."
+      },
+      "exercise": {
+        "title": "Regular Exercise",
+        "content": "Recommended 3-5 times per week, 30+ minutes of aerobic exercise."
+      },
+      "sleep": {
+        "title": "Adequate Sleep",
+        "content": "7-8 hours of quality sleep daily helps with weight management."
+      },
+      "water": {
+        "title": "Sufficient Hydration",
+        "content": "Drink 8+ glasses of water daily to boost metabolism."
+      }
+    },
+    "riskTable": {
+      "title": "BMI and Health Risk",
+      "headers": {
+        "range": "BMI Range",
+        "category": "Category",
+        "risk": "Disease Risk",
+        "concerns": "Main Concerns"
+      },
+      "rows": {
+        "underweight": {
+          "range": "Below 18.5",
+          "category": "Underweight",
+          "risk": "Increased",
+          "concerns": "Malnutrition, osteoporosis, low immunity"
+        },
+        "normal": {
+          "range": "18.5 - 22.9",
+          "category": "Normal",
+          "risk": "Lowest",
+          "concerns": "Maintain healthy condition"
+        },
+        "overweight": {
+          "range": "23.0 - 24.9",
+          "category": "Overweight",
+          "risk": "Slightly increased",
+          "concerns": "Lifestyle improvement needed"
+        },
+        "obese1": {
+          "range": "25.0 - 29.9",
+          "category": "Obesity Class I",
+          "risk": "Increased",
+          "concerns": "Diabetes, hypertension, cardiovascular disease"
+        },
+        "obese2": {
+          "range": "30.0 and above",
+          "category": "Obesity Class II",
+          "risk": "High risk",
+          "concerns": "Metabolic syndrome, joint disease, sleep apnea"
+        }
+      },
+      "note": "* Individual differences may apply. Consult medical professionals for accurate diagnosis."
+    },
     "classification": {
       "title": "BMI Classification Standards",
       "note": "* Asian standards applied, separate criteria for 65+ years"
@@ -578,6 +660,314 @@
       "format": "Height {height}cm, Weight {weight}kg, BMI {bmi}"
     },
     "placeholder": "BMI calculation results will appear when you enter height and weight"
+  },
+  "calorie": {
+    "title": "Calorie Calculator",
+    "description": "Calculate your Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE) to set healthy weight management goals",
+    "input": {
+      "title": "Body Information & Goal Setting",
+      "height": "Height (cm)",
+      "weight": "Current Weight (kg)",
+      "age": "Age",
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "heightPlaceholder": "170",
+      "weightPlaceholder": "70",
+      "agePlaceholder": "30",
+      "activityLevel": "Activity Level",
+      "activities": {
+        "sedentary": "Sedentary (Little/no exercise)",
+        "light": "Light (1-3 times/week)",
+        "moderate": "Moderate (3-5 times/week)",
+        "active": "Active (6-7 times/week)",
+        "veryActive": "Very Active (2x/day or intense exercise)"
+      },
+      "goal": "Goal",
+      "goals": {
+        "loseFast": "Fast Weight Loss (1kg/week)",
+        "loseModerate": "Weight Loss (0.75kg/week)",
+        "loseSlow": "Mild Weight Loss (0.5kg/week)",
+        "maintain": "Maintain Weight",
+        "gainSlow": "Mild Weight Gain (0.5kg/week)",
+        "gainModerate": "Weight Gain (0.75kg/week)",
+        "gainFast": "Fast Weight Gain (1kg/week)"
+      },
+      "targetWeight": "Target Weight (kg, optional)",
+      "targetWeightPlaceholder": "65",
+      "targetWeightNote": "Enter to calculate time to goal",
+      "bmrFormula": "BMR Calculation Formula",
+      "formulas": {
+        "mifflin": "Mifflin-St Jeor (Recommended)",
+        "harris": "Harris-Benedict (Traditional)"
+      }
+    },
+    "result": {
+      "title": "Calorie Calculation Result",
+      "bmr": "Basal Metabolic Rate (BMR)",
+      "tdee": "Total Daily Energy Expenditure (TDEE)",
+      "goalCalories": "Daily Calorie Goal",
+      "weightChangePerWeek": "Weight Change Per Week",
+      "timeToGoal": "Estimated Time to Goal",
+      "shareResult": "Share Result",
+      "details": "Detailed Information",
+      "bmrFormula": "BMR Formula Used",
+      "activityMultiplier": "Activity Level",
+      "calorieAdjustment": "Calorie Adjustment"
+    },
+    "guide": {
+      "title": "Understanding Calories and Metabolism",
+      "bmrTitle": "What is Basal Metabolic Rate (BMR)?",
+      "bmr": {
+        "0": "The minimum energy required to sustain life",
+        "1": "Used for heart beating, breathing, temperature regulation, etc.",
+        "2": "Accounts for 60-70% of total energy expenditure",
+        "3": "Decreases with age and lower muscle mass"
+      },
+      "calorieTitle": "Healthy Weight Management",
+      "calorie": {
+        "0": "Approximately 7700 kcal deficit needed to lose 1kg",
+        "1": "Healthy weight loss is 0.5-1kg per week",
+        "2": "Combining exercise and diet control is most effective",
+        "3": "Consult professionals considering individual differences"
+      }
+    },
+    "foodCalories": {
+      "title": "Food Calorie Reference Table",
+      "staples": "Staples",
+      "proteins": "Proteins",
+      "snacks": "Snacks",
+      "items": {
+        "rice": "Rice (1 bowl, 210g)",
+        "ramen": "Ramen (1 pack)",
+        "kimbap": "Kimbap (1 roll)",
+        "bread": "Bread (1 slice)",
+        "chicken": "Chicken breast (100g)",
+        "egg": "Egg (1 piece)",
+        "tofu": "Tofu (1/2 block)",
+        "milk": "Milk (1 cup, 200ml)",
+        "apple": "Apple (1 piece)",
+        "banana": "Banana (1 piece)",
+        "almond": "Almonds (10 pieces)",
+        "chocolate": "Chocolate (1 piece)"
+      }
+    },
+    "exerciseCalories": {
+      "title": "Exercise Calorie Burn (30 minutes)",
+      "cardio": "Cardio Exercise",
+      "strength": "Strength & Other Exercise",
+      "items": {
+        "walking": "Walking (30 min)",
+        "jogging": "Jogging (30 min)",
+        "cycling": "Cycling (30 min)",
+        "swimming": "Swimming (30 min)",
+        "weight": "Weight training (30 min)",
+        "yoga": "Yoga (30 min)",
+        "stairs": "Stair climbing (30 min)",
+        "jumprope": "Jump rope (30 min)"
+      },
+      "note": "* Based on 70kg adult male, individual differences may apply."
+    },
+    "history": {
+      "title": "Calorie Calculation History",
+      "empty": "No saved calculation history",
+      "format": "Goal Calories {goalCalories}kcal ({goal})"
+    },
+    "placeholder": "Calorie calculation results will appear when you enter body information"
+  },
+  "bodyFat": {
+    "title": "Body Fat Calculator",
+    "description": "Calculate accurate body fat percentage using Navy and YMCA formulas and analyze your body composition",
+    "input": {
+      "title": "Body Information & Measurements",
+      "height": "Height (cm)",
+      "weight": "Weight (kg)",
+      "age": "Age",
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "heightPlaceholder": "170",
+      "weightPlaceholder": "70",
+      "agePlaceholder": "30",
+      "formula": "Calculation Formula",
+      "formulas": {
+        "navy": "Navy Formula (Recommended)",
+        "ymca": "YMCA Formula"
+      },
+      "measurements": "Circumference Measurements",
+      "waist": "Waist Circumference (cm)",
+      "waistPlaceholder": "80",
+      "waistNote": "Measure 2-3cm above the navel",
+      "neck": "Neck Circumference (cm)",
+      "neckPlaceholder": "36",
+      "neckNote": "Measure just below the Adam's apple",
+      "hip": "Hip Circumference (cm)",
+      "hipPlaceholder": "90",
+      "hipNote": "Measure at the widest part of the hips"
+    },
+    "result": {
+      "title": "Body Fat Analysis Results",
+      "fatMass": "Fat Mass",
+      "leanMass": "Lean Mass",
+      "idealRange": "Ideal Body Fat Range",
+      "visceralFat": "Visceral Fat Level",
+      "visceralFatUnit": "Level",
+      "shareResult": "Share Result"
+    },
+    "categories": {
+      "essential": "Essential Fat",
+      "athletic": "Athletic",
+      "fitness": "Fitness",
+      "average": "Average",
+      "overweight": "Overweight",
+      "obese": "Obese"
+    },
+    "categoryLabels": {
+      "essential": "Essential Fat",
+      "athletic": "Athletic",
+      "fitness": "Fitness",
+      "average": "Average",
+      "overweight": "Overweight",
+      "obese": "Obese"
+    },
+    "healthRisks": {
+      "essential": "Risk of Essential Fat Deficiency",
+      "athletic": "Athletic Level",
+      "fitness": "Healthy Condition",
+      "average": "Average Level",
+      "overweight": "Overweight",
+      "obese": "Obese"
+    },
+    "classification": {
+      "title": "Body Fat Classification Chart",
+      "note": "Ideal body fat ranges may vary by age group. Consult with a professional for accurate diagnosis."
+    },
+    "guide": {
+      "title": "Body Fat Management Guide",
+      "measurementTitle": "Tips for Accurate Measurement",
+      "measurement": {
+        "0": "Morning measurements on an empty stomach are most accurate",
+        "1": "Place the tape measure lightly against the skin",
+        "2": "Keep the measurement area horizontal",
+        "3": "Take multiple measurements and use the average"
+      },
+      "managementTitle": "Healthy Body Fat Management",
+      "management": {
+        "0": "Balanced diet and regular exercise are fundamental",
+        "1": "Strength training to increase muscle mass reduces body fat percentage",
+        "2": "Aim for gradual changes rather than rapid weight loss",
+        "3": "Adequate sleep and stress management are also important"
+      }
+    },
+    "measurementGuide": {
+      "title": "Accurate Circumference Measurement Methods",
+      "waist": "Waist Circumference",
+      "neck": "Neck Circumference",
+      "hip": "Hip Circumference",
+      "waistTips": {
+        "0": "Measure 2-3cm above the navel",
+        "1": "Breathe out naturally",
+        "2": "Keep the tape measure horizontal",
+        "3": "Place lightly against skin, don't squeeze"
+      },
+      "neckTips": {
+        "0": "Measure at the narrowest part of the neck",
+        "1": "Just below the Adam's apple",
+        "2": "Keep head facing forward",
+        "3": "Don't extend or retract the neck"
+      },
+      "hipTips": {
+        "0": "Measure at the widest part of the hips",
+        "1": "Stand with feet together",
+        "2": "Keep tape measure horizontal",
+        "3": "Wear only thin underwear"
+      },
+      "measurementTip": "Measurement Tip:",
+      "measurementTipText": "Morning measurements after using the bathroom and before eating provide the most accurate results."
+    },
+    "history": {
+      "title": "Body Fat Calculation History",
+      "empty": "No saved calculation history",
+      "format": "Body Fat {bodyFatPercentage}% ({category})"
+    },
+    "placeholder": "Body fat calculation results will appear when you enter body information and measurements"
+  },
+  "workHours": {
+    "title": "Work Hours Calculator",
+    "description": "Calculate accurate part-time wages according to Korean Labor Standards Act! Automatically calculate basic pay, overtime pay, weekly holiday pay, and extended work allowances",
+    "input": {
+      "title": "Work Information Input",
+      "hourlyWage": "Hourly Wage (KRW)",
+      "hourlyWageNote": "2024 Minimum Wage: 9,860 KRW",
+      "weeklyHours": "Weekly Standard Working Hours",
+      "weeklyHoursNote": "Generally 40 hours (5 days × 8 hours)",
+      "workSchedule": "Work Schedule",
+      "addDay": "Add Day",
+      "date": "Date",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "breakTime": "Break Time (minutes)",
+      "holiday": "Holiday"
+    },
+    "result": {
+      "title": "Salary Calculation Result",
+      "totalHours": "Total Working Hours",
+      "hours": "hours",
+      "shareResult": "Share Result",
+      "breakdown": "Detailed Breakdown",
+      "basicPay": "Basic Pay",
+      "overtimePay": "Overtime Pay (1.5x)",
+      "nightPay": "Night Work Allowance (0.5x)",
+      "holidayPay": "Holiday Work Pay (1.5x)",
+      "weeklyHolidayPay": "Weekly Holiday Pay"
+    },
+    "guide": {
+      "title": "Labor Standards Act Guide",
+      "overtimeTitle": "Overtime and Night Work",
+      "overtime": {
+        "0": "1.5x overtime pay for work exceeding 8 hours/day or 40 hours/week",
+        "1": "Additional 0.5x pay for night work (10 PM - 6 AM)",
+        "2": "Overtime work up to 12 hours/week with worker consent",
+        "3": "Night and holiday work prohibited for workers under 18"
+      },
+      "allowanceTitle": "Various Allowances and Leave",
+      "allowance": {
+        "0": "Weekly holiday pay: 1 paid holiday guaranteed for 15+ hours/week",
+        "1": "Holiday work: 1.5x pay for work on legal holidays",
+        "2": "Annual leave: 15 days after 1 year, +1 day for perfect attendance",
+        "3": "4 major insurances: Mandatory for 60+ hours/month workers"
+      }
+    },
+    "minimumWage": {
+      "title": "2024 Minimum Wage Information",
+      "2024": "2024 Hourly Rate",
+      "monthly": "Monthly Equivalent (209 hours)",
+      "monthlyHours": "Monthly Standard Hours",
+      "note": "* Minimum 90% of minimum wage required during probation period"
+    },
+    "rights": {
+      "title": "Worker Rights and Protection",
+      "basicTitle": "Basic Rights",
+      "basic": {
+        "0": "Employment contract creation and delivery (wage, working hours specified)",
+        "1": "Wages paid directly at least once monthly on fixed dates",
+        "2": "Wages paid within 14 days of resignation date",
+        "3": "Protection from unfair dismissal and disciplinary actions"
+      },
+      "protectionTitle": "How to Handle Unpaid Wages",
+      "protection": {
+        "0": "Report and consult at Ministry of Employment and Labor (1350)",
+        "1": "Submit wage complaint to Regional Employment and Labor Office",
+        "2": "Apply for living expense loans with unpaid wage confirmation",
+        "3": "Claim damages and late interest for unpaid wages"
+      }
+    },
+    "history": {
+      "title": "Work Hours Calculation History",
+      "empty": "No saved calculation history",
+      "format": "Total Pay {totalPay} KRW ({totalHours} hours)"
+    },
+    "placeholder": "Salary calculation results will appear when you enter hourly wage and work schedule"
   },
   "navigation": {
     "financialCalculators": "Financial Calculators",

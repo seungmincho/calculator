@@ -2,7 +2,7 @@
 
 export interface CalculationHistory {
   id: string;
-  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock' | 'car-loan' | 'car-tax' | 'bmi';
+  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock' | 'car-loan' | 'car-tax' | 'bmi' | 'calorie' | 'bodyFat' | 'workHours';
   timestamp: number;
   inputs: Record<string, any>;
   result: Record<string, any>;
@@ -218,5 +218,62 @@ export const generateHistoryTitle = {
     const ageText = age > 0 ? `${age}세 ` : '';
     
     return `${ageText}${genderLabel} ${height}cm ${weight}kg`;
+  },
+
+  calorie: (inputs: any): string => {
+    const weight = inputs.weight || 0;
+    const goal = inputs.goal || 'maintain';
+    const activityLevel = inputs.activityLevel || 'moderate';
+    
+    const goalLabels = {
+      loseFast: '빠른감량',
+      loseModerate: '감량',
+      loseSlow: '완만감량',
+      maintain: '유지',
+      gainSlow: '완만증량',
+      gainModerate: '증량',
+      gainFast: '빠른증량'
+    };
+    
+    const activityLabels = {
+      sedentary: '저활동',
+      light: '가벼운활동',
+      moderate: '보통활동',
+      active: '활발한활동',
+      veryActive: '매우활발'
+    };
+    
+    const goalLabel = goalLabels[goal as keyof typeof goalLabels] || '유지';
+    const activityLabel = activityLabels[activityLevel as keyof typeof activityLabels] || '보통활동';
+    
+    return `${weight}kg ${goalLabel} ${activityLabel}`;
+  },
+
+  bodyFat: (inputs: any): string => {
+    const weight = inputs.weight || 0;
+    const gender = inputs.gender || 'male';
+    const formula = inputs.formula || 'navy';
+    
+    const genderLabel = gender === 'male' ? '남성' : '여성';
+    const formulaLabels = {
+      navy: 'Navy공식',
+      ymca: 'YMCA공식',
+      'covert-bailey': 'Bailey공식'
+    };
+    
+    const formulaLabel = formulaLabels[formula as keyof typeof formulaLabels] || 'Navy공식';
+    
+    return `${genderLabel} ${weight}kg ${formulaLabel}`;
+  },
+
+  workHours: (inputs: any): string => {
+    const hourlyWage = inputs.hourlyWage || 0;
+    const totalHours = inputs.totalHours || 0;
+    const workDays = inputs.workDays || 0;
+    
+    const wageText = Math.floor(hourlyWage / 1000);
+    const hoursText = totalHours.toFixed(1);
+    
+    return `시급 ${wageText}천원 ${hoursText}시간 ${workDays}일`;
   }
 };

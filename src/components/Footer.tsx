@@ -33,7 +33,6 @@ const Footer = () => {
               <li><a href="/real-estate-calculator" className="hover:text-white transition-colors">{t('footer.links.realEstateCalculator')}</a></li>
               <li><a href="/car-loan-calculator" className="hover:text-white transition-colors">{t('footer.links.carLoanCalculator')}</a></li>
               <li><a href="/car-tax-calculator" className="hover:text-white transition-colors">{t('footer.links.carTaxCalculator')}</a></li>
-              <li><a href="/bmi-calculator" className="hover:text-white transition-colors">{t('footer.links.bmiCalculator')}</a></li>
             </ul>
           </div>
           <div>
@@ -47,9 +46,12 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-4">건강 도구</h3>
+            <h3 className="font-semibold mb-4">{t('navigation.healthTools')}</h3>
             <ul className="space-y-2 text-gray-400 dark:text-gray-500">
-              <li><a href="/bmi-calculator" className="hover:text-white transition-colors">BMI 계산기</a></li>
+              <li><a href="/bmi-calculator" className="hover:text-white transition-colors">{t('footer.links.bmiCalculator')}</a></li>
+              <li><a href="/calorie-calculator" className="hover:text-white transition-colors">{t('footer.links.calorieCalculator')}</a></li>
+              <li><a href="/body-fat-calculator" className="hover:text-white transition-colors">{t('footer.links.bodyFatCalculator')}</a></li>
+              <li><a href="/work-hours-calculator" className="hover:text-white transition-colors">{t('footer.links.workHoursCalculator')}</a></li>
             </ul>
           </div>
         </div>

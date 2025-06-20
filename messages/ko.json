@@ -31,7 +31,8 @@
     "about": "정보",
     "contact": "연락처",
     "privacy": "개인정보처리방침",
-    "terms": "이용약관"
+    "terms": "이용약관",
+    "load": "불러오기"
   },
   "header": {
     "title": "툴허브",
@@ -504,11 +505,15 @@
       "carLoanCalculator": "자동차 할부 계산기",
       "carTaxCalculator": "자동차 취등록세 계산기",
       "bmiCalculator": "BMI 계산기",
+      "calorieCalculator": "칼로리 계산기",
+      "bodyFatCalculator": "체지방률 계산기",
+      "workHoursCalculator": "근무시간 계산기",
       "jsonFormatter": "JSON 포맷터",
       "sqlFormatter": "SQL 포맷터",
       "markdownViewer": "마크다운 뷰어",
       "imageResizer": "이미지 리사이저",
       "imageEditor": "이미지 편집기"
+
     },
     "copyright": "© 2025 툴허브. All rights reserved."
   },
@@ -568,6 +573,84 @@
         "3": "스트레스 관리와 충분한 수면도 필요합니다"
       }
     },
+    "usage": {
+      "title": "BMI 계산기 활용법",
+      "steps": {
+        "1": {
+          "title": "정확한 측정",
+          "content": "아침 공복 상태에서 측정하면 가장 정확한 결과를 얻을 수 있습니다."
+        },
+        "2": {
+          "title": "정기적 체크", 
+          "content": "월 1-2회 정기적으로 측정하여 변화 추이를 관찰해보세요."
+        },
+        "3": {
+          "title": "목표 설정",
+          "content": "건강한 BMI 범위를 목표로 단계적인 계획을 세워보세요."
+        }
+      }
+    },
+    "healthTips": {
+      "title": "건강한 체중 관리 팁",
+      "diet": {
+        "title": "균형잡힌 식단",
+        "content": "단백질, 탄수화물, 지방을 적절히 배분하여 섭취하세요."
+      },
+      "exercise": {
+        "title": "규칙적인 운동",
+        "content": "주 3-5회, 30분 이상의 유산소 운동을 권장합니다."
+      },
+      "sleep": {
+        "title": "충분한 수면",
+        "content": "하루 7-8시간의 양질의 수면이 체중 관리에 도움됩니다."
+      },
+      "water": {
+        "title": "충분한 수분",
+        "content": "하루 8잔 이상의 물을 마셔 신진대사를 활발하게 하세요."
+      }
+    },
+    "riskTable": {
+      "title": "BMI와 건강 위험도",
+      "headers": {
+        "range": "BMI 범위",
+        "category": "분류",
+        "risk": "질병 위험도",
+        "concerns": "주요 관심사"
+      },
+      "rows": {
+        "underweight": {
+          "range": "18.5 미만",
+          "category": "저체중",
+          "risk": "증가",
+          "concerns": "영양실조, 골다공증, 면역력 저하"
+        },
+        "normal": {
+          "range": "18.5 - 22.9",
+          "category": "정상",
+          "risk": "최저",
+          "concerns": "건강한 상태 유지"
+        },
+        "overweight": {
+          "range": "23.0 - 24.9",
+          "category": "과체중",
+          "risk": "약간 증가",
+          "concerns": "생활습관 개선 필요"
+        },
+        "obese1": {
+          "range": "25.0 - 29.9",
+          "category": "비만 1단계",
+          "risk": "증가",
+          "concerns": "당뇨, 고혈압, 심혈관 질환"
+        },
+        "obese2": {
+          "range": "30.0 이상",
+          "category": "비만 2단계",
+          "risk": "고위험",
+          "concerns": "대사증후군, 관절질환, 수면무호흡증"
+        }
+      },
+      "note": "* 개인차가 있을 수 있으며, 정확한 진단은 의료진과 상담하시기 바랍니다."
+    },
     "classification": {
       "title": "BMI 분류 기준",
       "note": "* 아시아인 기준 적용, 65세 이상은 별도 기준"
@@ -578,6 +661,314 @@
       "format": "키 {height}cm, 몸무게 {weight}kg, BMI {bmi}"
     },
     "placeholder": "키와 몸무게를 입력하시면 BMI 계산 결과가 나타납니다"
+  },
+  "calorie": {
+    "title": "칼로리 계산기",
+    "description": "기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 건강한 체중 관리 목표를 설정하세요",
+    "input": {
+      "title": "신체 정보 및 목표 설정",
+      "height": "키 (cm)",
+      "weight": "현재 체중 (kg)",
+      "age": "나이",
+      "gender": "성별",
+      "male": "남성",
+      "female": "여성",
+      "heightPlaceholder": "170",
+      "weightPlaceholder": "70",
+      "agePlaceholder": "30",
+      "activityLevel": "활동 수준",
+      "activities": {
+        "sedentary": "거의 운동 안함 (사무직)",
+        "light": "가벼운 운동 (주 1-3회)",
+        "moderate": "보통 운동 (주 3-5회)",
+        "active": "활발한 운동 (주 6-7회)",
+        "veryActive": "매우 활발 (하루 2회 또는 강도 높은 운동)"
+      },
+      "goal": "목표",
+      "goals": {
+        "loseFast": "빠른 감량 (주당 1kg)",
+        "loseModerate": "감량 (주당 0.75kg)",
+        "loseSlow": "완만한 감량 (주당 0.5kg)",
+        "maintain": "체중 유지",
+        "gainSlow": "완만한 증량 (주당 0.5kg)",
+        "gainModerate": "증량 (주당 0.75kg)",
+        "gainFast": "빠른 증량 (주당 1kg)"
+      },
+      "targetWeight": "목표 체중 (kg, 선택사항)",
+      "targetWeightPlaceholder": "65",
+      "targetWeightNote": "목표 달성 기간을 계산하려면 입력하세요",
+      "bmrFormula": "BMR 계산 공식",
+      "formulas": {
+        "mifflin": "Mifflin-St Jeor (권장)",
+        "harris": "Harris-Benedict (전통적)"
+      }
+    },
+    "result": {
+      "title": "칼로리 계산 결과",
+      "bmr": "기초대사율 (BMR)",
+      "tdee": "활동대사율 (TDEE)",
+      "goalCalories": "목표 일일 칼로리",
+      "weightChangePerWeek": "주당 체중 변화",
+      "timeToGoal": "목표 달성 예상 기간",
+      "shareResult": "결과 공유",
+      "details": "상세 정보",
+      "bmrFormula": "사용된 BMR 공식",
+      "activityMultiplier": "활동 수준",
+      "calorieAdjustment": "칼로리 조정량"
+    },
+    "guide": {
+      "title": "칼로리와 대사량 이해하기",
+      "bmrTitle": "기초대사율(BMR)이란?",
+      "bmr": {
+        "0": "생명 유지를 위해 최소한으로 필요한 에너지입니다",
+        "1": "심장 박동, 호흡, 체온 유지 등에 사용됩니다",
+        "2": "전체 에너지 소비의 60-70%를 차지합니다",
+        "3": "나이가 들수록, 근육량이 적을수록 감소합니다"
+      },
+      "calorieTitle": "건강한 체중 관리",
+      "calorie": {
+        "0": "1kg 감량을 위해서는 약 7700kcal의 적자가 필요합니다",
+        "1": "급격한 감량보다는 주당 0.5-1kg이 건강합니다",
+        "2": "운동과 식단 조절을 병행하는 것이 효과적입니다",
+        "3": "개인차를 고려하여 전문가와 상담하세요"
+      }
+    },
+    "foodCalories": {
+      "title": "음식 칼로리 참고표",
+      "staples": "주식류",
+      "proteins": "단백질",
+      "snacks": "간식류",
+      "items": {
+        "rice": "밥 (1공기, 210g)",
+        "ramen": "라면 (1개)",
+        "kimbap": "김밥 (1줄)",
+        "bread": "빵 (식빵 1장)",
+        "chicken": "닭가슴살 (100g)",
+        "egg": "계란 (1개)",
+        "tofu": "두부 (1/2모)",
+        "milk": "우유 (1컵, 200ml)",
+        "apple": "사과 (1개)",
+        "banana": "바나나 (1개)",
+        "almond": "아몬드 (10개)",
+        "chocolate": "초콜릿 (1조각)"
+      }
+    },
+    "exerciseCalories": {
+      "title": "운동별 칼로리 소모량 (30분 기준)",
+      "cardio": "유산소 운동",
+      "strength": "근력 및 기타 운동",
+      "items": {
+        "walking": "걷기 (30분)",
+        "jogging": "조깅 (30분)",
+        "cycling": "자전거 (30분)",
+        "swimming": "수영 (30분)",
+        "weight": "웨이트 트레이닝 (30분)",
+        "yoga": "요가 (30분)",
+        "stairs": "계단 오르기 (30분)",
+        "jumprope": "줄넘기 (30분)"
+      },
+      "note": "* 70kg 성인 남성 기준이며, 개인차가 있을 수 있습니다."
+    },
+    "history": {
+      "title": "칼로리 계산 기록",
+      "empty": "저장된 계산 이력이 없습니다",
+      "format": "목표 칼로리 {goalCalories}kcal ({goal})"
+    },
+    "placeholder": "신체 정보를 입력하면 칼로리 계산 결과가 표시됩니다"
+  },
+  "bodyFat": {
+    "title": "체지방률 계산기",
+    "description": "Navy 공식과 YMCA 공식을 사용하여 정확한 체지방률을 측정하고 체성분을 분석하세요",
+    "input": {
+      "title": "신체 정보 및 측정값 입력",
+      "height": "키 (cm)",
+      "weight": "체중 (kg)",
+      "age": "나이",
+      "gender": "성별",
+      "male": "남성",
+      "female": "여성",
+      "heightPlaceholder": "170",
+      "weightPlaceholder": "70",
+      "agePlaceholder": "30",
+      "formula": "계산 공식",
+      "formulas": {
+        "navy": "Navy 공식 (권장)",
+        "ymca": "YMCA 공식"
+      },
+      "measurements": "둘레 측정값",
+      "waist": "허리둘레 (cm)",
+      "waistPlaceholder": "80",
+      "waistNote": "배꼽 위 2-3cm 지점에서 측정",
+      "neck": "목둘레 (cm)",
+      "neckPlaceholder": "36",
+      "neckNote": "아담스 애플 바로 아래에서 측정",
+      "hip": "엉덩이둘레 (cm)",
+      "hipPlaceholder": "90",
+      "hipNote": "엉덩이의 가장 넓은 부분에서 측정"
+    },
+    "result": {
+      "title": "체지방률 분석 결과",
+      "fatMass": "체지방량",
+      "leanMass": "근육량",
+      "idealRange": "이상적인 체지방률 범위",
+      "visceralFat": "내장지방 레벨",
+      "visceralFatUnit": "레벨",
+      "shareResult": "결과 공유"
+    },
+    "categories": {
+      "essential": "필수지방",
+      "athletic": "운동선수",
+      "fitness": "건강",
+      "average": "평균",
+      "overweight": "과체중",
+      "obese": "비만"
+    },
+    "categoryLabels": {
+      "essential": "필수지방",
+      "athletic": "운동선수",
+      "fitness": "건강",
+      "average": "평균",
+      "overweight": "과체중",
+      "obese": "비만"
+    },
+    "healthRisks": {
+      "essential": "필수지방 부족 위험",
+      "athletic": "운동선수 수준",
+      "fitness": "건강한 상태",
+      "average": "평균 수준",
+      "overweight": "과체중",
+      "obese": "비만"
+    },
+    "classification": {
+      "title": "체지방률 분류표",
+      "note": "연령대별로 이상적인 체지방률 범위가 다를 수 있습니다. 정확한 진단은 전문가와 상담하세요."
+    },
+    "guide": {
+      "title": "체지방률 관리 가이드",
+      "measurementTitle": "정확한 측정을 위한 팁",
+      "measurement": {
+        "0": "아침에 공복 상태에서 측정하는 것이 가장 정확합니다",
+        "1": "줄자는 피부에 닿을 정도로 가볍게 대어주세요",
+        "2": "측정 부위가 수평이 되도록 유지해주세요",
+        "3": "여러 번 측정하여 평균값을 사용하세요"
+      },
+      "managementTitle": "건강한 체지방 관리법",
+      "management": {
+        "0": "균형 잡힌 식단과 꾸준한 운동이 기본입니다",
+        "1": "근력 운동으로 근육량을 늘리면 체지방률이 감소합니다",
+        "2": "급격한 감량보다는 점진적인 변화를 목표로 하세요",
+        "3": "충분한 수면과 스트레스 관리도 중요합니다"
+      }
+    },
+    "measurementGuide": {
+      "title": "정확한 둘레 측정 방법",
+      "waist": "허리둘레",
+      "neck": "목둘레",
+      "hip": "엉덩이둘레",
+      "waistTips": {
+        "0": "배꼽 위 2-3cm 지점 측정",
+        "1": "숨을 자연스럽게 내쉰 상태",
+        "2": "줄자가 수평이 되도록 유지",
+        "3": "너무 조이지 말고 피부에 닿을 정도"
+      },
+      "neckTips": {
+        "0": "목의 가장 가는 부분 측정",
+        "1": "아담스 애플(목젖) 바로 아래",
+        "2": "고개를 정면으로 향한 상태",
+        "3": "목을 빼거나 움츠리지 않기"
+      },
+      "hipTips": {
+        "0": "엉덩이의 가장 넓은 부분",
+        "1": "발을 모으고 선 상태",
+        "2": "줄자가 수평 유지",
+        "3": "옷은 얇은 속옷만 착용"
+      },
+      "measurementTip": "측정 팁:",
+      "measurementTipText": "아침에 일어나서 화장실을 다녀온 후, 식사 전에 측정하면 가장 정확한 결과를 얻을 수 있습니다."
+    },
+    "history": {
+      "title": "체지방률 계산 기록",
+      "empty": "저장된 계산 이력이 없습니다",
+      "format": "체지방률 {bodyFatPercentage}% ({category})"
+    },
+    "placeholder": "신체 정보와 둘레를 입력하면 체지방률 계산 결과가 표시됩니다"
+  },
+  "workHours": {
+    "title": "근무시간 계산기",
+    "description": "근로기준법에 따른 정확한 알바비 계산! 기본급, 야근수당, 주휴수당, 연장근로수당을 자동으로 계산하세요",
+    "input": {
+      "title": "근무 정보 입력",
+      "hourlyWage": "시급 (원)",
+      "hourlyWageNote": "2024년 최저임금: 9,860원",
+      "weeklyHours": "주 소정근로시간",
+      "weeklyHoursNote": "일반적으로 40시간 (주 5일 × 8시간)",
+      "workSchedule": "근무 일정",
+      "addDay": "날짜 추가",
+      "date": "날짜",
+      "startTime": "출근시간",
+      "endTime": "퇴근시간",
+      "breakTime": "휴게시간 (분)",
+      "holiday": "휴일"
+    },
+    "result": {
+      "title": "급여 계산 결과",
+      "totalHours": "총 근무시간",
+      "hours": "시간",
+      "shareResult": "결과 공유",
+      "breakdown": "상세 내역",
+      "basicPay": "기본급",
+      "overtimePay": "연장근로수당 (1.5배)",
+      "nightPay": "야간근로수당 (0.5배)",
+      "holidayPay": "휴일근로수당 (1.5배)",
+      "weeklyHolidayPay": "주휴수당"
+    },
+    "guide": {
+      "title": "근로기준법 가이드",
+      "overtimeTitle": "연장근로 및 야간근로",
+      "overtime": {
+        "0": "일 8시간, 주 40시간 초과시 연장근로수당 1.5배 지급",
+        "1": "오후 10시~오전 6시 야간근로시 0.5배 추가 지급",
+        "2": "연장근로는 근로자 동의하에 주 12시간까지 가능",
+        "3": "18세 미만 근로자는 야간근로 및 휴일근로 금지"
+      },
+      "allowanceTitle": "각종 수당 및 휴가",
+      "allowance": {
+        "0": "주휴수당: 주 15시간 이상 근무시 유급휴일 1일 보장",
+        "1": "휴일근로: 법정휴일 근무시 1.5배 수당 지급",
+        "2": "연차휴가: 1년 근무시 15일, 개근시 추가 1일씩 가산",
+        "3": "4대보험: 월 60시간 이상 근무시 의무가입 대상"
+      }
+    },
+    "minimumWage": {
+      "title": "2024년 최저임금 정보",
+      "2024": "2024년 시급",
+      "monthly": "월급 환산 (209시간)",
+      "monthlyHours": "월 소정근로시간",
+      "note": "* 수습기간에도 최저임금의 90% 이상 지급 의무"
+    },
+    "rights": {
+      "title": "근로자 권리 및 보호",
+      "basicTitle": "기본 권리",
+      "basic": {
+        "0": "근로계약서 작성 및 교부 의무 (임금, 근로시간 등 명시)",
+        "1": "임금은 매월 1회 이상 일정한 날짜에 직접 지급",
+        "2": "퇴직시 지급기일로부터 14일 이내 임금 지급",
+        "3": "부당한 해고, 징계 등으로부터 보호받을 권리"
+      },
+      "protectionTitle": "임금 체불 시 대처방법",
+      "protection": {
+        "0": "고용노동부 국번없이 1350번으로 신고 및 상담",
+        "1": "지방고용노동청에 임금체불 진정서 제출",
+        "2": "체불임금 확인원을 발급받아 생계비 대출 신청 가능",
+        "3": "임금체불로 인한 손해배상 및 지연이자 청구 가능"
+      }
+    },
+    "history": {
+      "title": "근무시간 계산 기록",
+      "empty": "저장된 계산 이력이 없습니다",
+      "format": "총 급여 {totalPay}원 ({totalHours}시간)"
+    },
+    "placeholder": "시급과 근무일정을 입력하면 급여 계산 결과가 표시됩니다"
   },
   "navigation": {
     "financialCalculators": "금융 계산기",

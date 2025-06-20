@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { History, Trash2, Download, Clock, X } from 'lucide-react';
 import { CalculationHistory as HistoryType } from '@/utils/localStorage';
+import { useTranslations } from 'next-intl';
 
 interface CalculationHistoryProps {
   histories: HistoryType[];
@@ -22,6 +23,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
   formatResult
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const tCommon = useTranslations('common');
   const [showConfirmClear, setShowConfirmClear] = useState(false);
 
   const formatDate = (timestamp: number) => {
@@ -132,7 +134,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
                             className="inline-flex items-center space-x-1 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 px-3 py-1 rounded text-sm transition-colors"
                           >
                             <Download className="w-3 h-3" />
-                            <span>불러오기</span>
+                            <span>{tCommon('load')}</span>
                           </button>
                           
                           <button

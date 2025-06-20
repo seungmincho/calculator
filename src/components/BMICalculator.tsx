@@ -547,7 +547,7 @@ export default function BMICalculator() {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-pink-600" />
-            BMI 계산기 활용법
+            {t('usage.title')}
           </h3>
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
@@ -555,8 +555,8 @@ export default function BMICalculator() {
                 <span className="text-pink-600 font-bold text-sm">1</span>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">정확한 측정</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">아침 공복 상태에서 측정하면 가장 정확한 결과를 얻을 수 있습니다.</p>
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">{t('usage.steps.1.title')}</h4>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">{t('usage.steps.1.content')}</p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
@@ -564,8 +564,8 @@ export default function BMICalculator() {
                 <span className="text-pink-600 font-bold text-sm">2</span>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">정기적 체크</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">월 1-2회 정기적으로 측정하여 변화 추이를 관찰해보세요.</p>
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">{t('usage.steps.2.title')}</h4>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">{t('usage.steps.2.content')}</p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
@@ -573,8 +573,8 @@ export default function BMICalculator() {
                 <span className="text-pink-600 font-bold text-sm">3</span>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">목표 설정</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">건강한 BMI 범위를 목표로 단계적인 계획을 세워보세요.</p>
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">{t('usage.steps.3.title')}</h4>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">{t('usage.steps.3.content')}</p>
               </div>
             </div>
           </div>
@@ -584,24 +584,24 @@ export default function BMICalculator() {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <Heart className="w-6 h-6 mr-2 text-red-500" />
-            건강한 체중 관리 팁
+            {t('healthTips.title')}
           </h3>
           <div className="space-y-4">
             <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border-l-4 border-green-500">
-              <h4 className="font-semibold text-green-800 dark:text-green-400 mb-2">🥗 균형잡힌 식단</h4>
-              <p className="text-green-700 dark:text-green-300 text-sm">단백질, 탄수화물, 지방을 적절히 배분하여 섭취하세요.</p>
+              <h4 className="font-semibold text-green-800 dark:text-green-400 mb-2">🥗 {t('healthTips.diet.title')}</h4>
+              <p className="text-green-700 dark:text-green-300 text-sm">{t('healthTips.diet.content')}</p>
             </div>
             <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-l-4 border-blue-500">
-              <h4 className="font-semibold text-blue-800 dark:text-blue-400 mb-2">🏃‍♂️ 규칙적인 운동</h4>
-              <p className="text-blue-700 dark:text-blue-300 text-sm">주 3-5회, 30분 이상의 유산소 운동을 권장합니다.</p>
+              <h4 className="font-semibold text-blue-800 dark:text-blue-400 mb-2">🏃‍♂️ {t('healthTips.exercise.title')}</h4>
+              <p className="text-blue-700 dark:text-blue-300 text-sm">{t('healthTips.exercise.content')}</p>
             </div>
             <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border-l-4 border-purple-500">
-              <h4 className="font-semibold text-purple-800 dark:text-purple-400 mb-2">😴 충분한 수면</h4>
-              <p className="text-purple-700 dark:text-purple-300 text-sm">하루 7-8시간의 양질의 수면이 체중 관리에 도움됩니다.</p>
+              <h4 className="font-semibold text-purple-800 dark:text-purple-400 mb-2">😴 {t('healthTips.sleep.title')}</h4>
+              <p className="text-purple-700 dark:text-purple-300 text-sm">{t('healthTips.sleep.content')}</p>
             </div>
             <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border-l-4 border-orange-500">
-              <h4 className="font-semibold text-orange-800 dark:text-orange-400 mb-2">💧 충분한 수분</h4>
-              <p className="text-orange-700 dark:text-orange-300 text-sm">하루 8잔 이상의 물을 마셔 신진대사를 활발하게 하세요.</p>
+              <h4 className="font-semibold text-orange-800 dark:text-orange-400 mb-2">💧 {t('healthTips.water.title')}</h4>
+              <p className="text-orange-700 dark:text-orange-300 text-sm">{t('healthTips.water.content')}</p>
             </div>
           </div>
         </div>
