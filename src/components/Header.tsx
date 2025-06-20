@@ -24,7 +24,8 @@ const Header = () => {
         { href: '/exchange-calculator', label: t('footer.links.exchangeCalculator'), icon: '💱' },
         { href: '/real-estate-calculator', label: t('footer.links.realEstateCalculator'), icon: '🏠' },
         { href: '/car-loan-calculator', label: t('footer.links.carLoanCalculator'), icon: '🚗' },
-        { href: '/car-tax-calculator', label: t('footer.links.carTaxCalculator'), icon: '🚘' }
+        { href: '/car-tax-calculator', label: t('footer.links.carTaxCalculator'), icon: '🚘' },
+        { href: '/bmi-calculator', label: t('footer.links.bmiCalculator'), icon: '❤️' }
       ]
     },
     tools: {
@@ -35,6 +36,12 @@ const Header = () => {
         { href: '/markdown-viewer', label: t('footer.links.markdownViewer'), icon: '📖' },
         { href: '/image-resizer', label: t('footer.links.imageResizer'), icon: '🖼️' },
         { href: '/image-editor', label: t('footer.links.imageEditor'), icon: '🎨' }
+      ]
+    },
+    health: {
+      title: t('navigation.healthTools'),
+      items: [
+        { href: '/bmi-calculator', label: 'BMI 계산기', icon: '❤️' }
       ]
     }
   };

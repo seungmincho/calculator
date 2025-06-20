@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 dark:bg-gray-950 text-white mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <Calculator className="w-6 h-6" />
@@ -33,6 +33,7 @@ const Footer = () => {
               <li><a href="/real-estate-calculator" className="hover:text-white transition-colors">{t('footer.links.realEstateCalculator')}</a></li>
               <li><a href="/car-loan-calculator" className="hover:text-white transition-colors">{t('footer.links.carLoanCalculator')}</a></li>
               <li><a href="/car-tax-calculator" className="hover:text-white transition-colors">{t('footer.links.carTaxCalculator')}</a></li>
+              <li><a href="/bmi-calculator" className="hover:text-white transition-colors">{t('footer.links.bmiCalculator')}</a></li>
             </ul>
           </div>
           <div>
@@ -43,6 +44,12 @@ const Footer = () => {
               <li><a href="/markdown-viewer" className="hover:text-white transition-colors">{t('footer.links.markdownViewer')}</a></li>
               <li><a href="/image-resizer" className="hover:text-white transition-colors">{t('footer.links.imageResizer')}</a></li>
               <li><a href="/image-editor" className="hover:text-white transition-colors">{t('footer.links.imageEditor')}</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-semibold mb-4">건강 도구</h3>
+            <ul className="space-y-2 text-gray-400 dark:text-gray-500">
+              <li><a href="/bmi-calculator" className="hover:text-white transition-colors">BMI 계산기</a></li>
             </ul>
           </div>
         </div>

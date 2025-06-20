@@ -382,6 +382,7 @@
       "realEstateCalculator": "Real Estate Calculator",
       "carLoanCalculator": "Car Loan Calculator",
       "carTaxCalculator": "Car Tax Calculator",
+      "bmiCalculator": "BMI Calculator",
       "jsonFormatter": "JSON Formatter",
       "sqlFormatter": "SQL Formatter",
       "markdownViewer": "Markdown Viewer",
@@ -390,9 +391,198 @@
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
   },
+  "carLoan": {
+    "title": "Car Loan Calculator",
+    "description": "Calculate monthly payments and total interest for car installment purchases",
+    "input": {
+      "carPrice": "Car Price (KRW)",
+      "downPayment": "Down Payment (KRW)",
+      "loanTerm": "Loan Term (Months)",
+      "interestRate": "Annual Interest Rate (%)",
+      "term12": "12 months (1 year)",
+      "term24": "24 months (2 years)",
+      "term36": "36 months (3 years)",
+      "term48": "48 months (4 years)",
+      "term60": "60 months (5 years)",
+      "term72": "72 months (6 years)",
+      "term84": "84 months (7 years)"
+    },
+    "result": {
+      "monthlyPayment": "Monthly Payment",
+      "totalPayment": "Total Payment",
+      "totalInterest": "Total Interest",
+      "loanAmount": "Loan Principal",
+      "loanPeriod": "Loan Period"
+    },
+    "guide": {
+      "title": "Car Loan Guide",
+      "considerationsTitle": "Considerations when choosing installments",
+      "considerations": {
+        "0": "Set monthly payment within 30% of monthly income",
+        "1": "Higher down payment reduces monthly payment",
+        "2": "Longer loan term increases total interest",
+        "3": "Choose optimal conditions through interest rate comparison"
+      },
+      "ratesTitle": "Current Installment Rates (2024 basis)",
+      "rates": {
+        "0": "New Car Installment: 3-7% annually",
+        "1": "Used Car Installment: 5-10% annually",
+        "2": "Capital Installment: 7-15% annually",
+        "3": "Bank Auto Loan: 3-6% annually"
+      }
+    }
+  },
+  "carTax": {
+    "title": "Car Acquisition & Registration Tax Calculator",
+    "description": "Calculate various taxes accurately when purchasing a car",
+    "input": {
+      "carPrice": "Car Price (KRW)",
+      "carType": "Car Type",
+      "fuelType": "Fuel Type",
+      "displacement": "Engine Displacement (cc)",
+      "carStatus": "Car Status",
+      "region": "Registration Region",
+      "passenger": "Passenger Car",
+      "truck": "Truck",
+      "van": "Van",
+      "motorcycle": "Motorcycle",
+      "gasoline": "Gasoline",
+      "diesel": "Diesel",
+      "lpg": "LPG",
+      "electric": "Electric",
+      "hybrid": "Hybrid",
+      "newCar": "New Car",
+      "usedCar": "Used Car",
+      "seoul": "Seoul",
+      "busan": "Busan",
+      "incheon": "Incheon",
+      "gyeonggi": "Gyeonggi-do",
+      "other": "Other Regions"
+    },
+    "result": {
+      "acquisitionTax": "Acquisition Tax",
+      "registrationTax": "Registration Tax",
+      "bondPurchase": "Bond Purchase",
+      "stampDuty": "Stamp Duty",
+      "totalTax": "Total Tax",
+      "totalCostWithTax": "Car Price + Tax"
+    },
+    "guide": {
+      "title": "Acquisition & Registration Tax Guide",
+      "taxTypesTitle": "Main Tax Types",
+      "taxTypes": {
+        "0": {
+          "title": "Acquisition Tax",
+          "content": "Paid when acquiring a vehicle (3-7%)"
+        },
+        "1": {
+          "title": "Registration Tax",
+          "content": "Paid when registering a vehicle (2-5%)"
+        },
+        "2": {
+          "title": "Bond Purchase",
+          "content": "Regional bond purchase (3-8%)"
+        },
+        "3": {
+          "title": "Stamp Duty",
+          "content": "Tax on registration documents"
+        }
+      },
+      "benefitsTitle": "Eco-friendly Vehicle Benefits",
+      "benefits": {
+        "0": {
+          "title": "Electric Vehicle",
+          "content": "50% reduction in acquisition & registration tax"
+        },
+        "1": {
+          "title": "Hybrid Vehicle",
+          "content": "50% reduction in acquisition & registration tax"
+        },
+        "2": {
+          "title": "Hydrogen Vehicle",
+          "content": "100% exemption from acquisition & registration tax"
+        },
+        "3": {
+          "title": "Note",
+          "content": "Reduction benefits may vary according to government policy"
+        }
+      },
+      "ecoCarBenefitTitle": "Eco-friendly Vehicle Tax Benefits Applied",
+      "ecoCarBenefitElectric": "50% reduction in acquisition & registration tax applied for electric vehicle.",
+      "ecoCarBenefitHybrid": "50% reduction in acquisition & registration tax applied for hybrid vehicle."
+    }
+  },
+  "bmi": {
+    "title": "BMI Calculator",
+    "description": "Calculate your Body Mass Index (BMI) to start healthy weight management",
+    "input": {
+      "title": "Body Information Input",
+      "height": "Height (cm)",
+      "weight": "Weight (kg)",
+      "age": "Age (optional)",
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "heightPlaceholder": "170",
+      "weightPlaceholder": "70",
+      "agePlaceholder": "30",
+      "ageNote": "Separate criteria applied for 65+ years"
+    },
+    "result": {
+      "title": "BMI Calculation Result",
+      "bmi": "BMI",
+      "category": "Category",
+      "idealWeightRange": "Ideal Weight Range",
+      "weightDifference": "Weight Difference",
+      "healthRisk": "Health Risk",
+      "shareResult": "Share Result"
+    },
+    "categories": {
+      "underweight": "Underweight",
+      "normal": "Normal",
+      "overweight": "Overweight",
+      "obese1": "Obese Class I",
+      "obese2": "Obese Class II+"
+    },
+    "healthRisks": {
+      "malnutrition": "Risk of malnutrition",
+      "healthy": "Healthy",
+      "slightRisk": "Slight risk",
+      "risk": "Risk",
+      "highRisk": "High risk"
+    },
+    "guide": {
+      "title": "BMI and Health Management",
+      "meaningTitle": "Meaning of BMI",
+      "meaning": {
+        "0": "BMI is an obesity index calculated from height and weight",
+        "1": "Used as a reference indicator for overall health status",
+        "2": "Has limitations as it doesn't reflect muscle mass, bone density, etc.",
+        "3": "Observe weight changes through regular measurements"
+      },
+      "managementTitle": "Healthy Weight Management",
+      "management": {
+        "0": "Balanced diet and regular exercise are important",
+        "1": "Steady management is more effective than rapid weight changes",
+        "2": "Consult with professionals considering individual differences",
+        "3": "Stress management and adequate sleep are also necessary"
+      }
+    },
+    "classification": {
+      "title": "BMI Classification Standards",
+      "note": "* Asian standards applied, separate criteria for 65+ years"
+    },
+    "history": {
+      "title": "BMI Calculation History",
+      "empty": "No saved calculation history",
+      "format": "Height {height}cm, Weight {weight}kg, BMI {bmi}"
+    },
+    "placeholder": "BMI calculation results will appear when you enter height and weight"
+  },
   "navigation": {
     "financialCalculators": "Financial Calculators",
     "developmentTools": "Development Tools",
+    "healthTools": "Health Tools",
     "financialTips": "💡 Financial Tips"
   }
 }

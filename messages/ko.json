@@ -503,6 +503,7 @@
       "realEstateCalculator": "부동산 계산기",
       "carLoanCalculator": "자동차 할부 계산기",
       "carTaxCalculator": "자동차 취등록세 계산기",
+      "bmiCalculator": "BMI 계산기",
       "jsonFormatter": "JSON 포맷터",
       "sqlFormatter": "SQL 포맷터",
       "markdownViewer": "마크다운 뷰어",
@@ -511,9 +512,77 @@
     },
     "copyright": "© 2025 툴허브. All rights reserved."
   },
+  "bmi": {
+    "title": "BMI 계산기",
+    "description": "체질량지수(BMI)를 계산하여 건강한 체중 관리를 시작해보세요",
+    "input": {
+      "title": "신체 정보 입력",
+      "height": "키 (cm)",
+      "weight": "몸무게 (kg)",
+      "age": "나이 (선택사항)",
+      "gender": "성별",
+      "male": "남성",
+      "female": "여성",
+      "heightPlaceholder": "170",
+      "weightPlaceholder": "70",
+      "agePlaceholder": "30",
+      "ageNote": "65세 이상인 경우 노인 기준을 적용합니다"
+    },
+    "result": {
+      "title": "BMI 계산 결과",
+      "bmi": "BMI",
+      "category": "분류",
+      "idealWeightRange": "이상 체중 범위",
+      "weightDifference": "현재 체중과의 차이",
+      "healthRisk": "건강 위험도",
+      "shareResult": "결과 공유"
+    },
+    "categories": {
+      "underweight": "저체중",
+      "normal": "정상",
+      "overweight": "과체중",
+      "obese1": "비만 1단계",
+      "obese2": "비만 2단계 이상"
+    },
+    "healthRisks": {
+      "malnutrition": "영양부족 위험",
+      "healthy": "건강",
+      "slightRisk": "약간 위험",
+      "risk": "위험",
+      "highRisk": "고위험"
+    },
+    "guide": {
+      "title": "BMI와 건강 관리",
+      "meaningTitle": "BMI의 의미",
+      "meaning": {
+        "0": "BMI는 키와 몸무게로 계산하는 비만도 지수입니다",
+        "1": "전체적인 건강 상태의 참고 지표로 활용됩니다",
+        "2": "근육량, 골밀도 등은 반영되지 않는 한계가 있습니다",
+        "3": "정기적인 측정으로 체중 변화를 관찰하세요"
+      },
+      "managementTitle": "건강한 체중 관리",
+      "management": {
+        "0": "균형 잡힌 식단과 규칙적인 운동이 중요합니다",
+        "1": "급격한 체중 변화보다는 꾸준한 관리가 효과적입니다",
+        "2": "개인차를 고려하여 전문가와 상담하세요",
+        "3": "스트레스 관리와 충분한 수면도 필요합니다"
+      }
+    },
+    "classification": {
+      "title": "BMI 분류 기준",
+      "note": "* 아시아인 기준 적용, 65세 이상은 별도 기준"
+    },
+    "history": {
+      "title": "BMI 계산 기록",
+      "empty": "저장된 계산 이력이 없습니다",
+      "format": "키 {height}cm, 몸무게 {weight}kg, BMI {bmi}"
+    },
+    "placeholder": "키와 몸무게를 입력하시면 BMI 계산 결과가 나타납니다"
+  },
   "navigation": {
     "financialCalculators": "금융 계산기",
     "developmentTools": "개발 도구",
+    "healthTools": "건강 도구",
     "financialTips": "💡 금융 팁"
   }
 }

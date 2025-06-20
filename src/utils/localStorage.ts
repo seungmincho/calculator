@@ -2,7 +2,7 @@
 
 export interface CalculationHistory {
   id: string;
-  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock' | 'car-loan' | 'car-tax';
+  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock' | 'car-loan' | 'car-tax' | 'bmi';
   timestamp: number;
   inputs: Record<string, any>;
   result: Record<string, any>;
@@ -206,5 +206,17 @@ export const generateHistoryTitle = {
     const fuelLabel = fuelLabels[fuelType as keyof typeof fuelLabels] || '휘발유';
     
     return `${typeLabel}(${fuelLabel}) ${priceRange}천만원`;
+  },
+
+  bmi: (inputs: any): string => {
+    const height = inputs.height || 0;
+    const weight = inputs.weight || 0;
+    const gender = inputs.gender || 'male';
+    const age = inputs.age || 0;
+    
+    const genderLabel = gender === 'male' ? '남성' : '여성';
+    const ageText = age > 0 ? `${age}세 ` : '';
+    
+    return `${ageText}${genderLabel} ${height}cm ${weight}kg`;
   }
 };
