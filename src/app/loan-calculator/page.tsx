@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import I18nWrapper from '@/components/I18nWrapper'
 import LoanCalculator from '@/components/LoanCalculator'
 
 export const metadata: Metadata = {
@@ -56,7 +57,9 @@ export default function LoanCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <LoanCalculator />
+      <I18nWrapper>
+        <LoanCalculator />
+      </I18nWrapper>
     </>
   )
 }

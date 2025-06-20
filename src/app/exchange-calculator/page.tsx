@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import I18nWrapper from '@/components/I18nWrapper'
 import ExchangeRateCalculator from '@/components/ExchangeRateCalculator'
 
 export const metadata: Metadata = {
@@ -55,7 +56,9 @@ export default function ExchangeCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ExchangeRateCalculator />
+      <I18nWrapper>
+        <ExchangeRateCalculator />
+      </I18nWrapper>
     </>
   )
 }

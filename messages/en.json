@@ -1,0 +1,386 @@
+{
+  "common": {
+    "calculate": "Calculate",
+    "result": "Result",
+    "share": "Share",
+    "save": "Save",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "edit": "Edit",
+    "delete": "Delete",
+    "clear": "Clear",
+    "reset": "Reset",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "home": "Home",
+    "menu": "Menu",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "export": "Export",
+    "import": "Import",
+    "print": "Print",
+    "help": "Help",
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "header": {
+    "title": "ToolHub",
+    "language": "Language"
+  },
+  "salary": {
+    "title": "Salary Take-Home Calculator",
+    "description": "Enter your salary to calculate the actual amount you can receive after deducting 4 major insurances, income tax, and local income tax.",
+    "input": {
+      "salaryType": "Salary Type",
+      "annual": "Annual Salary",
+      "monthly": "Monthly Salary",
+      "salaryAmount": "Salary Amount (Pre-tax)",
+      "salaryPlaceholderAnnual": "50,000,000",
+      "salaryPlaceholderMonthly": "4,000,000",
+      "nonTaxable": "Non-taxable Amount (Annual)",
+      "nonTaxablePlaceholder": "0",
+      "nonTaxableDesc": "Meal allowance, transportation, childcare leave benefit, etc.",
+      "dependents": "Number of Dependents (Including yourself)",
+      "children": "Number of Children Under 20",
+      "currency": "KRW"
+    },
+    "result": {
+      "monthlyTakeHome": "Monthly Take-Home",
+      "annualTakeHome": "Annual Take-Home",
+      "effectiveTaxRate": "Effective Tax Rate",
+      "shareResult": "Share Result",
+      "taxInfo": "Tax Information",
+      "grossSalary": "Gross Salary",
+      "taxableIncome": "Taxable Income",
+      "workIncomeDeduction": "Work Income Deduction",
+      "workIncome": "Work Income Amount",
+      "personalDeduction": "Personal Deduction",
+      "pensionDeduction": "National Pension Income Deduction",
+      "taxableStandard": "Taxable Standard",
+      "taxCredit": "Tax Credit",
+      "deductionBreakdown": "Deduction Breakdown",
+      "nationalPension": "National Pension",
+      "healthInsurance": "Health Insurance",
+      "longTermCare": "Long-term Care Insurance",
+      "employmentInsurance": "Employment Insurance",
+      "incomeTax": "Income Tax",
+      "localIncomeTax": "Local Income Tax",
+      "totalDeduction": "Total Deduction"
+    },
+    "tips": {
+      "title": "Today's Tips",
+      "yearEndTax": {
+        "title": "Year-end Tax Settlement Preparation",
+        "content": "Collect medical expenses, education expenses, and donation receipts in advance to receive more tax credits in year-end tax settlement."
+      },
+      "taxSaving": {
+        "title": "Tax Saving Methods",
+        "content": "You can increase your take-home pay by utilizing tax credit benefits such as IRP and pension savings."
+      }
+    },
+    "table": {
+      "title": "Take-Home Salary Table by Annual Income",
+      "description": "From 20 million to 200 million KRW in 1 million KRW increments",
+      "showTable": "Show Table",
+      "hideTable": "Hide Table",
+      "headers": {
+        "salary": "Annual Salary",
+        "annualTakeHome": "Take-Home (Annual)",
+        "monthlyTakeHome": "Take-Home (Monthly)",
+        "totalDeduction": "Total Deduction",
+        "takeHomeRatio": "Take-Home Ratio"
+      },
+      "usage": {
+        "title": "How to Use the Table",
+        "points": {
+          "0": "Calculated in 1 million KRW increments from 20 million to 200 million KRW",
+          "1": "The higher the take-home ratio, the lower the tax burden",
+          "2": "For high income earners, the take-home ratio decreases due to progressive tax rates",
+          "3": "Actual take-home pay may increase further with additional deductions during year-end tax settlement"
+        }
+      }
+    },
+    "guide": {
+      "title": "Salary Calculation Master Guide",
+      "subtitle": "From new employees to executives! A complete guide to mastering everything about salary calculation. We'll tell you all the secrets to increase your take-home pay, from 4 major insurances to year-end tax settlement!",
+      "features": {
+        "accurate": {
+          "title": "Latest 2025 Tax Law",
+          "description": "Accurate calculation based on National Tax Service official data, reflecting 4 major insurance premiums, income tax rates, and various deductions in real-time!",
+          "points": [
+            "Accurate 4 major insurance premiums: Health insurance 3.545%, National pension 4.5%, Employment insurance 0.9% accurately reflected",
+            "6-tier progressive tax rate: Accurate tax rate application by income bracket from 6% to 45%",
+            "Various tax credits: Perfect calculation including work income tax credit and child tax credit"
+          ]
+        },
+        "smart": {
+          "title": "Smart Analysis System",
+          "description": "Smart salary analysis beyond simple calculation! See everything from effective tax rate to tax-saving points at a glance.",
+          "points": [
+            "Effective tax rate analysis: Check the actual tax payment ratio at a glance",
+            "Tax-saving guide: Customized proposals for utilizing non-taxable income and income deductions",
+            "Salary comparison table: Take-home pay by bracket from 20 million to 200 million KRW at a glance"
+          ]
+        },
+        "practical": {
+          "title": "Practical Optimization Tools",
+          "description": "From HR teams to individuals! Maximize work efficiency with convenient features that can be used directly in practice.",
+          "points": [
+            "Calculation history management: Save and compare multiple scenarios for analysis",
+            "URL sharing: Easily share calculation results via URL",
+            "Responsive design: Perfect anywhere - PC, tablet, mobile"
+          ]
+        }
+      }
+    },
+    "calculation": {
+      "basis": "Calculation Basis (2025)",
+      "points": {
+        "0": "Work income deduction: Progressive deduction applied according to total salary",
+        "1": "4 major insurances: Health insurance 3.545%, National pension 4.5% (cap 80.52 million KRW), Employment insurance 0.9%",
+        "2": "Long-term care insurance: 12.27% of health insurance premium",
+        "3": "Income tax progressive rate: 6%~45% (7 brackets)",
+        "4": "Work income tax credit and child tax credit reflected",
+        "5": "Refund possible with additional deductions during year-end tax settlement"
+      }
+    },
+    "history": {
+      "title": "Calculation History",
+      "empty": "No saved calculation history",
+      "load": "Load",
+      "remove": "Delete",
+      "clear": "Clear All",
+      "format": "Monthly {monthly} KRW (Annual {annual} KRW)"
+    },
+    "placeholder": "Calculation results will appear when you enter your salary"
+  },
+  "loan": {
+    "title": "Loan Calculator",
+    "description": "Calculate monthly payments for various loan types including equal installment, equal principal, and bullet payment loans.",
+    "input": {
+      "loanAmount": "Loan Amount",
+      "interestRate": "Annual Interest Rate",
+      "loanTerm": "Loan Term",
+      "loanType": "Payment Type",
+      "equalInstallment": "Equal Installment",
+      "equalPrincipal": "Equal Principal", 
+      "bulletPayment": "Bullet Payment",
+      "graceType": "Grace Period Type",
+      "gracePeriod": "Grace Period (months)",
+      "years": "years",
+      "months": "months"
+    },
+    "result": {
+      "monthlyPayment": "Monthly Payment",
+      "totalPayment": "Total Payment",
+      "totalInterest": "Total Interest",
+      "paymentSchedule": "Payment Schedule",
+      "month": "Month",
+      "principal": "Principal",
+      "interest": "Interest",
+      "payment": "Payment",
+      "balance": "Balance"
+    }
+  },
+  "savings": {
+    "title": "Savings Calculator",
+    "description": "Calculate interest and maturity amount for various savings products.",
+    "input": {
+      "savingsType": "Savings Type",
+      "regularSavings": "Regular Savings",
+      "freeSavings": "Free Savings",
+      "targetSavings": "Target Savings",
+      "compoundSavings": "Compound Savings",
+      "monthlyDeposit": "Monthly Deposit",
+      "interestRate": "Annual Interest Rate",
+      "savingsPeriod": "Savings Period",
+      "targetAmount": "Target Amount"
+    },
+    "result": {
+      "maturityAmount": "Maturity Amount",
+      "totalDeposit": "Total Deposit",
+      "totalInterest": "Total Interest",
+      "effectiveRate": "Effective Interest Rate"
+    }
+  },
+  "retirement": {
+    "title": "Retirement Pay Calculator",
+    "description": "Calculate retirement pay and retirement income tax based on Korean labor law.",
+    "input": {
+      "averageWage": "Average Monthly Wage",
+      "workPeriod": "Work Period",
+      "retirementReason": "Retirement Reason",
+      "voluntary": "Voluntary Retirement",
+      "involuntary": "Involuntary Termination",
+      "years": "years",
+      "months": "months"
+    },
+    "result": {
+      "retirementPay": "Retirement Pay",
+      "retirementTax": "Retirement Income Tax",
+      "netRetirementPay": "Net Retirement Pay"
+    }
+  },
+  "tax": {
+    "title": "Tax Calculator",
+    "description": "Calculate income tax, VAT, and capital gains tax based on Korean tax law.",
+    "input": {
+      "taxType": "Tax Type",
+      "incomeTax": "Income Tax",
+      "vat": "Value Added Tax",
+      "capitalGains": "Capital Gains Tax",
+      "income": "Income",
+      "expenses": "Expenses",
+      "taxableIncome": "Taxable Income"
+    },
+    "result": {
+      "tax": "Tax Amount",
+      "netIncome": "Net Income",
+      "taxRate": "Tax Rate"
+    }
+  },
+  "exchange": {
+    "title": "Exchange Rate Calculator",
+    "description": "Convert currencies with real-time exchange rates.",
+    "input": {
+      "fromCurrency": "From Currency",
+      "toCurrency": "To Currency",
+      "amount": "Amount",
+      "exchangeRate": "Exchange Rate"
+    },
+    "result": {
+      "convertedAmount": "Converted Amount",
+      "exchangeRate": "Current Rate",
+      "lastUpdated": "Last Updated"
+    }
+  },
+  "realEstate": {
+    "title": "Real Estate Calculator",
+    "description": "Calculate real estate investment returns and acquisition tax.",
+    "input": {
+      "propertyPrice": "Property Price",
+      "downPayment": "Down Payment",
+      "loanAmount": "Loan Amount",
+      "acquisitionTax": "Acquisition Tax",
+      "propertyTax": "Property Tax"
+    },
+    "result": {
+      "totalCost": "Total Cost",
+      "monthlyPayment": "Monthly Payment",
+      "roi": "Return on Investment"
+    }
+  },
+  "jsonFormatter": {
+    "title": "JSON Formatter",
+    "description": "Format, validate, and beautify JSON data online.",
+    "input": {
+      "jsonInput": "JSON Input",
+      "pasteJson": "Paste your JSON here..."
+    },
+    "actions": {
+      "format": "Format",
+      "minify": "Minify",
+      "validate": "Validate",
+      "clear": "Clear"
+    },
+    "result": {
+      "formatted": "Formatted JSON",
+      "valid": "Valid JSON",
+      "invalid": "Invalid JSON",
+      "error": "JSON Error"
+    }
+  },
+  "sqlFormatter": {
+    "title": "SQL Formatter",
+    "description": "Format and beautify SQL queries with syntax highlighting.",
+    "input": {
+      "sqlInput": "SQL Input",
+      "pasteSql": "Paste your SQL here..."
+    },
+    "actions": {
+      "format": "Format",
+      "minify": "Minify",
+      "clear": "Clear"
+    },
+    "result": {
+      "formatted": "Formatted SQL"
+    }
+  },
+  "markdownViewer": {
+    "title": "Markdown Viewer",
+    "description": "Preview and render markdown files with live preview.",
+    "input": {
+      "markdownInput": "Markdown Input",
+      "pasteMarkdown": "Paste your Markdown here..."
+    },
+    "actions": {
+      "preview": "Preview",
+      "edit": "Edit",
+      "download": "Download"
+    }
+  },
+  "imageResizer": {
+    "title": "Image Resizer",
+    "description": "Resize images online while maintaining quality.",
+    "input": {
+      "selectImage": "Select Image",
+      "width": "Width",
+      "height": "Height",
+      "maintainRatio": "Maintain Aspect Ratio"
+    },
+    "actions": {
+      "resize": "Resize",
+      "download": "Download",
+      "reset": "Reset"
+    }
+  },
+  "imageEditor": {
+    "title": "Image Editor",
+    "description": "Edit images online with filters, cropping, and effects.",
+    "input": {
+      "selectImage": "Select Image"
+    },
+    "actions": {
+      "crop": "Crop",
+      "rotate": "Rotate",
+      "filter": "Filter",
+      "download": "Download"
+    }
+  },
+  "footer": {
+    "title": "ToolHub",
+    "description": "We provide various calculators needed in daily life.",
+    "calculators": "Calculators",
+    "tools": "Tools",
+    "links": {
+      "salaryCalculator": "Salary Calculator",
+      "loanCalculator": "Loan Calculator", 
+      "savingsCalculator": "Savings Calculator",
+      "retirementCalculator": "Retirement Calculator",
+      "taxCalculator": "Tax Calculator",
+      "exchangeCalculator": "Exchange Calculator",
+      "realEstateCalculator": "Real Estate Calculator",
+      "jsonFormatter": "JSON Formatter",
+      "sqlFormatter": "SQL Formatter",
+      "markdownViewer": "Markdown Viewer",
+      "imageResizer": "Image Resizer",
+      "imageEditor": "Image Editor"
+    },
+    "copyright": "© 2025 ToolHub. All rights reserved."
+  },
+  "navigation": {
+    "financialCalculators": "Financial Calculators",
+    "developmentTools": "Development Tools",
+    "financialTips": "💡 Financial Tips"
+  }
+}

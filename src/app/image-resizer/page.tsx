@@ -1,4 +1,5 @@
-import { Metadata } from 'next';
+import { Metadata } from 'next'
+import I18nWrapper from '@/components/I18nWrapper';
 import ImageResizerComponent from '@/components/ImageResizer';
 
 export const metadata: Metadata = {
@@ -24,5 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default function ImageResizerPage() {
-  return <ImageResizerComponent />;
+  return <I18nWrapper>
+        <ImageResizerComponent />
+      </I18nWrapper>;
 }

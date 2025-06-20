@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import I18nWrapper from '@/components/I18nWrapper'
 import JsonFormatter from '@/components/JsonFormatter'
 
 export const metadata: Metadata = {
@@ -13,5 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default function JsonFormatterPage() {
-  return <JsonFormatter />
+  return <I18nWrapper>
+        <JsonFormatter />
+      </I18nWrapper>
 }

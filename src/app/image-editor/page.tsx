@@ -1,4 +1,5 @@
-import { Metadata } from 'next';
+import { Metadata } from 'next'
+import I18nWrapper from '@/components/I18nWrapper';
 import ImageEditorComponent from '@/components/ImageEditor';
 
 export const metadata: Metadata = {
@@ -24,5 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default function ImageEditorPage() {
-  return <ImageEditorComponent />;
+  return <I18nWrapper>
+        <ImageEditorComponent />
+      </I18nWrapper>;
 }

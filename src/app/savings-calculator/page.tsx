@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import I18nWrapper from '@/components/I18nWrapper'
 import SavingsCalculator from '@/components/SavingsCalculator'
 
 export const metadata: Metadata = {
@@ -56,7 +57,9 @@ export default function SavingsCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <SavingsCalculator />
+      <I18nWrapper>
+        <SavingsCalculator />
+      </I18nWrapper>
     </>
   )
 }

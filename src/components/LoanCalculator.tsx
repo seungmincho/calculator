@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Calculator, TrendingDown, PiggyBank, BarChart3, CompassIcon, Share2, Check, Save } from 'lucide-react';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
+import { useTranslations } from 'next-intl';
 
 type LoanType = 'equal-payment' | 'equal-principal' | 'interest-only' | 'balloon';
 
@@ -25,6 +26,8 @@ interface LoanResult {
 const LoanCalculatorContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations('loan');
+  const tc = useTranslations('common');
   const [loanAmount, setLoanAmount] = useState('');
   const [interestRate, setInterestRate] = useState('');
   const [loanTerm, setLoanTerm] = useState('');
@@ -45,10 +48,10 @@ const LoanCalculatorContent = () => {
   } = useCalculationHistory('loan');
 
   const loanTypes = {
-    'equal-payment': '원리금균등상환',
-    'equal-principal': '원금균등상환',
-    'interest-only': '만기일시상환',
-    'balloon': '거치식대출'
+    'equal-payment': t('input.equalInstallment'),
+    'equal-principal': t('input.equalPrincipal'),
+    'interest-only': t('input.bulletPayment'),
+    'balloon': t('input.bulletPayment')
   };
 
   // 원리금균등상환 계산
@@ -459,7 +462,7 @@ const LoanCalculatorContent = () => {
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  대출금액
+                  {t('input.loanAmount')}
                 </label>
                 <div className="relative">
                   <input
@@ -475,7 +478,7 @@ const LoanCalculatorContent = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  연 이자율
+                  {t('input.interestRate')}
                 </label>
                 <div className="relative">
                   <input

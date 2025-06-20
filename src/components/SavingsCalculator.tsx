@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Target, Coins, BarChart3, Calculator, Share2, Check, Save } from 'lucide-react';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
+import { useTranslations } from 'next-intl';
 
 type SavingsType = 'regular' | 'free' | 'target' | 'compound';
 
@@ -26,6 +27,8 @@ interface SavingsResult {
 const SavingsCalculatorContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations('savings');
+  const tc = useTranslations('common');
   const [monthlyAmount, setMonthlyAmount] = useState('');
   const [interestRate, setInterestRate] = useState('');
   const [savingsPeriod, setSavingsPeriod] = useState('');

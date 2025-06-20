@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import I18nWrapper from '@/components/I18nWrapper'
 import MarkdownViewer from '@/components/MarkdownViewer'
 
 export const metadata: Metadata = {
@@ -13,5 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default function MarkdownViewerPage() {
-  return <MarkdownViewer />
+  return <I18nWrapper>
+        <MarkdownViewer />
+      </I18nWrapper>
 }

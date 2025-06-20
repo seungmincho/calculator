@@ -1,0 +1,386 @@
+{
+  "common": {
+    "calculate": "계산",
+    "result": "결과",
+    "share": "공유",
+    "save": "저장",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "loading": "로딩 중...",
+    "error": "오류",
+    "success": "성공",
+    "close": "닫기",
+    "cancel": "취소",
+    "confirm": "확인",
+    "edit": "편집",
+    "delete": "삭제",
+    "clear": "지우기",
+    "reset": "초기화",
+    "back": "뒤로",
+    "next": "다음",
+    "previous": "이전",
+    "home": "홈",
+    "menu": "메뉴",
+    "search": "검색",
+    "filter": "필터",
+    "sort": "정렬",
+    "export": "내보내기",
+    "import": "가져오기",
+    "print": "인쇄",
+    "help": "도움말",
+    "about": "정보",
+    "contact": "연락처",
+    "privacy": "개인정보처리방침",
+    "terms": "이용약관"
+  },
+  "header": {
+    "title": "툴허브",
+    "language": "언어"
+  },
+  "salary": {
+    "title": "연봉 실수령액 계산기",
+    "description": "연봉을 입력하시면 4대보험, 소득세, 지방소득세를 제외한 실제 받을 수 있는 금액을 계산해드립니다.",
+    "input": {
+      "salaryType": "급여 유형",
+      "annual": "연봉",
+      "monthly": "월급",
+      "salaryAmount": "급여 금액 (세전)",
+      "salaryPlaceholderAnnual": "50,000,000",
+      "salaryPlaceholderMonthly": "4,000,000",
+      "nonTaxable": "비과세액 (연간)",
+      "nonTaxablePlaceholder": "0",
+      "nonTaxableDesc": "식대, 교통비, 육아휴직급여 등",
+      "dependents": "부양가족수 (본인포함)",
+      "children": "20세 이하 자녀수",
+      "currency": "원"
+    },
+    "result": {
+      "monthlyTakeHome": "월 실수령액",
+      "annualTakeHome": "연 실수령액",
+      "effectiveTaxRate": "실효세율",
+      "shareResult": "결과 공유",
+      "taxInfo": "세금 정보",
+      "grossSalary": "총 급여액",
+      "taxableIncome": "과세대상 소득",
+      "workIncomeDeduction": "근로소득공제",
+      "workIncome": "근로소득금액",
+      "personalDeduction": "인적공제",
+      "pensionDeduction": "국민연금 소득공제",
+      "taxableStandard": "과세표준",
+      "taxCredit": "세액공제",
+      "deductionBreakdown": "공제 내역",
+      "nationalPension": "국민연금",
+      "healthInsurance": "건강보험",
+      "longTermCare": "장기요양보험",
+      "employmentInsurance": "고용보험",
+      "incomeTax": "소득세",
+      "localIncomeTax": "지방소득세",
+      "totalDeduction": "총 공제액"
+    },
+    "tips": {
+      "title": "오늘의 팁",
+      "yearEndTax": {
+        "title": "연말정산 준비",
+        "content": "의료비, 교육비, 기부금 영수증을 미리 모아두시면 연말정산에서 더 많은 세액공제를 받을 수 있습니다."
+      },
+      "taxSaving": {
+        "title": "절세 방법",
+        "content": "IRP, 연금저축 등의 세액공제 혜택을 활용하면 실수령액을 늘릴 수 있습니다."
+      }
+    },
+    "table": {
+      "title": "연봉별 실수령액 표",
+      "description": "2천만원부터 2억원까지 100만원 단위",
+      "showTable": "표 보기",
+      "hideTable": "표 숨기기",
+      "headers": {
+        "salary": "연봉",
+        "annualTakeHome": "실수령액(연)",
+        "monthlyTakeHome": "실수령액(월)",
+        "totalDeduction": "총 공제액",
+        "takeHomeRatio": "실수령 비율"
+      },
+      "usage": {
+        "title": "표 사용법",
+        "points": {
+          "0": "2천만원부터 2억원까지 100만원 단위로 계산됩니다",
+          "1": "실수령 비율이 높을수록 세금 부담이 적습니다",
+          "2": "고소득일수록 누진세율로 인해 실수령 비율이 감소합니다",
+          "3": "실제 연말정산시 추가 공제로 실수령액이 더 늘어날 수 있습니다"
+        }
+      }
+    },
+    "guide": {
+      "title": "연봉 계산 마스터 가이드",
+      "subtitle": "신입사원부터 임원까지! 연봉 계산의 모든 것을 마스터하는 완전한 가이드입니다. 4대보험부터 연말정산까지, 실수령액을 늘리는 모든 비법을 알려드립니다!",
+      "features": {
+        "accurate": {
+          "title": "2025년 최신 세법",
+          "description": "국세청 공식 자료 기반으로 4대보험료, 소득세율, 각종 공제를 실시간 반영한 정확한 계산!",
+          "points": [
+            "정확한 4대보험료: 건강보험 3.545%, 국민연금 4.5%, 고용보험 0.9% 정확 반영",
+            "6단계 누진세율: 6%~45%까지 소득 구간별 정확한 세율 적용",
+            "각종 세액공제: 근로소득세액공제, 자녀세액공제까지 완벽 계산"
+          ]
+        },
+        "smart": {
+          "title": "스마트 분석 시스템",
+          "description": "단순 계산을 넘어선 똑똑한 연봉 분석! 실효세율부터 절세 포인트까지 한눈에 파악하세요.",
+          "points": [
+            "실효세율 분석: 실제 납부하는 세금 비율을 한눈에 확인",
+            "절세 가이드: 비과세소득, 소득공제 활용법 맞춤 제안",
+            "연봉별 비교표: 2천만원~2억원까지 구간별 실수령액 한눈에"
+          ]
+        },
+        "practical": {
+          "title": "실무 최적화 도구",
+          "description": "HR팀부터 개인까지! 실무에서 바로 쓸 수 있는 편리한 기능들로 업무 효율성을 극대화하세요.",
+          "points": [
+            "계산 이력 관리: 여러 시나리오 저장하고 비교 분석 가능",
+            "URL 공유: 계산 결과를 URL로 간편하게 공유",
+            "반응형 디자인: PC, 태블릿, 모바일 어디서든 완벽하게"
+          ]
+        }
+      }
+    },
+    "calculation": {
+      "basis": "계산 기준 (2025년)",
+      "points": {
+        "0": "근로소득공제: 총급여에 따른 누진 공제 적용",
+        "1": "4대보험: 건강보험 3.545%, 국민연금 4.5% (상한 8,052만원), 고용보험 0.9%",
+        "2": "장기요양보험: 건강보험료의 12.27%",
+        "3": "소득세 누진세율: 6%~45% (7구간)",
+        "4": "근로소득세액공제 및 자녀세액공제 반영",
+        "5": "연말정산시 추가 공제로 환급 가능"
+      }
+    },
+    "history": {
+      "title": "계산 이력",
+      "empty": "저장된 계산 이력이 없습니다",
+      "load": "불러오기",
+      "remove": "삭제",
+      "clear": "전체 삭제",
+      "format": "월 {monthly}원 (연 {annual}원)"
+    },
+    "placeholder": "연봉을 입력하시면 계산 결과가 나타납니다"
+  },
+  "loan": {
+    "title": "대출 계산기",
+    "description": "원리금균등상환, 원금균등상환, 만기일시상환 등 다양한 대출 방식의 월 상환금액을 계산해보세요.",
+    "input": {
+      "loanAmount": "대출 금액",
+      "interestRate": "연 이자율",
+      "loanTerm": "대출 기간",
+      "loanType": "상환 방식",
+      "equalInstallment": "원리금균등상환",
+      "equalPrincipal": "원금균등상환",
+      "bulletPayment": "만기일시상환",
+      "graceType": "거치 방식",
+      "gracePeriod": "거치 기간 (개월)",
+      "years": "년",
+      "months": "개월"
+    },
+    "result": {
+      "monthlyPayment": "월 상환금",
+      "totalPayment": "총 상환금",
+      "totalInterest": "총 이자",
+      "paymentSchedule": "상환 스케줄",
+      "month": "회차",
+      "principal": "원금",
+      "interest": "이자",
+      "payment": "상환금",
+      "balance": "잔액"
+    }
+  },
+  "savings": {
+    "title": "적금 계산기",
+    "description": "정기적금, 자유적금, 목표적금 등 다양한 적금 상품의 이자와 만기 수령액을 계산해보세요.",
+    "input": {
+      "savingsType": "적금 종류",
+      "regularSavings": "정기적금",
+      "freeSavings": "자유적금",
+      "targetSavings": "목표적금",
+      "compoundSavings": "복리적금",
+      "monthlyDeposit": "월 납입액",
+      "interestRate": "연 이자율",
+      "savingsPeriod": "적금 기간",
+      "targetAmount": "목표 금액"
+    },
+    "result": {
+      "maturityAmount": "만기 수령액",
+      "totalDeposit": "총 납입액",
+      "totalInterest": "총 이자",
+      "effectiveRate": "실 수익률"
+    }
+  },
+  "retirement": {
+    "title": "퇴직금 계산기",
+    "description": "근로기준법에 따른 퇴직금과 퇴직소득세를 정확하게 계산해보세요.",
+    "input": {
+      "averageWage": "평균 월급여",
+      "workPeriod": "근무 기간",
+      "retirementReason": "퇴직 사유",
+      "voluntary": "자진 퇴사",
+      "involuntary": "권고 사직",
+      "years": "년",
+      "months": "개월"
+    },
+    "result": {
+      "retirementPay": "퇴직금",
+      "retirementTax": "퇴직소득세",
+      "netRetirementPay": "실수령 퇴직금"
+    }
+  },
+  "tax": {
+    "title": "세금 계산기",
+    "description": "소득세, 부가가치세, 양도소득세 등 한국 세법 기준 세금을 계산해보세요.",
+    "input": {
+      "taxType": "세금 종류",
+      "incomeTax": "소득세",
+      "vat": "부가가치세",
+      "capitalGains": "양도소득세",
+      "income": "소득",
+      "expenses": "경비",
+      "taxableIncome": "과세소득"
+    },
+    "result": {
+      "tax": "세액",
+      "netIncome": "세후소득",
+      "taxRate": "세율"
+    }
+  },
+  "exchange": {
+    "title": "환율 계산기",
+    "description": "실시간 환율로 원화, 달러, 유로, 엔화 등 주요 통화를 환전 계산해보세요.",
+    "input": {
+      "fromCurrency": "기준 통화",
+      "toCurrency": "대상 통화",
+      "amount": "금액",
+      "exchangeRate": "환율"
+    },
+    "result": {
+      "convertedAmount": "환전 금액",
+      "exchangeRate": "현재 환율",
+      "lastUpdated": "마지막 업데이트"
+    }
+  },
+  "realEstate": {
+    "title": "부동산 계산기",
+    "description": "부동산 투자 수익률과 취득세를 계산해보세요.",
+    "input": {
+      "propertyPrice": "부동산 가격",
+      "downPayment": "계약금",
+      "loanAmount": "대출 금액",
+      "acquisitionTax": "취득세",
+      "propertyTax": "재산세"
+    },
+    "result": {
+      "totalCost": "총 비용",
+      "monthlyPayment": "월 상환금",
+      "roi": "투자 수익률"
+    }
+  },
+  "jsonFormatter": {
+    "title": "JSON 포맷터",
+    "description": "JSON 데이터를 검증하고 예쁘게 포맷팅하거나 압축하세요.",
+    "input": {
+      "jsonInput": "JSON 입력",
+      "pasteJson": "JSON을 여기에 붙여넣으세요..."
+    },
+    "actions": {
+      "format": "포맷팅",
+      "minify": "압축",
+      "validate": "검증",
+      "clear": "지우기"
+    },
+    "result": {
+      "formatted": "포맷팅된 JSON",
+      "valid": "유효한 JSON",
+      "invalid": "잘못된 JSON",
+      "error": "JSON 오류"
+    }
+  },
+  "sqlFormatter": {
+    "title": "SQL 포맷터",
+    "description": "SQL 쿼리를 예쁘게 포맷팅하고 문법 하이라이팅을 적용하세요.",
+    "input": {
+      "sqlInput": "SQL 입력",
+      "pasteSql": "SQL을 여기에 붙여넣으세요..."
+    },
+    "actions": {
+      "format": "포맷팅",
+      "minify": "압축",
+      "clear": "지우기"
+    },
+    "result": {
+      "formatted": "포맷팅된 SQL"
+    }
+  },
+  "markdownViewer": {
+    "title": "마크다운 뷰어",
+    "description": "마크다운 파일을 실시간으로 미리보고 렌더링하세요.",
+    "input": {
+      "markdownInput": "마크다운 입력",
+      "pasteMarkdown": "마크다운을 여기에 붙여넣으세요..."
+    },
+    "actions": {
+      "preview": "미리보기",
+      "edit": "편집",
+      "download": "다운로드"
+    }
+  },
+  "imageResizer": {
+    "title": "이미지 리사이저",
+    "description": "품질을 유지하면서 온라인으로 이미지 크기를 조정하세요.",
+    "input": {
+      "selectImage": "이미지 선택",
+      "width": "너비",
+      "height": "높이",
+      "maintainRatio": "비율 유지"
+    },
+    "actions": {
+      "resize": "크기 조정",
+      "download": "다운로드",
+      "reset": "초기화"
+    }
+  },
+  "imageEditor": {
+    "title": "이미지 편집기",
+    "description": "필터, 자르기, 효과를 사용해서 온라인으로 이미지를 편집하세요.",
+    "input": {
+      "selectImage": "이미지 선택"
+    },
+    "actions": {
+      "crop": "자르기",
+      "rotate": "회전",
+      "filter": "필터",
+      "download": "다운로드"
+    }
+  },
+  "footer": {
+    "title": "툴허브",
+    "description": "일상에 필요한 다양한 계산기를 제공합니다.",
+    "calculators": "계산기",
+    "tools": "도구",
+    "links": {
+      "salaryCalculator": "연봉 계산기",
+      "loanCalculator": "대출 계산기",
+      "savingsCalculator": "적금 계산기",
+      "retirementCalculator": "퇴직금 계산기",
+      "taxCalculator": "세금 계산기",
+      "exchangeCalculator": "환율 계산기",
+      "realEstateCalculator": "부동산 계산기",
+      "jsonFormatter": "JSON 포맷터",
+      "sqlFormatter": "SQL 포맷터",
+      "markdownViewer": "마크다운 뷰어",
+      "imageResizer": "이미지 리사이저",
+      "imageEditor": "이미지 편집기"
+    },
+    "copyright": "© 2025 툴허브. All rights reserved."
+  },
+  "navigation": {
+    "financialCalculators": "금융 계산기",
+    "developmentTools": "개발 도구",
+    "financialTips": "💡 금융 팁"
+  }
+}

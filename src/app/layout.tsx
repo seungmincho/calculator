@@ -5,7 +5,10 @@ import Script from 'next/script'
 import { Calculator } from 'lucide-react'
 // import { Analytics } from "@vercel/analytics/next" // Removed for Cloudflare Pages
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import DailyTips from '@/components/DailyTips'
+import { LanguageProvider } from '@/contexts/LanguageContext'
+import I18nWrapper from '@/components/I18nWrapper'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -151,59 +154,21 @@ export default function RootLayout({
         />
         
         */}
-        <Header />
-        {/* Main Content */}
-        <main>
-          {children}
-        </main>
+        <LanguageProvider>
+          <I18nWrapper>
+            <Header />
+            {/* Main Content */}
+            <main>
+              {children}
+            </main>
 
-        {/* Footer */}
-        <footer className="bg-gray-900 dark:bg-gray-950 text-white mt-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid md:grid-cols-3 gap-8">
-              <div>
-                <div className="flex items-center space-x-2 mb-4">
-                  <Calculator className="w-6 h-6" />
-                  <span className="text-lg font-semibold">툴허브</span>
-                </div>
-                <p className="text-gray-400 dark:text-gray-500">
-                  일상에 필요한 다양한 계산기를 제공합니다.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-4">계산기</h3>
-                <ul className="space-y-2 text-gray-400 dark:text-gray-500">
-                  <li><a href="/" className="hover:text-white transition-colors">연봉 계산기</a></li>
-                  <li><a href="/loan-calculator" className="hover:text-white transition-colors">대출 계산기</a></li>
-                  <li><a href="/savings-calculator" className="hover:text-white transition-colors">적금 계산기</a></li>
-                  <li><a href="/retirement-calculator" className="hover:text-white transition-colors">퇴직금 계산기</a></li>
-                  <li><a href="/tax-calculator" className="hover:text-white transition-colors">세금 계산기</a></li>
-                  <li><a href="/exchange-calculator" className="hover:text-white transition-colors">환율 계산기</a></li>
-                  <li><a href="/real-estate-calculator" className="hover:text-white transition-colors">부동산 계산기</a></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-4">도구</h3>
-                <ul className="space-y-2 text-gray-400 dark:text-gray-500">
-                  <li><a href="/json-formatter" className="hover:text-white transition-colors">JSON 포맷터</a></li>
-                  <li><a href="/sql-formatter" className="hover:text-white transition-colors">SQL 포맷터</a></li>
-                  <li><a href="/markdown-viewer" className="hover:text-white transition-colors">마크다운 뷰어</a></li>
-                  <li><a href="/image-resizer" className="hover:text-white transition-colors">이미지 리사이저</a></li>
-                  <li><a href="/image-editor" className="hover:text-white transition-colors">이미지 편집기</a></li>
-                  {/* <li><a href="#" className="hover:text-white transition-colors">오늘의 팁</a></li> */}
-                  {/* <li><a href="#" className="hover:text-white transition-colors">이용약관</a></li> */}
-                  {/* <li><a href="#" className="hover:text-white transition-colors">개인정보처리방침</a></li> */}
-                </ul>
-              </div>
-            </div>
-            <div className="border-t border-gray-700 dark:border-gray-800 mt-8 pt-8 text-center text-gray-400 dark:text-gray-500">
-              <p>&copy; 2025 툴허브. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
-        
-        {/* Daily Tips Component */}
-        <DailyTips />
+            {/* Footer */}
+            <Footer />
+            
+            {/* Daily Tips Component */}
+            <DailyTips />
+          </I18nWrapper>
+        </LanguageProvider>
         
         {/* <Analytics/> Removed for Cloudflare Pages */}
       </body>

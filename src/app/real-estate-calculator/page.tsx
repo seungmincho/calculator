@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import I18nWrapper from '@/components/I18nWrapper'
 import RealEstateCalculator from '@/components/RealEstateCalculator'
 
 export const metadata: Metadata = {
@@ -13,5 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default function RealEstateCalculatorPage() {
-  return <RealEstateCalculator />
+  return <I18nWrapper>
+        <RealEstateCalculator />
+      </I18nWrapper>
 }

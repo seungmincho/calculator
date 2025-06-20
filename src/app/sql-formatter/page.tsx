@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import I18nWrapper from '@/components/I18nWrapper'
 import SqlFormatter from '@/components/SqlFormatter'
 
 export const metadata: Metadata = {
@@ -13,5 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default function SqlFormatterPage() {
-  return <SqlFormatter />
+  return <I18nWrapper>
+        <SqlFormatter />
+      </I18nWrapper>
 }

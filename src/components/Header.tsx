@@ -2,33 +2,36 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Calculator, Menu, X, ChevronDown } from 'lucide-react';
+import LanguageToggle from './LanguageToggle';
+import { useTranslations } from 'next-intl';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations();
 
   const menuItems = {
     calculators: {
-      title: '금융 계산기',
+      title: t('navigation.financialCalculators'),
       items: [
-        { href: '/', label: '연봉 계산기', icon: '💰' },
-        { href: '/loan-calculator', label: '대출 계산기', icon: '🏦' },
-        { href: '/savings-calculator', label: '적금 계산기', icon: '📈' },
-        { href: '/retirement-calculator', label: '퇴직금 계산기', icon: '👴' },
-        { href: '/tax-calculator', label: '세금 계산기', icon: '📋' },
-        { href: '/exchange-calculator', label: '환율 계산기', icon: '💱' },
-        { href: '/real-estate-calculator', label: '부동산 계산기', icon: '🏠' }
+        { href: '/', label: t('footer.links.salaryCalculator'), icon: '💰' },
+        { href: '/loan-calculator', label: t('footer.links.loanCalculator'), icon: '🏦' },
+        { href: '/savings-calculator', label: t('footer.links.savingsCalculator'), icon: '📈' },
+        { href: '/retirement-calculator', label: t('footer.links.retirementCalculator'), icon: '👴' },
+        { href: '/tax-calculator', label: t('footer.links.taxCalculator'), icon: '📋' },
+        { href: '/exchange-calculator', label: t('footer.links.exchangeCalculator'), icon: '💱' },
+        { href: '/real-estate-calculator', label: t('footer.links.realEstateCalculator'), icon: '🏠' }
       ]
     },
     tools: {
-      title: '개발 도구',
+      title: t('navigation.developmentTools'),
       items: [
-        { href: '/json-formatter', label: 'JSON 포맷터', icon: '📝' },
-        { href: '/sql-formatter', label: 'SQL 포맷터', icon: '🗄️' },
-        { href: '/markdown-viewer', label: '마크다운 뷰어', icon: '📖' },
-        { href: '/image-resizer', label: '이미지 리사이저', icon: '🖼️' },
-        { href: '/image-editor', label: '이미지 편집기', icon: '🎨' }
+        { href: '/json-formatter', label: t('footer.links.jsonFormatter'), icon: '📝' },
+        { href: '/sql-formatter', label: t('footer.links.sqlFormatter'), icon: '🗄️' },
+        { href: '/markdown-viewer', label: t('footer.links.markdownViewer'), icon: '📖' },
+        { href: '/image-resizer', label: t('footer.links.imageResizer'), icon: '🖼️' },
+        { href: '/image-editor', label: t('footer.links.imageEditor'), icon: '🎨' }
       ]
     }
   };
@@ -61,7 +64,7 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-2">
             <Calculator className="w-8 h-8 text-blue-600" />
-            <span className="text-xl font-bold text-gray-900 dark:text-white">툴허브</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">{t('header.title')}</span>
           </div>
           
           {/* Desktop Navigation */}
@@ -72,7 +75,7 @@ const Header = () => {
                 onClick={() => handleDropdownToggle('calculators')}
                 className="flex items-center space-x-1 px-3 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
-                <span>금융 계산기</span>
+                <span>{menuItems.calculators.title}</span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === 'calculators' ? 'rotate-180' : ''}`} />
               </button>
               
@@ -99,7 +102,7 @@ const Header = () => {
                 onClick={() => handleDropdownToggle('tools')}
                 className="flex items-center space-x-1 px-3 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
-                <span>개발 도구</span>
+                <span>{menuItems.tools.title}</span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === 'tools' ? 'rotate-180' : ''}`} />
               </button>
               
@@ -125,21 +128,27 @@ const Header = () => {
               href="/tips" 
               className="px-3 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
-              💡 금융 팁
+              {t('navigation.financialTips')}
             </a>
+            
+            {/* 언어 전환 */}
+            <LanguageToggle />
           </nav>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          {/* Mobile: Language Toggle + Menu Button */}
+          <div className="lg:hidden flex items-center space-x-2">
+            <LanguageToggle />
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -149,7 +158,7 @@ const Header = () => {
               {/* 금융 계산기 섹션 */}
               <div>
                 <h3 className="px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
-                  💰 금융 계산기
+                  💰 {menuItems.calculators.title}
                 </h3>
                 <div className="space-y-1">
                   {menuItems.calculators.items.map((item) => (
@@ -169,7 +178,7 @@ const Header = () => {
               {/* 개발 도구 섹션 */}
               <div>
                 <h3 className="px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
-                  🛠️ 개발 도구
+                  🛠️ {menuItems.tools.title}
                 </h3>
                 <div className="space-y-1">
                   {menuItems.tools.items.map((item) => (
@@ -194,7 +203,7 @@ const Header = () => {
                   className="flex items-center space-x-3 px-3 py-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg mx-3 transition-colors font-medium"
                 >
                   <span className="text-lg">💡</span>
-                  <span>금융 팁</span>
+                  <span>{t('navigation.financialTips')}</span>
                 </a>
               </div>
             </nav>

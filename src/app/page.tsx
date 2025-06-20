@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import SalaryCalculator from '@/components/SalaryCalculator'
+import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
   title: '연봉 실수령액 계산기 | 툴허브 - 2025년 기준 정확한 계산',
@@ -49,7 +50,9 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <SalaryCalculator />
+      <I18nWrapper>
+        <SalaryCalculator />
+      </I18nWrapper>
     </>
   )
 }

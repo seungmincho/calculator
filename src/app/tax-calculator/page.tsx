@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import I18nWrapper from '@/components/I18nWrapper'
 import TaxCalculator from '@/components/TaxCalculator'
 
 export const metadata: Metadata = {
@@ -55,7 +56,9 @@ export default function TaxCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <TaxCalculator />
+      <I18nWrapper>
+        <TaxCalculator />
+      </I18nWrapper>
     </>
   )
 }
