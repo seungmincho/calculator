@@ -29,7 +29,7 @@ interface PresetPattern {
   pattern: string
   description: string
   example: string
-  category: 'common' | 'email' | 'web' | 'numbers' | 'dates' | 'code'
+  category: 'common' | 'email' | 'web' | 'numbers' | 'dates' | 'code' | 'hash'
 }
 
 export default function RegexExtractor() {
@@ -94,17 +94,17 @@ export default function RegexExtractor() {
   const smartModes = [
     {
       id: 'find-lines-containing',
-      title: '특정 단어가 포함된 라인 찾기',
-      description: '입력한 단어를 포함하는 모든 라인을 찾습니다',
-      placeholder: '찾을 단어를 입력하세요',
+      title: t('smartModes.findLinesContaining.title'),
+      description: t('smartModes.findLinesContaining.description'),
+      placeholder: t('smartModes.findLinesContaining.placeholder'),
       generatePattern: (input: string) => `.*${input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.*`,
       operation: 'grep' as const
     },
     {
       id: 'extract-between',
-      title: '특정 문자 사이의 내용 추출',
-      description: '두 문자 사이에 있는 내용을 추출합니다 (예: 괄호, 따옴표)',
-      placeholder: '시작 문자와 끝 문자를 입력하세요 (예: ( )',
+      title: t('smartModes.extractBetween.title'),
+      description: t('smartModes.extractBetween.description'),
+      placeholder: t('smartModes.extractBetween.placeholder'),
       generatePattern: (input: string) => {
         const parts = input.trim().split(/\s+/)
         if (parts.length >= 2) {
@@ -118,51 +118,51 @@ export default function RegexExtractor() {
     },
     {
       id: 'remove-duplicates',
-      title: '중복된 라인 제거',
-      description: '텍스트에서 중복된 라인을 제거합니다',
-      placeholder: '(이 모드는 별도 입력이 필요하지 않습니다)',
+      title: t('smartModes.removeDuplicates.title'),
+      description: t('smartModes.removeDuplicates.description'),
+      placeholder: t('smartModes.removeDuplicates.placeholder'),
       generatePattern: () => '', // 특별 처리
       operation: 'grep' as const,
       special: true
     },
     {
       id: 'extract-numbers',
-      title: '모든 숫자 추출',
-      description: '텍스트에서 모든 숫자를 추출합니다',
-      placeholder: '(이 모드는 별도 입력이 필요하지 않습니다)',
+      title: t('smartModes.extractNumbers.title'),
+      description: t('smartModes.extractNumbers.description'),
+      placeholder: t('smartModes.extractNumbers.placeholder'),
       generatePattern: () => '\\d+',
       operation: 'extract' as const
     },
     {
       id: 'replace-spaces',
-      title: '공백을 다른 문자로 바꾸기',
-      description: '모든 공백을 입력한 문자로 바꿉니다',
-      placeholder: '바꿀 문자를 입력하세요 (예: _, -)',
+      title: t('smartModes.replaceSpaces.title'),
+      description: t('smartModes.replaceSpaces.description'),
+      placeholder: t('smartModes.replaceSpaces.placeholder'),
       generatePattern: () => '\\s+',
       operation: 'replace' as const
     },
     {
       id: 'capitalize-words',
-      title: '각 단어의 첫 글자 대문자로 변경',
-      description: '각 단어의 첫 번째 글자를 대문자로 만듭니다',
-      placeholder: '(이 모드는 별도 입력이 필요하지 않습니다)',
+      title: t('smartModes.capitalizeWords.title'),
+      description: t('smartModes.capitalizeWords.description'),
+      placeholder: t('smartModes.capitalizeWords.placeholder'),
       generatePattern: () => '\\b(\\w)',
       operation: 'replace' as const,
       defaultReplacement: (match: string) => match.toUpperCase()
     },
     {
       id: 'extract-urls',
-      title: 'URL 주소 찾기',
-      description: '텍스트에서 모든 URL을 찾습니다',
-      placeholder: '(이 모드는 별도 입력이 필요하지 않습니다)',
+      title: t('smartModes.extractUrls.title'),
+      description: t('smartModes.extractUrls.description'),
+      placeholder: t('smartModes.extractUrls.placeholder'),
       generatePattern: () => 'https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)',
       operation: 'extract' as const
     },
     {
       id: 'extract-emails',
-      title: '이메일 주소 찾기',
-      description: '텍스트에서 모든 이메일 주소를 찾습니다',
-      placeholder: '(이 모드는 별도 입력이 필요하지 않습니다)',
+      title: t('smartModes.extractEmails.title'),
+      description: t('smartModes.extractEmails.description'),
+      placeholder: t('smartModes.extractEmails.placeholder'),
       generatePattern: () => '\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b',
       operation: 'extract' as const
     }

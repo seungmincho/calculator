@@ -2,7 +2,10 @@
 
 export interface CalculationHistory {
   id: string;
-  type: 'salary' | 'loan' | 'savings' | 'retirement' | 'tax' | 'exchange' | 'real-estate' | 'stock' | 'car-loan' | 'car-tax' | 'bmi' | 'calorie' | 'bodyFat' | 'workHours' | 'lotto' | 'ladder';
+  type: 'salary' | 'loan' | 'savings' | 'retirement' 
+  | 'tax' | 'exchange' | 'real-estate' | 'stock' 
+  | 'car-loan' | 'car-tax' | 'regex' | 'bmi' | 'calorie' 
+  | 'bodyFat' | 'workHours' | 'lotto' | 'ladder';
   timestamp: number;
   inputs: Record<string, any>;
   result: Record<string, any>;
@@ -207,7 +210,10 @@ export const generateHistoryTitle = {
     
     return `${typeLabel}(${fuelLabel}) ${priceRange}천만원`;
   },
-
+  // TODO: 이후에 추가할것
+  regex: (inputs: any): string => {
+    return ''
+  },
   bmi: (inputs: any): string => {
     const height = inputs.height || 0;
     const weight = inputs.weight || 0;

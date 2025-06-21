@@ -1325,6 +1325,48 @@
     "patternBuilder": {
       "title": "Pattern Builder",
       "description": "Click the buttons below to build your pattern."
+    },
+    "smartModes": {
+      "findLinesContaining": {
+        "title": "Find Lines Containing Word",
+        "description": "Find all lines that contain the entered word",
+        "placeholder": "Enter word to search for"
+      },
+      "extractBetween": {
+        "title": "Extract Content Between Characters",
+        "description": "Extract content between two characters (e.g., parentheses, quotes)",
+        "placeholder": "Enter start and end characters (e.g., ( )"
+      },
+      "removeDuplicates": {
+        "title": "Remove Duplicate Lines",
+        "description": "Remove duplicate lines from text",
+        "placeholder": "(This mode doesn't require separate input)"
+      },
+      "extractNumbers": {
+        "title": "Extract All Numbers",
+        "description": "Extract all numbers from text",
+        "placeholder": "(This mode doesn't require separate input)"
+      },
+      "replaceSpaces": {
+        "title": "Replace Spaces with Other Characters",
+        "description": "Replace all spaces with the entered character",
+        "placeholder": "Enter replacement character (e.g., _, -)"
+      },
+      "capitalizeWords": {
+        "title": "Capitalize First Letter of Each Word",
+        "description": "Make the first letter of each word uppercase",
+        "placeholder": "(This mode doesn't require separate input)"
+      },
+      "extractUrls": {
+        "title": "Find URL Addresses",
+        "description": "Find all URLs in text",
+        "placeholder": "(This mode doesn't require separate input)"
+      },
+      "extractEmails": {
+        "title": "Find Email Addresses",
+        "description": "Find all email addresses in text",
+        "placeholder": "(This mode doesn't require separate input)"
+      }
     }
   },
   "navigation": {

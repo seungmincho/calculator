@@ -62,7 +62,7 @@ export default function LottoGenerator() {
     try {
       // lottoData.ts에서 직접 조회
       const { lottoData } = await import('../../public/lottoData')
-      const roundData = lottoData[round]
+      const roundData = (lottoData as any)[round]
       
       if (roundData) {
         const result: WinningNumber = {
@@ -103,7 +103,7 @@ export default function LottoGenerator() {
       
       if (rounds.length > 0) {
         const latestRound = rounds[0]
-        const roundData = lottoData[latestRound.toString()]
+        const roundData = (lottoData as any)[latestRound.toString()]
         
         const result: WinningNumber = {
           round: roundData.drwNo,

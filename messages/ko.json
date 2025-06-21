@@ -1325,6 +1325,48 @@
     "patternBuilder": {
       "title": "패턴 빌더",
       "description": "아래 버튼을 클릭해서 패턴을 조합해보세요."
+    },
+    "smartModes": {
+      "findLinesContaining": {
+        "title": "특정 단어가 포함된 라인 찾기",
+        "description": "입력한 단어를 포함하는 모든 라인을 찾습니다",
+        "placeholder": "찾을 단어를 입력하세요"
+      },
+      "extractBetween": {
+        "title": "특정 문자 사이의 내용 추출",
+        "description": "두 문자 사이에 있는 내용을 추출합니다 (예: 괄호, 따옴표)",
+        "placeholder": "시작 문자와 끝 문자를 입력하세요 (예: ( )"
+      },
+      "removeDuplicates": {
+        "title": "중복된 라인 제거",
+        "description": "텍스트에서 중복된 라인을 제거합니다",
+        "placeholder": "(이 모드는 별도 입력이 필요하지 않습니다)"
+      },
+      "extractNumbers": {
+        "title": "모든 숫자 추출",
+        "description": "텍스트에서 모든 숫자를 추출합니다",
+        "placeholder": "(이 모드는 별도 입력이 필요하지 않습니다)"
+      },
+      "replaceSpaces": {
+        "title": "공백을 다른 문자로 바꾸기",
+        "description": "모든 공백을 입력한 문자로 바꿉니다",
+        "placeholder": "바꿀 문자를 입력하세요 (예: _, -)"
+      },
+      "capitalizeWords": {
+        "title": "각 단어의 첫 글자 대문자로 변경",
+        "description": "각 단어의 첫 번째 글자를 대문자로 만듭니다",
+        "placeholder": "(이 모드는 별도 입력이 필요하지 않습니다)"
+      },
+      "extractUrls": {
+        "title": "URL 주소 찾기",
+        "description": "텍스트에서 모든 URL을 찾습니다",
+        "placeholder": "(이 모드는 별도 입력이 필요하지 않습니다)"
+      },
+      "extractEmails": {
+        "title": "이메일 주소 찾기",
+        "description": "텍스트에서 모든 이메일 주소를 찾습니다",
+        "placeholder": "(이 모드는 별도 입력이 필요하지 않습니다)"
+      }
     }
   },
   "navigation": {
