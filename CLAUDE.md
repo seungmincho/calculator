@@ -83,3 +83,84 @@ pnpm lint
 - Dark mode support throughout
 - Responsive design with mobile-first approach
 - Environment variable NEXT_PUBLIC_ADSENSE_ID for AdSense integration
+
+## Development Workflow for New Features
+
+### 1. Internationalization-First Development
+When adding new features, always follow this sequence:
+
+#### Step 1: Create Translation Files First
+1. **Add Korean translations** to `/messages/ko.json`:
+```json
+"newFeature": {
+  "title": "새 기능",
+  "description": "기능 설명",
+  "button": "버튼 텍스트",
+  "labels": {
+    "input": "입력 라벨",
+    "output": "출력 라벨"
+  }
+}
+```
+
+2. **Add English translations** to `/messages/en.json`:
+```json
+"newFeature": {
+  "title": "New Feature",
+  "description": "Feature description", 
+  "button": "Button Text",
+  "labels": {
+    "input": "Input Label",
+    "output": "Output Label"
+  }
+}
+```
+
+#### Step 2: Implement Component with Translations
+```typescript
+const NewFeatureComponent = () => {
+  const t = useTranslations('newFeature');
+  const tc = useTranslations('common');
+  
+  return (
+    <div>
+      <h1>{t('title')}</h1>
+      <p>{t('description')}</p>
+      <button>{t('button')}</button>
+    </div>
+  );
+};
+```
+
+#### Step 3: Update Navigation
+- Add to Header navigation with `t('footer.links.newFeature')`
+- Add to Footer links in both language files
+- Update sitemap.ts with new route
+
+### 2. Translation Key Naming Conventions
+- Use camelCase for keys: `buttonText`, `errorMessage`
+- Group related keys: `labels.input`, `messages.success`
+- Use descriptive names: `pasteFromClipboard` not `paste`
+- Consistent naming across features
+
+### 3. Dynamic Content Translation
+For conditional or dynamic content:
+```typescript
+// Good: Multiple specific keys
+{isSupported ? t('clipboardSupported') : t('clipboardNotSupported')}
+
+// Avoid: Generic keys with parameters
+{t('clipboardStatus', {supported: isSupported})}
+```
+
+### 4. Validation Checklist
+Before completing a feature:
+- [ ] All UI text uses translation functions
+- [ ] Both Korean and English translations complete
+- [ ] Navigation updated in both languages
+- [ ] Placeholder text translated
+- [ ] Error messages translated
+- [ ] Button labels translated
+- [ ] Form labels translated
+
+This workflow ensures consistent internationalization and prevents the need for translation retrofitting.

@@ -1115,7 +1115,30 @@
       "empty": "저장된 생성 이력이 없습니다",
       "format": "{method} {sets}게임"
     },
-    "placeholder": "설정을 선택하고 번호 생성 버튼을 눌러주세요"
+    "placeholder": "설정을 선택하고 번호 생성 버튼을 눌러주세요",
+    "winningNumbers": "당첨번호 조회",
+    "searchRound": "회차 검색",
+    "searchRoundPlaceholder": "회차를 입력하세요 (예: 1000)",
+    "searchButton": "조회",
+    "latestDrawing": "최신 추첨",
+    "round": "회차",
+    "bonusNumber": "보너스번호",
+    "statisticsRecommendation": "통계 기반 추천",
+    "hotNumbers": "핫 번호",
+    "coldNumbers": "콜드 번호",
+    "generateBasedOnHot": "핫 번호 기반 생성",
+    "generateBasedOnCold": "콜드 번호 기반 생성",
+    "generateBalanced": "균형 잡힌 생성",
+    "statisticsTabs": {
+      "frequency": "출현 빈도",
+      "recent": "최근 동향",
+      "patterns": "패턴 분석"
+    },
+    "noData": "해당 회차의 당첨번호가 없습니다",
+    "loading": "불러오는 중...",
+    "comingSoon": "준비 중입니다",
+    "patternAnalysis": "패턴 분석 기능은",
+    "recentTrends": "최근 동향 분석 기능은"
   },
   "ladder": {
     "title": "사다리 타기 게임",

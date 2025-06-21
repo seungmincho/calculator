@@ -2,29 +2,29 @@ import { Metadata } from 'next'
 import LottoGenerator from '@/components/LottoGenerator'
 
 export const metadata: Metadata = {
-  title: '로또번호 생성기 | 자동번호 추천, 당첨번호 분석 | 툴허브',
-  description: '로또 6/45 번호를 자동으로 생성하고 과거 당첨번호 분석으로 더 나은 번호 조합을 만들어보세요. 완전랜덤, 통계분석, 제외번호 설정 기능 제공.',
+  title: '로또번호 생성기 | 당첨번호 조회, 통계 기반 번호추천 | 툴허브',
+  description: '로또 6/45 당첨번호 조회, 통계 기반 번호 추천으로 똑똑한 로또번호를 생성하세요. 과거 당첨번호 분석, 핫/콜드 번호, 빈도 분석 기능 제공.',
   keywords: [
     '로또번호 생성기',
-    '로또 자동번호',
+    '로또 당첨번호 조회',
     '로또번호 추천',
     '로또 6/45',
-    '로또번호 분석',
-    '당첨번호 통계',
-    '로또번호 조합',
-    '복권번호 생성',
-    '로또번호 랜덤',
-    '로또 확률',
-    '로또번호 필터',
-    '로또번호 제외',
+    '당첨번호 분석',
+    '통계 기반 번호추천',
+    '핫번호 콜드번호',
+    '로또번호 빈도',
+    '로또번호 통계',
+    '당첨번호 검색',
+    '로또 회차별 조회',
+    '번호 출현 빈도',
+    '로또 데이터 분석',
     '당첨확률',
-    '로또 전략',
-    '번호 통계'
+    '로또 전략'
   ],
   authors: [{ name: '툴허브' }],
   openGraph: {
-    title: '로또번호 생성기 | 자동번호 추천, 당첨번호 분석',
-    description: '로또 6/45 번호를 자동으로 생성하고 과거 당첨번호 분석으로 더 나은 번호 조합을 만들어보세요.',
+    title: '로또번호 생성기 | 당첨번호 조회, 통계 기반 번호추천',
+    description: '로또 6/45 당첨번호 조회, 통계 기반 번호 추천으로 똑똑한 로또번호를 생성하세요.',
     type: 'website',
     url: 'https://toolhub.ai.kr/lotto-generator',
     siteName: '툴허브',
@@ -40,8 +40,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '로또번호 생성기 | 자동번호 추천, 당첨번호 분석',
-    description: '로또 6/45 번호를 자동으로 생성하고 과거 당첨번호 분석으로 더 나은 번호 조합을 만들어보세요.',
+    title: '로또번호 생성기 | 당첨번호 조회, 통계 기반 번호추천',
+    description: '로또 6/45 당첨번호 조회, 통계 기반 번호 추천으로 똑똑한 로또번호를 생성하세요.',
     images: ['https://toolhub.ai.kr/og-image.png'],
   },
   alternates: {

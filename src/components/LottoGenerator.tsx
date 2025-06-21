@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Sparkles, RefreshCw, Share2, Check, Save, Dice6, BarChart3, Star } from 'lucide-react'
+import { Sparkles, RefreshCw, Share2, Check, Save, Dice6, BarChart3, Star, Search, TrendingUp, Calendar, Award, Database, Activity, Filter } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from 'next-intl'
@@ -13,6 +13,20 @@ interface LottoResult {
   generateMethod: 'random' | 'statistics' | 'mixed'
   excludedNumbers: number[]
   timestamp: number
+}
+
+interface WinningNumber {
+  round: number
+  drawDate: string
+  numbers: number[]
+  bonusNumber: number
+}
+
+interface NumberStatistics {
+  number: number
+  frequency: number
+  lastAppearance: number
+  roundsAgo: number
 }
 
 export default function LottoGenerator() {
@@ -30,8 +44,163 @@ export default function LottoGenerator() {
   const [isCopied, setIsCopied] = useState(false)
   const [showSaveButton, setShowSaveButton] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [activeStatsTab, setActiveStatsTab] = useState<'frequency' | 'recent' | 'patterns'>('frequency')
+  const [searchRound, setSearchRound] = useState('')
+  const [searchResult, setSearchResult] = useState<WinningNumber | null>(null)
+  const [isSearching, setIsSearching] = useState(false)
+  const [winningHistory, setWinningHistory] = useState<WinningNumber[]>([])
+  const [numberStats, setNumberStats] = useState<NumberStatistics[]>([])
 
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('lotto')
+
+  // 당첨번호 조회 (lottoData에서 직접 조회)
+  const searchWinningNumber = async (round: string) => {
+    if (!round || isNaN(parseInt(round))) return
+    
+    setIsSearching(true)
+    
+    try {
+      // lottoData.ts에서 직접 조회
+      const { lottoData } = await import('../../public/lottoData')
+      const roundData = lottoData[round]
+      
+      if (roundData) {
+        const result: WinningNumber = {
+          round: roundData.drwNo,
+          drawDate: roundData.drwNoDate,
+          numbers: [
+            roundData.drwtNo1,
+            roundData.drwtNo2,
+            roundData.drwtNo3,
+            roundData.drwtNo4,
+            roundData.drwtNo5,
+            roundData.drwtNo6
+          ].sort((a, b) => a - b),
+          bonusNumber: roundData.bnusNo
+        }
+        setSearchResult(result)
+      } else {
+        setSearchResult(null)
+      }
+    } catch (error) {
+      console.error('당첨번호 조회 실패:', error)
+      setSearchResult(null)
+    } finally {
+      setIsSearching(false)
+    }
+  }
+
+  // 최신 당첨번호 가져오기
+  const [latestWinning, setLatestWinning] = useState<WinningNumber | null>(null)
+  
+  const fetchLatestWinning = async () => {
+    try {
+      // lottoData.ts에서 직접 최신 당첨번호 가져오기
+      const { lottoData } = await import('../../public/lottoData')
+      
+      // 최신 회차 찾기 (가장 큰 번호)
+      const rounds = Object.keys(lottoData).map(Number).sort((a, b) => b - a)
+      
+      if (rounds.length > 0) {
+        const latestRound = rounds[0]
+        const roundData = lottoData[latestRound.toString()]
+        
+        const result: WinningNumber = {
+          round: roundData.drwNo,
+          drawDate: roundData.drwNoDate,
+          numbers: [
+            roundData.drwtNo1,
+            roundData.drwtNo2,
+            roundData.drwtNo3,
+            roundData.drwtNo4,
+            roundData.drwtNo5,
+            roundData.drwtNo6
+          ].sort((a, b) => a - b),
+          bonusNumber: roundData.bnusNo
+        }
+        setLatestWinning(result)
+        return result
+      }
+      
+      // 데이터가 없으면 목 데이터 사용
+      setLatestWinning(mockWinningNumbers[0])
+      return mockWinningNumbers[0]
+    } catch (error) {
+      console.error('최신 당첨번호 조회 실패:', error)
+      setLatestWinning(mockWinningNumbers[0])
+      return mockWinningNumbers[0]
+    }
+  }
+
+  // 번호별 통계 계산
+  const calculateNumberStats = (): NumberStatistics[] => {
+    const stats: { [key: number]: { count: number, lastRound: number } } = {}
+    
+    // 초기화
+    for (let i = 1; i <= 45; i++) {
+      stats[i] = { count: 0, lastRound: 0 }
+    }
+    
+    // 실제 당첨번호 이력이 있으면 사용, 없으면 목 데이터 사용
+    const dataToUse = winningHistory.length > 0 ? winningHistory : mockWinningNumbers
+    
+    // 당첨번호 집계
+    dataToUse.forEach(winning => {
+      winning.numbers.forEach(num => {
+        stats[num].count++
+        if (winning.round > stats[num].lastRound) {
+          stats[num].lastRound = winning.round
+        }
+      })
+    })
+    
+    const currentRound = Math.max(...dataToUse.map(w => w.round))
+    
+    return Object.entries(stats).map(([num, data]) => ({
+      number: parseInt(num),
+      frequency: data.count,
+      lastAppearance: data.lastRound,
+      roundsAgo: data.lastRound > 0 ? currentRound - data.lastRound : 999
+    })).sort((a, b) => b.frequency - a.frequency)
+  }
+
+  // 핫/콜드 번호 생성
+  const generateHotNumbers = () => {
+    const stats = calculateNumberStats()
+    const hotNumbers = stats.slice(0, 15).map(s => s.number)
+    return generateNumbersFromPool(hotNumbers)
+  }
+
+  const generateColdNumbers = () => {
+    const stats = calculateNumberStats()
+    const coldNumbers = stats.slice(-15).map(s => s.number)
+    return generateNumbersFromPool(coldNumbers)
+  }
+
+  const generateNumbersFromPool = (pool: number[]) => {
+    const availableNumbers = pool.filter(num => !excludedNumbers.includes(num))
+    const selected: number[] = []
+    
+    while (selected.length < 6 && availableNumbers.length > 0) {
+      const randomIndex = Math.floor(Math.random() * availableNumbers.length)
+      const number = availableNumbers.splice(randomIndex, 1)[0]
+      selected.push(number)
+    }
+    
+    // 부족한 경우 전체 풀에서 추가
+    if (selected.length < 6) {
+      const remainingPool = Array.from({ length: 45 }, (_, i) => i + 1)
+        .filter(num => !selected.includes(num) && !excludedNumbers.includes(num))
+      
+      while (selected.length < 6 && remainingPool.length > 0) {
+        const randomIndex = Math.floor(Math.random() * remainingPool.length)
+        const number = remainingPool.splice(randomIndex, 1)[0]
+        selected.push(number)
+      }
+    }
+    
+    return selected.sort((a, b) => a - b)
+  }
 
   // URL 업데이트 함수
   const updateURL = (newParams: Record<string, string>) => {
@@ -45,6 +214,15 @@ export default function LottoGenerator() {
     })
     router.replace(`?${params.toString()}`, { scroll: false })
   }
+
+  // 모의 당첨번호 데이터 (실제 로또 API 연동 시 교체)
+  const mockWinningNumbers: WinningNumber[] = [
+    { round: 1100, drawDate: '2024-12-21', numbers: [5, 12, 18, 25, 31, 42], bonusNumber: 7 },
+    { round: 1099, drawDate: '2024-12-14', numbers: [3, 15, 22, 28, 35, 44], bonusNumber: 11 },
+    { round: 1098, drawDate: '2024-12-07', numbers: [8, 14, 21, 29, 36, 43], bonusNumber: 16 },
+    { round: 1097, drawDate: '2024-11-30', numbers: [2, 17, 24, 31, 38, 45], bonusNumber: 9 },
+    { round: 1096, drawDate: '2024-11-23', numbers: [6, 13, 19, 26, 33, 41], bonusNumber: 4 }
+  ]
 
   // 통계 기반 가중치 (실제 로또 데이터 기반 시뮬레이션)
   const numberFrequency: { [key: number]: number } = {
@@ -77,11 +255,19 @@ export default function LottoGenerator() {
     const availableNumbers = Array.from({ length: 45 }, (_, i) => i + 1)
       .filter(num => !exclude.includes(num))
     
+    // 실제 통계를 기반으로 가중치 계산
+    const currentStats = calculateNumberStats()
+    const statsMap = currentStats.reduce((acc, stat) => {
+      acc[stat.number] = stat.frequency
+      return acc
+    }, {} as { [key: number]: number })
+    
     // 가중치 기반 선택
     const weightedNumbers: number[] = []
     availableNumbers.forEach(num => {
-      const frequency = numberFrequency[num] || 300
-      const weight = Math.max(1, Math.floor(frequency / 50))
+      const frequency = statsMap[num] || 1
+      // 빈도수를 가중치로 사용 (최소 1, 최대 빈도수/10)
+      const weight = Math.max(1, Math.floor(frequency / 10))
       for (let i = 0; i < weight; i++) {
         weightedNumbers.push(num)
       }
@@ -270,6 +456,49 @@ export default function LottoGenerator() {
     }
   }, [searchParams])
 
+  // 과거 당첨번호 이력 로드 (lottoData에서 직접 로드)
+  const loadWinningHistory = async () => {
+    try {
+      // lottoData.ts에서 직접 모든 데이터 가져오기
+      const { lottoData } = await import('../../public/lottoData')
+      
+      // 모든 당첨번호를 WinningNumber 형태로 변환
+      const winningData: WinningNumber[] = Object.values(lottoData).map((data: any) => ({
+        round: data.drwNo,
+        drawDate: data.drwNoDate,
+        numbers: [
+          data.drwtNo1,
+          data.drwtNo2,
+          data.drwtNo3,
+          data.drwtNo4,
+          data.drwtNo5,
+          data.drwtNo6
+        ].sort((a, b) => a - b),
+        bonusNumber: data.bnusNo
+      }))
+      
+      // 회차 순서대로 정렬 (최신순)
+      winningData.sort((a, b) => b.round - a.round)
+      
+      setWinningHistory(winningData)
+      console.log(`로또 이력 ${winningData.length}회차 로드 완료`)
+    } catch (error) {
+      console.error('당첨번호 이력 로드 실패:', error)
+    }
+  }
+
+  // 당첨번호 이력이 변경되면 통계 재계산
+  useEffect(() => {
+    setNumberStats(calculateNumberStats())
+  }, [winningHistory])
+
+  // 초기 데이터 로드
+  useEffect(() => {
+    setWinningHistory(mockWinningNumbers)
+    fetchLatestWinning() // 최신 당첨번호 가져오기
+    loadWinningHistory() // 과거 당첨번호 이력 로드
+  }, [])
+
   // 번호 색상 결정
   const getNumberColor = (number: number) => {
     if (number <= 10) return 'bg-yellow-500 text-white'
@@ -314,6 +543,232 @@ export default function LottoGenerator() {
             return t('history.format', { method, sets })
           }}
         />
+      </div>
+
+      {/* 당첨번호 조회 섹션 */}
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <Database className="w-6 h-6 mr-2 text-green-600" />
+          {t('winningNumbers')}
+        </h2>
+        
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* 회차 검색 */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('searchRound')}</h3>
+            <div className="flex gap-2 mb-4">
+              <input
+                type="number"
+                value={searchRound}
+                onChange={(e) => setSearchRound(e.target.value)}
+                placeholder={t('searchRoundPlaceholder')}
+                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              />
+              <button
+                onClick={() => searchWinningNumber(searchRound)}
+                disabled={isSearching || !searchRound}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                {isSearching ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Search className="w-4 h-4" />
+                )}
+                {t('searchButton')}
+              </button>
+            </div>
+            
+            {searchResult && (
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  {t('round')} {searchResult.round} ({searchResult.drawDate})
+                </div>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {searchResult.numbers.map((number, index) => (
+                    <div
+                      key={index}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getNumberColor(number)}`}
+                    >
+                      {number}
+                    </div>
+                  ))}
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  {t('bonusNumber')}: <span className="font-bold">{searchResult.bonusNumber}</span>
+                </div>
+              </div>
+            )}
+            
+            {searchRound && !searchResult && !isSearching && (
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                {t('noData')}
+              </div>
+            )}
+          </div>
+          
+          {/* 최신 추첨 */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('latestDrawing')}</h3>
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg p-4">
+              {latestWinning ? (
+                <>
+                  <div className="text-sm text-purple-600 dark:text-purple-400 mb-2">
+                    {t('round')} {latestWinning.round} ({latestWinning.drawDate})
+                  </div>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {latestWinning.numbers.map((number, index) => (
+                      <div
+                        key={index}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getNumberColor(number)}`}
+                      >
+                        {number}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-sm text-purple-600 dark:text-purple-400">
+                    {t('bonusNumber')}: <span className="font-bold">{latestWinning.bonusNumber}</span>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <div className="animate-spin w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+                  <div className="text-sm">{t('loading')}</div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* 통계 기반 추천 섹션 */}
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <Activity className="w-6 h-6 mr-2 text-blue-600" />
+          {t('statisticsRecommendation')}
+        </h2>
+        
+        {/* 탭 메뉴 */}
+        <div className="flex space-x-1 mb-6 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+          {(['frequency', 'recent', 'patterns'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveStatsTab(tab)}
+              className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors ${
+                activeStatsTab === tab
+                  ? 'bg-white dark:bg-gray-600 text-purple-600 dark:text-purple-400 shadow'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
+              }`}
+            >
+              {t(`statisticsTabs.${tab}`)}
+            </button>
+          ))}
+        </div>
+        
+        {activeStatsTab === 'frequency' && (
+          <div>
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              {/* 자주 나온 번호 */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                  <TrendingUp className="w-5 h-5 mr-2 text-red-500" />
+                  {t('hotNumbers')}
+                </h3>
+                <div className="grid grid-cols-5 gap-2">
+                  {numberStats.slice(0, 10).map((stat) => (
+                    <div key={stat.number} className="text-center">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-1 ${getNumberColor(stat.number)}`}>
+                        {stat.number}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{stat.frequency}</div>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => {
+                    const hotNumbers = generateHotNumbers()
+                    setGeneratedSets([{
+                      numbers: hotNumbers,
+                      generateMethod: 'statistics',
+                      excludedNumbers: [...excludedNumbers],
+                      timestamp: Date.now()
+                    }])
+                    setGeneratedNumbers(hotNumbers)
+                  }}
+                  className="mt-3 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Filter className="w-4 h-4" />
+                  {t('generateBasedOnHot')}
+                </button>
+              </div>
+              
+              {/* 적게 나온 번호 */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                  <TrendingUp className="w-5 h-5 mr-2 text-blue-500 transform rotate-180" />
+                  {t('coldNumbers')}
+                </h3>
+                <div className="grid grid-cols-5 gap-2">
+                  {numberStats.slice(-10).reverse().map((stat) => (
+                    <div key={stat.number} className="text-center">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-1 ${getNumberColor(stat.number)}`}>
+                        {stat.number}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{stat.frequency}</div>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => {
+                    const coldNumbers = generateColdNumbers()
+                    setGeneratedSets([{
+                      numbers: coldNumbers,
+                      generateMethod: 'statistics',
+                      excludedNumbers: [...excludedNumbers],
+                      timestamp: Date.now()
+                    }])
+                    setGeneratedNumbers(coldNumbers)
+                  }}
+                  className="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Filter className="w-4 h-4" />
+                  {t('generateBasedOnCold')}
+                </button>
+              </div>
+            </div>
+            
+            {/* 균형 잡힌 생성 */}
+            <button
+              onClick={() => {
+                const balancedNumbers = generateMixedNumbers(excludedNumbers)
+                setGeneratedSets([{
+                  numbers: balancedNumbers,
+                  generateMethod: 'mixed',
+                  excludedNumbers: [...excludedNumbers],
+                  timestamp: Date.now()
+                }])
+                setGeneratedNumbers(balancedNumbers)
+              }}
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all flex items-center justify-center gap-2"
+            >
+              <BarChart3 className="w-5 h-5" />
+              {t('generateBalanced')}
+            </button>
+          </div>
+        )}
+        
+        {activeStatsTab === 'recent' && (
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <TrendingUp className="w-12 h-12 mx-auto mb-4 opacity-50" />
+            <p>{t('recentTrends')} {t('comingSoon')}.</p>
+          </div>
+        )}
+        
+        {activeStatsTab === 'patterns' && (
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <BarChart3 className="w-12 h-12 mx-auto mb-4 opacity-50" />
+            <p>{t('patternAnalysis')} {t('comingSoon')}.</p>
+          </div>
+        )}
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">

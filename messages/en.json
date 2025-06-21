@@ -1115,7 +1115,30 @@
       "empty": "No saved generation history",
       "format": "{method} {sets} games"
     },
-    "placeholder": "Select settings and press the generate numbers button"
+    "placeholder": "Select settings and press the generate numbers button",
+    "winningNumbers": "Winning Numbers Lookup",
+    "searchRound": "Search Round",
+    "searchRoundPlaceholder": "Enter round number (e.g., 1000)",
+    "searchButton": "Search",
+    "latestDrawing": "Latest Drawing",
+    "round": "Round",
+    "bonusNumber": "Bonus Number",
+    "statisticsRecommendation": "Statistics-Based Recommendation",
+    "hotNumbers": "Hot Numbers",
+    "coldNumbers": "Cold Numbers",
+    "generateBasedOnHot": "Generate Based on Hot Numbers",
+    "generateBasedOnCold": "Generate Based on Cold Numbers",
+    "generateBalanced": "Generate Balanced",
+    "statisticsTabs": {
+      "frequency": "Frequency",
+      "recent": "Recent Trends",
+      "patterns": "Pattern Analysis"
+    },
+    "noData": "No winning numbers found for this round",
+    "loading": "Loading...",
+    "comingSoon": "coming soon",
+    "patternAnalysis": "Pattern analysis feature is",
+    "recentTrends": "Recent trends analysis feature is"
   },
   "ladder": {
     "title": "Ladder Game",
