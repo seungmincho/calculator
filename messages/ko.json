@@ -1375,5 +1375,112 @@
     "healthTools": "건강 도구",
     "simpleGames": "간단 게임",
     "financialTips": "💡 금융 팁"
+  },
+  "toolsShowcase": {
+    "title": "다른 유용한 도구들",
+    "description": "금융, 건강, 개발 등 다양한 분야의 전문 계산기와 도구들을 활용해보세요",
+    "viewTips": "금융 팁 보기",
+    "categories": {
+      "financial": "금융 계산기",
+      "health": "건강 도구",
+      "development": "개발 도구",
+      "utility": "유틸리티",
+      "games": "간단 게임"
+    },
+    "currentPage": "현재 페이지",
+    "tools": {
+      "salary": {
+        "title": "연봉 계산기",
+        "description": "실수령액과 4대보험 계산"
+      },
+      "loan": {
+        "title": "대출 계산기",
+        "description": "월 상환금과 총 이자 계산"
+      },
+      "savings": {
+        "title": "적금 계산기",
+        "description": "만기 수령액과 이자 계산"
+      },
+      "retirement": {
+        "title": "은퇴 계산기",
+        "description": "은퇴 자금 준비 계획"
+      },
+      "tax": {
+        "title": "세금 계산기",
+        "description": "종합소득세 및 각종 세금"
+      },
+      "exchange": {
+        "title": "환율 계산기",
+        "description": "실시간 환율 변환"
+      },
+      "realEstate": {
+        "title": "부동산 계산기",
+        "description": "매매 수수료와 세금"
+      },
+      "stock": {
+        "title": "주식 계산기",
+        "description": "매매 수수료와 수익률"
+      },
+      "carLoan": {
+        "title": "자동차 대출",
+        "description": "자동차 구매 대출 계산"
+      },
+      "carTax": {
+        "title": "자동차세",
+        "description": "취등록세와 자동차세"
+      },
+      "bmi": {
+        "title": "BMI 계산기",
+        "description": "체질량지수와 비만도"
+      },
+      "calorie": {
+        "title": "칼로리 계산기",
+        "description": "기초대사율과 필요 칼로리"
+      },
+      "bodyFat": {
+        "title": "체지방 계산기",
+        "description": "체지방률과 근육량"
+      },
+      "json": {
+        "title": "JSON 포매터",
+        "description": "JSON 데이터 정리와 검증"
+      },
+      "sql": {
+        "title": "SQL 포매터",
+        "description": "SQL 쿼리 정리와 최적화"
+      },
+      "regex": {
+        "title": "정규식 추출기",
+        "description": "패턴 매칭과 텍스트 추출"
+      },
+      "markdown": {
+        "title": "마크다운 뷰어",
+        "description": "마크다운 미리보기와 변환"
+      },
+      "time": {
+        "title": "시간 변환기",
+        "description": "전 세계 시간대 변환"
+      },
+      "workHours": {
+        "title": "근무시간 계산기",
+        "description": "출퇴근 시간과 초과근무"
+      },
+      "imageResize": {
+        "title": "이미지 리사이저",
+        "description": "이미지 크기 조절과 압축"
+      },
+      "imageEdit": {
+        "title": "이미지 에디터",
+        "description": "기본적인 이미지 편집"
+      },
+      "lotto": {
+        "title": "로또 생성기",
+        "description": "로또 번호 자동 생성"
+      },
+      "ladder": {
+        "title": "사다리 게임",
+        "description": "온라인 사다리 타기"
+      }
+    }
   }
 }

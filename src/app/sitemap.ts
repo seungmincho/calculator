@@ -138,6 +138,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: 'https://toolhub.ai.kr/regex-extractor',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: 'https://toolhub.ai.kr/tips',
       lastModified: new Date(),
       changeFrequency: 'weekly',

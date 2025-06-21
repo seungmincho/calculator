@@ -8,6 +8,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import DailyTips from '@/components/DailyTips'
 import ProgressBar from '@/components/ProgressBar'
+import ToolsShowcase from '@/components/ToolsShowcase'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import I18nWrapper from '@/components/I18nWrapper'
 
@@ -163,6 +164,9 @@ export default function RootLayout({
             <main>
               {children}
             </main>
+
+            {/* Tools Showcase - Common across all pages */}
+            <ToolsShowcase />
 
             {/* Footer */}
             <Footer />

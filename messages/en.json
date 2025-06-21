@@ -1375,5 +1375,112 @@
     "healthTools": "Health Tools",
     "simpleGames": "Simple Games",
     "financialTips": "💡 Financial Tips"
+  },
+  "toolsShowcase": {
+    "title": "Other Useful Tools",
+    "description": "Explore professional calculators and tools across finance, health, development, and more",
+    "viewTips": "View Financial Tips",
+    "categories": {
+      "financial": "Financial Calculators",
+      "health": "Health Tools",
+      "development": "Development Tools",
+      "utility": "Utilities",
+      "games": "Simple Games"
+    },
+    "currentPage": "Current Page",
+    "tools": {
+      "salary": {
+        "title": "Salary Calculator",
+        "description": "Net salary and insurance calculation"
+      },
+      "loan": {
+        "title": "Loan Calculator",
+        "description": "Calculate monthly payments and interest"
+      },
+      "savings": {
+        "title": "Savings Calculator",
+        "description": "Calculate maturity amount and interest"
+      },
+      "retirement": {
+        "title": "Retirement Calculator",
+        "description": "Plan your retirement savings"
+      },
+      "tax": {
+        "title": "Tax Calculator",
+        "description": "Income tax and various taxes"
+      },
+      "exchange": {
+        "title": "Exchange Calculator",
+        "description": "Real-time currency conversion"
+      },
+      "realEstate": {
+        "title": "Real Estate Calculator",
+        "description": "Transaction fees and taxes"
+      },
+      "stock": {
+        "title": "Stock Calculator",
+        "description": "Trading fees and returns"
+      },
+      "carLoan": {
+        "title": "Car Loan",
+        "description": "Auto purchase loan calculator"
+      },
+      "carTax": {
+        "title": "Car Tax",
+        "description": "Registration and car taxes"
+      },
+      "bmi": {
+        "title": "BMI Calculator",
+        "description": "Body mass index and obesity"
+      },
+      "calorie": {
+        "title": "Calorie Calculator",
+        "description": "BMR and required calories"
+      },
+      "bodyFat": {
+        "title": "Body Fat Calculator",
+        "description": "Body fat percentage and muscle mass"
+      },
+      "json": {
+        "title": "JSON Formatter",
+        "description": "Format and validate JSON data"
+      },
+      "sql": {
+        "title": "SQL Formatter",
+        "description": "Format and optimize SQL queries"
+      },
+      "regex": {
+        "title": "Regex Extractor",
+        "description": "Pattern matching and text extraction"
+      },
+      "markdown": {
+        "title": "Markdown Viewer",
+        "description": "Preview and convert markdown"
+      },
+      "time": {
+        "title": "Time Converter",
+        "description": "Global timezone conversion"
+      },
+      "workHours": {
+        "title": "Work Hours Calculator",
+        "description": "Clock in/out and overtime"
+      },
+      "imageResize": {
+        "title": "Image Resizer",
+        "description": "Resize and compress images"
+      },
+      "imageEdit": {
+        "title": "Image Editor",
+        "description": "Basic image editing"
+      },
+      "lotto": {
+        "title": "Lotto Generator",
+        "description": "Auto-generate lottery numbers"
+      },
+      "ladder": {
+        "title": "Ladder Game",
+        "description": "Online ladder game"
+      }
+    }
   }
 }
