@@ -30,6 +30,7 @@ const Header = () => {
     tools: {
       title: t('navigation.developmentTools'),
       items: [
+        { href: '/regex-extractor', label: t('footer.links.regexExtractor'), icon: '🔍' },
         { href: '/time-converter', label: t('footer.links.timeConverter'), icon: '🕰️' },
         { href: '/json-formatter', label: t('footer.links.jsonFormatter'), icon: '📝' },
         { href: '/sql-formatter', label: t('footer.links.sqlFormatter'), icon: '🗄️' },

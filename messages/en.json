@@ -477,7 +477,8 @@
       "sqlFormatter": "SQL Formatter",
       "markdownViewer": "Markdown Viewer",
       "imageResizer": "Image Resizer",
-      "imageEditor": "Image Editor"
+      "imageEditor": "Image Editor",
+      "regexExtractor": "Regex Extractor"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
   },
@@ -1200,6 +1201,131 @@
       "format": "{participants} participants, {results} results"
     },
     "placeholder": "Set participants and outcomes, then generate a ladder"
+  },
+  "regexExtractor": {
+    "title": "Regex Extractor",
+    "description": "Search, extract, and transform text with powerful regular expressions. grep, pattern matching, and string replacement in one place!",
+    "operation": {
+      "title": "Operation Type",
+      "grep": "Filter",
+      "grepDesc": "Extract lines matching pattern",
+      "replace": "Replace",
+      "replaceDesc": "Replace pattern with string",
+      "extract": "Extract",
+      "extractDesc": "Extract matching parts only"
+    },
+    "pattern": {
+      "title": "Regex Pattern",
+      "placeholder": "Enter regex pattern (e.g., \\d{3}-\\d{4}-\\d{4})",
+      "presets": "View Presets",
+      "explanation": "Pattern Explanation"
+    },
+    "flags": {
+      "title": "Flags",
+      "global": "Global search",
+      "ignoreCase": "Ignore case",
+      "multiline": "Multiline mode",
+      "dotall": "Dot matches newline"
+    },
+    "replacement": {
+      "title": "Replacement String",
+      "placeholder": "Enter replacement text ($1, $2 for groups)",
+      "help": "$1, $2 refer to capture groups"
+    },
+    "presets": {
+      "title": "Preset Patterns",
+      "categories": {
+        "common": "Common",
+        "email": "Email",
+        "web": "Web",
+        "numbers": "Numbers",
+        "dates": "Dates",
+        "code": "Code",
+        "hash": "Hash"
+      },
+      "patterns": {
+        "emails": "Email addresses",
+        "urls": "URL addresses",
+        "phoneNumbers": "Phone numbers",
+        "ipAddresses": "IP addresses",
+        "integers": "Integers",
+        "floats": "Decimals",
+        "currency": "Currency",
+        "percentages": "Percentages",
+        "datesKorean": "Korean dates",
+        "datesUS": "US dates",
+        "times": "Times",
+        "hexColors": "Color codes",
+        "cssClasses": "CSS classes",
+        "jsVariables": "Variable names",
+        "htmlTags": "HTML tags",
+        "uuids": "UUIDs",
+        "md5": "MD5 hashes",
+        "base64": "Base64"
+      }
+    },
+    "input": {
+      "title": "Input Text",
+      "placeholder": "Enter text to process or upload a file...",
+      "upload": "Upload File",
+      "stats": "{lines} lines, {chars} chars"
+    },
+    "results": {
+      "title": "Results",
+      "placeholder": "Results will appear here when you enter a pattern",
+      "matchInfo": "Match Information",
+      "matches": "Matches",
+      "outputLines": "Output Lines",
+      "outputChars": "Output Chars",
+      "matchRate": "Match Rate",
+      "matchDetails": "Match Details",
+      "moreMatches": "and {count} more",
+      "download": "Download",
+      "share": "Share Results"
+    },
+    "guide": {
+      "title": "Regex Extractor Usage Guide",
+      "operationsTitle": "Operation Types",
+      "operations": {
+        "0": "Filter: Extract lines matching pattern",
+        "1": "Replace: Replace pattern with string",
+        "2": "Extract: Extract matching parts only"
+      },
+      "tipsTitle": "Usage Tips",
+      "tips": {
+        "0": "Start quickly with preset patterns",
+        "1": "Adjust search options with flags",
+        "2": "Upload files for large text processing"
+      },
+      "examplesTitle": "Use Cases",
+      "examples": {
+        "0": "Extract error lines from log files",
+        "1": "Collect email addresses or phone numbers",
+        "2": "Replace specific patterns in code"
+      }
+    },
+    "history": {
+      "title": "Processing History",
+      "empty": "No saved processing history",
+      "format": "{operation} operation, {matches} matches"
+    },
+    "placeholder": "Enter a regex pattern and process your text",
+    "smartMode": {
+      "title": "Smart Mode (Beginner-Friendly)",
+      "description": "Don't know regex? No problem! Choose what you want to do and we'll create the pattern automatically.",
+      "guide": "Regex Guide",
+      "patternBuilder": "Pattern Builder",
+      "apply": "Apply"
+    },
+    "guide": {
+      "regexBasics": "Regex Basics",
+      "basicSymbols": "Basic Symbols",
+      "examples": "Examples"
+    },
+    "patternBuilder": {
+      "title": "Pattern Builder",
+      "description": "Click the buttons below to build your pattern."
+    }
   },
   "navigation": {
     "financialCalculators": "Financial Calculators",

@@ -43,6 +43,7 @@ const Footer = () => {
               <li><a href="/markdown-viewer" className="hover:text-white transition-colors">{t('footer.links.markdownViewer')}</a></li>
               <li><a href="/image-resizer" className="hover:text-white transition-colors">{t('footer.links.imageResizer')}</a></li>
               <li><a href="/image-editor" className="hover:text-white transition-colors">{t('footer.links.imageEditor')}</a></li>
+              <li><a href="/regex-extractor" className="hover:text-white transition-colors">{t('footer.links.regexExtractor')}</a></li>
             </ul>
           </div>
           <div>
