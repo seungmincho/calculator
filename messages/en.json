@@ -32,7 +32,8 @@
     "contact": "Contact",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "load": "Load"
+    "load": "Load",
+    "convert": "Convert"
   },
   "header": {
     "title": "ToolHub",
@@ -577,6 +578,134 @@
       "error": "JSON Error"
     }
   },
+  "jsonCsvConverter": {
+    "title": "JSON ↔ CSV Converter",
+    "description": "High-performance bidirectional JSON and CSV conversion. Process large datasets quickly with developer-friendly options.",
+    "tabs": {
+      "jsonToCsv": "JSON → CSV",
+      "csvToJson": "CSV → JSON"
+    },
+    "input": {
+      "jsonInput": "JSON Data",
+      "csvInput": "CSV Data",
+      "pasteJson": "Paste JSON data here...",
+      "pasteCsv": "Paste CSV data here...\nExample: name,age\\nJohn,25\\nJane,30",
+      "uploadFile": "Upload File",
+      "dragDrop": "Drag files here or click to upload"
+    },
+    "options": {
+      "title": "Conversion Options",
+      "delimiter": "Delimiter",
+      "quote": "Quote",
+      "escape": "Escape",
+      "header": "Include Header",
+      "encoding": "Encoding",
+      "nested": "Nested Object Handling",
+      "flatten": "Flatten",
+      "preserve": "Preserve Structure",
+      "arrayHandling": "Array Handling",
+      "join": "Join as String",
+      "separate": "Separate Rows",
+      "customDelimiter": "Custom",
+      "autoDetect": "Auto Detect"
+    },
+    "presets": {
+      "title": "Presets",
+      "standard": "Standard CSV",
+      "excel": "Excel Compatible",
+      "tsv": "TSV (Tab Separated)",
+      "pipe": "Pipe Separated",
+      "korean": "Korean Optimized"
+    },
+    "result": {
+      "title": "Conversion Result",
+      "preview": "Preview",
+      "download": "Download",
+      "copy": "Copy",
+      "stats": "Statistics",
+      "rows": "rows",
+      "columns": "columns",
+      "size": "size",
+      "processingTime": "Processing Time",
+      "viewMode": "View Mode",
+      "textView": "Text View",
+      "tableView": "Table View",
+      "showingRows": "Showing {start}-{end} / {total} rows",
+      "noData": "No data to display"
+    },
+    "validation": {
+      "validJson": "Valid JSON",
+      "invalidJson": "Invalid JSON",
+      "validCsv": "Valid CSV",
+      "invalidCsv": "Invalid CSV",
+      "emptyData": "Data is empty",
+      "largeFile": "Large file ({size}MB)"
+    },
+    "features": {
+      "title": "Key Features",
+      "performance": {
+        "title": "High Performance",
+        "description": "Large file processing with Web Workers",
+        "details": {
+          "0": "Process 100MB+ files without browser freezing",
+          "1": "Memory-efficient streaming conversion",
+          "2": "Real-time progress tracking"
+        }
+      },
+      "developer": {
+        "title": "Developer Friendly",
+        "description": "Customizable options and presets",
+        "details": {
+          "0": "Support for nested objects and arrays",
+          "1": "Various CSV formats and delimiter options",
+          "2": "Preview and detailed statistics"
+        }
+      },
+      "utility": {
+        "title": "Practical Tools",
+        "description": "Ready-to-use convenience features",
+        "details": {
+          "0": "Drag & drop file upload",
+          "1": "Excel and Google Sheets compatible",
+          "2": "Multiple encoding support (UTF-8, EUC-KR)"
+        }
+      }
+    },
+    "guide": {
+      "title": "Usage Guide",
+      "jsonToCsvTitle": "JSON → CSV Conversion",
+      "jsonToCsv": {
+        "0": "Input JSON array data or upload a file",
+        "1": "Configure conversion options (delimiter, header, etc.)",
+        "2": "Click convert and review the results",
+        "3": "Download CSV file or copy the results"
+      },
+      "csvToJsonTitle": "CSV → JSON Conversion",
+      "csvToJson": {
+        "0": "Input CSV data or upload a file",
+        "1": "Choose whether to use first row as header",
+        "2": "Configure nested structure options if needed",
+        "3": "Download JSON result or copy to clipboard"
+      },
+      "tipsTitle": "Usage Tips",
+      "tips": {
+        "0": "Large files are processed in background with Web Workers",
+        "1": "Use presets for quick conversion to common formats",
+        "2": "Select 'EUC-KR' encoding for Korean data",
+        "3": "Use 'Excel Compatible' preset for CSV files in Excel"
+      }
+    },
+    "errors": {
+      "invalidJson": "Invalid JSON format",
+      "invalidCsv": "Invalid CSV format",
+      "emptyArray": "JSON array is empty",
+      "notArray": "JSON data is not an array",
+      "fileTooLarge": "File too large (max {size}MB)",
+      "unsupportedFormat": "Unsupported file format",
+      "processingError": "Error occurred during conversion"
+    },
+    "placeholder": "Enter data to convert or upload a file"
+  },
   "sqlFormatter": {
     "title": "SQL Formatter",
     "description": "Format and beautify SQL queries with syntax highlighting.",
@@ -658,6 +787,7 @@
       "ladderGame": "Ladder Game",
       "timeConverter": "Time Converter",
       "jsonFormatter": "JSON Formatter",
+      "jsonCsvConverter": "JSON-CSV Converter",
       "sqlFormatter": "SQL Formatter",
       "markdownViewer": "Markdown Viewer",
       "imageResizer": "Image Resizer",
@@ -1628,6 +1758,10 @@
       "json": {
         "title": "JSON Formatter",
         "description": "Format and validate JSON data"
+      },
+      "jsonCsv": {
+        "title": "JSON-CSV Converter",
+        "description": "High-performance JSON and CSV conversion"
       },
       "sql": {
         "title": "SQL Formatter",

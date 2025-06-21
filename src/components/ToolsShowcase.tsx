@@ -47,9 +47,10 @@ const tools: Tool[] = [
   
   // 개발 도구
   { name: 'json', href: '/json-formatter', icon: Code, category: 'development', priority: 1 },
-  { name: 'sql', href: '/sql-formatter', icon: Code, category: 'development', priority: 2 },
-  { name: 'regex', href: '/regex-extractor', icon: Code, category: 'development', priority: 3 },
-  { name: 'markdown', href: '/markdown-viewer', icon: FileText, category: 'development', priority: 4 },
+  { name: 'jsonCsv', href: '/json-csv-converter', icon: Code, category: 'development', priority: 2 },
+  { name: 'sql', href: '/sql-formatter', icon: Code, category: 'development', priority: 3 },
+  { name: 'regex', href: '/regex-extractor', icon: Code, category: 'development', priority: 4 },
+  { name: 'markdown', href: '/markdown-viewer', icon: FileText, category: 'development', priority: 5 },
   
   // 유틸리티
   { name: 'time', href: '/time-converter', icon: Clock, category: 'utility', priority: 1 },

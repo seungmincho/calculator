@@ -32,7 +32,8 @@
     "contact": "연락처",
     "privacy": "개인정보처리방침",
     "terms": "이용약관",
-    "load": "불러오기"
+    "load": "불러오기",
+    "convert": "변환"
   },
   "header": {
     "title": "툴허브",
@@ -698,6 +699,134 @@
       "error": "JSON 오류"
     }
   },
+  "jsonCsvConverter": {
+    "title": "JSON ↔ CSV 변환기",
+    "description": "고성능 JSON과 CSV 간 양방향 변환. 대용량 데이터도 빠르게 처리하고 개발자 친화적인 옵션을 제공합니다.",
+    "tabs": {
+      "jsonToCsv": "JSON → CSV",
+      "csvToJson": "CSV → JSON"
+    },
+    "input": {
+      "jsonInput": "JSON 데이터",
+      "csvInput": "CSV 데이터",
+      "pasteJson": "JSON 데이터를 붙여넣으세요...",
+      "pasteCsv": "CSV 데이터를 붙여넣으세요...\n예: name,age\\n김철수,25\\n이영희,30",
+      "uploadFile": "파일 업로드",
+      "dragDrop": "파일을 여기로 드래그하거나 클릭하여 업로드"
+    },
+    "options": {
+      "title": "변환 옵션",
+      "delimiter": "구분자",
+      "quote": "따옴표",
+      "escape": "이스케이프",
+      "header": "헤더 포함",
+      "encoding": "인코딩",
+      "nested": "중첩 객체 처리",
+      "flatten": "평면화",
+      "preserve": "구조 유지",
+      "arrayHandling": "배열 처리",
+      "join": "문자열로 결합",
+      "separate": "별도 행으로 분리",
+      "customDelimiter": "사용자 정의",
+      "autoDetect": "자동 감지"
+    },
+    "presets": {
+      "title": "프리셋",
+      "standard": "표준 CSV",
+      "excel": "Excel 호환",
+      "tsv": "TSV (탭 구분)",
+      "pipe": "파이프 구분",
+      "korean": "한국어 최적화"
+    },
+    "result": {
+      "title": "변환 결과",
+      "preview": "미리보기",
+      "download": "다운로드",
+      "copy": "복사",
+      "stats": "통계",
+      "rows": "행",
+      "columns": "열",
+      "size": "크기",
+      "processingTime": "처리 시간",
+      "viewMode": "보기 모드",
+      "textView": "텍스트 보기",
+      "tableView": "테이블 보기",
+      "showingRows": "{start}-{end} / {total}행 표시",
+      "noData": "표시할 데이터가 없습니다"
+    },
+    "validation": {
+      "validJson": "유효한 JSON",
+      "invalidJson": "잘못된 JSON",
+      "validCsv": "유효한 CSV",
+      "invalidCsv": "잘못된 CSV",
+      "emptyData": "데이터가 비어있습니다",
+      "largeFile": "대용량 파일 ({size}MB)"
+    },
+    "features": {
+      "title": "주요 기능",
+      "performance": {
+        "title": "고성능 처리",
+        "description": "Web Workers를 활용한 대용량 파일 처리",
+        "details": {
+          "0": "100MB+ 파일도 브라우저 멈춤 없이 처리",
+          "1": "스트리밍 방식으로 메모리 효율적 변환",
+          "2": "진행률 표시로 실시간 처리 상태 확인"
+        }
+      },
+      "developer": {
+        "title": "개발자 친화적",
+        "description": "다양한 옵션과 프리셋으로 맞춤 설정",
+        "details": {
+          "0": "중첩 객체, 배열 등 복잡한 구조 지원",
+          "1": "다양한 CSV 형식과 구분자 옵션",
+          "2": "변환 결과 미리보기와 상세 통계"
+        }
+      },
+      "utility": {
+        "title": "실용적 도구",
+        "description": "실무에서 바로 쓸 수 있는 편의 기능",
+        "details": {
+          "0": "드래그 앤 드롭으로 간편한 파일 업로드",
+          "1": "Excel, Google Sheets 호환 형식 지원",
+          "2": "UTF-8, EUC-KR 등 다양한 인코딩 지원"
+        }
+      }
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "jsonToCsvTitle": "JSON → CSV 변환",
+      "jsonToCsv": {
+        "0": "JSON 배열 데이터를 입력하거나 파일을 업로드하세요",
+        "1": "변환 옵션을 설정하세요 (구분자, 헤더 등)",
+        "2": "변환 버튼을 클릭하고 결과를 확인하세요",
+        "3": "CSV 파일을 다운로드하거나 결과를 복사하세요"
+      },
+      "csvToJsonTitle": "CSV → JSON 변환",
+      "csvToJson": {
+        "0": "CSV 데이터를 입력하거나 파일을 업로드하세요",
+        "1": "첫 번째 행을 헤더로 사용할지 선택하세요",
+        "2": "중첩 구조가 필요한 경우 옵션을 설정하세요",
+        "3": "JSON 결과를 다운로드하거나 복사하세요"
+      },
+      "tipsTitle": "활용 팁",
+      "tips": {
+        "0": "대용량 파일은 Web Worker로 백그라운드 처리됩니다",
+        "1": "프리셋을 사용하면 일반적인 형식으로 빠르게 변환 가능",
+        "2": "한국어 데이터는 'EUC-KR' 인코딩을 선택하세요",
+        "3": "Excel에서 사용할 CSV는 'Excel 호환' 프리셋 추천"
+      }
+    },
+    "errors": {
+      "invalidJson": "유효하지 않은 JSON 형식입니다",
+      "invalidCsv": "유효하지 않은 CSV 형식입니다",
+      "emptyArray": "JSON 배열이 비어있습니다",
+      "notArray": "JSON 데이터가 배열 형태가 아닙니다",
+      "fileTooLarge": "파일이 너무 큽니다 (최대 {size}MB)",
+      "unsupportedFormat": "지원하지 않는 파일 형식입니다",
+      "processingError": "변환 중 오류가 발생했습니다"
+    },
+    "placeholder": "변환할 데이터를 입력하거나 파일을 업로드하세요"
+  },
   "sqlFormatter": {
     "title": "SQL 포맷터",
     "description": "SQL 쿼리를 예쁘게 포맷팅하고 문법 하이라이팅을 적용하세요.",
@@ -779,6 +908,7 @@
       "ladderGame": "사다리 타기 게임",
       "timeConverter": "시간 변환기",
       "jsonFormatter": "JSON 포맷터",
+      "jsonCsvConverter": "JSON-CSV 변환기",
       "sqlFormatter": "SQL 포맷터",
       "markdownViewer": "마크다운 뷰어",
       "imageResizer": "이미지 리사이저",
@@ -1628,6 +1758,10 @@
       "json": {
         "title": "JSON 포매터",
         "description": "JSON 데이터 정리와 검증"
+      },
+      "jsonCsv": {
+        "title": "JSON-CSV 변환기",
+        "description": "고성능 JSON과 CSV 양방향 변환"
       },
       "sql": {
         "title": "SQL 포매터",
