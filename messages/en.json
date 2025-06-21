@@ -219,20 +219,38 @@
         "smart": {
           "title": "Smart Analysis System",
           "description": "Smart salary analysis beyond simple calculation! See everything from effective tax rate to tax-saving points at a glance.",
-          "points": [
-            "Effective tax rate analysis: Check the actual tax payment ratio at a glance",
-            "Tax-saving guide: Customized proposals for utilizing non-taxable income and income deductions",
-            "Salary comparison table: Take-home pay by bracket from 20 million to 200 million KRW at a glance"
-          ]
+          "points": {
+            "0": {
+              "title": "Effective Tax Rate Analysis",
+              "content": "Check the actual tax payment ratio at a glance"
+            },
+            "1": {
+              "title": "Tax-Saving Guide",
+              "content": "Customized proposals for utilizing non-taxable income and income deductions"
+            },
+            "2": {
+              "title": "Salary Comparison Table",
+              "content": "Take-home pay by bracket from 20 million to 200 million KRW at a glance"
+            }
+          }
         },
         "practical": {
           "title": "Practical Optimization Tools",
           "description": "From HR teams to individuals! Maximize work efficiency with convenient features that can be used directly in practice.",
-          "points": [
-            "Calculation history management: Save and compare multiple scenarios for analysis",
-            "URL sharing: Easily share calculation results via URL",
-            "Responsive design: Perfect anywhere - PC, tablet, mobile"
-          ]
+          "points": {
+            "0": {
+              "title": "Calculation History Management",
+              "content": "Save and compare multiple scenarios for analysis"
+            },
+            "1": {
+              "title": "URL Sharing",
+              "content": "Easily share calculation results via URL"
+            },
+            "2": {
+              "title": "Responsive Design",
+              "content": "Perfect anywhere - PC, tablet, mobile"
+            }
+          }
         }
       }
     },
@@ -255,7 +273,173 @@
       "clear": "Clear All",
       "format": "Monthly {monthly} KRW (Annual {annual} KRW)"
     },
-    "placeholder": "Calculation results will appear when you enter your salary"
+    "placeholder": "Calculation results will appear when you enter your salary",
+    "insurance": {
+      "title": "Complete Guide to 4 Major Insurances",
+      "description": "Understand Korea's 4 major insurance systems perfectly and see their impact on your take-home pay.",
+      "health": {
+        "title": "Health Insurance & Long-term Care Insurance",
+        "healthInsurance": {
+          "title": "Health Insurance",
+          "description": "National Health Insurance that reduces the burden of medical expenses due to illness or injury",
+          "details": {
+            "0": "3.545% of income (employee standard)",
+            "1": "Significant reduction in medical expense copayments",
+            "2": "Health check-ups, vaccinations, and health management services"
+          }
+        },
+        "longTermCare": {
+          "title": "Long-term Care Insurance",
+          "description": "Provides long-term care benefits for those with mobility difficulties due to aging or geriatric diseases",
+          "details": {
+            "0": "12.27% of health insurance premium (separate payment)",
+            "1": "For those 65+ or under 65 with geriatric diseases",
+            "2": "Home care, facility care, and special cash benefits"
+          }
+        }
+      },
+      "pension": {
+        "title": "National Pension & Employment Insurance",
+        "nationalPension": {
+          "title": "National Pension",
+          "description": "A public pension system for old-age income security, the core of stable retirement preparation",
+          "details": {
+            "0": "4.5% of income (cap: 6.71 million KRW/month)",
+            "1": "Old-age pension, survivor's pension, disability pension",
+            "2": "Full old-age pension for 20+ years of enrollment"
+          }
+        },
+        "employment": {
+          "title": "Employment Insurance",
+          "description": "Ensures employment stability through unemployment benefits and re-employment support during job loss",
+          "details": {
+            "0": "0.9% of income (employment insurance premium)",
+            "1": "Unemployment benefits, childcare leave pay, maternity leave pay",
+            "2": "Vocational development training support and employment stability programs"
+          }
+        }
+      }
+    },
+    "taxBracket": {
+      "title": "Complete Analysis of Income Tax Progressive Rates",
+      "description": "Learn about the 7-tier progressive income tax rates for 2025 and check the tax rate for your salary bracket.",
+      "headers": {
+        "bracket": "Taxable Income",
+        "rate": "Tax Rate",
+        "deduction": "Progressive Deduction",
+        "salaryRange": "Corresponding Salary Range"
+      },
+      "understanding": {
+        "title": "Understanding Progressive Tax Rates",
+        "keyPoint": {
+          "title": "Key Point",
+          "description": "Higher tax rates don't apply to your entire income, only to income in that bracket!"
+        },
+        "example": {
+          "title": "Tax Calculation Example for 50 Million KRW Salary",
+          "details": {
+            "0": "Up to 14 million: 14 million × 6% = 840,000 KRW",
+            "1": "14-50 million: 36 million × 15% = 5.4 million KRW",
+            "2": "Total income tax: 840,000 + 5.4 million = 6.24 million KRW",
+            "3": "Effective tax rate: 6.24 million ÷ 50 million = 12.5%"
+          }
+        },
+        "note": "※ Actual rates are lower due to various deductions and tax credits."
+      }
+    },
+    "taxStrategy": {
+      "title": "Complete Tax-Saving Strategy Guide",
+      "incomeDeduction": {
+        "title": "Maximize Income Deductions",
+        "creditCard": {
+          "title": "Credit Card Usage Amount",
+          "description": "15-30% deduction on amounts exceeding 25% of annual income (limit: 3 million KRW)"
+        },
+        "housing": {
+          "title": "Housing Subscription Savings",
+          "description": "40% income deduction up to 2.4 million KRW annually (960,000 KRW tax saving)"
+        },
+        "childcare": {
+          "title": "Personal Pension Savings",
+          "description": "13.2% income deduction up to 720,000 KRW annually"
+        }
+      },
+      "taxCredit": {
+        "title": "Maximize Tax Credits",
+        "medical": {
+          "title": "Medical Expense Tax Credit",
+          "description": "15% credit on amounts exceeding 3% of total salary (limit: 7 million KRW)"
+        },
+        "education": {
+          "title": "Education Expense Tax Credit",
+          "description": "15% credit up to 3 million KRW per preschool/elementary/middle/high school student"
+        },
+        "donation": {
+          "title": "Donation Tax Credit",
+          "description": "100% credit up to 30,000 KRW, 15-30% for excess amounts"
+        }
+      },
+      "pension": {
+        "title": "Pension Savings Tax Benefits",
+        "pensionFund": {
+          "title": "Pension Savings Fund",
+          "description": "13.2-16.5% tax credit up to 6 million KRW annually"
+        },
+        "irp": {
+          "title": "Individual Retirement Pension (IRP)",
+          "description": "Tax credit up to 9 million KRW annually (combined with pension savings)"
+        },
+        "isa": {
+          "title": "ISA Account",
+          "description": "Contributions up to 20 million KRW annually, tax benefits on returns"
+        }
+      }
+    },
+    "yearEndTax": {
+      "title": "Perfect Year-End Tax Settlement Preparation Guide",
+      "schedule": {
+        "title": "Year-End Tax Settlement Schedule",
+        "timeline": {
+          "title": "Key Dates",
+          "details": {
+            "0": "January: Issuance of withholding tax receipt",
+            "1": "February: Year-end tax settlement filing (workplace)",
+            "2": "March: Refund payment or additional payment",
+            "3": "May: Individual income tax final return (applicable persons)"
+          }
+        },
+        "documents": {
+          "title": "Required Documents",
+          "details": {
+            "0": "Medical, education, donation receipts",
+            "1": "Credit card and debit card usage records",
+            "2": "Housing subscription and pension savings certificates",
+            "3": "Dependent registration related documents"
+          }
+        }
+      },
+      "tips": {
+        "title": "Key Tips to Increase Refunds",
+        "receiptManagement": {
+          "title": "Thorough Receipt Management",
+          "details": {
+            "0": "Check items not automatically collected by Hometax",
+            "1": "All medical expenses except cosmetic/plastic surgery",
+            "2": "Education expenses include academy fees and textbook costs",
+            "3": "Always get cash receipts"
+          }
+        },
+        "taxSavingProducts": {
+          "title": "Active Use of Tax-Saving Products",
+          "details": {
+            "0": "Pension savings: 16.5% deduction up to 6 million KRW annually",
+            "1": "Housing subscription: 40% deduction up to 2.4 million KRW annually",
+            "2": "Small business support: Higher deduction rate than credit cards",
+            "3": "Donations: 100% for political donations up to 100,000 KRW"
+          }
+        }
+      }
+    }
   },
   "loan": {
     "title": "Loan Calculator",
