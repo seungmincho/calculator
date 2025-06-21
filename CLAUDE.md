@@ -19,6 +19,16 @@ pnpm build
 pnpm start
 ```
 
+Static export (configured in next.config.ts):
+```bash
+pnpm export
+```
+
+Cloudflare deployment:
+```bash
+pnpm cf:deploy
+```
+
 Linting:
 ```bash
 pnpm lint
@@ -43,6 +53,21 @@ pnpm lint
 - `LoanCalculator`: Loan payment calculator
 - `SavingsCalculator`: Savings interest calculator
 - `AdSense`: Google AdSense integration component
+
+### Component Architecture Patterns
+- **Calculator Structure**: Each calculator follows consistent pattern with Suspense wrapping, URL state management, and real-time calculations
+- **State Management**: useState patterns with URL parameter syncing for shareable links
+- **Input Handling**: Number formatting with comma separators and validation
+- **Calculation History**: Reusable `CalculationHistory` component with localStorage integration
+
+### Internationalization
+- **Framework**: Next-intl with Korean/English support (Korean default)
+- **Structure**: `/messages/` JSON files, `LanguageContext` + `I18nWrapper` for client-side switching
+- **Routing**: Configured in `/src/routing.ts` and `/src/i18n.ts`
+
+### Custom Hooks
+- `useCalculationHistory`: localStorage-based history management with type safety
+- `useMessages`: Dynamic locale message loading with fallback support
 
 ### SEO & Metadata
 - Comprehensive Korean SEO metadata in layout.tsx

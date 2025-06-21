@@ -16,11 +16,11 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   metadataBase: new URL('https://toolhub.ai.kr'),
   title: {
-    default: '툴허브 - 연봉, 대출, 적금 계산기 | 무료 온라인 도구',
+    default: '툴허브 - 연봉, 대출, 시간변환 계산기 | 무료 온라인 도구',
     template: '%s | 툴허브'
   },
-  description: '연봉 실수령액, 대출 상환, 적금 이자를 쉽게 계산하세요. 무료 온라인 계산기와 실용적인 도구들을 제공합니다.',
-  keywords: '툴허브, 계산기, 연봉계산기, 대출계산기, 적금계산기, 실수령액계산, 온라인도구, 무료계산기',
+  description: '연봉 실수령액, 대출 상환, 적금 이자, 시간변환까지! 금융계산기부터 개발자 도구까지 모든 계산을 한 곳에서 해결하세요.',
+  keywords: '툴허브, 계산기, 연봉계산기, 대출계산기, 적금계산기, 시간변환기, 타임존변환, Unix타임스탬프, 실수령액계산, 온라인도구, 무료계산기, 개발자도구',
   authors: [{ name: '툴허브' }],
   creator: '툴허브',
   publisher: '툴허브',
@@ -34,21 +34,21 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: 'https://toolhub.ai.kr',
     siteName: '툴허브',
-    title: '툴허브 - 필수 계산기 모음',
-    description: '연봉부터 대출까지, 모든 계산을 한 곳에서',
+    title: '툴허브 - 필수 계산기와 개발자 도구 모음',
+    description: '연봉부터 대출, 시간변환까지 모든 계산을 한 곳에서',
     images: [
       {
         url: '/logo.png', // 추후 이미지 추가
         width: 1200,
         height: 630,
-        alt: '툴허브 - 온라인 계산기 모음',
+        alt: '툴허브 - 온라인 계산기와 개발자 도구 모음',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '툴허브 - 필수 계산기 모음',
-    description: '연봉부터 대출까지, 모든 계산을 한 곳에서',
+    title: '툴허브 - 필수 계산기와 개발자 도구 모음',
+    description: '연봉부터 대출, 시간변환까지 모든 계산을 한 곳에서',
     images: ['/og-image.png'],
   },
   robots: {
@@ -79,7 +79,7 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: '툴허브',
-    description: '연봉, 대출, 적금 계산기 등 실용적인 온라인 도구 모음',
+    description: '연봉, 대출, 적금 계산기부터 시간변환, 개발자 도구까지 실용적인 온라인 도구 모음',
     url: 'https://toolhub.ai.kr',
     potentialAction: {
       '@type': 'SearchAction',

@@ -30,6 +30,7 @@ const Header = () => {
     tools: {
       title: t('navigation.developmentTools'),
       items: [
+        { href: '/time-converter', label: t('footer.links.timeConverter'), icon: '🕰️' },
         { href: '/json-formatter', label: t('footer.links.jsonFormatter'), icon: '📝' },
         { href: '/sql-formatter', label: t('footer.links.sqlFormatter'), icon: '🗄️' },
         { href: '/markdown-viewer', label: t('footer.links.markdownViewer'), icon: '📖' },
