@@ -4,7 +4,7 @@ export interface CalculationHistory {
   id: string;
   type: 'salary' | 'loan' | 'savings' | 'retirement' 
   | 'tax' | 'exchange' | 'real-estate' | 'stock' 
-  | 'car-loan' | 'car-tax' | 'regex' | 'bmi' | 'calorie' 
+  | 'car-loan' | 'car-tax' | 'fuel' | 'regex' | 'bmi' | 'calorie' 
   | 'bodyFat' | 'workHours' | 'lotto' | 'ladder';
   timestamp: number;
   inputs: Record<string, any>;
@@ -210,6 +210,35 @@ export const generateHistoryTitle = {
     
     return `${typeLabel}(${fuelLabel}) ${priceRange}천만원`;
   },
+  fuel: (inputs: any): string => {
+    const distance = inputs.distance || 0;
+    const vehicleType = inputs.vehicleType || 'compact';
+    const fuelType = inputs.fuelType || 'gasoline';
+    const totalCost = inputs.totalCost || 0;
+    
+    const vehicleLabels = {
+      light: '경차',
+      compact: '소형차',
+      midsize: '중형차',
+      fullsize: '대형차',
+      suv: 'SUV',
+      van: '승합차',
+      truck: '화물차'
+    };
+    
+    const fuelLabels = {
+      gasoline: '휘발유',
+      diesel: '경유',
+      lpg: 'LPG'
+    };
+    
+    const vehicleLabel = vehicleLabels[vehicleType as keyof typeof vehicleLabels] || '소형차';
+    const fuelLabel = fuelLabels[fuelType as keyof typeof fuelLabels] || '휘발유';
+    const costText = Math.floor(totalCost / 1000);
+    
+    return `${vehicleLabel}(${fuelLabel}) ${distance}km ${costText}천원`;
+  },
+  
   // TODO: 이후에 추가할것
   regex: (inputs: any): string => {
     return ''

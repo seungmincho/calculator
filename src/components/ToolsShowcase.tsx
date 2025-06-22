@@ -16,7 +16,9 @@ import {
   Code,
   Image,
   FileText,
-  Wrench
+  Wrench,
+  QrCode,
+  Fuel
 } from 'lucide-react'
 
 interface Tool {
@@ -39,6 +41,7 @@ const tools: Tool[] = [
   { name: 'stock', href: '/stock-calculator', icon: TrendingUp, category: 'financial', priority: 7 },
   { name: 'carLoan', href: '/car-loan-calculator', icon: Car, category: 'financial', priority: 8 },
   { name: 'carTax', href: '/car-tax-calculator', icon: Car, category: 'financial', priority: 9 },
+  { name: 'fuel', href: '/fuel-calculator', icon: Fuel, category: 'financial', priority: 10 },
   
   // 건강 도구
   { name: 'bmi', href: '/bmi-calculator', icon: Scale, category: 'health', priority: 1 },
@@ -51,9 +54,10 @@ const tools: Tool[] = [
   { name: 'jwt', href: '/jwt-decoder', icon: Code, category: 'development', priority: 3 },
   { name: 'uuid', href: '/uuid-generator', icon: Code, category: 'development', priority: 4 },
   { name: 'cron', href: '/cron-tester', icon: Clock, category: 'development', priority: 5 },
-  { name: 'sql', href: '/sql-formatter', icon: Code, category: 'development', priority: 6 },
-  { name: 'regex', href: '/regex-extractor', icon: Code, category: 'development', priority: 7 },
-  { name: 'markdown', href: '/markdown-viewer', icon: FileText, category: 'development', priority: 8 },
+  { name: 'qr', href: '/qr-generator', icon: QrCode, category: 'development', priority: 6 },
+  { name: 'sql', href: '/sql-formatter', icon: Code, category: 'development', priority: 7 },
+  { name: 'regex', href: '/regex-extractor', icon: Code, category: 'development', priority: 8 },
+  { name: 'markdown', href: '/markdown-viewer', icon: FileText, category: 'development', priority: 9 },
   
   // 유틸리티
   { name: 'time', href: '/time-converter', icon: Clock, category: 'utility', priority: 1 },

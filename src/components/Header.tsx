@@ -25,6 +25,7 @@ const Header = () => {
         { href: '/real-estate-calculator', label: t('footer.links.realEstateCalculator'), icon: '🏠' },
         { href: '/car-loan-calculator', label: t('footer.links.carLoanCalculator'), icon: '🚗' },
         { href: '/car-tax-calculator', label: t('footer.links.carTaxCalculator'), icon: '🚘' },
+        { href: '/fuel-calculator', label: t('footer.links.fuelCalculator'), icon: '⛽' },
       ]
     },
     tools: {

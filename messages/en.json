@@ -796,7 +796,8 @@
       "jwtDecoder": "JWT Decoder",
       "uuidGenerator": "UUID Generator",
       "cronTester": "Cron Tester",
-      "qrGenerator": "QR Code Generator"
+      "qrGenerator": "QR Code Generator",
+      "fuelCalculator": "Fuel Calculator"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
   },
@@ -2020,6 +2021,193 @@
     },
     "placeholder": "QR code will be automatically generated when you enter data"
   },
+  "fuelCalculator": {
+    "title": "Fuel Cost Calculator",
+    "description": "Calculate accurate fuel costs and depreciation for business vehicle usage. Automatically compute expenses for reimbursement based on vehicle type, fuel efficiency, and real-time fuel prices.",
+    "input": {
+      "tripInfo": "Trip Information",
+      "distance": "Distance",
+      "vehicleInfo": "Vehicle Information",
+      "vehicleType": "Vehicle Type",
+      "fuelType": "Fuel Type",
+      "customEfficiency": "Custom Fuel Efficiency (km/L)"
+    },
+    "fuelTypes": {
+      "gasoline": "Gasoline",
+      "diesel": "Diesel",
+      "lpg": "LPG"
+    },
+    "fuelPrices": {
+      "title": "Real-time Fuel Prices",
+      "update": "Refresh Prices",
+      "lastUpdated": "Last Updated"
+    },
+    "result": {
+      "title": "Calculation Result",
+      "totalCost": "Total Cost",
+      "fuelCost": "Fuel Cost",
+      "depreciationCost": "Depreciation Cost",
+      "costPerKm": "Cost per KM",
+      "breakdown": "Detailed Breakdown",
+      "distance": "Distance",
+      "efficiency": "Fuel Efficiency",
+      "fuelPrice": "Fuel Price",
+      "depreciationRate": "Depreciation Rate"
+    },
+    "guide": {
+      "title": "Fuel Calculator Usage Guide",
+      "usageTitle": "How to Calculate",
+      "usage": {
+        "0": "Enter accurate distance traveled (include round-trip)",
+        "1": "Select vehicle type or enter custom fuel efficiency",
+        "2": "Fuel prices are automatically applied by fuel type",
+        "3": "Depreciation costs use average values by vehicle type"
+      },
+      "tipTitle": "Expense Reimbursement Tips",
+      "tips": {
+        "0": "Keep accurate mileage records for business vehicle use",
+        "1": "Attach calculation sheet with receipts for easy reimbursement",
+        "2": "Maintain vehicle regularly to preserve fuel efficiency",
+        "3": "Check company policy for depreciation cost applicability"
+      },
+      "vehicleTypesTitle": "Fuel Efficiency by Vehicle Type",
+      "vehicleTypes": {
+        "0": "Light Car: 16.0km/L (80 KRW/km depreciation)",
+        "1": "Compact Car: 14.5km/L (100 KRW/km depreciation)",
+        "2": "Mid-size Car: 12.0km/L (130 KRW/km depreciation)",
+        "3": "Full-size Car: 10.5km/L (160 KRW/km depreciation)",
+        "4": "SUV: 9.5km/L (180 KRW/km depreciation)",
+        "5": "Van: 8.5km/L (200 KRW/km depreciation)",
+        "6": "Truck: 7.0km/L (250 KRW/km depreciation)"
+      }
+    },
+    "placeholder": "Enter distance to automatically calculate fuel costs",
+    "businessExpense": {
+      "title": "Complete Guide to Business Vehicle Expense Management",
+      "subtitle": "From calculating business vehicle operating costs to tax processing! Start smart cost management with accurate expense settlement.",
+      "features": {
+        "accurate": {
+          "title": "Accurate Cost Calculation",
+          "description": "Support reasonable expense processing with accurate operating cost calculation reflecting fuel efficiency by vehicle type and actual depreciation costs.",
+          "points": {
+            "0": {
+              "title": "Real Fuel Efficiency",
+              "content": "Accurately reflects actual fuel efficiency data by vehicle type and fuel efficiency differences"
+            },
+            "1": {
+              "title": "Depreciation Included",
+              "content": "Automatic calculation of depreciation cost per km considering vehicle value decline"
+            },
+            "2": {
+              "title": "Real-time Fuel Prices",
+              "content": "Accurate cost calculation reflecting latest fuel price information"
+            }
+          }
+        },
+        "legal": {
+          "title": "Tax Law Compliant Expense Processing",
+          "description": "Guide business vehicle expense processing methods and required documents that comply with National Tax Service standards.",
+          "points": {
+            "0": {
+              "title": "Business Vehicle Standards",
+              "content": "Calculation standards for business vehicle operating costs recognized under tax law"
+            },
+            "1": {
+              "title": "Supporting Document Guide",
+              "content": "How to prepare required supporting documents such as driving logs and receipts"
+            },
+            "2": {
+              "title": "Limit Management",
+              "content": "Expense processing within monthly and annual limit standards"
+            }
+          }
+        },
+        "practical": {
+          "title": "Practical Business Tools",
+          "description": "Maximize work efficiency with practical features for accounting teams and office workers.",
+          "points": {
+            "0": {
+              "title": "Automatic Invoice Generation",
+              "content": "Automatically generate and download invoices for expense settlement"
+            },
+            "1": {
+              "title": "History Management",
+              "content": "Systematically manage monthly/annual operating cost history"
+            },
+            "2": {
+              "title": "Various Export Options",
+              "content": "Support data export in various formats like Excel, PDF"
+            }
+          }
+        }
+      }
+    },
+    "expenseRules": {
+      "title": "Business Vehicle Expense Processing Standards",
+      "description": "Learn accurate business vehicle operating cost processing methods and limits according to tax law.",
+      "personalCar": {
+        "title": "Personal Vehicle Business Use",
+        "description": "Expense processing method when using personally owned vehicles for business",
+        "details": {
+          "0": "Actual expense reimbursement possible within monthly limit of 200,000 KRW",
+          "1": "Driving log preparation and receipt storage required",
+          "2": "Clear recording of business purpose and mileage",
+          "3": "Only actual costs like fuel, tolls, parking fees recognized"
+        }
+      },
+      "companyCar": {
+        "title": "Corporate Vehicle Operation",
+        "description": "Operating cost processing standards for company-owned vehicles",
+        "details": {
+          "0": "All operating costs including fuel, repairs, insurance recognized as deductible",
+          "1": "Personal use portion taxed as salary (monthly limit 120,000 KRW)",
+          "2": "Distinguish business/personal use management with driving logs",
+          "3": "Depreciation calculated according to useful life"
+        }
+      }
+    },
+    "costOptimization": {
+      "title": "Vehicle Operating Cost Saving Tips",
+      "fuelEfficiency": {
+        "title": "Fuel Efficiency Improvement Methods",
+        "methods": {
+          "0": {
+            "title": "Maintain Economic Speed",
+            "content": "Maintain 80-90km/h on highways, 50-60km/h on regular roads"
+          },
+          "1": {
+            "title": "No Sudden Acceleration/Braking",
+            "content": "Save 20% fuel consumption with smooth acceleration and braking"
+          },
+          "2": {
+            "title": "Regular Maintenance",
+            "content": "Improve fuel efficiency with tire pressure and engine oil checks"
+          },
+          "3": {
+            "title": "Remove Unnecessary Load",
+            "content": "1% fuel efficiency improvement per 10kg vehicle weight reduction"
+          }
+        }
+      },
+      "maintenance": {
+        "title": "Vehicle Management Tips",
+        "tips": {
+          "0": {
+            "title": "Preventive Maintenance",
+            "content": "Prevent major repair costs with regular inspections (20-30% annual savings)"
+          },
+          "1": {
+            "title": "Use Genuine Parts",
+            "content": "Advantageous for long-term repair costs and fuel efficiency"
+          },
+          "2": {
+            "title": "Driving Pattern Analysis",
+            "content": "Find efficient driving patterns by recording monthly fuel efficiency"
+          }
+        }
+      }
+    }
+  },
   "navigation": {
     "financialCalculators": "Financial Calculators",
     "developmentTools": "Development Tools",
@@ -2151,6 +2339,10 @@
       "qr": {
         "title": "QR Code Generator",
         "description": "QR codes with custom logos"
+      },
+      "fuel": {
+        "title": "Fuel Calculator",
+        "description": "Business vehicle fuel and depreciation costs"
       }
     }
   }
