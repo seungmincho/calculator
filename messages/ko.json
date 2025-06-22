@@ -944,6 +944,99 @@
     },
     "placeholder": "UUID 버전을 선택하고 생성 버튼을 눌러주세요"
   },
+  "cronTester": {
+    "title": "Cron 표현식 테스터",
+    "descriptionText": "Cron 표현식을 실시간으로 테스트하고 분석하세요. 다음 실행 시간 예측, 한국어 설명, 일반적인 패턴 제공으로 스케줄 관리를 쉽게 할 수 있습니다.",
+    "input": {
+      "title": "Cron 표현식 입력",
+      "expression": "Cron 표현식",
+      "format": "형식",
+      "formatDesc": "분 시 일 월 요일"
+    },
+    "validation": {
+      "valid": "유효한 Cron 표현식입니다",
+      "invalid": "잘못된 Cron 표현식입니다",
+      "invalidFormat": "Cron 표현식은 5개의 필드로 구성되어야 합니다 (분 시 일 월 요일)",
+      "invalidStep": "{field} 필드의 스텝 값이 잘못되었습니다: {value}",
+      "invalidRange": "{field} 필드의 범위가 잘못되었습니다 ({min}-{max})",
+      "outOfRange": "{field} 필드는 {min}-{max} 범위여야 합니다",
+      "dayAndWeekdayWarning": "일(day)과 요일(weekday)을 동시에 지정하면 예상과 다르게 동작할 수 있습니다",
+      "monthEndWarning": "월말 날짜 (29-31일)는 모든 월에 존재하지 않을 수 있습니다"
+    },
+    "presets": {
+      "title": "일반적인 패턴",
+      "weekdayMorning": "평일 오전 9시",
+      "daily": "매일 자정",
+      "weekly": "매주 일요일 자정",
+      "monthly": "매월 1일 자정",
+      "every5min": "5분마다",
+      "every2hours": "2시간마다",
+      "dailyNoon": "매일 정오",
+      "yearly": "매년 1월 1일",
+      "saturdayAfternoon": "토요일 오후 2:30",
+      "lateNight": "매일 밤 11시"
+    },
+    "result": {
+      "description": "실행 설명",
+      "nextExecutions": "다음 실행 일정",
+      "noExecutions": "유효한 Cron 표현식을 입력하면 실행 일정이 표시됩니다"
+    },
+    "description": {
+      "invalid": "잘못된 Cron 표현식입니다",
+      "runs": "실행:",
+      "daily": "매일",
+      "weekdays": "평일",
+      "mondayToThursday": "월-목",
+      "mondayToSaturday": "월-토",
+      "monday": "월요일",
+      "tuesday": "화요일", 
+      "wednesday": "수요일",
+      "thursday": "목요일",
+      "friday": "금요일",
+      "saturday": "토요일",
+      "sunday": "일요일",
+      "monthlyFirst": "매월 1일",
+      "monthly": "매월 {day}일",
+      "dayAndWeekday": "지정된 일과 요일",
+      "weekday": "요일 {weekday}",
+      "january": "1월",
+      "month": "{month}월",
+      "everyMinute": "매분 실행",
+      "everyNMinutes": "{n}분마다 실행",
+      "everyHourStart": "매시 정각 실행",
+      "everyHourAtMinute": "매시 {minute}분 실행",
+      "everyMinuteInHour": "{hour}시 매분 실행",
+      "everyNHours": "{n}시간마다 실행",
+      "specificTime": "{time} 실행",
+      "patterns": {
+        "daily": "매일 자정에 실행",
+        "weekly": "매주 일요일 자정에 실행",
+        "monthly": "매월 1일 자정에 실행",
+        "weekdayMorning": "평일 오전 9시에 실행",
+        "interval": "매 {minutes}분마다 실행"
+      }
+    },
+    "guide": {
+      "title": "Cron 표현식 가이드",
+      "formatTitle": "표현식 형식",
+      "formatExample": "분(0-59) 시(0-23) 일(1-31) 월(1-12) 요일(0-7)",
+      "fields": {
+        "minute": "분: 0-59",
+        "hour": "시: 0-23",
+        "day": "일: 1-31",
+        "month": "월: 1-12",
+        "weekday": "요일: 0-7 (0과 7은 일요일)"
+      },
+      "specialChars": "특수 문자",
+      "chars": {
+        "asterisk": "모든 값 (와일드카드)",
+        "comma": "값 목록 구분",
+        "dash": "값 범위 지정",
+        "slash": "스텝 값 지정"
+      }
+    },
+    "placeholder": "Cron 표현식을 입력하면 실행 일정과 설명이 표시됩니다"
+  },
   "footer": {
     "title": "툴허브",
     "description": "일상에 필요한 다양한 계산기를 제공합니다.",
@@ -975,7 +1068,8 @@
       "imageEditor": "이미지 편집기",
       "regexExtractor": "정규식 추출기",
       "jwtDecoder": "JWT 디코더",
-      "uuidGenerator": "UUID 생성기"
+      "uuidGenerator": "UUID 생성기",
+      "cronTester": "Cron 테스터"
     },
     "copyright": "© 2025 툴허브. All rights reserved."
   },
@@ -1905,6 +1999,10 @@
       "uuid": {
         "title": "UUID 생성기",
         "description": "고유 식별자 생성"
+      },
+      "cron": {
+        "title": "Cron 테스터",
+        "description": "스케줄 표현식 검증"
       },
       "sql": {
         "title": "SQL 포매터",

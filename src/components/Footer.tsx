@@ -42,6 +42,7 @@ const Footer = () => {
               <li><a href="/json-csv-converter" className="hover:text-white transition-colors">{t('footer.links.jsonCsvConverter')}</a></li>
               <li><a href="/jwt-decoder" className="hover:text-white transition-colors">{t('footer.links.jwtDecoder')}</a></li>
               <li><a href="/uuid-generator" className="hover:text-white transition-colors">{t('footer.links.uuidGenerator')}</a></li>
+              <li><a href="/cron-tester" className="hover:text-white transition-colors">{t('footer.links.cronTester')}</a></li>
               <li><a href="/sql-formatter" className="hover:text-white transition-colors">{t('footer.links.sqlFormatter')}</a></li>
               <li><a href="/markdown-viewer" className="hover:text-white transition-colors">{t('footer.links.markdownViewer')}</a></li>
               <li><a href="/image-resizer" className="hover:text-white transition-colors">{t('footer.links.imageResizer')}</a></li>

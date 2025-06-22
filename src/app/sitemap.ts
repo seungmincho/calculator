@@ -132,6 +132,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: 'https://toolhub.ai.kr/cron-tester',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: 'https://toolhub.ai.kr/sql-formatter',
       lastModified: new Date(),
       changeFrequency: 'monthly',

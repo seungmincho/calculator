@@ -794,7 +794,8 @@
       "imageEditor": "Image Editor",
       "regexExtractor": "Regex Extractor",
       "jwtDecoder": "JWT Decoder",
-      "uuidGenerator": "UUID Generator"
+      "uuidGenerator": "UUID Generator",
+      "cronTester": "Cron Tester"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
   },
@@ -857,6 +858,100 @@
       }
     },
     "placeholder": "Select a UUID version and click generate"
+  },
+  "cronTester": {
+    "title": "Cron Expression Tester",
+    "description": "Test and analyze Cron expressions in real-time. Predict next execution times, get Korean descriptions, and use common patterns for easy schedule management.",
+    "descriptionText": "Test and analyze Cron expressions in real-time. Predict next execution times, get Korean descriptions, and use common patterns for easy schedule management.",
+    "input": {
+      "title": "Cron Expression Input",
+      "expression": "Cron Expression",
+      "format": "Format",
+      "formatDesc": "minute hour day month weekday"
+    },
+    "validation": {
+      "valid": "Valid Cron expression",
+      "invalid": "Invalid Cron expression",
+      "invalidFormat": "Cron expression must have 5 fields (minute hour day month weekday)",
+      "invalidStep": "Invalid step value in {field} field: {value}",
+      "invalidRange": "Invalid range in {field} field ({min}-{max})",
+      "outOfRange": "{field} field must be in range {min}-{max}",
+      "dayAndWeekdayWarning": "Specifying both day and weekday may not work as expected",
+      "monthEndWarning": "Month-end dates (29-31) may not exist in all months"
+    },
+    "presets": {
+      "title": "Common Patterns",
+      "weekdayMorning": "Weekdays at 9 AM",
+      "daily": "Daily at midnight",
+      "weekly": "Weekly on Sunday midnight",
+      "monthly": "Monthly on 1st midnight",
+      "every5min": "Every 5 minutes",
+      "every2hours": "Every 2 hours",
+      "dailyNoon": "Daily at noon",
+      "yearly": "Yearly on Jan 1st",
+      "saturdayAfternoon": "Saturday at 2:30 PM",
+      "lateNight": "Daily at 11 PM"
+    },
+    "result": {
+      "description": "Execution Description",
+      "nextExecutions": "Next Execution Schedule",
+      "noExecutions": "Enter a valid Cron expression to see execution schedule"
+    },
+    "description": {
+      "invalid": "Invalid Cron expression",
+      "runs": "Runs:",
+      "daily": "Daily",
+      "weekdays": "Weekdays",
+      "mondayToThursday": "Mon-Thu",
+      "mondayToSaturday": "Mon-Sat",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday", 
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "monthlyFirst": "1st of month",
+      "monthly": "{day}th of month",
+      "dayAndWeekday": "specified day and weekday",
+      "weekday": "weekday {weekday}",
+      "january": "January",
+      "month": "month {month}",
+      "everyMinute": "every minute",
+      "everyNMinutes": "every {n} minutes",
+      "everyHourStart": "at start of every hour",
+      "everyHourAtMinute": "at minute {minute} of every hour",
+      "everyMinuteInHour": "every minute during hour {hour}",
+      "everyNHours": "every {n} hours",
+      "specificTime": "at {time}",
+      "patterns": {
+        "daily": "Runs daily at midnight",
+        "weekly": "Runs weekly on Sunday midnight",
+        "monthly": "Runs monthly on 1st midnight",
+        "weekdayMorning": "Runs weekdays at 9 AM",
+        "interval": "Runs every {minutes} minutes"
+      }
+    },
+    "guide": {
+      "title": "Cron Expression Guide",
+      "formatTitle": "Expression Format",
+      "formatExample": "minute(0-59) hour(0-23) day(1-31) month(1-12) weekday(0-7)",
+      "fields": {
+        "minute": "Minute: 0-59",
+        "hour": "Hour: 0-23",
+        "day": "Day: 1-31",
+        "month": "Month: 1-12",
+        "weekday": "Weekday: 0-7 (0 and 7 are Sunday)"
+      },
+      "specialChars": "Special Characters",
+      "chars": {
+        "asterisk": "Any value (wildcard)",
+        "comma": "Value list separator",
+        "dash": "Value range specifier",
+        "slash": "Step value specifier"
+      }
+    },
+    "placeholder": "Enter a Cron expression to see execution schedule and description"
   },
   "jwtDecoder": {
     "title": "JWT Decoder",
@@ -1905,6 +2000,10 @@
       "uuid": {
         "title": "UUID Generator",
         "description": "Generate unique identifiers"
+      },
+      "cron": {
+        "title": "Cron Tester",
+        "description": "Schedule expression validation"
       },
       "sql": {
         "title": "SQL Formatter",

@@ -50,9 +50,10 @@ const tools: Tool[] = [
   { name: 'jsonCsv', href: '/json-csv-converter', icon: Code, category: 'development', priority: 2 },
   { name: 'jwt', href: '/jwt-decoder', icon: Code, category: 'development', priority: 3 },
   { name: 'uuid', href: '/uuid-generator', icon: Code, category: 'development', priority: 4 },
-  { name: 'sql', href: '/sql-formatter', icon: Code, category: 'development', priority: 5 },
-  { name: 'regex', href: '/regex-extractor', icon: Code, category: 'development', priority: 6 },
-  { name: 'markdown', href: '/markdown-viewer', icon: FileText, category: 'development', priority: 7 },
+  { name: 'cron', href: '/cron-tester', icon: Clock, category: 'development', priority: 5 },
+  { name: 'sql', href: '/sql-formatter', icon: Code, category: 'development', priority: 6 },
+  { name: 'regex', href: '/regex-extractor', icon: Code, category: 'development', priority: 7 },
+  { name: 'markdown', href: '/markdown-viewer', icon: FileText, category: 'development', priority: 8 },
   
   // 유틸리티
   { name: 'time', href: '/time-converter', icon: Clock, category: 'utility', priority: 1 },
