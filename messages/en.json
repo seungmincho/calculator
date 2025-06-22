@@ -795,7 +795,8 @@
       "regexExtractor": "Regex Extractor",
       "jwtDecoder": "JWT Decoder",
       "uuidGenerator": "UUID Generator",
-      "cronTester": "Cron Tester"
+      "cronTester": "Cron Tester",
+      "qrGenerator": "QR Code Generator"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
   },
@@ -1913,6 +1914,112 @@
       }
     }
   },
+  "qrGenerator": {
+    "title": "QR Code Generator",
+    "description": "Convert text, URLs, and contact information into QR codes. Create personalized QR codes with logo insertion, color customization, and various size options.",
+    "input": {
+      "title": "QR Data Input",
+      "dataType": "Data Type",
+      "text": "Text",
+      "url": "Website URL",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "textPlaceholder": "Enter text to convert to QR code...",
+      "urlPlaceholder": "https://example.com",
+      "emailPlaceholder": "contact@example.com",
+      "phonePlaceholder": "010-1234-5678",
+      "optional": "optional",
+      "smsPhone": "Recipient Phone Number",
+      "smsPhonePlaceholder": "010-1234-5678",
+      "smsMessage": "Message Content",
+      "smsMessagePlaceholder": "Enter message to send...",
+      "wifiSsid": "WiFi Network Name (SSID)",
+      "wifiSsidPlaceholder": "MyWiFi",
+      "wifiPassword": "WiFi Password",
+      "wifiPasswordPlaceholder": "password123",
+      "wifiSecurity": "Security Type",
+      "wifiNoPassword": "No Password",
+      "wifiHidden": "Hidden Network",
+      "vcardName": "Name",
+      "vcardNamePlaceholder": "John Doe",
+      "vcardPhone": "Phone Number",
+      "vcardPhonePlaceholder": "010-1234-5678",
+      "vcardEmail": "Email",
+      "vcardEmailPlaceholder": "contact@example.com",
+      "vcardOrganization": "Company/Organization",
+      "vcardOrganizationPlaceholder": "ToolHub",
+      "vcardUrl": "Website",
+      "vcardUrlPlaceholder": "https://example.com"
+    },
+    "types": {
+      "text": "Text",
+      "url": "Website",
+      "email": "Email",
+      "phone": "Phone",
+      "sms": "SMS",
+      "wifi": "WiFi",
+      "vcard": "Contact"
+    },
+    "logo": {
+      "title": "Logo Image",
+      "upload": "Click to upload image file",
+      "supportedFormats": "PNG, JPG, GIF supported",
+      "size": "Logo Size",
+      "opacity": "Opacity"
+    },
+    "style": {
+      "title": "Style Settings",
+      "size": "QR Code Size",
+      "foregroundColor": "Foreground Color",
+      "backgroundColor": "Background Color",
+      "errorCorrection": "Error Correction Level",
+      "errorCorrectionHint": "Higher levels are better for logo insertion",
+      "errorLevels": {
+        "low": "Low",
+        "medium": "Medium", 
+        "high": "High",
+        "highest": "Highest"
+      }
+    },
+    "sizes": {
+      "small": "Small (200px)",
+      "medium": "Medium (300px)",
+      "large": "Large (400px)",
+      "xlarge": "X-Large (500px)"
+    },
+    "result": {
+      "title": "Generated QR Code",
+      "scanHint": "Scan the QR code with your smartphone",
+      "copyImage": "Copy Image",
+      "copiedImage": "Image Copied!"
+    },
+    "guide": {
+      "title": "QR Code Generator Guide",
+      "typesTitle": "Data Type Features",
+      "types": {
+        "0": "Text: Convert plain text to QR code",
+        "1": "Website: Convert URL to QR code for direct access",
+        "2": "Email: Convert email address to QR code for instant email composition",
+        "3": "Phone: Convert phone number to QR code for direct calling"
+      },
+      "logoTitle": "Logo Insertion Feature",
+      "logo": {
+        "0": "Supports PNG, JPG, GIF image formats",
+        "1": "Adjustable logo size and opacity",
+        "2": "Automatically positioned in QR code center",
+        "3": "High error correction ensures scan success"
+      },
+      "tipsTitle": "Usage Tips",
+      "tips": {
+        "0": "Keep logo size under 20% of total QR code size",
+        "1": "Use high contrast colors for easier scanning",
+        "2": "Print at minimum 3cm × 3cm size for best results",
+        "3": "Use URL shortening services for complex URLs",
+        "4": "Use the copy image button to copy QR code as PNG image to clipboard"
+      }
+    },
+    "placeholder": "QR code will be automatically generated when you enter data"
+  },
   "navigation": {
     "financialCalculators": "Financial Calculators",
     "developmentTools": "Development Tools",
@@ -2040,6 +2147,10 @@
       "ladder": {
         "title": "Ladder Game",
         "description": "Online ladder game"
+      },
+      "qr": {
+        "title": "QR Code Generator",
+        "description": "QR codes with custom logos"
       }
     }
   }
