@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Graph Image Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .og-image {
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .og-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+                        linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.1) 75%), 
+                        linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.1) 75%);
+            background-size: 60px 60px;
+            background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+            opacity: 0.3;
+        }
+        
+        .content {
+            text-align: center;
+            z-index: 1;
+            max-width: 900px;
+            padding: 40px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 20px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: #667eea;
+            font-weight: bold;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -2px;
+        }
+        
+        .subtitle {
+            font-size: 32px;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+        
+        .tools {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tool-item {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .smaller {
+            width: 600px;
+            height: 315px;
+        }
+        
+        .smaller .logo {
+            width: 80px;
+            height: 80px;
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .smaller h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .smaller .subtitle {
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+        
+        .smaller .tool-item {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Large OG Image (1200x630) -->
+    <div class="og-image" id="large-og">
+        <div class="content">
+            <div class="logo">🔧</div>
+            <h1>툴허브</h1>
+            <div class="subtitle">연봉, 대출, 시간변환부터<br>바코드 생성, JSON 포맷터까지</div>
+            <div class="tools">
+                <div class="tool-item">💰 연봉계산기</div>
+                <div class="tool-item">🏦 대출계산기</div>
+                <div class="tool-item">⏰ 시간변환기</div>
+                <div class="tool-item">📊 바코드생성기</div>
+                <div class="tool-item">🔧 개발자도구</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Small OG Image (600x315) -->
+    <div class="og-image smaller" id="small-og" style="margin-top: 50px;">
+        <div class="content">
+            <div class="logo">🔧</div>
+            <h1>툴허브</h1>
+            <div class="subtitle">모든 계산을 한 곳에서</div>
+            <div class="tools">
+                <div class="tool-item">연봉계산기</div>
+                <div class="tool-item">시간변환기</div>
+                <div class="tool-item">바코드생성기</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 이미지를 PNG로 변환하는 스크립트
+        // 브라우저에서 실행 후 개발자 도구에서 다음 코드 실행:
+        
+        function downloadElementAsPNG(elementId, filename) {
+            const element = document.getElementById(elementId);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const rect = element.getBoundingClientRect();
+            
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            
+            // HTML을 이미지로 변환 (html2canvas 라이브러리 필요)
+            console.log(`${elementId} 요소를 스크린샷으로 저장하세요: ${filename}`);
+        }
+        
+        console.log('Open Graph 이미지 생성 준비 완료');
+        console.log('브라우저 개발자 도구에서 각 요소를 스크린샷으로 저장하세요:');
+        console.log('1. large-og 요소 → og-image-1200x630.png');
+        console.log('2. small-og 요소 → og-image-600x315.png');
+    </script>
+</body>
+</html>
