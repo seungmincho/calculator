@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://toolhub.ai.kr/logo.png',
+        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
         width: 1200,
         height: 630,
         alt: '툴허브 - 종합 계산기 도구',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '연봉 실수령액 계산기 | 툴허브',
     description: '2025년 기준 정확한 연봉 계산 + 20+ 전문 도구',
-    images: ['https://toolhub.ai.kr/logo.png'],
+    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   robots: {
     index: true,

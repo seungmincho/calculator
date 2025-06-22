@@ -99,7 +99,6 @@ const BarcodeGenerator = () => {
       JsBarcode(canvas, data, { 
         format: format,
         valid: () => {},
-        invalid: () => { throw new Error('Invalid data') }
       })
       return { isValid: true }
     } catch (error) {
@@ -181,17 +180,13 @@ const BarcodeGenerator = () => {
 
         // Calculate position based on alignment
         let drawX = 0
-        switch (options.barcodeAlign) {
-          case 'left':
-            drawX = 0
-            break
-          case 'right':
-            drawX = alignedCanvas.width - originalCanvas.width
-            break
-          case 'center':
-          default:
-            drawX = (alignedCanvas.width - originalCanvas.width) / 2
-            break
+        if (options.barcodeAlign === 'left') {
+          drawX = 0
+        } else if (options.barcodeAlign === 'right') {
+          drawX = alignedCanvas.width - originalCanvas.width
+        } else {
+          // center or default
+          drawX = (alignedCanvas.width - originalCanvas.width) / 2
         }
 
         // Draw the original barcode on the aligned canvas

@@ -53,13 +53,13 @@ export const metadata: Metadata = {
     description: '연봉, 대출, 시간변환부터 바코드 생성, JSON 포맷터까지 모든 계산을 한 곳에서 해결하세요',
     images: [
       {
-        url: '/og-image-1200x630.png',
+        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
         width: 1200,
         height: 630,
         alt: '툴허브 - 온라인 계산기와 개발자 도구 모음',
       },
       {
-        url: '/og-image-600x315.png',
+        url: 'https://toolhub.ai.kr/og-image-600x315.png',
         width: 600,
         height: 315,
         alt: '툴허브 - 온라인 계산기와 개발자 도구 모음',
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     creator: '@toolhub_kr',
     title: '툴허브 - 필수 계산기와 개발자 도구 모음',
     description: '연봉, 대출, 시간변환부터 바코드 생성까지 모든 계산을 한 곳에서',
-    images: ['/og-image-1200x630.png'],
+    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   robots: {
     index: true,
@@ -166,6 +166,25 @@ export default function RootLayout({
       <head>
         <meta name="google-adsense-account" content={adsenseId} />
         <meta name="naver-site-verification" content="8cdcacf38562d4fa1ee11f4f77a8a0f15f11d532" />
+        
+        {/* Essential OG Tags for Static Export */}
+        <meta property="og:title" content="툴허브 - 필수 계산기와 개발자 도구 모음" />
+        <meta property="og:description" content="연봉, 대출, 시간변환부터 바코드 생성, JSON 포맷터까지 모든 계산을 한 곳에서 해결하세요" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://toolhub.ai.kr" />
+        <meta property="og:site_name" content="툴허브" />
+        <meta property="og:locale" content="ko_KR" />
+        <meta property="og:image" content="https://toolhub.ai.kr/og-image-1200x630.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="툴허브 - 온라인 계산기와 개발자 도구 모음" />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@toolhub_kr" />
+        <meta name="twitter:creator" content="@toolhub_kr" />
+        <meta name="twitter:title" content="툴허브 - 필수 계산기와 개발자 도구 모음" />
+        <meta name="twitter:description" content="연봉, 대출, 시간변환부터 바코드 생성까지 모든 계산을 한 곳에서" />
+        <meta name="twitter:image" content="https://toolhub.ai.kr/og-image-1200x630.png" />
         
         {/* Additional SEO Meta Tags */}
         <meta name="theme-color" content="#2563eb" />

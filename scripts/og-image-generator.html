@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Graph Image Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+        }
+        
+        .og-container {
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .og-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 2px, transparent 2px);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+        }
+        
+        .og-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            color: white;
+        }
+        
+        .logo-section {
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin: 0 auto 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .main-title {
+            font-size: 84px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            letter-spacing: -2px;
+        }
+        
+        .subtitle {
+            font-size: 36px;
+            font-weight: 400;
+            opacity: 0.95;
+            margin-bottom: 50px;
+            line-height: 1.3;
+        }
+        
+        .tools-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .tool-tag {
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            border: 2px solid rgba(255,255,255,0.3);
+            white-space: nowrap;
+        }
+        
+        .url {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+        
+        .small-og {
+            width: 600px;
+            height: 315px;
+            margin-top: 40px;
+        }
+        
+        .small-og .logo {
+            width: 70px;
+            height: 70px;
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+        
+        .small-og .main-title {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+        
+        .small-og .subtitle {
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .small-og .tool-tag {
+            font-size: 16px;
+            padding: 8px 16px;
+        }
+        
+        .small-og .url {
+            font-size: 20px;
+            bottom: 20px;
+        }
+        
+        .instructions {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .download-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .download-btn:hover {
+            background: #5a6fd8;
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">
+        <h1>🎨 Open Graph 이미지 생성기</h1>
+        <p>아래 이미지들을 우클릭하여 "이미지를 다른 이름으로 저장"을 선택하고 다음 파일명으로 저장하세요:</p>
+        <ul>
+            <li><strong>첫 번째 이미지</strong>: <code>og-image-1200x630.png</code></li>
+            <li><strong>두 번째 이미지</strong>: <code>og-image-600x315.png</code></li>
+        </ul>
+        <p>저장한 후 <code>public/</code> 폴더에 있는 기존 파일들을 교체하세요.</p>
+        <button class="download-btn" onclick="downloadImage('large-og', 'og-image-1200x630.png')">큰 이미지 다운로드</button>
+        <button class="download-btn" onclick="downloadImage('small-og', 'og-image-600x315.png')">작은 이미지 다운로드</button>
+    </div>
+
+    <!-- 큰 OG 이미지 (1200x630) -->
+    <div class="og-container" id="large-og">
+        <div class="og-content">
+            <div class="logo-section">
+                <div class="logo">🔧</div>
+            </div>
+            <h1 class="main-title">툴허브</h1>
+            <p class="subtitle">연봉, 대출, 시간변환부터<br>바코드 생성, JSON 포맷터까지</p>
+            <div class="tools-row">
+                <div class="tool-tag">💰 연봉계산기</div>
+                <div class="tool-tag">🏦 대출계산기</div>
+                <div class="tool-tag">⏰ 시간변환기</div>
+            </div>
+            <div class="tools-row">
+                <div class="tool-tag">📊 바코드생성기</div>
+                <div class="tool-tag">🔧 개발자도구</div>
+            </div>
+        </div>
+        <div class="url">toolhub.ai.kr</div>
+    </div>
+
+    <!-- 작은 OG 이미지 (600x315) -->
+    <div class="og-container small-og" id="small-og">
+        <div class="og-content">
+            <div class="logo-section">
+                <div class="logo">🔧</div>
+            </div>
+            <h1 class="main-title">툴허브</h1>
+            <p class="subtitle">모든 계산을 한 곳에서</p>
+            <div class="tools-row">
+                <div class="tool-tag">연봉계산기</div>
+                <div class="tool-tag">시간변환기</div>
+                <div class="tool-tag">바코드생성기</div>
+            </div>
+        </div>
+        <div class="url">toolhub.ai.kr</div>
+    </div>
+
+    <script>
+        function downloadImage(elementId, filename) {
+            // html2canvas 라이브러리가 있다면 사용
+            if (typeof html2canvas !== 'undefined') {
+                const element = document.getElementById(elementId);
+                html2canvas(element, {
+                    useCORS: true,
+                    scale: 1,
+                    backgroundColor: null
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = filename;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            } else {
+                alert('이미지를 우클릭하여 "이미지를 다른 이름으로 저장"을 선택하거나,\n개발자 도구에서 html2canvas 라이브러리를 로드한 후 다시 시도하세요.');
+            }
+        }
+
+        // 브라우저 개발자 도구에서 실행할 수 있는 스크린샷 코드
+        console.log(`
+🎨 Open Graph 이미지 스크린샷 가이드:
+
+1. 브라우저에서 개발자 도구 열기 (F12)
+2. 다음 중 하나의 방법 사용:
+
+방법 1: 브라우저 스크린샷 기능
+- 개발자 도구 → Console 탭
+- Ctrl+Shift+P (또는 Cmd+Shift+P)
+- "screenshot" 검색 → "Capture node screenshot" 선택
+- 원하는 요소 클릭하여 저장
+
+방법 2: html2canvas 라이브러리 사용
+- Console에서 다음 코드 실행:
+  
+  // html2canvas 라이브러리 로드
+  const script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+  document.head.appendChild(script);
+  
+  // 로드 완료 후 이미지 생성
+  script.onload = () => {
+    downloadImage('large-og', 'og-image-1200x630.png');
+    downloadImage('small-og', 'og-image-600x315.png');
+  };
+
+방법 3: 수동 스크린샷
+- 각 이미지를 우클릭 → "이미지를 다른 이름으로 저장"
+        `);
+    </script>
+</body>
+</html>
