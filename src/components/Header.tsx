@@ -34,6 +34,7 @@ const Header = () => {
         { href: '/regex-extractor', label: t('footer.links.regexExtractor'), icon: '🔍' },
         { href: '/time-converter', label: t('footer.links.timeConverter'), icon: '🕰️' },
         { href: '/json-formatter', label: t('footer.links.jsonFormatter'), icon: '📝' },
+        { href: '/json-xml-converter', label: t('footer.links.jsonXmlConverter'), icon: '🔄' },
         { href: '/json-csv-converter', label: t('footer.links.jsonCsvConverter'), icon: '🔄' },
         { href: '/jwt-decoder', label: t('footer.links.jwtDecoder'), icon: '🔐' },
         { href: '/uuid-generator', label: t('footer.links.uuidGenerator'), icon: '🆔' },

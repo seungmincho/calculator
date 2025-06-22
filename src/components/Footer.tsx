@@ -39,6 +39,7 @@ const Footer = () => {
             <h3 className="font-semibold mb-4">{t('footer.tools')}</h3>
             <ul className="space-y-2 text-gray-400 dark:text-gray-500">
               <li><a href="/json-formatter" className="hover:text-white transition-colors">{t('footer.links.jsonFormatter')}</a></li>
+              <li><a href="/json-xml-converter" className="hover:text-white transition-colors">{t('footer.links.jsonXmlConverter')}</a></li>
               <li><a href="/json-csv-converter" className="hover:text-white transition-colors">{t('footer.links.jsonCsvConverter')}</a></li>
               <li><a href="/jwt-decoder" className="hover:text-white transition-colors">{t('footer.links.jwtDecoder')}</a></li>
               <li><a href="/uuid-generator" className="hover:text-white transition-colors">{t('footer.links.uuidGenerator')}</a></li>

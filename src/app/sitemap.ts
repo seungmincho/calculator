@@ -120,6 +120,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: 'https://toolhub.ai.kr/json-xml-converter',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: 'https://toolhub.ai.kr/json-csv-converter',
       lastModified: new Date(),
       changeFrequency: 'monthly',

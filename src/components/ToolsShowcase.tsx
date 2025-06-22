@@ -50,14 +50,15 @@ const tools: Tool[] = [
   
   // 개발 도구
   { name: 'json', href: '/json-formatter', icon: Code, category: 'development', priority: 1 },
-  { name: 'jsonCsv', href: '/json-csv-converter', icon: Code, category: 'development', priority: 2 },
-  { name: 'jwt', href: '/jwt-decoder', icon: Code, category: 'development', priority: 3 },
-  { name: 'uuid', href: '/uuid-generator', icon: Code, category: 'development', priority: 4 },
-  { name: 'cron', href: '/cron-tester', icon: Clock, category: 'development', priority: 5 },
-  { name: 'qr', href: '/qr-generator', icon: QrCode, category: 'development', priority: 6 },
-  { name: 'sql', href: '/sql-formatter', icon: Code, category: 'development', priority: 7 },
-  { name: 'regex', href: '/regex-extractor', icon: Code, category: 'development', priority: 8 },
-  { name: 'markdown', href: '/markdown-viewer', icon: FileText, category: 'development', priority: 9 },
+  { name: 'jsonXml', href: '/json-xml-converter', icon: Code, category: 'development', priority: 2 },
+  { name: 'jsonCsv', href: '/json-csv-converter', icon: Code, category: 'development', priority: 3 },
+  { name: 'jwt', href: '/jwt-decoder', icon: Code, category: 'development', priority: 4 },
+  { name: 'uuid', href: '/uuid-generator', icon: Code, category: 'development', priority: 5 },
+  { name: 'cron', href: '/cron-tester', icon: Clock, category: 'development', priority: 6 },
+  { name: 'qr', href: '/qr-generator', icon: QrCode, category: 'development', priority: 7 },
+  { name: 'sql', href: '/sql-formatter', icon: Code, category: 'development', priority: 8 },
+  { name: 'regex', href: '/regex-extractor', icon: Code, category: 'development', priority: 9 },
+  { name: 'markdown', href: '/markdown-viewer', icon: FileText, category: 'development', priority: 10 },
   
   // 유틸리티
   { name: 'time', href: '/time-converter', icon: Clock, category: 'utility', priority: 1 },
@@ -76,6 +77,9 @@ export default function ToolsShowcase() {
   const t = useTranslations('toolsShowcase')
   const tc = useTranslations('common')
   const pathname = usePathname()
+  
+  // Debug: 현재 pathname 확인
+  console.log('Current pathname:', pathname)
 
   const groupedTools = tools.reduce((acc, tool) => {
     if (!acc[tool.category]) {
@@ -117,6 +121,11 @@ export default function ToolsShowcase() {
                   const Icon = tool.icon
                   const isCurrentPage = pathname === tool.href
                   
+                  // Debug: 매칭 상태 확인
+                  if (tool.name === 'jsonXml') {
+                    console.log('JSON-XML tool:', tool.href, 'vs pathname:', pathname, 'match:', isCurrentPage)
+                  }
+                  
                   if (isCurrentPage) {
                     // 현재 페이지는 링크가 아닌 현재 상태 표시
                     return (
@@ -126,7 +135,7 @@ export default function ToolsShowcase() {
                       >
                         <div className="absolute top-2 right-2">
                           <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">
-                            {t('currentPage') || '현재 페이지'}
+                            현재 페이지
                           </span>
                         </div>
                         <div className="flex items-center space-x-3">

@@ -787,6 +787,7 @@
       "ladderGame": "Ladder Game",
       "timeConverter": "Time Converter",
       "jsonFormatter": "JSON Formatter",
+      "jsonXml": "JSON-XML Converter",
       "jsonCsvConverter": "JSON-CSV Converter",
       "sqlFormatter": "SQL Formatter",
       "markdownViewer": "Markdown Viewer",
@@ -2343,7 +2344,171 @@
       "fuel": {
         "title": "Fuel Calculator",
         "description": "Business vehicle fuel and depreciation costs"
+      },
+      "jsonXml": {
+        "title": "JSON-XML Converter",
+        "description": "Bidirectional JSON and XML conversion"
       }
     }
+  },
+  "jsonXmlConverter": {
+    "title": "JSON ↔ XML Converter",
+    "description": "Convert JSON and XML data quickly and accurately. Professional conversion options and large file processing support for developers.",
+    "tabs": {
+      "jsonToXml": "JSON → XML",
+      "xmlToJson": "XML → JSON"
+    },
+    "input": {
+      "jsonTitle": "JSON Input",
+      "xmlTitle": "XML Input",
+      "jsonPlaceholder": "Enter JSON data here...",
+      "xmlPlaceholder": "Enter XML data here...",
+      "uploadFile": "Upload File",
+      "dragDrop": "Drag files here or click to upload"
+    },
+    "output": {
+      "jsonTitle": "JSON Output",
+      "xmlTitle": "XML Output",
+      "jsonPlaceholder": "Converted JSON will appear here...",
+      "xmlPlaceholder": "Converted XML will appear here..."
+    },
+    "options": {
+      "title": "Conversion Options",
+      "formatting": {
+        "title": "Formatting",
+        "prettyPrint": "Pretty Print",
+        "includeDeclaration": "Include XML Declaration"
+      },
+      "structure": {
+        "title": "Structure",
+        "rootElement": "Root Element",
+        "arrayElement": "Array Element"
+      },
+      "attributes": {
+        "title": "Attributes",
+        "prefix": "Attribute Prefix",
+        "ignore": "Ignore Attributes"
+      }
+    },
+    "presets": {
+      "title": "Presets",
+      "soap": {
+        "name": "SOAP Message",
+        "description": "Web service SOAP message format"
+      },
+      "rss": {
+        "name": "RSS Feed",
+        "description": "RSS/XML feed format"
+      },
+      "config": {
+        "name": "Config File",
+        "description": "Application configuration file format"
+      },
+      "api": {
+        "name": "API Response",
+        "description": "REST API response data format"
+      }
+    },
+    "result": {
+      "title": "Conversion Result",
+      "preview": "Preview",
+      "download": "Download",
+      "copy": "Copy",
+      "stats": "Statistics",
+      "elements": "elements",
+      "attributes": "attributes",
+      "textNodes": "text nodes",
+      "size": "size",
+      "processingTime": "Processing Time",
+      "viewMode": "View Mode",
+      "textView": "Text View",
+      "treeView": "Tree View",
+      "showingData": "Showing data",
+      "noData": "No data to display"
+    },
+    "validation": {
+      "valid": "Valid",
+      "validJson": "Valid JSON",
+      "invalidJson": "Invalid JSON",
+      "validXml": "Valid XML",
+      "invalidXml": "Invalid XML",
+      "emptyData": "Data is empty",
+      "largeFile": "Large file ({size}MB)",
+      "processingError": "Processing error occurred"
+    },
+    "converting": "Converting...",
+    "guide": {
+      "title": "User Guide",
+      "description": "Comprehensive guide for JSON and XML conversion",
+      "features": {
+        "title": "Key Features",
+        "realtime": "Real-time conversion and validation",
+        "validation": "Syntax error detection and display",
+        "presets": "Various presets for developers",
+        "options": "Fine-grained conversion options"
+      },
+      "useCases": {
+        "title": "Use Cases",
+        "api": "API development and testing",
+        "config": "Configuration file format conversion",
+        "legacy": "Legacy system integration",
+        "data": "Data migration"
+      }
+    },
+    "features": {
+      "title": "Key Features",
+      "bidirectional": {
+        "title": "Bidirectional Conversion",
+        "description": "Perfect conversion between JSON and XML",
+        "details": {
+          "0": "Full support for nested objects and arrays",
+          "1": "Accurate handling of attributes and text nodes",
+          "2": "Data type preservation and restoration"
+        }
+      },
+      "developer": {
+        "title": "Developer Friendly",
+        "description": "Features optimized for development workflow",
+        "details": {
+          "0": "Various presets and customization options",
+          "1": "Real-time validation and error display",
+          "2": "Compact/pretty formatting support"
+        }
+      },
+      "performance": {
+        "title": "High Performance",
+        "description": "Fast processing even for large files",
+        "details": {
+          "0": "Background processing with Web Workers",
+          "1": "Memory-efficient streaming processing",
+          "2": "Real-time progress tracking"
+        }
+      }
+    },
+    "examples": {
+      "title": "Conversion Examples",
+      "jsonExample": {
+        "title": "JSON Examples",
+        "simple": "Simple Object",
+        "complex": "Complex Structure",
+        "array": "Array Data"
+      },
+      "xmlExample": {
+        "title": "XML Examples", 
+        "simple": "Basic Element",
+        "attributes": "With Attributes",
+        "nested": "Nested Structure"
+      }
+    },
+    "errors": {
+      "invalidJson": "Invalid JSON format",
+      "invalidXml": "Invalid XML format",
+      "parseError": "Parse error: {error}",
+      "fileTooLarge": "File too large (max {size}MB)",
+      "unsupportedFormat": "Unsupported file format",
+      "conversionFailed": "Conversion failed",
+      "networkError": "Network error occurred"
+    },
+    "placeholder": "Enter data to convert or upload a file"
   }
 }
