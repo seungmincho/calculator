@@ -35,6 +35,7 @@ const Header = () => {
         { href: '/json-formatter', label: t('footer.links.jsonFormatter'), icon: '📝' },
         { href: '/json-csv-converter', label: t('footer.links.jsonCsvConverter'), icon: '🔄' },
         { href: '/jwt-decoder', label: t('footer.links.jwtDecoder'), icon: '🔐' },
+        { href: '/uuid-generator', label: t('footer.links.uuidGenerator'), icon: '🆔' },
         { href: '/sql-formatter', label: t('footer.links.sqlFormatter'), icon: '🗄️' },
         { href: '/markdown-viewer', label: t('footer.links.markdownViewer'), icon: '📖' },
         { href: '/image-resizer', label: t('footer.links.imageResizer'), icon: '🖼️' },

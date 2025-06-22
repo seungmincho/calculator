@@ -793,9 +793,70 @@
       "imageResizer": "Image Resizer",
       "imageEditor": "Image Editor",
       "regexExtractor": "Regex Extractor",
-      "jwtDecoder": "JWT Decoder"
+      "jwtDecoder": "JWT Decoder",
+      "uuidGenerator": "UUID Generator"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
+  },
+  "uuidGenerator": {
+    "title": "UUID Generator",
+    "description": "Professional UUID generator for developers. Supports v1, v4, v7, and Nil UUIDs with bulk generation and multiple output formats.",
+    "settings": {
+      "title": "Generation Settings",
+      "version": "UUID Version",
+      "count": "Count",
+      "customCount": "Custom input (1-1000)",
+      "format": "Output Format",
+      "includeTimestamp": "Include Timestamp"
+    },
+    "versions": {
+      "v1": {
+        "name": "Timestamp-based",
+        "description": "UUID generated based on timestamp and MAC address.",
+        "useCase": "Database records where time ordering is important"
+      },
+      "v4": {
+        "name": "Random-based",
+        "description": "Most common UUID generated with completely random values.",
+        "useCase": "General purpose unique identifiers"
+      },
+      "v7": {
+        "name": "Sortable",
+        "description": "Sortable UUID combining timestamp and random values.",
+        "useCase": "Modern applications where database performance matters"
+      },
+      "nil": {
+        "name": "Nil UUID",
+        "description": "Special UUID with all bits set to zero.",
+        "useCase": "Representing default or empty values"
+      },
+      "useCase": "Use Case"
+    },
+    "formats": {
+      "standard": "Standard format (lowercase with hyphens)",
+      "uppercase": "Uppercase format",
+      "lowercase": "Lowercase format",
+      "compact": "Compact format (no hyphens)",
+      "braces": "Braces format",
+      "urn": "URN format"
+    },
+    "generate": "🎲 Generate UUIDs",
+    "generating": "Generating...",
+    "result": {
+      "title": "Generated UUIDs"
+    },
+    "guide": {
+      "title": "UUID Generator Guide",
+      "versionsTitle": "UUID Version Features",
+      "useCasesTitle": "Common Use Cases",
+      "useCases": {
+        "0": "Database primary keys",
+        "1": "API request tracking IDs",
+        "2": "File names and session IDs",
+        "3": "Unique identifiers in distributed systems"
+      }
+    },
+    "placeholder": "Select a UUID version and click generate"
   },
   "jwtDecoder": {
     "title": "JWT Decoder",
@@ -1840,6 +1901,10 @@
       "jwt": {
         "title": "JWT Decoder",
         "description": "JWT token analysis and validation"
+      },
+      "uuid": {
+        "title": "UUID Generator",
+        "description": "Generate unique identifiers"
       },
       "sql": {
         "title": "SQL Formatter",
