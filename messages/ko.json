@@ -913,9 +913,83 @@
       "markdownViewer": "마크다운 뷰어",
       "imageResizer": "이미지 리사이저",
       "imageEditor": "이미지 편집기",
-      "regexExtractor": "정규식 추출기"
+      "regexExtractor": "정규식 추출기",
+      "jwtDecoder": "JWT 디코더"
     },
     "copyright": "© 2025 툴허브. All rights reserved."
+  },
+  "jwtDecoder": {
+    "title": "JWT 디코더",
+    "description": "JWT 토큰을 안전하게 디코드하고 분석하세요. Header, Payload, Signature를 명확히 분리하여 표시하고 토큰 유효성을 검증합니다.",
+    "security": {
+      "title": "🔒 보안 안내",
+      "description": "이 도구는 브라우저에서 로컬로 동작하며, 토큰이 서버로 전송되지 않습니다. 하지만 프로덕션 환경의 실제 토큰은 신중하게 다루세요."
+    },
+    "input": {
+      "title": "JWT 토큰 입력",
+      "tokenLabel": "JWT 토큰",
+      "tokenPlaceholder": "JWT 토큰을 여기에 붙여넣으세요...\n예: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0..."
+    },
+    "samples": {
+      "title": "샘플 토큰",
+      "basic": "기본 JWT",
+      "withExp": "만료시간 포함"
+    },
+    "validation": {
+      "valid": "유효한 JWT 토큰입니다",
+      "emptyToken": "토큰을 입력해주세요",
+      "invalidFormat": "JWT 형식이 올바르지 않습니다 (3개 부분으로 구성되어야 함)",
+      "invalidJson": "Header 또는 Payload의 JSON이 올바르지 않습니다",
+      "missingAlgorithm": "Header에 알고리즘이 누락되었습니다",
+      "invalidType": "토큰 타입이 'JWT'가 아닙니다",
+      "tokenExpired": "토큰이 만료되었습니다 ({date})",
+      "tokenNotYetValid": "토큰이 아직 유효하지 않습니다 ({date})",
+      "issuedInFuture": "토큰 발급시간이 미래로 설정되어 있습니다"
+    },
+    "result": {
+      "header": "Header",
+      "payload": "Payload",
+      "signature": "Signature",
+      "copy": "복사",
+      "algorithm": "알고리즘",
+      "type": "타입",
+      "subject": "주체",
+      "issuedAt": "발급시간",
+      "expiresAt": "만료시간",
+      "issuer": "발급자",
+      "audience": "대상",
+      "signatureNote": "Signature는 토큰의 무결성을 보장하는 부분입니다. 실제 검증을 위해서는 비밀키나 공개키가 필요합니다."
+    },
+    "guide": {
+      "title": "JWT 디코더 가이드",
+      "about": {
+        "title": "JWT란?",
+        "description": "JSON Web Token의 구조와 특징을 이해해보세요",
+        "points": {
+          "0": "Header.Payload.Signature 형태의 3부분 구조",
+          "1": "Base64 URL 인코딩된 JSON 데이터",
+          "2": "상태를 저장하지 않는 토큰 기반 인증"
+        }
+      },
+      "structure": {
+        "title": "토큰 구조",
+        "description": "JWT의 각 부분이 담고 있는 정보를 확인하세요",
+        "points": {
+          "0": "Header: 알고리즘과 토큰 타입 정보",
+          "1": "Payload: 클레임과 사용자 데이터",
+          "2": "Signature: 토큰 무결성 검증용"
+        }
+      },
+      "security": {
+        "title": "보안 고려사항",
+        "description": "JWT 사용 시 주의해야 할 보안 요소들",
+        "points": {
+          "0": "민감한 정보는 Payload에 포함하지 마세요",
+          "1": "HTTPS 환경에서만 토큰을 전송하세요",
+          "2": "토큰 만료시간을 적절히 설정하세요"
+        }
+      }
+    }
   },
   "bmi": {
     "title": "BMI 계산기",
@@ -1762,6 +1836,10 @@
       "jsonCsv": {
         "title": "JSON-CSV 변환기",
         "description": "고성능 JSON과 CSV 양방향 변환"
+      },
+      "jwt": {
+        "title": "JWT 디코더",
+        "description": "JWT 토큰 분석과 검증"
       },
       "sql": {
         "title": "SQL 포매터",

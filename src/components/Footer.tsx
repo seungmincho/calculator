@@ -39,11 +39,14 @@ const Footer = () => {
             <h3 className="font-semibold mb-4">{t('footer.tools')}</h3>
             <ul className="space-y-2 text-gray-400 dark:text-gray-500">
               <li><a href="/json-formatter" className="hover:text-white transition-colors">{t('footer.links.jsonFormatter')}</a></li>
+              <li><a href="/json-csv-converter" className="hover:text-white transition-colors">{t('footer.links.jsonCsvConverter')}</a></li>
+              <li><a href="/jwt-decoder" className="hover:text-white transition-colors">{t('footer.links.jwtDecoder')}</a></li>
               <li><a href="/sql-formatter" className="hover:text-white transition-colors">{t('footer.links.sqlFormatter')}</a></li>
               <li><a href="/markdown-viewer" className="hover:text-white transition-colors">{t('footer.links.markdownViewer')}</a></li>
               <li><a href="/image-resizer" className="hover:text-white transition-colors">{t('footer.links.imageResizer')}</a></li>
               <li><a href="/image-editor" className="hover:text-white transition-colors">{t('footer.links.imageEditor')}</a></li>
               <li><a href="/regex-extractor" className="hover:text-white transition-colors">{t('footer.links.regexExtractor')}</a></li>
+              <li><a href="/time-converter" className="hover:text-white transition-colors">{t('footer.links.timeConverter')}</a></li>
             </ul>
           </div>
           <div>

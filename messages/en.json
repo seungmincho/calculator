@@ -792,9 +792,83 @@
       "markdownViewer": "Markdown Viewer",
       "imageResizer": "Image Resizer",
       "imageEditor": "Image Editor",
-      "regexExtractor": "Regex Extractor"
+      "regexExtractor": "Regex Extractor",
+      "jwtDecoder": "JWT Decoder"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
+  },
+  "jwtDecoder": {
+    "title": "JWT Decoder",
+    "description": "Safely decode and analyze JWT tokens. Display Header, Payload, and Signature separately and validate token integrity.",
+    "security": {
+      "title": "🔒 Security Notice",
+      "description": "This tool runs locally in your browser and tokens are not sent to any server. However, please handle production tokens with care."
+    },
+    "input": {
+      "title": "JWT Token Input",
+      "tokenLabel": "JWT Token",
+      "tokenPlaceholder": "Paste your JWT token here...\nExample: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0..."
+    },
+    "samples": {
+      "title": "Sample Tokens",
+      "basic": "Basic JWT",
+      "withExp": "With Expiration"
+    },
+    "validation": {
+      "valid": "Valid JWT token",
+      "emptyToken": "Please enter a token",
+      "invalidFormat": "Invalid JWT format (must have 3 parts)",
+      "invalidJson": "Invalid JSON in Header or Payload",
+      "missingAlgorithm": "Missing algorithm in Header",
+      "invalidType": "Token type is not 'JWT'",
+      "tokenExpired": "Token has expired ({date})",
+      "tokenNotYetValid": "Token is not yet valid ({date})",
+      "issuedInFuture": "Token issued time is set in the future"
+    },
+    "result": {
+      "header": "Header",
+      "payload": "Payload",
+      "signature": "Signature",
+      "copy": "Copy",
+      "algorithm": "Algorithm",
+      "type": "Type",
+      "subject": "Subject",
+      "issuedAt": "Issued At",
+      "expiresAt": "Expires At",
+      "issuer": "Issuer",
+      "audience": "Audience",
+      "signatureNote": "The signature ensures token integrity. Actual verification requires the secret key or public key."
+    },
+    "guide": {
+      "title": "JWT Decoder Guide",
+      "about": {
+        "title": "What is JWT?",
+        "description": "Understand the structure and features of JSON Web Tokens",
+        "points": {
+          "0": "Three-part structure: Header.Payload.Signature",
+          "1": "Base64 URL encoded JSON data",
+          "2": "Stateless token-based authentication"
+        }
+      },
+      "structure": {
+        "title": "Token Structure",
+        "description": "Learn what information each part of JWT contains",
+        "points": {
+          "0": "Header: Algorithm and token type information",
+          "1": "Payload: Claims and user data",
+          "2": "Signature: Token integrity verification"
+        }
+      },
+      "security": {
+        "title": "Security Considerations",
+        "description": "Important security factors when using JWT",
+        "points": {
+          "0": "Don't include sensitive information in Payload",
+          "1": "Only transmit tokens over HTTPS",
+          "2": "Set appropriate token expiration times"
+        }
+      }
+    }
   },
   "carLoan": {
     "title": "Car Loan Calculator",
@@ -1762,6 +1836,10 @@
       "jsonCsv": {
         "title": "JSON-CSV Converter",
         "description": "High-performance JSON and CSV conversion"
+      },
+      "jwt": {
+        "title": "JWT Decoder",
+        "description": "JWT token analysis and validation"
       },
       "sql": {
         "title": "SQL Formatter",
