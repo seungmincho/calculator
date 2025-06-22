@@ -1072,6 +1072,7 @@
       "uuidGenerator": "UUID 생성기",
       "cronTester": "Cron 테스터",
       "qrGenerator": "QR 코드 생성기",
+      "barcodeGenerator": "바코드 생성기",
       "fuelCalculator": "유류비 계산기"
     },
     "copyright": "© 2025 툴허브. All rights reserved."
@@ -2340,6 +2341,10 @@
         "title": "QR 코드 생성기",
         "description": "로고 삽입 QR 코드 제작"
       },
+      "barcode": {
+        "title": "바코드 생성기",
+        "description": "다양한 형식 바코드 생성"
+      },
       "fuel": {
         "title": "유류비 계산기",
         "description": "업무용 차량 연료비와 감가상각비"
@@ -2347,6 +2352,153 @@
       "jsonXml": {
         "title": "JSON-XML 변환기",
         "description": "JSON과 XML 데이터 상호 변환"
+      },
+      "barcode": {
+        "title": "바코드 생성기",
+        "description": "다양한 형식의 바코드 생성"
+      }
+    }
+  },
+  "barcodeGenerator": {
+    "title": "바코드 생성기",
+    "description": "다양한 형식의 바코드를 생성하고 다운로드하세요. 제품 관리, 재고 관리, 이벤트 티켓 등에 활용할 수 있습니다.",
+    "input": {
+      "title": "바코드 정보 입력",
+      "data": "바코드 데이터",
+      "placeholder": "바코드로 변환할 텍스트나 숫자를 입력하세요",
+      "format": "바코드 형식",
+      "width": "바코드 너비",
+      "height": "바코드 높이",
+      "displayValue": "텍스트 표시",
+      "fontSize": "폰트 크기",
+      "margin": "여백",
+      "background": "배경색",
+      "lineColor": "바코드 색상",
+      "textAlign": "텍스트 정렬",
+      "textAlignLeft": "왼쪽 정렬",
+      "textAlignCenter": "가운데 정렬",
+      "textAlignRight": "오른쪽 정렬",
+      "barcodeAlign": "바코드 정렬",
+      "barcodeAlignLeft": "왼쪽 정렬",
+      "barcodeAlignCenter": "가운데 정렬",
+      "barcodeAlignRight": "오른쪽 정렬"
+    },
+    "formats": {
+      "CODE128": "CODE128 (범용)",
+      "CODE39": "CODE39 (영문/숫자)",
+      "EAN13": "EAN-13 (상품코드)",
+      "EAN8": "EAN-8 (소형상품)",
+      "UPC": "UPC (북미 상품코드)",
+      "ITF14": "ITF-14 (물류)",
+      "MSI": "MSI (재고관리)",
+      "pharmacode": "Pharmacode (의약품)"
+    },
+    "presets": {
+      "title": "바코드 프리셋",
+      "product": {
+        "name": "상품 바코드",
+        "description": "EAN-13 형식의 상품 관리용 바코드"
+      },
+      "inventory": {
+        "name": "재고 관리",
+        "description": "CODE128 형식의 재고 관리용 바코드"
+      },
+      "ticket": {
+        "name": "티켓/쿠폰",
+        "description": "CODE39 형식의 티켓 및 쿠폰용 바코드"
+      },
+      "logistics": {
+        "name": "물류/배송",
+        "description": "ITF-14 형식의 물류 관리용 바코드"
+      }
+    },
+    "result": {
+      "title": "생성된 바코드",
+      "download": "바코드 다운로드",
+      "copy": "이미지 복사",
+      "preview": "미리보기"
+    },
+    "validation": {
+      "valid": "유효한 데이터",
+      "invalid": "잘못된 바코드 데이터",
+      "ean13Error": "EAN-13은 12자리 숫자여야 합니다",
+      "ean8Error": "EAN-8은 7자리 숫자여야 합니다",
+      "upcError": "UPC는 11자리 숫자여야 합니다",
+      "code39Error": "CODE39는 영문자, 숫자, 특수문자(-. $/+%)만 지원합니다",
+      "pharmacodeError": "Pharmacode는 3-131071 범위의 숫자여야 합니다",
+      "itf14Error": "ITF-14는 짝수 개의 숫자만 가능합니다",
+      "msiError": "MSI는 숫자만 가능합니다",
+      "invalidData": "유효하지 않은 데이터입니다",
+      "generationError": "바코드 생성에 실패했습니다"
+    },
+    "features": {
+      "title": "주요 기능",
+      "multiFormat": {
+        "title": "다양한 바코드 형식",
+        "description": "8가지 주요 바코드 형식 지원",
+        "details": {
+          "0": "CODE128: 모든 ASCII 문자 지원하는 범용 바코드",
+          "1": "EAN-13/8: 전세계 표준 상품 바코드",
+          "2": "UPC: 북미 지역 상품 바코드",
+          "3": "ITF-14: 물류 및 배송용 바코드"
+        }
+      },
+      "customization": {
+        "title": "커스터마이징",
+        "description": "크기, 색상, 스타일 자유자재로 조정",
+        "details": {
+          "0": "바코드 크기와 여백 조정 가능",
+          "1": "배경색과 바코드 색상 변경",
+          "2": "텍스트 표시 여부 및 폰트 크기 설정",
+          "3": "고해상도 이미지 다운로드 지원"
+        }
+      },
+      "validation": {
+        "title": "실시간 검증",
+        "description": "형식별 데이터 유효성 실시간 확인",
+        "details": {
+          "0": "바코드 형식에 맞는 데이터 형식 검증",
+          "1": "체크섬 자동 계산 및 검증",
+          "2": "오류 메시지와 수정 가이드 제공",
+          "3": "미리보기를 통한 즉시 확인"
+        }
+      }
+    },
+    "guide": {
+      "title": "바코드 생성 가이드",
+      "description": "바코드 종류별 특징과 활용법",
+      "formats": {
+        "title": "바코드 형식 가이드",
+        "code128": {
+          "title": "CODE128",
+          "description": "가장 범용적인 바코드로 모든 ASCII 문자 지원",
+          "useCases": ["재고 관리", "회원카드", "배송 라벨", "내부 관리용"]
+        },
+        "ean": {
+          "title": "EAN-13/8",
+          "description": "국제 표준 상품 바코드",
+          "useCases": ["소매점 상품", "도서 ISBN", "음반/영화", "식품/생활용품"]
+        },
+        "upc": {
+          "title": "UPC",
+          "description": "북미 지역 표준 상품 바코드",
+          "useCases": ["미국/캐나다 판매 상품", "Amazon 등록", "월마트 납품", "온라인 쇼핑몰"]
+        }
+      },
+      "tips": {
+        "title": "바코드 활용 팁",
+        "printing": {
+          "title": "인쇄 가이드",
+          "content": "바코드는 최소 2cm 너비로 인쇄하고, 명암 대비가 선명하도록 하세요"
+        },
+        "scanning": {
+          "title": "스캔 최적화",
+          "content": "바코드 주변에 충분한 여백을 두고, 왜곡되지 않도록 평평하게 부착하세요"
+        },
+        "format": {
+          "title": "형식 선택",
+          "content": "용도에 맞는 바코드 형식을 선택하고, 데이터 길이 제한을 확인하세요"
+        }
       }
     }
   },

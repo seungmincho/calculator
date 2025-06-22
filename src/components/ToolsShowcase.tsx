@@ -18,6 +18,7 @@ import {
   FileText,
   Wrench,
   QrCode,
+  BarChart3,
   Fuel
 } from 'lucide-react'
 
@@ -56,9 +57,10 @@ const tools: Tool[] = [
   { name: 'uuid', href: '/uuid-generator', icon: Code, category: 'development', priority: 5 },
   { name: 'cron', href: '/cron-tester', icon: Clock, category: 'development', priority: 6 },
   { name: 'qr', href: '/qr-generator', icon: QrCode, category: 'development', priority: 7 },
-  { name: 'sql', href: '/sql-formatter', icon: Code, category: 'development', priority: 8 },
-  { name: 'regex', href: '/regex-extractor', icon: Code, category: 'development', priority: 9 },
-  { name: 'markdown', href: '/markdown-viewer', icon: FileText, category: 'development', priority: 10 },
+  { name: 'barcode', href: '/barcode-generator', icon: BarChart3, category: 'development', priority: 8 },
+  { name: 'sql', href: '/sql-formatter', icon: Code, category: 'development', priority: 9 },
+  { name: 'regex', href: '/regex-extractor', icon: Code, category: 'development', priority: 10 },
+  { name: 'markdown', href: '/markdown-viewer', icon: FileText, category: 'development', priority: 11 },
   
   // 유틸리티
   { name: 'time', href: '/time-converter', icon: Clock, category: 'utility', priority: 1 },

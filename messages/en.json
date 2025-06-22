@@ -798,6 +798,7 @@
       "uuidGenerator": "UUID Generator",
       "cronTester": "Cron Tester",
       "qrGenerator": "QR Code Generator",
+      "barcodeGenerator": "Barcode Generator",
       "fuelCalculator": "Fuel Calculator"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
@@ -2341,6 +2342,10 @@
         "title": "QR Code Generator",
         "description": "QR codes with custom logos"
       },
+      "barcode": {
+        "title": "Barcode Generator",
+        "description": "Multiple barcode formats"
+      },
       "fuel": {
         "title": "Fuel Calculator",
         "description": "Business vehicle fuel and depreciation costs"
@@ -2348,6 +2353,153 @@
       "jsonXml": {
         "title": "JSON-XML Converter",
         "description": "Bidirectional JSON and XML conversion"
+      },
+      "barcode": {
+        "title": "Barcode Generator",
+        "description": "Generate various barcode formats"
+      }
+    }
+  },
+  "barcodeGenerator": {
+    "title": "Barcode Generator",
+    "description": "Generate and download various barcode formats. Perfect for product management, inventory control, event tickets, and more.",
+    "input": {
+      "title": "Barcode Information",
+      "data": "Barcode Data",
+      "placeholder": "Enter text or numbers to convert to barcode",
+      "format": "Barcode Format",
+      "width": "Barcode Width",
+      "height": "Barcode Height",
+      "displayValue": "Display Text",
+      "fontSize": "Font Size",
+      "margin": "Margin",
+      "background": "Background Color",
+      "lineColor": "Barcode Color",
+      "textAlign": "Text Alignment",
+      "textAlignLeft": "Left Align",
+      "textAlignCenter": "Center Align",
+      "textAlignRight": "Right Align",
+      "barcodeAlign": "Barcode Alignment",
+      "barcodeAlignLeft": "Left Align",
+      "barcodeAlignCenter": "Center Align",
+      "barcodeAlignRight": "Right Align"
+    },
+    "formats": {
+      "CODE128": "CODE128 (Universal)",
+      "CODE39": "CODE39 (Alphanumeric)",
+      "EAN13": "EAN-13 (Product Code)",
+      "EAN8": "EAN-8 (Small Product)",
+      "UPC": "UPC (North America)",
+      "ITF14": "ITF-14 (Logistics)",
+      "MSI": "MSI (Inventory)",
+      "pharmacode": "Pharmacode (Pharmaceutical)"
+    },
+    "presets": {
+      "title": "Barcode Presets",
+      "product": {
+        "name": "Product Barcode",
+        "description": "EAN-13 format for product management"
+      },
+      "inventory": {
+        "name": "Inventory Management",
+        "description": "CODE128 format for inventory control"
+      },
+      "ticket": {
+        "name": "Ticket/Coupon",
+        "description": "CODE39 format for tickets and coupons"
+      },
+      "logistics": {
+        "name": "Logistics/Shipping",
+        "description": "ITF-14 format for logistics management"
+      }
+    },
+    "result": {
+      "title": "Generated Barcode",
+      "download": "Download Barcode",
+      "copy": "Copy Image",
+      "preview": "Preview"
+    },
+    "validation": {
+      "valid": "Valid Data",
+      "invalid": "Invalid Barcode Data",
+      "ean13Error": "EAN-13 requires 12 digits",
+      "ean8Error": "EAN-8 requires 7 digits",
+      "upcError": "UPC requires 11 digits",
+      "code39Error": "CODE39 supports letters, numbers, and special characters (-. $/+%) only",
+      "pharmacodeError": "Pharmacode must be a number between 3-131071",
+      "itf14Error": "ITF-14 requires an even number of digits",
+      "msiError": "MSI supports numbers only",
+      "invalidData": "Invalid data for this barcode format",
+      "generationError": "Failed to generate barcode"
+    },
+    "features": {
+      "title": "Key Features",
+      "multiFormat": {
+        "title": "Multiple Barcode Formats",
+        "description": "Support for 8 major barcode formats",
+        "details": {
+          "0": "CODE128: Universal barcode supporting all ASCII characters",
+          "1": "EAN-13/8: Global standard product barcodes",
+          "2": "UPC: North American product barcodes",
+          "3": "ITF-14: Logistics and shipping barcodes"
+        }
+      },
+      "customization": {
+        "title": "Customization",
+        "description": "Freely adjust size, color, and style",
+        "details": {
+          "0": "Adjustable barcode size and margins",
+          "1": "Changeable background and barcode colors",
+          "2": "Text display options and font size settings",
+          "3": "High-resolution image download support"
+        }
+      },
+      "validation": {
+        "title": "Real-time Validation",
+        "description": "Real-time data validity check by format",
+        "details": {
+          "0": "Data format validation for each barcode type",
+          "1": "Automatic checksum calculation and verification",
+          "2": "Error messages with correction guides",
+          "3": "Instant verification through preview"
+        }
+      }
+    },
+    "guide": {
+      "title": "Barcode Generation Guide",
+      "description": "Characteristics and usage of different barcode types",
+      "formats": {
+        "title": "Barcode Format Guide",
+        "code128": {
+          "title": "CODE128",
+          "description": "Most versatile barcode supporting all ASCII characters",
+          "useCases": ["Inventory Management", "Membership Cards", "Shipping Labels", "Internal Use"]
+        },
+        "ean": {
+          "title": "EAN-13/8",
+          "description": "International standard product barcodes",
+          "useCases": ["Retail Products", "Book ISBN", "Music/Movies", "Food/Consumer Goods"]
+        },
+        "upc": {
+          "title": "UPC",
+          "description": "North American standard product barcodes",
+          "useCases": ["US/Canada Sales", "Amazon Registration", "Walmart Supply", "Online Stores"]
+        }
+      },
+      "tips": {
+        "title": "Barcode Usage Tips",
+        "printing": {
+          "title": "Printing Guide",
+          "content": "Print barcodes at minimum 2cm width with clear contrast"
+        },
+        "scanning": {
+          "title": "Scan Optimization",
+          "content": "Leave sufficient margins around barcodes and attach flat without distortion"
+        },
+        "format": {
+          "title": "Format Selection",
+          "content": "Choose appropriate barcode format for your use case and check data length limits"
+        }
       }
     }
   },
