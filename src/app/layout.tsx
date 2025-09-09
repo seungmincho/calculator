@@ -276,7 +276,74 @@ export default function RootLayout({
             {/* Daily Tips Component */}
             <DailyTips />
           </I18nWrapper>
+
         </LanguageProvider>
+        
+        {/* Service Worker Registration for PWA */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                      console.log('Service Worker registered successfully:', registration);
+                      
+                      // Check for updates
+                      registration.addEventListener('updatefound', function() {
+                        const newWorker = registration.installing;
+                        if (newWorker) {
+                          newWorker.addEventListener('statechange', function() {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                              // Show update notification
+                              if (confirm('새로운 버전이 있습니다. 지금 업데이트하시겠습니까?')) {
+                                window.location.reload();
+                              }
+                            }
+                          });
+                        }
+                      });
+                    })
+                    .catch(function(error) {
+                      console.log('Service Worker registration failed:', error);
+                    });
+                });
+
+                // Listen for app install prompt
+                let deferredPrompt;
+                window.addEventListener('beforeinstallprompt', function(event) {
+                  event.preventDefault();
+                  deferredPrompt = event;
+                  
+                  // Show custom install button (can be added later)
+                  const installButton = document.getElementById('install-button');
+                  if (installButton) {
+                    installButton.style.display = 'block';
+                    installButton.addEventListener('click', function() {
+                      deferredPrompt.prompt();
+                      deferredPrompt.userChoice.then(function(choiceResult) {
+                        if (choiceResult.outcome === 'accepted') {
+                          console.log('User accepted the install prompt');
+                        }
+                        deferredPrompt = null;
+                      });
+                    });
+                  }
+                });
+
+                // Handle app installed
+                window.addEventListener('appinstalled', function(event) {
+                  console.log('PWA was successfully installed');
+                  // Hide install button
+                  const installButton = document.getElementById('install-button');
+                  if (installButton) {
+                    installButton.style.display = 'none';
+                  }
+                });
+              }
+            `,
+          }}
+        />
         
         {/* <Analytics/> Removed for Cloudflare Pages */}
       </body>

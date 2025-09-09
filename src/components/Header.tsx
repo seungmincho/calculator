@@ -23,6 +23,8 @@ const Header = () => {
         { href: '/tax-calculator', label: t('footer.links.taxCalculator'), icon: '📋' },
         { href: '/exchange-calculator', label: t('footer.links.exchangeCalculator'), icon: '💱' },
         { href: '/real-estate-calculator', label: t('footer.links.realEstateCalculator'), icon: '🏠' },
+        { href: '/monthly-rent-subsidy', label: t('footer.links.monthlyRentSubsidy'), icon: '🏘️' },
+        { href: '/bogeumjari-loan', label: t('footer.links.bogeumjariLoan'), icon: '🏡' },
         { href: '/car-loan-calculator', label: t('footer.links.carLoanCalculator'), icon: '🚗' },
         { href: '/car-tax-calculator', label: t('footer.links.carTaxCalculator'), icon: '🚘' },
         { href: '/fuel-calculator', label: t('footer.links.fuelCalculator'), icon: '⛽' },

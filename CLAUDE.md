@@ -4,49 +4,69 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Korean financial calculator web application ("툴허브") built with Next.js 15, providing comprehensive financial, health, and utility calculators. The app is deployed on Vercel and includes SEO optimization, AdSense integration, and Vercel Analytics.
+This is a Korean financial calculator web application ("툴허브") built with Next.js 15, providing comprehensive financial, health, and utility calculators. The app is deployed on Cloudflare Pages and includes SEO optimization and AdSense integration.
 
 ## Development Commands
 
-Development server (runs on port 3030):
 ```bash
+# Development server (runs on port 3030)
 pnpm dev
-```
 
-Build and deployment:
-```bash
+# Build production bundle
 pnpm build
+
+# Start production server (for testing)
 pnpm start
-```
 
-Static export (configured in next.config.ts):
-```bash
-pnpm export
-```
-
-Cloudflare deployment:
-```bash
-pnpm cf:deploy
-```
-
-Linting:
-```bash
+# Linting
 pnpm lint
+
+# Static export
+pnpm export
+
+# Cloudflare Pages deployment
+pnpm cf:deploy
+
+# Test Cloudflare Pages locally
+pnpm wrangler:dev
 ```
 
 ## Architecture
 
-- **Framework**: Next.js 15 with App Router
+### Technology Stack
+- **Framework**: Next.js 15 with App Router (static export mode)
 - **Styling**: Tailwind CSS v4 with dark mode support
 - **Icons**: Lucide React
-- **Analytics**: Vercel Analytics
+- **Deployment**: Cloudflare Pages with Wrangler
 - **Monetization**: Google AdSense integration
-- **Language**: Korean (ko_KR locale)
+- **Language**: Korean (ko_KR locale) with English support
 
-### File Structure
-- `/src/app/`: Next.js app directory with page routes
-- `/src/components/`: Reusable calculator components
-- Each calculator has dedicated page route and component
+### High-Level Architecture
+
+#### App Router Structure
+```
+src/app/
+├── layout.tsx          # Root layout with metadata and providers
+├── page.tsx           # Home page (salary calculator)
+├── [tool-name]/       # Individual tool pages
+│   └── page.tsx       # Server component with Suspense boundary
+├── tips/              # Tips section with dynamic routing
+│   └── [id]/          # generateStaticParams for static generation
+└── api/               # Minimal API routes
+```
+
+#### Internationalization (i18n) Architecture
+The project uses a **dual-layer i18n system**:
+- **Server-side**: next-intl configuration in `/src/i18n.ts` and `/src/routing.ts`
+- **Client-side**: LanguageContext + I18nWrapper for client-side language switching
+- **Message files**: `/messages/ko.json` and `/messages/en.json`
+- **Fallback strategy**: Korean messages as fallback on load failure
+
+#### Component Architecture Patterns
+- **Page Components**: Server components with client component imports
+- **Calculator Components**: Client components with URL state synchronization
+- **Shared Components**: CalculationHistory, Header, Footer, ToolsShowcase
+- **Custom Hooks**: useCalculationHistory, useMessages for reusable logic
 
 ### Key Components
 
@@ -109,14 +129,47 @@ pnpm lint
 - JSON-LD structured data for search engines
 - Domain: toolhub.ai.kr
 
+## Key Architecture Decisions
+
+### Static Export Configuration
+```typescript
+// next.config.ts
+const nextConfig: NextConfig = {
+  output: 'export',
+  trailingSlash: true,
+  images: { unoptimized: true },
+  distDir: 'out'
+};
+```
+
+### URL State Management Pattern
+All calculators sync state with URL parameters for shareable links:
+```typescript
+// Common pattern in calculator components
+const updateURL = (params: Record<string, any>) => {
+  const url = new URL(window.location.href);
+  Object.entries(params).forEach(([key, value]) => {
+    url.searchParams.set(key, String(value));
+  });
+  window.history.replaceState({}, '', url);
+};
+```
+
+### Calculation History Architecture
+- Uses localStorage with type-safe interface in `/src/utils/localStorage.ts`
+- Custom hook `useCalculationHistory` for consistent access
+- Manual save pattern (button click) instead of auto-save
+- Title generation based on calculator type and inputs
+
 ## Development Notes
 
 - ESLint is disabled during builds (ignoreDuringBuilds: true)
 - Uses pnpm as package manager
-- Korean UI/UX with financial calculation focus
-- Dark mode support throughout
+- Korean-first UI/UX with comprehensive English translations
+- Dark mode support with system preference detection
 - Responsive design with mobile-first approach
 - Environment variable NEXT_PUBLIC_ADSENSE_ID for AdSense integration
+- Static sitemap generation with all tool routes
 
 ## Development Workflow for New Features
 

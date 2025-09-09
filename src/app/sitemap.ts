@@ -48,6 +48,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: 'https://toolhub.ai.kr/monthly-rent-subsidy',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://toolhub.ai.kr/bogeumjari-loan',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
       url: 'https://toolhub.ai.kr/stock-calculator',
       lastModified: new Date(),
       changeFrequency: 'weekly',

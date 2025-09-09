@@ -1,14 +1,14 @@
 {
-  "name": "툴허브 - 온라인 계산기와 개발자 도구",
+  "name": "툴허브 - 종합 계산기 도구",
   "short_name": "툴허브",
-  "description": "연봉, 대출, 시간변환부터 바코드 생성, JSON 포맷터까지 모든 계산을 한 곳에서",
+  "description": "연봉, 로또, 대출, 적금 등 다양한 계산기와 개발 도구를 제공하는 종합 웹 애플리케이션. 오프라인에서도 사용 가능합니다.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "orientation": "portrait-primary",
   "scope": "/",
-  "lang": "ko",
+  "lang": "ko-KR",
   "dir": "ltr",
   "icons": [
     {
@@ -45,6 +45,60 @@
     }
   ],
   "categories": ["productivity", "utilities", "finance"],
+  "shortcuts": [
+    {
+      "name": "연봉 계산기",
+      "short_name": "연봉계산",
+      "description": "2025년 기준 정확한 연봉 실수령액 계산",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "로또 생성기",
+      "short_name": "로또",
+      "description": "통계 기반 로또번호 생성 및 당첨번호 조회",
+      "url": "/lotto-generator",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "대출 계산기",
+      "short_name": "대출계산",
+      "description": "대출 월 상환금 및 이자 계산",
+      "url": "/loan-calculator",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "부동산 계산기",
+      "short_name": "부동산",
+      "description": "부동산 거래세, 취득세 계산",
+      "url": "/real-estate-calculator",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
   "screenshots": [
     {
       "src": "/screenshot-desktop.png",
@@ -60,5 +114,10 @@
       "form_factor": "narrow",
       "label": "툴허브 모바일 화면"
     }
-  ]
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
 }

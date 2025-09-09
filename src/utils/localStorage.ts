@@ -5,7 +5,8 @@ export interface CalculationHistory {
   type: 'salary' | 'loan' | 'savings' | 'retirement' 
   | 'tax' | 'exchange' | 'real-estate' | 'stock' 
   | 'car-loan' | 'car-tax' | 'fuel' | 'regex' | 'bmi' | 'calorie' 
-  | 'bodyFat' | 'workHours' | 'lotto' | 'ladder';
+  | 'bodyFat' | 'workHours' | 'lotto' | 'ladder' 
+  | 'rentSubsidy' | 'bogeumjariLoan';
   timestamp: number;
   inputs: Record<string, any>;
   result: Record<string, any>;
@@ -15,7 +16,8 @@ export interface CalculationHistory {
 export const STORAGE_KEYS = {
   CALCULATION_HISTORY: 'calculation_history',
   FAVORITES: 'favorites',
-  SETTINGS: 'user_settings'
+  SETTINGS: 'user_settings',
+  FEEDBACK: 'user_feedback'
 } as const;
 
 // localStorage 안전하게 사용하는 함수들
@@ -338,5 +340,42 @@ export const generateHistoryTitle = {
     const moreText = participantCount > 3 ? ` 외 ${participantCount - 3}명` : '';
     
     return `${participantNames}${moreText} (${participantCount}명)`;
+  },
+
+  rentSubsidy: (inputs: any): string => {
+    const income = parseInt(inputs.householdIncome?.toString().replace(/,/g, '') || '0');
+    const members = inputs.householdMembers || '1';
+    const rent = parseInt(inputs.rent?.toString().replace(/,/g, '') || '0');
+    const applicantType = inputs.applicantType || 'youth';
+    
+    const typeLabels = {
+      youth: '청년',
+      newlywed: '신혼부부',
+      general: '일반'
+    };
+    
+    const typeLabel = typeLabels[applicantType as keyof typeof typeLabels] || '청년';
+    const incomeAmount = Math.floor(income / 1000000);
+    const rentAmount = Math.floor(rent / 10000);
+    
+    return `${typeLabel} ${members}인 월소득${incomeAmount}백만원 월세${rentAmount}만원`;
+  },
+
+  bogeumjariLoan: (inputs: any): string => {
+    const income = parseInt(inputs.householdIncome?.toString().replace(/,/g, '') || '0');
+    const members = inputs.householdMembers || '4';
+    const housePrice = parseInt(inputs.housePrice?.toString().replace(/,/g, '') || '0');
+    const loanType = inputs.loanType || 'first';
+    
+    const typeLabels = {
+      first: '생애최초',
+      general: '일반'
+    };
+    
+    const typeLabel = typeLabels[loanType as keyof typeof typeLabels] || '생애최초';
+    const incomeAmount = Math.floor(income / 10000000);
+    const priceAmount = Math.floor(housePrice / 100000000);
+    
+    return `${typeLabel} ${members}인 연소득${incomeAmount}천만원 ${priceAmount}억원`;
   }
 };

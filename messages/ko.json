@@ -35,6 +35,54 @@
     "load": "불러오기",
     "convert": "변환"
   },
+  "feedback": {
+    "button": "피드백",
+    "title": "이 계산기가 도움이 되셨나요?",
+    "rating": {
+      "label": "별점 평가",
+      "selected": "★ {rating}/5 점"
+    },
+    "comment": {
+      "label": "의견 및 제안 (선택사항)",
+      "placeholder": "개선 제안, 오류 신고, 기능 요청 등을 자유롭게 남겨주세요.",
+      "optional": "(선택사항)"
+    },
+    "submit": "피드백 제출",
+    "submitting": "제출 중...",
+    "cancel": "취소",
+    "thankYou": {
+      "title": "감사합니다!",
+      "message": "소중한 의견 감사드립니다. 더 나은 서비스를 위해 참고하겠습니다."
+    }
+  },
+  "pdf": {
+    "download": "PDF 다운로드",
+    "generating": "PDF 생성 중...",
+    "export": "PDF로 내보내기",
+    "title": "계산 결과 보고서",
+    "disclaimer": "이 계산 결과는 참고용이며, 실제 적용시 전문가 상담을 권장합니다.",
+    "generatedBy": "툴허브 (toolhub.ai.kr)에서 생성됨",
+    "error": "PDF 생성에 실패했습니다. 다시 시도해주세요."
+  },
+  "pwa": {
+    "install": {
+      "title": "앱으로 설치하기",
+      "subtitle": "더 빠르고 편리하게 이용하세요",
+      "now": "지금 설치",
+      "later": "나중에"
+    },
+    "benefits": {
+      "offline": "오프라인에서도 사용 가능",
+      "fast": "빠른 로딩 속도",
+      "homescreen": "홈 화면에서 바로 실행",
+      "storage": "데이터 절약"
+    },
+    "update": {
+      "available": "새로운 버전이 있습니다",
+      "confirm": "지금 업데이트하시겠습니까?",
+      "reload": "다시 로드"
+    }
+  },
   "header": {
     "title": "툴허브",
     "language": "언어"
@@ -132,9 +180,9 @@
       "salaryAmount": "급여 금액 (세전)",
       "salaryPlaceholderAnnual": "50,000,000",
       "salaryPlaceholderMonthly": "4,000,000",
-      "nonTaxable": "비과세액 (연간)",
+      "nonTaxable": "비과세액 (월별)",
       "nonTaxablePlaceholder": "0",
-      "nonTaxableDesc": "식대, 교통비, 육아휴직급여 등",
+      "nonTaxableDesc": "월별 식대, 교통비 등 (예: 20만원/월)",
       "dependents": "부양가족수 (본인포함)",
       "children": "20세 이하 자녀수",
       "currency": "원"
@@ -1073,7 +1121,9 @@
       "cronTester": "Cron 테스터",
       "qrGenerator": "QR 코드 생성기",
       "barcodeGenerator": "바코드 생성기",
-      "fuelCalculator": "유류비 계산기"
+      "fuelCalculator": "유류비 계산기",
+      "monthlyRentSubsidy": "LH 월세지원금 계산기",
+      "bogeumjariLoan": "LH 보금자리론 계산기"
     },
     "copyright": "© 2025 툴허브. All rights reserved."
   },
@@ -2256,6 +2306,14 @@
       "realEstate": {
         "title": "부동산 계산기",
         "description": "매매 수수료와 세금"
+      },
+      "monthlyRentSubsidy": {
+        "title": "LH 월세지원금",
+        "description": "청년·신혼부부 월세지원금 계산"
+      },
+      "bogeumjariLoan": {
+        "title": "LH 보금자리론",
+        "description": "생애최초 우대대출 한도·금리"
       },
       "stock": {
         "title": "주식 계산기",

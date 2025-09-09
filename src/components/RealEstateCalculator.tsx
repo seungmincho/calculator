@@ -6,7 +6,7 @@ import { Home, Calculator, TrendingUp, Share2, Check, Building, Save } from 'luc
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 
-type CalculatorType = 'jeonse-loan' | 'mortgage-loan' | 'acquisition-tax';
+type CalculatorType = 'jeonse-loan' | 'mortgage-loan' | 'acquisition-tax' | 'property-tax' | 'capital-gains-tax';
 
 interface LoanResult {
   monthlyPayment: number;
@@ -16,11 +16,25 @@ interface LoanResult {
 }
 
 interface TaxResult {
-  acquisitionTax: number;
-  localTax: number;
-  stampTax: number;
-  registrationTax: number;
+  acquisitionTax?: number;
+  localTax?: number;
+  stampTax?: number;
+  registrationTax?: number;
   totalTax: number;
+  propertyTax?: number;
+  educationTax?: number;
+  capitalGainsTax?: number;
+  localIncomeTax?: number;
+}
+
+interface PropertyTaxResult extends TaxResult {
+  propertyTax: number;
+  educationTax: number;
+}
+
+interface CapitalGainsTaxResult extends TaxResult {
+  capitalGainsTax: number;
+  localIncomeTax: number;
 }
 
 const RealEstateCalculatorContent = () => {
@@ -46,6 +60,18 @@ const RealEstateCalculatorContent = () => {
   const [isFirstHome, setIsFirstHome] = useState(true);
   const [area, setArea] = useState('');
 
+  // 종부세 관련 상태
+  const [propertyValue, setPropertyValue] = useState('');
+  const [propertyCount, setPropertyCount] = useState('1');
+  const [ownedYears, setOwnedYears] = useState('');
+
+  // 양도소득세 관련 상태
+  const [sellPrice, setSellPrice] = useState('');
+  const [buyPrice, setBuyPrice] = useState('');
+  const [sellDate, setSellDate] = useState('');
+  const [buyDate, setBuyDate] = useState('');
+  const [isMultipleHomes, setIsMultipleHomes] = useState(false);
+
   const [result, setResult] = useState<LoanResult | TaxResult | null>(null);
   const [showSaveButton, setShowSaveButton] = useState(false);
 
@@ -62,7 +88,9 @@ const RealEstateCalculatorContent = () => {
   const calculatorTypes = {
     'jeonse-loan': '전세자금대출',
     'mortgage-loan': '주택담보대출',
-    'acquisition-tax': '취득세 계산'
+    'acquisition-tax': '취득세 계산',
+    'property-tax': '종합부동산세',
+    'capital-gains-tax': '양도소득세'
   };
 
   // 전세자금대출 계산
@@ -154,6 +182,130 @@ const RealEstateCalculatorContent = () => {
     };
   };
 
+  // 종합부동산세 계산 (2025년 기준)
+  const calculatePropertyTax = (value: number, count: number, years: number) => {
+    // 1세대 1주택 공제 (9억원)
+    const deduction = count === 1 ? 900000000 : 600000000; // 다주택자는 6억원 공제
+    const taxableValue = Math.max(0, value - deduction);
+    
+    if (taxableValue <= 0) {
+      return {
+        propertyTax: 0,
+        educationTax: 0,
+        totalTax: 0
+      };
+    }
+
+    // 세율 적용 (누진세율)
+    let propertyTax = 0;
+    const isMultipleHome = count > 1;
+    
+    if (isMultipleHome) {
+      // 다주택자 중과세율 (0.6~3.2%)
+      if (taxableValue <= 300000000) {
+        propertyTax = taxableValue * 0.006;
+      } else if (taxableValue <= 600000000) {
+        propertyTax = 300000000 * 0.006 + (taxableValue - 300000000) * 0.008;
+      } else {
+        propertyTax = 300000000 * 0.006 + 300000000 * 0.008 + (taxableValue - 600000000) * 0.032;
+      }
+    } else {
+      // 1주택자 일반세율 (0.5~2.7%)
+      if (taxableValue <= 300000000) {
+        propertyTax = taxableValue * 0.005;
+      } else if (taxableValue <= 600000000) {
+        propertyTax = 300000000 * 0.005 + (taxableValue - 300000000) * 0.007;
+      } else {
+        propertyTax = 300000000 * 0.005 + 300000000 * 0.007 + (taxableValue - 600000000) * 0.027;
+      }
+    }
+
+    // 장기보유 공제 (3년 이상)
+    if (years >= 3) {
+      const discountRate = Math.min(0.8, 0.2 + (years - 3) * 0.04); // 최대 80% 공제
+      propertyTax *= (1 - discountRate);
+    }
+
+    const educationTax = propertyTax * 0.2; // 지방교육세 20%
+    const totalTax = propertyTax + educationTax;
+
+    return {
+      propertyTax,
+      educationTax,
+      totalTax
+    };
+  };
+
+  // 양도소득세 계산 (2025년 기준)
+  const calculateCapitalGainsTax = (sellPrice: number, buyPrice: number, sellDateStr: string, buyDateStr: string, multipleHomes: boolean) => {
+    const sellDate = new Date(sellDateStr);
+    const buyDate = new Date(buyDateStr);
+    const ownedMonths = Math.floor((sellDate.getTime() - buyDate.getTime()) / (1000 * 60 * 60 * 24 * 30));
+    const ownedYears = Math.floor(ownedMonths / 12);
+    
+    // 양도차익 계산
+    const capitalGains = sellPrice - buyPrice;
+    if (capitalGains <= 0) {
+      return {
+        capitalGainsTax: 0,
+        localIncomeTax: 0,
+        totalTax: 0
+      };
+    }
+
+    // 기본공제 (연간 250만원)
+    const basicDeduction = 2500000;
+    const taxableGains = Math.max(0, capitalGains - basicDeduction);
+    
+    if (taxableGains <= 0) {
+      return {
+        capitalGainsTax: 0,
+        localIncomeTax: 0,
+        totalTax: 0
+      };
+    }
+
+    // 세율 적용
+    let taxRate = 0;
+    
+    if (multipleHomes) {
+      // 다주택자 중과세
+      if (ownedYears < 1) {
+        taxRate = 0.5; // 1년 미만 50%
+      } else if (ownedYears < 2) {
+        taxRate = 0.4; // 2년 미만 40%
+      } else {
+        taxRate = 0.2; // 2년 이상 20%
+      }
+    } else {
+      // 1주택자 일반세율
+      if (ownedYears < 1) {
+        taxRate = 0.4; // 1년 미만 40%
+      } else if (ownedYears < 2) {
+        taxRate = 0.3; // 2년 미만 30%
+      } else {
+        taxRate = 0.15; // 2년 이상 15%
+      }
+    }
+
+    // 장기보유 특별공제 (3년 이상)
+    let finalTaxableGains = taxableGains;
+    if (ownedYears >= 3) {
+      const discountRate = Math.min(0.3, (ownedYears - 3) * 0.04); // 최대 30% 공제
+      finalTaxableGains = taxableGains * (1 - discountRate);
+    }
+
+    const capitalGainsTax = finalTaxableGains * taxRate;
+    const localIncomeTax = capitalGainsTax * 0.1; // 지방소득세 10%
+    const totalTax = capitalGainsTax + localIncomeTax;
+
+    return {
+      capitalGainsTax,
+      localIncomeTax,
+      totalTax
+    };
+  };
+
   const formatNumber = (num: number) => {
     return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
@@ -173,6 +325,12 @@ const RealEstateCalculatorContent = () => {
         break;
       case 'acquisition-tax':
         inputs = { ...inputs, acquisitionPrice, propertyType, isFirstHome, area };
+        break;
+      case 'property-tax':
+        inputs = { ...inputs, propertyValue, propertyCount, ownedYears };
+        break;
+      case 'capital-gains-tax':
+        inputs = { ...inputs, sellPrice, buyPrice, sellDate, buyDate, isMultipleHomes };
         break;
     }
 
@@ -207,6 +365,18 @@ const RealEstateCalculatorContent = () => {
             if (inputs.isFirstHome !== undefined) setIsFirstHome(inputs.isFirstHome);
             if (inputs.area) setArea(inputs.area);
             break;
+          case 'property-tax':
+            if (inputs.propertyValue) setPropertyValue(inputs.propertyValue);
+            if (inputs.propertyCount) setPropertyCount(inputs.propertyCount);
+            if (inputs.ownedYears) setOwnedYears(inputs.ownedYears);
+            break;
+          case 'capital-gains-tax':
+            if (inputs.sellPrice) setSellPrice(inputs.sellPrice);
+            if (inputs.buyPrice) setBuyPrice(inputs.buyPrice);
+            if (inputs.sellDate) setSellDate(inputs.sellDate);
+            if (inputs.buyDate) setBuyDate(inputs.buyDate);
+            if (inputs.isMultipleHomes !== undefined) setIsMultipleHomes(inputs.isMultipleHomes);
+            break;
         }
         
         // URL도 업데이트
@@ -220,7 +390,14 @@ const RealEstateCalculatorContent = () => {
     if (!result) return '';
     
     if ('totalTax' in result) {
-      return `취득세: ${formatNumber(result.totalTax)}원`;
+      if ('acquisitionTax' in result) {
+        return `취득세: ${formatNumber(result.totalTax)}원`;
+      } else if ('propertyTax' in result) {
+        return `종부세: ${formatNumber(result.totalTax)}원`;
+      } else if ('capitalGainsTax' in result) {
+        return `양도세: ${formatNumber(result.totalTax)}원`;
+      }
+      return `총 세금: ${formatNumber(result.totalTax)}원`;
     } else if ('monthlyPayment' in result) {
       return `월 상환: ${formatNumber(result.monthlyPayment)}원`;
     }
@@ -299,6 +476,26 @@ const RealEstateCalculatorContent = () => {
           );
         }
         break;
+      case 'property-tax':
+        if (propertyValue && ownedYears) {
+          calculation = calculatePropertyTax(
+            parseInt(propertyValue.replace(/,/g, '')),
+            parseInt(propertyCount),
+            parseInt(ownedYears)
+          );
+        }
+        break;
+      case 'capital-gains-tax':
+        if (sellPrice && buyPrice && sellDate && buyDate) {
+          calculation = calculateCapitalGainsTax(
+            parseInt(sellPrice.replace(/,/g, '')),
+            parseInt(buyPrice.replace(/,/g, '')),
+            sellDate,
+            buyDate,
+            isMultipleHomes
+          );
+        }
+        break;
     }
 
     setResult(calculation);
@@ -318,7 +515,7 @@ const RealEstateCalculatorContent = () => {
   // URL에서 초기값 로드
   useEffect(() => {
     const tabParam = searchParams.get('tab') as CalculatorType;
-    if (tabParam && ['jeonse-loan', 'mortgage-loan', 'acquisition-tax'].includes(tabParam)) {
+    if (tabParam && ['jeonse-loan', 'mortgage-loan', 'acquisition-tax', 'property-tax', 'capital-gains-tax'].includes(tabParam)) {
       setActiveTab(tabParam);
     }
 
@@ -330,6 +527,14 @@ const RealEstateCalculatorContent = () => {
     const areaParam = searchParams.get('area');
     const typeParam = searchParams.get('type');
     const firstHomeParam = searchParams.get('firstHome');
+    const propertyValueParam = searchParams.get('propertyValue');
+    const propertyCountParam = searchParams.get('propertyCount');
+    const ownedYearsParam = searchParams.get('ownedYears');
+    const sellPriceParam = searchParams.get('sellPrice');
+    const buyPriceParam = searchParams.get('buyPrice');
+    const sellDateParam = searchParams.get('sellDate');
+    const buyDateParam = searchParams.get('buyDate');
+    const multipleHomesParam = searchParams.get('multipleHomes');
 
     if (jeonseParam && /^\d+$/.test(jeonseParam)) {
       setJeonseDeposit(formatNumber(Number(jeonseParam)));
@@ -352,11 +557,35 @@ const RealEstateCalculatorContent = () => {
     if (firstHomeParam === 'false') {
       setIsFirstHome(false);
     }
+    if (propertyValueParam && /^\d+$/.test(propertyValueParam)) {
+      setPropertyValue(formatNumber(Number(propertyValueParam)));
+    }
+    if (propertyCountParam && /^\d+$/.test(propertyCountParam)) {
+      setPropertyCount(propertyCountParam);
+    }
+    if (ownedYearsParam && /^\d+$/.test(ownedYearsParam)) {
+      setOwnedYears(ownedYearsParam);
+    }
+    if (sellPriceParam && /^\d+$/.test(sellPriceParam)) {
+      setSellPrice(formatNumber(Number(sellPriceParam)));
+    }
+    if (buyPriceParam && /^\d+$/.test(buyPriceParam)) {
+      setBuyPrice(formatNumber(Number(buyPriceParam)));
+    }
+    if (sellDateParam) {
+      setSellDate(sellDateParam);
+    }
+    if (buyDateParam) {
+      setBuyDate(buyDateParam);
+    }
+    if (multipleHomesParam === 'true') {
+      setIsMultipleHomes(true);
+    }
   }, [searchParams]);
 
   useEffect(() => {
     handleCalculate();
-  }, [activeTab, jeonseDeposit, jeonseInterestRate, jeonseLoanTerm, housePrice, downPayment, mortgageRate, mortgageTerm, acquisitionPrice, propertyType, isFirstHome, area]);
+  }, [activeTab, jeonseDeposit, jeonseInterestRate, jeonseLoanTerm, housePrice, downPayment, mortgageRate, mortgageTerm, acquisitionPrice, propertyType, isFirstHome, area, propertyValue, propertyCount, ownedYears, sellPrice, buyPrice, sellDate, buyDate, isMultipleHomes]);
 
   const renderInputSection = () => {
     switch (activeTab) {
@@ -605,6 +834,172 @@ const RealEstateCalculatorContent = () => {
           </div>
         );
 
+      case 'property-tax':
+        return (
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                부동산 공시가격
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={propertyValue}
+                  onChange={(e) => handleNumberInput(e.target.value, setPropertyValue, 'propertyValue')}
+                  placeholder="예: 1,500,000,000"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                />
+                <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  보유 주택수
+                </label>
+                <select
+                  value={propertyCount}
+                  onChange={(e) => {
+                    setPropertyCount(e.target.value);
+                    updateURL({ propertyCount: e.target.value, tab: activeTab });
+                  }}
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                >
+                  <option value="1">1주택</option>
+                  <option value="2">2주택</option>
+                  <option value="3">3주택 이상</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  보유기간
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={ownedYears}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d*$/.test(value)) {
+                        setOwnedYears(value);
+                        updateURL({ ownedYears: value, tab: activeTab });
+                      }
+                    }}
+                    placeholder="5"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  />
+                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">년</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'capital-gains-tax':
+        return (
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  매도가격
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={sellPrice}
+                    onChange={(e) => handleNumberInput(e.target.value, setSellPrice, 'sellPrice')}
+                    placeholder="예: 1,200,000,000"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  />
+                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  매수가격
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={buyPrice}
+                    onChange={(e) => handleNumberInput(e.target.value, setBuyPrice, 'buyPrice')}
+                    placeholder="예: 800,000,000"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                  />
+                  <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  매도일
+                </label>
+                <input
+                  type="date"
+                  value={sellDate}
+                  onChange={(e) => {
+                    setSellDate(e.target.value);
+                    updateURL({ sellDate: e.target.value, tab: activeTab });
+                  }}
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  매수일
+                </label>
+                <input
+                  type="date"
+                  value={buyDate}
+                  onChange={(e) => {
+                    setBuyDate(e.target.value);
+                    updateURL({ buyDate: e.target.value, tab: activeTab });
+                  }}
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 dark:text-white"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                주택 보유 현황
+              </label>
+              <div className="flex space-x-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    checked={!isMultipleHomes}
+                    onChange={() => {
+                      setIsMultipleHomes(false);
+                      updateURL({ multipleHomes: 'false', tab: activeTab });
+                    }}
+                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-300">1주택자</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    checked={isMultipleHomes}
+                    onChange={() => {
+                      setIsMultipleHomes(true);
+                      updateURL({ multipleHomes: 'true', tab: activeTab });
+                    }}
+                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-300">다주택자</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -613,12 +1008,26 @@ const RealEstateCalculatorContent = () => {
   const renderResult = () => {
     if (!result) return null;
 
-    if (activeTab === 'acquisition-tax') {
+    if (activeTab === 'acquisition-tax' || activeTab === 'property-tax' || activeTab === 'capital-gains-tax') {
       const taxResult = result as TaxResult;
+      
+      let titleText = '총 세금';
+      let gradientClass = 'from-purple-500 to-pink-600';
+      
+      if (activeTab === 'property-tax') {
+        titleText = '종합부동산세';
+        gradientClass = 'from-blue-500 to-purple-600';
+      } else if (activeTab === 'capital-gains-tax') {
+        titleText = '양도소득세';
+        gradientClass = 'from-red-500 to-orange-600';
+      } else {
+        titleText = '취득세';
+      }
+
       return (
         <div className="space-y-6">
-          <div className="text-center p-6 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl text-white">
-            <div className="text-sm opacity-90 mb-1">총 세금</div>
+          <div className={`text-center p-6 bg-gradient-to-br ${gradientClass} rounded-xl text-white`}>
+            <div className="text-sm opacity-90 mb-1">{titleText}</div>
             <div className="text-3xl font-bold">{formatNumber(taxResult.totalTax)}원</div>
             <button
               onClick={handleShare}
@@ -649,30 +1058,68 @@ const RealEstateCalculatorContent = () => {
           </div>
 
           <div className="space-y-4">
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-              <span className="text-gray-600 dark:text-gray-400">취득세</span>
-              <span className="font-semibold text-gray-900 dark:text-white">
-                {formatNumber(taxResult.acquisitionTax)}원
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-              <span className="text-gray-600 dark:text-gray-400">지방교육세</span>
-              <span className="font-semibold text-gray-900 dark:text-white">
-                {formatNumber(taxResult.localTax)}원
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-              <span className="text-gray-600 dark:text-gray-400">인지세</span>
-              <span className="font-semibold text-gray-900 dark:text-white">
-                {formatNumber(taxResult.stampTax)}원
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-              <span className="text-gray-600 dark:text-gray-400">등록세</span>
-              <span className="font-semibold text-gray-900 dark:text-white">
-                {formatNumber(taxResult.registrationTax)}원
-              </span>
-            </div>
+            {activeTab === 'acquisition-tax' && (
+              <>
+                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">취득세</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {formatNumber(taxResult.acquisitionTax!)}원
+                  </span>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">지방교육세</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {formatNumber(taxResult.localTax!)}원
+                  </span>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">인지세</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {formatNumber(taxResult.stampTax!)}원
+                  </span>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">등록세</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {formatNumber(taxResult.registrationTax!)}원
+                  </span>
+                </div>
+              </>
+            )}
+            
+            {activeTab === 'property-tax' && (
+              <>
+                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">종합부동산세</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {formatNumber(taxResult.propertyTax!)}원
+                  </span>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">지방교육세</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {formatNumber(taxResult.educationTax!)}원
+                  </span>
+                </div>
+              </>
+            )}
+            
+            {activeTab === 'capital-gains-tax' && (
+              <>
+                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">양도소득세</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {formatNumber(taxResult.capitalGainsTax!)}원
+                  </span>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">지방소득세</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {formatNumber(taxResult.localIncomeTax!)}원
+                  </span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       );

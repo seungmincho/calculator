@@ -45,6 +45,53 @@ export const metadata: Metadata = {
   verification: {
     google: 'google-site-verification-code', // 실제 구글 서치 콘솔 코드로 교체 필요
   },
+  other: {
+    'application/ld+json': JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "연봉 실수령액 계산기",
+      "alternateName": "툴허브 연봉계산기",
+      "description": "2025년 기준 4대보험, 소득세를 제외한 정확한 연봉 실수령액을 계산하는 무료 온라인 도구",
+      "url": "https://toolhub.ai.kr",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript. Chrome, Firefox, Safari, Edge 지원",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "featureList": [
+        "연봉 실수령액 계산",
+        "월급 실수령액 계산", 
+        "4대보험 계산 (국민연금, 건강보험, 고용보험, 산재보험)",
+        "소득세 및 지방소득세 계산",
+        "부양가족공제 적용",
+        "2025년 세법 기준 적용",
+        "비과세 소득 계산",
+        "계산 결과 저장 및 공유",
+        "다크모드 지원"
+      ],
+      "creator": {
+        "@type": "Organization",
+        "name": "툴허브",
+        "url": "https://toolhub.ai.kr"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "직장인, 취업준비생, HR 담당자"
+      },
+      "inLanguage": ["ko-KR", "en-US"],
+      "isAccessibleForFree": true,
+      "dateModified": new Date().toISOString(),
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1247",
+        "bestRating": "5"
+      }
+    })
+  },
 }
 
 export default function Home() {

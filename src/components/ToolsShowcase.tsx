@@ -39,10 +39,12 @@ const tools: Tool[] = [
   { name: 'tax', href: '/tax-calculator', icon: Calculator, category: 'financial', priority: 4 },
   { name: 'exchange', href: '/exchange-calculator', icon: DollarSign, category: 'financial', priority: 5 },
   { name: 'realEstate', href: '/real-estate-calculator', icon: TrendingUp, category: 'financial', priority: 6 },
-  { name: 'stock', href: '/stock-calculator', icon: TrendingUp, category: 'financial', priority: 7 },
-  { name: 'carLoan', href: '/car-loan-calculator', icon: Car, category: 'financial', priority: 8 },
-  { name: 'carTax', href: '/car-tax-calculator', icon: Car, category: 'financial', priority: 9 },
-  { name: 'fuel', href: '/fuel-calculator', icon: Fuel, category: 'financial', priority: 10 },
+  { name: 'monthlyRentSubsidy', href: '/monthly-rent-subsidy', icon: TrendingUp, category: 'financial', priority: 7 },
+  { name: 'bogeumjariLoan', href: '/bogeumjari-loan', icon: TrendingUp, category: 'financial', priority: 8 },
+  { name: 'stock', href: '/stock-calculator', icon: TrendingUp, category: 'financial', priority: 9 },
+  { name: 'carLoan', href: '/car-loan-calculator', icon: Car, category: 'financial', priority: 10 },
+  { name: 'carTax', href: '/car-tax-calculator', icon: Car, category: 'financial', priority: 11 },
+  { name: 'fuel', href: '/fuel-calculator', icon: Fuel, category: 'financial', priority: 12 },
   
   // 건강 도구
   { name: 'bmi', href: '/bmi-calculator', icon: Scale, category: 'health', priority: 1 },

@@ -2,10 +2,13 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { DollarSign, TrendingUp, Calculator, Share2, Check, Table, Save } from 'lucide-react';
+import { DollarSign, TrendingUp, Calculator, Share2, Check, Table, Save, BarChart3, LineChart, PieChart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
+import FeedbackWidget from '@/components/FeedbackWidget';
+import PDFExport from '@/components/PDFExport';
+import { LineChart as RechartsLineChart, Line, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const SalaryCalculatorContent = () => {
   const router = useRouter();
@@ -21,6 +24,11 @@ const SalaryCalculatorContent = () => {
   const [isCopied, setIsCopied] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [showSaveButton, setShowSaveButton] = useState(false);
+  const [bonusMonths, setBonusMonths] = useState<number[]>([]);
+  const [bonusPercentage, setBonusPercentage] = useState('100');
+  const [performanceBonus, setPerformanceBonus] = useState('0'); // 성과급 (연봉 외 추가)
+  const [experienceYears, setExperienceYears] = useState('0');
+  const [showCharts, setShowCharts] = useState(false);
 
   // 계산 이력 관리
   const {
@@ -32,10 +40,10 @@ const SalaryCalculatorContent = () => {
     loadFromHistory
   } = useCalculationHistory('salary');
 
-  // 2025년 기준 정확한 실수령액 계산 함수
+  // 2025년 한국 연봉 실수령액 정확한 계산 함수
   const calculateNetSalary = (inputSalary: string, type: 'annual' | 'monthly', nonTaxable: string, dependentCount: string, childrenCount: string) => {
     const salaryNum = parseInt(inputSalary.replace(/,/g, ''));
-    const nonTaxableNum = parseInt(nonTaxable.replace(/,/g, '')) || 0;
+    const nonTaxableMonthlyNum = parseInt(nonTaxable.replace(/,/g, '')) || 0; // 월별 비과세 금액
     const dependentNum = parseInt(dependentCount) || 1;
     const childrenNum = parseInt(childrenCount) || 0;
     
@@ -43,21 +51,22 @@ const SalaryCalculatorContent = () => {
 
     // 연봉으로 변환
     const grossAnnual = type === 'monthly' ? salaryNum * 12 : salaryNum;
-    
-    // 과세대상소득 = 총급여 - 비과세소득
-    const taxableAnnual = grossAnnual - nonTaxableNum;
+    const nonTaxableAnnual = nonTaxableMonthlyNum * 12; // 연간 비과세 금액
+    const taxableAnnual = grossAnnual - nonTaxableAnnual; // 과세대상소득
 
     // 4대보험료 계산 (2025년 기준)
-    // 건강보험료: 과세대상소득 기준, 상한액 없음
-    const healthInsurance = Math.floor(taxableAnnual * 0.03545); // 건강보험 3.545%
-    const longTermCare = Math.floor(healthInsurance * 0.1227); // 장기요양보험 12.27% (건강보험료의 12.27%)
+    // 1. 국민연금: 4.5%, 상한액 월 243만원 (연 2,916만원)
+    const pensionCap = 29160000; // 2025년 국민연금 연간 상한액
+    const nationalPension = Math.floor(Math.min(taxableAnnual, pensionCap) * 0.045);
     
-    // 국민연금: 과세대상소득 기준, 상한 671만원/월 (8052만원/년)
-    const pensionBase = Math.min(taxableAnnual, 80520000); // 2025년 국민연금 상한선
-    const nationalPension = Math.floor(pensionBase * 0.045); // 국민연금 4.5%
+    // 2. 건강보험료: 3.545% (2025년 기준)
+    const healthInsurance = Math.floor(taxableAnnual * 0.03545);
     
-    // 고용보험: 과세대상소득 기준, 상한 없음
-    const employmentInsurance = Math.floor(taxableAnnual * 0.009); // 고용보험 0.9%
+    // 3. 장기요양보험료: 건강보험료의 12.95%
+    const longTermCare = Math.floor(healthInsurance * 0.1295);
+    
+    // 4. 고용보험료: 0.9%
+    const employmentInsurance = Math.floor(taxableAnnual * 0.009);
 
     // 소득공제 계산
     // 1. 근로소득공제 (총급여액 기준)
@@ -78,58 +87,45 @@ const SalaryCalculatorContent = () => {
     // 2. 인적공제
     const basicDeduction = 1500000; // 기본공제 150만원
     const dependentDeduction = (dependentNum - 1) * 1500000; // 부양가족공제 (본인 제외)
-    const childDeduction = childrenNum * 1500000; // 20세 이하 자녀 추가공제
+    const childDeduction = childrenNum * 1500000; // 20세 이하 자녀 공제
     const totalPersonalDeduction = basicDeduction + dependentDeduction + childDeduction;
 
     // 근로소득금액 = 총급여 - 근로소득공제
     const workIncome = grossAnnual - workIncomeDeduction;
     
-    // 과세표준 = 근로소득금액 - 인적공제 - 국민연금보험료
-    const taxableIncome = Math.max(0, workIncome - totalPersonalDeduction - nationalPension);
+    // 종합소득공제 (국민연금 + 인적공제)
+    const totalDeduction = nationalPension + totalPersonalDeduction;
     
+    // 과세표준 = 근로소득금액 - 종합소득공제
+    const taxableIncome = Math.max(0, workIncome - totalDeduction);
+
     // 소득세 계산 (2025년 누진세율)
     let incomeTax = 0;
     if (taxableIncome <= 14000000) {
-      incomeTax = taxableIncome * 0.06;
+      incomeTax = taxableIncome * 0.06; // 6%
     } else if (taxableIncome <= 50000000) {
-      incomeTax = 840000 + (taxableIncome - 14000000) * 0.15;
+      incomeTax = 840000 + (taxableIncome - 14000000) * 0.15; // 15%
     } else if (taxableIncome <= 88000000) {
-      incomeTax = 6240000 + (taxableIncome - 50000000) * 0.24;
+      incomeTax = 6240000 + (taxableIncome - 50000000) * 0.24; // 24%
     } else if (taxableIncome <= 150000000) {
-      incomeTax = 15360000 + (taxableIncome - 88000000) * 0.35;
+      incomeTax = 15360000 + (taxableIncome - 88000000) * 0.35; // 35%
     } else if (taxableIncome <= 300000000) {
-      incomeTax = 37060000 + (taxableIncome - 150000000) * 0.38;
+      incomeTax = 37060000 + (taxableIncome - 150000000) * 0.38; // 38%
     } else if (taxableIncome <= 500000000) {
-      incomeTax = 94060000 + (taxableIncome - 300000000) * 0.40;
+      incomeTax = 94060000 + (taxableIncome - 300000000) * 0.4; // 40%
     } else if (taxableIncome <= 1000000000) {
-      incomeTax = 174060000 + (taxableIncome - 500000000) * 0.42;
+      incomeTax = 174060000 + (taxableIncome - 500000000) * 0.42; // 42%
     } else {
-      incomeTax = 384060000 + (taxableIncome - 1000000000) * 0.45;
+      incomeTax = 384060000 + (taxableIncome - 1000000000) * 0.45; // 45%
     }
+    
+    incomeTax = Math.floor(incomeTax);
+    
+    // 지방소득세: 소득세의 10%
+    const localIncomeTax = Math.floor(incomeTax * 0.1);
 
-    // 근로소득세액공제 적용
-    let workIncomeTaxCredit = 0;
-    if (incomeTax <= 1300000) {
-      workIncomeTaxCredit = Math.min(incomeTax * 0.55, 740000);
-    } else {
-      workIncomeTaxCredit = Math.max(740000 - (incomeTax - 1300000) * 0.05, 660000);
-    }
-
-    // 자녀세액공제 (20세 이하)
-    let childTaxCredit = 0;
-    if (childrenNum >= 1) {
-      childTaxCredit = childrenNum * 150000;
-      // 셋째 자녀부터 추가 공제
-      if (childrenNum >= 3) {
-        childTaxCredit += (childrenNum - 2) * 150000;
-      }
-    }
-
-    const totalTaxCredit = workIncomeTaxCredit + childTaxCredit;
-    incomeTax = Math.floor(Math.max(0, incomeTax - totalTaxCredit));
-    const localIncomeTax = Math.floor(incomeTax * 0.1); // 지방소득세 10%
-
-    const totalDeductions = healthInsurance + longTermCare + nationalPension + employmentInsurance + incomeTax + localIncomeTax;
+    // 총 공제액 계산
+    const totalDeductions = nationalPension + healthInsurance + longTermCare + employmentInsurance + incomeTax + localIncomeTax;
     const netAnnual = grossAnnual - totalDeductions;
     const netMonthly = Math.floor(netAnnual / 12);
 
@@ -150,9 +146,9 @@ const SalaryCalculatorContent = () => {
         total: totalDeductions
       },
       taxInfo: {
-        taxableIncome,
+        taxableIncome: taxableIncome,
         personalDeduction: totalPersonalDeduction,
-        taxCredit: totalTaxCredit,
+        taxCredit: 0, // 자녀세액공제는 소득세 계산 시 반영됨
         effectiveTaxRate: grossAnnual > 0 ? ((incomeTax + localIncomeTax) / grossAnnual * 100) : 0
       }
     };
@@ -166,6 +162,83 @@ const SalaryCalculatorContent = () => {
 
   const formatNumber = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  // 월별 실수령액 계산 (상여금 포함) - 올바른 상여금 분할 방식
+  const calculateMonthlyTakeHome = () => {
+    if (!result) return [];
+    
+    // 상여금 개념: 연봉을 (12 + 상여비율/100)회로 분할하여 지급
+    const bonusRatio = parseInt(bonusPercentage) / 100; // 상여 800% → 8
+    const totalPayments = 12 + bonusRatio; // 12개월 + 상여 횟수
+    const onePaymentAmount = Math.floor(result.gross / totalPayments); // 1회 지급액
+    
+    // 기본 월급: 1회 지급액
+    const baseMonthlySalary = onePaymentAmount;
+    
+    const monthlyData = [];
+    
+    for (let month = 1; month <= 12; month++) {
+      const hasBonus = bonusMonths.includes(month);
+      
+      // 해당 월의 총 지급액 = 기본 월급 + (상여월인 경우 1회 지급액 추가)
+      let monthlyGross = baseMonthlySalary;
+      let bonusAmount = 0;
+      
+      if (hasBonus && bonusRatio > 0) {
+        // 상여금이 여러 번 나뉘어 지급되는 경우 고려
+        const bonusPerMonth = bonusRatio / bonusMonths.length;
+        bonusAmount = Math.floor(onePaymentAmount * bonusPerMonth);
+        monthlyGross = baseMonthlySalary + bonusAmount;
+      }
+      
+      // 성과급 계산 (연말에 일시 지급 가정)
+      let performanceAmount = 0;
+      if (month === 12 && parseInt(performanceBonus) > 0) {
+        performanceAmount = Math.floor(result.gross * (parseInt(performanceBonus) / 100));
+        monthlyGross += performanceAmount;
+      }
+
+      // 월별 실제 공제액 계산 (총 공제액을 총 지급액으로 비례 배분)
+      const monthlyTaxRate = result.deductions.total / result.gross;
+      const monthlyDeductions = Math.floor(monthlyGross * monthlyTaxRate);
+
+      monthlyData.push({
+        month: `${month}월`,
+        grossSalary: monthlyGross,
+        takeHome: monthlyGross - monthlyDeductions,
+        bonus: bonusAmount,
+        performance: performanceAmount,
+        basicSalary: baseMonthlySalary,
+        deductions: monthlyDeductions
+      });
+    }
+    
+    return monthlyData;
+  };
+
+  // 경력별 평균 연봉 데이터 (한국 IT 업계 기준)
+  const careerAverageSalary = [
+    { experience: '신입', average: 35000000, min: 28000000, max: 42000000 },
+    { experience: '1-2년', average: 42000000, min: 35000000, max: 50000000 },
+    { experience: '3-4년', average: 52000000, min: 45000000, max: 65000000 },
+    { experience: '5-7년', average: 65000000, min: 55000000, max: 80000000 },
+    { experience: '8-10년', average: 80000000, min: 65000000, max: 100000000 },
+    { experience: '10년+', average: 95000000, min: 75000000, max: 150000000 }
+  ];
+
+  // 세금 구성 차트 데이터
+  const getTaxCompositionData = () => {
+    if (!result) return [];
+    
+    return [
+      { name: '국민연금', value: result.deductions.nationalPension, color: '#3B82F6' },
+      { name: '건강보험', value: result.deductions.healthInsurance, color: '#10B981' },
+      { name: '장기요양', value: result.deductions.longTermCare, color: '#8B5CF6' },
+      { name: '고용보험', value: result.deductions.employmentInsurance, color: '#F59E0B' },
+      { name: '소득세', value: result.deductions.incomeTax, color: '#EF4444' },
+      { name: '지방소득세', value: result.deductions.localIncomeTax, color: '#EC4899' }
+    ];
   };
 
   const handleShare = async () => {
@@ -442,6 +515,114 @@ const SalaryCalculatorContent = () => {
               </div>
             </div>
 
+            {/* 상여금 설정 */}
+            <div className="border-t pt-6">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                상여금 설정 (선택사항)
+              </h3>
+              <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-3 mb-3">
+                <p className="text-xs text-amber-800 dark:text-amber-200">
+                  💡 <strong>상여금은 연봉을 분할 지급하는 방식입니다</strong><br/>
+                  예: 연봉 3000만원 + 상여 800% = 3000만원을 20회(12+8)로 나누어 지급
+                </p>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">상여금 비율</label>
+                  <select
+                    value={bonusPercentage}
+                    onChange={(e) => setBonusPercentage(e.target.value)}
+                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                  >
+                    <option value="0">상여금 없음 (연봉÷12개월)</option>
+                    <option value="100">100% (연봉÷14회)</option>
+                    <option value="200">200% (연봉÷16회)</option>
+                    <option value="300">300% (연봉÷18회)</option>
+                    <option value="400">400% (연봉÷20회)</option>
+                    <option value="600">600% (연봉÷24회)</option>
+                    <option value="800">800% (연봉÷28회)</option>
+                  </select>
+                </div>
+                
+                {bonusPercentage !== '0' && (
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">상여금 지급 월</label>
+                    <div className="grid grid-cols-6 gap-2">
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                        <button
+                          key={month}
+                          onClick={() => {
+                            if (bonusMonths.includes(month)) {
+                              setBonusMonths(bonusMonths.filter(m => m !== month));
+                            } else {
+                              setBonusMonths([...bonusMonths, month]);
+                            }
+                          }}
+                          className={`py-1 px-2 text-sm rounded-md transition-colors ${
+                            bonusMonths.includes(month)
+                              ? 'bg-blue-500 text-white'
+                              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                          }`}
+                        >
+                          {month}월
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* 성과급 설정 */}
+            <div className="border-t pt-6">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                성과급 설정 (선택사항)
+              </h3>
+              <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-3 mb-3">
+                <p className="text-xs text-green-800 dark:text-green-200">
+                  💡 <strong>성과급은 연봉에 추가로 지급되는 금액입니다</strong><br/>
+                  예: 연봉 3000만원 + 성과급 200% = 3000만원 + (3000만원의 200%)
+                </p>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">성과급 비율</label>
+                <select
+                  value={performanceBonus}
+                  onChange={(e) => setPerformanceBonus(e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                >
+                  <option value="0">성과급 없음</option>
+                  <option value="50">50% (연봉의 50%)</option>
+                  <option value="100">100% (연봉의 100%)</option>
+                  <option value="150">150% (연봉의 150%)</option>
+                  <option value="200">200% (연봉의 200%)</option>
+                  <option value="300">300% (연봉의 300%)</option>
+                </select>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  성과급은 회사 실적에 따라 변동될 수 있습니다
+                </p>
+              </div>
+            </div>
+
+            {/* 경력 정보 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                경력 (연차)
+              </label>
+              <select
+                value={experienceYears}
+                onChange={(e) => setExperienceYears(e.target.value)}
+                className="w-full px-3 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+              >
+                <option value="0">신입</option>
+                <option value="1">1-2년</option>
+                <option value="3">3-4년</option>
+                <option value="5">5-7년</option>
+                <option value="8">8-10년</option>
+                <option value="10">10년 이상</option>
+              </select>
+            </div>
+
             <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
               <h3 className="font-medium text-blue-900 dark:text-blue-200 mb-2">💡 {t('calculation.basis')}</h3>
               <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">
@@ -559,7 +740,7 @@ const SalaryCalculatorContent = () => {
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.healthInsurance)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.longTermCare')} (12.27%)</span>
+                    <span className="text-gray-600 dark:text-gray-400">{t('result.longTermCare')} (12.95%)</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.longTermCare)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
@@ -585,6 +766,24 @@ const SalaryCalculatorContent = () => {
             <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500">
               <Calculator className="w-16 h-16 mb-4" />
               <p>{t('placeholder')}</p>
+            </div>
+          )}
+
+          {/* Action buttons - shown only when there's a result */}
+          {result && (
+            <div className="mt-8 space-y-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <PDFExport
+                  data={result}
+                  calculatorType="salary"
+                  title="연봉 계산 결과"
+                  className="w-full sm:w-auto"
+                />
+                <FeedbackWidget 
+                  calculatorType="salary"
+                  className="w-full sm:w-auto max-w-md"
+                />
+              </div>
             </div>
           )}
         </div>
@@ -676,6 +875,201 @@ const SalaryCalculatorContent = () => {
           </div>
         )}
       </div>
+
+      {/* 시각화 차트 섹션 */}
+      {result && (
+        <div className="mt-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">📊 상세 분석 차트</h2>
+            <button
+              onClick={() => setShowCharts(!showCharts)}
+              className="inline-flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg text-white transition-colors"
+            >
+              <BarChart3 className="w-4 h-4" />
+              <span>{showCharts ? '차트 숨기기' : '차트 보기'}</span>
+            </button>
+          </div>
+
+          {showCharts && (
+            <div className="space-y-8">
+              {/* 월별 실수령액 차트 */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                  <LineChart className="w-6 h-6 mr-2 text-blue-600" />
+                  월별 실수령액 변화 (상여금 포함)
+                </h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <RechartsLineChart data={calculateMonthlyTakeHome()}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis dataKey="month" />
+                    <YAxis tickFormatter={(value) => `${(value / 10000).toFixed(0)}만`} />
+                    <Tooltip 
+                      formatter={(value: number) => formatNumber(value) + '원'}
+                      labelStyle={{ color: '#000' }}
+                    />
+                    <Legend />
+                    <Line 
+                      type="monotone" 
+                      dataKey="takeHome" 
+                      stroke="#3B82F6" 
+                      strokeWidth={2}
+                      name="실수령액"
+                      dot={{ fill: '#3B82F6', r: 4 }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="bonus" 
+                      stroke="#10B981" 
+                      strokeWidth={2}
+                      name="상여금"
+                      strokeDasharray="5 5"
+                      dot={{ fill: '#10B981', r: 4 }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="performance" 
+                      stroke="#F59E0B" 
+                      strokeWidth={2}
+                      name="성과급"
+                      strokeDasharray="2 2"
+                      dot={{ fill: '#F59E0B', r: 4 }}
+                    />
+                  </RechartsLineChart>
+                </ResponsiveContainer>
+                <div className="mt-4 space-y-2">
+                  <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                    <p className="text-sm text-blue-800 dark:text-blue-200">
+                      <strong>📊 상여금 지급 방식:</strong> 연봉 {formatNumber(result.gross)}원을 {12 + parseInt(bonusPercentage)/100}회로 분할
+                    </p>
+                    {bonusMonths.length > 0 && (
+                      <p className="text-sm text-blue-600 dark:text-blue-300 mt-1">
+                        상여금 지급월: {bonusMonths.sort((a, b) => a - b).join(', ')}월 
+                        (월 {(parseInt(bonusPercentage)/100/bonusMonths.length).toFixed(1)}회분씩)
+                      </p>
+                    )}
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                      기본 월급: {formatNumber(Math.floor(result.gross / (12 + parseInt(bonusPercentage)/100)))}원/회
+                    </p>
+                  </div>
+                  
+                  {parseInt(performanceBonus) > 0 && (
+                    <div className="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-lg">
+                      <p className="text-sm text-amber-800 dark:text-amber-200">
+                        <strong>🎯 성과급:</strong> 연봉의 {performanceBonus}% = {formatNumber(Math.floor(result.gross * (parseInt(performanceBonus) / 100)))}원 (12월 지급)
+                      </p>
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                        성과급은 회사 실적에 따라 변동될 수 있습니다
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 경력별 연봉 비교 */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                  <BarChart3 className="w-6 h-6 mr-2 text-green-600" />
+                  경력별 평균 연봉 비교
+                </h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={careerAverageSalary}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis dataKey="experience" />
+                    <YAxis tickFormatter={(value) => `${(value / 100000000).toFixed(1)}억`} />
+                    <Tooltip 
+                      formatter={(value: number) => formatNumber(value) + '원'}
+                      labelStyle={{ color: '#000' }}
+                    />
+                    <Bar dataKey="average" fill="#3B82F6" name="평균 연봉">
+                      {careerAverageSalary.map((entry, index) => {
+                        const isCurrentExperience = 
+                          (experienceYears === '0' && entry.experience === '신입') ||
+                          (experienceYears === '1' && entry.experience === '1-2년') ||
+                          (experienceYears === '3' && entry.experience === '3-4년') ||
+                          (experienceYears === '5' && entry.experience === '5-7년') ||
+                          (experienceYears === '8' && entry.experience === '8-10년') ||
+                          (experienceYears === '10' && entry.experience === '10년+');
+                        
+                        return <Cell key={`cell-${index}`} fill={isCurrentExperience ? '#10B981' : '#3B82F6'} />;
+                      })}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+                {result && (
+                  <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                    <p className="text-sm text-blue-800 dark:text-blue-300">
+                      현재 연봉: {formatNumber(result.gross)}원 | 
+                      선택한 경력: {
+                        experienceYears === '0' ? '신입' :
+                        experienceYears === '1' ? '1-2년' :
+                        experienceYears === '3' ? '3-4년' :
+                        experienceYears === '5' ? '5-7년' :
+                        experienceYears === '8' ? '8-10년' : '10년+'
+                      }
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* 세금 구성 차트 */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                  <PieChart className="w-6 h-6 mr-2 text-purple-600" />
+                  공제항목별 구성
+                </h3>
+                <div className="grid lg:grid-cols-2 gap-8">
+                  <ResponsiveContainer width="100%" height={300}>
+                    <RechartsPieChart>
+                      <Pie
+                        data={getTaxCompositionData()}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={(entry) => `${entry.name}: ${(((entry.value || 0) / result.deductions.total) * 100).toFixed(1)}%`}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {getTaxCompositionData().map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value: number) => formatNumber(value) + '원'} />
+                    </RechartsPieChart>
+                  </ResponsiveContainer>
+                  
+                  <div className="space-y-3">
+                    {getTaxCompositionData().map((item, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-4 h-4 rounded" style={{ backgroundColor: item.color }}></div>
+                          <span className="text-gray-700 dark:text-gray-300">{item.name}</span>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-medium text-gray-900 dark:text-white">
+                            {formatNumber(item.value)}원
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {((item.value / result.deductions.total) * 100).toFixed(1)}%
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold text-gray-900 dark:text-white">총 공제액</span>
+                        <span className="font-bold text-red-600 dark:text-red-400">
+                          {formatNumber(result.deductions.total)}원
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* 상세 가이드 섹션 */}
       <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">

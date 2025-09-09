@@ -2,10 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Sparkles, RefreshCw, Share2, Check, Save, Dice6, BarChart3, Star, Search, TrendingUp, Calendar, Award, Database, Activity, Filter } from 'lucide-react'
+import { Sparkles, RefreshCw, Share2, Check, Save, Dice6, BarChart3, Star, Search, TrendingUp, Calendar, Award, Database, Activity, Filter, Shield, ChartBar, Zap, AlertCircle, CheckCircle } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
+import FeedbackWidget from './FeedbackWidget'
+import PDFExport from './PDFExport'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from 'next-intl'
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from 'recharts'
+import { useLottoData } from '@/hooks/useLottoData'
 
 interface LottoResult {
   numbers: number[]
@@ -52,17 +56,31 @@ export default function LottoGenerator() {
   const [numberStats, setNumberStats] = useState<NumberStatistics[]>([])
 
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('lotto')
+  
+  // 새로운 로또 데이터 자동 업데이트 시스템
+  const {
+    lottoData,
+    latestDrawData,
+    recentDraws,
+    numberStats: autoNumberStats,
+    isLoading: dataLoading,
+    isUpdating,
+    updateStatus,
+    dataStats,
+    refreshData,
+    checkForUpdates,
+    getDrawByNumber
+  } = useLottoData()
 
-  // 당첨번호 조회 (lottoData에서 직접 조회)
+  // 당첨번호 조회 (새로운 시스템 사용)
   const searchWinningNumber = async (round: string) => {
     if (!round || isNaN(parseInt(round))) return
     
     setIsSearching(true)
     
     try {
-      // lottoData.ts에서 직접 조회
-      const { lottoData } = await import('../../public/lottoData')
-      const roundData = (lottoData as any)[round]
+      const roundNo = parseInt(round)
+      const roundData = getDrawByNumber(roundNo)
       
       if (roundData) {
         const result: WinningNumber = {
@@ -90,47 +108,28 @@ export default function LottoGenerator() {
     }
   }
 
-  // 최신 당첨번호 가져오기
+  // 최신 당첨번호 가져오기 (새로운 시스템에서 자동 관리)
   const [latestWinning, setLatestWinning] = useState<WinningNumber | null>(null)
   
-  const fetchLatestWinning = async () => {
-    try {
-      // lottoData.ts에서 직접 최신 당첨번호 가져오기
-      const { lottoData } = await import('../../public/lottoData')
-      
-      // 최신 회차 찾기 (가장 큰 번호)
-      const rounds = Object.keys(lottoData).map(Number).sort((a, b) => b - a)
-      
-      if (rounds.length > 0) {
-        const latestRound = rounds[0]
-        const roundData = (lottoData as any)[latestRound.toString()]
-        
-        const result: WinningNumber = {
-          round: roundData.drwNo,
-          drawDate: roundData.drwNoDate,
-          numbers: [
-            roundData.drwtNo1,
-            roundData.drwtNo2,
-            roundData.drwtNo3,
-            roundData.drwtNo4,
-            roundData.drwtNo5,
-            roundData.drwtNo6
-          ].sort((a, b) => a - b),
-          bonusNumber: roundData.bnusNo
-        }
-        setLatestWinning(result)
-        return result
+  // 새로운 시스템의 최신 데이터를 latestWinning 상태에 동기화
+  useEffect(() => {
+    if (latestDrawData) {
+      const result: WinningNumber = {
+        round: latestDrawData.drwNo,
+        drawDate: latestDrawData.drwNoDate,
+        numbers: [
+          latestDrawData.drwtNo1,
+          latestDrawData.drwtNo2,
+          latestDrawData.drwtNo3,
+          latestDrawData.drwtNo4,
+          latestDrawData.drwtNo5,
+          latestDrawData.drwtNo6
+        ].sort((a, b) => a - b),
+        bonusNumber: latestDrawData.bnusNo
       }
-      
-      // 데이터가 없으면 목 데이터 사용
-      setLatestWinning(mockWinningNumbers[0])
-      return mockWinningNumbers[0]
-    } catch (error) {
-      console.error('최신 당첨번호 조회 실패:', error)
-      setLatestWinning(mockWinningNumbers[0])
-      return mockWinningNumbers[0]
+      setLatestWinning(result)
     }
-  }
+  }, [latestDrawData])
 
   // 번호별 통계 계산
   const calculateNumberStats = (): NumberStatistics[] => {
@@ -235,14 +234,26 @@ export default function LottoGenerator() {
     43: 325, 44: 318, 45: 312
   }
 
-  // 완전 랜덤 번호 생성
+  // 안전한 난수 생성 (crypto.getRandomValues 사용)
+  const getSecureRandomInt = (max: number): number => {
+    if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
+      const array = new Uint32Array(1)
+      window.crypto.getRandomValues(array)
+      return array[0] % max
+    } else {
+      // 폴백: 서버사이드나 구형 브라우저용
+      return Math.floor(Math.random() * max)
+    }
+  }
+
+  // 완전 랜덤 번호 생성 (암호화 수준의 난수 사용)
   const generateRandomNumbers = (exclude: number[] = []): number[] => {
     const availableNumbers = Array.from({ length: 45 }, (_, i) => i + 1)
       .filter(num => !exclude.includes(num))
     
     const selected: number[] = []
     while (selected.length < 6 && availableNumbers.length > 0) {
-      const randomIndex = Math.floor(Math.random() * availableNumbers.length)
+      const randomIndex = getSecureRandomInt(availableNumbers.length)
       const number = availableNumbers.splice(randomIndex, 1)[0]
       selected.push(number)
     }
@@ -277,7 +288,7 @@ export default function LottoGenerator() {
     const usedNumbers = new Set<number>()
     
     while (selected.length < 6 && weightedNumbers.length > 0) {
-      const randomIndex = Math.floor(Math.random() * weightedNumbers.length)
+      const randomIndex = getSecureRandomInt(weightedNumbers.length)
       const number = weightedNumbers[randomIndex]
       
       if (!usedNumbers.has(number)) {
@@ -331,7 +342,7 @@ export default function LottoGenerator() {
           const remainingNumbers = Array.from({ length: 45 }, (_, i) => i + 1)
             .filter(num => !numbers.includes(num) && !excludedNumbers.includes(num))
           if (remainingNumbers.length > 0) {
-            bonus = remainingNumbers[Math.floor(Math.random() * remainingNumbers.length)]
+            bonus = remainingNumbers[getSecureRandomInt(remainingNumbers.length)]
           }
         }
         
@@ -492,10 +503,9 @@ export default function LottoGenerator() {
     setNumberStats(calculateNumberStats())
   }, [winningHistory])
 
-  // 초기 데이터 로드
+  // 초기 데이터 로드 (fetchLatestWinning 제거, 새로운 시스템에서 자동 처리)
   useEffect(() => {
     setWinningHistory(mockWinningNumbers)
-    fetchLatestWinning() // 최신 당첨번호 가져오기
     loadWinningHistory() // 과거 당첨번호 이력 로드
   }, [])
 
@@ -608,7 +618,45 @@ export default function LottoGenerator() {
           
           {/* 최신 추첨 */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('latestDrawing')}</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('latestDrawing')}</h3>
+              <div className="flex items-center space-x-2">
+                {/* 데이터 상태 표시 */}
+                {dataStats && (
+                  <div className="flex items-center space-x-1 text-xs">
+                    {dataStats.dataUpToDate ? (
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <AlertCircle className="w-4 h-4 text-yellow-500" />
+                    )}
+                    <span className="text-gray-600 dark:text-gray-400">
+                      {dataStats.totalDraws}회차
+                    </span>
+                  </div>
+                )}
+                
+                {/* 업데이트 버튼 */}
+                <button
+                  onClick={checkForUpdates}
+                  disabled={isUpdating}
+                  className="p-1.5 text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  title="최신 회차 확인"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isUpdating ? 'animate-spin' : ''}`} />
+                </button>
+              </div>
+            </div>
+            
+            {/* 업데이트 상태 표시 */}
+            {updateStatus && (
+              <div className="mb-3 p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                <div className="flex items-center space-x-2">
+                  {isUpdating && <RefreshCw className="w-4 h-4 animate-spin text-blue-600" />}
+                  <span className="text-sm text-blue-800 dark:text-blue-200">{updateStatus}</span>
+                </div>
+              </div>
+            )}
+            
             <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg p-4">
               {latestWinning ? (
                 <>
@@ -629,10 +677,15 @@ export default function LottoGenerator() {
                     {t('bonusNumber')}: <span className="font-bold">{latestWinning.bonusNumber}</span>
                   </div>
                 </>
-              ) : (
+              ) : dataLoading ? (
                 <div className="text-center text-gray-500 dark:text-gray-400">
                   <div className="animate-spin w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
                   <div className="text-sm">{t('loading')}</div>
+                </div>
+              ) : (
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <AlertCircle className="w-6 h-6 mx-auto mb-2" />
+                  <div className="text-sm">최신 회차 정보를 불러올 수 없습니다</div>
                 </div>
               )}
             </div>
@@ -666,20 +719,44 @@ export default function LottoGenerator() {
         
         {activeStatsTab === 'frequency' && (
           <div>
+            {/* 번호별 출현 빈도 차트 */}
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                <ChartBar className="w-5 h-5 mr-2 text-purple-600" />
+                번호별 출현 빈도 통계
+              </h4>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={numberStats.slice(0, 20)}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <XAxis dataKey="number" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="frequency">
+                    {numberStats.slice(0, 20).map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={index < 6 ? '#EF4444' : '#3B82F6'} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               {/* 자주 나온 번호 */}
-              <div>
+              <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl p-6">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
                   <TrendingUp className="w-5 h-5 mr-2 text-red-500" />
                   {t('hotNumbers')}
+                  <span className="ml-2 text-xs bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 px-2 py-1 rounded-full">
+                    TOP 10
+                  </span>
                 </h3>
-                <div className="grid grid-cols-5 gap-2">
-                  {numberStats.slice(0, 10).map((stat) => (
-                    <div key={stat.number} className="text-center">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-1 ${getNumberColor(stat.number)}`}>
+                <div className="grid grid-cols-5 gap-3 mb-4">
+                  {numberStats.slice(0, 10).map((stat, index) => (
+                    <div key={stat.number} className="text-center group">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-1 ${getNumberColor(stat.number)} transform transition-transform group-hover:scale-110 shadow-lg`}>
                         {stat.number}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{stat.frequency}</div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{stat.frequency}회</div>
                     </div>
                   ))}
                 </div>
@@ -693,27 +770,31 @@ export default function LottoGenerator() {
                       timestamp: Date.now()
                     }])
                     setGeneratedNumbers(hotNumbers)
+                    setShowSaveButton(true)
                   }}
-                  className="mt-3 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-red-500 to-orange-500 text-white py-3 rounded-lg hover:from-red-600 hover:to-orange-600 transition-all flex items-center justify-center gap-2 shadow-lg transform hover:scale-105"
                 >
-                  <Filter className="w-4 h-4" />
+                  <Zap className="w-4 h-4" />
                   {t('generateBasedOnHot')}
                 </button>
               </div>
               
               {/* 적게 나온 번호 */}
-              <div>
+              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl p-6">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
                   <TrendingUp className="w-5 h-5 mr-2 text-blue-500 transform rotate-180" />
                   {t('coldNumbers')}
+                  <span className="ml-2 text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-2 py-1 rounded-full">
+                    COLD 10
+                  </span>
                 </h3>
-                <div className="grid grid-cols-5 gap-2">
-                  {numberStats.slice(-10).reverse().map((stat) => (
-                    <div key={stat.number} className="text-center">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-1 ${getNumberColor(stat.number)}`}>
+                <div className="grid grid-cols-5 gap-3 mb-4">
+                  {numberStats.slice(-10).reverse().map((stat, index) => (
+                    <div key={stat.number} className="text-center group">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-1 ${getNumberColor(stat.number)} transform transition-transform group-hover:scale-110 shadow-lg`}>
                         {stat.number}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{stat.frequency}</div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{stat.frequency}회</div>
                     </div>
                   ))}
                 </div>
@@ -727,10 +808,11 @@ export default function LottoGenerator() {
                       timestamp: Date.now()
                     }])
                     setGeneratedNumbers(coldNumbers)
+                    setShowSaveButton(true)
                   }}
-                  className="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all flex items-center justify-center gap-2 shadow-lg transform hover:scale-105"
                 >
-                  <Filter className="w-4 h-4" />
+                  <Shield className="w-4 h-4" />
                   {t('generateBasedOnCold')}
                 </button>
               </div>
@@ -747,12 +829,36 @@ export default function LottoGenerator() {
                   timestamp: Date.now()
                 }])
                 setGeneratedNumbers(balancedNumbers)
+                setShowSaveButton(true)
               }}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all flex items-center justify-center gap-2 shadow-xl transform hover:scale-105"
             >
               <BarChart3 className="w-5 h-5" />
-              {t('generateBalanced')}
+              <span className="font-semibold">{t('generateBalanced')}</span>
+              <span className="text-xs bg-white/20 px-2 py-1 rounded-full ml-2">HOT + COLD MIX</span>
             </button>
+
+            {/* 통계 정보 요약 */}
+            <div className="mt-6 grid grid-cols-3 gap-4">
+              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-center">
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {Math.max(...numberStats.map(s => s.frequency))}회
+                </div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">최다 출현</div>
+              </div>
+              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-center">
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {Math.min(...numberStats.map(s => s.frequency))}회
+                </div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">최소 출현</div>
+              </div>
+              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-center">
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {(numberStats.reduce((sum, s) => sum + s.frequency, 0) / 45).toFixed(0)}회
+                </div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">평균 출현</div>
+              </div>
+            </div>
           </div>
         )}
         
@@ -895,11 +1001,27 @@ export default function LottoGenerator() {
               <p className="text-xs text-gray-500 mt-2">{t('settings.excludeDesc')}</p>
             </div>
 
+            {/* 안전성 표시 */}
+            <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-4 mb-6">
+              <div className="flex items-center justify-center space-x-2 mb-2">
+                <Shield className="w-5 h-5 text-green-600" />
+                <span className="text-green-800 dark:text-green-200 font-semibold text-sm">
+                  암호화 수준 난수 생성
+                </span>
+              </div>
+              <p className="text-xs text-green-700 dark:text-green-300 text-center">
+                {typeof window !== 'undefined' && window.crypto ? 
+                  'crypto.getRandomValues()를 사용한 안전한 난수 생성' : 
+                  '기본 난수 생성기 사용 (서버 환경)'
+                }
+              </p>
+            </div>
+
             {/* 생성 버튼 */}
             <button
               onClick={generateLottoNumbers}
               disabled={isGenerating}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-xl"
             >
               {isGenerating ? (
                 <div className="flex items-center justify-center space-x-2">
@@ -910,6 +1032,7 @@ export default function LottoGenerator() {
                 <div className="flex items-center justify-center space-x-2">
                   <Sparkles className="w-5 h-5" />
                   <span>{t('generate')}</span>
+                  <span className="text-xs bg-white/20 px-2 py-1 rounded-full ml-2">SECURE</span>
                 </div>
               )}
             </button>
@@ -1091,6 +1214,24 @@ export default function LottoGenerator() {
           }
         }
       `}</style>
+      
+      {/* Action buttons - shown when lottery numbers have been generated */}
+      {(generatedNumbers.length > 0 || generatedSets.length > 0) && (
+        <div className="mt-8 space-y-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <PDFExport
+              data={generatedSets.length > 0 ? generatedSets : { numbers: generatedNumbers, bonusNumber, generateMethod, excludedNumbers }}
+              calculatorType="lotto"
+              title="로또번호 생성 결과"
+              className="w-full sm:w-auto"
+            />
+            <FeedbackWidget 
+              calculatorType="lotto"
+              className="w-full sm:w-auto max-w-md"
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

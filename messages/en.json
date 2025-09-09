@@ -35,6 +35,54 @@
     "load": "Load",
     "convert": "Convert"
   },
+  "feedback": {
+    "button": "Feedback",
+    "title": "Was this calculator helpful?",
+    "rating": {
+      "label": "Rating",
+      "selected": "★ {rating}/5 stars"
+    },
+    "comment": {
+      "label": "Comments & Suggestions (Optional)",
+      "placeholder": "Please share your improvement suggestions, bug reports, feature requests, etc.",
+      "optional": "(optional)"
+    },
+    "submit": "Submit Feedback",
+    "submitting": "Submitting...",
+    "cancel": "Cancel",
+    "thankYou": {
+      "title": "Thank you!",
+      "message": "We appreciate your valuable feedback. We'll use it to improve our service."
+    }
+  },
+  "pdf": {
+    "download": "Download PDF",
+    "generating": "Generating PDF...",
+    "export": "Export to PDF",
+    "title": "Calculation Results Report",
+    "disclaimer": "These calculation results are for reference only. Professional consultation is recommended for actual application.",
+    "generatedBy": "Generated from ToolHub (toolhub.ai.kr)",
+    "error": "Failed to generate PDF. Please try again."
+  },
+  "pwa": {
+    "install": {
+      "title": "Install as App",
+      "subtitle": "Get faster and more convenient access",
+      "now": "Install Now",
+      "later": "Later"
+    },
+    "benefits": {
+      "offline": "Works offline",
+      "fast": "Fast loading speed",
+      "homescreen": "Launch from home screen",
+      "storage": "Saves data"
+    },
+    "update": {
+      "available": "New version available",
+      "confirm": "Would you like to update now?",
+      "reload": "Reload"
+    }
+  },
   "header": {
     "title": "ToolHub",
     "language": "Language"
@@ -132,9 +180,9 @@
       "salaryAmount": "Salary Amount (Pre-tax)",
       "salaryPlaceholderAnnual": "50,000,000",
       "salaryPlaceholderMonthly": "4,000,000",
-      "nonTaxable": "Non-taxable Amount (Annual)",
+      "nonTaxable": "Non-taxable Amount (Monthly)",
       "nonTaxablePlaceholder": "0",
-      "nonTaxableDesc": "Meal allowance, transportation, childcare leave benefit, etc.",
+      "nonTaxableDesc": "Monthly meal allowance, transportation, etc. (e.g., 200,000 KRW/month)",
       "dependents": "Number of Dependents (Including yourself)",
       "children": "Number of Children Under 20",
       "currency": "KRW"
@@ -799,7 +847,9 @@
       "cronTester": "Cron Tester",
       "qrGenerator": "QR Code Generator",
       "barcodeGenerator": "Barcode Generator",
-      "fuelCalculator": "Fuel Calculator"
+      "fuelCalculator": "Fuel Calculator",
+      "monthlyRentSubsidy": "LH Monthly Rent Subsidy Calculator",
+      "bogeumjariLoan": "LH Bogeumjari Loan Calculator"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
   },
@@ -2257,6 +2307,14 @@
       "realEstate": {
         "title": "Real Estate Calculator",
         "description": "Transaction fees and taxes"
+      },
+      "monthlyRentSubsidy": {
+        "title": "LH Monthly Rent Subsidy",
+        "description": "Youth & newlywed rent subsidy calculation"
+      },
+      "bogeumjariLoan": {
+        "title": "LH Bogeumjari Loan",
+        "description": "First-time homebuyer loan rates"
       },
       "stock": {
         "title": "Stock Calculator",
