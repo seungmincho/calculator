@@ -156,13 +156,13 @@ export const getNumberStatistics = async (recentCount: number = 50): Promise<{
 };
 
 // 데이터 통계 정보
-export const getDataStatistics = async (): Promise<{
+export const getDataStatistics = async (forceReload = false): Promise<{
   totalDraws: number;
   latestDraw: number;
   latestDate: string;
   dataUpToDate: boolean;
 }> => {
-  const data = await getLottoData();
+  const data = await getLottoData(forceReload);
   const latestDrawNo = getLatestDrawNumberFromData(data);
   const latestDrawData = data[latestDrawNo.toString()];
   

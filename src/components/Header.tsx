@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Calculator, Menu, X, ChevronDown } from 'lucide-react';
 import LanguageToggle from './LanguageToggle';
+import ThemeToggle from './ThemeToggle';
 import { useTranslations } from 'next-intl';
 
 const Header = () => {
@@ -245,12 +246,16 @@ const Header = () => {
               {t('navigation.financialTips')}
             </a>
             
+            {/* 테마 전환 */}
+            <ThemeToggle />
+
             {/* 언어 전환 */}
             <LanguageToggle />
           </nav>
 
-          {/* Mobile: Language Toggle + Menu Button */}
+          {/* Mobile: Theme + Language Toggle + Menu Button */}
           <div className="lg:hidden flex items-center space-x-2">
+            <ThemeToggle />
             <LanguageToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

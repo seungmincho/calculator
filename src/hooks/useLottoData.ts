@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { getLottoData, addNewLottoData, getDataStatistics, getNumberStatistics, getRecentDraws } from '@/utils/lottoDataLoader';
-import { updateMissingLottoData, shouldUpdate, setLastUpdateTime } from '@/utils/lottoUpdater';
+import { updateMissingLottoData, shouldUpdate, setLastUpdateTime, fetchLatestLottoByDate, getLastSaturday, formatDateToString } from '@/utils/lottoUpdater';
 
 interface LottoDrawData {
   drwNo: number;
@@ -63,19 +63,19 @@ export const useLottoData = (): UseLottoDataReturn => {
   const [updateStatus, setUpdateStatus] = useState('');
 
   // 데이터 로드
-  const loadData = useCallback(async (showStatus = false) => {
+  const loadData = useCallback(async (showStatus = false, forceReload = false) => {
     try {
       if (showStatus) {
         setIsLoading(true);
         setUpdateStatus('로또 데이터 로드 중...');
       }
-      
-      // 기본 데이터 로드
-      const data = await getLottoData();
+
+      // 기본 데이터 로드 (forceReload 시 캐시 무시)
+      const data = await getLottoData(forceReload);
       setLottoData(data);
-      
-      // 통계 정보 계산
-      const stats = await getDataStatistics();
+
+      // 통계 정보 계산 (forceReload 시 캐시 무시)
+      const stats = await getDataStatistics(forceReload);
       setDataStats(stats);
       
       // 최신 회차 데이터 설정
@@ -108,39 +108,53 @@ export const useLottoData = (): UseLottoDataReturn => {
     }
   }, []);
 
-  // 업데이트 확인 및 실행
+  // 업데이트 확인 및 실행 (날짜 기반)
   const checkForUpdates = useCallback(async () => {
     if (isUpdating) return;
-    
+
     try {
       setIsUpdating(true);
-      setUpdateStatus('최신 회차 확인 중...');
-      
-      const updateResult = await updateMissingLottoData();
-      
-      if (updateResult.success) {
-        if (updateResult.newDraws.length > 0) {
-          setUpdateStatus(`${updateResult.newDraws.length}개 회차 업데이트 중...`);
-          
+      const lastSaturday = getLastSaturday();
+      setUpdateStatus(`📅 ${formatDateToString(lastSaturday)} 추첨 결과 확인 중...`);
+
+      // 날짜 기반으로 최신 회차 가져오기
+      const latestData = await fetchLatestLottoByDate();
+
+      if (latestData) {
+        // 현재 저장된 최신 회차와 비교
+        const currentStats = await getDataStatistics();
+
+        if (latestData.drwNo > currentStats.latestDraw) {
+          setUpdateStatus(`🎉 ${latestData.drwNo}회차 당첨번호 업데이트 중...`);
+
           // 새 데이터를 localStorage에 저장
-          addNewLottoData(updateResult.newDraws);
-          
+          addNewLottoData([latestData]);
+
           // 마지막 업데이트 시간 저장
           setLastUpdateTime();
-          
-          // 데이터 다시 로드
-          await loadData(false);
-          
+
+          // 데이터 다시 로드 (캐시 강제 갱신)
+          await loadData(false, true);
+
+          setUpdateStatus(`✅ ${latestData.drwNo}회차 업데이트 완료!`);
+          console.log(`✅ 로또 데이터 업데이트 완료: ${latestData.drwNo}회차`);
+        } else {
+          setUpdateStatus(`✅ 최신 상태 (${currentStats.latestDraw}회차)`);
+        }
+      } else {
+        // 날짜 기반 실패시 기존 방식 시도
+        const updateResult = await updateMissingLottoData();
+
+        if (updateResult.success && updateResult.newDraws.length > 0) {
+          addNewLottoData(updateResult.newDraws);
+          setLastUpdateTime();
+          await loadData(false, true);
           setUpdateStatus(`✅ ${updateResult.newDraws.length}개 회차 업데이트 완료`);
-          
-          console.log('✅ 로또 데이터 업데이트 완료:', updateResult.newDraws.map(d => `${d.drwNo}회차`).join(', '));
         } else {
           setUpdateStatus('✅ 최신 상태');
         }
-      } else {
-        setUpdateStatus(`❌ 업데이트 실패: ${updateResult.error || 'Unknown error'}`);
       }
-      
+
     } catch (error) {
       console.error('Update check failed:', error);
       setUpdateStatus('❌ 업데이트 확인 실패');

@@ -458,8 +458,8 @@ const SqlFormatter = () => {
     <div className={isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900 p-4 overflow-auto' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'}>
       {/* 헤더 */}
       <div className="text-center mb-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-          <Database className="w-8 h-8 text-blue-600" />
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
+          <Database className="w-8 h-8 text-blue-600 dark:text-blue-400" />
         </div>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">SQL 포맷터</h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">

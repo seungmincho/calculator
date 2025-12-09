@@ -219,7 +219,7 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800`}>
+      <body className={`${inter.className} min-h-screen bg-white dark:bg-gray-900`}>
         {/* Axeptio Cookie Consent Script with Google Consent Mode 
         <Script
           id="axeptio-settings"

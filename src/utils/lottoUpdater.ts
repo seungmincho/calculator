@@ -46,25 +46,44 @@ export const getLatestDrawNumber = async (): Promise<number> => {
   }
 };
 
-// 특정 회차 당첨번호 조회
+// 특정 회차 당첨번호 조회 (CORS 프록시 사용)
 export const fetchLottoData = async (drawNo: number): Promise<LottoData | null> => {
   try {
-    const url = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drawNo}`;
-    
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    // 동행복권 API URL
+    const lottoApiUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drawNo}`;
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    // CORS 프록시 서비스들 (순서대로 시도)
+    const proxyUrls = [
+      `https://api.allorigins.win/raw?url=${encodeURIComponent(lottoApiUrl)}`,
+      `https://corsproxy.io/?${encodeURIComponent(lottoApiUrl)}`,
+    ];
+
+    let data: LottoApiResponse | null = null;
+
+    for (const proxyUrl of proxyUrls) {
+      try {
+        const response = await fetch(proxyUrl, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const text = await response.text();
+          data = JSON.parse(text);
+          break;
+        }
+      } catch (proxyError) {
+        console.warn(`Proxy failed: ${proxyUrl}`, proxyError);
+        continue;
+      }
     }
 
-    const data: LottoApiResponse = await response.json();
-    
+    if (!data) {
+      throw new Error('All proxies failed');
+    }
+
     // returnValue가 'success'가 아니면 해당 회차가 아직 추첨되지 않음
     if (data.returnValue !== 'success') {
       return null;
@@ -87,30 +106,74 @@ export const fetchLottoData = async (drawNo: number): Promise<LottoData | null> 
   }
 };
 
+// 가장 최근 토요일 날짜 계산 (추첨일 기준)
+export const getLastSaturday = (): Date => {
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0: 일요일, 6: 토요일
+
+  // 토요일이면서 오후 9시 이후면 오늘이 추첨일
+  if (dayOfWeek === 6 && now.getHours() >= 21) {
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  }
+
+  // 그 외에는 이전 토요일 찾기
+  const daysToSubtract = dayOfWeek === 0 ? 1 : (dayOfWeek === 6 ? 7 : dayOfWeek + 1);
+  const lastSaturday = new Date(now);
+  lastSaturday.setDate(now.getDate() - daysToSubtract + 1);
+
+  // 토요일로 정확히 맞추기
+  while (lastSaturday.getDay() !== 6) {
+    lastSaturday.setDate(lastSaturday.getDate() - 1);
+  }
+
+  return lastSaturday;
+};
+
+// 날짜를 YYYY-MM-DD 형식으로 변환
+export const formatDateToString = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 // 현재 추정 최신 회차 계산 (매주 토요일 추첨, 2002년 12월 7일이 1회차)
 export const getExpectedLatestDrawNumber = (): number => {
   const firstDrawDate = new Date('2002-12-07'); // 1회차 추첨일
-  const now = new Date();
-  
-  // 현재 시간이 토요일 오후 8시 45분(추첨시간) 이전이면 전주까지만 계산
-  const currentSaturday = new Date(now);
-  const dayOfWeek = now.getDay(); // 0: 일요일, 6: 토요일
-  const daysUntilSaturday = dayOfWeek === 0 ? 6 : 6 - dayOfWeek;
-  currentSaturday.setDate(now.getDate() + daysUntilSaturday);
-  currentSaturday.setHours(20, 45, 0, 0); // 오후 8시 45분
-  
-  let targetDate = currentSaturday;
-  if (now < currentSaturday) {
-    // 아직 이번주 추첨 전이면 지난주로 설정
-    targetDate = new Date(currentSaturday);
-    targetDate.setDate(targetDate.getDate() - 7);
-  }
-  
-  // 첫 회차부터 목표 날짜까지의 주 수 계산
+  const lastSaturday = getLastSaturday();
+
+  // 첫 회차부터 마지막 토요일까지의 주 수 계산
+  const diffTime = lastSaturday.getTime() - firstDrawDate.getTime();
+  const diffWeeks = Math.floor(diffTime / (7 * 24 * 60 * 60 * 1000));
+
+  return diffWeeks + 1; // 1회차부터 시작
+};
+
+// 날짜로 회차 번호 계산
+export const getDrawNumberByDate = (targetDate: Date): number => {
+  const firstDrawDate = new Date('2002-12-07'); // 1회차 추첨일
   const diffTime = targetDate.getTime() - firstDrawDate.getTime();
   const diffWeeks = Math.floor(diffTime / (7 * 24 * 60 * 60 * 1000));
-  
-  return diffWeeks + 1; // 1회차부터 시작
+  return diffWeeks + 1;
+};
+
+// 최신 회차 정보를 날짜 기반으로 가져오기
+export const fetchLatestLottoByDate = async (): Promise<LottoData | null> => {
+  const lastSaturday = getLastSaturday();
+  const expectedDrawNo = getDrawNumberByDate(lastSaturday);
+
+  console.log(`📅 마지막 토요일: ${formatDateToString(lastSaturday)}, 예상 회차: ${expectedDrawNo}`);
+
+  // 예상 회차부터 시도, 없으면 이전 회차 시도
+  for (let drawNo = expectedDrawNo; drawNo >= expectedDrawNo - 2; drawNo--) {
+    const data = await fetchLottoData(drawNo);
+    if (data) {
+      console.log(`✅ ${drawNo}회차 당첨번호 조회 성공`);
+      return data;
+    }
+  }
+
+  return null;
 };
 
 // 새로운 로또 데이터를 lottoData.ts에 추가

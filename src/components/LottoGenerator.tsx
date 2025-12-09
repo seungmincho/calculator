@@ -72,16 +72,19 @@ export default function LottoGenerator() {
     getDrawByNumber
   } = useLottoData()
 
-  // 당첨번호 조회 (새로운 시스템 사용)
+  // 당첨번호 조회 (로컬 데이터 우선, 없으면 API 호출)
   const searchWinningNumber = async (round: string) => {
     if (!round || isNaN(parseInt(round))) return
-    
+
     setIsSearching(true)
-    
+    setSearchResult(null)
+
     try {
       const roundNo = parseInt(round)
+
+      // 1. 먼저 로컬 데이터에서 찾기
       const roundData = getDrawByNumber(roundNo)
-      
+
       if (roundData) {
         const result: WinningNumber = {
           round: roundData.drwNo,
@@ -98,7 +101,28 @@ export default function LottoGenerator() {
         }
         setSearchResult(result)
       } else {
-        setSearchResult(null)
+        // 2. 로컬에 없으면 API로 직접 조회
+        const { fetchLottoData } = await import('@/utils/lottoUpdater')
+        const apiData = await fetchLottoData(roundNo)
+
+        if (apiData) {
+          const result: WinningNumber = {
+            round: apiData.drwNo,
+            drawDate: apiData.drwNoDate,
+            numbers: [
+              apiData.drwtNo1,
+              apiData.drwtNo2,
+              apiData.drwtNo3,
+              apiData.drwtNo4,
+              apiData.drwtNo5,
+              apiData.drwtNo6
+            ].sort((a, b) => a - b),
+            bonusNumber: apiData.bnusNo
+          }
+          setSearchResult(result)
+        } else {
+          setSearchResult(null)
+        }
       }
     } catch (error) {
       console.error('당첨번호 조회 실패:', error)
@@ -509,13 +533,22 @@ export default function LottoGenerator() {
     loadWinningHistory() // 과거 당첨번호 이력 로드
   }, [])
 
-  // 번호 색상 결정
+  // 번호 색상 결정 - 실제 로또 공과 동일한 색상
   const getNumberColor = (number: number) => {
-    if (number <= 10) return 'bg-yellow-500 text-white'
-    if (number <= 20) return 'bg-blue-500 text-white'
-    if (number <= 30) return 'bg-red-500 text-white'
-    if (number <= 40) return 'bg-gray-600 text-white'
-    return 'bg-green-500 text-white'
+    if (number <= 10) return 'lotto-ball-yellow'
+    if (number <= 20) return 'lotto-ball-blue'
+    if (number <= 30) return 'lotto-ball-red'
+    if (number <= 40) return 'lotto-ball-gray'
+    return 'lotto-ball-green'
+  }
+
+  // 번호에 맞는 그라데이션 색상
+  const getNumberGradient = (number: number) => {
+    if (number <= 10) return 'from-yellow-400 via-yellow-500 to-amber-600'
+    if (number <= 20) return 'from-blue-400 via-blue-500 to-blue-700'
+    if (number <= 30) return 'from-red-400 via-red-500 to-red-700'
+    if (number <= 40) return 'from-gray-500 via-gray-600 to-gray-800'
+    return 'from-green-400 via-green-500 to-green-700'
   }
 
   return (
@@ -597,7 +630,7 @@ export default function LottoGenerator() {
                   {searchResult.numbers.map((number, index) => (
                     <div
                       key={index}
-                      className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getNumberColor(number)}`}
+                      className={`lotto-ball w-10 h-10 text-sm ${getNumberColor(number)}`}
                     >
                       {number}
                     </div>
@@ -630,7 +663,7 @@ export default function LottoGenerator() {
                       <AlertCircle className="w-4 h-4 text-yellow-500" />
                     )}
                     <span className="text-gray-600 dark:text-gray-400">
-                      {dataStats.totalDraws}회차
+                      {dataStats.latestDraw}회차
                     </span>
                   </div>
                 )}
@@ -667,7 +700,7 @@ export default function LottoGenerator() {
                     {latestWinning.numbers.map((number, index) => (
                       <div
                         key={index}
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getNumberColor(number)}`}
+                        className={`lotto-ball w-10 h-10 text-sm ${getNumberColor(number)}`}
                       >
                         {number}
                       </div>
@@ -753,7 +786,7 @@ export default function LottoGenerator() {
                 <div className="grid grid-cols-5 gap-3 mb-4">
                   {numberStats.slice(0, 10).map((stat, index) => (
                     <div key={stat.number} className="text-center group">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-1 ${getNumberColor(stat.number)} transform transition-transform group-hover:scale-110 shadow-lg`}>
+                      <div className={`lotto-ball w-10 h-10 text-sm mx-auto mb-1 ${getNumberColor(stat.number)}`}>
                         {stat.number}
                       </div>
                       <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{stat.frequency}회</div>
@@ -791,7 +824,7 @@ export default function LottoGenerator() {
                 <div className="grid grid-cols-5 gap-3 mb-4">
                   {numberStats.slice(-10).reverse().map((stat, index) => (
                     <div key={stat.number} className="text-center group">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-1 ${getNumberColor(stat.number)} transform transition-transform group-hover:scale-110 shadow-lg`}>
+                      <div className={`lotto-ball w-10 h-10 text-sm mx-auto mb-1 ${getNumberColor(stat.number)}`}>
                         {stat.number}
                       </div>
                       <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{stat.frequency}회</div>
@@ -1021,18 +1054,22 @@ export default function LottoGenerator() {
             <button
               onClick={generateLottoNumbers}
               disabled={isGenerating}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-xl"
+              className="generate-button-glow w-full bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 bg-size-200 text-white py-5 px-6 rounded-xl font-bold text-lg hover:bg-pos-100 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-2xl border border-purple-400/30"
+              style={{ backgroundSize: '200% auto' }}
             >
               {isGenerating ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <RefreshCw className="w-5 h-5 animate-spin" />
-                  <span>{t('generating')}</span>
+                <div className="flex items-center justify-center space-x-3">
+                  <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span className="text-lg">{t('generating')}</span>
                 </div>
               ) : (
-                <div className="flex items-center justify-center space-x-2">
-                  <Sparkles className="w-5 h-5" />
-                  <span>{t('generate')}</span>
-                  <span className="text-xs bg-white/20 px-2 py-1 rounded-full ml-2">SECURE</span>
+                <div className="flex items-center justify-center space-x-3">
+                  <Sparkles className="w-6 h-6" />
+                  <span className="text-lg">{t('generate')}</span>
+                  <span className="text-xs bg-white/20 px-3 py-1 rounded-full ml-2 flex items-center gap-1">
+                    <Shield className="w-3 h-3" />
+                    SECURE
+                  </span>
                 </div>
               )}
             </button>
@@ -1058,14 +1095,13 @@ export default function LottoGenerator() {
                   </div>
                   
                   {/* 메인 번호 */}
-                  <div className="flex flex-wrap justify-center gap-3 mb-4">
+                  <div className="flex flex-wrap justify-center gap-4 mb-6">
                     {set.numbers.map((number, numberIndex) => (
                       <div
                         key={numberIndex}
-                        className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shadow-lg transform transition-all duration-300 ${getNumberColor(number)}`}
+                        className={`lotto-ball lotto-ball-animated w-14 h-14 text-xl ${getNumberColor(number)}`}
                         style={{
-                          animationDelay: `${numberIndex * 0.1}s`,
-                          animation: isGenerating ? 'none' : 'bounceIn 0.6s ease-out forwards'
+                          animationDelay: `${numberIndex * 0.1}s`
                         }}
                       >
                         {number}
@@ -1076,8 +1112,14 @@ export default function LottoGenerator() {
                   {/* 보너스 번호 */}
                   {set.bonusNumber && index === 0 && (
                     <div className="text-center mb-6">
-                      <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">{t('result.bonusNumber')}</div>
-                      <div className={`inline-flex w-10 h-10 rounded-full items-center justify-center text-lg font-bold border-2 border-dashed ${getNumberColor(set.bonusNumber)} border-current`}>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex items-center justify-center">
+                        <span className="inline-block w-8 h-px bg-gray-300 dark:bg-gray-600 mr-2"></span>
+                        {t('result.bonusNumber')}
+                        <span className="inline-block w-8 h-px bg-gray-300 dark:bg-gray-600 ml-2"></span>
+                      </div>
+                      <div className={`lotto-ball lotto-ball-animated w-12 h-12 text-lg mx-auto ${getNumberColor(set.bonusNumber)} ring-4 ring-white dark:ring-gray-800 ring-offset-2 ring-offset-purple-200 dark:ring-offset-purple-900`}
+                        style={{ animationDelay: '0.7s' }}
+                      >
                         {set.bonusNumber}
                       </div>
                     </div>
@@ -1195,25 +1237,7 @@ export default function LottoGenerator() {
         </p>
       </div>
 
-      <style jsx>{`
-        @keyframes bounceIn {
-          0% {
-            opacity: 0;
-            transform: scale(0.3);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1.05);
-          }
-          70% {
-            transform: scale(0.9);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-      `}</style>
+{/* Animation styles moved to globals.css */}
       
       {/* Action buttons - shown when lottery numbers have been generated */}
       {(generatedNumbers.length > 0 || generatedSets.length > 0) && (
