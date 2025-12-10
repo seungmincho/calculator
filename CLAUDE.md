@@ -173,7 +173,77 @@ const updateURL = (params: Record<string, any>) => {
 
 ## Development Workflow for New Features
 
-### 1. Internationalization-First Development
+### 1. Adding New Menu Items (Quick Reference)
+
+메뉴 시스템은 **단일 설정 파일**로 관리됩니다. 새 도구를 추가할 때 아래 파일들만 수정하면 됩니다:
+
+#### 수정 파일 목록 (순서대로)
+1. `/src/config/menuConfig.ts` - 메뉴 항목 추가
+2. `/messages/ko.json` - 한국어 번역 추가
+3. `/messages/en.json` - 영어 번역 추가
+4. `/src/app/sitemap.ts` - SEO sitemap 추가
+5. `/src/app/[tool-name]/page.tsx` - 페이지 생성
+6. `/src/components/[ToolName].tsx` - 컴포넌트 생성
+
+#### Step 1: menuConfig.ts에 메뉴 항목 추가
+```typescript
+// /src/config/menuConfig.ts
+// 적절한 카테고리(calculators, tools, health, games)에 추가
+{
+  href: '/new-tool',
+  labelKey: 'footer.links.newTool',           // Footer/Header 메뉴명
+  descriptionKey: 'toolsShowcase.tools.newTool.description',  // ToolsShowcase 설명
+  icon: '🔧'  // 이모지 아이콘
+}
+```
+
+#### Step 2: 번역 파일 추가 (ko.json, en.json)
+```json
+// messages/ko.json - 2곳에 추가 필요
+
+// 1) footer.links 섹션에 메뉴명 추가
+"footer": {
+  "links": {
+    "newTool": "새 도구"
+  }
+}
+
+// 2) toolsShowcase.tools 섹션에 설명 추가
+"toolsShowcase": {
+  "tools": {
+    "newTool": {
+      "title": "새 도구",
+      "description": "새 도구에 대한 간단한 설명"
+    }
+  }
+}
+```
+
+#### Step 3: sitemap.ts에 URL 추가
+```typescript
+// /src/app/sitemap.ts
+{
+  url: 'https://toolhub.ai.kr/new-tool',
+  lastModified: new Date(),
+  changeFrequency: 'weekly',
+  priority: 0.8,
+}
+```
+
+#### 메뉴 시스템 구조
+```
+/src/config/menuConfig.ts (공통 설정)
+    ↓ (자동 반영)
+├── Header.tsx (드롭다운 메뉴)
+├── ToolsShowcase.tsx (카드형 네비게이션)
+└── Footer.tsx (간소화됨 - 메뉴 없음)
+```
+
+**중요**: Header와 ToolsShowcase는 menuConfig에서 자동으로 메뉴를 가져오므로 별도 수정이 필요 없습니다.
+
+---
+
+### 2. Internationalization-First Development
 When adding new features, always follow this sequence:
 
 #### Step 1: Create Translation Files First
@@ -194,7 +264,7 @@ When adding new features, always follow this sequence:
 ```json
 "newFeature": {
   "title": "New Feature",
-  "description": "Feature description", 
+  "description": "Feature description",
   "button": "Button Text",
   "labels": {
     "input": "Input Label",
@@ -208,7 +278,7 @@ When adding new features, always follow this sequence:
 const NewFeatureComponent = () => {
   const t = useTranslations('newFeature');
   const tc = useTranslations('common');
-  
+
   return (
     <div>
       <h1>{t('title')}</h1>
@@ -220,17 +290,15 @@ const NewFeatureComponent = () => {
 ```
 
 #### Step 3: Update Navigation
-- Add to Header navigation with `t('footer.links.newFeature')`
-- Add to Footer links in both language files
-- Update sitemap.ts with new route
+메뉴 추가는 위의 "Adding New Menu Items" 섹션을 참고하세요.
 
-### 2. Translation Key Naming Conventions
+### 3. Translation Key Naming Conventions
 - Use camelCase for keys: `buttonText`, `errorMessage`
 - Group related keys: `labels.input`, `messages.success`
 - Use descriptive names: `pasteFromClipboard` not `paste`
 - Consistent naming across features
 
-### 3. Dynamic Content Translation
+### 4. Dynamic Content Translation
 For conditional or dynamic content:
 ```typescript
 // Good: Multiple specific keys
@@ -240,7 +308,7 @@ For conditional or dynamic content:
 {t('clipboardStatus', {supported: isSupported})}
 ```
 
-### 4. Validation Checklist
+### 5. Validation Checklist
 Before completing a feature:
 - [ ] All UI text uses translation functions
 - [ ] Both Korean and English translations complete
@@ -317,12 +385,14 @@ This workflow ensures consistent internationalization and prevents the need for 
 ## Development Best Practices
 
 ### When Adding New Calculators
-1. Follow the established pattern: Page component + Calculator component
-2. Add to localStorage.ts for history title generation
-3. Use manual save pattern for better UX
-4. Include comprehensive guide content
-5. Add to all navigation points (Header, Footer, ToolsShowcase, sitemap)
-6. Ensure complete Korean/English translations
+1. **menuConfig.ts에 메뉴 항목 추가** (Header, ToolsShowcase 자동 반영)
+2. **번역 파일 업데이트** (ko.json, en.json - footer.links, toolsShowcase.tools 섹션)
+3. **sitemap.ts에 URL 추가**
+4. **페이지 컴포넌트 생성** (`/src/app/[tool-name]/page.tsx`)
+5. **계산기 컴포넌트 생성** (`/src/components/[ToolName].tsx`)
+6. localStorage.ts에 history title 추가 (히스토리 기능 사용 시)
+7. Use manual save pattern for better UX
+8. Include comprehensive guide content
 
 ### Code Quality
 - Prefer TypeScript interfaces over any types

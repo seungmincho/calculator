@@ -9,7 +9,9 @@
       "WebFetch(domain:www.opengraph.xyz)",
       "Bash(curl:*)",
       "Bash(ls:*)",
-      "WebFetch(domain:developers.facebook.com)"
+      "WebFetch(domain:developers.facebook.com)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm add:*)"
     ],
     "deny": []
   }

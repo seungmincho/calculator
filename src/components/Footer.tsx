@@ -9,71 +9,17 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-5 gap-8">
-          <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <Calculator className="w-6 h-6" />
-              <span className="text-lg font-semibold">{t('footer.title')}</span>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400">
-              {t('footer.description')}
-            </p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center space-x-2">
+            <Calculator className="w-6 h-6 text-blue-600" />
+            <span className="text-lg font-semibold">{t('footer.title')}</span>
           </div>
-          <div>
-            <h3 className="font-semibold mb-4">{t('footer.calculators')}</h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-              <li><a href="/" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.salaryCalculator')}</a></li>
-              <li><a href="/loan-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.loanCalculator')}</a></li>
-              <li><a href="/savings-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.savingsCalculator')}</a></li>
-              <li><a href="/stock-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.stockCalculator')}</a></li>
-              <li><a href="/retirement-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.retirementCalculator')}</a></li>
-              <li><a href="/tax-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.taxCalculator')}</a></li>
-              <li><a href="/exchange-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.exchangeCalculator')}</a></li>
-              <li><a href="/real-estate-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.realEstateCalculator')}</a></li>
-              <li><a href="/monthly-rent-subsidy" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.monthlyRentSubsidy')}</a></li>
-              <li><a href="/bogeumjari-loan" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.bogeumjariLoan')}</a></li>
-              <li><a href="/car-loan-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.carLoanCalculator')}</a></li>
-              <li><a href="/car-tax-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.carTaxCalculator')}</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-4">{t('footer.tools')}</h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-              <li><a href="/json-formatter" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.jsonFormatter')}</a></li>
-              <li><a href="/json-xml-converter" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.jsonXmlConverter')}</a></li>
-              <li><a href="/json-csv-converter" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.jsonCsvConverter')}</a></li>
-              <li><a href="/jwt-decoder" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.jwtDecoder')}</a></li>
-              <li><a href="/uuid-generator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.uuidGenerator')}</a></li>
-              <li><a href="/cron-tester" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.cronTester')}</a></li>
-              <li><a href="/qr-generator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.qrGenerator')}</a></li>
-              <li><a href="/barcode-generator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.barcodeGenerator')}</a></li>
-              <li><a href="/sql-formatter" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.sqlFormatter')}</a></li>
-              <li><a href="/markdown-viewer" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.markdownViewer')}</a></li>
-              <li><a href="/image-resizer" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.imageResizer')}</a></li>
-              <li><a href="/image-editor" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.imageEditor')}</a></li>
-              <li><a href="/regex-extractor" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.regexExtractor')}</a></li>
-              <li><a href="/time-converter" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.timeConverter')}</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-4">{t('navigation.healthTools')}</h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-              <li><a href="/bmi-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.bmiCalculator')}</a></li>
-              <li><a href="/calorie-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.calorieCalculator')}</a></li>
-              <li><a href="/body-fat-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.bodyFatCalculator')}</a></li>
-              <li><a href="/work-hours-calculator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.workHoursCalculator')}</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-4">{t('navigation.simpleGames')}</h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-              <li><a href="/lotto-generator" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.lottoGenerator')}</a></li>
-              <li><a href="/ladder-game" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('footer.links.ladderGame')}</a></li>
-            </ul>
-          </div>
+          <p className="text-gray-600 dark:text-gray-400 text-center md:text-left max-w-xl">
+            {t('footer.description')}
+          </p>
         </div>
-        <div className="border-t border-gray-300 dark:border-gray-700 mt-8 pt-8 text-center text-gray-600 dark:text-gray-400">
+        <div className="border-t border-gray-300 dark:border-gray-700 mt-6 pt-6 text-center text-gray-600 dark:text-gray-400">
           <p>{t('footer.copyright')}</p>
         </div>
       </div>

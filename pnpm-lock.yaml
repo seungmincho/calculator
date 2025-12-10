@@ -8,6 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@babylonjs/core':
+        specifier: ^8.40.1
+        version: 8.40.1
+      '@babylonjs/loaders':
+        specifier: ^8.40.1
+        version: 8.40.1(@babylonjs/core@8.40.1)(babylonjs-gltf2interface@8.40.1)
+      '@babylonjs/serializers':
+        specifier: ^8.40.1
+        version: 8.40.1(@babylonjs/core@8.40.1)(babylonjs-gltf2interface@8.40.1)
       '@types/jspdf':
         specifier: ^2.0.0
         version: 2.0.0
@@ -17,6 +26,9 @@ importers:
       '@vercel/analytics':
         specifier: ^1.6.1
         version: 1.6.1(next@16.0.8(@babel/core@7.28.5)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react@19.2.1)
+      gif.js:
+        specifier: ^0.2.0
+        version: 0.2.0
       jsbarcode:
         specifier: ^3.12.1
         version: 3.12.1
@@ -161,6 +173,21 @@ packages:
   '@babel/types@7.28.5':
     resolution: {integrity: sha512-qQ5m48eI/MFLQ5PxQj4PFaprjyCTLI37ElWMmNs0K8Lk3dVeOdNpB3ks8jc7yM5CDmVC73eMVk/trk3fgmrUpA==}
     engines: {node: '>=6.9.0'}
+
+  '@babylonjs/core@8.40.1':
+    resolution: {integrity: sha512-J//Wodlu1m1elh3cKZUh4HillxVc4QxgWyJxUABFYtr0kfSzk2vwJ5f9F3BvEq3X+XU8dEEK7i9buU1aV6w11A==}
+
+  '@babylonjs/loaders@8.40.1':
+    resolution: {integrity: sha512-kmmgsgCSm5v8MCZ4z96Iv9AnWWO4fOaPpRwO5ftpIK5cnVdX5eA1qzHVhF+BkRGJUOGv2RSWWS51Ucw2gFW/Yg==}
+    peerDependencies:
+      '@babylonjs/core': ^8.0.0
+      babylonjs-gltf2interface: ^8.0.0
+
+  '@babylonjs/serializers@8.40.1':
+    resolution: {integrity: sha512-w2+mrzjCfDniJvJk0GRnrOcV4sYeZCXfQXMMlD3k7NW/fwxjDGUp6K30j00vc8bQ07Z7tQc7ReHM2J1aX6Myvw==}
+    peerDependencies:
+      '@babylonjs/core': ^8.0.0
+      babylonjs-gltf2interface: ^8.0.0
 
   '@cloudflare/kv-asset-handler@0.3.4':
     resolution: {integrity: sha512-YLPHc8yASwjNkmcDMQMY35yiWjoKAKnhUbPRszBRS0YgH+IXtsMp61j+yTcnCE3oO2DgP0U3iejLC8FTtKDC8Q==}
@@ -1302,6 +1329,9 @@ packages:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
     engines: {node: '>= 0.4'}
 
+  babylonjs-gltf2interface@8.40.1:
+    resolution: {integrity: sha512-d++rCxLZrVDtaPDD4qK7sczs/J3XBWp86mALaYZiZysnbw6hDlcf2bqoQ4pp6NErXSI8llUiJEs++INo+XBTVQ==}
+
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
@@ -1834,6 +1864,9 @@ packages:
 
   get-tsconfig@4.13.0:
     resolution: {integrity: sha512-1VKTZJCwBrvbd+Wn3AOgQP/2Av+TfTCOlE4AcRJE72W1ksZXbAx8PPBR9RzgTeSPzlPMHrbANMH3LbltH73wxQ==}
+
+  gif.js@0.2.0:
+    resolution: {integrity: sha512-bYxCoT8OZKmbxY8RN4qDiYuj4nrQDTzgLRcFVovyona1PTWNePzI4nzOmotnlOFIzTk/ZxAHtv+TfVLiBWj/hw==}
 
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
@@ -3043,6 +3076,18 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
+  '@babylonjs/core@8.40.1': {}
+
+  '@babylonjs/loaders@8.40.1(@babylonjs/core@8.40.1)(babylonjs-gltf2interface@8.40.1)':
+    dependencies:
+      '@babylonjs/core': 8.40.1
+      babylonjs-gltf2interface: 8.40.1
+
+  '@babylonjs/serializers@8.40.1(@babylonjs/core@8.40.1)(babylonjs-gltf2interface@8.40.1)':
+    dependencies:
+      '@babylonjs/core': 8.40.1
+      babylonjs-gltf2interface: 8.40.1
+
   '@cloudflare/kv-asset-handler@0.3.4':
     dependencies:
       mime: 3.0.0
@@ -3977,6 +4022,8 @@ snapshots:
 
   axobject-query@4.1.0: {}
 
+  babylonjs-gltf2interface@8.40.1: {}
+
   balanced-match@1.0.2: {}
 
   base64-arraybuffer@1.0.2:
@@ -4684,6 +4731,8 @@ snapshots:
   get-tsconfig@4.13.0:
     dependencies:
       resolve-pkg-maps: 1.0.0
+
+  gif.js@0.2.0: {}
 
   glob-parent@5.1.2:
     dependencies:

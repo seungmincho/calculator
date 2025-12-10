@@ -1123,7 +1123,9 @@
       "barcodeGenerator": "바코드 생성기",
       "fuelCalculator": "유류비 계산기",
       "monthlyRentSubsidy": "LH 월세지원금 계산기",
-      "bogeumjariLoan": "LH 보금자리론 계산기"
+      "bogeumjariLoan": "LH 보금자리론 계산기",
+      "medianIncome": "기준 중위소득 조회",
+      "3dConverter": "3D 변환기"
     },
     "copyright": "© 2025 툴허브. All rights reserved."
   },
@@ -2411,9 +2413,13 @@
         "title": "JSON-XML 변환기",
         "description": "JSON과 XML 데이터 상호 변환"
       },
-      "barcode": {
-        "title": "바코드 생성기",
-        "description": "다양한 형식의 바코드 생성"
+      "medianIncome": {
+        "title": "기준 중위소득 조회",
+        "description": "연도별 가구원수별 중위소득 조회"
+      },
+      "3dConverter": {
+        "title": "3D 변환기",
+        "description": "3D 파일 변환, 최적화, 프린팅 분석"
       }
     }
   },
@@ -2719,5 +2725,134 @@
       "networkError": "네트워크 오류가 발생했습니다"
     },
     "placeholder": "변환할 데이터를 입력하거나 파일을 업로드하세요"
+  },
+  "viewer3d": {
+    "title": "3D 변환기",
+    "description": "3D 파일 변환, 최적화, 3D 프린팅 분석까지 한 번에. GLB, OBJ, STL 등 다양한 포맷 지원",
+    "tabs": {
+      "viewer": "뷰어",
+      "convert": "변환",
+      "optimize": "최적화",
+      "print": "프린팅"
+    },
+    "upload": {
+      "title": "3D 파일 업로드",
+      "dragDrop": "파일을 드래그하거나 클릭하여 업로드",
+      "supportedFormats": "지원 형식: GLB, GLTF, OBJ, STL",
+      "maxSize": "최대 100MB",
+      "hint": "3D 파일을 업로드하여 시작하세요"
+    },
+    "controls": {
+      "title": "뷰어 설정",
+      "rotate": "회전: 마우스 드래그",
+      "zoom": "줌: 마우스 휠",
+      "pan": "이동: Shift + 드래그",
+      "reset": "뷰 초기화",
+      "fullscreen": "전체 화면",
+      "screenshot": "스크린샷",
+      "autoRotate": "자동 회전",
+      "wireframe": "와이어프레임",
+      "grid": "그리드 표시",
+      "axes": "축 표시"
+    },
+    "info": {
+      "title": "모델 정보",
+      "fileName": "파일명",
+      "fileSize": "파일 크기",
+      "vertices": "정점 수",
+      "faces": "면 수",
+      "meshes": "메시 수",
+      "materials": "재질 수",
+      "textures": "텍스처 수",
+      "dimensions": "크기"
+    },
+    "animation": {
+      "title": "애니메이션",
+      "noAnimations": "애니메이션 없음",
+      "play": "재생",
+      "pause": "일시정지",
+      "stop": "정지",
+      "speed": "속도",
+      "loop": "반복",
+      "select": "애니메이션 선택"
+    },
+    "environment": {
+      "title": "환경",
+      "preset": "프리셋",
+      "none": "없음",
+      "studio": "스튜디오",
+      "sunset": "석양",
+      "dawn": "새벽",
+      "night": "밤"
+    },
+    "lighting": {
+      "title": "조명 설정",
+      "ambient": "주변광",
+      "directional": "직사광",
+      "intensity": "밝기"
+    },
+    "background": {
+      "title": "배경",
+      "color": "배경색"
+    },
+    "export": {
+      "title": "포맷 변환",
+      "description": "다른 3D 포맷으로 변환하여 다운로드합니다",
+      "format": "출력 형식",
+      "download": "다운로드",
+      "exporting": "변환 중...",
+      "error": "변환 실패",
+      "formats": {
+        "glb": "웹/Unity/Unreal에 최적화된 바이너리 포맷",
+        "obj": "대부분의 3D 소프트웨어와 호환",
+        "stl": "3D 프린터에 최적화된 메시 전용 포맷"
+      }
+    },
+    "optimize": {
+      "title": "모델 최적화",
+      "description": "폴리곤 수를 줄여 파일 크기와 성능을 개선합니다",
+      "level": "품질 유지",
+      "current": "현재",
+      "after": "최적화 후 (예상)",
+      "apply": "최적화 적용",
+      "preview": "예상 계산",
+      "optimizing": "계산 중...",
+      "error": "최적화 실패",
+      "highQuality": "고품질",
+      "smallSize": "작은 크기",
+      "downloadStl": "STL로 다운로드",
+      "note": "* 실제 최적화는 외부 도구(Blender, MeshLab)에서 진행하세요. 여기서는 현재 모델을 STL로 내보냅니다."
+    },
+    "print": {
+      "title": "3D 프린팅 분석",
+      "description": "출력 시간, 재료 사용량, 출력 가능성을 분석합니다",
+      "scale": "스케일",
+      "infill": "내부 채움",
+      "dimensions": "출력 크기",
+      "size": "크기",
+      "volume": "부피",
+      "surfaceArea": "표면적",
+      "timeEstimate": "예상 출력 시간",
+      "hours": "시간",
+      "materialEstimate": "예상 재료 사용량",
+      "uploadFirst": "3D 파일을 먼저 업로드하세요",
+      "warnings": {
+        "tooLarge": "출력 크기가 일반 프린터 베드(300mm)를 초과합니다",
+        "tooSmall": "출력 크기가 너무 작아 디테일이 손실될 수 있습니다",
+        "highPoly": "폴리곤 수가 많아 슬라이싱이 오래 걸릴 수 있습니다",
+        "lowVolume": "부피가 너무 작아 구조적으로 약할 수 있습니다"
+      }
+    },
+    "errors": {
+      "unsupportedFormat": "지원하지 않는 파일 형식입니다",
+      "loadFailed": "파일 로드에 실패했습니다",
+      "webgpuNotSupported": "WebGPU를 지원하지 않아 WebGL로 전환합니다",
+      "fileTooLarge": "파일이 너무 큽니다 (최대 100MB)"
+    },
+    "status": {
+      "loading": "로딩 중...",
+      "ready": "렌더링 준비 완료",
+      "rendering": "렌더링 중..."
+    }
   }
 }

@@ -849,7 +849,9 @@
       "barcodeGenerator": "Barcode Generator",
       "fuelCalculator": "Fuel Calculator",
       "monthlyRentSubsidy": "LH Monthly Rent Subsidy Calculator",
-      "bogeumjariLoan": "LH Bogeumjari Loan Calculator"
+      "bogeumjariLoan": "LH Bogeumjari Loan Calculator",
+      "medianIncome": "Median Income Lookup",
+      "3dConverter": "3D Converter"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
   },
@@ -2412,9 +2414,13 @@
         "title": "JSON-XML Converter",
         "description": "Bidirectional JSON and XML conversion"
       },
-      "barcode": {
-        "title": "Barcode Generator",
-        "description": "Generate various barcode formats"
+      "medianIncome": {
+        "title": "Median Income Lookup",
+        "description": "Lookup median income by year and household size"
+      },
+      "3dConverter": {
+        "title": "3D Converter",
+        "description": "Convert, optimize, and analyze 3D files for printing"
       }
     }
   },
@@ -2720,5 +2726,134 @@
       "networkError": "Network error occurred"
     },
     "placeholder": "Enter data to convert or upload a file"
+  },
+  "viewer3d": {
+    "title": "3D Converter",
+    "description": "Convert, optimize, and analyze 3D files for printing. Supports GLB, OBJ, STL formats.",
+    "tabs": {
+      "viewer": "Viewer",
+      "convert": "Convert",
+      "optimize": "Optimize",
+      "print": "Printing"
+    },
+    "upload": {
+      "title": "Upload 3D File",
+      "dragDrop": "Drag and drop or click to upload",
+      "supportedFormats": "Formats: GLB, GLTF, OBJ, STL",
+      "maxSize": "Max 100MB",
+      "hint": "Upload a 3D file to get started"
+    },
+    "controls": {
+      "title": "Viewer Settings",
+      "rotate": "Rotate: Mouse drag",
+      "zoom": "Zoom: Mouse wheel",
+      "pan": "Pan: Shift + drag",
+      "reset": "Reset View",
+      "fullscreen": "Fullscreen",
+      "screenshot": "Screenshot",
+      "autoRotate": "Auto Rotate",
+      "wireframe": "Wireframe",
+      "grid": "Show Grid",
+      "axes": "Show Axes"
+    },
+    "info": {
+      "title": "Model Info",
+      "fileName": "File Name",
+      "fileSize": "File Size",
+      "vertices": "Vertices",
+      "faces": "Faces",
+      "meshes": "Meshes",
+      "materials": "Materials",
+      "textures": "Textures",
+      "dimensions": "Dimensions"
+    },
+    "animation": {
+      "title": "Animation",
+      "noAnimations": "No animations",
+      "play": "Play",
+      "pause": "Pause",
+      "stop": "Stop",
+      "speed": "Speed",
+      "loop": "Loop",
+      "select": "Select animation"
+    },
+    "environment": {
+      "title": "Environment",
+      "preset": "Preset",
+      "none": "None",
+      "studio": "Studio",
+      "sunset": "Sunset",
+      "dawn": "Dawn",
+      "night": "Night"
+    },
+    "lighting": {
+      "title": "Lighting",
+      "ambient": "Ambient Light",
+      "directional": "Directional Light",
+      "intensity": "Intensity"
+    },
+    "background": {
+      "title": "Background",
+      "color": "Background Color"
+    },
+    "export": {
+      "title": "Format Conversion",
+      "description": "Convert and download in different 3D formats",
+      "format": "Output Format",
+      "download": "Download",
+      "exporting": "Converting...",
+      "error": "Conversion failed",
+      "formats": {
+        "glb": "Optimized binary format for Web/Unity/Unreal",
+        "obj": "Compatible with most 3D software",
+        "stl": "Mesh-only format optimized for 3D printers"
+      }
+    },
+    "optimize": {
+      "title": "Model Optimization",
+      "description": "Reduce polygon count to improve file size and performance",
+      "level": "Quality Level",
+      "current": "Current",
+      "after": "After optimization (est.)",
+      "apply": "Apply Optimization",
+      "preview": "Calculate",
+      "optimizing": "Calculating...",
+      "error": "Optimization failed",
+      "highQuality": "High Quality",
+      "smallSize": "Small Size",
+      "downloadStl": "Download as STL",
+      "note": "* For actual optimization, use external tools (Blender, MeshLab). This exports the current model as STL."
+    },
+    "print": {
+      "title": "3D Print Analysis",
+      "description": "Analyze print time, material usage, and printability",
+      "scale": "Scale",
+      "infill": "Infill",
+      "dimensions": "Print Dimensions",
+      "size": "Size",
+      "volume": "Volume",
+      "surfaceArea": "Surface Area",
+      "timeEstimate": "Estimated Print Time",
+      "hours": "hours",
+      "materialEstimate": "Estimated Material",
+      "uploadFirst": "Upload a 3D file first",
+      "warnings": {
+        "tooLarge": "Print size exceeds typical bed size (300mm)",
+        "tooSmall": "Print size too small, may lose detail",
+        "highPoly": "High polygon count may slow down slicing",
+        "lowVolume": "Very low volume, may be structurally weak"
+      }
+    },
+    "errors": {
+      "unsupportedFormat": "Unsupported file format",
+      "loadFailed": "Failed to load file",
+      "webgpuNotSupported": "WebGPU not supported, falling back to WebGL",
+      "fileTooLarge": "File too large (max 100MB)"
+    },
+    "status": {
+      "loading": "Loading...",
+      "ready": "Ready to render",
+      "rendering": "Rendering..."
+    }
   }
 }
