@@ -1739,7 +1739,34 @@
     "loading": "Loading...",
     "comingSoon": "coming soon",
     "patternAnalysis": "Pattern analysis feature is",
-    "recentTrends": "Recent trends analysis feature is"
+    "recentTrends": "Recent trends analysis feature is",
+    "winChecker": {
+      "title": "Check Winning",
+      "inputTitle": "Enter Your Numbers",
+      "resultTitle": "Check Result",
+      "checkButton": "Check Winning",
+      "comparingWith": "Comparing with:",
+      "noWinningData": "Please search for winning numbers first",
+      "enterNumbers": "Enter 6 numbers and press the check winning button",
+      "matched": "Matched",
+      "bonus": "Bonus",
+      "prizes": {
+        "first": "1st Prize Winner!",
+        "second": "2nd Prize Winner!",
+        "third": "3rd Prize Winner!",
+        "fourth": "4th Prize Winner!",
+        "fifth": "5th Prize Winner!",
+        "none": "Unfortunately, you did not win"
+      },
+      "ocr": {
+        "upload": "Upload Lottery Ticket Image",
+        "processing": "Analyzing image...",
+        "hint": "Upload a photo of your lottery ticket to automatically recognize numbers",
+        "error": "Image recognition failed. Please try again.",
+        "noNumbersFound": "No numbers found in the image",
+        "notEnoughNumbers": "Not enough valid numbers. 6 numbers are required"
+      }
+    }
   },
   "ladder": {
     "title": "Ladder Game",
