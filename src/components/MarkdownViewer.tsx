@@ -221,14 +221,13 @@ const MarkdownViewer = () => {
   return (
     <div className={isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'}>
       {/* 헤더 */}
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full mb-4">
-          <FileText className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">마크다운 뷰어</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            마크다운 텍스트를 실시간으로 미리보고 편집하세요.
+          </p>
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">마크다운 뷰어</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          마크다운 텍스트를 실시간으로 미리보고 편집하세요. HTML 변환과 다양한 내보내기를 지원합니다.
-        </p>
       </div>
 
       {/* 컨트롤 패널 */}

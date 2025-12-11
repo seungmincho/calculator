@@ -318,16 +318,15 @@ const MonthlyRentSubsidyCalculatorContent = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* 헤더 */}
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-green-600 rounded-full text-white mb-4">
-          <Home className="w-8 h-8" />
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            LH 월세지원금 계산기
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            청년, 신혼부부, 일반 가구의 월세지원금을 정확하게 계산해보세요.
+          </p>
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          LH 월세지원금 계산기
-        </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          청년, 신혼부부, 일반 가구의 월세지원금을 정확하게 계산해보세요. 2024년 LH 기준 최신 반영!
-        </p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">

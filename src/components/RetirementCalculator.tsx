@@ -243,17 +243,14 @@ const RetirementCalculatorContent = () => {
   }, [avgSalary, workYears, workMonths, handleCalculate]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-100 dark:bg-orange-900/30 rounded-full mb-4">
-          <Briefcase className="w-8 h-8 text-orange-600 dark:text-orange-400" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">퇴직금 계산기</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            평균임금과 근무기간을 입력하여 퇴직금과 퇴직소득세를 계산하세요
+          </p>
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">퇴직금 계산기</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
-          평균임금과 근무기간을 입력하시면 퇴직금과 퇴직소득세를 계산해드립니다.
-        </p>
-        
-        {/* 계산 이력 버튼 */}
         <CalculationHistory
           histories={histories}
           isLoading={historyLoading}

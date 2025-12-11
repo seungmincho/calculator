@@ -1184,16 +1184,13 @@ const RealEstateCalculatorContent = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full mb-4">
-          <Home className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">부동산 계산기</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            전세자금대출, 주택담보대출, 취득세를 정확하게 계산해보세요.
+          </p>
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">부동산 계산기</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
-          전세자금대출, 주택담보대출, 취득세를 정확하게 계산해보세요.
-        </p>
-        
-        {/* 계산 이력 버튼 */}
         <CalculationHistory
           histories={histories}
           isLoading={historyLoading}

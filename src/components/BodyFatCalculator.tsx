@@ -345,18 +345,15 @@ export default function BodyFatCalculator() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* 헤더 */}
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-full text-white mb-4">
-          <Users className="w-8 h-8" />
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            {t('description')}
+          </p>
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          {t('title')}
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
-          {t('description')}
-        </p>
-        
-        {/* 계산 기록 */}
         <CalculationHistory
           histories={histories}
           isLoading={false}
@@ -379,8 +376,8 @@ export default function BodyFatCalculator() {
             if (!history.inputs || !history.result) return t('history.empty')
             const bodyFatPercentage = history.result.bodyFatPercentage || 0
             const category = history.result.category || 'average'
-            return t('history.format', { 
-              bodyFatPercentage: formatNumber(bodyFatPercentage, 1), 
+            return t('history.format', {
+              bodyFatPercentage: formatNumber(bodyFatPercentage, 1),
               category: t(`categories.${category}`)
             })
           }}

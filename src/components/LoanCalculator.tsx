@@ -404,17 +404,14 @@ const LoanCalculatorContent = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
-          <PiggyBank className="w-8 h-8 text-green-600 dark:text-green-400" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">대출 계산기</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            다양한 대출 방식을 비교하여 가장 적합한 상환 방법을 찾아보세요
+          </p>
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">대출 계산기</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
-          다양한 대출 방식을 비교하여 가장 적합한 상환 방법을 찾아보세요.
-        </p>
-        
-        {/* 계산 이력 버튼 */}
         <CalculationHistory
           histories={histories}
           isLoading={historyLoading}

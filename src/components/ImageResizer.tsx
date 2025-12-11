@@ -211,27 +211,24 @@ const ImageResizer = () => {
     <div className={`min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center items-center mb-4">
-            <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-full">
-              <ImageIcon className="w-8 h-8 text-purple-600 dark:text-purple-400" />
-            </div>
-            {!isFullscreen && (
-              <button
-                onClick={() => setIsFullscreen(true)}
-                className="ml-4 p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
-                title="전체화면"
-              >
-                <Maximize className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-              </button>
-            )}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              이미지 리사이저
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              브라우저에서 바로 이미지 크기를 조정하고 다운로드하세요.
+            </p>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            이미지 리사이저
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            브라우저에서 바로 이미지 크기를 조정하고 다운로드하세요. 서버 업로드 없이 안전하게 처리됩니다.
-          </p>
+          {!isFullscreen && (
+            <button
+              onClick={() => setIsFullscreen(true)}
+              className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+              title="전체화면"
+            >
+              <Maximize className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+            </button>
+          )}
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">

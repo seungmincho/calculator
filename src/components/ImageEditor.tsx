@@ -605,26 +605,25 @@ const ImageEditor = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex justify-center items-center mb-4">
-            <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-full">
-              <Palette className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                이미지 편집기
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                브라우저에서 바로 이미지를 편집하세요. 크롭, 회전, 필터, 텍스트 추가 등.
+              </p>
             </div>
             {!isFullscreen && (
               <button
                 onClick={() => setIsFullscreen(true)}
-                className="ml-4 p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                className="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                 title="전체화면"
               >
                 <Maximize className="w-5 h-5 text-gray-600 dark:text-gray-300" />
               </button>
             )}
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            이미지 편집기
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            브라우저에서 바로 이미지를 편집하세요. 크롭, 회전, 필터, 텍스트 추가 등 다양한 편집 기능을 제공합니다.
-          </p>
         </div>
 
         <div className="grid lg:grid-cols-4 gap-8">

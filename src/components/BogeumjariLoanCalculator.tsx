@@ -379,16 +379,15 @@ const BogeumjariLoanCalculatorContent = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* 헤더 */}
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-full text-white mb-4">
-          <Home className="w-8 h-8" />
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            LH 보금자리론 계산기
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            생애최초 구입자를 위한 LH 보금자리론! 최대 3억원, 최저 1.8% 우대금리까지.
+          </p>
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          LH 보금자리론 계산기
-        </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          생애최초 구입자를 위한 LH 보금자리론! 최대 3억원, 최저 1.8% 우대금리까지 확인하세요.
-        </p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">

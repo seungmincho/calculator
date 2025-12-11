@@ -509,16 +509,15 @@ const MedianIncomeTable = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 헤더 */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl mb-4 shadow-lg">
-            <TrendingUp className="w-8 h-8 text-white" />
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              기준 중위소득 조회
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              연도별, 가구원수별 기준 중위소득과 정부 복지사업 자격요건을 확인하세요
+            </p>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
-            기준 중위소득 조회
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            연도별, 가구원수별 기준 중위소득과 정부 복지사업 자격요건을 한눈에 확인하세요
-          </p>
         </div>
 
         {/* 연도 탭 */}
