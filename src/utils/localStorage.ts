@@ -17,7 +17,9 @@ export const STORAGE_KEYS = {
   CALCULATION_HISTORY: 'calculation_history',
   FAVORITES: 'favorites',
   SETTINGS: 'user_settings',
-  FEEDBACK: 'user_feedback'
+  FEEDBACK: 'user_feedback',
+  VEHICLE_SETTINGS: 'fuel_vehicle_settings',
+  DRIVING_LOG: 'fuel_driving_log'
 } as const;
 
 // localStorage 안전하게 사용하는 함수들

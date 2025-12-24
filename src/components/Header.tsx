@@ -187,7 +187,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-gray-200 dark:border-gray-700 max-h-screen overflow-y-auto">
+          <div className="lg:hidden py-4 border-t border-gray-200 dark:border-gray-700 max-h-[calc(100vh-5rem)] overflow-y-auto">
             <nav className="space-y-4">
               {categoryKeys.map((key) => (
                 <div key={key}>

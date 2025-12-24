@@ -5,6 +5,8 @@ pages_build_output_dir = "out"
 [env.production.vars]
 NODE_ENV = "production"
 NEXT_PUBLIC_ADSENSE_ID = "ca-pub-2070759131396958"
+NEXT_PUBLIC_SUPABASE_URL = "https://fodancicubtjoilnritt.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvZGFuY2ljdWJ0am9pbG5yaXR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0NjE2NjgsImV4cCI6MjA4MjAzNzY2OH0.hZedDAA3nWGVn-iJRPHlgipyw6D-KeNUk3ptdY5Z3p8"
 
 [[analytics_engine]]
 binding = "ANALYTICS"

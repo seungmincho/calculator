@@ -12,8 +12,8 @@ This is a Korean financial calculator web application ("툴허브") built with N
 # Development server (runs on port 3030)
 pnpm dev
 
-# Build production bundle
-pnpm build
+# Build production bundle (DO NOT run this - user will handle builds manually)
+# pnpm build
 
 # Start production server (for testing)
 pnpm start
@@ -30,6 +30,8 @@ pnpm cf:deploy
 # Test Cloudflare Pages locally
 pnpm wrangler:dev
 ```
+
+**⚠️ IMPORTANT: Do NOT run `pnpm build` unless explicitly requested by the user. The user will handle builds manually.**
 
 ## Architecture
 
@@ -106,6 +108,12 @@ The project uses a **dual-layer i18n system**:
 #### Simple Games & Tools
 - `LottoGenerator`: Korean lottery number generation with statistics
 - `LadderGame`: Online ladder game for decision making
+
+#### Online Multiplayer Games
+- `Omok`: **NEW** 1v1 온라인 오목 게임 (WebRTC P2P + Supabase)
+  - 상세 아키텍처: [/docs/ONLINE_GAME_ARCHITECTURE.md](docs/ONLINE_GAME_ARCHITECTURE.md)
+  - 재사용 가능한 컴포넌트: `GameLobby`, `useGameRoom`, `usePeerConnection`
+  - 향후 추가 예정: 장기, 오셀로, 바둑
 
 ### Component Architecture Patterns
 - **Calculator Structure**: Each calculator follows consistent pattern with Suspense wrapping, URL state management, and real-time calculations

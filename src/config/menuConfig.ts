@@ -74,6 +74,13 @@ export const menuConfig: MenuConfig = {
     items: [
       { href: '/lotto-generator', labelKey: 'footer.links.lottoGenerator', descriptionKey: 'toolsShowcase.tools.lotto.description', icon: '🎲' },
       { href: '/ladder-game', labelKey: 'footer.links.ladderGame', descriptionKey: 'toolsShowcase.tools.ladder.description', icon: '🪜' },
+      { href: '/omok', labelKey: 'footer.links.omok', descriptionKey: 'toolsShowcase.tools.omok.description', icon: '⚫' },
+      { href: '/othello', labelKey: 'footer.links.othello', descriptionKey: 'toolsShowcase.tools.othello.description', icon: '🟢' },
+      { href: '/connect4', labelKey: 'footer.links.connect4', descriptionKey: 'toolsShowcase.tools.connect4.description', icon: '🔴' },
+      { href: '/checkers', labelKey: 'footer.links.checkers', descriptionKey: 'toolsShowcase.tools.checkers.description', icon: '🏁' },
+      { href: '/mancala', labelKey: 'footer.links.mancala', descriptionKey: 'toolsShowcase.tools.mancala.description', icon: '🥜' },
+      { href: '/battleship', labelKey: 'footer.links.battleship', descriptionKey: 'toolsShowcase.tools.battleship.description', icon: '🚢' },
+      { href: '/dots-and-boxes', labelKey: 'footer.links.dotsAndBoxes', descriptionKey: 'toolsShowcase.tools.dotsAndBoxes.description', icon: '📦' },
     ],
   },
 };
