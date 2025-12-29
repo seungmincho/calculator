@@ -31,7 +31,14 @@ interface ToastMessage {
   type: 'error' | 'warning' | 'info' | 'success'
 }
 
-export default function Mancala() {
+interface MancalaProps {
+  initialRoom?: GameRoom
+  isHost?: boolean
+  hostPeerId?: string
+  onBack?: () => void
+}
+
+export default function Mancala({ initialRoom, isHost: isHostProp, hostPeerId, onBack }: MancalaProps) {
   const t = useTranslations('mancala')
   const tCommon = useTranslations('common')
 
@@ -45,6 +52,7 @@ export default function Mancala() {
   const [winCount, setWinCount] = useState<{ player1: number; player2: number }>({ player1: 0, player2: 0 })
   const [showRules, setShowRules] = useState(false)
   const isHostRef = useRef(false)
+  const gameCountedRef = useRef(false)  // 게임 시작 시 중복 카운트 방지
 
   // 채팅 관련 상태
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
@@ -103,6 +111,61 @@ export default function Mancala() {
     if (stored) setPlayerName(stored)
   }, [])
 
+  // initialRoom이 있으면 자동으로 방에 접속 (GameHub에서 온 경우)
+  const initialRoomProcessed = useRef(false)
+  useEffect(() => {
+    if (initialRoom && !initialRoomProcessed.current) {
+      initialRoomProcessed.current = true
+
+      // 방 생성한 호스트인 경우 - GameHub에서 이미 PeerJS 방 생성됨
+      if (isHostProp && hostPeerId) {
+        setCurrentRoom(initialRoom)
+        setPlayerName(initialRoom.host_name)
+        setOpponentName('')
+        isHostRef.current = true
+        setMyRole('player1')
+        setChatMessages([])
+        setWinCount({ player1: 0, player2: 0 })
+        setGamePhase('waiting')
+        return
+      }
+
+      // 게스트로 방 입장 - 바로 실행
+      const joinInitialRoom = async () => {
+        const stored = localStorage.getItem('mancala_player_name')
+        const name = stored || t('guest')
+        setPlayerName(name)
+        if (!stored) localStorage.setItem('mancala_player_name', name)
+        isHostRef.current = false
+        setOpponentName(initialRoom.host_name)
+
+        // Supabase에서 방 상태 변경
+        const joined = await joinSupabaseRoom(initialRoom.id)
+        if (!joined) {
+          showToast(t('roomAlreadyFull') || 'Room is already full', 'error')
+          if (onBack) onBack()
+          return
+        }
+
+        setCurrentRoom(initialRoom)
+        setChatMessages([])
+        setWinCount({ player1: 0, player2: 0 })
+        setGamePhase('waiting')
+
+        // PeerJS로 호스트에 연결
+        const success = await joinPeerRoom(initialRoom.host_id)
+        if (!success) {
+          // 연결 실패 시 Supabase 방 상태 복구
+          await leaveSupabaseRoom(initialRoom.id)
+          setGamePhase('lobby')
+          showToast(t('connectionFailed') || 'Failed to connect to host', 'error')
+          if (onBack) onBack()
+        }
+      }
+      joinInitialRoom()
+    }
+  }, [initialRoom, isHostProp, hostPeerId, joinSupabaseRoom, joinPeerRoom, leaveSupabaseRoom, showToast, t, onBack])
+
   // 채팅 스크롤
   useEffect(() => {
     if (showChat && chatContainerRef.current) {
@@ -138,6 +201,12 @@ export default function Mancala() {
       if (isHostRef.current) {
         setMyRole('player1')
         sendMessage('ready', { playerName, role: 'player1' })
+
+        // 게임 시작 시 게임판수 증가 (호스트만, 중복 방지)
+        if (currentRoom && !gameCountedRef.current) {
+          gameCountedRef.current = true
+          incrementGamesPlayed(currentRoom.id)
+        }
       } else {
         setMyRole('player2')
         sendMessage('ready', { playerName, role: 'player2' })
@@ -145,7 +214,7 @@ export default function Mancala() {
 
       setGamePhase('playing')
     }
-  }, [isConnected, gamePhase, playerName, sendMessage])
+  }, [isConnected, gamePhase, playerName, sendMessage, currentRoom])
 
   // 메시지 처리
   useEffect(() => {
@@ -219,13 +288,10 @@ export default function Mancala() {
     }
   }, [gameState.capturedStones, myRole, t, showToast])
 
-  // 게임 상태에서 승자 확인 및 게임 완료 기록
+  // 게임 상태에서 승자 확인
   useEffect(() => {
     if (gameState.winner && gamePhase === 'playing') {
       setGamePhase('finished')
-      if (currentRoom && isHostRef.current) {
-        incrementGamesPlayed(currentRoom.id)
-      }
       // 승리 횟수 업데이트
       if (gameState.winner === 'player1' || gameState.winner === 'player2') {
         setWinCount(prev => ({
@@ -234,7 +300,7 @@ export default function Mancala() {
         }))
       }
     }
-  }, [gameState.winner, gamePhase, currentRoom])
+  }, [gameState.winner, gamePhase])
 
   // 방 heartbeat
   useEffect(() => {
@@ -321,11 +387,16 @@ export default function Mancala() {
     sendMessage('move', { pitIndex, player: myRole })
   }, [myRole, gameState, sendMessage])
 
-  // 재시작
+  // 재시작 (새 게임)
   const handleRestart = () => {
     setGameState(createInitialMancalaState())
     setGamePhase('playing')
     sendMessage('restart', {})
+
+    // 호스트만 게임판수 증가 (새 게임 시작 기준)
+    if (currentRoom && isHostRef.current) {
+      incrementGamesPlayed(currentRoom.id)
+    }
   }
 
   // 기권
@@ -360,6 +431,7 @@ export default function Mancala() {
     setWinCount({ player1: 0, player2: 0 })
     setGamePhase('lobby')
     isHostRef.current = false
+    gameCountedRef.current = false
   }, [currentRoom, leaveSupabaseRoom, disconnectPeer, sendMessage])
 
   // Peer ID 복사

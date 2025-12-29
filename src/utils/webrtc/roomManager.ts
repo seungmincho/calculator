@@ -103,6 +103,24 @@ export const updateRoomStatus = async (roomId: string, status: RoomStatus): Prom
   return true
 }
 
+// 방 호스트 ID 업데이트 (PeerJS ID로 업데이트)
+export const updateRoomHostId = async (roomId: string, hostId: string): Promise<boolean> => {
+  const supabase = getSupabase()
+  if (!supabase) return false
+
+  const { error } = await supabase
+    .from(ROOMS_TABLE)
+    .update({ host_id: hostId, updated_at: new Date().toISOString() })
+    .eq('id', roomId)
+
+  if (error) {
+    console.error('Error updating room host ID:', error)
+    return false
+  }
+
+  return true
+}
+
 // 방 입장 시도 (waiting 상태일 때만 playing으로 변경 - atomic operation)
 export const tryJoinRoom = async (roomId: string): Promise<boolean> => {
   const supabase = getSupabase()

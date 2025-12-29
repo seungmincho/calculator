@@ -8,7 +8,11 @@ export type {
   GameRoom,
   CreateRoomInput,
   OmokMove,
-  OmokGameState
+  OmokGameState,
+  Difficulty,
+  GameResult,
+  AIGameStats,
+  PlayerGameStats
 } from './types'
 
 // Room Manager (Supabase - 방 목록만 관리)
@@ -18,6 +22,7 @@ export {
   getMonthlyStats,
   createRoom,
   updateRoomStatus,
+  updateRoomHostId,
   tryJoinRoom,
   sendRoomHeartbeat,
   closeRoom,
@@ -32,6 +37,15 @@ export type { RoomStats, MonthlyStats } from './roomManager'
 // Peer Manager (PeerJS - 실시간 게임 통신)
 export { PeerManager, createPeerManager } from './peerManager'
 export type { PeerMessage, MessageType } from './peerManager'
+
+// AI Stats Manager (AI 대전 통계)
+export {
+  recordAIGameResult,
+  getPlayerGameStats,
+  getAllPlayerStats,
+  getTotalAIGamesCount,
+  getAIGamesCountByType
+} from './aiStatsManager'
 
 // Utils
 export { generatePlayerId } from './gameChannel'

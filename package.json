@@ -10,6 +10,7 @@
     "lint": "next lint",
     "wrangler:dev": "wrangler pages dev out --compatibility-date=2025-12-09",
     "wrangler:deploy": "next build && wrangler pages deploy out",
+    "deploy": "wrangler pages deploy out",
     "cf:deploy": "npm run build && wrangler pages deploy out"
   },
   "dependencies": {

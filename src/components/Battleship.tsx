@@ -38,7 +38,14 @@ interface ToastMessage {
   type: 'error' | 'warning' | 'info' | 'success'
 }
 
-export default function Battleship() {
+interface BattleshipProps {
+  initialRoom?: GameRoom
+  isHost?: boolean
+  hostPeerId?: string
+  onBack?: () => void
+}
+
+export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId, onBack }: BattleshipProps) {
   const t = useTranslations('battleship')
   const tCommon = useTranslations('common')
 
@@ -52,6 +59,7 @@ export default function Battleship() {
   const [winCount, setWinCount] = useState<{ player1: number; player2: number }>({ player1: 0, player2: 0 })
   const [showRules, setShowRules] = useState(false)
   const isHostRef = useRef(false)
+  const gameCountedRef = useRef(false)  // 게임 시작 시 중복 카운트 방지
 
   // 함선 배치 상태
   const [placementBoard, setPlacementBoard] = useState<BattleshipBoard>(createEmptyBoard())
@@ -116,6 +124,60 @@ export default function Battleship() {
     if (stored) setPlayerName(stored)
   }, [])
 
+  // initialRoom이 있으면 자동으로 방에 접속 (GameHub에서 온 경우)
+  const initialRoomProcessed = useRef(false)
+  useEffect(() => {
+    if (initialRoom && !initialRoomProcessed.current) {
+      initialRoomProcessed.current = true
+
+      // 방 생성한 호스트인 경우 - GameHub에서 이미 PeerJS 방 생성됨
+      if (isHostProp && hostPeerId) {
+        setCurrentRoom(initialRoom)
+        setPlayerName(initialRoom.host_name)
+        setOpponentName('')
+        isHostRef.current = true
+        setChatMessages([])
+        setWinCount({ player1: 0, player2: 0 })
+        setGamePhase('waiting')
+        return
+      }
+
+      // 게스트로 방 입장 - 바로 실행
+      const joinInitialRoom = async () => {
+        const stored = localStorage.getItem('battleship_player_name')
+        const name = stored || t('guest')
+        setPlayerName(name)
+        if (!stored) localStorage.setItem('battleship_player_name', name)
+        isHostRef.current = false
+        setOpponentName(initialRoom.host_name)
+
+        // Supabase에서 방 상태 변경
+        const joined = await joinSupabaseRoom(initialRoom.id)
+        if (!joined) {
+          showToast(t('roomAlreadyFull') || 'Room is already full', 'error')
+          if (onBack) onBack()
+          return
+        }
+
+        setCurrentRoom(initialRoom)
+        setChatMessages([])
+        setWinCount({ player1: 0, player2: 0 })
+        setGamePhase('waiting')
+
+        // PeerJS로 호스트에 연결
+        const success = await joinPeerRoom(initialRoom.host_id)
+        if (!success) {
+          // 연결 실패 시 Supabase 방 상태 복구
+          await leaveSupabaseRoom(initialRoom.id)
+          setGamePhase('lobby')
+          showToast(t('connectionFailed') || 'Failed to connect to host', 'error')
+          if (onBack) onBack()
+        }
+      }
+      joinInitialRoom()
+    }
+  }, [initialRoom, isHostProp, hostPeerId, joinSupabaseRoom, joinPeerRoom, leaveSupabaseRoom, showToast, t, onBack])
+
   // 채팅 스크롤
   useEffect(() => {
     if (showChat && chatContainerRef.current) {
@@ -163,8 +225,14 @@ export default function Battleship() {
   useEffect(() => {
     if (isReady && opponentReady && gamePhase === 'setup') {
       setGamePhase('playing')
+
+      // 게임 시작 시 게임판수 증가 (호스트만, 중복 방지)
+      if (currentRoom && isHostRef.current && !gameCountedRef.current) {
+        gameCountedRef.current = true
+        incrementGamesPlayed(currentRoom.id)
+      }
     }
-  }, [isReady, opponentReady, gamePhase])
+  }, [isReady, opponentReady, gamePhase, currentRoom])
 
   // 메시지 처리
   useEffect(() => {
@@ -239,9 +307,6 @@ export default function Battleship() {
   useEffect(() => {
     if (gameState.winner && gamePhase === 'playing') {
       setGamePhase('finished')
-      if (currentRoom && isHostRef.current) {
-        incrementGamesPlayed(currentRoom.id)
-      }
       if (gameState.winner === 'player1' || gameState.winner === 'player2') {
         setWinCount(prev => ({
           ...prev,
@@ -249,7 +314,7 @@ export default function Battleship() {
         }))
       }
     }
-  }, [gameState.winner, gamePhase, currentRoom])
+  }, [gameState.winner, gamePhase])
 
   // 마지막 공격 결과 알림
   useEffect(() => {
@@ -431,8 +496,9 @@ export default function Battleship() {
     sendMessage('move', { row, col, player: myRole })
   }, [myRole, gameState, sendMessage])
 
-  // 재시작
+  // 재시작 (새 게임) - setup 단계로 돌아가므로 카운트는 setup→playing 전환 시 처리됨
   const handleRestart = () => {
+    gameCountedRef.current = false  // 새 게임 카운트를 위해 리셋
     resetGame()
     sendMessage('restart', {})
   }
@@ -471,6 +537,7 @@ export default function Battleship() {
     setOpponentReady(false)
     setGamePhase('lobby')
     isHostRef.current = false
+    gameCountedRef.current = false
   }, [currentRoom, leaveSupabaseRoom, disconnectPeer, sendMessage])
 
   // Peer ID 복사

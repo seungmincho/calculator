@@ -72,6 +72,7 @@ export const menuConfig: MenuConfig = {
   games: {
     titleKey: 'navigation.simpleGames',
     items: [
+      { href: '/games', labelKey: 'footer.links.gameHub', descriptionKey: 'toolsShowcase.tools.gameHub.description', icon: '🎮' },
       { href: '/lotto-generator', labelKey: 'footer.links.lottoGenerator', descriptionKey: 'toolsShowcase.tools.lotto.description', icon: '🎲' },
       { href: '/ladder-game', labelKey: 'footer.links.ladderGame', descriptionKey: 'toolsShowcase.tools.ladder.description', icon: '🪜' },
       { href: '/omok', labelKey: 'footer.links.omok', descriptionKey: 'toolsShowcase.tools.omok.description', icon: '⚫' },

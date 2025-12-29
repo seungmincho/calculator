@@ -831,6 +831,7 @@
       "calorieCalculator": "Calorie Calculator",
       "bodyFatCalculator": "Body Fat Calculator",
       "workHoursCalculator": "Work Hours Calculator",
+      "gameHub": "Game Center",
       "lottoGenerator": "Lotto Number Generator",
       "ladderGame": "Ladder Game",
       "timeConverter": "Time Converter",
@@ -1688,6 +1689,117 @@
     "totalGames": "Total Games",
     "totalRooms": "Total Rooms"
   },
+  "gameHub": {
+    "title": "Game Center",
+    "description": "Enjoy various 1v1 games! Play online multiplayer or against the computer.",
+    "selectGame": "Select Game",
+    "allGames": "All",
+    "boardGames": "Board Games",
+    "strategyGames": "Strategy",
+    "playMode": "Play Mode",
+    "vsComputer": "vs Computer",
+    "vsOnline": "Online Match",
+    "difficulty": "Difficulty",
+    "easy": "Easy",
+    "normal": "Normal",
+    "hard": "Hard",
+    "easyDesc": "AI plays randomly",
+    "normalDesc": "Uses basic strategy",
+    "hardDesc": "Calculates optimal moves",
+    "startGame": "Start Game",
+    "waitingRooms": "Waiting Rooms",
+    "noWaitingRooms": "No waiting rooms",
+    "createRoom": "Create Room",
+    "joinRoom": "Join",
+    "refresh": "Refresh",
+    "players": "players",
+    "recentStats": "Recent Stats",
+    "gamesThisMonth": "Games This Month",
+    "activeRooms": "Active Rooms",
+    "enterNickname": "Nickname",
+    "nicknamePlaceholder": "Enter your nickname",
+    "roomVisibility": "Room Visibility",
+    "publicRoom": "Public",
+    "publicRoomDesc": "Anyone can join",
+    "privateRoom": "Private",
+    "privateRoomDesc": "Join via link only",
+    "creating": "Creating...",
+    "createRoomError": "Failed to create room",
+    "joining": "Joining...",
+    "joinRoomError": "Failed to join room",
+    "statistics": "Stats",
+    "gameRanking": "Game Ranking",
+    "playing": "playing",
+    "gameList": {
+      "omok": {
+        "name": "Omok",
+        "desc": "Get 5 in a row to win"
+      },
+      "othello": {
+        "name": "Othello",
+        "desc": "Flip opponent's pieces to dominate"
+      },
+      "connect4": {
+        "name": "Connect 4",
+        "desc": "Get 4 in a row to win"
+      },
+      "checkers": {
+        "name": "Checkers",
+        "desc": "Capture all opponent's pieces"
+      },
+      "mancala": {
+        "name": "Mancala",
+        "desc": "Collect more stones in your store"
+      },
+      "battleship": {
+        "name": "Battleship",
+        "desc": "Sink all enemy ships first"
+      },
+      "dotsandboxes": {
+        "name": "Dots & Boxes",
+        "desc": "Complete more boxes to win"
+      }
+    },
+    "gameCategories": {
+      "board": "Board",
+      "strategy": "Strategy"
+    },
+    "computerMatch": "Play vs Computer",
+    "onlineMatch": "Play Online",
+    "back": "Back",
+    "yourTurn": "Your Turn",
+    "computerTurn": "Computer's Turn",
+    "thinking": "Thinking...",
+    "youWin": "You Win!",
+    "youLose": "You Lose",
+    "draw": "Draw",
+    "playAgain": "Play Again",
+    "backToHub": "Back to Game Center",
+    "you": "You",
+    "aiThinking": "AI is thinking...",
+    "myStats": "My Stats",
+    "wins": "Wins",
+    "losses": "Losses",
+    "draws": "Draws",
+    "totalGames": "Total Games",
+    "vsAI": "vs AI",
+    "aiStats": "AI Game Stats",
+    "noAiGames": "No AI game records yet"
+  },
+  "gameStats": {
+    "title": "Game Statistics",
+    "description": "View this month's game activity",
+    "monthlyGames": "Monthly Games",
+    "activeGames": "Active",
+    "waitingRooms": "Waiting",
+    "totalRooms": "Total Rooms",
+    "gameRanking": "Game Ranking",
+    "games": "games",
+    "playing": "Playing",
+    "waiting": "Waiting",
+    "mostPopular": "Most Popular Game",
+    "totalGamesPlayed": "{count} games played"
+  },
   "omok": {
     "title": "Online Omok",
     "description": "Play real-time Omok with friends. Place 5 stones in a row on a 19x19 board to win!",
@@ -1718,6 +1830,7 @@
     "enterPeerId": "Enter host's Peer ID",
     "connecting": "Connecting...",
     "connectingDesc": "Establishing connection with the host...",
+    "creatingConnection": "Creating connection...",
     "connectionFailed": "Connection failed. Please check the Peer ID.",
     "opponentDisconnected": "Opponent has disconnected",
     "chat": "Chat",
@@ -1730,7 +1843,16 @@
     "private": "Private",
     "publicDesc": "Anyone can join from room list",
     "privateDesc": "Join only via Peer ID",
-    "playing": "Playing"
+    "playing": "Playing",
+    "black": "Black",
+    "white": "White",
+    "howToPlay": "How to Play",
+    "rules": {
+      "rule1": "Black plays first. Players take turns placing stones on the board.",
+      "rule2": "The goal is to get 5 stones in a row (horizontally, vertically, or diagonally).",
+      "rule3": "Once placed, stones cannot be moved.",
+      "rule4": "The first player to connect 5 stones wins!"
+    }
   },
   "othello": {
     "title": "Online Othello",
@@ -1774,7 +1896,14 @@
     "typeMessage": "Type a message...",
     "roomAlreadyFull": "Another player has already joined",
     "noValidMoves": "No valid moves, passing turn",
-    "opponentPassed": "Opponent passed their turn"
+    "opponentPassed": "Opponent passed their turn",
+    "howToPlay": "How to Play",
+    "rules": {
+      "rule1": "Black plays first. Players take turns placing discs on the board.",
+      "rule2": "Place a disc to flip at least one opponent disc.",
+      "rule3": "Flip all opponent discs in a straight line between your new disc and another of your discs.",
+      "rule4": "The game ends when neither player can move. Most discs wins!"
+    }
   },
   "connect4": {
     "title": "Connect4",
@@ -1848,12 +1977,15 @@
     "roomAlreadyFull": "Another player has already joined",
     "mustCapture": "You must capture!",
     "mustContinueCapture": "Continue capturing!",
+    "black": "Black",
+    "red": "Red",
     "howToPlay": "How to Play",
     "rules": {
-      "rule1": "Move your pieces diagonally forward on dark squares.",
-      "rule2": "Jump over opponent pieces to capture them (mandatory if possible).",
-      "rule3": "Reach the opposite end to become a King - Kings can move backwards!",
-      "rule4": "Capture all opponent pieces or block them to win."
+      "rule1": "Red moves first. Pieces move diagonally forward.",
+      "rule2": "Capture opponent pieces by jumping over them.",
+      "rule3": "If you can capture, you must capture.",
+      "rule4": "Reach the opposite end to become a King (can move backwards).",
+      "rule5": "Win by capturing all opponent pieces or blocking all their moves."
     }
   },
   "mancala": {
@@ -1896,18 +2028,11 @@
     "opponentCaptured": "Opponent captured {count} stones!",
     "howToPlay": "How to Play",
     "rules": {
-      "objective": "Objective",
-      "objectiveDesc": "Collect more stones in your store than your opponent.",
-      "setup": "Setup",
-      "setupDesc": "Each player has 6 pits with 4 stones each, and 1 store on their right.",
-      "gameplay": "Gameplay",
-      "gameplayDesc": "Pick up all stones from one of your pits and drop them one by one counterclockwise.",
-      "extraTurn": "Extra Turn",
-      "extraTurnDesc": "If your last stone lands in your store, you get another turn.",
-      "capture": "Capture",
-      "captureDesc": "If your last stone lands in an empty pit on your side, capture that stone and all stones in the opposite pit.",
-      "end": "End",
-      "endDesc": "Game ends when one side is empty. Remaining stones go to their owner's store."
+      "rule1": "Pick a pit on your side and distribute stones counter-clockwise.",
+      "rule2": "If your last stone lands in your store, you get another turn.",
+      "rule3": "If your last stone lands in an empty pit on your side, capture it and the opposite pit's stones.",
+      "rule4": "The game ends when one side is empty. Remaining stones go to that player's store.",
+      "rule5": "The player with the most stones in their store wins!"
     }
   },
   "battleship": {
@@ -1959,16 +2084,10 @@
     "yourShipSunk": "Your ship was sunk!",
     "howToPlay": "How to Play",
     "rules": {
-      "objective": "Objective",
-      "objectiveDesc": "Sink all enemy ships before they sink yours.",
-      "setup": "Setup",
-      "setupDesc": "Place your 5 ships on the grid. Ships cannot overlap or touch.",
-      "ships": "Ships",
-      "shipsDesc": "Carrier (5), Battleship (4), Cruiser (3), Submarine (3), Destroyer (2)",
-      "gameplay": "Gameplay",
-      "gameplayDesc": "Take turns firing at coordinates. Hit all parts of a ship to sink it.",
-      "end": "End",
-      "endDesc": "First player to sink all enemy ships wins."
+      "rule1": "Place your ships on the board before battle begins.",
+      "rule2": "Take turns firing at the enemy grid.",
+      "rule3": "Red X marks a hit, gray dot marks a miss.",
+      "rule4": "Sink all enemy ships to win!"
     }
   },
   "dotsandboxes": {
@@ -2010,14 +2129,10 @@
     "opponentCompletedBox": "Opponent completed {count} box(es)!",
     "howToPlay": "How to Play",
     "rules": {
-      "objective": "Objective",
-      "objectiveDesc": "Complete more boxes than your opponent.",
-      "gameplay": "Gameplay",
-      "gameplayDesc": "Take turns drawing lines between adjacent dots.",
-      "scoring": "Scoring",
-      "scoringDesc": "Complete a box by drawing its 4th side to claim it and get an extra turn.",
-      "end": "End",
-      "endDesc": "Game ends when all boxes are claimed. Player with more boxes wins."
+      "rule1": "Take turns drawing lines between dots.",
+      "rule2": "Complete the fourth side of a box to claim it.",
+      "rule3": "When you complete a box, you get another turn.",
+      "rule4": "The player with the most boxes wins!"
     }
   },
   "lotto": {
@@ -2837,6 +2952,10 @@
       "imageEdit": {
         "title": "Image Editor",
         "description": "Basic image editing"
+      },
+      "gameHub": {
+        "title": "Game Center",
+        "description": "All games in one place with online & AI modes"
       },
       "lotto": {
         "title": "Lotto Generator",

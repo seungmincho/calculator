@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { ArrowLeft, Trophy, RefreshCw, Flag, Users, Copy, Check, Send, MessageCircle, AlertCircle, X } from 'lucide-react'
 import { useGameRoom } from '@/hooks/useGameRoom'
 import { usePeerConnection } from '@/hooks/usePeerConnection'
-import { GameRoom, OmokGameState, OmokMove, sendRoomHeartbeat, incrementGamesPlayed } from '@/utils/webrtc'
+import { GameRoom, OmokGameState, OmokMove, sendRoomHeartbeat, incrementGamesPlayed, updateRoomHostId, getRoom } from '@/utils/webrtc'
 import { PeerMessage } from '@/utils/webrtc/peerManager'
 import GameLobby from './GameLobby'
 import OmokBoard, { createInitialGameState, checkWinner, checkDoubleThree } from './OmokBoard'
@@ -26,7 +26,14 @@ interface ToastMessage {
   type: 'error' | 'warning' | 'info' | 'success'
 }
 
-export default function Omok() {
+interface OmokProps {
+  initialRoom?: GameRoom
+  isHost?: boolean
+  hostPeerId?: string
+  onBack?: () => void
+}
+
+export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokProps) {
   const t = useTranslations('omok')
 
   const [gamePhase, setGamePhase] = useState<GamePhase>('lobby')
@@ -38,6 +45,8 @@ export default function Omok() {
   const [copied, setCopied] = useState(false)
   const [winCount, setWinCount] = useState<{ black: number; white: number }>({ black: 0, white: 0 })
   const isHostRef = useRef(false)
+  const gameCountedRef = useRef(false)  // 게임 시작 시 중복 카운트 방지
+  const wasConnectedRef = useRef(false)  // 실제로 연결된 적이 있는지 추적
 
   // 채팅 관련 상태
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
@@ -97,6 +106,142 @@ export default function Omok() {
     if (stored) setPlayerName(stored)
   }, [])
 
+  // initialRoom이 있으면 자동으로 방에 접속 (GameHub에서 온 경우)
+  const [isCreatingPeer, setIsCreatingPeer] = useState(false)
+  const initialRoomIdRef = useRef<string | null>(null)
+  const setupInProgressRef = useRef(false)
+
+  // 함수들을 ref로 저장하여 deps 문제 방지
+  const createPeerRoomRef = useRef(createPeerRoom)
+  const joinPeerRoomRef = useRef(joinPeerRoom)
+  const leaveSupabaseRoomRef = useRef(leaveSupabaseRoom)
+  const showToastRef = useRef(showToast)
+  const onBackRef = useRef(onBack)
+
+  useEffect(() => {
+    createPeerRoomRef.current = createPeerRoom
+    joinPeerRoomRef.current = joinPeerRoom
+    leaveSupabaseRoomRef.current = leaveSupabaseRoom
+    showToastRef.current = showToast
+    onBackRef.current = onBack
+  })
+
+  useEffect(() => {
+    // 이미 처리한 방이면 스킵
+    if (!initialRoom || initialRoomIdRef.current === initialRoom.id) {
+      return
+    }
+
+    // 이미 설정 중이면 스킵 (React Strict Mode 대응)
+    if (setupInProgressRef.current) {
+      console.log('[Omok] Setup already in progress, skipping...')
+      return
+    }
+
+    console.log('[Omok] Processing initialRoom:', initialRoom.id, 'isHost:', isHostProp)
+    initialRoomIdRef.current = initialRoom.id
+    setupInProgressRef.current = true
+
+    // 방 생성한 호스트인 경우 - 여기서 PeerJS 연결 생성
+    if (isHostProp) {
+      console.log('[Omok] Setting up as host')
+      // 먼저 상태 설정 (UI가 바로 대기 화면으로 전환)
+      setCurrentRoom(initialRoom)
+      setPlayerName(initialRoom.host_name)
+      setOpponentName('')
+      isHostRef.current = true
+      setMyColor('black')
+      setChatMessages([])
+      setWinCount({ black: 0, white: 0 })
+      setGamePhase('waiting')
+      setIsCreatingPeer(true)
+
+      // 비동기로 PeerJS 연결 생성
+      const setupHostPeer = async () => {
+        console.log('[Omok] Creating PeerJS connection...')
+        const newPeerId = await createPeerRoomRef.current()
+        console.log('[Omok] PeerJS created:', newPeerId)
+        setIsCreatingPeer(false)
+        setupInProgressRef.current = false
+
+        if (!newPeerId) {
+          showToastRef.current(t('createRoomError') || '방 생성에 실패했습니다.', 'error')
+          setGamePhase('lobby')
+          if (onBackRef.current) onBackRef.current()
+          return
+        }
+
+        // Supabase에 실제 PeerJS ID 업데이트
+        console.log('[Omok] Updating Supabase with PeerJS ID:', newPeerId)
+        await updateRoomHostId(initialRoom.id, newPeerId)
+      }
+      setupHostPeer()
+      return
+    }
+
+    // 게스트로 방 입장 - 바로 실행
+    console.log('[Omok] Setting up as guest')
+    const joinInitialRoom = async () => {
+      // 다른 사람 방에 입장
+      // GameHub에서 넘어온 경우 gameNickname 사용, 아니면 omok_player_name 사용
+      const gameNickname = localStorage.getItem('gameNickname')
+      const omokNickname = localStorage.getItem('omok_player_name')
+      const name = gameNickname || omokNickname || t('guest')
+      setPlayerName(name)
+      if (!omokNickname) localStorage.setItem('omok_player_name', name)
+      isHostRef.current = false
+      setOpponentName(initialRoom.host_name)
+
+      setCurrentRoom(initialRoom)
+      setChatMessages([])
+      setWinCount({ black: 0, white: 0 })
+      setGamePhase('waiting')
+
+      // PeerJS로 호스트에 연결 (host_id가 pending_으로 시작하면 최신 정보 가져오기)
+      let hostId = initialRoom.host_id
+      console.log('[Omok] Initial host_id:', hostId)
+
+      if (hostId.startsWith('pending_')) {
+        console.log('[Omok] Host ID is pending, polling for real ID...')
+        // 호스트가 PeerJS 연결을 생성할 때까지 대기 후 최신 방 정보 가져오기
+        for (let i = 0; i < 5; i++) {
+          await new Promise(resolve => setTimeout(resolve, 1000))
+          const updatedRoom = await getRoom(initialRoom.id)
+          console.log('[Omok] Poll attempt', i + 1, 'host_id:', updatedRoom?.host_id)
+          if (updatedRoom && !updatedRoom.host_id.startsWith('pending_')) {
+            hostId = updatedRoom.host_id
+            break
+          }
+        }
+
+        // 여전히 pending이면 연결 실패
+        if (hostId.startsWith('pending_')) {
+          console.log('[Omok] Host ID still pending after 5 attempts')
+          await leaveSupabaseRoomRef.current(initialRoom.id)
+          setGamePhase('lobby')
+          showToastRef.current(t('connectionFailed') || '호스트에 연결할 수 없습니다.', 'error')
+          setupInProgressRef.current = false
+          if (onBackRef.current) onBackRef.current()
+          return
+        }
+      }
+
+      console.log('[Omok] Connecting to host:', hostId)
+      const success = await joinPeerRoomRef.current(hostId)
+      console.log('[Omok] Join result:', success)
+      setupInProgressRef.current = false
+      if (!success) {
+        // 연결 실패 시 Supabase 방 상태 복구
+        await leaveSupabaseRoomRef.current(initialRoom.id)
+        setGamePhase('lobby')
+        showToastRef.current(t('connectionFailed') || '호스트에 연결할 수 없습니다. 방이 닫혔거나 호스트가 떠났습니다.', 'error')
+        if (onBackRef.current) onBackRef.current()
+      }
+    }
+    joinInitialRoom()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialRoom, isHostProp, t])
+
   // 채팅 스크롤 - 채팅창 내부에서만 스크롤
   useEffect(() => {
     if (showChat && chatContainerRef.current) {
@@ -111,19 +256,12 @@ export default function Omok() {
     }
   }, [showChat])
 
-  // 상대방 연결 끊김 처리
+  // 연결 상태 추적 - 실제로 연결된 적이 있는지 확인
   useEffect(() => {
-    if (onDisconnect) {
-      onDisconnect(() => {
-        console.log('[Omok] Opponent disconnected')
-        // 게임 중이거나 대기 중이면 알림
-        if (gamePhase === 'playing' || gamePhase === 'waiting' || gamePhase === 'finished') {
-          showToast(t('opponentDisconnected') || 'Opponent has disconnected', 'error')
-          handleBackToLobby()
-        }
-      })
+    if (isConnected) {
+      wasConnectedRef.current = true
     }
-  }, [onDisconnect, gamePhase, t, showToast])
+  }, [isConnected])
 
   // PeerJS 연결 성공 시 게임 시작
   useEffect(() => {
@@ -134,6 +272,12 @@ export default function Omok() {
         // 호스트는 흑돌
         setMyColor('black')
         sendMessage('ready', { playerName, color: 'black' })
+
+        // 게임 시작 시 게임판수 증가 (호스트만, 중복 방지)
+        if (currentRoom && !gameCountedRef.current) {
+          gameCountedRef.current = true
+          incrementGamesPlayed(currentRoom.id)
+        }
       } else {
         // 게스트는 백돌
         setMyColor('white')
@@ -142,7 +286,7 @@ export default function Omok() {
 
       setGamePhase('playing')
     }
-  }, [isConnected, gamePhase, playerName, sendMessage])
+  }, [isConnected, gamePhase, playerName, sendMessage, currentRoom])
 
   // 메시지 처리
   useEffect(() => {
@@ -180,6 +324,8 @@ export default function Omok() {
       case 'restart':
         setGameState(createInitialGameState())
         setGamePhase('playing')
+        // 게스트 입장에서 새 게임 시작 (호스트가 restart 메시지 보냈을 때)
+        // 호스트가 이미 카운트했으므로 게스트는 카운트하지 않음
         break
 
       case 'surrender':
@@ -211,7 +357,7 @@ export default function Omok() {
     }
   }, [lastMessage, myColor, showChat])
 
-  // 게임 상태에서 승자 확인 및 게임 완료 기록
+  // 게임 상태에서 승자 확인
   useEffect(() => {
     if (gameState.winner && gamePhase === 'playing') {
       setGamePhase('finished')
@@ -222,12 +368,8 @@ export default function Omok() {
           [gameState.winner as 'black' | 'white']: prev[gameState.winner as 'black' | 'white'] + 1
         }))
       }
-      // 호스트만 게임 완료 횟수 증가 (중복 방지)
-      if (currentRoom && isHostRef.current) {
-        incrementGamesPlayed(currentRoom.id)
-      }
     }
-  }, [gameState.winner, gamePhase, currentRoom])
+  }, [gameState.winner, gamePhase])
 
   // 방 heartbeat (5분마다 updated_at 갱신 - 비활성 방 정리용)
   useEffect(() => {
@@ -348,11 +490,16 @@ export default function Omok() {
     sendMessage('move', move)
   }, [myColor, gameState, sendMessage, t, showToast])
 
-  // 재시작
+  // 재시작 (새 게임)
   const handleRestart = () => {
     setGameState(createInitialGameState())
     setGamePhase('playing')
     sendMessage('restart', {})
+
+    // 호스트만 게임판수 증가 (새 게임 시작 기준)
+    if (currentRoom && isHostRef.current) {
+      incrementGamesPlayed(currentRoom.id)
+    }
   }
 
   // 기권
@@ -387,7 +534,23 @@ export default function Omok() {
     setWinCount({ black: 0, white: 0 })
     setGamePhase('lobby')
     isHostRef.current = false
+    gameCountedRef.current = false
+    wasConnectedRef.current = false
   }, [currentRoom, leaveSupabaseRoom, disconnectPeer, sendMessage])
+
+  // 상대방 연결 끊김 처리 - 실제로 연결된 적이 있을 때만 반응
+  useEffect(() => {
+    if (onDisconnect) {
+      onDisconnect(() => {
+        console.log('[Omok] Disconnect callback called, wasConnected:', wasConnectedRef.current)
+        // 실제로 연결된 적이 있고, 게임 중이거나 끝났을 때만 로비로 이동
+        if (wasConnectedRef.current && (gamePhase === 'playing' || gamePhase === 'finished')) {
+          showToast(t('opponentDisconnected') || 'Opponent has disconnected', 'error')
+          handleBackToLobby()
+        }
+      })
+    }
+  }, [onDisconnect, gamePhase, t, showToast, handleBackToLobby])
 
   // Peer ID 복사
   const handleCopyPeerId = async () => {
@@ -495,20 +658,32 @@ export default function Omok() {
           <div className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-6">
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Peer ID</p>
             <div className="flex items-center justify-center gap-2">
-              <p className="font-mono text-lg text-gray-900 dark:text-white break-all">
-                {peerId || 'Loading...'}
-              </p>
-              <button
-                onClick={handleCopyPeerId}
-                className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-all"
-                title="Copy"
-              >
-                {copied ? (
-                  <Check className="w-5 h-5 text-green-500" />
-                ) : (
-                  <Copy className="w-5 h-5 text-gray-500" />
-                )}
-              </button>
+              {isCreatingPeer ? (
+                <div className="flex items-center gap-2">
+                  <RefreshCw className="w-5 h-5 animate-spin text-indigo-500" />
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {t('creatingConnection') || 'Creating connection...'}
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <p className="font-mono text-lg text-gray-900 dark:text-white break-all">
+                    {peerId || 'Loading...'}
+                  </p>
+                  <button
+                    onClick={handleCopyPeerId}
+                    className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-all"
+                    title="Copy"
+                    disabled={!peerId}
+                  >
+                    {copied ? (
+                      <Check className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <Copy className="w-5 h-5 text-gray-500" />
+                    )}
+                  </button>
+                </>
+              )}
             </div>
           </div>
 

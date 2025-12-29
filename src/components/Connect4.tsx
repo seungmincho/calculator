@@ -36,7 +36,14 @@ interface WinCount {
   yellow: number
 }
 
-export default function Connect4() {
+interface Connect4Props {
+  initialRoom?: GameRoom
+  isHost?: boolean
+  hostPeerId?: string
+  onBack?: () => void
+}
+
+export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, onBack }: Connect4Props) {
   const t = useTranslations('connect4')
 
   const [gamePhase, setGamePhase] = useState<GamePhase>('lobby')
@@ -49,6 +56,7 @@ export default function Connect4() {
   const [showRules, setShowRules] = useState(false)
   const [winCount, setWinCount] = useState<WinCount>({ red: 0, yellow: 0 })
   const isHostRef = useRef(false)
+  const gameCountedRef = useRef(false)  // 게임 시작 시 중복 카운트 방지
 
   // 채팅 관련 상태
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
@@ -107,6 +115,61 @@ export default function Connect4() {
     if (stored) setPlayerName(stored)
   }, [])
 
+  // initialRoom이 있으면 자동으로 방에 접속 (GameHub에서 온 경우)
+  const initialRoomProcessed = useRef(false)
+  useEffect(() => {
+    if (initialRoom && !initialRoomProcessed.current) {
+      initialRoomProcessed.current = true
+
+      // 방 생성한 호스트인 경우 - GameHub에서 이미 PeerJS 방 생성됨
+      if (isHostProp && hostPeerId) {
+        setCurrentRoom(initialRoom)
+        setPlayerName(initialRoom.host_name)
+        setOpponentName('')
+        isHostRef.current = true
+        setMyColor('red')
+        setChatMessages([])
+        setWinCount({ red: 0, yellow: 0 })
+        setGamePhase('waiting')
+        return
+      }
+
+      // 게스트로 방 입장 - 바로 실행
+      const joinInitialRoom = async () => {
+        const stored = localStorage.getItem('connect4_player_name')
+        const name = stored || t('guest')
+        setPlayerName(name)
+        if (!stored) localStorage.setItem('connect4_player_name', name)
+        isHostRef.current = false
+        setOpponentName(initialRoom.host_name)
+
+        // Supabase에서 방 상태 변경
+        const joined = await joinSupabaseRoom(initialRoom.id)
+        if (!joined) {
+          showToast(t('roomAlreadyFull') || 'Room is already full', 'error')
+          if (onBack) onBack()
+          return
+        }
+
+        setCurrentRoom(initialRoom)
+        setChatMessages([])
+        setWinCount({ red: 0, yellow: 0 })
+        setGamePhase('waiting')
+
+        // PeerJS로 호스트에 연결
+        const success = await joinPeerRoom(initialRoom.host_id)
+        if (!success) {
+          // 연결 실패 시 Supabase 방 상태 복구
+          await leaveSupabaseRoom(initialRoom.id)
+          setGamePhase('lobby')
+          showToast(t('connectionFailed') || 'Failed to connect to host', 'error')
+          if (onBack) onBack()
+        }
+      }
+      joinInitialRoom()
+    }
+  }, [initialRoom, isHostProp, hostPeerId, joinSupabaseRoom, joinPeerRoom, leaveSupabaseRoom, showToast, t, onBack])
+
   // 채팅 스크롤
   useEffect(() => {
     if (showChat && chatContainerRef.current) {
@@ -136,13 +199,19 @@ export default function Connect4() {
       if (isHostRef.current) {
         setMyColor('red')
         sendMessage('ready', { playerName, color: 'red' })
+
+        // 게임 시작 시 게임판수 증가 (호스트만, 중복 방지)
+        if (currentRoom && !gameCountedRef.current) {
+          gameCountedRef.current = true
+          incrementGamesPlayed(currentRoom.id)
+        }
       } else {
         setMyColor('yellow')
         sendMessage('ready', { playerName, color: 'yellow' })
       }
       setGamePhase('playing')
     }
-  }, [isConnected, gamePhase, playerName, sendMessage])
+  }, [isConnected, gamePhase, playerName, sendMessage, currentRoom])
 
   // 메시지 처리
   useEffect(() => {
@@ -205,11 +274,8 @@ export default function Connect4() {
           [gameState.winner as 'red' | 'yellow']: prev[gameState.winner as 'red' | 'yellow'] + 1
         }))
       }
-      if (currentRoom && isHostRef.current) {
-        incrementGamesPlayed(currentRoom.id)
-      }
     }
-  }, [gameState.winner, gamePhase, currentRoom])
+  }, [gameState.winner, gamePhase])
 
   // 방 heartbeat
   useEffect(() => {
@@ -290,11 +356,16 @@ export default function Connect4() {
     sendMessage('move', { col, player: myColor })
   }, [myColor, gameState, sendMessage])
 
-  // 재시작
+  // 재시작 (새 게임)
   const handleRestart = () => {
     setGameState(createInitialConnect4State())
     setGamePhase('playing')
     sendMessage('restart', {})
+
+    // 호스트만 게임판수 증가 (새 게임 시작 기준)
+    if (currentRoom && isHostRef.current) {
+      incrementGamesPlayed(currentRoom.id)
+    }
   }
 
   // 기권
@@ -324,6 +395,7 @@ export default function Connect4() {
     setWinCount({ red: 0, yellow: 0 })
     setGamePhase('lobby')
     isHostRef.current = false
+    gameCountedRef.current = false
   }, [currentRoom, leaveSupabaseRoom, disconnectPeer, sendMessage])
 
   // Peer ID 복사

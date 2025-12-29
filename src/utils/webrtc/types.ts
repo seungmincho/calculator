@@ -70,3 +70,32 @@ export interface GameRecord {
   created_at: string
   finished_at: string | null
 }
+
+// AI 대전 난이도
+export type Difficulty = 'easy' | 'normal' | 'hard'
+
+// AI 대전 결과
+export type GameResult = 'win' | 'loss' | 'draw'
+
+// AI 게임 통계 (Supabase ai_game_stats 테이블)
+export interface AIGameStats {
+  id: string
+  player_id: string
+  game_type: GameType
+  difficulty: Difficulty
+  wins: number
+  losses: number
+  draws: number
+  created_at: string
+  updated_at: string
+}
+
+// 플레이어의 게임별 통계 요약
+export interface PlayerGameStats {
+  game_type: GameType
+  easy: { wins: number; losses: number; draws: number; total: number }
+  normal: { wins: number; losses: number; draws: number; total: number }
+  hard: { wins: number; losses: number; draws: number; total: number }
+  totalGames: number
+  totalWins: number
+}
