@@ -2,11 +2,12 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from 'next-intl'
-import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3 } from 'lucide-react'
-import OmokBoardComponent, { createInitialGameState, checkWinner } from '@/components/OmokBoard'
+import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3, AlertCircle, X } from 'lucide-react'
+import OmokBoardComponent from '@/components/OmokBoard'
 import { OmokGameState, OmokMove } from '@/utils/webrtc'
 import { getOmokAIMove, Difficulty } from '@/utils/gameAI'
 import { useAIGameStats } from '@/hooks/useAIGameStats'
+import { createInitialGameState, checkWinner, checkForbiddenMove } from '@/utils/gameRules/omokRules'
 
 interface OmokAIProps {
   difficulty: Difficulty
@@ -23,6 +24,7 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
   const [showRules, setShowRules] = useState(false)
   const [showStats, setShowStats] = useState(false)
   const [winCount, setWinCount] = useState({ player: 0, ai: 0 })
+  const [forbiddenToast, setForbiddenToast] = useState<string | null>(null)
   const resultRecordedRef = useRef(false) // 결과 중복 기록 방지
 
   // AI 게임 통계
@@ -85,10 +87,34 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
     }
   }, [gameState.winner, playerColor, recordResult])
 
+  // Get forbidden move message
+  const getForbiddenMessage = (reason: string): string => {
+    switch (reason) {
+      case 'double-three':
+        return t('doubleThreeForbidden') || '쌍삼(3-3)은 금수입니다!'
+      case 'double-four':
+        return t('doubleFourForbidden') || '쌍사(4-4)는 금수입니다!'
+      case 'overline':
+        return t('overlineForbidden') || '장목(6목 이상)은 금수입니다!'
+      default:
+        return t('forbiddenMove') || '금수입니다!'
+    }
+  }
+
   // Player move
   const handleMove = useCallback((x: number, y: number) => {
     if (!isPlayerTurn || gameState.winner || isThinking) return
     if (gameState.board[y][x] !== null) return
+
+    // Check for forbidden moves (Renju rules - black only)
+    if (playerColor === 'black') {
+      const forbidden = checkForbiddenMove(gameState.board, x, y, playerColor)
+      if (forbidden.forbidden && forbidden.reason) {
+        setForbiddenToast(getForbiddenMessage(forbidden.reason))
+        setTimeout(() => setForbiddenToast(null), 2000)
+        return
+      }
+    }
 
     const newBoard = gameState.board.map(row => [...row])
     newBoard[y][x] = playerColor
@@ -110,7 +136,7 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
       winner,
       lastMove: newMove
     }))
-  }, [gameState, isPlayerTurn, playerColor, aiColor, isThinking])
+  }, [gameState, isPlayerTurn, playerColor, aiColor, isThinking, t])
 
   // Restart game
   const handleRestart = () => {
@@ -330,9 +356,26 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
             <p>2. {t('rules.rule2') || 'The goal is to get 5 stones in a row (horizontally, vertically, or diagonally).'}</p>
             <p>3. {t('rules.rule3') || 'Once placed, stones cannot be moved.'}</p>
             <p>4. {t('rules.rule4') || 'The first player to connect 5 stones wins!'}</p>
+            <p>5. {t('rules.rule5') || 'Black has forbidden moves: double-three (3-3), double-four (4-4), and overline (6+).'}</p>
           </div>
         )}
       </div>
+
+      {/* Forbidden Move Toast */}
+      {forbiddenToast && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg bg-amber-500 text-white animate-in slide-in-from-top-2 fade-in duration-200">
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <span className="font-medium">{forbiddenToast}</span>
+            <button
+              onClick={() => setForbiddenToast(null)}
+              className="ml-2 p-1 hover:bg-white/20 rounded-full transition-all"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

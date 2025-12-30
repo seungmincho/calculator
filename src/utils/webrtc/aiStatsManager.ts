@@ -270,3 +270,130 @@ export const getAIGamesCountByType = async (gameType: GameType): Promise<number>
     0
   )
 }
+
+// 전체 글로벌 통계 (AI 대전 + 온라인 대전 통합)
+export interface GlobalStats {
+  // 전체 통계
+  totalGames: number           // AI + 온라인 총 게임 수
+  totalAIGames: number         // AI 대전 수
+  totalOnlineGames: number     // 온라인 대전 수
+  totalRoomsCreated: number    // 생성된 방 수
+  uniquePlayers: number        // 고유 플레이어 수
+  // AI 대전 통계
+  totalWins: number
+  totalLosses: number
+  totalDraws: number
+  // 게임별 통계
+  byGameType: Record<GameType, {
+    games: number          // 총 게임 수 (AI + 온라인)
+    aiGames: number        // AI 대전 수
+    onlineGames: number    // 온라인 대전 수
+    roomsCreated: number   // 생성된 방 수
+    wins: number
+    losses: number
+    draws: number
+  }>
+}
+
+const ROOMS_TABLE = 'game_rooms'
+
+export const getGlobalStats = async (gameTypes: GameType[]): Promise<GlobalStats> => {
+  const defaultStats: GlobalStats = {
+    totalGames: 0,
+    totalAIGames: 0,
+    totalOnlineGames: 0,
+    totalRoomsCreated: 0,
+    uniquePlayers: 0,
+    totalWins: 0,
+    totalLosses: 0,
+    totalDraws: 0,
+    byGameType: {} as GlobalStats['byGameType']
+  }
+
+  // 게임 타입별 초기화
+  gameTypes.forEach(gt => {
+    defaultStats.byGameType[gt] = {
+      games: 0, aiGames: 0, onlineGames: 0, roomsCreated: 0,
+      wins: 0, losses: 0, draws: 0
+    }
+  })
+
+  const supabase = getSupabase()
+  if (!supabase) {
+    return defaultStats
+  }
+
+  try {
+    // 1. AI 대전 통계 조회
+    const { data: aiData, error: aiError } = await supabase
+      .from(AI_STATS_TABLE)
+      .select('player_id, game_type, wins, losses, draws')
+
+    // 2. 온라인 대전 통계 조회 (game_rooms 테이블)
+    const { data: roomData, error: roomError } = await supabase
+      .from(ROOMS_TABLE)
+      .select('game_type, games_played, host_id')
+
+    const uniquePlayerIds = new Set<string>()
+
+    // AI 대전 통계 집계
+    if (!aiError && aiData) {
+      aiData.forEach((stat: { player_id: string, game_type: string, wins: number, losses: number, draws: number }) => {
+        uniquePlayerIds.add(stat.player_id)
+
+        const wins = stat.wins || 0
+        const losses = stat.losses || 0
+        const draws = stat.draws || 0
+        const games = wins + losses + draws
+
+        defaultStats.totalAIGames += games
+        defaultStats.totalWins += wins
+        defaultStats.totalLosses += losses
+        defaultStats.totalDraws += draws
+
+        const gameType = stat.game_type as GameType
+        if (defaultStats.byGameType[gameType]) {
+          defaultStats.byGameType[gameType].aiGames += games
+          defaultStats.byGameType[gameType].wins += wins
+          defaultStats.byGameType[gameType].losses += losses
+          defaultStats.byGameType[gameType].draws += draws
+        }
+      })
+    }
+
+    // 온라인 대전 통계 집계
+    if (!roomError && roomData) {
+      roomData.forEach((room: { game_type: string, games_played: number, host_id: string }) => {
+        if (room.host_id) {
+          uniquePlayerIds.add(room.host_id)
+        }
+
+        const gamesPlayed = room.games_played || 0
+        const gameType = room.game_type as GameType
+
+        defaultStats.totalRoomsCreated += 1
+        defaultStats.totalOnlineGames += gamesPlayed
+
+        if (defaultStats.byGameType[gameType]) {
+          defaultStats.byGameType[gameType].roomsCreated += 1
+          defaultStats.byGameType[gameType].onlineGames += gamesPlayed
+        }
+      })
+    }
+
+    // 총 게임 수 계산
+    defaultStats.totalGames = defaultStats.totalAIGames + defaultStats.totalOnlineGames
+    defaultStats.uniquePlayers = uniquePlayerIds.size
+
+    // 게임별 총 게임 수 계산
+    gameTypes.forEach(gt => {
+      const stats = defaultStats.byGameType[gt]
+      stats.games = stats.aiGames + stats.onlineGames
+    })
+
+    return defaultStats
+  } catch (err) {
+    console.error('Error fetching global stats:', err)
+    return defaultStats
+  }
+}

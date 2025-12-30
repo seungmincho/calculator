@@ -1,17 +1,41 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Calculator, Menu, X, ChevronDown } from 'lucide-react';
+import { Calculator, Menu, X, ChevronDown, Clock, Grid3X3 } from 'lucide-react';
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
 import { useTranslations } from 'next-intl';
 import { menuConfig, categoryKeys } from '@/config/menuConfig';
+import { getRecentToolsByCategory, recordToolUsage } from '@/utils/recentTools';
+
+const MAX_RECENT_DISPLAY = 4; // 최근 사용 표시 최대 개수
+
+// 카테고리별 기본 추천 항목 인덱스 (최근 사용이 없을 때)
+const DEFAULT_INDICES: Record<string, number[]> = {
+  calculators: [0, 1, 2, 3],
+  tools: [0, 1, 2, 3],
+  health: [0, 1, 2, 3],
+  games: [0, 1, 2, 3],
+};
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [recentTools, setRecentTools] = useState<Record<string, string[]>>({});
   const headerRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
+
+  // 최근 사용 도구 로드 (클라이언트에서만)
+  useEffect(() => {
+    const loadRecentTools = () => {
+      const recent: Record<string, string[]> = {};
+      categoryKeys.forEach(key => {
+        recent[key] = getRecentToolsByCategory(key);
+      });
+      setRecentTools(recent);
+    };
+    loadRecentTools();
+  }, []);
 
   // menuConfig에서 번역된 메뉴 아이템 생성
   const getMenuItems = () => {
@@ -59,6 +83,51 @@ const Header = () => {
 
   const closeDropdown = () => {
     setOpenDropdown(null);
+  };
+
+  // 도구 클릭 핸들러 (사용 기록 저장)
+  const handleToolClick = (category: string, href: string) => {
+    recordToolUsage(category, href);
+    // 상태 업데이트
+    setRecentTools(prev => ({
+      ...prev,
+      [category]: [href, ...(prev[category] || []).filter(h => h !== href)].slice(0, MAX_RECENT_DISPLAY)
+    }));
+    closeDropdown();
+  };
+
+  // 최근 사용 또는 기본 추천 항목 가져오기
+  const getRecentOrDefaultItems = (key: string) => {
+    const recentHrefs = recentTools[key] || [];
+    const items = menuItems[key].items;
+
+    if (recentHrefs.length > 0) {
+      // 최근 사용 항목이 있으면 href로 매칭
+      const recentItems = recentHrefs
+        .map(href => items.find(item => item.href === href))
+        .filter(Boolean)
+        .slice(0, MAX_RECENT_DISPLAY);
+
+      // 최근 사용이 4개 미만이면 기본 항목으로 채우기
+      if (recentItems.length < MAX_RECENT_DISPLAY) {
+        const defaultIndices = DEFAULT_INDICES[key] || [0, 1, 2, 3];
+        const additionalItems = defaultIndices
+          .map(i => items[i])
+          .filter(item => item && !recentItems.some(r => r?.href === item.href))
+          .slice(0, MAX_RECENT_DISPLAY - recentItems.length);
+        return [...recentItems, ...additionalItems];
+      }
+      return recentItems;
+    }
+
+    // 최근 사용이 없으면 기본 추천 항목
+    const indices = DEFAULT_INDICES[key] || [0, 1, 2, 3];
+    return indices.map(i => items[i]).filter(Boolean);
+  };
+
+  // 최근 사용 항목이 있는지 확인
+  const hasRecentItems = (key: string) => {
+    return (recentTools[key] || []).length > 0;
   };
 
   // 모바일 메뉴 열릴 때 배경 스크롤 방지
@@ -134,19 +203,52 @@ const Header = () => {
                 </button>
 
                 {openDropdown === key && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[480px] bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-3 z-50">
-                    <div className="grid grid-cols-3 gap-2">
-                      {menuItems[key].items.map((item) => (
-                        <a
-                          key={item.href}
-                          href={item.href}
-                          onClick={closeDropdown}
-                          className="flex flex-col items-center text-center p-3 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-600 transition-colors"
-                        >
-                          <span className="text-2xl mb-1">{item.icon}</span>
-                          <span className="text-xs font-medium leading-tight">{item.label}</span>
-                        </a>
-                      ))}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[520px] bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden">
+                    <div className="flex">
+                      {/* 왼쪽: 최근 사용 또는 추천 항목 */}
+                      <div className="w-[180px] bg-gray-50 dark:bg-gray-900/50 p-3 border-r border-gray-200 dark:border-gray-700">
+                        <div className="flex items-center gap-1.5 mb-3 px-1">
+                          <Clock className="w-3.5 h-3.5 text-blue-500" />
+                          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                            {hasRecentItems(key) ? t('header.recent') : t('header.recommended')}
+                          </span>
+                        </div>
+                        <div className="space-y-1">
+                          {getRecentOrDefaultItems(key).map((item) => item && (
+                            <a
+                              key={item.href}
+                              href={item.href}
+                              onClick={() => handleToolClick(key, item.href)}
+                              className="flex items-center gap-2 px-2 py-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-gray-800 hover:text-blue-600 transition-colors"
+                            >
+                              <span className="text-lg">{item.icon}</span>
+                              <span className="text-sm font-medium truncate">{item.label}</span>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                      {/* 오른쪽: 전체 목록 (스크롤) */}
+                      <div className="flex-1 p-3">
+                        <div className="flex items-center gap-1.5 mb-3 px-1">
+                          <Grid3X3 className="w-3.5 h-3.5 text-gray-400" />
+                          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('header.all')} ({menuItems[key].items.length})</span>
+                        </div>
+                        <div className="max-h-[280px] overflow-y-auto pr-1">
+                          <div className="grid grid-cols-3 gap-1.5">
+                            {menuItems[key].items.map((item) => (
+                              <a
+                                key={item.href}
+                                href={item.href}
+                                onClick={() => handleToolClick(key, item.href)}
+                                className="flex flex-col items-center text-center p-2.5 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-600 transition-colors"
+                              >
+                                <span className="text-xl mb-1">{item.icon}</span>
+                                <span className="text-[11px] font-medium leading-tight line-clamp-2">{item.label}</span>
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}

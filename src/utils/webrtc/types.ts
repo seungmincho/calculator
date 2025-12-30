@@ -9,6 +9,7 @@ export interface GameRoom {
   id: string
   host_name: string
   host_id: string
+  room_title?: string  // 방 제목 (선택)
   game_type: GameType
   status: RoomStatus
   is_private: boolean
@@ -23,6 +24,7 @@ export interface CreateRoomInput {
   hostId: string
   gameType: GameType
   isPrivate?: boolean
+  roomTitle?: string  // 방 제목 (선택)
 }
 
 // 플레이어 정보 (Presence용)

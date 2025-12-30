@@ -1,9 +1,17 @@
 'use client'
 
 import { useRef, useEffect, useState, useCallback } from 'react'
-import { OmokMove, OmokGameState } from '@/utils/webrtc'
+import { OmokGameState } from '@/utils/webrtc'
+import {
+  BOARD_SIZE,
+  createInitialGameState,
+  checkWinner,
+  checkDoubleThree,
+  checkForbiddenMove
+} from '@/utils/gameRules/omokRules'
 
-const BOARD_SIZE = 19
+// Re-export for backward compatibility
+export { createInitialGameState, checkWinner, checkDoubleThree, checkForbiddenMove }
 const CELL_SIZE = 32
 const PADDING = 24
 const STONE_RADIUS = 14
@@ -244,156 +252,4 @@ export default function OmokBoard({
       />
     </div>
   )
-}
-
-// 초기 게임 상태 생성
-export const createInitialGameState = (): OmokGameState => ({
-  board: Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(null)),
-  currentTurn: 'black',
-  moveHistory: [],
-  winner: null,
-  lastMove: null
-})
-
-// 5목 검사
-export const checkWinner = (
-  board: OmokGameState['board'],
-  lastMove: OmokMove
-): 'black' | 'white' | null => {
-  const { x, y, player } = lastMove
-  const directions = [
-    [1, 0],   // 가로
-    [0, 1],   // 세로
-    [1, 1],   // 대각선 ↘
-    [1, -1]   // 대각선 ↗
-  ]
-
-  for (const [dx, dy] of directions) {
-    let count = 1
-
-    // 정방향
-    for (let i = 1; i < 5; i++) {
-      const nx = x + dx * i
-      const ny = y + dy * i
-      if (nx < 0 || nx >= BOARD_SIZE || ny < 0 || ny >= BOARD_SIZE) break
-      if (board[ny][nx] !== player) break
-      count++
-    }
-
-    // 역방향
-    for (let i = 1; i < 5; i++) {
-      const nx = x - dx * i
-      const ny = y - dy * i
-      if (nx < 0 || nx >= BOARD_SIZE || ny < 0 || ny >= BOARD_SIZE) break
-      if (board[ny][nx] !== player) break
-      count++
-    }
-
-    if (count >= 5) return player
-  }
-
-  return null
-}
-
-// 특정 방향에서 열린 3 체크 (양 끝이 막혀있지 않은 연속 3개)
-const checkOpenThree = (
-  board: OmokGameState['board'],
-  x: number,
-  y: number,
-  player: 'black' | 'white',
-  dx: number,
-  dy: number
-): boolean => {
-  // 가상으로 돌을 놓은 상태의 보드
-  const tempBoard = board.map(row => [...row])
-  tempBoard[y][x] = player
-
-  // 해당 방향으로 연속된 돌 찾기
-  let stones: { x: number; y: number }[] = [{ x, y }]
-
-  // 정방향 탐색
-  for (let i = 1; i <= 4; i++) {
-    const nx = x + dx * i
-    const ny = y + dy * i
-    if (nx < 0 || nx >= BOARD_SIZE || ny < 0 || ny >= BOARD_SIZE) break
-    if (tempBoard[ny][nx] === player) {
-      stones.push({ x: nx, y: ny })
-    } else if (tempBoard[ny][nx] === null) {
-      break
-    } else {
-      break
-    }
-  }
-
-  // 역방향 탐색
-  for (let i = 1; i <= 4; i++) {
-    const nx = x - dx * i
-    const ny = y - dy * i
-    if (nx < 0 || nx >= BOARD_SIZE || ny < 0 || ny >= BOARD_SIZE) break
-    if (tempBoard[ny][nx] === player) {
-      stones.unshift({ x: nx, y: ny })
-    } else if (tempBoard[ny][nx] === null) {
-      break
-    } else {
-      break
-    }
-  }
-
-  // 연속된 돌이 정확히 3개인지 확인
-  if (stones.length !== 3) return false
-
-  // 양 끝 확인
-  const first = stones[0]
-  const last = stones[stones.length - 1]
-
-  // 첫 번째 돌 앞
-  const beforeX = first.x - dx
-  const beforeY = first.y - dy
-  // 마지막 돌 뒤
-  const afterX = last.x + dx
-  const afterY = last.y + dy
-
-  // 양쪽 끝이 비어있는지 확인 (열린 3)
-  const beforeEmpty = (
-    beforeX >= 0 && beforeX < BOARD_SIZE &&
-    beforeY >= 0 && beforeY < BOARD_SIZE &&
-    tempBoard[beforeY][beforeX] === null
-  )
-  const afterEmpty = (
-    afterX >= 0 && afterX < BOARD_SIZE &&
-    afterY >= 0 && afterY < BOARD_SIZE &&
-    tempBoard[afterY][afterX] === null
-  )
-
-  // 양 끝이 모두 비어있어야 열린 3
-  return beforeEmpty && afterEmpty
-}
-
-// 쌍삼(3-3) 검사 - 흑돌만 적용
-export const checkDoubleThree = (
-  board: OmokGameState['board'],
-  x: number,
-  y: number,
-  player: 'black' | 'white'
-): boolean => {
-  // 흑돌에만 쌍삼 금지 적용 (렌주 룰)
-  if (player !== 'black') return false
-
-  const directions = [
-    [1, 0],   // 가로
-    [0, 1],   // 세로
-    [1, 1],   // 대각선 ↘
-    [1, -1]   // 대각선 ↗
-  ]
-
-  let openThreeCount = 0
-
-  for (const [dx, dy] of directions) {
-    if (checkOpenThree(board, x, y, player, dx, dy)) {
-      openThreeCount++
-    }
-  }
-
-  // 2개 이상의 열린 3이 형성되면 쌍삼
-  return openThreeCount >= 2
 }

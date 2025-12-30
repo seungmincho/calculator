@@ -5,10 +5,11 @@ import { useTranslations } from 'next-intl'
 import { ArrowLeft, Trophy, RefreshCw, Flag, Users, Copy, Check, Send, MessageCircle, AlertCircle, X } from 'lucide-react'
 import { useGameRoom } from '@/hooks/useGameRoom'
 import { usePeerConnection } from '@/hooks/usePeerConnection'
-import { GameRoom, OmokGameState, OmokMove, sendRoomHeartbeat, incrementGamesPlayed, updateRoomHostId, getRoom } from '@/utils/webrtc'
+import { GameRoom, OmokGameState, OmokMove, sendRoomHeartbeat, incrementGamesPlayed, getRoom } from '@/utils/webrtc'
 import { PeerMessage } from '@/utils/webrtc/peerManager'
 import GameLobby from './GameLobby'
-import OmokBoard, { createInitialGameState, checkWinner, checkDoubleThree } from './OmokBoard'
+import OmokBoard from './OmokBoard'
+import { createInitialGameState, checkWinner, checkForbiddenMove } from '@/utils/gameRules/omokRules'
 
 type GamePhase = 'lobby' | 'waiting' | 'playing' | 'finished'
 
@@ -142,10 +143,11 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
     initialRoomIdRef.current = initialRoom.id
     setupInProgressRef.current = true
 
-    // 방 생성한 호스트인 경우 - 여기서 PeerJS 연결 생성
+    // 방 생성한 호스트인 경우
+    // GameHub에서 이미 PeerJS 연결을 생성하고 실제 PeerID로 Supabase에 등록함
+    // 여기서는 기존 연결을 재사용하기만 하면 됨
     if (isHostProp) {
-      console.log('[Omok] Setting up as host')
-      // 먼저 상태 설정 (UI가 바로 대기 화면으로 전환)
+      console.log('[Omok] Setting up as host (PeerJS already created by GameHub)')
       setCurrentRoom(initialRoom)
       setPlayerName(initialRoom.host_name)
       setOpponentName('')
@@ -154,32 +156,16 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
       setChatMessages([])
       setWinCount({ black: 0, white: 0 })
       setGamePhase('waiting')
-      setIsCreatingPeer(true)
+      setIsCreatingPeer(false)  // GameHub에서 이미 생성됨
+      setupInProgressRef.current = false
 
-      // 비동기로 PeerJS 연결 생성
-      const setupHostPeer = async () => {
-        console.log('[Omok] Creating PeerJS connection...')
-        const newPeerId = await createPeerRoomRef.current()
-        console.log('[Omok] PeerJS created:', newPeerId)
-        setIsCreatingPeer(false)
-        setupInProgressRef.current = false
-
-        if (!newPeerId) {
-          showToastRef.current(t('createRoomError') || '방 생성에 실패했습니다.', 'error')
-          setGamePhase('lobby')
-          if (onBackRef.current) onBackRef.current()
-          return
-        }
-
-        // Supabase에 실제 PeerJS ID 업데이트
-        console.log('[Omok] Updating Supabase with PeerJS ID:', newPeerId)
-        await updateRoomHostId(initialRoom.id, newPeerId)
-      }
-      setupHostPeer()
+      // GameHub에서 이미 PeerJS를 생성했으므로, usePeerConnection hook이
+      // 전역 PeerManager를 재사용하여 자동으로 콜백을 등록함
+      // 추가로 PeerJS 연결을 생성할 필요 없음
       return
     }
 
-    // 게스트로 방 입장 - 바로 실행
+    // 게스트로 방 입장
     console.log('[Omok] Setting up as guest')
     const joinInitialRoom = async () => {
       // 다른 사람 방에 입장
@@ -197,26 +183,26 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
       setWinCount({ black: 0, white: 0 })
       setGamePhase('waiting')
 
-      // PeerJS로 호스트에 연결 (host_id가 pending_으로 시작하면 최신 정보 가져오기)
+      // PeerJS로 호스트에 연결
+      // GameHub에서 실제 PeerID로 방이 생성되므로 pending_ 체크 불필요
+      // 하위 호환성을 위해 pending_ 체크는 유지하되, 빠르게 실패 처리
       let hostId = initialRoom.host_id
-      console.log('[Omok] Initial host_id:', hostId)
+      console.log('[Omok] Host ID:', hostId)
 
       if (hostId.startsWith('pending_')) {
-        console.log('[Omok] Host ID is pending, polling for real ID...')
-        // 호스트가 PeerJS 연결을 생성할 때까지 대기 후 최신 방 정보 가져오기
-        for (let i = 0; i < 5; i++) {
+        // 이 경우는 이전 버전 호환성을 위해 남겨둠 (드물게 발생)
+        console.log('[Omok] Host ID is pending (legacy), polling for real ID...')
+        for (let i = 0; i < 3; i++) {
           await new Promise(resolve => setTimeout(resolve, 1000))
           const updatedRoom = await getRoom(initialRoom.id)
-          console.log('[Omok] Poll attempt', i + 1, 'host_id:', updatedRoom?.host_id)
           if (updatedRoom && !updatedRoom.host_id.startsWith('pending_')) {
             hostId = updatedRoom.host_id
             break
           }
         }
 
-        // 여전히 pending이면 연결 실패
         if (hostId.startsWith('pending_')) {
-          console.log('[Omok] Host ID still pending after 5 attempts')
+          console.log('[Omok] Host ID still pending')
           await leaveSupabaseRoomRef.current(initialRoom.id)
           setGamePhase('lobby')
           showToastRef.current(t('connectionFailed') || '호스트에 연결할 수 없습니다.', 'error')
@@ -231,10 +217,9 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
       console.log('[Omok] Join result:', success)
       setupInProgressRef.current = false
       if (!success) {
-        // 연결 실패 시 Supabase 방 상태 복구
         await leaveSupabaseRoomRef.current(initialRoom.id)
         setGamePhase('lobby')
-        showToastRef.current(t('connectionFailed') || '호스트에 연결할 수 없습니다. 방이 닫혔거나 호스트가 떠났습니다.', 'error')
+        showToastRef.current(t('connectionFailed') || '호스트에 연결할 수 없습니다.', 'error')
         if (onBackRef.current) onBackRef.current()
       }
     }
@@ -452,14 +437,31 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
     }
   }
 
+  // Get forbidden move message
+  const getForbiddenMessage = (reason: string): string => {
+    switch (reason) {
+      case 'double-three':
+        return t('doubleThreeForbidden') || '쌍삼(3-3)은 금수입니다!'
+      case 'double-four':
+        return t('doubleFourForbidden') || '쌍사(4-4)는 금수입니다!'
+      case 'overline':
+        return t('overlineForbidden') || '장목(6목 이상)은 금수입니다!'
+      default:
+        return t('forbiddenMove') || '금수입니다!'
+    }
+  }
+
   // 착수 핸들러
   const handleMove = useCallback((x: number, y: number) => {
     if (!myColor || gameState.currentTurn !== myColor || gameState.winner) return
 
-    // 쌍삼(3-3) 체크 - 흑돌만 적용
-    if (myColor === 'black' && checkDoubleThree(gameState.board, x, y, myColor)) {
-      showToast(t('doubleThreeForbidden') || '쌍삼(3-3)은 금수입니다!', 'warning')
-      return
+    // 금수 체크 (렌주 룰 - 흑돌만 적용)
+    if (myColor === 'black') {
+      const forbidden = checkForbiddenMove(gameState.board, x, y, myColor)
+      if (forbidden.forbidden && forbidden.reason) {
+        showToast(getForbiddenMessage(forbidden.reason), 'warning')
+        return
+      }
     }
 
     const move: OmokMove = {

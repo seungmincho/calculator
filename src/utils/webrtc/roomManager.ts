@@ -65,15 +65,19 @@ export const createRoom = async (input: CreateRoomInput): Promise<GameRoom | nul
   const supabase = getSupabase()
   if (!supabase) return null
 
+  // room_title 포함하여 저장
+  const insertData: Record<string, unknown> = {
+    host_name: input.hostName,
+    host_id: input.hostId,
+    game_type: input.gameType,
+    status: 'waiting' as RoomStatus,
+    is_private: input.isPrivate ?? false,
+    room_title: input.roomTitle || null
+  }
+
   const { data, error } = await supabase
     .from(ROOMS_TABLE)
-    .insert({
-      host_name: input.hostName,
-      host_id: input.hostId,
-      game_type: input.gameType,
-      status: 'waiting' as RoomStatus,
-      is_private: input.isPrivate ?? false
-    })
+    .insert(insertData)
     .select()
     .single()
 

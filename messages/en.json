@@ -85,7 +85,11 @@
   },
   "header": {
     "title": "ToolHub",
-    "language": "Language"
+    "language": "Language",
+    "popular": "Popular",
+    "recent": "Recent",
+    "recommended": "Recommended",
+    "all": "All"
   },
   "timeConverter": {
     "title": "Time Converter",
@@ -859,9 +863,66 @@
       "checkers": "Checkers",
       "mancala": "Mancala",
       "battleship": "Battleship",
-      "dotsAndBoxes": "Dots and Boxes"
+      "dotsAndBoxes": "Dots and Boxes",
+      "characterCounter": "Character Counter",
+      "base64Converter": "Base64 Converter",
+      "urlEncoder": "URL Encoder",
+      "hashGenerator": "Hash Generator",
+      "diffViewer": "Diff Viewer",
+      "colorConverter": "Color Converter",
+      "loremIpsum": "Lorem Ipsum Generator",
+      "unitConverter": "Unit Converter",
+      "textConverter": "Text Converter"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
+  },
+  "characterCounter": {
+    "title": "Character Counter",
+    "description": "Real-time analysis of character count, word count, and sentence count. Useful for blog posts, SNS posting, and report writing.",
+    "meta": {
+      "title": "Character Counter - Characters, Words, Sentences Counter",
+      "description": "Real-time calculation of character count, without spaces, word count, sentence count, and paragraph count. Useful for checking SNS character limits."
+    },
+    "input": {
+      "placeholder": "Enter or paste your text here..."
+    },
+    "stats": {
+      "characters": "Characters",
+      "withoutSpaces": "Without Spaces",
+      "words": "Words",
+      "sentences": "Sentences",
+      "paragraphs": "Paragraphs",
+      "lines": "Lines",
+      "bytes": "Bytes"
+    },
+    "actions": {
+      "copy": "Copy Text",
+      "clear": "Clear Text",
+      "copied": "Copied!"
+    },
+    "guide": {
+      "title": "Character Counter Guide",
+      "sections": {
+        "usage": {
+          "title": "Usage Examples",
+          "items": [
+            "Twitter: 280 characters limit",
+            "Instagram Bio: 150 characters",
+            "YouTube Title: 100 characters",
+            "Blog SEO Meta Description: 155-160 characters",
+            "SMS: 160 characters"
+          ]
+        },
+        "counting": {
+          "title": "Counting Methods",
+          "characters": "Characters: Total character count including spaces",
+          "withoutSpaces": "Without Spaces: Characters excluding spaces, tabs, and line breaks",
+          "words": "Words: Word count separated by spaces",
+          "sentences": "Sentences: Count of sentences ending with period, question mark, or exclamation mark",
+          "paragraphs": "Paragraphs: Paragraph count separated by blank lines"
+        }
+      }
+    }
   },
   "uuidGenerator": {
     "title": "UUID Generator",
@@ -1784,7 +1845,30 @@
     "totalGames": "Total Games",
     "vsAI": "vs AI",
     "aiStats": "AI Game Stats",
-    "noAiGames": "No AI game records yet"
+    "noAiGames": "No AI game records yet",
+    "winRate": "Win Rate",
+    "gameBreakdown": "Game Breakdown",
+    "globalStats": "Global Stats",
+    "totalGamesPlayed": "Total Games Played",
+    "uniquePlayers": "Unique Players",
+    "activePlayers": "Active Players",
+    "gamePopularity": "Game Popularity",
+    "noGlobalStats": "No statistics data yet",
+    "cancel": "Cancel",
+    "noNickname": "No Nickname",
+    "setNickname": "Set Nickname",
+    "setNicknameFirst": "Set your nickname for online play",
+    "edit": "Change",
+    "roomTitle": "Room Title",
+    "roomTitlePlaceholder": "Enter room title",
+    "roomTitlePlaceholderRequired": "Enter room title (required)",
+    "roomTitleRequired": "Room title is required",
+    "waiting": "Waiting",
+    "optional": "Optional",
+    "myNickname": "My Nickname",
+    "aiGames": "AI Games",
+    "onlineGames": "Online Games",
+    "roomsCreated": "Rooms Created"
   },
   "gameStats": {
     "title": "Game Statistics",
@@ -2026,6 +2110,8 @@
     "extraTurnLabel": "Extra Turn!",
     "youCaptured": "You captured {count} stones!",
     "opponentCaptured": "Opponent captured {count} stones!",
+    "bottom": "Bottom (You)",
+    "top": "Top (Opponent)",
     "howToPlay": "How to Play",
     "rules": {
       "rule1": "Pick a pit on your side and distribute stones counter-clockwise.",
@@ -2082,12 +2168,26 @@
     "hit": "Hit!",
     "youSunkShip": "You sunk a ship!",
     "yourShipSunk": "Your ship was sunk!",
+    "placingShip": "Placing Ship",
+    "shipsRemaining": "Ships Remaining",
+    "randomPlace": "Random Place",
+    "startBattle": "Start Battle",
     "howToPlay": "How to Play",
     "rules": {
       "rule1": "Place your ships on the board before battle begins.",
       "rule2": "Take turns firing at the enemy grid.",
       "rule3": "Red X marks a hit, gray dot marks a miss.",
-      "rule4": "Sink all enemy ships to win!"
+      "rule4": "Sink all enemy ships to win!",
+      "objective": "Objective",
+      "objectiveDesc": "Sink all 5 enemy ships to win the game.",
+      "setup": "Setup",
+      "setupDesc": "Place your 5 ships on the 10x10 grid. Ships can be placed horizontally or vertically.",
+      "ships": "Ships",
+      "shipsDesc": "Carrier (5), Battleship (4), Cruiser (3), Submarine (3), Destroyer (2)",
+      "gameplay": "Gameplay",
+      "gameplayDesc": "Take turns firing at enemy coordinates. Hit all parts of a ship to sink it.",
+      "end": "Victory",
+      "endDesc": "The player who sinks all 5 enemy ships first wins the game."
     }
   },
   "dotsandboxes": {
@@ -2123,6 +2223,7 @@
     "noChatMessages": "No messages yet",
     "moves": "Moves",
     "boxesRemaining": "Boxes Left",
+    "totalMoves": "Total Moves",
     "finalScore": "Final Score",
     "extraTurnLabel": "Extra Turn!",
     "youCompletedBox": "You completed {count} box(es)!",
@@ -3016,6 +3117,400 @@
       "dotsAndBoxes": {
         "title": "Dots and Boxes",
         "description": "Connect dots to claim boxes"
+      },
+      "characterCounter": {
+        "title": "Character Counter",
+        "description": "Real-time character, word, and sentence analysis"
+      },
+      "base64": {
+        "title": "Base64 Converter",
+        "description": "Encode/decode text and files to Base64"
+      },
+      "urlEncoder": {
+        "title": "URL Encoder",
+        "description": "URL encoding/decoding with parameter analysis"
+      },
+      "hashGenerator": {
+        "title": "Hash Generator",
+        "description": "Generate MD5, SHA-256 and other hashes"
+      },
+      "diffViewer": {
+        "title": "Diff Viewer",
+        "description": "Visual comparison of two texts"
+      },
+      "colorConverter": {
+        "title": "Color Converter",
+        "description": "Convert between HEX, RGB, HSL, CMYK"
+      },
+      "loremIpsum": {
+        "title": "Lorem Ipsum Generator",
+        "description": "Generate dummy text (Latin/Korean)"
+      },
+      "unitConverter": {
+        "title": "Unit Converter",
+        "description": "Convert length, weight, temperature, CSS units"
+      },
+      "textConverter": {
+        "title": "Text Converter",
+        "description": "Convert case, camelCase, snake_case"
+      }
+    }
+  },
+  "base64Converter": {
+    "title": "Base64 Encoder/Decoder",
+    "description": "Encode text and files to Base64 or decode Base64 back to original.",
+    "modes": {
+      "encode": "Encode",
+      "decode": "Decode"
+    },
+    "input": {
+      "text": "Text Input",
+      "base64": "Base64 Input",
+      "textPlaceholder": "Enter text to encode...",
+      "base64Placeholder": "Enter Base64 string to decode..."
+    },
+    "output": {
+      "base64": "Base64 Result",
+      "text": "Decoded Text",
+      "imageDetected": "Image detected"
+    },
+    "actions": {
+      "encode": "Encode",
+      "decode": "Decode",
+      "swap": "Swap Input/Output",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "clear": "Clear",
+      "upload": "Upload File"
+    },
+    "errors": {
+      "encodeError": "Error encoding. Please check your input.",
+      "decodeError": "Error decoding. Please verify the Base64 format."
+    },
+    "guide": {
+      "title": "Base64 Guide",
+      "whatIs": {
+        "title": "What is Base64?",
+        "description": "Base64 is an encoding scheme that converts binary data to ASCII strings. Widely used in email attachments, web image data URIs, and API communication."
+      },
+      "useCases": {
+        "title": "Use Cases",
+        "items": [
+          "Embed images directly in HTML/CSS (Data URI)",
+          "Encode API authentication tokens",
+          "Email attachment transmission",
+          "Text transmission of binary data"
+        ]
+      }
+    }
+  },
+  "urlEncoder": {
+    "title": "URL Encoder/Decoder",
+    "description": "Safely encode URLs or decode encoded URLs back to original. Includes URL parameter analysis.",
+    "modes": {
+      "encode": "Encode",
+      "decode": "Decode"
+    },
+    "input": {
+      "text": "Text Input",
+      "encoded": "Encoded URL",
+      "textPlaceholder": "Enter text or URL to encode...",
+      "encodedPlaceholder": "Enter URL-encoded string to decode..."
+    },
+    "output": {
+      "encoded": "Encoded Result",
+      "text": "Decoded Text"
+    },
+    "urlAnalysis": {
+      "title": "URL Analysis",
+      "protocol": "Protocol",
+      "host": "Host",
+      "path": "Path",
+      "params": "Parameters",
+      "hash": "Hash"
+    },
+    "actions": {
+      "encode": "Encode",
+      "decode": "Decode",
+      "swap": "Swap Input/Output",
+      "parseUrl": "Parse URL",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "clear": "Clear"
+    },
+    "errors": {
+      "encodeError": "Error encoding.",
+      "decodeError": "Error decoding. Please verify the URL encoding format.",
+      "invalidUrl": "Invalid URL format."
+    },
+    "guide": {
+      "title": "URL Encoding Guide",
+      "whatIs": {
+        "title": "What is URL Encoding?",
+        "description": "URL encoding (percent-encoding) converts characters that cannot be used in URLs to %XX format. Allows safe inclusion of special characters, spaces, and non-ASCII characters in URLs."
+      },
+      "examples": {
+        "title": "Conversion Examples"
+      }
+    }
+  },
+  "hashGenerator": {
+    "title": "Hash Generator",
+    "description": "Generate hash values for text or files. Supports MD5, SHA-1, SHA-256, SHA-512 and more.",
+    "input": {
+      "label": "Text or File",
+      "placeholder": "Enter text to generate hash...",
+      "fileLoaded": "File loaded"
+    },
+    "results": {
+      "title": "Hash Results"
+    },
+    "actions": {
+      "generate": "Generate Hash",
+      "generating": "Generating...",
+      "uploadFile": "Upload File",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "clear": "Clear"
+    },
+    "errors": {
+      "notSupported": "Not supported"
+    },
+    "guide": {
+      "title": "Hash Guide",
+      "whatIs": {
+        "title": "What is a Hash?",
+        "description": "A hash function converts arbitrary data into a fixed-length value. Same input always produces the same hash. Used for file integrity verification, password storage, and more."
+      },
+      "algorithms": {
+        "title": "Algorithm Descriptions",
+        "items": [
+          "MD5: 128-bit, fast but not recommended for security",
+          "SHA-1: 160-bit, for legacy compatibility",
+          "SHA-256: 256-bit, current standard recommendation",
+          "SHA-512: 512-bit, highest security level"
+        ]
+      }
+    }
+  },
+  "diffViewer": {
+    "title": "Diff Viewer",
+    "description": "Compare two texts or code and visually identify the differences.",
+    "input": {
+      "original": "Original Text",
+      "modified": "Modified Text",
+      "originalPlaceholder": "Enter original text...",
+      "modifiedPlaceholder": "Enter modified text..."
+    },
+    "results": {
+      "title": "Comparison Results",
+      "added": "Added",
+      "removed": "Removed",
+      "unchanged": "Unchanged"
+    },
+    "actions": {
+      "compare": "Compare",
+      "swap": "Swap Left/Right",
+      "clear": "Clear",
+      "copyDiff": "Copy Diff",
+      "copied": "Copied!"
+    },
+    "guide": {
+      "title": "Diff Comparison Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter original text on the left",
+          "Enter modified text on the right",
+          "Click the Compare button",
+          "Green means added, red means removed"
+        ]
+      },
+      "useCases": {
+        "title": "Use Cases",
+        "items": [
+          "Review code changes",
+          "Compare document versions",
+          "Track config file changes",
+          "Compare before/after translations"
+        ]
+      }
+    }
+  },
+  "colorConverter": {
+    "title": "Color Converter",
+    "description": "Convert between HEX, RGB, HSL, HSV, CMYK and other color formats.",
+    "preview": {
+      "title": "Color Preview"
+    },
+    "values": {
+      "title": "Color Values"
+    },
+    "actions": {
+      "random": "Random Color"
+    },
+    "guide": {
+      "title": "Color Conversion Guide",
+      "formats": {
+        "title": "Color Formats",
+        "hex": "Most common on web (#RRGGBB)",
+        "rgb": "Red, Green, Blue combination (0-255)",
+        "hsl": "Hue, Saturation, Lightness (designer-friendly)",
+        "cmyk": "Print color format"
+      },
+      "useCases": {
+        "title": "Use Cases",
+        "items": [
+          "Web design color code conversion",
+          "Share colors between design tools",
+          "Check CMYK values for printing",
+          "Create color palettes"
+        ]
+      }
+    }
+  },
+  "loremIpsum": {
+    "title": "Lorem Ipsum Generator",
+    "description": "Generate dummy text for web design and development. Supports Latin and Korean.",
+    "options": {
+      "language": "Language",
+      "latin": "Latin (Lorem Ipsum)",
+      "korean": "Korean",
+      "type": "Output Type",
+      "paragraphs": "Paragraphs",
+      "sentences": "Sentences",
+      "words": "Words",
+      "count": "Count",
+      "startWithLorem": "Start with Lorem ipsum"
+    },
+    "stats": {
+      "characters": "Characters",
+      "words": "Words",
+      "paragraphs": "Paragraphs"
+    },
+    "actions": {
+      "generate": "Generate",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "clear": "Clear"
+    },
+    "guide": {
+      "title": "Lorem Ipsum Guide",
+      "whatIs": {
+        "title": "What is Lorem Ipsum?",
+        "description": "Lorem Ipsum is dummy text used in the publishing and graphic design industries. Used to preview layout and design before actual content is ready."
+      },
+      "useCases": {
+        "title": "Use Cases",
+        "items": [
+          "Website layout design",
+          "Print mockup creation",
+          "App UI prototypes",
+          "Presentation templates"
+        ]
+      }
+    }
+  },
+  "unitConverter": {
+    "title": "Unit Converter",
+    "description": "Convert length, weight, temperature, area, volume, data, and CSS units.",
+    "from": "Value to Convert",
+    "to": "Conversion Result",
+    "swap": "Swap Units",
+    "copyResult": "Copy Result",
+    "copied": "Copied!",
+    "quickConversions": "All Unit Conversions",
+    "categories": {
+      "length": "Length",
+      "weight": "Weight",
+      "temperature": "Temperature",
+      "area": "Area",
+      "volume": "Volume",
+      "data": "Data",
+      "css": "CSS Units"
+    },
+    "guide": {
+      "title": "Unit Conversion Guide",
+      "supported": {
+        "title": "Supported Units",
+        "items": [
+          "Length: mm, cm, m, km, inch, ft, yard, mile",
+          "Weight: mg, g, kg, ton, oz, lb",
+          "Temperature: Celsius, Fahrenheit, Kelvin",
+          "Area: mm², cm², m², km², pyeong, acre, ft²",
+          "Volume: mL, L, m³, gallon, fl oz",
+          "Data: bit, B, KB, MB, GB, TB",
+          "CSS: px, rem, em, pt, vw, vh"
+        ]
+      },
+      "tips": {
+        "title": "Useful Tips",
+        "items": [
+          "Real estate: 1 pyeong ≈ 3.3m²",
+          "CSS: 1rem = 16px (default)",
+          "Data: 1KB = 1024B"
+        ]
+      }
+    }
+  },
+  "textConverter": {
+    "title": "Text Converter",
+    "description": "Convert text case, coding style, and formatting in various ways.",
+    "categories": {
+      "case": "Case",
+      "coding": "Coding Conventions",
+      "formatting": "Formatting",
+      "lines": "Line Operations"
+    },
+    "conversions": {
+      "uppercase": "UPPERCASE",
+      "lowercase": "lowercase",
+      "capitalize": "Capitalize",
+      "titleCase": "Title Case",
+      "camelCase": "camelCase",
+      "pascalCase": "PascalCase",
+      "snakeCase": "snake_case",
+      "kebabCase": "kebab-case",
+      "constantCase": "CONSTANT_CASE",
+      "dotCase": "dot.case",
+      "reverse": "Reverse",
+      "removeSpaces": "Remove Spaces",
+      "removeLineBreaks": "Remove Line Breaks",
+      "singleSpaces": "Single Spaces",
+      "trim": "Trim",
+      "sortLines": "Sort Lines",
+      "reverseLines": "Reverse Lines",
+      "uniqueLines": "Unique Lines",
+      "numberLines": "Number Lines"
+    },
+    "input": {
+      "label": "Input",
+      "placeholder": "Enter text to convert..."
+    },
+    "output": {
+      "label": "Output"
+    },
+    "preview": {
+      "title": "Quick Preview"
+    },
+    "actions": {
+      "copy": "Copy",
+      "copied": "Copied!",
+      "clear": "Clear"
+    },
+    "guide": {
+      "title": "Text Conversion Guide",
+      "caseConversions": {
+        "title": "Case Conversion Examples"
+      },
+      "useCases": {
+        "title": "Use Cases",
+        "items": [
+          "Standardize variable names",
+          "Convert CSS class names",
+          "Convert API field names",
+          "Data cleanup and formatting"
+        ]
       }
     }
   },

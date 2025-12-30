@@ -44,8 +44,10 @@ export {
   getPlayerGameStats,
   getAllPlayerStats,
   getTotalAIGamesCount,
-  getAIGamesCountByType
+  getAIGamesCountByType,
+  getGlobalStats
 } from './aiStatsManager'
+export type { GlobalStats } from './aiStatsManager'
 
 // Utils
 export { generatePlayerId } from './gameChannel'

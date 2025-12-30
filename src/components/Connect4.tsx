@@ -116,59 +116,85 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
   }, [])
 
   // initialRoom이 있으면 자동으로 방에 접속 (GameHub에서 온 경우)
-  const initialRoomProcessed = useRef(false)
+  const initialRoomIdRef = useRef<string | null>(null)
+  const setupInProgressRef = useRef(false)
+
+  // 함수들을 ref로 저장하여 deps 문제 방지
+  const joinPeerRoomRef = useRef(joinPeerRoom)
+  const leaveSupabaseRoomRef = useRef(leaveSupabaseRoom)
+  const showToastRef = useRef(showToast)
+  const onBackRef = useRef(onBack)
+
   useEffect(() => {
-    if (initialRoom && !initialRoomProcessed.current) {
-      initialRoomProcessed.current = true
+    joinPeerRoomRef.current = joinPeerRoom
+    leaveSupabaseRoomRef.current = leaveSupabaseRoom
+    showToastRef.current = showToast
+    onBackRef.current = onBack
+  })
 
-      // 방 생성한 호스트인 경우 - GameHub에서 이미 PeerJS 방 생성됨
-      if (isHostProp && hostPeerId) {
-        setCurrentRoom(initialRoom)
-        setPlayerName(initialRoom.host_name)
-        setOpponentName('')
-        isHostRef.current = true
-        setMyColor('red')
-        setChatMessages([])
-        setWinCount({ red: 0, yellow: 0 })
-        setGamePhase('waiting')
-        return
-      }
-
-      // 게스트로 방 입장 - 바로 실행
-      const joinInitialRoom = async () => {
-        const stored = localStorage.getItem('connect4_player_name')
-        const name = stored || t('guest')
-        setPlayerName(name)
-        if (!stored) localStorage.setItem('connect4_player_name', name)
-        isHostRef.current = false
-        setOpponentName(initialRoom.host_name)
-
-        // Supabase에서 방 상태 변경
-        const joined = await joinSupabaseRoom(initialRoom.id)
-        if (!joined) {
-          showToast(t('roomAlreadyFull') || 'Room is already full', 'error')
-          if (onBack) onBack()
-          return
-        }
-
-        setCurrentRoom(initialRoom)
-        setChatMessages([])
-        setWinCount({ red: 0, yellow: 0 })
-        setGamePhase('waiting')
-
-        // PeerJS로 호스트에 연결
-        const success = await joinPeerRoom(initialRoom.host_id)
-        if (!success) {
-          // 연결 실패 시 Supabase 방 상태 복구
-          await leaveSupabaseRoom(initialRoom.id)
-          setGamePhase('lobby')
-          showToast(t('connectionFailed') || 'Failed to connect to host', 'error')
-          if (onBack) onBack()
-        }
-      }
-      joinInitialRoom()
+  useEffect(() => {
+    // 이미 처리한 방이면 스킵
+    if (!initialRoom || initialRoomIdRef.current === initialRoom.id) {
+      return
     }
-  }, [initialRoom, isHostProp, hostPeerId, joinSupabaseRoom, joinPeerRoom, leaveSupabaseRoom, showToast, t, onBack])
+
+    // 이미 설정 중이면 스킵 (React Strict Mode 대응)
+    if (setupInProgressRef.current) {
+      console.log('[Connect4] Setup already in progress, skipping...')
+      return
+    }
+
+    console.log('[Connect4] Processing initialRoom:', initialRoom.id, 'isHost:', isHostProp)
+    initialRoomIdRef.current = initialRoom.id
+    setupInProgressRef.current = true
+
+    // 방 생성한 호스트인 경우 - GameHub에서 이미 PeerJS 방 생성됨
+    if (isHostProp) {
+      console.log('[Connect4] Setting up as host (PeerJS already created by GameHub)')
+      setCurrentRoom(initialRoom)
+      setPlayerName(initialRoom.host_name)
+      setOpponentName('')
+      isHostRef.current = true
+      setMyColor('red')
+      setChatMessages([])
+      setWinCount({ red: 0, yellow: 0 })
+      setGamePhase('waiting')
+      setupInProgressRef.current = false
+      return
+    }
+
+    // 게스트로 방 입장 - GameHub에서 이미 Supabase 방 상태 변경됨
+    console.log('[Connect4] Setting up as guest')
+    const joinInitialRoom = async () => {
+      // GameHub에서 넘어온 경우 gameNickname 사용, 아니면 connect4_player_name 사용
+      const gameNickname = localStorage.getItem('gameNickname')
+      const connect4Nickname = localStorage.getItem('connect4_player_name')
+      const name = gameNickname || connect4Nickname || t('guest')
+      setPlayerName(name)
+      if (!connect4Nickname) localStorage.setItem('connect4_player_name', name)
+      isHostRef.current = false
+      setOpponentName(initialRoom.host_name)
+
+      setCurrentRoom(initialRoom)
+      setChatMessages([])
+      setWinCount({ red: 0, yellow: 0 })
+      setGamePhase('waiting')
+
+      // PeerJS로 호스트에 연결
+      console.log('[Connect4] Connecting to host:', initialRoom.host_id)
+      const success = await joinPeerRoomRef.current(initialRoom.host_id)
+      console.log('[Connect4] Join result:', success)
+      setupInProgressRef.current = false
+      if (!success) {
+        await leaveSupabaseRoomRef.current(initialRoom.id)
+        setGamePhase('lobby')
+        showToastRef.current(t('connectionFailed') || 'Failed to connect to host', 'error')
+        if (onBackRef.current) onBackRef.current()
+      }
+    }
+    joinInitialRoom()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialRoom, isHostProp, t])
 
   // 채팅 스크롤
   useEffect(() => {

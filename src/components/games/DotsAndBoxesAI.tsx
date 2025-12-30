@@ -17,7 +17,7 @@ interface DotsAndBoxesAIProps {
 }
 
 export default function DotsAndBoxesAI({ difficulty, onBack }: DotsAndBoxesAIProps) {
-  const t = useTranslations('dotsAndBoxes')
+  const t = useTranslations('dotsandboxes')
   const tHub = useTranslations('gameHub')
 
   const [gameState, setGameState] = useState<DotsAndBoxesGameState>(createInitialDotsState())

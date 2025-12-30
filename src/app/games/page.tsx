@@ -24,7 +24,7 @@ const MancalaAI = dynamic(() => import('@/components/games/MancalaAI'), { ssr: f
 const BattleshipAI = dynamic(() => import('@/components/games/BattleshipAI'), { ssr: false })
 const DotsAndBoxesAI = dynamic(() => import('@/components/games/DotsAndBoxesAI'), { ssr: false })
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { GameRoom } from '@/utils/webrtc'
 
@@ -45,6 +45,13 @@ interface GameState {
 function GamesContent() {
   const t = useTranslations('gameHub')
   const [gameState, setGameState] = useState<GameState | null>(null)
+
+  // 게임 시작 시 화면 최상단으로 스크롤
+  useEffect(() => {
+    if (gameState) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [gameState])
 
   const handleStartGame = (game: GameType, mode: PlayMode, difficulty?: Difficulty) => {
     setGameState({ game, mode, difficulty })

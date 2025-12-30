@@ -6,10 +6,12 @@ import {
   Difficulty,
   GameResult,
   PlayerGameStats,
+  GlobalStats,
   recordAIGameResult,
   getPlayerGameStats,
   getAllPlayerStats,
   getAIGamesCountByType,
+  getGlobalStats,
   generatePlayerId
 } from '@/utils/webrtc'
 
@@ -113,6 +115,14 @@ export const useAIGameStats = (
 // 전체 AI 게임 통계 조회용 (GameHub에서 사용)
 interface UseAllAIStatsReturn {
   playerId: string
+  // 나의 통계
+  myStats: PlayerGameStats[]
+  myTotalGames: number
+  myTotalWins: number
+  myTotalLosses: number
+  // 전체 글로벌 통계
+  globalStats: GlobalStats | null
+  // 레거시 호환성
   allStats: PlayerGameStats[]
   gameCountsByType: Record<GameType, number>
   totalGames: number
@@ -121,9 +131,22 @@ interface UseAllAIStatsReturn {
   refreshStats: () => Promise<void>
 }
 
+const defaultGlobalStats: GlobalStats = {
+  totalGames: 0,
+  totalAIGames: 0,
+  totalOnlineGames: 0,
+  totalRoomsCreated: 0,
+  uniquePlayers: 0,
+  totalWins: 0,
+  totalLosses: 0,
+  totalDraws: 0,
+  byGameType: {} as GlobalStats['byGameType']
+}
+
 export const useAllAIStats = (): UseAllAIStatsReturn => {
   const [playerId, setPlayerId] = useState<string>('')
-  const [allStats, setAllStats] = useState<PlayerGameStats[]>([])
+  const [myStats, setMyStats] = useState<PlayerGameStats[]>([])
+  const [globalStats, setGlobalStats] = useState<GlobalStats | null>(null)
   const [gameCountsByType, setGameCountsByType] = useState<Record<GameType, number>>({} as Record<GameType, number>)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -146,17 +169,20 @@ export const useAllAIStats = (): UseAllAIStatsReturn => {
     setIsLoading(true)
 
     try {
-      // 내 통계
-      const all = await getAllPlayerStats(playerId, GAME_TYPES)
-      setAllStats(all)
+      // 내 통계와 글로벌 통계를 병렬로 가져오기
+      const [myStatsData, global] = await Promise.all([
+        getAllPlayerStats(playerId, GAME_TYPES),
+        getGlobalStats(GAME_TYPES)
+      ])
 
-      // 게임별 전체 판 수
+      setMyStats(myStatsData)
+      setGlobalStats(global)
+
+      // 게임별 전체 판 수 (글로벌 통계에서 추출)
       const counts: Record<GameType, number> = {} as Record<GameType, number>
-      await Promise.all(
-        GAME_TYPES.map(async (gameType) => {
-          counts[gameType] = await getAIGamesCountByType(gameType)
-        })
-      )
+      GAME_TYPES.forEach((gameType) => {
+        counts[gameType] = global.byGameType[gameType]?.games || 0
+      })
       setGameCountsByType(counts)
     } catch (err) {
       console.error('Failed to load AI stats:', err)
@@ -171,15 +197,27 @@ export const useAllAIStats = (): UseAllAIStatsReturn => {
     }
   }, [playerId, refreshStats])
 
-  const totalGames = allStats.reduce((sum, s) => sum + s.totalGames, 0)
-  const totalWins = allStats.reduce((sum, s) => sum + s.totalWins, 0)
+  // 나의 통계 집계
+  const myTotalGames = myStats.reduce((sum, s) => sum + s.totalGames, 0)
+  const myTotalWins = myStats.reduce((sum, s) => sum + s.totalWins, 0)
+  const myTotalLosses = myStats.reduce((sum, s) => {
+    return sum + (s.easy.losses + s.normal.losses + s.hard.losses)
+  }, 0)
 
   return {
     playerId,
-    allStats,
+    // 나의 통계
+    myStats,
+    myTotalGames,
+    myTotalWins,
+    myTotalLosses,
+    // 전체 글로벌 통계
+    globalStats,
+    // 레거시 호환성 (기존 코드와 호환)
+    allStats: myStats,
     gameCountsByType,
-    totalGames,
-    totalWins,
+    totalGames: myTotalGames,
+    totalWins: myTotalWins,
     isLoading,
     refreshStats
   }

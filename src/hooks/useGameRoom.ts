@@ -27,7 +27,7 @@ interface UseGameRoomReturn {
   error: string | null
   playerId: string
   isConfigured: boolean
-  createRoom: (hostName: string, peerId?: string, isPrivate?: boolean) => Promise<GameRoom | null>
+  createRoom: (hostName: string, peerId?: string, isPrivate?: boolean, roomTitle?: string) => Promise<GameRoom | null>
   joinRoom: (roomId: string) => Promise<boolean>
   leaveRoom: (roomId: string) => Promise<boolean>
   refreshRooms: () => Promise<void>
@@ -126,17 +126,27 @@ export const useGameRoom = (gameType: GameType): UseGameRoomReturn => {
 
   // 방 생성 (peerId가 있으면 host_id에 peerId 저장)
   const createRoom = useCallback(
-    async (hostName: string, peerId?: string, isPrivate?: boolean): Promise<GameRoom | null> => {
-      if (!playerId) return null
+    async (hostName: string, peerId?: string, isPrivate?: boolean, roomTitle?: string): Promise<GameRoom | null> => {
+      // playerId가 아직 초기화되지 않았으면 직접 생성/복원
+      let currentPlayerId = playerId
+      if (!currentPlayerId) {
+        const storageKey = `game_player_id_${gameType}`
+        currentPlayerId = localStorage.getItem(storageKey) || ''
+        if (!currentPlayerId) {
+          currentPlayerId = generatePlayerId()
+          localStorage.setItem(storageKey, currentPlayerId)
+        }
+      }
 
       setError(null)
 
       try {
         const room = await createRoomApi({
           hostName,
-          hostId: peerId || playerId, // PeerJS의 peerId를 저장
+          hostId: peerId || currentPlayerId, // PeerJS의 peerId를 저장
           gameType,
-          isPrivate: isPrivate ?? false
+          isPrivate: isPrivate ?? false,
+          roomTitle: roomTitle || undefined
         })
 
         return room
