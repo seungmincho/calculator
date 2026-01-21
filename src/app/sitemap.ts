@@ -222,6 +222,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: 'https://toolhub.ai.kr/games',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
       url: 'https://toolhub.ai.kr/omok',
       lastModified: new Date(),
       changeFrequency: 'weekly',

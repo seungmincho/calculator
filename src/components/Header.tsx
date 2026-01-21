@@ -5,7 +5,7 @@ import { Calculator, Menu, X, ChevronDown, Clock, Grid3X3 } from 'lucide-react';
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
 import { useTranslations } from 'next-intl';
-import { menuConfig, categoryKeys } from '@/config/menuConfig';
+import { menuConfig, categoryKeys, CategoryKey } from '@/config/menuConfig';
 import { getRecentToolsByCategory, recordToolUsage } from '@/utils/recentTools';
 
 const MAX_RECENT_DISPLAY = 4; // 최근 사용 표시 최대 개수
@@ -97,7 +97,7 @@ const Header = () => {
   };
 
   // 최근 사용 또는 기본 추천 항목 가져오기
-  const getRecentOrDefaultItems = (key: string) => {
+  const getRecentOrDefaultItems = (key: CategoryKey) => {
     const recentHrefs = recentTools[key] || [];
     const items = menuItems[key].items;
 
@@ -126,7 +126,7 @@ const Header = () => {
   };
 
   // 최근 사용 항목이 있는지 확인
-  const hasRecentItems = (key: string) => {
+  const hasRecentItems = (key: CategoryKey) => {
     return (recentTools[key] || []).length > 0;
   };
 
