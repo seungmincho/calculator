@@ -9,6 +9,10 @@ import Footer from '@/components/Footer'
 import DailyTips from '@/components/DailyTips'
 import ProgressBar from '@/components/ProgressBar'
 import ToolsShowcase from '@/components/ToolsShowcase'
+import Breadcrumb from '@/components/Breadcrumb'
+import RelatedTools from '@/components/RelatedTools'
+import ToolJsonLd from '@/components/ToolJsonLd'
+import SkipToContent from '@/components/SkipToContent'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import I18nWrapper from '@/components/I18nWrapper'
 
@@ -260,12 +264,20 @@ export default function RootLayout({
         */}
         <LanguageProvider>
           <I18nWrapper>
+            <SkipToContent />
             <ProgressBar />
             <Header />
+            {/* Breadcrumb Navigation */}
+            <Breadcrumb />
+            {/* Per-tool JSON-LD structured data */}
+            <ToolJsonLd />
             {/* Main Content */}
-            <main>
+            <main id="main-content">
               {children}
             </main>
+
+            {/* Related Tools */}
+            <RelatedTools />
 
             {/* Tools Showcase - Common across all pages */}
             <ToolsShowcase />

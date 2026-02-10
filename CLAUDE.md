@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Korean financial calculator web application ("툴허브") built with Next.js 15, providing comprehensive financial, health, and utility calculators. The app is deployed on Cloudflare Pages and includes SEO optimization and AdSense integration.
+Korean all-in-one web tool platform ("툴허브") built with Next.js 16, providing 50+ tools across financial calculators, developer utilities, health tools, and browser games. Deployed on Cloudflare Pages as a static PWA with offline support, SEO optimization, and AdSense integration.
 
 ## Development Commands
 
 ```bash
-# Development server (runs on port 3030)
+# Development server (runs on port 3030, Turbopack enabled)
 pnpm dev
 
 # Build production bundle (DO NOT run this - user will handle builds manually)
@@ -31,15 +31,23 @@ pnpm cf:deploy
 pnpm wrangler:dev
 ```
 
-**⚠️ IMPORTANT: Do NOT run `pnpm build` unless explicitly requested by the user. The user will handle builds manually.**
+**IMPORTANT: Do NOT run `pnpm build` unless explicitly requested by the user. The user will handle builds manually.**
 
 ## Architecture
 
 ### Technology Stack
-- **Framework**: Next.js 15 with App Router (static export mode)
+- **Framework**: Next.js 16 with App Router (static export mode, Turbopack dev)
+- **Language**: TypeScript, React 19
 - **Styling**: Tailwind CSS v4 with dark mode support
 - **Icons**: Lucide React
+- **Charts**: Recharts
+- **3D**: Babylon.js (3D viewer)
+- **PDF**: jsPDF (PDF export)
+- **OCR**: Tesseract.js (image text extraction)
+- **P2P Gaming**: PeerJS (WebRTC) + Supabase (signaling)
+- **Barcodes/QR**: JsBarcode, qrcode
 - **Deployment**: Cloudflare Pages with Wrangler
+- **PWA**: Service Worker + manifest.json + offline page
 - **Monetization**: Google AdSense integration
 - **Language**: Korean (ko_KR locale) with English support
 
@@ -48,94 +56,177 @@ pnpm wrangler:dev
 #### App Router Structure
 ```
 src/app/
-├── layout.tsx          # Root layout with metadata and providers
-├── page.tsx           # Home page (salary calculator)
-├── [tool-name]/       # Individual tool pages
-│   └── page.tsx       # Server component with Suspense boundary
+├── layout.tsx          # Root layout with metadata, PWA, providers
+├── page.tsx            # Home page (salary calculator)
+├── games/page.tsx      # Game hub listing page
 ├── tips/              # Tips section with dynamic routing
-│   └── [id]/          # generateStaticParams for static generation
-└── api/               # Minimal API routes
+│   ├── page.tsx
+│   └── [id]/page.tsx  # generateStaticParams for static generation
+├── offline/page.tsx    # PWA offline fallback page
+└── [tool-name]/page.tsx  # 50+ individual tool pages
 ```
 
-#### Internationalization (i18n) Architecture
-The project uses a **dual-layer i18n system**:
-- **Server-side**: next-intl configuration in `/src/i18n.ts` and `/src/routing.ts`
-- **Client-side**: LanguageContext + I18nWrapper for client-side language switching
-- **Message files**: `/messages/ko.json` and `/messages/en.json`
-- **Fallback strategy**: Korean messages as fallback on load failure
-
-#### Component Architecture Patterns
-- **Page Components**: Server components with client component imports
-- **Calculator Components**: Client components with URL state synchronization
-- **Shared Components**: CalculationHistory, Header, Footer, ToolsShowcase
-- **Custom Hooks**: useCalculationHistory, useMessages for reusable logic
+#### Component Architecture
+```
+src/
+├── components/        # All UI components (70+ files)
+├── config/
+│   └── menuConfig.ts  # Central menu configuration (4 categories)
+├── contexts/
+│   └── LanguageContext.tsx  # Client-side language state
+├── hooks/             # Custom React hooks
+├── utils/             # Utility functions
+└── app/               # Next.js App Router pages
+```
 
 ### Key Components
 
-#### Financial Calculators
-- `SalaryCalculator`: Korean salary tax calculator with 4대보험 (4 major insurances) and income tax calculations
+#### Financial Calculators (14 tools)
+- `SalaryCalculator`: Korean salary with 4대보험 and income tax
 - `LoanCalculator`: Loan payment calculator
 - `SavingsCalculator`: Savings interest calculator
 - `RetirementCalculator`: Retirement savings calculator
 - `TaxCalculator`: Income tax and various taxes
-- `ExchangeRateCalculator`: Real-time currency conversion
+- `ExchangeRateCalculator`: Currency conversion
 - `RealEstateCalculator`: Real estate transaction fees and taxes
 - `StockCalculator`: Stock trading fees and returns
 - `CarLoanCalculator`: Auto purchase loan calculator
 - `CarTaxCalculator`: Car registration and acquisition taxes
-- `FuelCalculator`: **NEW** Business vehicle fuel costs and depreciation with manual fuel price input
+- `FuelCalculator`: Business vehicle fuel costs and depreciation
+- `BogeumjariLoanCalculator`: 보금자리론 (government housing loan) calculator
+- `MonthlyRentSubsidyCalculator`: 월세보조금 (rent subsidy) calculator
+- `MedianIncomeTable`: 중위소득 (median income) reference table
 
-#### Health & Fitness Tools
+#### Health & Fitness Tools (4 tools)
 - `BMICalculator`: Body mass index and health analysis
 - `CalorieCalculator`: BMR and daily calorie requirements
 - `BodyFatCalculator`: Body fat percentage calculation
-- `WorkHoursCalculator`: Part-time work hours and overtime calculation
+- `WorkHoursCalculator`: Part-time work hours and overtime
 
-#### Development & Utility Tools
+#### Development & Utility Tools (24 tools)
 - `JsonFormatter`: JSON formatting and validation
-- `JsonCsvConverter`: High-performance JSON ↔ CSV conversion
-- `JwtDecoder`: JWT token analysis and validation
+- `JsonCsvConverter`: JSON to CSV conversion
+- `JsonXmlConverter`: JSON to XML conversion
+- `JwtDecoder`: JWT token analysis
 - `UuidGenerator`: UUID generation (v1, v4, v7, nil)
-- `CronTester`: Cron expression validation and testing
+- `CronTester`: Cron expression validation
 - `SqlFormatter`: SQL query formatting
-- `RegexExtractor`: Pattern matching and text extraction
-- `MarkdownViewer`: Markdown preview and rendering
-- `TimeConverter`: Global timezone conversion and Unix timestamps
+- `RegexExtractor`: Regex pattern matching
+- `MarkdownViewer`: Markdown preview
+- `TimeConverter`: Timezone conversion and Unix timestamps
 - `ImageResizer`: Image resizing and compression
 - `ImageEditor`: Basic image editing tools
-- `QrGenerator`: **NEW** QR code generation with custom logo insertion
+- `QrGenerator`: QR code generation with custom logo
+- `BarcodeGenerator`: Barcode generation (JsBarcode)
+- `Viewer3D`: 3D model viewer (Babylon.js, GLB/GLTF/OBJ/STL)
+- `CharacterCounter`: Character, word, line counter
+- `Base64Converter`: Base64 encoding/decoding
+- `UrlEncoder`: URL encoding/decoding
+- `HashGenerator`: Hash generation (MD5, SHA-1, SHA-256, SHA-512)
+- `DiffViewer`: Text diff comparison tool
+- `ColorConverter`: Color format conversion (HEX, RGB, HSL, CMYK)
+- `LoremIpsumGenerator`: Lorem ipsum placeholder text generator
+- `UnitConverter`: Unit conversion (length, weight, temperature, etc.)
+- `TextConverter`: Text transformation (uppercase, lowercase, camelCase, etc.)
 
-#### Simple Games & Tools
+#### Games (10 tools)
+- `GameHub`: Game listing/hub page with game stats
 - `LottoGenerator`: Korean lottery number generation with statistics
 - `LadderGame`: Online ladder game for decision making
+- `Omok`: 오목 (Gomoku) with AI opponent and online P2P multiplayer
+- `Othello`: 오셀로 (Reversi) with AI opponent
+- `Connect4`: 사목 (Connect Four) with AI opponent
+- `Checkers`: 체커 with AI opponent
+- `Mancala`: 만칼라 with AI opponent
+- `Battleship`: 배틀쉽 with AI opponent
+- `DotsAndBoxes`: 점과선 with AI opponent
 
-#### Online Multiplayer Games
-- `Omok`: **NEW** 1v1 온라인 오목 게임 (WebRTC P2P + Supabase)
-  - 상세 아키텍처: [/docs/ONLINE_GAME_ARCHITECTURE.md](docs/ONLINE_GAME_ARCHITECTURE.md)
-  - 재사용 가능한 컴포넌트: `GameLobby`, `useGameRoom`, `usePeerConnection`
-  - 향후 추가 예정: 장기, 오셀로, 바둑
-
-### Component Architecture Patterns
-- **Calculator Structure**: Each calculator follows consistent pattern with Suspense wrapping, URL state management, and real-time calculations
-- **State Management**: useState patterns with URL parameter syncing for shareable links
-- **Input Handling**: Number formatting with comma separators and validation
-- **Calculation History**: Reusable `CalculationHistory` component with localStorage integration
-- **Manual Save Pattern**: Recent calculators use manual save buttons instead of auto-save to prevent unnecessary history entries
-
-### Internationalization
-- **Framework**: Next-intl with Korean/English support (Korean default)
-- **Structure**: `/messages/` JSON files, `LanguageContext` + `I18nWrapper` for client-side switching
-- **Routing**: Configured in `/src/routing.ts` and `/src/i18n.ts`
+#### Shared Components
+- `Header`: Sticky navigation with dropdown menus, recent tools tracking, global search (Ctrl+K), mobile responsive
+- `Footer`: Minimal footer with branding
+- `ToolsShowcase`: Card-based tool navigation grid with favorites support
+- `SearchDialog`: Global command palette (Ctrl+K / Cmd+K) for searching all 52 tools
+- `Breadcrumb`: Auto-generated breadcrumb with JSON-LD structured data
+- `RelatedTools`: Same-category tool recommendations (auto from menuConfig)
+- `ToolJsonLd`: Per-tool WebApplication JSON-LD structured data
+- `SkipToContent`: Skip-to-main-content accessibility link (i18n)
+- `CalculationHistory`: localStorage-based calculation history with manual save
+- `DailyTips`: Daily financial tips display
+- `ProgressBar`: NProgress page transition indicator
+- `ThemeToggle`: Dark/light mode toggle with system preference detection
+- `LanguageToggle`: Korean/English language switcher
+- `InstallPrompt`: PWA install prompt
+- `FeedbackWidget`: User feedback collection
+- `PDFExport`: PDF export for calculation results
+- `GameLobby`: Reusable online game lobby (Supabase rooms)
+- `GameStats`: AI game win/loss statistics with recharts
+- `AdSense`: Google AdSense ad component
+- `I18nWrapper`: Client-side i18n provider
 
 ### Custom Hooks
 - `useCalculationHistory`: localStorage-based history management with type safety
-- `useMessages`: Dynamic locale message loading with fallback support
+- `useMessages`: Dynamic locale message loading with fallback
+- `useLottoData`: Lotto winning number data fetching
+- `useGameRoom`: Supabase-based game room management
+- `usePeerConnection`: WebRTC P2P connection for multiplayer games
+- `useAIGameStats`: AI game statistics tracking (wins, losses, draws)
+
+### Utility Files
+- `localStorage.ts`: Type-safe localStorage wrapper with history titles
+- `recentTools.ts`: Recent tool usage tracking per category
+- `favorites.ts`: Tool favorites management (localStorage)
+- `corsProxy.ts`: CORS proxy utility for external API calls
+- `lottoDataLoader.ts` / `lottoUpdater.ts`: Lotto data management
+
+### Menu System
+Central configuration in `/src/config/menuConfig.ts` with 4 categories:
+- **calculators**: 14 financial calculators
+- **tools**: 24 development & utility tools
+- **health**: 4 health & fitness tools
+- **games**: 10 games (including GameHub)
+
+Header and ToolsShowcase auto-read from menuConfig. Footer is minimal (no menu links).
+
+### PWA Architecture
+- `public/manifest.json`: Full PWA manifest with shortcuts, screenshots, categories
+- `public/sw.js`: Service Worker for offline caching
+- `src/app/offline/page.tsx`: Offline fallback page
+- `src/components/InstallPrompt.tsx`: Install prompt UI
+- Service Worker registration in layout.tsx with update notifications
 
 ### SEO & Metadata
 - Comprehensive Korean SEO metadata in layout.tsx
 - OpenGraph and Twitter card support
-- JSON-LD structured data for search engines
+- JSON-LD structured data: site-level (WebSite + SoftwareApplication) + per-tool (WebApplication via ToolJsonLd)
+- Breadcrumb JSON-LD structured data (auto-generated via Breadcrumb component)
+- Static sitemap generation (`src/app/sitemap.ts`) with all 50+ routes
+- Naver site verification configured
 - Domain: toolhub.ai.kr
+
+### Accessibility
+- Skip-to-content link (i18n-aware via SkipToContent component)
+- Global focus-visible styles (blue outline)
+- aria-label, aria-expanded, aria-haspopup on Header navigation
+- SearchDialog with combobox role, aria-activedescendant, focus trap
+- Breadcrumb with aria-current="page"
+
+### Search & Discovery
+- Global search command palette (Ctrl+K / Cmd+K) via SearchDialog
+- Searches by tool name, description, URL path, and category
+- Keyboard navigation (arrow keys, Enter, Escape)
+- Recent tools tracking in Header dropdown (per category)
+
+### Favorites System
+- localStorage-based tool favorites via `favorites.ts` utility
+- Star icon on ToolsShowcase cards (hover/focus to reveal)
+- Dedicated "Favorites" section at top of ToolsShowcase when items exist
+
+### Internationalization
+- **Framework**: next-intl with Korean/English support (Korean default)
+- **Server-side**: `/src/i18n.ts` and `/src/routing.ts`
+- **Client-side**: `LanguageContext` + `I18nWrapper`
+- **Message files**: `/messages/ko.json` and `/messages/en.json`
+- **Fallback**: Korean messages as fallback on load failure
 
 ## Key Architecture Decisions
 
@@ -153,7 +244,6 @@ const nextConfig: NextConfig = {
 ### URL State Management Pattern
 All calculators sync state with URL parameters for shareable links:
 ```typescript
-// Common pattern in calculator components
 const updateURL = (params: Record<string, any>) => {
   const url = new URL(window.location.href);
   Object.entries(params).forEach(([key, value]) => {
@@ -163,21 +253,16 @@ const updateURL = (params: Record<string, any>) => {
 };
 ```
 
-### Calculation History Architecture
-- Uses localStorage with type-safe interface in `/src/utils/localStorage.ts`
-- Custom hook `useCalculationHistory` for consistent access
-- Manual save pattern (button click) instead of auto-save
-- Title generation based on calculator type and inputs
+### Game Architecture Pattern
+All board games follow a consistent pattern:
+- Wrapper component (e.g., `Omok.tsx`) handles mode selection (AI/Online)
+- Board component (e.g., `OmokBoard.tsx`) handles game logic and rendering
+- AI opponents use minimax/alpha-beta pruning algorithms
+- Online multiplayer via `useGameRoom` (Supabase) + `usePeerConnection` (WebRTC)
+- Game stats tracked via `useAIGameStats` hook with localStorage persistence
 
-## Development Notes
-
-- ESLint is disabled during builds (ignoreDuringBuilds: true)
-- Uses pnpm as package manager
-- Korean-first UI/UX with comprehensive English translations
-- Dark mode support with system preference detection
-- Responsive design with mobile-first approach
-- Environment variable NEXT_PUBLIC_ADSENSE_ID for AdSense integration
-- Static sitemap generation with all tool routes
+### Recent Tools Tracking
+Header shows recently used tools per category (max 4) using `recentTools.ts` utility with localStorage.
 
 ## Development Workflow for New Features
 
@@ -199,9 +284,9 @@ const updateURL = (params: Record<string, any>) => {
 // 적절한 카테고리(calculators, tools, health, games)에 추가
 {
   href: '/new-tool',
-  labelKey: 'footer.links.newTool',           // Footer/Header 메뉴명
-  descriptionKey: 'toolsShowcase.tools.newTool.description',  // ToolsShowcase 설명
-  icon: '🔧'  // 이모지 아이콘
+  labelKey: 'footer.links.newTool',
+  descriptionKey: 'toolsShowcase.tools.newTool.description',
+  icon: '🔧'
 }
 ```
 
@@ -210,200 +295,80 @@ const updateURL = (params: Record<string, any>) => {
 // messages/ko.json - 2곳에 추가 필요
 
 // 1) footer.links 섹션에 메뉴명 추가
-"footer": {
-  "links": {
-    "newTool": "새 도구"
-  }
-}
+"footer": { "links": { "newTool": "새 도구" } }
 
 // 2) toolsShowcase.tools 섹션에 설명 추가
-"toolsShowcase": {
-  "tools": {
-    "newTool": {
-      "title": "새 도구",
-      "description": "새 도구에 대한 간단한 설명"
-    }
-  }
-}
+"toolsShowcase": { "tools": { "newTool": { "title": "새 도구", "description": "설명" } } }
 ```
 
 #### Step 3: sitemap.ts에 URL 추가
 ```typescript
-// /src/app/sitemap.ts
-{
-  url: 'https://toolhub.ai.kr/new-tool',
-  lastModified: new Date(),
-  changeFrequency: 'weekly',
-  priority: 0.8,
-}
+{ url: 'https://toolhub.ai.kr/new-tool', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 }
 ```
 
 #### 메뉴 시스템 구조
 ```
 /src/config/menuConfig.ts (공통 설정)
     ↓ (자동 반영)
-├── Header.tsx (드롭다운 메뉴)
+├── Header.tsx (드롭다운 메뉴 + 최근 사용)
 ├── ToolsShowcase.tsx (카드형 네비게이션)
 └── Footer.tsx (간소화됨 - 메뉴 없음)
 ```
 
 **중요**: Header와 ToolsShowcase는 menuConfig에서 자동으로 메뉴를 가져오므로 별도 수정이 필요 없습니다.
 
----
-
 ### 2. Internationalization-First Development
-When adding new features, always follow this sequence:
 
 #### Step 1: Create Translation Files First
-1. **Add Korean translations** to `/messages/ko.json`:
-```json
-"newFeature": {
-  "title": "새 기능",
-  "description": "기능 설명",
-  "button": "버튼 텍스트",
-  "labels": {
-    "input": "입력 라벨",
-    "output": "출력 라벨"
-  }
-}
-```
-
-2. **Add English translations** to `/messages/en.json`:
-```json
-"newFeature": {
-  "title": "New Feature",
-  "description": "Feature description",
-  "button": "Button Text",
-  "labels": {
-    "input": "Input Label",
-    "output": "Output Label"
-  }
-}
-```
+Add Korean translations to `/messages/ko.json` and English to `/messages/en.json`.
 
 #### Step 2: Implement Component with Translations
 ```typescript
 const NewFeatureComponent = () => {
   const t = useTranslations('newFeature');
-  const tc = useTranslations('common');
-
-  return (
-    <div>
-      <h1>{t('title')}</h1>
-      <p>{t('description')}</p>
-      <button>{t('button')}</button>
-    </div>
-  );
+  return <h1>{t('title')}</h1>;
 };
 ```
 
-#### Step 3: Update Navigation
-메뉴 추가는 위의 "Adding New Menu Items" 섹션을 참고하세요.
-
 ### 3. Translation Key Naming Conventions
-- Use camelCase for keys: `buttonText`, `errorMessage`
-- Group related keys: `labels.input`, `messages.success`
-- Use descriptive names: `pasteFromClipboard` not `paste`
-- Consistent naming across features
+- camelCase keys: `buttonText`, `errorMessage`
+- Group related: `labels.input`, `messages.success`
+- Descriptive names: `pasteFromClipboard` not `paste`
 
-### 4. Dynamic Content Translation
-For conditional or dynamic content:
-```typescript
-// Good: Multiple specific keys
-{isSupported ? t('clipboardSupported') : t('clipboardNotSupported')}
-
-// Avoid: Generic keys with parameters
-{t('clipboardStatus', {supported: isSupported})}
-```
-
-### 5. Validation Checklist
+### 4. Validation Checklist
 Before completing a feature:
 - [ ] All UI text uses translation functions
 - [ ] Both Korean and English translations complete
-- [ ] Navigation updated in both languages
-- [ ] Placeholder text translated
-- [ ] Error messages translated
-- [ ] Button labels translated
-- [ ] Form labels translated
+- [ ] Navigation updated (menuConfig + translations)
+- [ ] Sitemap updated
+- [ ] Dark mode compatible
+- [ ] Mobile responsive
 
-This workflow ensures consistent internationalization and prevents the need for translation retrofitting.
+## Development Notes
 
-## Recent Completed Features
-
-### ✅ QR Code Generator (2024)
-- QR code generation with custom logo insertion
-- Support for text, URL, email, phone, SMS, WiFi, vCard formats
-- Image copying functionality with canvas manipulation
-- Complete Korean/English translations
-- Integrated into Header, Footer, ToolsShowcase, sitemap
-
-### ✅ Fuel Calculator (2024)
-- Business vehicle fuel cost and depreciation calculation
-- Manual fuel price input (replaced real-time API)
-- Manual save functionality for calculation history
-- Comprehensive guide content with business expense rules
-- Vehicle type efficiency and depreciation data
-- Complete Korean/English translations
-
-## Potential Next Tasks
-
-### High Priority
-1. **Performance Optimization**
-   - Implement lazy loading for heavy components
-   - Optimize bundle size and Core Web Vitals
-   - Add service worker for offline functionality
-
-2. **Enhanced SEO**
-   - Add more structured data for rich snippets
-   - Implement breadcrumb navigation
-   - Create tool-specific landing pages with better content
-
-3. **User Experience**
-   - Add keyboard shortcuts for power users
-   - Implement bulk operations for calculators
-   - Add export/import for calculation histories
-
-### Medium Priority
-4. **New Calculator Categories**
-   - Insurance calculators (life, health, car)
-   - Investment calculators (compound interest, portfolio)
-   - Business calculators (ROI, break-even analysis)
-
-5. **Advanced Features**
-   - PDF report generation for calculations
-   - Email sharing functionality
-   - Multi-language support expansion (Japanese, Chinese)
-
-6. **Analytics & Insights**
-   - Usage analytics dashboard
-   - Popular calculation patterns
-   - User feedback collection system
-
-### Low Priority
-7. **Integration Features**
-   - API endpoints for calculator functions
-   - Webhook support for business integrations
-   - Plugin system for custom calculators
-
-8. **Mobile App**
-   - Progressive Web App (PWA) enhancement
-   - Native mobile app consideration
-   - Offline calculation capabilities
+- ESLint is disabled during builds (ignoreDuringBuilds: true)
+- Uses pnpm as package manager
+- Korean-first UI/UX with comprehensive English translations
+- Dark mode support with system preference detection via ThemeToggle
+- Responsive design with mobile-first approach
+- Environment variable NEXT_PUBLIC_ADSENSE_ID for AdSense integration
+- Static sitemap generation with all tool routes
+- PWA with Service Worker, offline page, install prompt
 
 ## Development Best Practices
 
-### When Adding New Calculators
+### When Adding New Tools
 1. **menuConfig.ts에 메뉴 항목 추가** (Header, ToolsShowcase 자동 반영)
 2. **번역 파일 업데이트** (ko.json, en.json - footer.links, toolsShowcase.tools 섹션)
 3. **sitemap.ts에 URL 추가**
 4. **페이지 컴포넌트 생성** (`/src/app/[tool-name]/page.tsx`)
-5. **계산기 컴포넌트 생성** (`/src/components/[ToolName].tsx`)
+5. **도구 컴포넌트 생성** (`/src/components/[ToolName].tsx`)
 6. localStorage.ts에 history title 추가 (히스토리 기능 사용 시)
 7. Use manual save pattern for better UX
 8. Include comprehensive guide content
 
 ### Code Quality
-- Prefer TypeScript interfaces over any types
+- Prefer TypeScript interfaces over `any` types
 - Use useCallback for expensive operations
 - Implement proper error boundaries
 - Add comprehensive error handling for clipboard and file operations

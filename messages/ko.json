@@ -35,6 +35,9 @@
     "load": "불러오기",
     "convert": "변환"
   },
+  "accessibility": {
+    "skipToContent": "본문으로 건너뛰기"
+  },
   "feedback": {
     "button": "피드백",
     "title": "이 계산기가 도움이 되셨나요?",
@@ -90,6 +93,13 @@
     "recent": "최근 사용",
     "recommended": "추천",
     "all": "전체"
+  },
+  "searchDialog": {
+    "placeholder": "도구 이름이나 키워드로 검색...",
+    "noResults": "검색 결과가 없습니다",
+    "navigate": "이동",
+    "open": "열기",
+    "results": "개 도구"
   },
   "timeConverter": {
     "title": "시간 변환기",
@@ -2931,6 +2941,14 @@
     "healthTools": "건강 도구",
     "simpleGames": "간단 게임",
     "financialTips": "💡 금융 팁"
+  },
+  "relatedTools": {
+    "title": "관련 도구"
+  },
+  "favorites": {
+    "title": "즐겨찾기",
+    "add": "즐겨찾기 추가",
+    "remove": "즐겨찾기 해제"
   },
   "toolsShowcase": {
     "title": "다른 유용한 도구들",

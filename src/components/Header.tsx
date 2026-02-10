@@ -1,9 +1,10 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Calculator, Menu, X, ChevronDown, Clock, Grid3X3 } from 'lucide-react';
+import { Calculator, Menu, X, ChevronDown, Clock, Grid3X3, Search } from 'lucide-react';
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
+import SearchDialog from './SearchDialog';
 import { useTranslations } from 'next-intl';
 import { menuConfig, categoryKeys, CategoryKey } from '@/config/menuConfig';
 import { getRecentToolsByCategory, recordToolUsage } from '@/utils/recentTools';
@@ -22,6 +23,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [recentTools, setRecentTools] = useState<Record<string, string[]>>({});
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
 
@@ -152,12 +154,28 @@ const Header = () => {
 
     return () => {
       // 컴포넌트 언마운트 시 스크롤 복원
+      const scrollY = document.body.style.top;
       document.body.style.overflow = '';
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     };
   }, [isMobileMenuOpen]);
+
+  // 글로벌 검색 단축키 (Ctrl+K / Cmd+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // 외부 클릭 시 드롭다운 닫기
   useEffect(() => {
@@ -191,12 +209,14 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-1" aria-label={t('common.menu')}>
             {categoryKeys.map((key) => (
               <div key={key} className="relative">
                 <button
                   onClick={() => handleDropdownToggle(key)}
                   className="flex items-center space-x-1 px-3 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  aria-expanded={openDropdown === key}
+                  aria-haspopup="true"
                 >
                   <span>{menuItems[key].title}</span>
                   <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === key ? 'rotate-180' : ''}`} />
@@ -263,6 +283,19 @@ const Header = () => {
               {t('navigation.financialTips')}
             </a>
 
+            {/* 검색 */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm"
+              aria-label={t('common.search')}
+            >
+              <Search className="w-4 h-4" />
+              <span className="hidden xl:inline">{t('common.search')}</span>
+              <kbd className="hidden xl:inline-flex px-1.5 py-0.5 text-[10px] font-mono text-gray-400 bg-white dark:bg-gray-600 rounded border border-gray-300 dark:border-gray-500">
+                ⌘K
+              </kbd>
+            </button>
+
             {/* 테마 전환 */}
             <ThemeToggle />
 
@@ -270,13 +303,22 @@ const Header = () => {
             <LanguageToggle />
           </nav>
 
-          {/* Mobile: Theme + Language Toggle + Menu Button */}
+          {/* Mobile: Search + Theme + Language Toggle + Menu Button */}
           <div className="lg:hidden flex items-center space-x-2">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label={t('common.search')}
+            >
+              <Search className="w-5 h-5" />
+            </button>
             <ThemeToggle />
             <LanguageToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label={isMobileMenuOpen ? t('common.close') : t('common.menu')}
+              aria-expanded={isMobileMenuOpen}
             >
               {isMobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -327,6 +369,8 @@ const Header = () => {
           </div>
         )}
       </div>
+      {/* Search Dialog */}
+      <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
   );
 };

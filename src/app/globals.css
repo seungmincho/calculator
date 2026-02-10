@@ -130,6 +130,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Accessibility - Consistent focus styles */
+*:focus-visible {
+  outline: 2px solid var(--primary, #2563eb);
+  outline-offset: 2px;
+}
+
 /* Clean White Mode Background - Light Mode */
 .bg-gradient-to-br.from-slate-50.to-blue-50 {
   background: linear-gradient(to bottom right, #ffffff, #f8fafc) !important;

@@ -35,6 +35,9 @@
     "load": "Load",
     "convert": "Convert"
   },
+  "accessibility": {
+    "skipToContent": "Skip to main content"
+  },
   "feedback": {
     "button": "Feedback",
     "title": "Was this calculator helpful?",
@@ -90,6 +93,13 @@
     "recent": "Recent",
     "recommended": "Recommended",
     "all": "All"
+  },
+  "searchDialog": {
+    "placeholder": "Search tools by name or keyword...",
+    "noResults": "No results found",
+    "navigate": "Navigate",
+    "open": "Open",
+    "results": "tools"
   },
   "timeConverter": {
     "title": "Time Converter",
@@ -2932,6 +2942,14 @@
     "healthTools": "Health Tools",
     "simpleGames": "Simple Games",
     "financialTips": "💡 Financial Tips"
+  },
+  "relatedTools": {
+    "title": "Related Tools"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "add": "Add to favorites",
+    "remove": "Remove from favorites"
   },
   "toolsShowcase": {
     "title": "Other Useful Tools",
