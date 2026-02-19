@@ -621,11 +621,12 @@
     }
   },
   "jsonFormatter": {
-    "title": "JSON Formatter",
-    "description": "Format, validate, and beautify JSON data online.",
+    "title": "JSON Formatter Pro",
+    "description": "Validate, format, and minify JSON data. With JSONPath queries, JSON5 support, and statistical analysis.",
     "input": {
       "jsonInput": "JSON Input",
-      "pasteJson": "Paste your JSON here..."
+      "pasteJson": "Paste your JSON here...",
+      "output": "Output"
     },
     "actions": {
       "format": "Format",
@@ -638,6 +639,155 @@
       "valid": "Valid JSON",
       "invalid": "Invalid JSON",
       "error": "JSON Error"
+    },
+    "modes": {
+      "format": "Format",
+      "minify": "Minify",
+      "treeView": "Tree",
+      "stats": "Stats"
+    },
+    "controls": {
+      "settings": "Settings",
+      "example": "Example",
+      "upload": "Upload",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "download": "Download",
+      "fullscreen": "Fullscreen",
+      "exitFullscreen": "Exit Fullscreen",
+      "expandAll": "Expand All",
+      "collapseAll": "Collapse All",
+      "clear": "Clear",
+      "paste": "Paste",
+      "urlImport": "URL"
+    },
+    "settings": {
+      "title": "Settings",
+      "indentSize": "Indent",
+      "sortKeys": "Sort Keys (A-Z)",
+      "json5Mode": "JSON5 Mode",
+      "json5Desc": "Allow comments, trailing commas",
+      "spaces": "{count} spaces"
+    },
+    "statusBar": {
+      "valid": "Valid",
+      "invalid": "Error",
+      "keys": "Keys",
+      "depth": "Depth",
+      "nodes": "Nodes",
+      "size": "Size",
+      "time": "Time",
+      "compressionRatio": "Ratio"
+    },
+    "jsonPath": {
+      "title": "JSONPath Query",
+      "placeholder": "Enter JSONPath query (e.g. $.store.book[*].author)",
+      "run": "Run",
+      "result": "Query Result",
+      "resultCount": "{count} results",
+      "examples": "Examples",
+      "error": "Query Error",
+      "noResult": "No results",
+      "exampleQueries": {
+        "allAuthors": "Extract all authors",
+        "filterByPrice": "Filter by price",
+        "allKeys": "All key names",
+        "recursive": "Recursive search"
+      }
+    },
+    "urlImport": {
+      "placeholder": "Enter JSON URL",
+      "fetch": "Fetch",
+      "loading": "Loading...",
+      "error": "Failed to fetch URL",
+      "success": "Fetched successfully"
+    },
+    "dragDrop": {
+      "message": "Drop JSON file here",
+      "supported": ".json, .txt, .json5 files supported"
+    },
+    "treeView": {
+      "search": "Search keys or values...",
+      "copyPath": "Copy Path",
+      "pathCopied": "JSONPath copied",
+      "editValue": "Edit Value",
+      "keys": " keys",
+      "items": " items",
+      "empty": "Enter valid JSON to see the tree view",
+      "noSearchResult": "No search results"
+    },
+    "stats": {
+      "title": "JSON Statistics",
+      "overview": "Overview",
+      "typeDistribution": "Type Distribution",
+      "depthDistribution": "Distribution by Depth",
+      "topKeys": "Most Used Keys (Top 10)",
+      "totalNodes": "Total Nodes",
+      "totalKeys": "Total Keys",
+      "maxDepth": "Max Depth",
+      "dataSize": "Data Size",
+      "stringType": "String",
+      "numberType": "Number",
+      "booleanType": "Boolean",
+      "nullType": "null",
+      "objectType": "Object",
+      "arrayType": "Array",
+      "depth": "Depth {level}"
+    },
+    "shortcuts": {
+      "title": "Keyboard Shortcuts",
+      "format": "Format",
+      "minify": "Minify",
+      "treeView": "Tree View",
+      "copyOutput": "Copy Output",
+      "search": "Search"
+    },
+    "errors": {
+      "syntaxError": "JSON Syntax Error",
+      "processingFailed": "Processing Failed",
+      "invalidFile": "Unsupported file format",
+      "fileTooLarge": "File too large (max 10MB)",
+      "line": "Line",
+      "position": "Position",
+      "autoFix": "Auto Fix",
+      "autoFixTooltip": "Automatically repair broken JSON (missing commas, quotes, brackets, etc.)",
+      "autoFixSuccess": "JSON has been automatically repaired",
+      "autoFixFailed": "Auto repair failed"
+    },
+    "guide": {
+      "title": "JSON Formatter Pro Complete Guide",
+      "subtitle": "Code editor-grade syntax highlighting, JSONPath queries, JSON5 support, and real-time statistical analysis - the ultimate JSON tool for developers",
+      "features": {
+        "syntaxHighlight": "Syntax Highlighting Editor",
+        "syntaxHighlightDesc": "Professional code editor powered by CodeMirror 6 with color-coded JSON keys, values, and types. Supports code folding, bracket matching, and line numbers.",
+        "treeView": "Interactive Tree View",
+        "treeViewDesc": "Visually explore JSON structure. Click any node to auto-copy its JSONPath, and use real-time search to quickly find the data you need.",
+        "jsonPath": "JSONPath Queries",
+        "jsonPathDesc": "Extract data using JSONPath expressions. Supports complex filtering and recursive searches.",
+        "json5": "JSON5 / JSONC Support",
+        "json5Desc": "Supports JSON5 extended syntax including comments (// and /* */), trailing commas, and single quotes for easy config file processing.",
+        "stats": "Statistical Analysis",
+        "statsDesc": "Visualize type distribution, depth analysis, and most-used keys of your JSON data with interactive charts.",
+        "performance": "High Performance",
+        "performanceDesc": "Processes large JSON files efficiently. Debounced parsing, cached results, and optimized tree rendering for a smooth experience."
+      },
+      "useCases": {
+        "title": "Use Cases",
+        "apiDebug": "API Debugging",
+        "apiDebugDesc": "Format API response JSON and extract needed data with JSONPath.",
+        "configEdit": "Config File Editing",
+        "configEditDesc": "Edit tsconfig, .eslintrc, and other JSON5 config files with comments.",
+        "dataAnalysis": "Data Analysis",
+        "dataAnalysisDesc": "Understand JSON data structure and type distribution at a glance with the stats view."
+      },
+      "tips": {
+        "title": "Tips",
+        "tip1": "Press Ctrl+Shift+F to format quickly, Ctrl+Shift+M to minify.",
+        "tip2": "Click any tree node to auto-copy its JSONPath.",
+        "tip3": "Enable JSON5 mode to parse config files with comments.",
+        "tip4": "Drag and drop files onto the editor to load them quickly.",
+        "tip5": "Use URL import to analyze external API JSON responses directly."
+      }
     }
   },
   "jsonCsvConverter": {
@@ -882,7 +1032,82 @@
       "colorConverter": "Color Converter",
       "loremIpsum": "Lorem Ipsum Generator",
       "unitConverter": "Unit Converter",
-      "textConverter": "Text Converter"
+      "textConverter": "Text Converter",
+      "passwordGenerator": "Password Generator",
+      "ddayCalculator": "D-Day Calculator",
+      "percentCalculator": "Percentage Calculator",
+      "ageCalculator": "Age Calculator",
+      "gpaCalculator": "GPA Calculator",
+      "randomPicker": "Random Picker",
+      "timer": "Timer/Stopwatch",
+      "baseConverter": "Base Converter",
+      "notepad": "Notepad",
+      "compoundCalculator": "Compound Interest",
+      "electricityCalculator": "Electricity Bill",
+      "screenInfo": "Screen Info",
+      "emojiPicker": "Emoji Picker",
+      "lunarConverter": "Lunar Calendar",
+      "ipChecker": "IP Address",
+      "discountCalculator": "Discount Calc",
+      "typingTest": "Typing Test",
+      "numberToKorean": "Number to Korean",
+      "qrScanner": "QR Scanner",
+      "pyeongCalculator": "Pyeong Calc",
+      "vatCalculator": "VAT Calculator",
+      "alcoholCalculator": "BAC Calculator",
+      "fontPreview": "Font Preview",
+      "worldClock": "World Clock",
+      "rentConverter": "Rent Converter",
+      "waterBill": "Water Bill Calc",
+      "cssGradient": "CSS Gradient",
+      "koreanSyllable": "Korean Syllable",
+      "romanNumeral": "Roman Numerals",
+      "businessNumber": "Business Number",
+      "dueDateCalculator": "Due Date Calc",
+      "hourlyWage": "Hourly Wage",
+      "colorPalette": "Color Palette",
+      "aspectRatio": "Aspect Ratio",
+      "severancePay": "Severance Pay",
+      "annualLeave": "Annual Leave",
+      "gasBill": "Gas Bill Calc",
+      "imageConverter": "Image Converter",
+      "textToSpeech": "Text to Speech",
+      "taxiFare": "Taxi Fare",
+      "installmentCalc": "Installment Calc",
+      "signatureGenerator": "Signature Gen",
+      "morseCode": "Morse Code",
+      "reactionTest": "Reaction Test",
+      "residentNumber": "ID Validator",
+      "shippingCalc": "Shipping Calc",
+      "parkingFee": "Parking Fee",
+      "bloodPressure": "Blood Pressure",
+      "colorBlindTest": "Color Blind Test",
+      "monitorTest": "Monitor Test",
+      "game2048": "2048 Game",
+      "minesweeper": "Minesweeper",
+      "sudoku": "Sudoku",
+      "dutchPay": "Dutch Pay Calculator",
+      "colorExtractor": "Image Color Extractor",
+      "imageMosaic": "Image Mosaic/Blur",
+      "imageWatermark": "Image Watermark",
+      "imageOcr": "Image OCR",
+      "keyboardConverter": "Keyboard Converter",
+      "contrastChecker": "Contrast Checker",
+      "pdfTools": "PDF Tools",
+      "tetris": "Tetris",
+      "numberBaseball": "Number Baseball",
+      "boxShadow": "CSS Box Shadow",
+      "koreanWordle": "Korean Wordle",
+      "codeScreenshot": "Code Screenshot",
+      "flexboxGrid": "Flexbox & Grid Generator",
+      "svgEditor": "SVG Editor",
+      "apiTester": "API Tester",
+      "budgetCalculator": "Budget Calculator",
+      "loanSchedule": "Loan Schedule",
+      "movingCost": "Moving Cost Calculator",
+      "carMaintenance": "Car Maintenance Calculator",
+      "memoryGame": "Memory Game",
+      "snakeGame": "Snake Game"
     },
     "copyright": "© 2025 ToolHub. All rights reserved."
   },
@@ -2940,6 +3165,7 @@
     "financialCalculators": "Financial Calculators",
     "developmentTools": "Development Tools",
     "healthTools": "Health Tools",
+    "mediaTools": "Image/Media Tools",
     "simpleGames": "Simple Games",
     "financialTips": "💡 Financial Tips"
   },
@@ -2960,7 +3186,8 @@
       "health": "Health Tools",
       "development": "Development Tools",
       "utility": "Utilities",
-      "games": "Simple Games"
+      "games": "Simple Games",
+      "media": "Image/Media"
     },
     "currentPage": "Current Page",
     "tools": {
@@ -3171,6 +3398,306 @@
       "textConverter": {
         "title": "Text Converter",
         "description": "Convert case, camelCase, snake_case"
+      },
+      "passwordGenerator": {
+        "title": "Password Generator",
+        "description": "Generate secure passwords and passphrases"
+      },
+      "ddayCalculator": {
+        "title": "D-Day Calculator",
+        "description": "D-Day counter and date calculations"
+      },
+      "percentCalculator": {
+        "title": "Percentage Calculator",
+        "description": "Percentage calculation, rate of change, discounts, and more"
+      },
+      "ageCalculator": {
+        "title": "Age Calculator",
+        "description": "Calculate age, zodiac sign, and birth info"
+      },
+      "gpaCalculator": {
+        "title": "GPA Calculator",
+        "description": "Calculate university GPA (4.5/4.3 scale)"
+      },
+      "randomPicker": {
+        "title": "Random Picker",
+        "description": "Random number, name picker, team divider"
+      },
+      "timer": {
+        "title": "Timer/Stopwatch",
+        "description": "Stopwatch, countdown timer, Pomodoro"
+      },
+      "baseConverter": {
+        "title": "Base Converter",
+        "description": "Binary, octal, decimal, hexadecimal conversion"
+      },
+      "notepad": {
+        "title": "Notepad",
+        "description": "Online notepad with auto-save"
+      },
+      "compoundCalculator": {
+        "title": "Compound Interest",
+        "description": "Compound interest and investment return simulation"
+      },
+      "electricityCalculator": {
+        "title": "Electricity Bill",
+        "description": "Korean residential electricity bill calculator"
+      },
+      "screenInfo": {
+        "title": "Screen Info",
+        "description": "Check screen resolution, browser, OS info"
+      },
+      "emojiPicker": {
+        "title": "Emoji Picker",
+        "description": "Search, copy, and browse emojis by category"
+      },
+      "lunarConverter": {
+        "title": "Lunar Calendar",
+        "description": "Lunar ↔ Solar date conversion"
+      },
+      "ipChecker": {
+        "title": "IP Address Checker",
+        "description": "Check your public IP, location, ISP info"
+      },
+      "discountCalculator": {
+        "title": "Discount Calculator",
+        "description": "Calculate discount rate, price, original cost"
+      },
+      "typingTest": {
+        "title": "Typing Test",
+        "description": "Typing speed test, Korean/English practice"
+      },
+      "numberToKorean": {
+        "title": "Number to Korean",
+        "description": "Convert numbers to Korean text format"
+      },
+      "qrScanner": {
+        "title": "QR Scanner",
+        "description": "Scan QR codes via camera or image"
+      },
+      "pyeongCalculator": {
+        "title": "Pyeong Calculator",
+        "description": "Pyeong(坪) ↔ m² area conversion"
+      },
+      "vatCalculator": {
+        "title": "VAT Calculator",
+        "description": "Calculate supply price, VAT, total"
+      },
+      "alcoholCalculator": {
+        "title": "BAC Calculator",
+        "description": "Estimate blood alcohol concentration"
+      },
+      "fontPreview": {
+        "title": "Font Preview",
+        "description": "Preview text in various fonts"
+      },
+      "worldClock": {
+        "title": "World Clock",
+        "description": "Current time in major cities worldwide"
+      },
+      "rentConverter": {
+        "title": "Rent Converter",
+        "description": "Jeonse ↔ Monthly rent conversion"
+      },
+      "waterBill": {
+        "title": "Water Bill Calculator",
+        "description": "Calculate water bill by usage"
+      },
+      "cssGradient": {
+        "title": "CSS Gradient",
+        "description": "Generate CSS gradient code"
+      },
+      "koreanSyllable": {
+        "title": "Korean Syllable",
+        "description": "Decompose Korean syllables"
+      },
+      "romanNumeral": {
+        "title": "Roman Numerals",
+        "description": "Arabic ↔ Roman numeral conversion"
+      },
+      "businessNumber": {
+        "title": "Business Number Validator",
+        "description": "Validate Korean business registration numbers"
+      },
+      "dueDateCalculator": {
+        "title": "Due Date Calculator",
+        "description": "Calculate due date from LMP"
+      },
+      "hourlyWage": {
+        "title": "Hourly Wage Calculator",
+        "description": "Convert hourly, daily, monthly wages"
+      },
+      "colorPalette": {
+        "title": "Color Palette Generator",
+        "description": "Generate harmonious color combinations"
+      },
+      "aspectRatio": {
+        "title": "Aspect Ratio Calculator",
+        "description": "Calculate aspect ratios and resolutions"
+      },
+      "severancePay": {
+        "title": "Severance Pay Calculator",
+        "description": "Calculate severance pay by tenure"
+      },
+      "annualLeave": {
+        "title": "Annual Leave Calculator",
+        "description": "Calculate annual leave by join date"
+      },
+      "gasBill": {
+        "title": "Gas Bill Calculator",
+        "description": "Calculate gas bill by usage"
+      },
+      "imageConverter": {
+        "title": "Image Converter",
+        "description": "Convert JPEG/PNG/WebP image formats"
+      },
+      "textToSpeech": {
+        "title": "Text to Speech",
+        "description": "Read text aloud with TTS"
+      },
+      "taxiFare": {
+        "title": "Taxi Fare Calculator",
+        "description": "Calculate estimated taxi fare"
+      },
+      "installmentCalc": {
+        "title": "Installment Calculator",
+        "description": "Calculate installment fees and payments"
+      },
+      "signatureGenerator": {
+        "title": "Signature Generator",
+        "description": "Create e-signatures on canvas"
+      },
+      "morseCode": {
+        "title": "Morse Code Converter",
+        "description": "Text ↔ Morse code conversion"
+      },
+      "reactionTest": {
+        "title": "Reaction Time Test",
+        "description": "Measure your reaction speed"
+      },
+      "residentNumber": {
+        "title": "Resident ID Validator",
+        "description": "Validate Korean resident registration numbers"
+      },
+      "shippingCalc": {
+        "title": "Shipping Calculator",
+        "description": "Calculate delivery shipping costs"
+      },
+      "parkingFee": {
+        "title": "Parking Fee Calculator",
+        "description": "Calculate parking fees by time"
+      },
+      "bloodPressure": {
+        "title": "Blood Pressure Log",
+        "description": "Record and classify blood pressure"
+      },
+      "colorBlindTest": {
+        "title": "Color Blind Test",
+        "description": "Ishihara color vision test"
+      },
+      "monitorTest": {
+        "title": "Monitor Test",
+        "description": "14 comprehensive monitor quality tests"
+      },
+      "game2048": {
+        "title": "2048 Game",
+        "description": "Merge same numbers to reach 2048"
+      },
+      "minesweeper": {
+        "title": "Minesweeper",
+        "description": "Classic mine sweeping puzzle game"
+      },
+      "sudoku": {
+        "title": "Sudoku",
+        "description": "Number puzzle with 4 difficulty levels"
+      },
+      "dutchPay": {
+        "title": "Dutch Pay Calculator",
+        "description": "Split bills accurately with N-way settlement"
+      },
+      "colorExtractor": {
+        "title": "Image Color Extractor",
+        "description": "Extract colors and create palettes from images"
+      },
+      "imageMosaic": {
+        "title": "Image Mosaic/Blur",
+        "description": "Apply mosaic or blur effects to photos"
+      },
+      "imageWatermark": {
+        "title": "Image Watermark",
+        "description": "Add text or image watermarks to images"
+      },
+      "imageOcr": {
+        "title": "Image OCR",
+        "description": "Extract text from images using OCR"
+      },
+      "keyboardConverter": {
+        "title": "Keyboard Converter",
+        "description": "Convert English keystrokes to Korean and vice versa"
+      },
+      "contrastChecker": {
+        "title": "Contrast Checker",
+        "description": "WCAG accessibility color contrast ratio checker"
+      },
+      "pdfTools": {
+        "title": "PDF Tools",
+        "description": "Merge, split, rotate PDFs and convert images to PDF"
+      },
+      "tetris": {
+        "title": "Tetris",
+        "description": "Classic block puzzle game"
+      },
+      "numberBaseball": {
+        "title": "Number Baseball",
+        "description": "Number guessing brain game"
+      },
+      "boxShadow": {
+        "title": "CSS Box Shadow",
+        "description": "Visual multi-layer box-shadow CSS code generator"
+      },
+      "koreanWordle": {
+        "title": "Korean Wordle",
+        "description": "Daily Korean word guessing game"
+      },
+      "codeScreenshot": {
+        "title": "Code Screenshot",
+        "description": "Convert code to beautiful shareable images"
+      },
+      "flexboxGrid": {
+        "title": "Flexbox & Grid Generator",
+        "description": "Visually generate CSS Flexbox/Grid layouts"
+      },
+      "svgEditor": {
+        "title": "SVG Editor",
+        "description": "Edit, optimize, and convert SVG code"
+      },
+      "apiTester": {
+        "title": "API Tester",
+        "description": "Test and debug REST APIs in your browser"
+      },
+      "budgetCalculator": {
+        "title": "Budget Calculator",
+        "description": "Manage monthly expenses by category and plan your budget"
+      },
+      "loanSchedule": {
+        "title": "Loan Repayment Scheduler",
+        "description": "Generate detailed loan repayment schedule"
+      },
+      "movingCost": {
+        "title": "Moving Cost Calculator",
+        "description": "Estimate moving costs by home size and type"
+      },
+      "carMaintenance": {
+        "title": "Car Maintenance Calculator",
+        "description": "Calculate annual vehicle maintenance costs"
+      },
+      "memoryGame": {
+        "title": "Memory Game",
+        "description": "Flip cards to find matching pairs"
+      },
+      "snakeGame": {
+        "title": "Snake Game",
+        "description": "Classic snake game with 3 modes"
       }
     }
   },
@@ -3962,6 +4489,4841 @@
       "loading": "Loading...",
       "ready": "Ready to render",
       "rendering": "Rendering..."
+    }
+  },
+  "passwordGenerator": {
+    "title": "Password Generator",
+    "description": "Generate secure passwords and passphrases quickly and easily",
+    "modes": {
+      "password": "Password",
+      "passphrase": "Passphrase"
+    },
+    "settings": {
+      "title": "Settings",
+      "length": "Password Length",
+      "characters": "Character Types",
+      "uppercase": "Uppercase (A-Z)",
+      "lowercase": "Lowercase (a-z)",
+      "numbers": "Numbers (0-9)",
+      "specialChars": "Special Characters",
+      "customSpecialChars": "Custom Special Characters",
+      "customSpecialCharsPlaceholder": "e.g., !@#$%",
+      "excludeAmbiguous": "Exclude Ambiguous",
+      "excludeAmbiguousDesc": "Exclude easily confused characters: 0, O, o, l, 1, I",
+      "count": "Generate Count",
+      "wordCount": "Word Count",
+      "separator": "Separator",
+      "separators": {
+        "hyphen": "Hyphen (-)",
+        "space": "Space",
+        "period": "Period (.)",
+        "underscore": "Underscore (_)"
+      },
+      "capitalizeFirst": "Capitalize First Letter"
+    },
+    "generate": "Generate Passwords",
+    "copyAll": "Copy All",
+    "copied": "Copied!",
+    "copy": "Copy",
+    "result": {
+      "title": "Generated Passwords",
+      "empty": "Select options and click Generate",
+      "count": "{count} generated"
+    },
+    "strength": {
+      "veryWeak": "Very Weak",
+      "weak": "Weak",
+      "medium": "Medium",
+      "strong": "Strong",
+      "veryStrong": "Very Strong",
+      "entropy": "Entropy",
+      "bits": "bits"
+    },
+    "history": {
+      "title": "History",
+      "show": "Show History",
+      "hide": "Hide History",
+      "empty": "No passwords generated yet",
+      "clear": "Clear History"
+    },
+    "errors": {
+      "noCharType": "Please select at least one character type"
+    },
+    "guide": {
+      "title": "Password Security Guide",
+      "tips": {
+        "title": "Secure Password Tips",
+        "items": [
+          "Use passwords with at least 12 characters",
+          "Combine uppercase, lowercase, numbers, and special characters",
+          "Don't include personal information (birthday, phone number)",
+          "Use different passwords for each site",
+          "Use a password manager"
+        ]
+      },
+      "passphrase": {
+        "title": "Benefits of Passphrases",
+        "items": [
+          "Easy to remember with high security",
+          "Random word combinations provide sufficient entropy",
+          "Recommended to use 4 or more words",
+          "Adding separators further improves security"
+        ]
+      }
+    }
+  },
+  "ddayCalculator": {
+    "title": "D-Day Calculator",
+    "description": "D-Day countdown, date difference, and date add/subtract in one place",
+    "modes": {
+      "dday": "D-Day Counter",
+      "diff": "Date Difference",
+      "add": "Date Add/Subtract"
+    },
+    "dday": {
+      "targetDate": "Target Date",
+      "eventName": "Event Name",
+      "eventNamePlaceholder": "e.g., Exam, Wedding, Trip...",
+      "today": "Today",
+      "setToday": "Set to Today"
+    },
+    "diff": {
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "swap": "Swap Dates"
+    },
+    "add": {
+      "baseDate": "Base Date",
+      "value": "Value",
+      "unit": "Unit",
+      "units": {
+        "days": "Days",
+        "weeks": "Weeks",
+        "months": "Months",
+        "years": "Years"
+      },
+      "direction": {
+        "add": "Add",
+        "subtract": "Subtract"
+      },
+      "businessDaysOnly": "Business Days Only",
+      "resultDate": "Result Date"
+    },
+    "result": {
+      "title": "Results",
+      "totalDays": "Total Days",
+      "weeks": "weeks",
+      "days": "days",
+      "months": "months",
+      "years": "years",
+      "and": " ",
+      "businessDays": "Business Days (excl. weekends)",
+      "businessDaysHoliday": "Business Days (excl. weekends & holidays)",
+      "holidaysInRange": "Holidays in Range",
+      "remaining": "remaining",
+      "passed": "passed",
+      "dday": "D-Day!"
+    },
+    "presets": {
+      "title": "Popular D-Days",
+      "csat": "CSAT (Suneung)",
+      "seollal": "Seollal",
+      "chuseok": "Chuseok",
+      "christmas": "Christmas",
+      "newYear": "New Year",
+      "childrensDay": "Children's Day",
+      "liberationDay": "Liberation Day"
+    },
+    "holidays": {
+      "title": "Korean Public Holidays",
+      "newYear": "New Year's Day",
+      "marchFirst": "March 1st Movement Day",
+      "childrensDay": "Children's Day",
+      "memorialDay": "Memorial Day",
+      "liberationDay": "Liberation Day",
+      "nationalFoundation": "National Foundation Day",
+      "hangeulDay": "Hangeul Day",
+      "christmas": "Christmas",
+      "seollal": "Seollal (Lunar New Year)",
+      "seollalEve": "Seollal Holiday",
+      "seollalAfter": "Seollal Holiday",
+      "buddhasBirthday": "Buddha's Birthday",
+      "chuseok": "Chuseok",
+      "chuseokEve": "Chuseok Holiday",
+      "chuseokAfter": "Chuseok Holiday",
+      "substituteHoliday": "Substitute Holiday"
+    },
+    "share": "Share Results",
+    "guide": {
+      "title": "D-Day Calculator Guide",
+      "usage": {
+        "title": "How to Use",
+        "items": [
+          "D-Day Counter: Calculate days remaining until your target date",
+          "Date Difference: Show the period between two dates in various units",
+          "Date Add/Subtract: Add or subtract days from a specific date"
+        ]
+      },
+      "businessDays": {
+        "title": "Business Days",
+        "description": "Business days exclude weekends (Sat, Sun) and Korean public holidays, including lunar calendar holidays like Seollal and Chuseok."
+      }
+    }
+  },
+  "percentCalculator": {
+    "title": "Percentage Calculator",
+    "description": "Various percentage calculations in one place",
+    "modes": {
+      "basicPercent": "Basic Percent",
+      "whatPercent": "What Percent?",
+      "change": "% Change",
+      "addSubtract": "Add/Subtract"
+    },
+    "basicPercent": {
+      "title": "What is Y% of X?",
+      "description": "Calculate a percentage of a given value",
+      "valueLabel": "Value (X)",
+      "percentLabel": "Percent (Y%)",
+      "resultPrefix": "",
+      "resultMiddle": "% of",
+      "resultSuffix": "is"
+    },
+    "whatPercent": {
+      "title": "X is what % of Y?",
+      "description": "Calculate the ratio of two values as a percentage",
+      "partLabel": "Part value (X)",
+      "wholeLabel": "Whole value (Y)",
+      "resultPrefix": "is",
+      "resultMiddle": "of",
+      "resultSuffix": ""
+    },
+    "change": {
+      "title": "Percentage Change",
+      "description": "Calculate the rate of change from old to new value",
+      "fromLabel": "Old value",
+      "toLabel": "New value",
+      "increase": "increase",
+      "decrease": "decrease",
+      "noChange": "no change",
+      "resultPrefix": "From",
+      "resultMiddle": "to",
+      "resultSuffix": "change",
+      "difference": "Difference"
+    },
+    "addSubtract": {
+      "title": "Add/Subtract Percent",
+      "description": "Add or subtract a percentage to calculate the final amount (tax, discounts, etc.)",
+      "valueLabel": "Original value",
+      "percentLabel": "Percent (%)",
+      "add": "Add (+)",
+      "subtract": "Subtract (-)",
+      "addResult": "After adding",
+      "subtractResult": "After subtracting",
+      "addedAmount": "Added amount",
+      "subtractedAmount": "Subtracted amount"
+    },
+    "common": {
+      "calculate": "Calculate",
+      "result": "Result",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "reset": "Reset",
+      "placeholder": "Enter number",
+      "history": "Calculation History",
+      "clearHistory": "Clear History",
+      "noHistory": "No calculation history",
+      "quickPercent": "Quick Percent",
+      "tipTitle": "Tips",
+      "tips": [
+        "Tax: Add 10% to item price → price including tax",
+        "Discount: Subtract 30% from original → discounted price",
+        "Scores: Correct answers ÷ total questions → accuracy rate",
+        "Growth: Compare monthly sales change → growth rate"
+      ]
+    },
+    "guide": {
+      "title": "User Guide",
+      "basicPercent": {
+        "title": "Basic Percentage Calculation",
+        "items": [
+          "Enter a value (X) and percentage (Y%) to calculate the result",
+          "Example: 15% of 50,000 = 7,500",
+          "Useful for calculating tax, tips, and fees"
+        ]
+      },
+      "whatPercent": {
+        "title": "Ratio (%) Calculation",
+        "items": [
+          "Enter part value (X) and whole value (Y) to calculate the ratio",
+          "Example: 300 is 25% of 1,200",
+          "Useful for test scores and achievement rates"
+        ]
+      },
+      "change": {
+        "title": "Percentage Change Calculation",
+        "items": [
+          "Enter old and new values to calculate the rate of change",
+          "Example: From 100 to 130 → 30% increase",
+          "Useful for analyzing sales changes and price fluctuations"
+        ]
+      },
+      "addSubtract": {
+        "title": "Add/Subtract Percentage",
+        "items": [
+          "Add or subtract a percentage from the original value to get the final amount",
+          "Example: 10,000 + 10% = 11,000 (tax included)",
+          "Example: 50,000 - 20% = 40,000 (discount applied)",
+          "Useful for tax, discounts, and margin calculations"
+        ]
+      }
+    }
+  },
+  "ageCalculator": {
+    "title": "Age Calculator",
+    "description": "Enter your birthdate to see your age, zodiac sign, and more at a glance",
+    "birthDate": "Date of Birth",
+    "year": "Year",
+    "month": "Month",
+    "day": "Day",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "baseDate": "Reference Date",
+    "today": "Today",
+    "result": {
+      "title": "Results",
+      "internationalAge": "International Age",
+      "koreanAge": "Korean Age (Counting)",
+      "yearAge": "Year Age",
+      "years": "years old",
+      "months": "months",
+      "days": "days",
+      "totalDays": "Days lived",
+      "totalWeeks": "Weeks lived",
+      "totalMonths": "Months lived",
+      "nextBirthday": "Next birthday",
+      "daysUntilBirthday": "days left",
+      "birthdayToday": "Today is your birthday!",
+      "zodiacAnimal": "Chinese Zodiac",
+      "zodiacSign": "Zodiac Sign",
+      "birthDay": "Born on",
+      "generation": "Generation",
+      "earlySchoolYear": "Early school year"
+    },
+    "zodiacAnimals": {
+      "rat": "Rat 🐭",
+      "ox": "Ox 🐂",
+      "tiger": "Tiger 🐅",
+      "rabbit": "Rabbit 🐇",
+      "dragon": "Dragon 🐉",
+      "snake": "Snake 🐍",
+      "horse": "Horse 🐴",
+      "goat": "Goat 🐑",
+      "monkey": "Monkey 🐒",
+      "rooster": "Rooster 🐓",
+      "dog": "Dog 🐕",
+      "pig": "Pig 🐷"
+    },
+    "zodiacSigns": {
+      "capricorn": "Capricorn ♑",
+      "aquarius": "Aquarius ♒",
+      "pisces": "Pisces ♓",
+      "aries": "Aries ♈",
+      "taurus": "Taurus ♉",
+      "gemini": "Gemini ♊",
+      "cancer": "Cancer ♋",
+      "leo": "Leo ♌",
+      "virgo": "Virgo ♍",
+      "libra": "Libra ♎",
+      "scorpio": "Scorpio ♏",
+      "sagittarius": "Sagittarius ♐"
+    },
+    "days": {
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday"
+    },
+    "generations": {
+      "genAlpha": "Gen Alpha (2013~)",
+      "genZ": "Gen Z (1997~2012)",
+      "millennial": "Millennial (1981~1996)",
+      "genX": "Gen X (1965~1980)",
+      "babyBoomer": "Baby Boomer (1946~1964)",
+      "silent": "Silent Generation (~1945)"
+    },
+    "earlySchool": {
+      "yes": "Early school year (born Jan-Feb)",
+      "no": "N/A"
+    },
+    "ageExplanation": {
+      "title": "Age Calculation Methods",
+      "international": {
+        "title": "International Age",
+        "description": "The international standard where age increases on your birthday. This became the unified legal age in Korea since June 2023."
+      },
+      "korean": {
+        "title": "Korean Age (Counting Age)",
+        "description": "Traditional Korean age where you start at 1 year old at birth and gain a year every January 1st."
+      },
+      "year": {
+        "title": "Year Age",
+        "description": "Simply current year minus birth year. Everyone born in the same year has the same age regardless of birthday."
+      }
+    },
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter your birthdate to see results in real-time",
+          "Change the reference date to calculate age at a specific point in time",
+          "View international age, Korean age, and year age all at once"
+        ]
+      },
+      "features": {
+        "title": "Information Provided",
+        "items": [
+          "International / Korean / Year age",
+          "Total days, weeks, and months lived",
+          "Days until next birthday",
+          "Chinese zodiac, zodiac sign, day of birth",
+          "Generation classification, early school year status"
+        ]
+      }
+    }
+  },
+  "gpaCalculator": {
+    "title": "GPA Calculator",
+    "description": "Enter courses with credits and grades to calculate your GPA",
+    "scale": "Scale",
+    "scale45": "4.5 Scale",
+    "scale43": "4.3 Scale",
+    "semester": "Semester",
+    "addSemester": "Add Semester",
+    "removeSemester": "Remove Semester",
+    "addCourse": "Add Course",
+    "courseName": "Course Name",
+    "credits": "Credits",
+    "grade": "Grade",
+    "remove": "Remove",
+    "reset": "Reset",
+    "result": {
+      "title": "Results",
+      "semesterGpa": "Semester GPA",
+      "cumulativeGpa": "Cumulative GPA",
+      "totalCredits": "Total Credits",
+      "totalCourses": "Total Courses",
+      "average": "Average",
+      "courses": "courses"
+    },
+    "grades45": {
+      "Aplus": "A+ (4.5)",
+      "A": "A (4.0)",
+      "Bplus": "B+ (3.5)",
+      "B": "B (3.0)",
+      "Cplus": "C+ (2.5)",
+      "C": "C (2.0)",
+      "Dplus": "D+ (1.5)",
+      "D": "D (1.0)",
+      "F": "F (0.0)"
+    },
+    "grades43": {
+      "Aplus": "A+ (4.3)",
+      "A": "A (4.0)",
+      "Aminus": "A- (3.7)",
+      "Bplus": "B+ (3.3)",
+      "B": "B (3.0)",
+      "Bminus": "B- (2.7)",
+      "Cplus": "C+ (2.3)",
+      "C": "C (2.0)",
+      "Cminus": "C- (1.7)",
+      "Dplus": "D+ (1.3)",
+      "D": "D (1.0)",
+      "Dminus": "D- (0.7)",
+      "F": "F (0.0)"
+    },
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select the grading scale (4.5 or 4.3)",
+          "Enter course name, credits, and grade",
+          "Add multiple semesters to calculate cumulative GPA"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Most Korean universities use the 4.5 scale",
+          "Some universities (e.g., SNU) use the 4.3 scale",
+          "Exclude P/F courses from GPA calculation"
+        ]
+      }
+    }
+  },
+  "randomPicker": {
+    "title": "Random Picker",
+    "description": "Random number generation, pick from list, and team divider",
+    "modes": {
+      "number": "Number",
+      "list": "List Picker",
+      "team": "Team Divider"
+    },
+    "number": {
+      "title": "Random Number Generator",
+      "min": "Minimum",
+      "max": "Maximum",
+      "count": "Count",
+      "allowDuplicates": "Allow duplicates",
+      "generate": "Pick!",
+      "result": "Result"
+    },
+    "list": {
+      "title": "Pick from List",
+      "inputLabel": "Enter items (one per line)",
+      "placeholder": "Alice\nBob\nCharlie\n...",
+      "count": "Number to pick",
+      "pick": "Pick!",
+      "result": "Winner!"
+    },
+    "team": {
+      "title": "Team Divider",
+      "inputLabel": "Enter participants (one per line)",
+      "placeholder": "Alice\nBob\nCharlie\nDiana\n...",
+      "teamCount": "Number of teams",
+      "divide": "Divide!",
+      "teamLabel": "Team"
+    },
+    "common": {
+      "copy": "Copy",
+      "copied": "Copied!",
+      "reset": "Reset",
+      "result": "Result",
+      "animation": "Animation"
+    },
+    "guide": {
+      "title": "User Guide",
+      "number": {
+        "title": "Number Picker",
+        "items": [
+          "Generate random numbers within a min-max range",
+          "Pick multiple numbers at once with optional duplicate control"
+        ]
+      },
+      "list": {
+        "title": "List Picker",
+        "items": [
+          "Enter names or items, one per line",
+          "Set how many to pick and draw randomly"
+        ]
+      },
+      "team": {
+        "title": "Team Divider",
+        "items": [
+          "Enter participant names, one per line",
+          "Set the number of teams to divide evenly"
+        ]
+      }
+    }
+  },
+  "timer": {
+    "title": "Timer / Stopwatch",
+    "description": "Stopwatch, countdown timer, and Pomodoro timer in one place",
+    "modes": {
+      "stopwatch": "Stopwatch",
+      "timer": "Timer",
+      "pomodoro": "Pomodoro"
+    },
+    "stopwatch": {
+      "title": "Stopwatch",
+      "start": "Start",
+      "stop": "Stop",
+      "reset": "Reset",
+      "lap": "Lap",
+      "laps": "Lap Records",
+      "noLaps": "No lap records",
+      "lapNumber": "Lap",
+      "lapTime": "Lap Time",
+      "totalTime": "Total Time"
+    },
+    "countdown": {
+      "title": "Countdown Timer",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds",
+      "start": "Start",
+      "pause": "Pause",
+      "resume": "Resume",
+      "reset": "Reset",
+      "finished": "Time's up!",
+      "presets": "Quick Set",
+      "preset1min": "1 min",
+      "preset3min": "3 min",
+      "preset5min": "5 min",
+      "preset10min": "10 min",
+      "preset15min": "15 min",
+      "preset30min": "30 min"
+    },
+    "pomodoro": {
+      "title": "Pomodoro Timer",
+      "work": "Focus",
+      "shortBreak": "Short Break",
+      "longBreak": "Long Break",
+      "start": "Start",
+      "pause": "Pause",
+      "reset": "Reset",
+      "skip": "Skip",
+      "session": "Session",
+      "workDuration": "Focus time (min)",
+      "shortBreakDuration": "Short break (min)",
+      "longBreakDuration": "Long break (min)",
+      "sessionsBeforeLong": "Sessions before long break",
+      "completed": "Completed sessions"
+    },
+    "guide": {
+      "title": "User Guide",
+      "stopwatch": {
+        "title": "Stopwatch",
+        "items": [
+          "Use start/stop buttons to measure time",
+          "Use lap button to record split times"
+        ]
+      },
+      "timer": {
+        "title": "Countdown Timer",
+        "items": [
+          "Set hours/minutes/seconds and start",
+          "Use quick set buttons for common durations",
+          "An alarm will sound when the timer finishes"
+        ]
+      },
+      "pomodoro": {
+        "title": "Pomodoro Technique",
+        "items": [
+          "Alternate between 25-minute focus and 5-minute break sessions",
+          "Take a 15-minute long break after 4 sessions",
+          "Customize focus and break durations to your preference"
+        ]
+      }
+    }
+  },
+  "baseConverter": {
+    "title": "Base Converter",
+    "description": "Convert between binary, octal, decimal, and hexadecimal in real-time",
+    "decimal": "Decimal (Base 10)",
+    "binary": "Binary (Base 2)",
+    "octal": "Octal (Base 8)",
+    "hex": "Hexadecimal (Base 16)",
+    "input": "Enter a value to convert",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "swap": "Swap",
+    "bitVisualization": "Bit Visualization",
+    "bit": "bit",
+    "signed": "Signed integer",
+    "unsigned": "Unsigned integer",
+    "commonValues": "Common Values",
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter a value in any base field and others will auto-convert",
+          "Hexadecimal uses characters 0-9 and A-F",
+          "Use the copy button to copy results to clipboard"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Binary: The 0 and 1 number system computers actually process",
+          "Octal: Used for Unix file permissions (chmod 755)",
+          "Hex: Used for color codes (#FF0000), memory addresses, etc."
+        ]
+      }
+    }
+  },
+  "notepad": {
+    "title": "Notepad",
+    "description": "Manage multiple notes with auto-save in your browser",
+    "newNote": "New Note",
+    "noNotes": "No notes yet",
+    "createFirstNote": "Click New Note to get started",
+    "export": "Export",
+    "autoSaved": "Auto-saved",
+    "stats": {
+      "chars": "Characters",
+      "words": "Words",
+      "lines": "Lines",
+      "bytes": "Bytes"
+    },
+    "guide": {
+      "title": "User Guide",
+      "features": {
+        "title": "Key Features",
+        "items": [
+          "Create and manage multiple notes",
+          "Freely edit titles and content",
+          "Auto-saves after 500ms",
+          "Real-time stats: characters, words, lines, bytes",
+          "Export notes as .txt files",
+          "Automatically saved to browser localStorage"
+        ]
+      },
+      "usage": {
+        "title": "How to Use",
+        "items": [
+          "Click New Note button to create a note",
+          "Select a note from the left sidebar to edit",
+          "Title and content auto-save as you type",
+          "Click the trash icon to delete a note",
+          "Click Export to download as a text file"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Notes are stored in browser localStorage",
+          "Clearing browser data will also delete notes",
+          "Use export feature to back up important notes",
+          "On mobile, use the menu button to open/close sidebar"
+        ]
+      }
+    }
+  },
+  "compoundCalculator": {
+    "title": "Compound Interest Calculator",
+    "description": "Calculate compound interest and investment returns with principal, rate, and period",
+    "principal": "Principal ($)",
+    "rate": "Annual Rate (%)",
+    "period": "Investment Period",
+    "periodUnit": {
+      "years": "years",
+      "months": "months"
+    },
+    "compoundFrequency": "Compound Frequency",
+    "frequency": {
+      "yearly": "Annually",
+      "semiannually": "Semi-annually",
+      "quarterly": "Quarterly",
+      "monthly": "Monthly",
+      "daily": "Daily"
+    },
+    "monthlyDeposit": "Monthly Deposit ($)",
+    "monthlyDepositDesc": "Additional monthly deposit (optional)",
+    "result": {
+      "title": "Results",
+      "totalAmount": "Total Amount",
+      "totalInterest": "Total Interest",
+      "totalDeposit": "Total Deposited",
+      "effectiveRate": "Effective Return",
+      "growthChart": "Growth Chart",
+      "yearlyBreakdown": "Yearly Breakdown",
+      "year": "Year",
+      "balance": "Balance",
+      "interest": "Interest",
+      "deposit": "Principal"
+    },
+    "comparison": {
+      "title": "Simple vs Compound Interest",
+      "simple": "Simple",
+      "compound": "Compound",
+      "difference": "Difference"
+    },
+    "common": {
+      "calculate": "Calculate",
+      "reset": "Reset",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "won": ""
+    },
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter principal, annual rate, and investment period",
+          "Select compound frequency (annual/semi-annual/quarterly/monthly/daily)",
+          "Add monthly deposits to calculate investment returns with regular contributions"
+        ]
+      },
+      "tips": {
+        "title": "The Magic of Compound Interest",
+        "items": [
+          "Compound interest earns interest on interest, benefiting long-term investments",
+          "Shorter compounding periods (monthly > annual) generate more interest",
+          "Rule of 72: 72 ÷ rate = years to double your money"
+        ]
+      }
+    }
+  },
+  "electricityCalculator": {
+    "title": "Electricity Bill Calculator",
+    "description": "Calculate Korean residential electricity bill with progressive rates",
+    "usage": "Monthly Usage (kWh)",
+    "usagePlaceholder": "Enter usage amount",
+    "season": "Season",
+    "seasons": {
+      "normal": "Normal (Spring/Fall)",
+      "summer": "Summer (Jul-Aug)",
+      "winter": "Winter (Dec-Feb)"
+    },
+    "contractType": "Contract Type",
+    "contracts": {
+      "lowVoltage": "Residential Low Voltage",
+      "highVoltage": "Residential High Voltage"
+    },
+    "result": {
+      "title": "Estimated Bill",
+      "baseFee": "Base Fee",
+      "usageFee": "Usage Fee",
+      "climateFee": "Climate/Environment Fee",
+      "fuelAdjust": "Fuel Cost Adjustment",
+      "subtotal": "Subtotal",
+      "vat": "VAT (10%)",
+      "elecFund": "Electric Industry Fund (3.7%)",
+      "totalMonthly": "Estimated Monthly Bill",
+      "perKwh": "Cost per kWh"
+    },
+    "tiers": {
+      "title": "Progressive Rate Tiers",
+      "tier": "Tier",
+      "range": "Usage Range",
+      "unitPrice": "Unit Price",
+      "kwh": "kWh",
+      "used": "Used",
+      "fee": "Fee"
+    },
+    "savingTips": {
+      "title": "Energy Saving Tips",
+      "items": [
+        "In summer/winter, bills increase rapidly as you enter higher progressive tiers",
+        "Unplug unused appliances to cut standby power consumption",
+        "Recommended AC temperature: 26°C in summer, 20°C in winter",
+        "Switching to LED lighting can reduce lighting costs by 80%"
+      ]
+    },
+    "common": {
+      "calculate": "Calculate",
+      "reset": "Reset",
+      "won": "KRW"
+    },
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter monthly electricity usage in kWh (check your bill)",
+          "Select the current season (summer/winter have different tiers)",
+          "The estimated bill is calculated based on progressive rates"
+        ]
+      },
+      "rateInfo": {
+        "title": "Rate Structure",
+        "items": [
+          "Korean residential electricity uses progressive pricing tiers",
+          "Summer (Jul-Aug) and winter (Dec-Feb) have adjusted tier ranges",
+          "Bill consists of base fee + usage fee + climate fee + fuel adjustment",
+          "VAT (10%) and Electric Industry Fund (3.7%) are added"
+        ]
+      }
+    }
+  },
+  "screenInfo": {
+    "title": "Screen/Device Info",
+    "description": "Check your device's screen size, resolution, and browser info",
+    "screen": {
+      "title": "Screen Info",
+      "resolution": "Screen Resolution",
+      "viewport": "Viewport Size",
+      "availableSize": "Available Size",
+      "colorDepth": "Color Depth",
+      "pixelRatio": "Pixel Ratio (DPR)",
+      "orientation": "Orientation",
+      "portrait": "Portrait",
+      "landscape": "Landscape",
+      "touchscreen": "Touchscreen"
+    },
+    "browser": {
+      "title": "Browser Info",
+      "userAgent": "User Agent",
+      "language": "Language",
+      "languages": "Supported Languages",
+      "cookiesEnabled": "Cookies",
+      "online": "Online Status",
+      "doNotTrack": "Do Not Track"
+    },
+    "device": {
+      "title": "Device Info",
+      "platform": "Platform",
+      "cores": "CPU Cores",
+      "memory": "Memory (GB)",
+      "connection": "Network Type",
+      "maxTouchPoints": "Touch Points",
+      "deviceType": "Device Type",
+      "desktop": "Desktop",
+      "tablet": "Tablet",
+      "mobile": "Mobile"
+    },
+    "common": {
+      "copy": "Copy",
+      "copied": "Copied!",
+      "copyAll": "Copy All",
+      "yes": "Yes",
+      "no": "No",
+      "unknown": "Unknown",
+      "pixels": "px",
+      "bit": "bit",
+      "refresh": "Refresh"
+    },
+    "guide": {
+      "title": "User Guide",
+      "features": {
+        "title": "Available Info",
+        "items": [
+          "Screen resolution, viewport size, available area",
+          "Pixel ratio (check for Retina display)",
+          "Browser type, version, language settings",
+          "CPU cores, memory, network type"
+        ]
+      },
+      "usage": {
+        "title": "Use Cases",
+        "items": [
+          "Useful for checking responsive design in web development",
+          "Share device info for technical support requests",
+          "Compare and verify display specifications"
+        ]
+      }
+    }
+  },
+  "emojiPicker": {
+    "title": "Emoji Picker",
+    "description": "Search and copy emojis with a single click",
+    "searchPlaceholder": "Search emojis...",
+    "categories": {
+      "all": "All",
+      "smileys": "Smileys",
+      "people": "People",
+      "animals": "Animals/Nature",
+      "food": "Food/Drink",
+      "travel": "Travel/Places",
+      "activities": "Activities",
+      "objects": "Objects",
+      "symbols": "Symbols",
+      "flags": "Flags"
+    },
+    "copied": "Copied!",
+    "clickToCopy": "Click to copy",
+    "recentlyUsed": "Recently Used",
+    "noResults": "No results found",
+    "totalEmojis": "emojis",
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click an emoji to automatically copy it to clipboard",
+          "Search by keyword in English",
+          "Use category tabs to quickly find what you need"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Recently used emojis appear at the top",
+          "Paste copied emojis into messages, notes, social media, etc.",
+          "Emoji appearance may vary across different OS and devices"
+        ]
+      }
+    }
+  },
+  "lunarConverter": {
+    "title": "Lunar Calendar Converter",
+    "description": "Convert between lunar and solar calendar dates",
+    "mode": {
+      "solarToLunar": "Solar → Lunar",
+      "lunarToSolar": "Lunar → Solar"
+    },
+    "solar": "Solar Date",
+    "lunar": "Lunar Date",
+    "year": "Year",
+    "month": "Month",
+    "day": "Day",
+    "leapMonth": "Leap month",
+    "isLeapMonth": "Leap month",
+    "convert": "Convert",
+    "reset": "Reset",
+    "result": {
+      "title": "Conversion Result",
+      "solarDate": "Solar Date",
+      "lunarDate": "Lunar Date",
+      "leapMonth": "(Leap)",
+      "dayOfWeek": "Day of Week",
+      "zodiacAnimal": "Chinese Zodiac",
+      "heavenlyStem": "Heavenly Stem",
+      "earthlyBranch": "Earthly Branch",
+      "sexagenary": "Sexagenary Cycle"
+    },
+    "copy": "Copy",
+    "copied": "Copied!",
+    "error": {
+      "invalidDate": "Invalid date",
+      "outOfRange": "Out of convertible range (1900-2100)"
+    },
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select conversion direction (Solar→Lunar / Lunar→Solar)",
+          "Enter a date and it will be converted automatically",
+          "Check the leap month checkbox for leap month dates"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Useful for finding lunar birthdays, ancestral rites, and holiday dates",
+          "Convertible range: 1900-2100",
+          "The same lunar date may correspond to different solar dates depending on leap month"
+        ]
+      }
+    }
+  },
+  "ipChecker": {
+    "title": "IP Address Checker",
+    "description": "Check your public IP address, location, ISP, and network information at a glance.",
+    "myIp": "My IP Address",
+    "loading": "Loading IP information...",
+    "error": "Failed to load IP information",
+    "retry": "Retry",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copyAll": "Copy All",
+    "refresh": "Refresh",
+    "ipv4": "IPv4 Address",
+    "ipv6": "IPv6 Address",
+    "location": "Location",
+    "city": "City",
+    "region": "Region",
+    "country": "Country",
+    "timezone": "Timezone",
+    "isp": "Internet Service Provider",
+    "org": "Organization",
+    "asn": "AS Number",
+    "network": "Network Information",
+    "connectionType": "Connection Type",
+    "vpnDetected": "VPN Detected",
+    "proxyDetected": "Proxy Detected",
+    "yes": "Yes",
+    "no": "No",
+    "guide": {
+      "title": "IP Address Guide",
+      "whatIsIp": {
+        "title": "What is an IP Address?",
+        "items": [
+          "An IP (Internet Protocol) address is a unique identifier for devices connected to the internet",
+          "Public IP is the address visible externally, while private IP is the internal network address",
+          "There are two formats: IPv4 (e.g., 192.168.0.1) and IPv6 (e.g., 2001:db8::1)"
+        ]
+      },
+      "whyCheck": {
+        "title": "When to Check Your IP",
+        "items": [
+          "When setting up remote access or server configuration",
+          "Verifying VPN connection status",
+          "Checking ISP information",
+          "Setting up IP-based access controls"
+        ]
+      }
+    }
+  },
+  "discountCalculator": {
+    "title": "Discount Calculator",
+    "description": "Calculate discount rates, discounted prices, and original prices easily.",
+    "mode": {
+      "discountRate": "Calculate by Rate",
+      "finalPrice": "Calculate by Final Price",
+      "discountAmount": "Calculate by Amount"
+    },
+    "originalPrice": "Original Price",
+    "discountRate": "Discount Rate (%)",
+    "discountAmount": "Discount Amount",
+    "finalPrice": "Final Price",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": "Result",
+    "savings": "You Save",
+    "effectiveRate": "Effective Discount Rate",
+    "won": "KRW",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "enterPrice": "Enter price",
+    "enterRate": "Enter discount rate",
+    "quickRates": "Quick Rates",
+    "multiDiscount": "Stacked Discounts",
+    "addDiscount": "Add Discount",
+    "totalDiscount": "Total Discount Rate",
+    "multiResult": "Stacked Discount Result",
+    "discount1": "First Discount",
+    "discount2": "Second Discount",
+    "discount3": "Third Discount",
+    "guide": {
+      "title": "Discount Calculator Guide",
+      "basic": {
+        "title": "Basic Usage",
+        "items": [
+          "Enter the original price and discount rate to calculate the final price",
+          "Use quick rate buttons to apply 10%-90% discounts instantly",
+          "Stacked discounts are applied sequentially (e.g., 20%+10% = 28%)"
+        ]
+      },
+      "tips": {
+        "title": "Discount Tips",
+        "items": [
+          "Buy 1 Get 1 Free is effectively a 50% discount",
+          "Buy 2 Get 1 Free is effectively a 33.3% discount",
+          "Stacked discounts are applied sequentially, not simply added"
+        ]
+      }
+    }
+  },
+  "typingTest": {
+    "title": "Typing Test",
+    "description": "Measure your typing speed and practice Korean/English typing.",
+    "language": {
+      "korean": "Korean",
+      "english": "English"
+    },
+    "difficulty": {
+      "title": "Difficulty",
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "duration": {
+      "title": "Duration",
+      "sec30": "30s",
+      "min1": "1min",
+      "min2": "2min",
+      "min5": "5min"
+    },
+    "start": "Start",
+    "restart": "Restart",
+    "stop": "Stop",
+    "result": "Result",
+    "timeLeft": "Time Left",
+    "wpm": "WPM",
+    "cpm": "CPM",
+    "accuracy": "Accuracy",
+    "totalChars": "Total Characters",
+    "correctChars": "Correct",
+    "wrongChars": "Errors",
+    "typingSpeed": "Typing Speed",
+    "excellent": "Excellent",
+    "fast": "Fast",
+    "average": "Average",
+    "slow": "Slow",
+    "beginTyping": "Look at the text above and start typing",
+    "timeUp": "Time's Up!",
+    "history": "History",
+    "bestRecord": "Best Record",
+    "averageSpeed": "Average Speed",
+    "totalTests": "Total Tests",
+    "clearHistory": "Clear History",
+    "guide": {
+      "title": "Typing Test Guide",
+      "howTo": {
+        "title": "How to Use",
+        "items": [
+          "Select language, difficulty, and duration, then click Start",
+          "Type the text displayed on screen exactly as shown",
+          "Correctly typed characters appear green, errors appear red",
+          "Your typing speed and accuracy are shown when time runs out"
+        ]
+      },
+      "speed": {
+        "title": "Speed Reference (WPM)",
+        "items": [
+          "Under 20: Beginner - Basic typing practice needed",
+          "20-40: Intermediate - Suitable for general office work",
+          "40-70: Advanced - Fast work processing possible",
+          "70+: Expert - Professional typing level"
+        ]
+      }
+    }
+  },
+  "numberToKorean": {
+    "title": "Number to Korean",
+    "description": "Convert numbers to Korean currency text format. Useful for checks, contracts, and receipts.",
+    "inputNumber": "Enter Number",
+    "placeholder": "Enter a number to convert",
+    "result": "Conversion Result",
+    "koreanFormal": "Korean Amount (Formal)",
+    "koreanInformal": "Korean Reading",
+    "chineseNum": "Chinese Character Amount",
+    "currency": "Currency Format",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "won": "Won",
+    "examples": "Examples",
+    "maxNumber": "Maximum input: 9,999,999,999,999,999 (9999 trillion)",
+    "invalidNumber": "Please enter a valid number",
+    "units": {
+      "il": "il",
+      "ship": "ship",
+      "baek": "baek",
+      "cheon": "cheon",
+      "man": "man",
+      "eok": "eok",
+      "jo": "jo"
+    },
+    "quickAmounts": "Quick Amounts",
+    "guide": {
+      "title": "Number to Korean Guide",
+      "usage": {
+        "title": "Use Cases",
+        "items": [
+          "Writing check amounts in Korean (e.g., 금 삼백만원정)",
+          "Korean text notation for contracts and receipts",
+          "Accurate amount notation in legal documents",
+          "Government document preparation with number-Korean parallel notation"
+        ]
+      },
+      "rules": {
+        "title": "Korean Amount Notation Rules",
+        "items": [
+          "'il' (one) can only be omitted at 10,000 units and above",
+          "Official documents use the format '금 OOO원정'",
+          "Chinese numerals: 壹(1) 貳(2) 參(3) 四(4) 五(5) 六(6) 七(7) 八(8) 九(9) 拾(10)",
+          "Financial institutions use Chinese character amounts to prevent forgery"
+        ]
+      }
+    }
+  },
+  "qrScanner": {
+    "title": "QR Code Scanner",
+    "description": "Scan QR codes using your camera or image files.",
+    "scanCamera": "Scan with Camera",
+    "scanImage": "Scan from Image",
+    "startCamera": "Start Camera",
+    "stopCamera": "Stop Camera",
+    "uploadImage": "Upload Image",
+    "dragDrop": "Drag or click to upload an image",
+    "scanning": "Scanning...",
+    "noQrFound": "No QR code found",
+    "result": "Scan Result",
+    "type": "Type",
+    "content": "Content",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "openLink": "Open Link",
+    "scanAnother": "Scan Another",
+    "history": "Scan History",
+    "clearHistory": "Clear History",
+    "cameraPermission": "Camera access permission required",
+    "cameraError": "Camera is not available",
+    "types": {
+      "url": "URL Link",
+      "text": "Text",
+      "email": "Email",
+      "phone": "Phone Number",
+      "wifi": "Wi-Fi",
+      "vcard": "Contact",
+      "unknown": "Other"
+    },
+    "guide": {
+      "title": "QR Scanner Guide",
+      "howTo": {
+        "title": "How to Use",
+        "items": [
+          "In the Camera tab, point the QR code at your camera for auto-detection",
+          "In the Image tab, upload an image containing a QR code",
+          "Detected content is automatically displayed and can be copied",
+          "URLs can be opened directly"
+        ]
+      },
+      "tips": {
+        "title": "Scanning Tips",
+        "items": [
+          "The QR code should be clear and large enough",
+          "Scan in a well-lit environment",
+          "Minimize camera shake",
+          "Damaged or partially covered QR codes may be difficult to detect"
+        ]
+      }
+    }
+  },
+  "pyeongCalculator": {
+    "title": "Pyeong Calculator",
+    "description": "Convert between Pyeong (坪) and square meters (m²). Useful for real estate and interior design.",
+    "pyeongToSqm": "Pyeong → m²",
+    "sqmToPyeong": "m² → Pyeong",
+    "inputPyeong": "Enter Pyeong",
+    "inputSqm": "Enter Square Meters",
+    "result": "Conversion Result",
+    "pyeong": "Pyeong",
+    "sqm": "m²",
+    "sqft": "ft²",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "quickValues": "Quick Values",
+    "areaComparison": "Area Comparison",
+    "roomSize": "Room Size Reference",
+    "sizes": {
+      "studio": "Studio (5-8 pyeong)",
+      "small": "Small Apt (15-20 pyeong)",
+      "medium": "Medium Apt (25-34 pyeong)",
+      "large": "Large Apt (40-60 pyeong)"
+    },
+    "formula": "1 Pyeong = 3.305785 m² = 35.5832 ft²",
+    "guide": {
+      "title": "Pyeong Calculator Guide",
+      "what": {
+        "title": "What is Pyeong?",
+        "items": [
+          "Pyeong (坪) is a traditional area unit used in Korea and Japan",
+          "1 Pyeong = approximately 3.3058 m² (exactly 400/121 m²)",
+          "Commonly used in real estate and interior design",
+          "Officially m² is the standard, but Pyeong is still widely used"
+        ]
+      },
+      "reference": {
+        "title": "Apartment Area Reference",
+        "items": [
+          "Exclusive area: Actual usable space (rooms, living room, kitchen)",
+          "Supply area: Exclusive area + common residential area",
+          "Contract area: Supply area + other common areas (parking, management)",
+          "A '25-pyeong apartment' typically means about 82.6 m² in supply area"
+        ]
+      }
+    }
+  },
+  "vatCalculator": {
+    "title": "VAT Calculator",
+    "description": "Calculate VAT (10%) from supply amount, or reverse-calculate from total amount.",
+    "mode": {
+      "fromSupply": "Supply → VAT",
+      "fromTotal": "Total → Reverse",
+      "fromVat": "VAT → Reverse"
+    },
+    "supplyAmount": "Supply Amount",
+    "vatAmount": "VAT (10%)",
+    "totalAmount": "Total (Supply + VAT)",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": "Result",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copyAll": "Copy All",
+    "enterAmount": "Enter amount",
+    "won": "KRW",
+    "vatRate": "VAT Rate",
+    "receipt": "Tax Invoice Format",
+    "quickAmounts": "Quick Amounts",
+    "guide": {
+      "title": "VAT Calculator Guide",
+      "basic": {
+        "title": "What is VAT?",
+        "items": [
+          "Value Added Tax (VAT) is a tax on the supply of goods and services",
+          "Korea's VAT rate is 10%",
+          "Supply Amount × 10% = VAT",
+          "Total = Supply Amount + VAT"
+        ]
+      },
+      "reverse": {
+        "title": "Reverse VAT Calculation",
+        "items": [
+          "From total: Supply Amount = Total ÷ 1.1",
+          "From total: VAT = Total ÷ 11",
+          "Tax invoices require separate supply amount and VAT",
+          "Simplified taxpayers have different VAT rates by industry (1.5%-4%)"
+        ]
+      }
+    }
+  },
+  "alcoholCalculator": {
+    "title": "Blood Alcohol Calculator",
+    "description": "Estimate blood alcohol concentration (BAC) using the Widmark formula.",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "weight": "Weight (kg)",
+    "drinks": "Drinks",
+    "addDrink": "Add Drink",
+    "removeDrink": "Remove",
+    "drinkType": "Drink Type",
+    "amount": "Amount (ml)",
+    "alcoholPercent": "ABV (%)",
+    "drinkingDuration": "Drinking Duration (hours)",
+    "timeSinceDrinking": "Time Since Drinking (hours)",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": "Estimated Result",
+    "bac": "Blood Alcohol Concentration",
+    "bacUnit": "%",
+    "status": "Status",
+    "legal": "Legal Limits",
+    "driveLimit": "License suspension: 0.03% or above",
+    "driveRevoke": "License revocation: 0.08% or above",
+    "penalty": "Criminal penalty: 0.08% or above",
+    "sober": "Sober",
+    "buzzed": "Slightly Impaired",
+    "drunk": "License Suspension Level",
+    "veryDrunk": "License Revocation Level",
+    "dangerous": "Dangerous Level",
+    "soberTime": "Estimated Sober Time",
+    "hours": "hours",
+    "drinkTypes": {
+      "soju": "Soju (16.5%)",
+      "beer": "Beer (4.5%)",
+      "wine": "Wine (13%)",
+      "makgeolli": "Makgeolli (6%)",
+      "whiskey": "Whiskey (40%)",
+      "custom": "Custom"
+    },
+    "drinkUnits": {
+      "sojuGlass": "Soju glass (50ml)",
+      "sojuBottle": "Soju bottle (360ml)",
+      "beerGlass": "Beer glass (355ml)",
+      "beerBottle": "Beer bottle (500ml)",
+      "wineGlass": "Wine glass (150ml)",
+      "makgeolliGlass": "Makgeolli glass (300ml)"
+    },
+    "warning": "This calculator is for reference only and may differ from actual BAC. Never drive after drinking.",
+    "guide": {
+      "title": "Blood Alcohol Calculator Guide",
+      "formula": {
+        "title": "Widmark Formula",
+        "items": [
+          "BAC = (Alcohol(ml) × ABV × 0.7894) / (Weight(kg) × Body Water Ratio) - (Hours × 0.015)",
+          "Body water ratio: Male 0.68, Female 0.55",
+          "Alcohol metabolism rate: approximately 0.015% per hour",
+          "This formula provides estimates and individual results may vary"
+        ]
+      },
+      "factors": {
+        "title": "Influencing Factors",
+        "items": [
+          "Higher body weight results in lower BAC",
+          "Drinking on an empty stomach increases absorption and BAC",
+          "Women have lower body water ratio, resulting in higher BAC for same intake",
+          "Fatigue and medication can affect alcohol metabolism rate"
+        ]
+      }
+    }
+  },
+  "fontPreview": {
+    "title": "Font Preview",
+    "description": "Preview and compare text in various web fonts.",
+    "sampleText": "Preview Text",
+    "defaultText": "The quick brown fox jumps over the lazy dog 0123456789 다람쥐 헌 쳇바퀴에 타고파",
+    "fontSize": "Font Size",
+    "fontWeight": "Weight",
+    "lineHeight": "Line Height",
+    "letterSpacing": "Letter Spacing",
+    "textColor": "Text Color",
+    "bgColor": "Background Color",
+    "textAlign": "Alignment",
+    "alignLeft": "Left",
+    "alignCenter": "Center",
+    "alignRight": "Right",
+    "category": "Category",
+    "all": "All",
+    "sansSerif": "Sans-serif",
+    "serif": "Serif",
+    "monospace": "Monospace",
+    "handwriting": "Handwriting",
+    "display": "Display",
+    "search": "Search Fonts",
+    "addToCompare": "Add to Compare",
+    "compare": "Compare Mode",
+    "clearCompare": "Clear Compare",
+    "copyCSS": "Copy CSS",
+    "copiedCSS": "CSS Copied!",
+    "fonts": "Font List",
+    "preview": "Preview",
+    "guide": {
+      "title": "Font Preview Guide",
+      "usage": {
+        "title": "How to Use",
+        "items": [
+          "Enter preview text and select your desired font",
+          "Adjust font size, weight, line height, and other settings",
+          "Use compare mode to view multiple fonts side by side",
+          "Copy CSS button lets you copy the style code directly"
+        ]
+      },
+      "tips": {
+        "title": "Font Selection Tips",
+        "items": [
+          "Body text: Use readable sans-serif fonts (Noto Sans KR, Pretendard)",
+          "Headings: Use bold, impactful fonts (Black Han Sans, Jua)",
+          "Coding: Use monospace fonts (JetBrains Mono, D2Coding)",
+          "Free web fonts: Available for free on Google Fonts"
+        ]
+      }
+    }
+  },
+  "worldClock": {
+    "title": "World Clock",
+    "description": "View current time in major cities around the world at a glance.",
+    "currentTime": "Current Time",
+    "addCity": "Add City",
+    "removeCity": "Remove",
+    "search": "Search Cities",
+    "timeDifference": "Time Difference",
+    "hours": "hours",
+    "ahead": "ahead",
+    "behind": "behind",
+    "same": "same",
+    "myTime": "My Time",
+    "format24h": "24-hour",
+    "format12h": "12-hour",
+    "am": "AM",
+    "pm": "PM",
+    "date": "Date",
+    "dayOfWeek": "Day",
+    "days": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "cities": {
+      "seoul": "Seoul",
+      "tokyo": "Tokyo",
+      "beijing": "Beijing",
+      "newYork": "New York",
+      "losAngeles": "Los Angeles",
+      "london": "London",
+      "paris": "Paris",
+      "berlin": "Berlin",
+      "moscow": "Moscow",
+      "dubai": "Dubai",
+      "singapore": "Singapore",
+      "sydney": "Sydney",
+      "toronto": "Toronto",
+      "chicago": "Chicago",
+      "honolulu": "Honolulu",
+      "bangkok": "Bangkok",
+      "mumbai": "Mumbai",
+      "istanbul": "Istanbul",
+      "cairo": "Cairo",
+      "saoPaulo": "São Paulo"
+    },
+    "guide": {
+      "title": "World Clock Guide",
+      "usage": {
+        "title": "How to Use",
+        "items": [
+          "Major city times are displayed by default",
+          "Use the Add City button to add your desired cities",
+          "Check time differences between each city and your local time",
+          "Switch between 12-hour and 24-hour formats"
+        ]
+      },
+      "tips": {
+        "title": "Time Zone Reference",
+        "items": [
+          "Korea (KST) is UTC+9",
+          "US Eastern (EST) is 14 hours behind Korea (13 hours during DST)",
+          "US Pacific (PST) is 17 hours behind Korea (16 hours during DST)",
+          "London (GMT) is 9 hours behind Korea (8 hours during BST)"
+        ]
+      }
+    }
+  },
+  "rentConverter": {
+    "title": "Rent Converter",
+    "description": "Convert between Jeonse (lump-sum deposit) and monthly rent using conversion rate.",
+    "mode": {
+      "jeonseToWolse": "Jeonse → Monthly",
+      "wolseToJeonse": "Monthly → Jeonse"
+    },
+    "jeonseDeposit": "Jeonse Deposit",
+    "wolseDeposit": "Monthly Rent Deposit",
+    "monthlyRent": "Monthly Rent",
+    "conversionRate": "Conversion Rate (%)",
+    "result": "Conversion Result",
+    "estimatedMonthlyRent": "Estimated Monthly Rent",
+    "estimatedJeonse": "Estimated Jeonse",
+    "won": "KRW",
+    "monthlyWon": "KRW/month",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "currentRate": "Current Rate Reference",
+    "rateInfo": "Based on Bank of Korea base rate, typically 4-6%",
+    "quickRates": "Quick Rates",
+    "quickDeposits": "Quick Deposits",
+    "formula": "Monthly Rent = (Jeonse - Deposit) × Rate ÷ 12",
+    "yearlyRent": "Annual Rent Total",
+    "comparison": "Jeonse vs Monthly Comparison",
+    "guide": {
+      "title": "Rent Conversion Guide",
+      "what": {
+        "title": "What is Rent Conversion?",
+        "items": [
+          "Converting between Jeonse (lump-sum deposit) and monthly rent",
+          "Conversion rate is typically 4-6% annually, based on base rate + premium",
+          "Legal maximum conversion rate is base rate + 3.5%"
+        ]
+      },
+      "example": {
+        "title": "Calculation Example",
+        "items": [
+          "Jeonse 300M → Monthly (deposit 50M, rate 5%): (300M-50M) × 5% ÷ 12 ≈ 1.04M KRW",
+          "Monthly 1M (deposit 100M, rate 5%) → Jeonse: 100M + (1M × 12 ÷ 5%) = 340M",
+          "Higher conversion rate means higher monthly rent for the same Jeonse amount"
+        ]
+      }
+    }
+  },
+  "waterBill": {
+    "title": "Water Bill Calculator",
+    "description": "Calculate water bill based on monthly usage (m³) with progressive rates.",
+    "usage": "Monthly Usage (m³)",
+    "householdSize": "Household Size",
+    "persons": "persons",
+    "waterType": "Water Type",
+    "residential": "Residential",
+    "calculate": "Calculate",
+    "result": "Result",
+    "basicFee": "Basic Fee",
+    "usageFee": "Usage Fee",
+    "sewageFee": "Sewage Fee",
+    "waterQualityFee": "Water Quality Fee",
+    "totalBeforeVat": "Subtotal",
+    "vat": "VAT (10%)",
+    "totalAmount": "Total Water Bill",
+    "won": "KRW",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "tier": "Tier",
+    "tierInfo": "Progressive Rate Tiers",
+    "quickUsage": "Quick Usage",
+    "averageUsage": "Average Usage by Household",
+    "avgInfo": {
+      "person1": "1 person: ~6m³/month",
+      "person2": "2 persons: ~10m³/month",
+      "person3": "3 persons: ~14m³/month",
+      "person4": "4 persons: ~18m³/month"
+    },
+    "guide": {
+      "title": "Water Bill Guide",
+      "structure": {
+        "title": "Bill Structure",
+        "items": [
+          "Basic fee: Fixed amount by pipe diameter (~1,080 KRW for residential 13mm)",
+          "Usage fee: Progressive rate based on consumption",
+          "Sewage fee: Based on water consumption",
+          "Water quality fee: Environmental improvement charge (~170 KRW/m³)"
+        ]
+      },
+      "saving": {
+        "title": "Water Saving Tips",
+        "items": [
+          "Install water-saving faucets and toilets to save 30%+",
+          "Batch laundry loads, use dishwashers",
+          "Reduce shower time (1 minute saves ~12 liters)",
+          "Regular leak checks (toilets, faucets)"
+        ]
+      }
+    }
+  },
+  "cssGradient": {
+    "title": "CSS Gradient Generator",
+    "description": "Generate CSS gradient code by selecting colors and direction.",
+    "type": {
+      "linear": "Linear",
+      "radial": "Radial",
+      "conic": "Conic"
+    },
+    "gradientType": "Gradient Type",
+    "direction": "Direction",
+    "angle": "Angle",
+    "shape": "Shape",
+    "shapeCircle": "Circle",
+    "shapeEllipse": "Ellipse",
+    "posCenter": "Center",
+    "posTop": "Top",
+    "posBottom": "Bottom",
+    "posLeft": "Left",
+    "posRight": "Right",
+    "colors": "Colors",
+    "addColor": "Add Color",
+    "removeColor": "Remove",
+    "position": "Position",
+    "preview": "Preview",
+    "cssCode": "CSS Code",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "presets": "Presets",
+    "random": "Random",
+    "reverse": "Reverse",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Close",
+    "exportPng": "Save PNG",
+    "repeating": "Repeating Gradient",
+    "tools": "Tools",
+    "maxColors": "Up to 8 color stops allowed",
+    "stopLabel": "Color #{n}",
+    "cssWithPrefix": "With Vendor Prefix",
+    "tailwindHint": "Tailwind CSS Class",
+    "preset": {
+      "sunset": "Sunset",
+      "ocean": "Ocean",
+      "forest": "Forest",
+      "fire": "Fire",
+      "night": "Night",
+      "candy": "Candy",
+      "mint": "Mint",
+      "aurora": "Aurora",
+      "peach": "Peach",
+      "sky": "Sky",
+      "lavender": "Lavender",
+      "neon": "Neon",
+      "rainbow": "Rainbow",
+      "steel": "Steel",
+      "wine": "Wine",
+      "spring": "Spring"
+    },
+    "guide": {
+      "title": "CSS Gradient Guide",
+      "types": {
+        "title": "Gradient Types",
+        "items": [
+          "Linear: Colors change in one direction",
+          "Radial: Colors spread from center outward",
+          "Conic: Colors rotate around a center point"
+        ]
+      },
+      "tips": {
+        "title": "Usage Tips",
+        "items": [
+          "2-3 colors produce the most natural gradients",
+          "High-contrast color combinations create striking effects",
+          "Use background-size and animation for animated effects",
+          "Use opacity for overlay effects on images"
+        ]
+      }
+    }
+  },
+  "koreanSyllable": {
+    "title": "Korean Syllable Decomposer",
+    "description": "Decompose Korean text into initial, medial, and final consonants/vowels.",
+    "input": "Text Input",
+    "placeholder": "Enter Korean text",
+    "mode": {
+      "chosung": "Extract Initials",
+      "decompose": "Decompose",
+      "compose": "Compose"
+    },
+    "result": "Result",
+    "original": "Original",
+    "chosung": "Initial",
+    "jungsung": "Medial",
+    "jongsung": "Final",
+    "decomposed": "Decomposed",
+    "composed": "Composed",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "charCount": "Character Count",
+    "syllableCount": "Korean Syllable Count",
+    "examples": "Examples",
+    "exampleList": {
+      "ex1": "대한민국 → ㄷㅎㅁㄱ",
+      "ex2": "안녕하세요 → ㅇㄴㅎㅅㅇ",
+      "ex3": "프로그래밍 → ㅍㄹㄱㄹㅁ"
+    },
+    "guide": {
+      "title": "Korean Syllable Guide",
+      "structure": {
+        "title": "Korean Structure",
+        "items": [
+          "Korean syllables consist of initial (consonant) + medial (vowel) + final (consonant)",
+          "19 initial consonants: ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ",
+          "21 medial vowels: ㅏ ㅐ ㅑ ㅒ ㅓ ㅔ ㅕ ㅖ ㅗ ㅘ ㅙ ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ ㅠ ㅡ ㅢ ㅣ",
+          "27 final consonants: (none) ㄱ ㄲ ㄳ ㄴ ㄵ ㄶ ㄷ ㄹ ..."
+        ]
+      },
+      "usage": {
+        "title": "Use Cases",
+        "items": [
+          "Initial consonant search (e.g., 'ㄷㅎㅁㄱ' → '대한민국')",
+          "Korean character education materials",
+          "Text analysis and processing",
+          "Unicode Korean character testing"
+        ]
+      }
+    }
+  },
+  "romanNumeral": {
+    "title": "Roman Numeral Converter",
+    "description": "Convert between Arabic numbers and Roman numerals.",
+    "mode": {
+      "toRoman": "Number → Roman",
+      "toArabic": "Roman → Number"
+    },
+    "inputNumber": "Enter Number",
+    "inputRoman": "Enter Roman Numeral",
+    "result": "Conversion Result",
+    "arabicNumber": "Arabic Number",
+    "romanNumeral": "Roman Numeral",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "maxNumber": "Maximum convertible: 3,999",
+    "invalidRoman": "Please enter a valid Roman numeral",
+    "invalidNumber": "Enter a number between 1 and 3999",
+    "quickNumbers": "Quick Input",
+    "referenceTable": "Roman Numeral Table",
+    "symbols": {
+      "I": "1",
+      "V": "5",
+      "X": "10",
+      "L": "50",
+      "C": "100",
+      "D": "500",
+      "M": "1000"
+    },
+    "guide": {
+      "title": "Roman Numeral Guide",
+      "rules": {
+        "title": "Notation Rules",
+        "items": [
+          "Same symbol can repeat up to 3 times (III=3, XXX=30)",
+          "Smaller value before larger means subtraction (IV=4, IX=9, XL=40, XC=90)",
+          "Larger value first means addition (VI=6, XI=11, LX=60)",
+          "Expressible range: 1 to 3,999"
+        ]
+      },
+      "examples": {
+        "title": "Conversion Examples",
+        "items": [
+          "2024 = MMXXIV (M+M+X+X+IV)",
+          "1999 = MCMXCIX (M+CM+XC+IX)",
+          "58 = LVIII (L+V+III)",
+          "3999 = MMMCMXCIX (maximum value)"
+        ]
+      }
+    }
+  },
+  "businessNumber": {
+    "title": "Business Registration Number Validator",
+    "description": "Validate Korean business registration numbers (10 digits). Check if a number is valid using the checksum algorithm.",
+    "inputLabel": "Business Registration Number",
+    "inputPlaceholder": "000-00-00000 or digits only",
+    "verify": "Verify",
+    "reset": "Reset",
+    "valid": "Valid Business Number",
+    "invalid": "Invalid Business Number",
+    "validMessage": "This business registration number passes the checksum validation algorithm.",
+    "invalidMessage": "This number failed the validation algorithm. Please double-check the number.",
+    "formatted": "Formatted Number",
+    "digitCount": "Digit Count",
+    "checkDigit": "Check Digit",
+    "recentVerifications": "Recent Verifications",
+    "clearHistory": "Clear History",
+    "noHistory": "No verification history",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "guide": {
+      "title": "Business Number Guide",
+      "structure": {
+        "title": "Number Structure",
+        "items": [
+          "10 digits total (XXX-XX-XXXXX)",
+          "First 3: Regional tax office code",
+          "Middle 2: Individual/Corporate code",
+          "Last 5: Serial number + check digit (last 1)"
+        ]
+      },
+      "validation": {
+        "title": "Validation Method",
+        "items": [
+          "Checksum verification using weight array",
+          "Last digit is the check digit",
+          "This tool performs format validation only",
+          "Check actual business status at NTS (Korea)"
+        ]
+      }
+    }
+  },
+  "dueDateCalculator": {
+    "title": "Due Date Calculator",
+    "description": "Calculate your estimated due date based on your last menstrual period (LMP) or ovulation date.",
+    "calcMethod": "Calculation Basis",
+    "lmpMethod": "Last Menstrual Period (LMP)",
+    "ovulationMethod": "Ovulation / Conception Date",
+    "lmpDate": "Last Menstrual Period Date",
+    "ovulationDate": "Ovulation / Conception Date",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": {
+      "title": "Results",
+      "dueDate": "Estimated Due Date",
+      "currentWeek": "Current Week",
+      "weeksAndDays": "{weeks} weeks {days} days",
+      "trimester": "Current Trimester",
+      "trimester1": "1st Trimester (Weeks 1-12)",
+      "trimester2": "2nd Trimester (Weeks 13-27)",
+      "trimester3": "3rd Trimester (Weeks 28-40)",
+      "daysRemaining": "Days Remaining",
+      "daysElapsed": "Days Elapsed",
+      "progress": "Progress",
+      "conceptionDate": "Estimated Conception Date",
+      "alreadyPassed": "Due date has already passed"
+    },
+    "milestones": {
+      "title": "Key Milestones",
+      "heartbeat": "Heartbeat Detection (Weeks 6-7)",
+      "firstTrimesterScreen": "1st Trimester Screening (Weeks 11-13)",
+      "genderReveal": "Gender Reveal Possible (Weeks 16-20)",
+      "secondTrimesterScreen": "2nd Trimester Screening (Weeks 15-20)",
+      "viability": "Viability (Week 24)",
+      "glucoseTest": "Glucose Tolerance Test (Weeks 24-28)",
+      "fullTerm": "Full Term (Week 37)",
+      "dueDate": "Due Date (Week 40)"
+    },
+    "guide": {
+      "title": "Due Date Guide",
+      "calculation": {
+        "title": "Calculation Method",
+        "items": [
+          "Naegele's Rule: LMP + 280 days (40 weeks)",
+          "Ovulation-based: Ovulation + 266 days (38 weeks)",
+          "Average pregnancy duration: about 280 days",
+          "Actual delivery within ±2 weeks is normal"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Ultrasound can provide more accurate dating",
+          "First pregnancies may go past due date",
+          "Delivery between 37-42 weeks is normal range",
+          "Regular prenatal checkups are essential"
+        ]
+      }
+    }
+  },
+  "hourlyWage": {
+    "title": "Hourly Wage Calculator",
+    "description": "Convert between hourly, daily, monthly, and yearly wages. Includes comparison with 2024 minimum wage.",
+    "inputType": "Input Basis",
+    "hourly": "Hourly",
+    "daily": "Daily",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "amount": "Amount (KRW)",
+    "amountPlaceholder": "Enter amount",
+    "workHoursPerDay": "Hours per Day",
+    "workDaysPerWeek": "Days per Week",
+    "workDaysPerMonth": "Days per Month",
+    "hours": "hours",
+    "days": "days",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": {
+      "title": "Conversion Results",
+      "hourlyWage": "Hourly Wage",
+      "dailyWage": "Daily Wage",
+      "monthlyWage": "Monthly Wage",
+      "yearlyWage": "Yearly Wage",
+      "won": "KRW"
+    },
+    "minimumWage": {
+      "title": "2024 Minimum Wage Comparison",
+      "current": "Minimum Wage",
+      "currentValue": "₩9,860",
+      "monthlyMin": "Monthly Equivalent (209 hrs)",
+      "monthlyMinValue": "₩2,060,740",
+      "comparison": "Comparison",
+      "above": "Above minimum wage",
+      "below": "Below minimum wage",
+      "percent": "{percent}% of minimum wage"
+    },
+    "guide": {
+      "title": "Wage Calculation Guide",
+      "conversion": {
+        "title": "Conversion Basis",
+        "items": [
+          "Monthly → Hourly: Monthly ÷ (weekly hours × 4.345 weeks)",
+          "Yearly → Monthly: Yearly ÷ 12",
+          "Daily → Hourly: Daily ÷ daily work hours",
+          "Legal work hours: 40 hrs/week, 8 hrs/day"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Actual hourly rate varies by weekly holiday pay inclusion",
+          "Overtime (over 8 hrs) pays 1.5x premium",
+          "Night work (10PM-6AM) pays 1.5x premium",
+          "Holiday work: 1.5x (≤8hrs), 2x (>8hrs) premium"
+        ]
+      }
+    }
+  },
+  "colorPalette": {
+    "title": "Color Palette Generator",
+    "description": "Automatically generate harmonious color combinations from a base color.",
+    "baseColor": "Base Color",
+    "harmony": "Harmony Rule",
+    "harmonies": {
+      "complementary": "Complementary",
+      "analogous": "Analogous",
+      "triadic": "Triadic",
+      "tetradic": "Tetradic (Rectangle)",
+      "splitComplementary": "Split Complementary",
+      "monochromatic": "Monochromatic"
+    },
+    "palette": "Palette",
+    "shades": "Shades",
+    "tints": "Tints",
+    "tones": "Tones",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "export": "Export Palette",
+    "exportCSS": "Copy as CSS Variables",
+    "exportJSON": "Copy as JSON",
+    "exportTailwind": "Copy as Tailwind Config",
+    "presets": "Preset Palettes",
+    "random": "Random Color",
+    "savedPalettes": "Saved Palettes",
+    "savePalette": "Save Palette",
+    "noPalettes": "No saved palettes",
+    "deletePalette": "Delete",
+    "colorInfo": {
+      "title": "Color Info",
+      "hex": "HEX",
+      "rgb": "RGB",
+      "hsl": "HSL"
+    },
+    "guide": {
+      "title": "Color Palette Guide",
+      "harmonies": {
+        "title": "Color Harmony",
+        "items": [
+          "Complementary: Opposite on color wheel (strong contrast)",
+          "Analogous: Adjacent colors (natural harmony)",
+          "Triadic: 3 colors at 120° intervals (balanced contrast)",
+          "Monochromatic: Same hue with varying lightness/saturation"
+        ]
+      },
+      "tips": {
+        "title": "Design Tips",
+        "items": [
+          "60% primary, 30% secondary, 10% accent color",
+          "Ensure sufficient contrast between background and text",
+          "Don't rely solely on color to convey information (color blindness)",
+          "Check WCAG contrast ratio guidelines for accessibility"
+        ]
+      }
+    }
+  },
+  "aspectRatio": {
+    "title": "Aspect Ratio Calculator",
+    "description": "Calculate aspect ratios and convert between resolutions.",
+    "width": "Width (px)",
+    "height": "Height (px)",
+    "widthPlaceholder": "Enter width",
+    "heightPlaceholder": "Enter height",
+    "ratio": "Ratio",
+    "calculate": "Calculate",
+    "swap": "Swap Width↔Height",
+    "lockRatio": "Lock Ratio",
+    "unlockRatio": "Unlock Ratio",
+    "result": {
+      "title": "Results",
+      "aspectRatio": "Aspect Ratio",
+      "decimal": "Decimal Ratio",
+      "totalPixels": "Total Pixels",
+      "megapixels": "Megapixels",
+      "orientation": "Orientation",
+      "landscape": "Landscape",
+      "portrait": "Portrait",
+      "square": "Square"
+    },
+    "presets": {
+      "title": "Common Resolutions",
+      "items": {
+        "hd": "HD (1280×720)",
+        "fullHd": "Full HD (1920×1080)",
+        "qhd": "QHD (2560×1440)",
+        "uhd4k": "4K UHD (3840×2160)",
+        "ultrawide": "Ultrawide (2560×1080)",
+        "instagram": "Instagram (1080×1080)",
+        "instagramStory": "Instagram Story (1080×1920)",
+        "youtube": "YouTube Thumbnail (1280×720)",
+        "a4": "A4 (2480×3508, 300dpi)"
+      }
+    },
+    "resizer": {
+      "title": "Ratio-Preserving Resize",
+      "targetWidth": "Target Width",
+      "targetHeight": "Target Height",
+      "resultSize": "Result Size"
+    },
+    "guide": {
+      "title": "Aspect Ratio Guide",
+      "common": {
+        "title": "Common Ratios",
+        "items": [
+          "16:9 - Standard widescreen (TV, monitor, YouTube)",
+          "4:3 - Classic TV, iPad",
+          "21:9 - Ultrawide monitor, cinema",
+          "1:1 - Square (Instagram)",
+          "9:16 - Vertical (smartphone, Reels, Shorts)"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Lock ratio to auto-calculate from one dimension",
+          "Use presets for quick standard resolution selection",
+          "Print: 300dpi, Web: 72dpi standard",
+          "Check recommended image sizes per social media platform"
+        ]
+      }
+    },
+    "businessNumber": {
+      "title": "Business Registration Number Validator",
+      "description": "Validate Korean business registration numbers using checksum algorithm",
+      "inputLabel": "Business Registration Number",
+      "inputPlaceholder": "e.g., 123-45-67890",
+      "verify": "Verify",
+      "reset": "Reset",
+      "valid": "Valid",
+      "invalid": "Invalid",
+      "validMessage": "This is a valid business registration number",
+      "invalidMessage": "This is an invalid business registration number",
+      "formatted": "Formatted Number",
+      "digitCount": "Digit Count",
+      "checkDigit": "Check Digit",
+      "recentVerifications": "Recent Verifications",
+      "clearHistory": "Clear History",
+      "noHistory": "No verification history",
+      "copy": "Copy",
+      "copied": "Copied",
+      "guide": {
+        "title": "User Guide",
+        "structure": {
+          "title": "Business Number Structure",
+          "items": [
+            "10 digits total (XXX-XX-XXXXX format)",
+            "First 3 digits: Tax office code",
+            "Middle 2 digits: Individual/Corporate classification",
+            "Next 4 digits: Serial number",
+            "Last 1 digit: Check digit (checksum)"
+          ]
+        },
+        "validation": {
+          "title": "Validation Algorithm",
+          "items": [
+            "Uses weight array [1, 3, 7, 1, 3, 7, 1, 3, 5]",
+            "Multiply first 9 digits by respective weights and sum",
+            "For 9th position, also add Math.floor(digit × 5 / 10)",
+            "Subtract (sum mod 10) from 10, then take mod 10",
+            "Result should match the last (10th) digit"
+          ]
+        }
+      }
+    }
+  },
+  "severancePay": {
+    "title": "Severance Pay Calculator",
+    "description": "Calculate statutory severance pay based on tenure and average wages.",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "monthlyPay": "Monthly Base Pay (KRW)",
+    "monthlyPayPlaceholder": "Enter monthly pay",
+    "annualBonus": "Annual Bonus (KRW)",
+    "annualBonusPlaceholder": "0",
+    "annualLeaveAllowance": "Annual Leave Allowance (KRW)",
+    "annualLeaveAllowancePlaceholder": "0",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": {
+      "title": "Severance Pay Result",
+      "workPeriod": "Work Period",
+      "years": "years",
+      "months": "months",
+      "days": "days",
+      "totalDays": "Total Days Worked",
+      "avgDailyWage": "Avg Daily Wage",
+      "severancePay": "Severance Pay",
+      "won": "KRW",
+      "taxExempt": "Retirement income tax exemption reference",
+      "formula": "Formula: Avg Daily Wage × 30 days × (Total Days ÷ 365)"
+    },
+    "guide": {
+      "title": "Severance Pay Guide",
+      "calculation": {
+        "title": "Calculation Method",
+        "items": [
+          "Severance = Avg Daily Wage × 30 × (Total Days ÷ 365)",
+          "Avg Daily Wage = Total wages for last 3 months ÷ days",
+          "Total wages = Base pay + Bonus(3/12) + Leave allowance(3/12)",
+          "Eligible after 1+ year of continuous employment"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Mandatory for 1+ year employment under Korean Labor Standards Act",
+          "Bonuses and leave allowances are included in average wage",
+          "Must be paid within 14 days of termination",
+          "Different calculation for DC/DB retirement pension plans"
+        ]
+      }
+    }
+  },
+  "annualLeave": {
+    "title": "Annual Leave Calculator",
+    "description": "Calculate earned annual leave days based on your join date.",
+    "joinDate": "Join Date",
+    "usedLeaves": "Used Leave Days",
+    "usedLeavesPlaceholder": "0",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": {
+      "title": "Annual Leave Result",
+      "workPeriod": "Work Period",
+      "years": "years",
+      "months": "months",
+      "totalEarned": "Total Earned Leave",
+      "used": "Used Leave",
+      "remaining": "Remaining Leave",
+      "days": "days",
+      "nextEarned": "Next Leave Earned",
+      "currentYearEarned": "This Year's Leave"
+    },
+    "breakdown": {
+      "title": "Leave Breakdown",
+      "year": "Year",
+      "earned": "Earned",
+      "type": "Type",
+      "monthly": "Monthly (Under 1 year)",
+      "annual": "Annual",
+      "additional": "Additional"
+    },
+    "guide": {
+      "title": "Annual Leave Guide",
+      "rules": {
+        "title": "Leave Accrual Rules",
+        "items": [
+          "Under 1 year: 1 day per month of perfect attendance (max 11)",
+          "1+ years: 15 days per year",
+          "3+ years: 1 additional day per 2 years (max 25 days)",
+          "Leave must be used within 1 year of accrual"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Unused leave can be paid out as leave allowance",
+          "Company policies may vary from statutory minimum",
+          "Leave promotion system may exempt unused leave pay",
+          "Parental leave period counts as attendance"
+        ]
+      }
+    }
+  },
+  "gasBill": {
+    "title": "Gas Bill Calculator",
+    "description": "Calculate monthly gas bill based on city gas usage (MJ).",
+    "usage": "Usage (MJ)",
+    "usagePlaceholder": "Enter usage",
+    "region": "Region",
+    "regions": {
+      "seoul": "Seoul",
+      "gyeonggi": "Gyeonggi",
+      "incheon": "Incheon",
+      "busan": "Busan",
+      "daegu": "Daegu",
+      "gwangju": "Gwangju",
+      "daejeon": "Daejeon",
+      "ulsan": "Ulsan",
+      "sejong": "Sejong",
+      "gangwon": "Gangwon",
+      "chungbuk": "Chungbuk",
+      "chungnam": "Chungnam",
+      "jeonbuk": "Jeonbuk",
+      "jeonnam": "Jeonnam",
+      "gyeongbuk": "Gyeongbuk",
+      "gyeongnam": "Gyeongnam",
+      "jeju": "Jeju"
+    },
+    "season": "Season",
+    "seasons": {
+      "summer": "Summer (Apr-Sep)",
+      "winter": "Winter (Oct-Mar)"
+    },
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": {
+      "title": "Gas Bill Result",
+      "basicCharge": "Basic Charge",
+      "usageCharge": "Usage Charge",
+      "subtotal": "Subtotal",
+      "vat": "VAT (10%)",
+      "total": "Total",
+      "won": "KRW",
+      "unitPrice": "Unit Price (KRW/MJ)"
+    },
+    "averageUsage": {
+      "title": "Average Monthly Usage",
+      "summer": "Summer: approx. 15-30 MJ",
+      "winter": "Winter: approx. 80-150 MJ",
+      "description": "Including heating, hot water, cooking"
+    },
+    "guide": {
+      "title": "Gas Bill Guide",
+      "structure": {
+        "title": "Fee Structure",
+        "items": [
+          "Basic charge + Usage charge + VAT (10%)",
+          "Rates vary by region and season",
+          "Winter (Oct-Mar) rates are higher than summer",
+          "City gas usage is measured in MJ (megajoules)"
+        ]
+      },
+      "tips": {
+        "title": "Saving Tips",
+        "items": [
+          "Use boiler away mode to reduce heating costs",
+          "Reduce hot water usage (shorter showers)",
+          "Insulation prevents heat loss",
+          "Check gas bill statement for accurate usage"
+        ]
+      }
+    }
+  },
+  "imageConverter": {
+    "title": "Image Converter",
+    "description": "Convert image file formats. Supports JPEG, PNG, WebP, GIF, and more.",
+    "uploadLabel": "Upload Image",
+    "dragDrop": "Drag and drop or click to upload",
+    "supportedFormats": "Supported: JPEG, PNG, WebP, GIF, BMP",
+    "outputFormat": "Output Format",
+    "quality": "Quality",
+    "qualityPercent": "{value}%",
+    "convert": "Convert",
+    "download": "Download",
+    "downloadAll": "Download All",
+    "reset": "Reset",
+    "preview": "Preview",
+    "original": "Original",
+    "converted": "Converted",
+    "fileInfo": {
+      "name": "File Name",
+      "format": "Format",
+      "size": "Size",
+      "dimensions": "Dimensions",
+      "reduction": "Size Change"
+    },
+    "batchMode": "Batch Convert",
+    "singleMode": "Single Convert",
+    "guide": {
+      "title": "Image Conversion Guide",
+      "formats": {
+        "title": "Format Features",
+        "items": [
+          "JPEG: Best for photos, lossy compression, small file size",
+          "PNG: Transparency support, lossless, best for graphics",
+          "WebP: Web-optimized, 25-34% smaller than JPEG",
+          "GIF: Animation support, limited to 256 colors"
+        ]
+      },
+      "tips": {
+        "title": "Conversion Tips",
+        "items": [
+          "WebP is the most efficient for web use",
+          "Use PNG when transparency is needed",
+          "JPEG 80-90% quality is optimal for photos",
+          "Conversion is processed locally, nothing uploaded to servers"
+        ]
+      }
+    }
+  },
+  "textToSpeech": {
+    "title": "Text to Speech (TTS)",
+    "description": "Enter text and have it read aloud. Supports multiple languages and voices.",
+    "textInput": "Text to Read",
+    "textPlaceholder": "Enter text to be read aloud...",
+    "voice": "Select Voice",
+    "rate": "Speed",
+    "pitch": "Pitch",
+    "volume": "Volume",
+    "play": "Play",
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop": "Stop",
+    "noVoices": "No voices available",
+    "charCount": "Character Count",
+    "estimatedTime": "Estimated Duration",
+    "seconds": "seconds",
+    "speaking": "Speaking...",
+    "paused": "Paused",
+    "stopped": "Stopped",
+    "notSupported": "This browser does not support TTS",
+    "presets": {
+      "title": "Sample Text",
+      "greeting": "Hello, welcome to ToolHub.",
+      "news": "Today's weather is sunny with a temperature of 20°C.",
+      "story": "Once upon a time, there was a kind girl living in a village."
+    },
+    "guide": {
+      "title": "TTS Guide",
+      "usage": {
+        "title": "How to Use",
+        "items": [
+          "Enter text and press the play button",
+          "Adjust voice, speed, and pitch as needed",
+          "Uses the browser's Web Speech API",
+          "Supports Korean, English, and many other languages"
+        ]
+      },
+      "tips": {
+        "title": "Usage Tips",
+        "items": [
+          "Useful for checking foreign language pronunciation",
+          "Great for accessibility testing",
+          "Use for presentation practice",
+          "Helpful as a language learning aid"
+        ]
+      }
+    }
+  },
+  "taxiFare": {
+    "title": "Taxi Fare Calculator",
+    "description": "Calculate estimated taxi fare from origin to destination.",
+    "distance": "Distance (km)",
+    "distancePlaceholder": "Enter distance",
+    "time": "Estimated Time (min)",
+    "timePlaceholder": "Enter time",
+    "region": "Region",
+    "regions": {
+      "seoul": "Seoul",
+      "gyeonggi": "Gyeonggi",
+      "busan": "Busan",
+      "other": "Other"
+    },
+    "taxiType": "Taxi Type",
+    "types": {
+      "regular": "Regular",
+      "deluxe": "Deluxe",
+      "jumbo": "Jumbo"
+    },
+    "timeOfDay": "Time of Day",
+    "times": {
+      "day": "Day (04:00-24:00)",
+      "night": "Night (00:00-04:00)"
+    },
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": {
+      "title": "Estimated Taxi Fare",
+      "baseFare": "Base Fare",
+      "distanceFare": "Distance Fare",
+      "timeFare": "Time Fare",
+      "nightSurcharge": "Night Surcharge",
+      "total": "Total Estimated Fare",
+      "won": "KRW",
+      "note": "Actual fare may vary based on traffic conditions"
+    },
+    "fareInfo": {
+      "title": "2024 Taxi Fares (Seoul)",
+      "baseFare": "Base: ₩4,800 (1.6km)",
+      "distanceRate": "Distance: ₩100/131m",
+      "timeRate": "Time: ₩100/30sec",
+      "nightRate": "Night surcharge: 20% (00-04h)"
+    },
+    "guide": {
+      "title": "Taxi Fare Guide",
+      "calculation": {
+        "title": "Calculation Method",
+        "items": [
+          "Base fare + Distance fare + Time fare",
+          "Distance fare: Excess distance × unit rate",
+          "Time fare: Added per time unit when stopped/slow",
+          "Night surcharge: 20% added 00:00-04:00"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Deluxe taxis have ~2x base fare",
+          "Rates vary by region",
+          "App-hailed taxis may have additional call fees",
+          "Highway tolls are passenger's responsibility"
+        ]
+      }
+    }
+  },
+  "installmentCalc": {
+    "title": "Installment Calculator",
+    "description": "Calculate monthly payments and fees for credit card installment purchases.",
+    "totalAmount": "Purchase Amount (KRW)",
+    "totalAmountPlaceholder": "Enter amount",
+    "installmentMonths": "Installment Months",
+    "months": "months",
+    "interestRate": "Interest Rate (%)",
+    "interestRatePlaceholder": "Annual rate",
+    "freeInstallment": "Interest-free",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": {
+      "title": "Installment Result",
+      "monthlyPayment": "Monthly Payment",
+      "totalInterest": "Total Interest",
+      "totalPayment": "Total Payment",
+      "won": "KRW",
+      "effectiveRate": "Effective Rate"
+    },
+    "schedule": {
+      "title": "Payment Schedule",
+      "month": "Month",
+      "payment": "Payment",
+      "principal": "Principal",
+      "interest": "Interest",
+      "balance": "Balance"
+    },
+    "quickMonths": "Quick Select",
+    "guide": {
+      "title": "Installment Guide",
+      "rates": {
+        "title": "Typical Interest Rates",
+        "items": [
+          "2-3 months: Often interest-free promotions",
+          "6 months: ~8-12% annual rate",
+          "12 months: ~10-15% annual rate",
+          "24 months: ~12-18% annual rate"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Interest-free means 0% fee",
+          "Partial interest-free applies to select months only",
+          "Longer terms = higher interest rates",
+          "Early repayment may waive remaining fees"
+        ]
+      }
+    }
+  },
+  "signatureGenerator": {
+    "title": "Signature Generator",
+    "description": "Create electronic signatures with mouse or touch and download as image.",
+    "canvas": "Signature Area",
+    "drawHere": "Sign here",
+    "penColor": "Pen Color",
+    "penSize": "Pen Size",
+    "backgroundColor": "Background",
+    "transparent": "Transparent",
+    "white": "White",
+    "clear": "Clear",
+    "undo": "Undo",
+    "download": "Download",
+    "downloadPNG": "Download PNG",
+    "downloadSVG": "Download SVG",
+    "copy": "Copy to Clipboard",
+    "copied": "Copied!",
+    "guide": {
+      "title": "Signature Generator Guide",
+      "usage": {
+        "title": "How to Use",
+        "items": [
+          "Draw your signature with mouse or touch on canvas",
+          "Adjust pen color and thickness",
+          "Transparent background for document overlay",
+          "Download as PNG or SVG format"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Use when e-signatures are needed for documents",
+          "Transparent background is best for overlays",
+          "SVG maintains quality when resized",
+          "This signature may not have legal validity"
+        ]
+      }
+    }
+  },
+  "morseCode": {
+    "title": "Morse Code Converter",
+    "description": "Convert text to Morse code and Morse code to text.",
+    "mode": {
+      "textToMorse": "Text → Morse",
+      "morseToText": "Morse → Text"
+    },
+    "textInput": "Text Input",
+    "textPlaceholder": "Enter text to convert",
+    "morseInput": "Morse Input",
+    "morsePlaceholder": "Enter Morse code (use · ─ /)",
+    "result": "Result",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "clear": "Clear",
+    "play": "Play Sound",
+    "stop": "Stop",
+    "speed": "Speed",
+    "slow": "Slow",
+    "normal": "Normal",
+    "fast": "Fast",
+    "referenceTable": "Morse Code Table",
+    "letters": "Letters",
+    "numbers": "Numbers",
+    "guide": {
+      "title": "Morse Code Guide",
+      "basics": {
+        "title": "Basic Rules",
+        "items": [
+          "· (dot): Short signal",
+          "─ (dash): Long signal (3x dot length)",
+          "Between letters: 1 space",
+          "Between words: / (slash)"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "SOS = ··· ─── ···",
+          "Supports English letters and numbers",
+          "Play sound to learn Morse code",
+          "Use SOS signal in emergencies"
+        ]
+      }
+    }
+  },
+  "reactionTest": {
+    "title": "Reaction Time Test",
+    "description": "Click as fast as you can when the screen changes color to measure your reaction time.",
+    "instruction": "Click when it turns green!",
+    "waiting": "Wait...",
+    "ready": "Get ready...",
+    "clickNow": "Click NOW!",
+    "tooEarly": "Too early! Try again.",
+    "result": "Reaction Time",
+    "ms": "ms",
+    "tryAgain": "Try Again",
+    "attempts": "Attempts",
+    "average": "Average",
+    "best": "Best",
+    "rating": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "average": "Average",
+      "slow": "Slow",
+      "verySlow": "Very Slow"
+    },
+    "history": "History",
+    "clearHistory": "Clear History",
+    "guide": {
+      "title": "Reaction Time Guide",
+      "howTo": {
+        "title": "How to Test",
+        "items": [
+          "Click when the red screen turns green",
+          "Clicking before green is invalid",
+          "Average calculated after 5 attempts",
+          "Use mouse or touch screen"
+        ]
+      },
+      "standards": {
+        "title": "Reaction Time Standards",
+        "items": [
+          "Under 200ms: Excellent (pro gamer level)",
+          "200-300ms: Good (above average)",
+          "300-400ms: Average (typical adult)",
+          "Over 400ms: Slow"
+        ]
+      }
+    }
+  },
+  "residentNumber": {
+    "title": "Resident Registration Number Validator",
+    "description": "Validate Korean resident registration numbers (13 digits). Format validation only, no data is stored.",
+    "inputLabel": "Resident Registration Number",
+    "inputPlaceholder": "000000-0000000",
+    "verify": "Verify",
+    "reset": "Reset",
+    "valid": "Valid Number",
+    "invalid": "Invalid Number",
+    "validMessage": "This number passes the checksum validation.",
+    "invalidMessage": "Invalid format. Please check the number.",
+    "info": {
+      "birthDate": "Birth Date",
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "region": "Region Code"
+    },
+    "privacy": "Numbers are processed locally and never sent to any server.",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "guide": {
+      "title": "Resident Number Guide",
+      "structure": {
+        "title": "Number Structure",
+        "items": [
+          "13 digits total: YYMMDD-GXXXXC",
+          "First 6 digits: Birth date (YYMMDD)",
+          "7th digit: Gender/Century (1,2=1900s, 3,4=2000s)",
+          "8-11: Birth region, 12: Serial, 13: Check digit"
+        ]
+      },
+      "validation": {
+        "title": "Validation Method",
+        "items": [
+          "Multiply each digit by weights [2,3,4,5,6,7,8,9,2,3,4,5]",
+          "Sum all products, divide by 11, get remainder",
+          "Subtract remainder from 11, mod 10 = check digit",
+          "This tool performs algorithm validation only"
+        ]
+      }
+    }
+  },
+  "shippingCalc": {
+    "title": "Shipping Calculator",
+    "description": "Calculate estimated shipping costs based on package size and weight.",
+    "weight": "Weight (kg)",
+    "weightPlaceholder": "Enter weight",
+    "width": "Width (cm)",
+    "height": "Height (cm)",
+    "depth": "Depth (cm)",
+    "dimensionPlaceholder": "cm",
+    "carrier": "Carrier",
+    "carriers": {
+      "cj": "CJ Logistics",
+      "hanjin": "Hanjin",
+      "lotte": "Lotte",
+      "post": "Korea Post",
+      "logen": "Logen"
+    },
+    "destination": "Destination",
+    "destinations": {
+      "local": "Metro/Gyeonggi",
+      "national": "Nationwide",
+      "jeju": "Jeju/Islands"
+    },
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": {
+      "title": "Estimated Shipping Cost",
+      "actualWeight": "Actual Weight",
+      "volumeWeight": "Volume Weight",
+      "appliedWeight": "Applied Weight",
+      "baseCost": "Base Cost",
+      "surcharge": "Surcharge (Jeju/Islands)",
+      "total": "Estimated Cost",
+      "won": "KRW",
+      "kg": "kg",
+      "note": "Actual rates may vary by carrier policy"
+    },
+    "volumeWeightInfo": "Volume Weight = W × H × D ÷ 6000",
+    "guide": {
+      "title": "Shipping Guide",
+      "calculation": {
+        "title": "Calculation Basis",
+        "items": [
+          "Greater of actual weight vs volume weight applies",
+          "Volume Weight = W × H × D ÷ 6000 (cm, kg)",
+          "Additional charges for Jeju/remote islands",
+          "Base rates and tiers vary by carrier"
+        ]
+      },
+      "tips": {
+        "title": "Saving Tips",
+        "items": [
+          "Reduce packaging to lower volume weight",
+          "Contract customers get discounted rates",
+          "Some carriers offer convenience store discounts",
+          "Compare quotes for bulk shipments"
+        ]
+      }
+    }
+  },
+  "parkingFee": {
+    "title": "Parking Fee Calculator",
+    "description": "Calculate parking fees based on duration.",
+    "parkingType": "Parking Type",
+    "types": {
+      "public": "Public Parking",
+      "private": "Private Parking",
+      "apartment": "Apartment Parking"
+    },
+    "startTime": "Entry Time",
+    "endTime": "Exit Time",
+    "duration": "Duration",
+    "hours": "hours",
+    "minutes": "minutes",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": {
+      "title": "Parking Fee Result",
+      "totalTime": "Total Time",
+      "freeTime": "Free Time",
+      "chargedTime": "Charged Time",
+      "baseFee": "Base Fee",
+      "additionalFee": "Additional Fee",
+      "dailyMax": "Daily Maximum Applied",
+      "total": "Total Fee",
+      "won": "KRW"
+    },
+    "settings": {
+      "title": "Fee Settings",
+      "baseFee": "Base Fee (KRW)",
+      "baseMinutes": "Base Minutes",
+      "additionalFee": "Additional Fee (KRW)",
+      "additionalMinutes": "Additional Interval (min)",
+      "freeMinutes": "Free Minutes",
+      "dailyMax": "Daily Maximum (KRW)"
+    },
+    "presets": {
+      "title": "Presets",
+      "publicSeoul": "Seoul Public (5min ₩300)",
+      "privateAvg": "Private Avg (30min ₩2,000)",
+      "department": "Dept Store (1hr free, 10min ₩1,000)"
+    },
+    "guide": {
+      "title": "Parking Fee Guide",
+      "structure": {
+        "title": "Fee Structure",
+        "items": [
+          "Base fee: Fixed charge for initial period",
+          "Additional fee: Per-interval charge after base time",
+          "Daily max: Maximum daily charge cap",
+          "Free time: Initial free parking period"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Public parking is usually cheaper than private",
+          "Disability/compact car discounts may apply",
+          "Shopping discounts at department stores/malls",
+          "Monthly passes offer discounted rates"
+        ]
+      }
+    }
+  },
+  "bloodPressure": {
+    "title": "Blood Pressure Log",
+    "description": "Record and classify your blood pressure. Records are stored in your browser.",
+    "systolic": "Systolic (mmHg)",
+    "systolicPlaceholder": "120",
+    "diastolic": "Diastolic (mmHg)",
+    "diastolicPlaceholder": "80",
+    "pulse": "Pulse (bpm)",
+    "pulsePlaceholder": "72",
+    "memo": "Memo",
+    "memoPlaceholder": "Condition, medication, etc.",
+    "record": "Record",
+    "reset": "Reset",
+    "classification": {
+      "title": "BP Classification",
+      "normal": "Normal",
+      "elevated": "Elevated",
+      "high1": "Hypertension Stage 1",
+      "high2": "Hypertension Stage 2",
+      "crisis": "Hypertensive Crisis"
+    },
+    "ranges": {
+      "normal": "Systolic < 120 AND Diastolic < 80",
+      "elevated": "Systolic 120-129 AND Diastolic < 80",
+      "high1": "Systolic 130-139 OR Diastolic 80-89",
+      "high2": "Systolic ≥ 140 OR Diastolic ≥ 90",
+      "crisis": "Systolic > 180 OR Diastolic > 120"
+    },
+    "history": {
+      "title": "Records",
+      "date": "Date",
+      "bp": "Blood Pressure",
+      "pulseLabel": "Pulse",
+      "class": "Classification",
+      "noRecords": "No records yet",
+      "clearAll": "Clear All",
+      "delete": "Delete"
+    },
+    "guide": {
+      "title": "Blood Pressure Guide",
+      "measurement": {
+        "title": "Measurement Tips",
+        "items": [
+          "Rest for at least 5 minutes before measuring",
+          "Measure at elbow height in a comfortable position",
+          "Measure regularly at the same time of day",
+          "Avoid caffeine and exercise 30 min before"
+        ]
+      },
+      "tips": {
+        "title": "Health Management",
+        "items": [
+          "Normal BP: Below 120/80 mmHg",
+          "Recommended: Measure daily at same time",
+          "Consult doctor for repeated abnormal readings",
+          "This log is for reference only, not medical diagnosis"
+        ]
+      }
+    }
+  },
+  "colorBlindTest": {
+    "title": "Color Blind Test",
+    "description": "Ishihara-style color vision test. Identify the numbers in the circles.",
+    "instruction": "Enter the number you see in the circle",
+    "plate": "Plate",
+    "of": "/",
+    "yourAnswer": "Answer",
+    "answerPlaceholder": "Enter visible number",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "See Results",
+    "restart": "Restart",
+    "skip": "Not sure",
+    "result": {
+      "title": "Test Results",
+      "correct": "Correct",
+      "wrong": "Wrong",
+      "skipped": "Skipped",
+      "total": "Total",
+      "score": "Score",
+      "normal": "Normal color vision is likely",
+      "mild": "Mild color deficiency possible",
+      "moderate": "Color deficiency possible. Eye exam recommended",
+      "disclaimer": "This is a screening tool only. See an eye doctor for accurate diagnosis"
+    },
+    "guide": {
+      "title": "Color Blind Test Guide",
+      "about": {
+        "title": "About the Test",
+        "items": [
+          "Based on the Ishihara color test method",
+          "View in bright lighting, facing the monitor directly",
+          "Enter the number you see in each plate",
+          "10 plates in total"
+        ]
+      },
+      "types": {
+        "title": "Types of Color Deficiency",
+        "items": [
+          "Red-green: Difficulty distinguishing red-green (most common)",
+          "Blue-yellow: Difficulty distinguishing blue-yellow",
+          "Total color blindness: Cannot distinguish colors (very rare)",
+          "About 8% of males and 0.5% of females are affected"
+        ]
+      }
+    }
+  },
+  "monitorTest": {
+    "title": "Monitor Test",
+    "description": "14 tests for dead pixels, contrast, color, gamma, burn-in and more",
+    "startFullscreen": "Start Fullscreen Test",
+    "preview": "Preview",
+    "clickToStart": "Click to start fullscreen",
+    "howToUse": "How to Test",
+    "prev": "Prev",
+    "next": "Next",
+    "hud": {
+      "clickToNext": "Click for next step",
+      "escToExit": "ESC to exit"
+    },
+    "tests": {
+      "deadPixel": {
+        "name": "Dead Pixel",
+        "shortDesc": "Find dead/stuck pixels with 8 solid colors",
+        "description": "Fill the entire screen with 8 solid colors (black, white, red, green, blue, cyan, magenta, yellow) to find dead or stuck pixels.",
+        "steps": [
+          "Start the fullscreen test",
+          "Check for any dots or differently colored spots on each color",
+          "Click to advance to the next color",
+          "Check all 8 colors then press ESC to exit"
+        ]
+      },
+      "viewingAngle": {
+        "name": "Viewing Angle",
+        "shortDesc": "Measure monitor viewing angle performance with dot patterns",
+        "description": "Display repeating dot patterns in 6 sizes to measure the monitor's viewing angle performance. Check if patterns appear uniform from all angles.",
+        "steps": [
+          "Start the fullscreen test",
+          "View the monitor from front, then shift your view up/down/left/right",
+          "Uniform patterns from all directions indicate excellent viewing angles",
+          "Click to change dot size"
+        ]
+      },
+      "contrastRatio": {
+        "name": "Contrast Ratio",
+        "shortDesc": "Check contrast in 14 brightness ranges from 0% to 100%",
+        "description": "Divide 0-100% brightness into 14 ranges and check if you can distinguish subtle brightness differences in each range.",
+        "steps": [
+          "Start the fullscreen test",
+          "Check if you can distinguish the 26 brightness levels in each stage",
+          "Adjust your monitor brightness/contrast settings to optimize",
+          "Click to advance to the next brightness range"
+        ]
+      },
+      "readability": {
+        "name": "Readability",
+        "shortDesc": "Test text readability with various font sizes and backgrounds",
+        "description": "Test monitor text readability with font sizes from 8px to 28px on alternating black and white backgrounds.",
+        "step": "Step",
+        "steps": [
+          "Start the fullscreen test",
+          "Compare text readability at center vs edges of the screen",
+          "Check if even small text appears sharp and clear",
+          "Click to advance to the next font size/background combination"
+        ]
+      },
+      "colorRatio": {
+        "name": "Color Ratio",
+        "shortDesc": "Check color accuracy with RGB channel gradients 0-100%",
+        "description": "Display Red, Green, and Blue channels from 0% to 100% in 26 steps to check color reproduction accuracy.",
+        "steps": [
+          "Start the fullscreen test",
+          "Check if all steps between 0-100% are distinguishable for each channel",
+          "Adjust your monitor's RGB settings to optimize",
+          "Click to advance to the next channel/direction"
+        ]
+      },
+      "responseTime": {
+        "name": "Response Time",
+        "shortDesc": "Check response time and ghosting with 5 fps levels",
+        "description": "Test monitor response time and ghosting with 5 boxes moving at 1fps, 15fps, 30fps, 45fps, and 60fps.",
+        "instruction": "Compare ghosting across different fps levels",
+        "steps": [
+          "Start the fullscreen test",
+          "5 boxes move at different speeds simultaneously",
+          "Ghosting on faster boxes indicates slow response time",
+          "Press ESC to exit"
+        ]
+      },
+      "gamma": {
+        "name": "Gamma",
+        "shortDesc": "Measure monitor gamma value with 4 color patterns",
+        "description": "Compare checkerboard patterns and backgrounds in 4 colors (gray, red, green, blue) to measure your monitor's gamma value.",
+        "instruction": "The value where pattern matches background is your gamma",
+        "matchHint": "Your gamma is the value where the top (checkerboard) and bottom (solid) halves appear the same brightness. Standard is 2.2.",
+        "steps": [
+          "Start the fullscreen test",
+          "Stand 1-2m away so the checkerboard blends into a single tone",
+          "Find where the checkerboard matches the solid color below (standard: 2.2)",
+          "Click to advance to the next color"
+        ]
+      },
+      "lightBleed": {
+        "name": "Light Bleed",
+        "shortDesc": "Check for light bleed, clouding, banding, and grain in 15 steps",
+        "description": "Display 15 brightness levels from black to white and back to check for light bleed, clouding, uneven coloring, banding patterns, and grain.",
+        "steps": [
+          "Start the test in a dark room for best results",
+          "On black screens, check for light leaking from edges",
+          "On bright screens, check for dark spots or clouding",
+          "Click to advance to the next brightness level"
+        ]
+      },
+      "burnIn": {
+        "name": "Burn-in",
+        "shortDesc": "Check for burn-in marks with 7-color mosaic comparison",
+        "description": "Compare solid colors and mosaic checkerboard patterns side-by-side in 7 colors to detect burn-in (persistent image retention).",
+        "steps": [
+          "Start the fullscreen test",
+          "Move your mouse left/right to compare solid vs mosaic areas",
+          "If you see ghost images on the solid area, that indicates burn-in",
+          "Click to advance to the next color"
+        ]
+      },
+      "whiteBalance": {
+        "name": "White Balance",
+        "shortDesc": "Check bright area color uniformity with 15 dot patterns",
+        "description": "Display 15 stages of dot patterns (3 sizes x 5 brightness levels 92%-99%) to check white balance uniformity.",
+        "steps": [
+          "Start the fullscreen test",
+          "Check if dot patterns are distinguishable across all screen areas",
+          "Uniform appearance across all areas indicates good white balance",
+          "Click to advance to the next pattern/brightness"
+        ]
+      },
+      "blackBalance": {
+        "name": "Black Balance",
+        "shortDesc": "Check dark area detail with 15 grid patterns",
+        "description": "Display 15 stages of diagonal grid patterns (3 sizes x 5 brightness levels 2%-10%) to check black level detail.",
+        "steps": [
+          "Start the test in a dark room for best results",
+          "Check if grid patterns are visible across all screen areas",
+          "If dark patterns are identifiable, black reproduction is excellent",
+          "Click to advance to the next pattern/brightness"
+        ]
+      },
+      "imageQuality": {
+        "name": "Image Quality",
+        "shortDesc": "Check color reproduction with 10 test patterns and custom images",
+        "description": "Test color reproduction with rainbow spectrum, grayscale, color bars, skin tones and 10 other patterns, plus custom image upload.",
+        "upload": "Upload Image",
+        "uploaded": "Image uploaded successfully",
+        "steps": [
+          "Optionally upload your own image for testing",
+          "Start the fullscreen test",
+          "Check if colors are naturally reproduced in each pattern",
+          "Click to advance to the next pattern"
+        ]
+      },
+      "calibration": {
+        "name": "Calibration",
+        "shortDesc": "Adjust screen position with grid, color bars, and safe areas",
+        "description": "Use crosshair grid, 8-color bars, and safe area guides to precisely calibrate your monitor's position and aspect ratio.",
+        "steps": [
+          "Start the fullscreen test",
+          "Check if the grid and crosshair are exactly centered on screen",
+          "Adjust your monitor's position/size settings",
+          "Click to advance (grid → color bars → safe areas)"
+        ]
+      },
+      "pixelFix": {
+        "name": "Pixel Fix",
+        "shortDesc": "Attempt to fix stuck pixels with rapid color flashing",
+        "description": "Apply rapid random RGB pixel flashing to stimulate stuck pixels and attempt recovery. Drag to reposition and resize the fix box.",
+        "dragInstruction": "Drag the fix box to the stuck pixel location",
+        "steps": [
+          "Start the fullscreen test",
+          "Drag the flashing red-bordered box to the stuck pixel location",
+          "Use +/- buttons to adjust the box size",
+          "Leave it running for 30 min to 1 hour for best results"
+        ]
+      }
+    },
+    "guide": {
+      "title": "User Guide",
+      "preparation": {
+        "title": "Test Preparation",
+        "items": [
+          "Warm up your monitor for at least 30 minutes before testing",
+          "Test in a dark environment to more easily spot defects",
+          "Chrome browser is recommended for best results",
+          "Use fullscreen mode (F11 or button) for accurate results",
+          "Set monitor brightness and contrast to default before starting"
+        ]
+      },
+      "tips": {
+        "title": "Testing Tips",
+        "items": [
+          "Dead pixels appear as black dots, stuck pixels show a constant color",
+          "For viewing angle tests, stand at least 1m away from the monitor",
+          "Gamma 2.2 is the standard value suitable for most content",
+          "Light bleed is common on LED backlit monitors",
+          "Pixel fix only works on stuck pixels; dead pixels cannot be recovered"
+        ]
+      }
+    }
+  },
+  "game2048": {
+    "title": "2048",
+    "description": "Merge same number tiles to make 2048!",
+    "score": "Score",
+    "bestScore": "Best",
+    "newGame": "New Game",
+    "undo": "Undo",
+    "gameOver": "Game Over",
+    "youWin": "You Win!",
+    "tryAgain": "Try Again",
+    "keepPlaying": "Keep Playing",
+    "guide": {
+      "title": "Game Guide",
+      "howToPlay": {
+        "title": "How to Play",
+        "items": [
+          "Use arrow keys (↑↓←→) or swipe to move tiles",
+          "When two tiles with the same number touch, they merge",
+          "The merged value is added to your score",
+          "Reach the 2048 tile to win! You can keep playing after"
+        ]
+      },
+      "tips": {
+        "title": "Strategy Tips",
+        "items": [
+          "Keep your largest tile in a corner",
+          "Use only 2-3 directions to avoid scattering tiles",
+          "Never place the largest tile in the center",
+          "Use undo to recover from mistakes"
+        ]
+      }
+    }
+  },
+  "minesweeper": {
+    "title": "Minesweeper",
+    "description": "Clear all safe cells without hitting a mine!",
+    "mines": "Mines",
+    "time": "Time",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "expert": "Expert",
+    "gameOver": "Game Over",
+    "youWin": "You Win!",
+    "newGame": "New Game",
+    "guide": {
+      "title": "Game Guide",
+      "howToPlay": {
+        "title": "How to Play",
+        "items": [
+          "Left click to reveal a cell",
+          "Right click (or long press) to place a flag",
+          "Numbers indicate how many mines are in adjacent cells",
+          "Reveal all safe cells to win"
+        ]
+      },
+      "tips": {
+        "title": "Strategy Tips",
+        "items": [
+          "The first click is always safe",
+          "Start from corners and edges for better odds",
+          "If a number matches its flag count, surrounding cells are safe",
+          "Leave uncertain cells unflagged rather than guessing"
+        ]
+      }
+    }
+  },
+  "sudoku": {
+    "title": "Sudoku",
+    "description": "Fill the 9×9 grid with numbers 1-9 without repeating!",
+    "newGame": "New Game",
+    "time": "Time",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "expert": "Expert",
+    "notes": "Notes",
+    "hint": "Hint",
+    "undo": "Undo",
+    "erase": "Erase",
+    "completed": "Complete!",
+    "congratulations": "Congratulations! You solved the puzzle!",
+    "errors": "Errors",
+    "hintsUsed": "Hints",
+    "guide": {
+      "title": "Game Guide",
+      "howToPlay": {
+        "title": "How to Play",
+        "items": [
+          "Click/tap an empty cell to select it",
+          "Use the number pad or keyboard (1-9) to enter a number",
+          "Toggle notes mode to write small candidate numbers",
+          "Each row, column, and 3×3 box must contain unique numbers"
+        ]
+      },
+      "tips": {
+        "title": "Strategy Tips",
+        "items": [
+          "Start with cells that have the most constraints",
+          "Use notes to track candidate numbers effectively",
+          "Check each row/column/box for missing numbers",
+          "Use the hint button to reveal one cell when stuck"
+        ]
+      }
+    }
+  },
+  "dutchPay": {
+    "title": "Dutch Pay Calculator",
+    "description": "Split bills accurately with Dutch Pay calculator. Supports equal split and custom settlement based on individual amounts.",
+    "totalAmount": "Total Amount",
+    "numberOfPeople": "Number of People",
+    "perPerson": "Per Person",
+    "equalSplit": "Equal Split",
+    "customSplit": "Custom Split",
+    "addPerson": "Add Person",
+    "removePerson": "Remove Person",
+    "name": "Person",
+    "paid": "Paid",
+    "consumed": "Consumed",
+    "result": "Settlement Result",
+    "transfers": "Transfers",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "noTransfers": "No transfers needed",
+    "won": "KRW",
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Equal Split: Enter total amount and number of people to calculate per-person cost",
+          "Custom Split: Enter each participant's paid and consumed amounts",
+          "Differences are automatically calculated showing who owes whom",
+          "Copy the result to share via messaging apps"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Custom split is useful when people order different items",
+          "Optimizes settlement with minimum number of transfers",
+          "Enter participant names for easier result identification",
+          "Copy the entire settlement result to share at once"
+        ]
+      }
+    }
+  },
+  "colorExtractor": {
+    "title": "Image Color Extractor",
+    "description": "Extract colors from images. Supports click-to-pick, auto palette extraction, and HEX/RGB/HSL conversion.",
+    "upload": "Upload Image",
+    "dragDrop": "Drag & drop or click to upload an image",
+    "pickedColor": "Picked Color",
+    "palette": "Auto Palette",
+    "history": "Extraction History",
+    "export": "Export",
+    "hex": "HEX",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "cssVars": "CSS Variables",
+    "tailwind": "Tailwind",
+    "json": "JSON",
+    "noImage": "Please upload an image",
+    "clickToExtract": "Click on the image to extract colors",
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Drag an image or use the upload button to load an image",
+          "Click anywhere on the image to extract the color at that position",
+          "Use the magnifier to pinpoint the exact location",
+          "Auto palette extracts 8 dominant colors from the image",
+          "Export extracted colors as CSS variables, Tailwind, or JSON format"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Click a color card to copy the HEX value to clipboard",
+          "Use palette export to apply directly to your design system",
+          "Check extraction history for previously picked colors",
+          "Great for web design, branding, and UI color reference"
+        ]
+      }
+    }
+  },
+  "imageWatermark": {
+    "title": "Image Watermark",
+    "description": "Add text or image watermarks to your images. Supports position, size, opacity, rotation, and tile repeat options.",
+    "upload": "Upload Image",
+    "uploadDragDrop": "Drag & drop or click to upload",
+    "watermarkType": "Watermark Type",
+    "textType": "Text",
+    "imageType": "Image",
+    "text": "Watermark Text",
+    "textPlaceholder": "Enter watermark text",
+    "fontSize": "Font Size",
+    "fontFamily": "Font",
+    "fontColor": "Font Color",
+    "bold": "Bold",
+    "watermarkImage": "Watermark Image",
+    "watermarkImageUpload": "Upload logo image",
+    "watermarkSize": "Watermark Size",
+    "position": "Position",
+    "positions": {
+      "topLeft": "Top Left",
+      "topCenter": "Top Center",
+      "topRight": "Top Right",
+      "middleLeft": "Middle Left",
+      "center": "Center",
+      "middleRight": "Middle Right",
+      "bottomLeft": "Bottom Left",
+      "bottomCenter": "Bottom Center",
+      "bottomRight": "Bottom Right"
+    },
+    "opacity": "Opacity",
+    "rotation": "Rotation",
+    "tileMode": "Tile Repeat",
+    "margin": "Margin",
+    "preview": "Preview",
+    "download": "Download",
+    "reset": "Reset",
+    "noImage": "Please upload an image first",
+    "guide": {
+      "title": "User Guide",
+      "features": {
+        "title": "Features",
+        "items": [
+          "Text or image watermark support",
+          "9 position options (top-left, center, bottom-right, etc.)",
+          "Fine-tune opacity, rotation, and margin",
+          "Tile repeat mode for full-area watermarking",
+          "Download at original resolution"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "30-50% opacity works best for copyright protection",
+          "Tile repeat mode is useful for covering the entire image",
+          "45-degree rotation creates a diagonal watermark effect",
+          "Use image watermark to add your logo"
+        ]
+      }
+    }
+  },
+  "imageOcr": {
+    "title": "Image OCR",
+    "description": "Extract text from images automatically. Supports Korean, English, Japanese, and Chinese.",
+    "upload": "Upload Image",
+    "uploadDragDrop": "Drag & drop or click to upload",
+    "pasteHint": "Paste from clipboard with Ctrl+V",
+    "language": "Recognition Language",
+    "languages": {
+      "kor": "Korean",
+      "eng": "English",
+      "jpn": "Japanese",
+      "chiSim": "Chinese (Simplified)",
+      "chiTra": "Chinese (Traditional)"
+    },
+    "rotateLeft": "Rotate 90° left",
+    "rotateRight": "Rotate 90° right",
+    "recognize": "Recognize Text",
+    "recognizing": "Recognizing...",
+    "progress": "Progress",
+    "result": "Result",
+    "resultPlaceholder": "Recognized text will appear here",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "download": "Download",
+    "downloadTxt": "Download TXT",
+    "showConfidence": "Show Confidence",
+    "confidence": "Confidence",
+    "noImage": "Please upload an image first",
+    "noResult": "No text recognized",
+    "reset": "Reset",
+    "guide": {
+      "title": "User Guide",
+      "features": {
+        "title": "Features",
+        "items": [
+          "Korean, English, Japanese, and Chinese text recognition",
+          "Select multiple languages for mixed-language documents",
+          "Paste images directly from clipboard (Ctrl+V)",
+          "Edit, copy, or download recognized text as TXT",
+          "Word-level confidence score display"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Higher resolution and clearer images yield better results",
+          "Great for scanned documents, receipts, and business cards",
+          "Select all relevant languages for mixed-language documents",
+          "First run may take time to download language data"
+        ]
+      }
+    }
+  },
+  "keyboardConverter": {
+    "title": "Keyboard Converter",
+    "description": "Convert English keystrokes to Korean and vice versa. Useful when you forget to switch keyboard layout.",
+    "engToKor": "Eng → Kor",
+    "korToEng": "Kor → Eng",
+    "input": "Input",
+    "inputPlaceholder": "Enter text to convert",
+    "output": "Result",
+    "swap": "Swap",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "charCount": "chars",
+    "examples": "Examples",
+    "guide": {
+      "title": "User Guide",
+      "howTo": {
+        "title": "How to Use",
+        "items": [
+          "Select conversion direction (Eng→Kor or Kor→Eng)",
+          "Type or paste text in the input area for real-time conversion",
+          "Click example buttons to see instant conversions",
+          "Use the swap button to exchange input and output"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Useful when you typed without switching the keyboard layout",
+          "Double consonants (ㄲ, ㄸ) correspond to Shift+key",
+          "Eng→Kor converts based on QWERTY keyboard positions to Korean",
+          "Kor→Eng decomposes Korean into jamo and maps to English keys"
+        ]
+      }
+    }
+  },
+  "imageMosaic": {
+    "title": "Image Mosaic/Blur",
+    "description": "Apply mosaic or blur effects to photos. Select areas or use brush to process specific parts.",
+    "upload": "Upload Image",
+    "dragDrop": "Drag & drop or click to upload",
+    "mosaic": "Mosaic",
+    "blur": "Blur",
+    "rectangle": "Rectangle",
+    "brush": "Brush",
+    "intensity": "Intensity",
+    "brushSize": "Brush Size",
+    "undo": "Undo",
+    "reset": "Reset",
+    "download": "Download",
+    "png": "PNG",
+    "jpeg": "JPEG",
+    "quality": "Quality",
+    "noImage": "Please upload an image",
+    "selectArea": "Select an area to apply mosaic/blur",
+    "mode": "Mode",
+    "effectType": "Effect Type",
+    "format": "Format",
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Drag an image or use the upload button to load an image",
+          "Rectangle mode: Drag to select a rectangular area for the effect",
+          "Brush mode: Paint over areas to apply the effect freely",
+          "Choose between mosaic (pixelate) and blur (gaussian) effects",
+          "Adjust the intensity slider to control effect strength"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Great for protecting privacy on faces, license plates, etc.",
+          "Use Undo to reverse any mistaken effects",
+          "PNG is lossless, JPEG produces smaller file sizes",
+          "Adjust brush size for precise processing"
+        ]
+      }
+    }
+  },
+  "pdfTools": {
+    "title": "PDF Tools",
+    "description": "Merge, split, rotate PDFs and convert images to PDF — all free, right in your browser.",
+    "tabs": {
+      "merge": "Merge",
+      "split": "Split",
+      "rotate": "Rotate",
+      "imageToPdf": "Image→PDF"
+    },
+    "common": {
+      "pages": "pages",
+      "pdfOnly": "Only PDF files are supported",
+      "remove": "Remove"
+    },
+    "merge": {
+      "dropzone": "Drag PDF files here or click to select",
+      "button": "Merge PDFs",
+      "processing": "Merging...",
+      "success": "PDFs merged successfully!",
+      "errorMin": "At least 2 PDF files are required",
+      "reorderHint": "Drag to reorder files"
+    },
+    "split": {
+      "dropzone": "Select a PDF file to split",
+      "button": "Split PDF",
+      "processing": "Splitting...",
+      "success": "PDF split successfully!",
+      "errorSelect": "Select pages to extract",
+      "selectHint": "Click pages to select for extraction",
+      "modeExtract": "Select Pages",
+      "modeRange": "Page Range",
+      "rangeLabel": "Page Range",
+      "rangeHint": "e.g., 1-3, 5, 7-9"
+    },
+    "rotate": {
+      "dropzone": "Select a PDF file to rotate",
+      "button": "Save PDF",
+      "processing": "Processing...",
+      "success": "PDF rotated successfully!",
+      "allPages": "All Pages"
+    },
+    "imageToPdf": {
+      "dropzone": "Drag images here or click to select",
+      "button": "Convert to PDF",
+      "processing": "Converting...",
+      "success": "PDF created successfully!",
+      "errorEmpty": "Add at least one image",
+      "formats": "JPG, PNG, GIF, WebP supported",
+      "pageSize": "Page Size",
+      "custom": "Custom",
+      "imagesAdded": "images"
+    },
+    "error": {
+      "generic": "An error occurred",
+      "load": "Could not load file"
+    },
+    "guide": {
+      "title": "PDF Tools Guide",
+      "merge": {
+        "title": "Merge PDFs",
+        "items": [
+          "Combine multiple PDF files into one",
+          "Drag to reorder files before merging",
+          "All processing happens in your browser — your files stay private"
+        ]
+      },
+      "split": {
+        "title": "Split PDF",
+        "items": [
+          "Extract specific pages from a PDF",
+          "Select individual pages or specify a page range",
+          "Download a new PDF containing only selected pages"
+        ]
+      },
+      "rotate": {
+        "title": "Rotate Pages",
+        "items": [
+          "Rotate individual or all pages in a PDF",
+          "Supports 90°, 180°, and 270° rotation",
+          "Great for fixing orientation of scanned documents"
+        ]
+      },
+      "imageToPdf": {
+        "title": "Image to PDF",
+        "items": [
+          "Convert JPG, PNG, GIF, WebP images to PDF",
+          "Combine multiple images into a single PDF",
+          "Choose page size: A4, Letter, or custom"
+        ]
+      }
+    }
+  },
+  "tetris": {
+    "title": "Tetris",
+    "description": "Classic block puzzle game with hold, next preview, ghost piece, and level system.",
+    "score": "Score",
+    "bestScore": "Best",
+    "level": "Level",
+    "lines": "Lines",
+    "next": "Next",
+    "hold": "Hold",
+    "holdUsed": "Used",
+    "newGame": "New Game",
+    "gameOver": "Game Over",
+    "newRecord": "New Record!",
+    "pause": "Pause",
+    "paused": "Paused",
+    "resume": "Resume",
+    "guide": {
+      "title": "Game Guide",
+      "keyboard": {
+        "title": "Keyboard Controls",
+        "items": [
+          "← → : Move left/right",
+          "↑ : Rotate clockwise",
+          "↓ : Soft drop (move down faster)",
+          "Space : Hard drop (instant drop)",
+          "C : Hold (save current piece)",
+          "P : Pause/Resume"
+        ]
+      },
+      "touch": {
+        "title": "Touch Controls",
+        "items": [
+          "Swipe left/right : Move",
+          "Swipe down : Soft drop",
+          "Swipe up : Hard drop",
+          "Tap : Rotate"
+        ]
+      },
+      "scoring": {
+        "title": "Scoring System",
+        "items": [
+          "1 line clear : 100 × Level",
+          "2 line clear : 300 × Level",
+          "3 line clear : 500 × Level",
+          "4 line clear (Tetris) : 800 × Level",
+          "Level increases every 10 lines, speed increases with level"
+        ]
+      }
+    }
+  },
+  "numberBaseball": {
+    "title": "Number Baseball",
+    "description": "A brain game where you deduce hidden numbers using strike, ball, and out judgments.",
+    "difficulty": "Difficulty",
+    "difficultyLabel": "Select Difficulty",
+    "easy": "Easy",
+    "normal": "Normal",
+    "hard": "Hard",
+    "digitCount": "Digits",
+    "digits": "digits",
+    "guess": "Guess",
+    "submit": "Submit",
+    "strike": "Strike",
+    "ball": "Ball",
+    "out": "Out",
+    "strikeDesc": "Correct digit in correct position",
+    "ballDesc": "Correct digit in wrong position",
+    "outDesc": "Digit not in the number",
+    "attempt": "Attempt",
+    "currentAttempts": "Current attempts",
+    "times": "times",
+    "history": "Guess History",
+    "hint": "Show Hint",
+    "hintUsed": "Hint Used",
+    "hintAvailableAfter": "attempts before hint available",
+    "hintReveal": "Digit #{pos} is {digit}",
+    "newGame": "New Game",
+    "gameWon": "Correct!",
+    "gameWonMessage": "You cracked the number in {attempts} attempts!",
+    "gameInfo": "Game Info",
+    "legend": "Judgment Rules",
+    "errorDuplicate": "Duplicate digits found",
+    "errorIncomplete": "Fill in all digits",
+    "errorLeadingZero": "First digit cannot be 0",
+    "stats": {
+      "title": "Statistics",
+      "gamesPlayed": "Games Played",
+      "avgAttempts": "Avg. Attempts",
+      "bestRecord": "Best Record",
+      "winStreak": "Win Streak"
+    },
+    "guide": {
+      "title": "Game Guide",
+      "rules": {
+        "title": "Game Rules",
+        "items": [
+          "The computer picks a number with unique digits",
+          "You guess the number and get judgment results",
+          "Strike: Correct digit in correct position",
+          "Ball: Correct digit in wrong position",
+          "Out: Digit not in the number",
+          "Goal: Guess the number in minimum attempts"
+        ]
+      },
+      "example": {
+        "title": "Example",
+        "items": [
+          "If answer is 1-2-3 and you guess 1-3-5: 1S 1B 1O",
+          "1 is in the correct position → Strike",
+          "3 is in the number but wrong position → Ball",
+          "5 is not in the number → Out"
+        ]
+      },
+      "tips": {
+        "title": "Strategy Tips",
+        "items": [
+          "Use unique digits for your first guess",
+          "Remember and eliminate digits judged as Out",
+          "Use Ball judgments to narrow down positions",
+          "Use the hint after 5+ attempts"
+        ]
+      }
+    }
+  },
+  "contrastChecker": {
+    "title": "Contrast Checker",
+    "description": "Check WCAG contrast ratio between text and background colors for accessibility compliance.",
+    "foreground": "Foreground (Text)",
+    "background": "Background",
+    "contrastRatio": "Contrast Ratio",
+    "swap": "Swap Colors",
+    "random": "Random Colors",
+    "wcagGrades": "WCAG Grades",
+    "normalText": "Normal Text",
+    "largeText": "Large Text",
+    "aa": "AA",
+    "aaa": "AAA",
+    "presets": "Preset Color Pairs",
+    "copy": "Copy",
+    "suggestion": "Color Suggestions",
+    "suggestionAA": "Suggested color for AA",
+    "suggestionAAA": "Suggested color for AAA",
+    "apply": "Apply",
+    "textarea": "Type text here to preview readability",
+    "preview": {
+      "title": "Preview",
+      "normalText": "Normal text (16px) preview. Check readability according to WCAG standards.",
+      "largeText": "Large text (24px) preview"
+    },
+    "guide": {
+      "title": "Contrast Guide",
+      "wcag": {
+        "title": "WCAG Standards",
+        "items": [
+          "AA: Normal text 4.5:1 or higher, Large text 3:1 or higher",
+          "AAA: Normal text 7:1 or higher, Large text 4.5:1 or higher",
+          "Large text: 18pt (24px)+ or 14pt (18.67px) bold",
+          "UI components and graphics require 3:1 minimum"
+        ]
+      },
+      "tips": {
+        "title": "Accessibility Tips",
+        "items": [
+          "Don't convey information through color alone (use icons, patterns)",
+          "Always verify contrast between text and background",
+          "Avoid red-green combinations for color-blind users",
+          "Maintain sufficient contrast in dark mode too"
+        ]
+      }
+    }
+  },
+  "koreanWordle": {
+    "title": "Korean Wordle",
+    "description": "Guess the 2-character Korean word in 6 tries!",
+    "howToPlay": "How to Play",
+    "statistics": "Statistics",
+    "played": "Played",
+    "winRate": "Win %",
+    "currentStreak": "Current Streak",
+    "maxStreak": "Max Streak",
+    "guessDistribution": "Guess Distribution",
+    "nextWord": "Next Word",
+    "share": "Share Results",
+    "shared": "Copied to clipboard!",
+    "newGame": "New Game",
+    "enter": "Enter",
+    "delete": "Delete",
+    "notInList": "Not in word list",
+    "notEnoughLetters": "Not enough letters",
+    "youWin": "Correct! 🎉",
+    "youLose": "The answer was: ",
+    "correct": "Correct position",
+    "present": "Wrong position",
+    "absent": "Not in word",
+    "helpTitle": "How to Play",
+    "helpDesc": "Guess the 2-character Korean word in 6 tries.",
+    "helpCorrect": "Green means the jamo is in the correct position.",
+    "helpPresent": "Yellow means the jamo is in the word but wrong position.",
+    "helpAbsent": "Gray means the jamo is not in the word.",
+    "helpJamo": "Each character is decomposed into initial/vowel/final consonants for individual hints.",
+    "close": "Close",
+    "attempt": "attempt",
+    "hardMode": "Hard Mode",
+    "hardModeAfterStart": "Hard mode cannot be changed after game starts",
+    "invalidChars": "Only Korean characters are allowed",
+    "shareTitle": "Korean Wordle",
+    "copyFailed": "Failed to copy",
+    "helpExampleTitle": "Example",
+    "helpJamoTitle": "Jamo Analysis",
+    "helpKeyboard": "Keyboard colors indicate the status of each jamo",
+    "hardModeCorrect": "{jamo} must be in the correct position",
+    "hardModePresent": "{jamo} must be included",
+    "winMessages": {
+      "0": "Genius! 🎯",
+      "1": "Amazing! 🌟",
+      "2": "Excellent! ✨",
+      "3": "Well done! 👍",
+      "4": "Not bad! 😊",
+      "5": "Close one! 😅"
+    },
+    "guide": {
+      "title": "User Guide",
+      "rules": {
+        "title": "Game Rules",
+        "items": [
+          "A new 2-character Korean word is chosen daily",
+          "You have 6 attempts to guess the correct word",
+          "Each character is decomposed into jamo for individual hints",
+          "🟩 Green: correct position / 🟨 Yellow: wrong position / ⬛ Gray: not in word",
+          "Share your results with friends by copying"
+        ]
+      },
+      "tips": {
+        "title": "Strategy Tips",
+        "items": [
+          "Start with words containing diverse jamo characters",
+          "Words with final consonants give more information",
+          "Use yellow hints to narrow down positions",
+          "Check common initial consonants (ㅅ, ㄱ, ㅈ) first"
+        ]
+      }
+    }
+  },
+  "boxShadow": {
+    "title": "CSS Box Shadow Generator",
+    "description": "Visually create multi-layer box-shadow CSS code",
+    "preview": "Preview",
+    "cssCode": "CSS Code",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "cssWithPrefix": "With Vendor Prefix",
+    "tailwindHint": "Tailwind CSS Class",
+    "layers": "Shadow Layers",
+    "addLayer": "Add Layer",
+    "maxLayers": "Maximum 5 layers allowed",
+    "layerLabel": "#{n}",
+    "xOffset": "X Offset",
+    "yOffset": "Y Offset",
+    "blur": "Blur",
+    "spread": "Spread",
+    "color": "Color",
+    "opacity": "Opacity",
+    "inset": "Inset Shadow",
+    "previewSettings": "Preview Settings",
+    "bgColor": "Background Color",
+    "elementColor": "Element Color",
+    "borderRadius": "Border Radius",
+    "elementSize": "Element Size",
+    "elementWidth": "Element Width",
+    "elementHeight": "Element Height",
+    "tools": "Tools",
+    "random": "Random",
+    "reset": "Reset",
+    "exportPng": "Export PNG",
+    "presets": "Presets",
+    "preset": {
+      "material1": "Material 1",
+      "material2": "Material 2",
+      "material3": "Material 3",
+      "material4": "Material 4",
+      "soft": "Soft UI",
+      "sharp": "Sharp Shadow",
+      "float": "Floating",
+      "inner": "Inner Shadow",
+      "layered": "Multi-Layer",
+      "neon": "Neon Glow",
+      "retro": "Retro",
+      "minimal": "Minimal",
+      "glass": "Glassmorphism",
+      "deep": "Deep Shadow",
+      "colorful": "Colorful",
+      "paper": "Paper Lift"
+    },
+    "guide": {
+      "title": "User Guide",
+      "basics": {
+        "title": "box-shadow Syntax",
+        "items": [
+          "box-shadow: [inset] x-offset y-offset blur spread color",
+          "X Offset: positive=right, negative=left shadow direction",
+          "Y Offset: positive=down, negative=up shadow direction",
+          "Blur: shadow blur amount (0=sharp, higher=softer)",
+          "Spread: shadow expand/shrink size",
+          "Multiple shadows can be stacked separated by commas"
+        ]
+      },
+      "tips": {
+        "title": "Design Tips",
+        "items": [
+          "For natural shadows, set Y offset larger than X offset",
+          "Blur value about 2x the offset looks natural",
+          "Using colors with transparency (rgba) gives a more refined effect",
+          "Multiple layers can express depth perception",
+          "Neumorphism effect combines light/dark two shadows"
+        ]
+      }
+    }
+  },
+  "codeScreenshot": {
+    "title": "Code Screenshot",
+    "description": "Convert code into beautiful shareable images",
+    "codeInput": "Code Input",
+    "codePlaceholder": "Paste your code here...",
+    "preview": "Preview",
+    "settings": "Settings",
+    "theme": "Theme",
+    "language": "Language",
+    "langAuto": "Auto Detect",
+    "background": "Background",
+    "bgGradient": "Gradient",
+    "bgSolid": "Solid",
+    "bgTransparent": "Transparent",
+    "bgColor": "Background Color",
+    "padding": "Padding",
+    "fontSize": "Font Size",
+    "lineHeight": "Line Height",
+    "lineNumbers": "Line Numbers",
+    "windowChrome": "Window Chrome",
+    "windowTitle": "Window Title",
+    "shadow": "Shadow",
+    "watermark": "Watermark",
+    "watermarkPlaceholder": "Watermark text",
+    "exportPng": "Export PNG",
+    "exportSvg": "Export SVG",
+    "copyImage": "Copy Image",
+    "copied": "Copied!",
+    "copy": "Copy",
+    "borderRadius": "Border Radius",
+    "detected": "detected",
+    "retina": "Retina (2x)",
+    "exportTitle": "Export",
+    "exportNote": "Exports at 2x resolution for Retina displays",
+    "guide": {
+      "title": "User Guide",
+      "usage": {
+        "title": "How to Use",
+        "items": [
+          "Type or paste your code",
+          "Customize theme, background, font size, and more",
+          "Download as PNG or SVG, or copy to clipboard",
+          "Exports at 2x resolution for Retina displays"
+        ]
+      },
+      "tips": {
+        "title": "Usage Tips",
+        "items": [
+          "Perfect for sharing code on blogs, social media, and presentations",
+          "Supports popular themes like Dracula, Monokai, and more",
+          "Gradient backgrounds create more polished images",
+          "Window chrome (macOS style) makes it look like a real editor"
+        ]
+      }
+    }
+  },
+  "flexboxGrid": {
+    "title": "CSS Flexbox & Grid Generator",
+    "description": "Visually create CSS Flexbox and Grid layouts and copy the code",
+    "flexbox": "Flexbox",
+    "grid": "Grid",
+    "container": "Container Properties",
+    "children": "Children",
+    "addChild": "Add Child",
+    "removeChild": "Remove",
+    "maxChildren": "Maximum 8 children allowed",
+    "childLabel": "Child #{n}",
+    "cssCode": "CSS Code",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "preview": "Preview",
+    "previewSize": "Preview Size",
+    "desktop": "Desktop",
+    "tablet": "Tablet",
+    "mobile": "Mobile",
+    "direction": "Direction",
+    "justifyContent": "Justify Content",
+    "alignItems": "Align Items",
+    "flexWrap": "Flex Wrap",
+    "gap": "Gap",
+    "flexGrow": "Grow",
+    "flexShrink": "Shrink",
+    "flexBasis": "Basis",
+    "alignSelf": "Align Self",
+    "order": "Order",
+    "columns": "Columns",
+    "rows": "Rows",
+    "columnSize": "Column Size",
+    "rowSize": "Row Size",
+    "justifyItems": "Justify Items",
+    "gridColumn": "Column Span",
+    "gridRow": "Row Span",
+    "resetBtn": "Reset",
+    "addColumn": "Add Column",
+    "addRow": "Add Row",
+    "presets": "Presets",
+    "preset": {
+      "holyGrail": "Holy Grail",
+      "sidebar": "Sidebar",
+      "cardGrid": "Card Grid",
+      "navbar": "Navbar",
+      "centered": "Centered",
+      "equalCards": "Equal Cards",
+      "masonry": "Masonry"
+    },
+    "guide": {
+      "title": "User Guide",
+      "flexboxGuide": {
+        "title": "Flexbox Basics",
+        "items": [
+          "flex-direction sets the main axis direction (row/column)",
+          "justify-content aligns items along the main axis",
+          "align-items aligns items along the cross axis",
+          "flex-wrap controls whether items wrap to new lines",
+          "gap sets spacing between items"
+        ]
+      },
+      "gridGuide": {
+        "title": "Grid Basics",
+        "items": [
+          "grid-template-columns defines the column structure",
+          "grid-template-rows defines the row structure",
+          "fr unit sets proportional sizes",
+          "grid-column/grid-row specifies item span",
+          "gap sets spacing between cells"
+        ]
+      },
+      "tips": {
+        "title": "Usage Tips",
+        "items": [
+          "Flexbox is ideal for 1D layouts (row or column), while Grid excels at 2D layouts (rows and columns)",
+          "Select a preset then customize properties to quickly build your desired layout",
+          "Use responsive preview to check how it looks on desktop, tablet, and mobile",
+          "Copy the generated CSS code and apply it directly to your project"
+        ]
+      }
+    }
+  },
+  "svgEditor": {
+    "title": "SVG Editor & Optimizer",
+    "description": "Edit and optimize SVG code. Export to PNG/JPEG supported.",
+    "dropzone": {
+      "title": "Drag and drop SVG file or click to upload",
+      "subtitle": "Or paste SVG code directly below"
+    },
+    "tabs": {
+      "editor": "Editor",
+      "optimize": "Optimize",
+      "export": "Export",
+      "color": "Colors"
+    },
+    "upload": "Open File",
+    "reset": "Reset",
+    "svgCode": "SVG Code",
+    "optimizedCode": "Optimized Code",
+    "lines": "lines",
+    "showOriginal": "Show Original",
+    "showOptimized": "Show Optimized",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "placeholder": "Paste SVG code here...",
+    "preview": "Preview",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "resetZoom": "Reset Zoom",
+    "invalidSvg": "Invalid SVG code",
+    "statistics": "Statistics",
+    "stats": {
+      "elements": "Elements",
+      "originalSize": "Original Size",
+      "optimizedSize": "Optimized Size",
+      "reduction": "Reduction",
+      "width": "Width",
+      "height": "Height"
+    },
+    "optimizeOptions": "Optimization Options",
+    "opt": {
+      "removeComments": "Remove comments",
+      "removeMetadata": "Remove metadata (title, desc, editor attrs)",
+      "removeWhitespace": "Remove unnecessary whitespace",
+      "removeEmptyGroups": "Remove empty groups (<g>)",
+      "shortenHexColors": "Shorten hex colors (#ffffff → #fff)",
+      "removeDefaultAttrs": "Remove default attribute values",
+      "removeXmlDeclaration": "Remove XML declaration",
+      "minify": "Minify (remove newlines/indentation)"
+    },
+    "optimize": "Run Optimization",
+    "sizeAdjust": "Size Adjustment",
+    "applySize": "Apply Size",
+    "applyToEditor": "Apply to Editor",
+    "optimizeHint": "Select options on the left and run optimization",
+    "exportSettings": "Export Settings",
+    "exportFormat": "File Format",
+    "exportScale": "Resolution Scale",
+    "jpegQuality": "JPEG Quality",
+    "useOptimized": "Use optimized code",
+    "download": "Download",
+    "exportPreview": "Export Preview",
+    "exportResolution": "Output Resolution",
+    "colorReplace": "Color Replace",
+    "findColor": "Find Color",
+    "replaceWith": "Replace With",
+    "replaceAll": "Replace All",
+    "detectedColors": "Detected Colors",
+    "noColors": "No colors detected",
+    "guide": {
+      "title": "User Guide",
+      "features": {
+        "title": "Key Features",
+        "items": [
+          "Real-time SVG code editing and preview",
+          "Remove unnecessary code: comments, metadata, empty groups",
+          "Optimize: shorten hex colors, remove XML declaration",
+          "Convert to PNG/JPEG (1x to 4x resolution)",
+          "Auto-detect and batch replace colors",
+          "Adjust width/height/viewBox dimensions",
+          "Drag and drop SVG file upload"
+        ]
+      },
+      "tips": {
+        "title": "Optimization Tips",
+        "items": [
+          "Removing comments and metadata alone can reduce size by 20-30%",
+          "Color shortening reduces file size with no visual difference",
+          "Use 2x resolution for PNG export to support Retina displays",
+          "Use color replacement to match icons to your brand colors"
+        ]
+      }
+    }
+  },
+  "apiTester": {
+    "title": "API Tester",
+    "description": "Test REST APIs directly in your browser",
+    "send": "Send",
+    "sending": "Sending...",
+    "cancel": "Cancel",
+    "reset": "Reset",
+    "urlPlaceholder": "https://api.example.com/data",
+    "addRow": "Add Row",
+    "remove": "Remove",
+    "tabs": {
+      "params": "Params",
+      "headers": "Headers",
+      "body": "Body",
+      "auth": "Auth",
+      "responseBody": "Response Body",
+      "responseHeaders": "Response Headers",
+      "codeGen": "Code Gen"
+    },
+    "paramsHint": "Enter query parameters to append to the URL",
+    "headersHint": "Enter HTTP headers to include in the request",
+    "bodyHint": "Enter the request body in JSON format",
+    "keyPlaceholder": "Parameter name",
+    "valuePlaceholder": "Value",
+    "headerKeyPlaceholder": "Header name (e.g., Content-Type)",
+    "headerValuePlaceholder": "Header value (e.g., application/json)",
+    "bodyPlaceholder": "{\n  \"key\": \"value\"\n}",
+    "bodyInvalid": "Invalid JSON format",
+    "authType": "Auth Type",
+    "authNone": "No Auth",
+    "authBasic": "Basic Auth",
+    "authBearer": "Bearer Token",
+    "username": "Username",
+    "usernamePlaceholder": "Enter username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "bearerToken": "Bearer Token",
+    "bearerTokenPlaceholder": "Enter token",
+    "envVars": "Environment Variables",
+    "envVarsHint": "Use {{variableName}} in URL, headers, and body",
+    "envKeyPlaceholder": "Variable name (e.g., API_KEY)",
+    "envValuePlaceholder": "Value",
+    "addEnvVar": "Add Variable",
+    "history": "Request History",
+    "clearHistory": "Clear History",
+    "noHistory": "No request history yet",
+    "requestCancelled": "Request was cancelled",
+    "unknownError": "An unknown error occurred",
+    "corsError": "CORS error occurred",
+    "corsExplanation": "Browser security policy (CORS) restricts direct access to some API servers.",
+    "corsSuggestions": [
+      "Route requests through a CORS proxy service",
+      "Install a browser CORS extension",
+      "Set the Access-Control-Allow-Origin header on the API server",
+      "Use a proxy server during local development"
+    ],
+    "copy": "Copy",
+    "copied": "Copied!",
+    "prettyView": "Pretty",
+    "rawView": "Raw",
+    "previewView": "Preview",
+    "htmlPreview": "HTML Preview",
+    "headerName": "Name",
+    "headerValue": "Value",
+    "guide": {
+      "title": "User Guide",
+      "features": {
+        "title": "Key Features",
+        "items": [
+          "Supports GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS methods",
+          "Edit request headers and query parameters",
+          "JSON body editing with real-time validation",
+          "Basic Auth and Bearer Token authentication",
+          "Response status code, time, and size analysis",
+          "Auto-generate cURL, fetch(), and axios code",
+          "Environment variables for reusing API keys"
+        ]
+      },
+      "tips": {
+        "title": "Usage Tips",
+        "items": [
+          "Use environment variables to reuse API keys across requests",
+          "Click on previous requests in history to reload them",
+          "Press Enter to quickly send a request",
+          "Content-Type is automatically set when entering a JSON body"
+        ]
+      },
+      "cors": {
+        "title": "About CORS",
+        "description": "This tool runs in the browser, so access to some API servers may be restricted by CORS policy. If you encounter CORS errors, use a proxy server or check the API server's CORS configuration."
+      }
+    }
+  },
+  "budgetCalculator": {
+    "title": "Budget Calculator",
+    "description": "Manage monthly expenses by category and plan your budget",
+    "currency": " KRW",
+    "manWon": "0K",
+    "income": {
+      "title": "Income",
+      "salary": "Salary (After Tax)",
+      "sideIncome": "Side Income",
+      "otherIncome": "Other Income"
+    },
+    "expenses": {
+      "title": "Expense Categories",
+      "average": "Korean Avg"
+    },
+    "categories": {
+      "housing": "Housing",
+      "food": "Food",
+      "transport": "Transport",
+      "communication": "Communication",
+      "insurance": "Insurance",
+      "education": "Education",
+      "medical": "Medical",
+      "leisure": "Leisure/Culture",
+      "clothing": "Clothing/Beauty",
+      "social": "Social Events",
+      "savings": "Savings/Investment",
+      "other": "Other"
+    },
+    "budgetType": {
+      "need": "Need",
+      "want": "Want",
+      "saving": "Save"
+    },
+    "summary": {
+      "title": "Income vs Expenses",
+      "totalIncome": "Total Income",
+      "totalExpenses": "Total Expenses",
+      "remaining": "Remaining",
+      "surplus": "Surplus",
+      "deficit": "Deficit",
+      "usageRate": "Usage Rate",
+      "savingsRate": "Savings Rate"
+    },
+    "chart": {
+      "title": "Expense Ratio",
+      "total": "Total",
+      "categoryBars": "Expenses by Category",
+      "noData": "Enter expense data to see the chart"
+    },
+    "rule": {
+      "title": "50/30/20 Rule Analysis",
+      "description": "Ideally, allocate 50% of income to needs, 30% to wants, and 20% to savings/investments.",
+      "needs": "Needs",
+      "wants": "Wants",
+      "saving": "Savings/Investment",
+      "target": "Target",
+      "actual": "Actual",
+      "recommendations": "Recommendations",
+      "rec": {
+        "needsHigh": "Needs exceed 55% of income. Consider reducing housing or communication costs.",
+        "wantsHigh": "Wants exceed 35% of income. Try cutting back on dining out or leisure spending.",
+        "savingLow": "Savings rate is below 15%. Consider setting up automatic savings transfers.",
+        "good": "Your budget aligns well with the 50/30/20 rule. Great job!",
+        "overBudget": "Total expenses exceed your income. Review all spending categories."
+      }
+    },
+    "actions": {
+      "reset": "Reset",
+      "share": "Share",
+      "save": "Save",
+      "copied": "Copied!"
+    },
+    "preset": {
+      "defaultName": "My Budget",
+      "placeholder": "Preset name",
+      "saved": "Saved Budgets"
+    },
+    "share": {
+      "title": "Monthly Budget Summary"
+    },
+    "guide": {
+      "title": "User Guide",
+      "usage": {
+        "title": "How to Use",
+        "items": [
+          "Enter your monthly income (after-tax salary, side income, etc.)",
+          "Enter amounts for each expense category or adjust with sliders",
+          "Review the donut chart and category bar graphs",
+          "Compare with the 50/30/20 rule to find improvements",
+          "Save your budget to load later"
+        ]
+      },
+      "rule": {
+        "title": "What is the 50/30/20 Rule?",
+        "items": [
+          "Needs (50%): Housing, food, transport, communication, insurance, medical - essential expenses",
+          "Wants (30%): Dining out, leisure, shopping, hobbies - discretionary spending",
+          "Savings (20%): Savings accounts, investments, emergency fund - building for the future"
+        ]
+      },
+      "tips": {
+        "title": "Saving Tips",
+        "items": [
+          "Food expenses should be 15-20% of income",
+          "Identify fixed costs (housing, communication) first",
+          "Budget for social events by dividing annual total by 12",
+          "Aim for at least 20% savings rate",
+          "Compare with Korean averages to find areas to cut back"
+        ]
+      }
+    }
+  },
+  "loanSchedule": {
+    "title": "Loan Repayment Scheduler",
+    "description": "Generate loan repayment schedule and analyze interest",
+    "loanAmount": "Loan Amount",
+    "annualRate": "Annual Interest Rate",
+    "loanTerm": "Loan Term",
+    "repaymentType": "Repayment Type",
+    "typeEqualPayment": "Equal Payment (Annuity)",
+    "typeEqualPrincipal": "Equal Principal",
+    "typeBullet": "Bullet (Interest-Only)",
+    "gracePeriod": "Grace Period",
+    "startDate": "Start Date",
+    "unitWon": "KRW",
+    "unitManwon": "x10,000",
+    "unitEokwon": "x100M",
+    "wonUnit": " KRW",
+    "unitYears": "Years",
+    "unitMonths": "Months",
+    "monthsLabel": " months",
+    "extraMonthly": "Extra Monthly Payment",
+    "period": "Period",
+    "periodSuffix": "",
+    "date": "Date",
+    "monthlyPayment": "Monthly Payment",
+    "principalPayment": "Principal",
+    "interestPayment": "Interest",
+    "remainingBalance": "Remaining Balance",
+    "totalPayment": "Total Payment",
+    "totalInterest": "Total Interest",
+    "interestRatio": "Interest Ratio",
+    "avgMonthly": "Avg Monthly",
+    "totalPeriods": "Total Periods",
+    "earlyRepaymentSavings": "Early Repayment Savings",
+    "interestSaved": "Interest Saved",
+    "termReduced": "Term Reduced",
+    "scheduleTab": "Schedule",
+    "chartTab": "Chart",
+    "scheduleTitle": "Detailed Repayment Schedule",
+    "copyText": "Copy",
+    "copied": "Copied!",
+    "loadMore": "Load More",
+    "rowsRemaining": " rows remaining",
+    "compare": "Compare",
+    "reset": "Reset",
+    "loanA": "Loan A",
+    "loanB": "Loan B",
+    "compareDiff": "A - B Difference",
+    "totalInterestDiff": "Total Interest Diff",
+    "totalPaymentDiff": "Total Payment Diff",
+    "avgMonthlyDiff": "Avg Monthly Diff",
+    "compareDiffNote": "Positive means Loan A pays more; negative means Loan B pays more.",
+    "chartPrincipalInterest": "Principal/Interest Ratio by Period",
+    "chartBalance": "Remaining Balance Trend",
+    "graceLabel": "Grace",
+    "guide": {
+      "title": "User Guide",
+      "types": {
+        "title": "Repayment Types",
+        "items": [
+          "Equal Payment: Same amount each month, higher interest portion initially",
+          "Equal Principal: Equal principal portions, higher initial payments but less total interest",
+          "Bullet: Interest-only monthly payments, principal at maturity"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Minimize grace periods as they increase interest burden",
+          "Early repayment can significantly reduce interest",
+          "Equal Principal is more favorable in total interest",
+          "Recalculate when interest rates change"
+        ]
+      }
+    }
+  },
+  "movingCost": {
+    "title": "Moving Cost Calculator",
+    "description": "Calculate estimated moving costs by type and conditions",
+    "sizeLabel": "Home Size",
+    "customSize": "Custom Input",
+    "pyeong": "pyeong",
+    "sqm": "sqm",
+    "sizePresets": {
+      "oneRoom": "Studio(6p)",
+      "twoRoom": "1BR(10p)",
+      "twenty": "20p",
+      "thirty": "30p",
+      "forty": "40p",
+      "fiftyPlus": "50p+"
+    },
+    "movingTypeLabel": "Moving Type",
+    "movingTypes": {
+      "full": "Full Service",
+      "semi": "Semi Service",
+      "regular": "Self-Pack"
+    },
+    "movingTypeDesc": {
+      "full": "Company handles everything (most convenient)",
+      "semi": "Company packs large items, you pack small items",
+      "regular": "You pack, movers only transport (cheapest)"
+    },
+    "distanceLabel": "Distance",
+    "distances": {
+      "inCity": "In City",
+      "nearBy": "Nearby",
+      "longRange": "Long Range",
+      "veryLong": "Very Long",
+      "custom": "Custom"
+    },
+    "floorLabel": "Floor Info",
+    "currentFloor": "Current Floor",
+    "newFloor": "New Floor",
+    "floor": "F",
+    "hasElevator": "Has Elevator",
+    "ladderTruck": "Ladder Truck Needed",
+    "extrasLabel": "Extra Services",
+    "extras": {
+      "acUnits": "AC Install/Remove (units)",
+      "piano": "Piano Moving",
+      "pianoNone": "None",
+      "pianoUpright": "Upright Piano",
+      "pianoGrand": "Grand Piano",
+      "largeAppliances": "Large Appliances (count)",
+      "storageDays": "Storage Service (days)",
+      "organization": "Organization Service",
+      "cleaning": "Cleaning Service"
+    },
+    "dateLabel": "Moving Date",
+    "peakSeason": "Peak Season (Mar, Sep)",
+    "weekend": "Weekend/Holiday",
+    "auspiciousDay": "Auspicious Day",
+    "normalDay": "Off-season Weekday",
+    "peakSeasonNote": "March and September are peak moving season with 20-30% surcharge.",
+    "weekendNote": "Weekend/holiday moves have a 10-20% surcharge.",
+    "reset": "Reset",
+    "manwon": "0,000 KRW",
+    "won": " KRW",
+    "copied": "Copied!",
+    "copyResult": "Copy Result",
+    "disclaimer": "* Prices are estimates based on 2024-2025 average Korean market rates. Actual costs may vary by company and circumstances. Please contact moving companies directly for accurate quotes.",
+    "result": {
+      "title": "Estimated Cost",
+      "estimatedTotal": "Total Estimated Cost",
+      "empty": "Set options on the left to see estimated costs",
+      "base": "Base Moving Cost",
+      "distance": "Distance Surcharge",
+      "floor": "Floor Surcharge",
+      "ladder": "Ladder Truck",
+      "ac": "AC Service",
+      "otherServices": "Other Services",
+      "peakSeason": "Peak Season Surcharge",
+      "weekend": "Weekend Surcharge",
+      "total": "Total Estimated Cost"
+    },
+    "checklist": {
+      "title": "Moving Preparation Checklist",
+      "items": [
+        "Compare quotes from at least 3 moving companies",
+        "Confirm moving date and time",
+        "Prepare address change registration",
+        "Apply for mail forwarding",
+        "Transfer internet/TV/phone service",
+        "Change utilities (electricity/gas/water)",
+        "Settle maintenance fees",
+        "Sort and dispose of unnecessary items",
+        "Separately store valuables and important documents",
+        "Prepare cleaning supplies for moving day",
+        "Clean and disinfect new home",
+        "Notify neighbors about moving (noise courtesy)",
+        "Unplug refrigerator 24 hours before move",
+        "Pack and secure electronics",
+        "Prepare pet transportation"
+      ]
+    },
+    "guide": {
+      "title": "Moving Guide",
+      "priceRef": {
+        "title": "Base Cost by Size (Full Service)",
+        "items": [
+          "Studio (6p): 300K-500K KRW",
+          "1BR (10p): 500K-800K KRW",
+          "20p: 800K-1.2M KRW",
+          "30p: 1.2M-1.8M KRW",
+          "40p: 1.8M-2.5M KRW",
+          "50p+: 2.5M-3.5M KRW",
+          "Self-Pack is 50-60% of full service cost",
+          "Semi Service is 70-80% of full service cost"
+        ]
+      },
+      "tips": {
+        "title": "Money-Saving Tips",
+        "items": [
+          "Moving in off-season saves 20-30%",
+          "Weekday moves are 10-20% cheaper than weekends",
+          "Get quotes from at least 3 companies",
+          "Decluttering beforehand reduces costs",
+          "Auspicious days have higher demand and prices",
+          "Separate AC service companies may be cheaper than movers"
+        ]
+      }
+    }
+  },
+  "carMaintenance": {
+    "title": "Car Maintenance Calculator",
+    "description": "Calculate annual vehicle ownership costs including insurance, tax, fuel, maintenance, and depreciation all at once",
+    "vehicleInfo": "Vehicle Info",
+    "vehicleType": "Vehicle Type",
+    "vehicleTypes": {
+      "light": "Light Car",
+      "small": "Small Car",
+      "medium": "Midsize Car",
+      "large": "Large Car",
+      "suv": "SUV",
+      "import": "Imported"
+    },
+    "displacement": "Displacement",
+    "modelYear": "Model Year",
+    "year": "",
+    "yearsOld": " yr old",
+    "fuelType": "Fuel Type",
+    "fuelTypes": {
+      "gasoline": "Gasoline",
+      "diesel": "Diesel",
+      "lpg": "LPG",
+      "hybrid": "Hybrid",
+      "electric": "Electric"
+    },
+    "fuelEfficiency": "Fuel Efficiency",
+    "customInput": "Custom",
+    "drivingCosts": "Driving & Costs",
+    "annualDistance": "Annual Distance",
+    "fuelPrice": "Fuel Price",
+    "wonPerLiter": "KRW/L",
+    "wonPerKwh": "KRW/kWh",
+    "won": "KRW",
+    "monthlyParking": "Monthly Parking",
+    "carWashFrequency": "Car Wash Freq.",
+    "timesPerMonth": "/mo",
+    "carWashCost": "Cost per Wash",
+    "monthlyToll": "Monthly Toll (Hi-Pass)",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "annualTotal": "Annual Total",
+    "monthlyAverage": "Monthly Average",
+    "costPerKm": "Cost per km",
+    "wonPerKm": " KRW/km",
+    "costBreakdown": "Cost Breakdown",
+    "categories": {
+      "autoTax": "Auto Tax",
+      "insurance": "Insurance",
+      "fuelCost": "Fuel Cost",
+      "maintenance": "Maintenance",
+      "parking": "Parking",
+      "carWash": "Car Wash",
+      "tollFees": "Toll Fees",
+      "depreciation": "Depreciation"
+    },
+    "monthly": "Mo.",
+    "total": "Total",
+    "monthlyBreakdown": "Monthly Breakdown",
+    "category": "Category",
+    "monthlyAmount": "Monthly",
+    "annualAmount": "Annual",
+    "percentage": "Ratio",
+    "transitComparison": "Public Transit Comparison",
+    "carAnnualCost": "Car Annual Cost",
+    "transitAnnualCost": "Transit Annual Cost",
+    "transitComparisonResult": "Car maintenance costs approximately {ratio}x of public transit (based on Seoul transit card at 65,000 KRW/month)",
+    "maintenanceSchedule": "Maintenance Schedule",
+    "scheduleItem": "Item",
+    "scheduleInterval": "Interval",
+    "scheduleUnitCost": "Unit Cost",
+    "scheduleAnnualCost": "Annual Cost",
+    "months": " months",
+    "maintenanceItems": {
+      "engineOil": "Engine Oil",
+      "oilFilter": "Oil Filter",
+      "airFilter": "Air Filter",
+      "cabinFilter": "Cabin Filter",
+      "brakePads": "Brake Pads",
+      "tires": "Tires",
+      "battery": "Battery",
+      "coolant": "Coolant",
+      "transmissionFluid": "Transmission Fluid",
+      "sparkPlugs": "Spark Plugs",
+      "wiperBlades": "Wiper Blades",
+      "brakeFluid": "Brake Fluid"
+    },
+    "placeholderTitle": "Enter your vehicle info",
+    "placeholderDescription": "Enter vehicle details and cost items in the left panel, then click Calculate to see your annual maintenance costs.",
+    "guide": {
+      "title": "Car Maintenance Guide",
+      "taxSection": {
+        "title": "Korean Auto Tax",
+        "items": [
+          "Non-commercial cars: 80 KRW/cc (up to 1000cc), 140 KRW/cc (up to 1600cc), 200 KRW/cc (over 1600cc)",
+          "30% education tax is added",
+          "5% annual discount after 3 years of age (max 50%)",
+          "Electric vehicles: flat 130,000 KRW/year",
+          "Prepay in January or March for ~10% discount"
+        ]
+      },
+      "savingsSection": {
+        "title": "Cost Saving Tips",
+        "items": [
+          "Light cars save significantly on tax and insurance",
+          "Eco-driving (avoid rapid acceleration/braking) saves 10-20% on fuel",
+          "Use insurance comparison sites to find the best rates",
+          "Self car wash and self-service fuel save costs",
+          "Use Hi-Pass discount time slots for toll savings"
+        ]
+      },
+      "maintenanceSection": {
+        "title": "Maintenance Tips",
+        "items": [
+          "Change engine oil every 10,000km or 6 months",
+          "Check tire pressure regularly",
+          "Inspect brake pad wear limit lines",
+          "Replace cabin air filter annually",
+          "Check coolant antifreeze ratio before winter"
+        ]
+      },
+      "depreciationSection": {
+        "title": "Understanding Depreciation",
+        "items": [
+          "Highest depreciation occurs in the first year (about 20-30%)",
+          "Depreciation slows down after 3-5 years",
+          "Imported cars depreciate faster than domestic ones",
+          "Popular models and white/black colors retain higher resale value",
+          "Regular maintenance records increase used car value"
+        ]
+      }
+    }
+  },
+  "memoryGame": {
+    "title": "Memory Tile Game",
+    "description": "Flip cards to find matching pairs!",
+    "selectDifficulty": "Select Difficulty",
+    "difficulty": {
+      "easy": "Easy",
+      "normal": "Normal",
+      "hard": "Hard",
+      "expert": "Expert"
+    },
+    "selectTheme": "Select Theme",
+    "theme": {
+      "emoji": "Emoji",
+      "food": "Food",
+      "sports": "Sports",
+      "korean": "Korean",
+      "numbers": "Numbers"
+    },
+    "pairs": "pairs",
+    "startGame": "Start Game",
+    "playAgain": "Play Again",
+    "backToMenu": "Menu",
+    "menu": "Menu",
+    "movesLabel": "Moves",
+    "movesUnit": "moves",
+    "timeLabel": "Time",
+    "comboLabel": "Combo",
+    "maxCombo": "Max Combo",
+    "bestRecord": "Best Record",
+    "newRecord": "New Record!",
+    "congratulations": "Congratulations!",
+    "winMessage": "You found all matching pairs!",
+    "soundOn": "Sound On",
+    "soundOff": "Sound Off",
+    "guide": {
+      "title": "How to Play",
+      "howToPlay": {
+        "title": "How to Play",
+        "items": [
+          "Click a card to flip it over",
+          "If two cards match, they stay face up",
+          "If they don't match, they flip back after a short delay",
+          "Find all pairs to win!"
+        ]
+      },
+      "scoring": {
+        "title": "Scoring System",
+        "items": [
+          "Fewer moves earns you 3 stars",
+          "Match pairs consecutively for combo bonuses!",
+          "Best scores are saved per difficulty and theme",
+          "Time is also tracked - try to be fast!"
+        ]
+      }
+    }
+  },
+  "snakeGame": {
+    "title": "Snake Game",
+    "description": "Classic snake game - 3 modes, 4 difficulty levels, custom skins!",
+    "score": "Score",
+    "highScore": "High Score",
+    "speed": "Speed",
+    "mode": "Game Mode",
+    "difficulty": "Difficulty",
+    "skin": "Snake Skin",
+    "startGame": "Start Game",
+    "startHint": "Select mode and difficulty, then start",
+    "pause": "Pause",
+    "paused": "Paused",
+    "resume": "Resume",
+    "gameOver": "Game Over",
+    "newRecord": "New Record!",
+    "playAgain": "Play Again",
+    "backToMenu": "Menu",
+    "modes": {
+      "classic": "Classic",
+      "classicDesc": "Game over when hitting walls",
+      "infinite": "Infinite",
+      "infiniteDesc": "Wrap around through walls",
+      "obstacles": "Obstacles",
+      "obstaclesDesc": "Random obstacles appear"
+    },
+    "difficulties": {
+      "slow": "Slow",
+      "normal": "Normal",
+      "fast": "Fast",
+      "accelerating": "Accel"
+    },
+    "skins": {
+      "green": "Green",
+      "blue": "Blue",
+      "purple": "Purple",
+      "rainbow": "Rainbow"
+    },
+    "foods": {
+      "title": "Food Types",
+      "normal": "Normal Food",
+      "bonus": "Bonus Food",
+      "special": "Special Food"
+    },
+    "guide": {
+      "title": "Game Guide",
+      "keyboard": {
+        "title": "Keyboard Controls",
+        "items": [
+          "Arrow keys : Change direction",
+          "W A S D : Change direction (alternative)",
+          "Space / P : Pause/Resume"
+        ]
+      },
+      "touch": {
+        "title": "Touch Controls",
+        "items": [
+          "Swipe : Change direction",
+          "On-screen D-pad : Tap direction buttons",
+          "Center button : Pause/Resume"
+        ]
+      },
+      "scoring": {
+        "title": "Scoring System",
+        "items": [
+          "Normal food (red) : +1 point",
+          "Bonus food (orange) : +3 points, disappears after a while",
+          "Special food (yellow star) : +5 points, disappears after 3 seconds",
+          "Accelerating mode: speed increases with score"
+        ]
+      }
     }
   }
 }

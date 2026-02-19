@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Korean all-in-one web tool platform ("툴허브") built with Next.js 16, providing 50+ tools across financial calculators, developer utilities, health tools, and browser games. Deployed on Cloudflare Pages as a static PWA with offline support, SEO optimization, and AdSense integration.
+Korean all-in-one web tool platform ("툴허브") built with Next.js 16, providing 110+ tools across financial calculators, developer utilities, health tools, and browser games. Deployed on Cloudflare Pages as a static PWA with offline support, SEO optimization, and AdSense integration.
 
 ## Development Commands
 
@@ -40,6 +40,8 @@ pnpm wrangler:dev
 - **Language**: TypeScript, React 19
 - **Styling**: Tailwind CSS v4 with dark mode support
 - **Icons**: Lucide React
+- **Code Editor**: CodeMirror 6 via @uiw/react-codemirror (JSON syntax highlighting, code folding, search)
+- **JSON Processing**: json5 (JSON5/JSONC parsing), jsonpath-plus (JSONPath queries), jsonrepair (auto-fix broken JSON)
 - **Charts**: Recharts
 - **3D**: Babylon.js (3D viewer)
 - **PDF**: jsPDF (PDF export)
@@ -103,8 +105,9 @@ src/
 - `BodyFatCalculator`: Body fat percentage calculation
 - `WorkHoursCalculator`: Part-time work hours and overtime
 
-#### Development & Utility Tools (24 tools)
-- `JsonFormatter`: JSON formatting and validation
+#### Development & Utility Tools (29 tools)
+- `JsonFormatter`: JSON Formatter Pro - CodeMirror 6 editor, 4 modes (format/minify/tree/stats), JSONPath queries, JSON5/JSONC support, auto-fix broken JSON (jsonrepair), drag-and-drop, URL import, keyboard shortcuts
+- `JsonCodeEditor`: CodeMirror 6 React wrapper with dark mode, error line decoration
 - `JsonCsvConverter`: JSON to CSV conversion
 - `JsonXmlConverter`: JSON to XML conversion
 - `JwtDecoder`: JWT token analysis
@@ -128,6 +131,11 @@ src/
 - `LoremIpsumGenerator`: Lorem ipsum placeholder text generator
 - `UnitConverter`: Unit conversion (length, weight, temperature, etc.)
 - `TextConverter`: Text transformation (uppercase, lowercase, camelCase, etc.)
+- `PasswordGenerator`: Secure password & passphrase generator with strength analysis
+- `DdayCalculator`: D-Day counter, date difference, date add/subtract with Korean holidays
+- `ImageWatermark`: Text/image watermark with position, opacity, rotation, tile repeat (Canvas API)
+- `ImageOcr`: Image text extraction (OCR) using Tesseract.js with rotation support, multi-language
+- `KeyboardConverter`: Korean-English keyboard mistype converter with Hangul jamo assembly/disassembly
 
 #### Games (10 tools)
 - `GameHub`: Game listing/hub page with game stats
@@ -145,7 +153,7 @@ src/
 - `Header`: Sticky navigation with dropdown menus, recent tools tracking, global search (Ctrl+K), mobile responsive
 - `Footer`: Minimal footer with branding
 - `ToolsShowcase`: Card-based tool navigation grid with favorites support
-- `SearchDialog`: Global command palette (Ctrl+K / Cmd+K) for searching all 52 tools
+- `SearchDialog`: Global command palette (Ctrl+K / Cmd+K) for searching all tools
 - `Breadcrumb`: Auto-generated breadcrumb with JSON-LD structured data
 - `RelatedTools`: Same-category tool recommendations (auto from menuConfig)
 - `ToolJsonLd`: Per-tool WebApplication JSON-LD structured data
@@ -177,13 +185,15 @@ src/
 - `favorites.ts`: Tool favorites management (localStorage)
 - `corsProxy.ts`: CORS proxy utility for external API calls
 - `lottoDataLoader.ts` / `lottoUpdater.ts`: Lotto data management
+- `wordlist.ts`: EFF-inspired word list for passphrase generation
+- `koreanHolidays.ts`: Korean public holiday data (2024-2030, lunar included) + business day calculation
 
 ### Menu System
 Central configuration in `/src/config/menuConfig.ts` with 4 categories:
-- **calculators**: 14 financial calculators
-- **tools**: 24 development & utility tools
-- **health**: 4 health & fitness tools
-- **games**: 10 games (including GameHub)
+- **calculators**: 33 financial/life calculators
+- **tools**: 57 development & utility tools (including image/media tools)
+- **health**: 7 health & fitness tools
+- **games**: 15 games (including GameHub)
 
 Header and ToolsShowcase auto-read from menuConfig. Footer is minimal (no menu links).
 
@@ -199,7 +209,7 @@ Header and ToolsShowcase auto-read from menuConfig. Footer is minimal (no menu l
 - OpenGraph and Twitter card support
 - JSON-LD structured data: site-level (WebSite + SoftwareApplication) + per-tool (WebApplication via ToolJsonLd)
 - Breadcrumb JSON-LD structured data (auto-generated via Breadcrumb component)
-- Static sitemap generation (`src/app/sitemap.ts`) with all 50+ routes
+- Static sitemap generation (`src/app/sitemap.ts`) with all 110+ routes
 - Naver site verification configured
 - Domain: toolhub.ai.kr
 
@@ -266,88 +276,232 @@ Header shows recently used tools per category (max 4) using `recentTools.ts` uti
 
 ## Development Workflow for New Features
 
-### 1. Adding New Menu Items (Quick Reference)
+### 새 도구 추가 시 수정할 파일 (순서대로, 탐색 불필요)
 
-메뉴 시스템은 **단일 설정 파일**로 관리됩니다. 새 도구를 추가할 때 아래 파일들만 수정하면 됩니다:
+| # | 파일 | 작업 | 코드 위치 힌트 |
+|---|------|------|---------------|
+| 1 | `/src/config/menuConfig.ts` | 메뉴 항목 추가 | 적절한 카테고리 items 배열 끝에 추가 |
+| 2 | `/messages/ko.json` | 한국어 번역 3곳 | footer.links + toolsShowcase.tools + 컴포넌트 네임스페이스 |
+| 3 | `/messages/en.json` | 영어 번역 3곳 | ko.json과 동일 구조 |
+| 4 | `/src/app/sitemap.ts` | URL 추가 | 배열 끝에 추가 |
+| 5 | `/src/app/[tool-name]/page.tsx` | 페이지 생성 | 새 디렉토리 + page.tsx |
+| 6 | `/src/components/[ToolName].tsx` | 컴포넌트 생성 | 새 파일 |
 
-#### 수정 파일 목록 (순서대로)
-1. `/src/config/menuConfig.ts` - 메뉴 항목 추가
-2. `/messages/ko.json` - 한국어 번역 추가
-3. `/messages/en.json` - 영어 번역 추가
-4. `/src/app/sitemap.ts` - SEO sitemap 추가
-5. `/src/app/[tool-name]/page.tsx` - 페이지 생성
-6. `/src/components/[ToolName].tsx` - 컴포넌트 생성
+**Header, ToolsShowcase, SearchDialog는 menuConfig에서 자동 반영되므로 별도 수정 불필요.**
 
-#### Step 1: menuConfig.ts에 메뉴 항목 추가
+### Step 1: menuConfig.ts
+
 ```typescript
-// /src/config/menuConfig.ts
-// 적절한 카테고리(calculators, tools, health, games)에 추가
-{
-  href: '/new-tool',
-  labelKey: 'footer.links.newTool',
-  descriptionKey: 'toolsShowcase.tools.newTool.description',
-  icon: '🔧'
+// /src/config/menuConfig.ts — 카테고리: calculators | tools | health | games
+{ href: '/new-tool', labelKey: 'footer.links.newTool', descriptionKey: 'toolsShowcase.tools.newTool.description', icon: '🔧' }
+```
+
+### Step 2: 번역 파일 (ko.json, en.json) — 3곳 수정
+
+```jsonc
+// ── 1) footer.links 섹션 (ko.json ~line 1310 부근, en.json ~line 1035 부근)
+// 마지막 항목 뒤에 추가. 쉼표 주의!
+"newTool": "새 도구"
+
+// ── 2) toolsShowcase.tools 섹션 (ko.json ~line 3320 부근, en.json ~line 3321 부근)
+// 마지막 항목 뒤에 추가
+"newTool": {
+  "title": "새 도구",
+  "description": "한 줄 설명"
+}
+
+// ── 3) 컴포넌트 네임스페이스 (파일 맨 끝, 닫는 } 바로 전)
+// ko.json, en.json 모두 파일 마지막 부분에 추가
+"newTool": {
+  "title": "새 도구",
+  "description": "상세 설명",
+  "guide": {
+    "title": "가이드",
+    "section1": { "title": "...", "items": ["...", "..."] }
+  }
+  // ... 컴포넌트에서 사용할 모든 번역 키
 }
 ```
 
-#### Step 2: 번역 파일 추가 (ko.json, en.json)
-```json
-// messages/ko.json - 2곳에 추가 필요
+### Step 3: sitemap.ts
 
-// 1) footer.links 섹션에 메뉴명 추가
-"footer": { "links": { "newTool": "새 도구" } }
-
-// 2) toolsShowcase.tools 섹션에 설명 추가
-"toolsShowcase": { "tools": { "newTool": { "title": "새 도구", "description": "설명" } } }
-```
-
-#### Step 3: sitemap.ts에 URL 추가
 ```typescript
-{ url: 'https://toolhub.ai.kr/new-tool', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 }
+// /src/app/sitemap.ts — 배열 끝, ] 바로 전에 추가
+{
+  url: 'https://toolhub.ai.kr/new-tool/',
+  lastModified: new Date(),
+  changeFrequency: 'monthly',  // 도구=monthly, 계산기=weekly, 게임=weekly
+  priority: 0.8,               // 일반=0.7~0.8, 인기=0.9
+}
 ```
 
-#### 메뉴 시스템 구조
-```
-/src/config/menuConfig.ts (공통 설정)
-    ↓ (자동 반영)
-├── Header.tsx (드롭다운 메뉴 + 최근 사용)
-├── ToolsShowcase.tsx (카드형 네비게이션)
-└── Footer.tsx (간소화됨 - 메뉴 없음)
-```
+### Step 4: page.tsx 템플릿
 
-**중요**: Header와 ToolsShowcase는 menuConfig에서 자동으로 메뉴를 가져오므로 별도 수정이 필요 없습니다.
-
-### 2. Internationalization-First Development
-
-#### Step 1: Create Translation Files First
-Add Korean translations to `/messages/ko.json` and English to `/messages/en.json`.
-
-#### Step 2: Implement Component with Translations
 ```typescript
-const NewFeatureComponent = () => {
-  const t = useTranslations('newFeature');
-  return <h1>{t('title')}</h1>;
-};
+// /src/app/new-tool/page.tsx
+import { Metadata } from 'next'
+import { Suspense } from 'react'
+import NewTool from '@/components/NewTool'
+import I18nWrapper from '@/components/I18nWrapper'
+
+export const metadata: Metadata = {
+  title: '한국어 제목 - 키워드 | 툴허브',
+  description: '80-160자 설명',
+  keywords: '키워드1, 키워드2, 키워드3',
+  openGraph: {
+    title: '제목 | 툴허브',
+    description: 'OG 설명',
+    url: 'https://toolhub.ai.kr/new-tool',
+    siteName: '툴허브',
+    locale: 'ko_KR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '제목',
+    description: '설명',
+  },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/new-tool',
+  },
+}
+
+export default function NewToolPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '한국어 제목',
+    description: '설명',
+    url: 'https://toolhub.ai.kr/new-tool',
+    applicationCategory: 'UtilityApplication', // or DeveloperApplication
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['기능1', '기능2']
+  }
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Suspense fallback={<div className="text-center">Loading...</div>}>
+            <I18nWrapper>
+              <NewTool />
+            </I18nWrapper>
+          </Suspense>
+        </div>
+      </div>
+    </>
+  )
+}
 ```
 
-### 3. Translation Key Naming Conventions
-- camelCase keys: `buttonText`, `errorMessage`
-- Group related: `labels.input`, `messages.success`
-- Descriptive names: `pasteFromClipboard` not `paste`
+### Step 5: 컴포넌트 템플릿
 
-### 4. Validation Checklist
-Before completing a feature:
-- [ ] All UI text uses translation functions
-- [ ] Both Korean and English translations complete
-- [ ] Navigation updated (menuConfig + translations)
-- [ ] Sitemap updated
-- [ ] Dark mode compatible
-- [ ] Mobile responsive
+```typescript
+// /src/components/NewTool.tsx
+'use client'
+
+import { useState, useCallback } from 'react'
+import { useTranslations } from 'next-intl'
+import { Copy, Check, BookOpen /* 필요한 아이콘 */ } from 'lucide-react'
+
+export default function NewTool() {
+  const t = useTranslations('newTool')
+  const [copiedId, setCopiedId] = useState<string | null>(null)
+
+  // ── 클립보드 복사 (프로젝트 공통 패턴) ──
+  const copyToClipboard = useCallback(async (text: string, id: string) => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text)
+      } else {
+        const textarea = document.createElement('textarea')
+        textarea.value = text
+        textarea.style.position = 'fixed'
+        textarea.style.left = '-999999px'
+        document.body.appendChild(textarea)
+        textarea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+      }
+      setCopiedId(id)
+      setTimeout(() => setCopiedId(null), 2000)
+    } catch {
+      setCopiedId(id)
+      setTimeout(() => setCopiedId(null), 2000)
+    }
+  }, [])
+
+  return (
+    <div className="space-y-8">
+      {/* 헤더 */}
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      </div>
+
+      {/* 메인 그리드: 설정(1/3) + 결과(2/3) */}
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-1">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            {/* 설정 패널 */}
+          </div>
+        </div>
+        <div className="lg:col-span-2">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            {/* 결과 패널 */}
+          </div>
+        </div>
+      </div>
+
+      {/* 가이드 섹션 */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+          {t('guide.title')}
+        </h2>
+        {/* 가이드 내용 — 배열은 t.raw('guide.section.items') as string[] */}
+      </div>
+    </div>
+  )
+}
+```
+
+### 공통 Tailwind 클래스 패턴
+
+```
+카드:         bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6
+입력 필드:    w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500
+메인 버튼:    bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700
+보조 버튼:    bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg
+제목 텍스트:  text-gray-900 dark:text-white
+부제 텍스트:  text-gray-500 dark:text-gray-400
+정보 박스:    bg-blue-50 dark:bg-blue-950 rounded-xl p-6
+체크박스:     accent-blue-600
+```
+
+### 번역 키 네이밍 규칙
+
+- camelCase: `buttonText`, `errorMessage`
+- 그룹핑: `settings.length`, `result.title`, `guide.tips.items`
+- 배열은 `t.raw('key')` 사용: `(t.raw('guide.items') as string[]).map(...)`
+- 컴포넌트 네임스페이스 = 컴포넌트명 camelCase (예: `PasswordGenerator` → `passwordGenerator`)
+
+### 완료 체크리스트
+
+- [ ] 모든 UI 텍스트가 `t()` 번역 함수 사용
+- [ ] ko.json, en.json 번역 완성 (footer.links + toolsShowcase.tools + 컴포넌트 네임스페이스)
+- [ ] menuConfig.ts에 항목 추가됨
+- [ ] sitemap.ts에 URL 추가됨
+- [ ] 다크모드 호환 (모든 요소에 dark: 접두사)
+- [ ] 모바일 반응형 (lg:grid-cols 등)
+- [ ] TypeScript 에러 없음 (`npx tsc --noEmit`)
 
 ## Development Notes
 
 - ESLint is disabled during builds (ignoreDuringBuilds: true)
-- Uses pnpm as package manager
+- Uses npm as package manager (pnpm has store location issues on this machine; use `npm install` / `npm run`)
 - Korean-first UI/UX with comprehensive English translations
 - Dark mode support with system preference detection via ThemeToggle
 - Responsive design with mobile-first approach
@@ -367,12 +521,28 @@ Before completing a feature:
 7. Use manual save pattern for better UX
 8. Include comprehensive guide content
 
+### i18n 병렬 작업 시 주의사항 (Critical)
+병렬 에이전트로 여러 컴포넌트를 동시에 생성할 때 **i18n 키 불일치**가 가장 흔한 버그 원인이다.
+
+- **컴포넌트와 번역 키를 반드시 동일 에이전트가 함께 작성**할 것. 컴포넌트 에이전트와 번역 에이전트를 분리하면 키 구조가 어긋남.
+- **ko.json의 키 구조는 FLAT**: `t('gender')`, `t('reset')` 형태. 중첩 키(`settings.gender.label`)를 사용하면 런타임 MISSING_MESSAGE 에러 발생.
+- **t.raw()로 읽는 배열 키**는 ko.json에 실제 배열(`["항목1", "항목2"]`)로 존재해야 함. 없으면 `e.raw(...).map is not a function` 크래시.
+- **컴포넌트 생성 후 반드시 ko.json 키와 대조 검증** 수행. 특히 guide 섹션의 `t.raw('guide.xxx.items')` 호출.
+- **번역 네임스페이스 규칙**: 컴포넌트명 camelCase (예: `PasswordGenerator` → `passwordGenerator`). `footer.links` + `toolsShowcase.tools` + 컴포넌트 네임스페이스 3곳 모두 추가.
+
 ### Code Quality
 - Prefer TypeScript interfaces over `any` types
 - Use useCallback for expensive operations
 - Implement proper error boundaries
 - Add comprehensive error handling for clipboard and file operations
 - Follow consistent naming conventions
+
+### TypeScript Gotchas
+- **Recharts callback types**: `Tooltip formatter` and `Pie label` callbacks have optional params (`value?: number`, `name?: string`, `percent?: number`). Always use nullish coalescing (`value ?? 0`).
+- **`unknown` type in JSX**: When using `&&` short-circuit in JSX with `unknown`-typed values (e.g., `parsedResult?.data`), wrap with `!!` to cast to boolean. Otherwise TypeScript errors with "Type 'unknown' is not assignable to type 'ReactNode'".
+- **Tailwind CSS v4 JIT**: Dynamic class names like `` `bg-${color}-50` `` don't work. Must use explicit hardcoded class names.
+- **`ssr: false` in Next.js 16**: `dynamic(() => ..., { ssr: false })` is NOT allowed in Server Components (page.tsx). Use it only in Client Components ('use client').
+- **Tesseract.js v6 API**: `recognize()` returns `Page` type. Words are NOT at `data.words` — use nested `data.blocks[].paragraphs[].lines[].words[]`. Use `createWorker(langs)` with dynamic import.
 
 ### Testing Considerations
 - Test calculation accuracy with edge cases

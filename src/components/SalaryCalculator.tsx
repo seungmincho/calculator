@@ -901,7 +901,7 @@ const SalaryCalculatorContent = () => {
                     <XAxis dataKey="month" />
                     <YAxis tickFormatter={(value) => `${(value / 10000).toFixed(0)}만`} />
                     <Tooltip 
-                      formatter={(value: number) => formatNumber(value) + '원'}
+                      formatter={(value?: number) => formatNumber(value ?? 0) + '원'}
                       labelStyle={{ color: '#000' }}
                     />
                     <Legend />
@@ -974,7 +974,7 @@ const SalaryCalculatorContent = () => {
                     <XAxis dataKey="experience" />
                     <YAxis tickFormatter={(value) => `${(value / 100000000).toFixed(1)}억`} />
                     <Tooltip 
-                      formatter={(value: number) => formatNumber(value) + '원'}
+                      formatter={(value?: number) => formatNumber(value ?? 0) + '원'}
                       labelStyle={{ color: '#000' }}
                     />
                     <Bar dataKey="average" fill="#3B82F6" name="평균 연봉">
@@ -1031,7 +1031,7 @@ const SalaryCalculatorContent = () => {
                           <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(value: number) => formatNumber(value) + '원'} />
+                      <Tooltip formatter={(value?: number) => formatNumber(value ?? 0) + '원'} />
                     </RechartsPieChart>
                   </ResponsiveContainer>
                   

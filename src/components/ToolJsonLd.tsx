@@ -7,6 +7,7 @@ import { menuConfig, categoryKeys } from '@/config/menuConfig'
 const categoryToAppCategory: Record<string, string> = {
   calculators: 'FinanceApplication',
   tools: 'DeveloperApplication',
+  media: 'MultimediaApplication',
   health: 'HealthApplication',
   games: 'GameApplication',
 }

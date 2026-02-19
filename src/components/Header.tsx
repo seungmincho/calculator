@@ -15,6 +15,7 @@ const MAX_RECENT_DISPLAY = 4; // 최근 사용 표시 최대 개수
 const DEFAULT_INDICES: Record<string, number[]> = {
   calculators: [0, 1, 2, 3],
   tools: [0, 1, 2, 3],
+  media: [0, 1, 2, 3],
   health: [0, 1, 2, 3],
   games: [0, 1, 2, 3],
 };
@@ -39,42 +40,20 @@ const Header = () => {
     loadRecentTools();
   }, []);
 
-  // menuConfig에서 번역된 메뉴 아이템 생성
+  // menuConfig에서 번역된 메뉴 아이템 생성 (카테고리 자동 반영)
   const getMenuItems = () => {
-    return {
-      calculators: {
-        title: t(menuConfig.calculators.titleKey),
-        items: menuConfig.calculators.items.map(item => ({
+    const result: Record<string, { title: string; items: { href: string; label: string; icon: string }[] }> = {};
+    for (const key of categoryKeys) {
+      result[key] = {
+        title: t(menuConfig[key].titleKey),
+        items: menuConfig[key].items.map(item => ({
           href: item.href,
           label: t(item.labelKey),
           icon: item.icon,
         })),
-      },
-      tools: {
-        title: t(menuConfig.tools.titleKey),
-        items: menuConfig.tools.items.map(item => ({
-          href: item.href,
-          label: t(item.labelKey),
-          icon: item.icon,
-        })),
-      },
-      health: {
-        title: t(menuConfig.health.titleKey),
-        items: menuConfig.health.items.map(item => ({
-          href: item.href,
-          label: t(item.labelKey),
-          icon: item.icon,
-        })),
-      },
-      games: {
-        title: t(menuConfig.games.titleKey),
-        items: menuConfig.games.items.map(item => ({
-          href: item.href,
-          label: t(item.labelKey),
-          icon: item.icon,
-        })),
-      },
-    };
+      };
+    }
+    return result;
   };
 
   const menuItems = getMenuItems();
@@ -195,6 +174,7 @@ const Header = () => {
   const categoryIcons: Record<string, string> = {
     calculators: '💰',
     tools: '🛠️',
+    media: '🖼️',
     health: '❤️',
     games: '🎮',
   };

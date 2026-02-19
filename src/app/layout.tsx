@@ -167,7 +167,7 @@ export default function RootLayout({
 
   return (
     <html lang="ko">
-      <head>
+      <head suppressHydrationWarning>
         <meta name="google-adsense-account" content={adsenseId} />
         <meta name="naver-site-verification" content="8cdcacf38562d4fa1ee11f4f77a8a0f15f11d532" />
         

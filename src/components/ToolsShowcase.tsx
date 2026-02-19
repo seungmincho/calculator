@@ -28,6 +28,7 @@ export default function ToolsShowcase() {
   const categoryTitleKeys: Record<string, string> = {
     calculators: 'toolsShowcase.categories.financial',
     tools: 'toolsShowcase.categories.development',
+    media: 'toolsShowcase.categories.media',
     health: 'toolsShowcase.categories.health',
     games: 'toolsShowcase.categories.games',
   }

@@ -742,11 +742,12 @@
     }
   },
   "jsonFormatter": {
-    "title": "JSON 포맷터",
-    "description": "JSON 데이터를 검증하고 예쁘게 포맷팅하거나 압축하세요.",
+    "title": "JSON 포맷터 Pro",
+    "description": "JSON 데이터를 검증하고 예쁘게 포맷팅하거나 압축하세요. JSONPath 쿼리, JSON5 지원, 통계 분석을 제공합니다.",
     "input": {
       "jsonInput": "JSON 입력",
-      "pasteJson": "JSON을 여기에 붙여넣으세요..."
+      "pasteJson": "JSON을 여기에 붙여넣으세요...",
+      "output": "결과"
     },
     "actions": {
       "format": "포맷팅",
@@ -759,6 +760,155 @@
       "valid": "유효한 JSON",
       "invalid": "잘못된 JSON",
       "error": "JSON 오류"
+    },
+    "modes": {
+      "format": "포맷팅",
+      "minify": "압축",
+      "treeView": "트리뷰",
+      "stats": "통계"
+    },
+    "controls": {
+      "settings": "설정",
+      "example": "예제",
+      "upload": "업로드",
+      "copy": "복사",
+      "copied": "복사됨!",
+      "download": "다운로드",
+      "fullscreen": "전체화면",
+      "exitFullscreen": "전체화면 나가기",
+      "expandAll": "모두 펼치기",
+      "collapseAll": "모두 접기",
+      "clear": "지우기",
+      "paste": "붙여넣기",
+      "urlImport": "URL"
+    },
+    "settings": {
+      "title": "설정",
+      "indentSize": "들여쓰기",
+      "sortKeys": "키 정렬 (A-Z)",
+      "json5Mode": "JSON5 모드",
+      "json5Desc": "주석, trailing comma 허용",
+      "spaces": "{count} 스페이스"
+    },
+    "statusBar": {
+      "valid": "유효",
+      "invalid": "오류",
+      "keys": "키",
+      "depth": "깊이",
+      "nodes": "노드",
+      "size": "크기",
+      "time": "처리",
+      "compressionRatio": "압축률"
+    },
+    "jsonPath": {
+      "title": "JSONPath 쿼리",
+      "placeholder": "JSONPath 쿼리 입력 (예: $.store.book[*].author)",
+      "run": "실행",
+      "result": "쿼리 결과",
+      "resultCount": "{count}개 결과",
+      "examples": "예제",
+      "error": "쿼리 오류",
+      "noResult": "결과 없음",
+      "exampleQueries": {
+        "allAuthors": "모든 author 추출",
+        "filterByPrice": "가격 필터링",
+        "allKeys": "모든 키 이름",
+        "recursive": "재귀적 검색"
+      }
+    },
+    "urlImport": {
+      "placeholder": "JSON URL 입력",
+      "fetch": "가져오기",
+      "loading": "로딩 중...",
+      "error": "URL에서 가져올 수 없습니다",
+      "success": "가져오기 완료"
+    },
+    "dragDrop": {
+      "message": "JSON 파일을 여기로 드래그하세요",
+      "supported": ".json, .txt, .json5 파일 지원"
+    },
+    "treeView": {
+      "search": "키 또는 값 검색...",
+      "copyPath": "경로 복사",
+      "pathCopied": "JSONPath 복사됨",
+      "editValue": "값 편집",
+      "keys": "개 키",
+      "items": "개 항목",
+      "empty": "유효한 JSON을 입력하면 트리가 표시됩니다",
+      "noSearchResult": "검색 결과 없음"
+    },
+    "stats": {
+      "title": "JSON 통계",
+      "overview": "개요",
+      "typeDistribution": "타입 분포",
+      "depthDistribution": "깊이별 분포",
+      "topKeys": "자주 사용되는 키 (Top 10)",
+      "totalNodes": "총 노드",
+      "totalKeys": "총 키",
+      "maxDepth": "최대 깊이",
+      "dataSize": "데이터 크기",
+      "stringType": "문자열",
+      "numberType": "숫자",
+      "booleanType": "불리언",
+      "nullType": "null",
+      "objectType": "객체",
+      "arrayType": "배열",
+      "depth": "깊이 {level}"
+    },
+    "shortcuts": {
+      "title": "키보드 단축키",
+      "format": "포맷팅",
+      "minify": "압축",
+      "treeView": "트리뷰",
+      "copyOutput": "결과 복사",
+      "search": "검색"
+    },
+    "errors": {
+      "syntaxError": "JSON 문법 오류",
+      "processingFailed": "처리 실패",
+      "invalidFile": "지원하지 않는 파일 형식입니다",
+      "fileTooLarge": "파일이 너무 큽니다 (최대 10MB)",
+      "line": "줄",
+      "position": "위치",
+      "autoFix": "자동 수정",
+      "autoFixTooltip": "깨진 JSON을 자동으로 복구합니다 (누락된 쉼표, 따옴표, 괄호 등)",
+      "autoFixSuccess": "JSON이 자동으로 수정되었습니다",
+      "autoFixFailed": "자동 수정에 실패했습니다"
+    },
+    "guide": {
+      "title": "JSON 포맷터 Pro 완벽 가이드",
+      "subtitle": "코드 에디터급 구문 강조, JSONPath 쿼리, JSON5 지원, 실시간 통계 분석까지 - 개발자를 위한 최고의 JSON 도구",
+      "features": {
+        "syntaxHighlight": "구문 강조 에디터",
+        "syntaxHighlightDesc": "CodeMirror 6 기반의 전문 코드 에디터로 JSON 키, 값, 타입별 색상 강조를 제공합니다. 코드 접기, 브라켓 매칭, 줄 번호를 지원합니다.",
+        "treeView": "인터랙티브 트리뷰",
+        "treeViewDesc": "JSON 구조를 시각적으로 탐색할 수 있습니다. 노드를 클릭하면 JSONPath가 자동으로 복사되고, 실시간 검색으로 원하는 데이터를 빠르게 찾을 수 있습니다.",
+        "jsonPath": "JSONPath 쿼리",
+        "jsonPathDesc": "JSONPath 표현식으로 데이터를 추출할 수 있습니다. 복잡한 필터링과 재귀적 검색을 지원합니다.",
+        "json5": "JSON5 / JSONC 지원",
+        "json5Desc": "주석(// 및 /* */), trailing comma, 작은따옴표 등 JSON5 확장 문법을 지원하여 설정 파일을 쉽게 처리할 수 있습니다.",
+        "stats": "통계 분석",
+        "statsDesc": "JSON 데이터의 타입 분포, 깊이 분석, 자주 사용되는 키를 차트로 시각화합니다.",
+        "performance": "고성능 처리",
+        "performanceDesc": "대용량 JSON도 빠르게 처리합니다. 디바운스 파싱, 캐싱된 결과, 최적화된 트리 렌더링으로 부드러운 사용 경험을 제공합니다."
+      },
+      "useCases": {
+        "title": "활용 사례",
+        "apiDebug": "API 디버깅",
+        "apiDebugDesc": "API 응답 JSON을 포맷팅하고 JSONPath로 필요한 데이터를 추출하세요.",
+        "configEdit": "설정 파일 편집",
+        "configEditDesc": "tsconfig, .eslintrc 등 JSON5 설정 파일을 주석 포함하여 편집하세요.",
+        "dataAnalysis": "데이터 분석",
+        "dataAnalysisDesc": "JSON 데이터의 구조와 타입 분포를 통계 뷰에서 한눈에 파악하세요."
+      },
+      "tips": {
+        "title": "사용 팁",
+        "tip1": "Ctrl+Shift+F로 빠르게 포맷팅, Ctrl+Shift+M으로 압축할 수 있습니다.",
+        "tip2": "트리뷰에서 노드를 클릭하면 JSONPath가 자동 복사됩니다.",
+        "tip3": "JSON5 모드를 활성화하면 주석이 포함된 설정 파일도 파싱할 수 있습니다.",
+        "tip4": "파일을 에디터로 드래그앤드롭하여 빠르게 불러올 수 있습니다.",
+        "tip5": "URL 가져오기로 외부 API의 JSON 응답을 바로 분석할 수 있습니다."
+      }
     }
   },
   "jsonCsvConverter": {
@@ -1156,7 +1306,82 @@
       "colorConverter": "색상 변환기",
       "loremIpsum": "Lorem Ipsum 생성기",
       "unitConverter": "단위 변환기",
-      "textConverter": "텍스트 변환기"
+      "textConverter": "텍스트 변환기",
+      "passwordGenerator": "비밀번호 생성기",
+      "ddayCalculator": "디데이 계산기",
+      "percentCalculator": "퍼센트 계산기",
+      "ageCalculator": "나이 계산기",
+      "gpaCalculator": "학점 계산기",
+      "randomPicker": "랜덤 뽑기",
+      "timer": "타이머/스톱워치",
+      "baseConverter": "진법 변환기",
+      "notepad": "메모장",
+      "compoundCalculator": "복리 계산기",
+      "electricityCalculator": "전기요금 계산기",
+      "screenInfo": "화면/기기 정보",
+      "emojiPicker": "이모지 검색",
+      "lunarConverter": "음력 양력 변환기",
+      "ipChecker": "IP 주소 확인",
+      "discountCalculator": "할인 계산기",
+      "typingTest": "타이핑 테스트",
+      "numberToKorean": "숫자 한글 변환",
+      "qrScanner": "QR코드 스캔",
+      "pyeongCalculator": "평수 계산기",
+      "vatCalculator": "부가세 계산기",
+      "alcoholCalculator": "혈중알코올 계산기",
+      "fontPreview": "글꼴 미리보기",
+      "worldClock": "세계 시계",
+      "rentConverter": "전세/월세 전환",
+      "waterBill": "수도요금 계산기",
+      "cssGradient": "CSS 그라디언트",
+      "koreanSyllable": "초성 추출기",
+      "romanNumeral": "로마 숫자 변환",
+      "businessNumber": "사업자번호 검증",
+      "dueDateCalculator": "출산 예정일",
+      "hourlyWage": "시급 계산기",
+      "colorPalette": "색상 팔레트",
+      "aspectRatio": "화면 비율 계산",
+      "severancePay": "퇴직금 계산기",
+      "annualLeave": "연차 계산기",
+      "gasBill": "가스 요금 계산",
+      "imageConverter": "이미지 변환기",
+      "textToSpeech": "텍스트 읽어주기",
+      "taxiFare": "택시 요금 계산",
+      "installmentCalc": "카드 할부 계산",
+      "signatureGenerator": "서명 생성기",
+      "morseCode": "모스부호 변환",
+      "reactionTest": "반응속도 테스트",
+      "residentNumber": "주민번호 검증",
+      "shippingCalc": "배송비 계산",
+      "parkingFee": "주차 요금 계산",
+      "bloodPressure": "혈압 기록",
+      "colorBlindTest": "색약 테스트",
+      "monitorTest": "모니터 테스트",
+      "game2048": "2048 게임",
+      "minesweeper": "지뢰찾기",
+      "sudoku": "스도쿠",
+      "dutchPay": "더치페이 계산기",
+      "colorExtractor": "이미지 색상 추출기",
+      "imageMosaic": "사진 모자이크/블러",
+      "imageWatermark": "이미지 워터마크",
+      "imageOcr": "이미지 텍스트 추출 (OCR)",
+      "keyboardConverter": "한영 타자 변환기",
+      "contrastChecker": "색상 대비 체커",
+      "pdfTools": "PDF 도구",
+      "tetris": "테트리스",
+      "numberBaseball": "숫자야구",
+      "boxShadow": "CSS 박스 그림자",
+      "koreanWordle": "한글 워들",
+      "codeScreenshot": "코드 스크린샷",
+      "flexboxGrid": "Flexbox & Grid 생성기",
+      "svgEditor": "SVG 편집기",
+      "apiTester": "API 테스터",
+      "budgetCalculator": "생활비 계산기",
+      "loanSchedule": "대출 상환 스케줄러",
+      "movingCost": "이사 비용 계산기",
+      "carMaintenance": "자동차 유지비 계산기",
+      "memoryGame": "타일 매칭 게임",
+      "snakeGame": "스네이크 게임"
     },
     "copyright": "© 2025 툴허브. All rights reserved."
   },
@@ -2939,6 +3164,7 @@
     "financialCalculators": "금융 계산기",
     "developmentTools": "개발 도구",
     "healthTools": "건강 도구",
+    "mediaTools": "이미지/미디어 도구",
     "simpleGames": "간단 게임",
     "financialTips": "💡 금융 팁"
   },
@@ -2959,7 +3185,8 @@
       "health": "건강 도구",
       "development": "개발 도구",
       "utility": "유틸리티",
-      "games": "간단 게임"
+      "games": "간단 게임",
+      "media": "이미지/미디어"
     },
     "currentPage": "현재 페이지",
     "tools": {
@@ -3170,6 +3397,306 @@
       "textConverter": {
         "title": "텍스트 변환기",
         "description": "대소문자, camelCase, snake_case 변환"
+      },
+      "passwordGenerator": {
+        "title": "비밀번호 생성기",
+        "description": "안전한 비밀번호와 패스프레이즈 생성"
+      },
+      "ddayCalculator": {
+        "title": "디데이 계산기",
+        "description": "D-Day 카운터와 날짜 계산"
+      },
+      "percentCalculator": {
+        "title": "퍼센트 계산기",
+        "description": "퍼센트 계산, 증감률, 할인율 등 다양한 비율 계산"
+      },
+      "ageCalculator": {
+        "title": "나이 계산기",
+        "description": "만 나이, 연 나이, 띠, 별자리 계산"
+      },
+      "gpaCalculator": {
+        "title": "학점 계산기",
+        "description": "대학교 학점(GPA) 계산, 4.5/4.3 만점"
+      },
+      "randomPicker": {
+        "title": "랜덤 뽑기",
+        "description": "랜덤 숫자, 이름 뽑기, 팀 나누기"
+      },
+      "timer": {
+        "title": "타이머/스톱워치",
+        "description": "스톱워치, 카운트다운 타이머, 뽀모도로"
+      },
+      "baseConverter": {
+        "title": "진법 변환기",
+        "description": "2진수, 8진수, 10진수, 16진수 변환"
+      },
+      "notepad": {
+        "title": "메모장",
+        "description": "온라인 메모장, 자동 저장"
+      },
+      "compoundCalculator": {
+        "title": "복리 계산기",
+        "description": "복리 이자 계산, 투자 수익률 시뮬레이션"
+      },
+      "electricityCalculator": {
+        "title": "전기요금 계산기",
+        "description": "한국 주택용 전기요금 누진제 계산"
+      },
+      "screenInfo": {
+        "title": "화면/기기 정보",
+        "description": "화면 해상도, 브라우저, OS 정보 확인"
+      },
+      "emojiPicker": {
+        "title": "이모지 검색",
+        "description": "이모지 검색, 복사, 카테고리별 모음"
+      },
+      "lunarConverter": {
+        "title": "음력 양력 변환기",
+        "description": "음력 ↔ 양력 날짜 변환"
+      },
+      "ipChecker": {
+        "title": "IP 주소 확인",
+        "description": "내 공인 IP, 위치, ISP 정보 확인"
+      },
+      "discountCalculator": {
+        "title": "할인 계산기",
+        "description": "할인율, 할인가, 원가 계산"
+      },
+      "typingTest": {
+        "title": "타이핑 테스트",
+        "description": "타자 속도 측정, 한글/영어 연습"
+      },
+      "numberToKorean": {
+        "title": "숫자 한글 변환",
+        "description": "숫자를 한글 금액으로 변환"
+      },
+      "qrScanner": {
+        "title": "QR코드 스캔",
+        "description": "카메라/이미지로 QR코드 스캔"
+      },
+      "pyeongCalculator": {
+        "title": "평수 계산기",
+        "description": "평(坪)↔m² 면적 변환"
+      },
+      "vatCalculator": {
+        "title": "부가세 계산기",
+        "description": "공급가액, 부가세, 합계 계산"
+      },
+      "alcoholCalculator": {
+        "title": "혈중알코올 계산기",
+        "description": "음주 후 혈중알코올 농도 추정"
+      },
+      "fontPreview": {
+        "title": "글꼴 미리보기",
+        "description": "다양한 폰트로 텍스트 미리보기"
+      },
+      "worldClock": {
+        "title": "세계 시계",
+        "description": "전 세계 주요 도시 현재 시간"
+      },
+      "rentConverter": {
+        "title": "전세/월세 전환",
+        "description": "전세↔월세 전환율 계산"
+      },
+      "waterBill": {
+        "title": "수도요금 계산기",
+        "description": "수도 사용량별 요금 계산"
+      },
+      "cssGradient": {
+        "title": "CSS 그라디언트",
+        "description": "CSS 그라데이션 코드 생성"
+      },
+      "koreanSyllable": {
+        "title": "초성 추출기",
+        "description": "한글 초성/중성/종성 분리"
+      },
+      "romanNumeral": {
+        "title": "로마 숫자 변환",
+        "description": "아라비아↔로마 숫자 변환"
+      },
+      "businessNumber": {
+        "title": "사업자번호 검증",
+        "description": "사업자등록번호 유효성 검증"
+      },
+      "dueDateCalculator": {
+        "title": "출산 예정일 계산기",
+        "description": "마지막 생리일 기준 출산 예정일"
+      },
+      "hourlyWage": {
+        "title": "시급 계산기",
+        "description": "시급, 일급, 월급 상호 변환"
+      },
+      "colorPalette": {
+        "title": "색상 팔레트",
+        "description": "조화로운 색상 조합 생성"
+      },
+      "aspectRatio": {
+        "title": "화면 비율 계산기",
+        "description": "가로세로 비율, 해상도 계산"
+      },
+      "severancePay": {
+        "title": "퇴직금 계산기",
+        "description": "근속연수별 퇴직금 계산"
+      },
+      "annualLeave": {
+        "title": "연차 계산기",
+        "description": "입사일 기준 연차 일수 계산"
+      },
+      "gasBill": {
+        "title": "가스 요금 계산기",
+        "description": "도시가스 사용량별 요금 계산"
+      },
+      "imageConverter": {
+        "title": "이미지 변환기",
+        "description": "JPEG/PNG/WebP 이미지 포맷 변환"
+      },
+      "textToSpeech": {
+        "title": "텍스트 읽어주기",
+        "description": "텍스트를 음성으로 읽어줍니다"
+      },
+      "taxiFare": {
+        "title": "택시 요금 계산기",
+        "description": "거리/시간 기반 택시 요금 계산"
+      },
+      "installmentCalc": {
+        "title": "카드 할부 계산기",
+        "description": "할부 수수료 및 월 납부금 계산"
+      },
+      "signatureGenerator": {
+        "title": "서명 생성기",
+        "description": "캔버스로 전자 서명 생성"
+      },
+      "morseCode": {
+        "title": "모스부호 변환기",
+        "description": "텍스트↔모스부호 변환"
+      },
+      "reactionTest": {
+        "title": "반응속도 테스트",
+        "description": "반응 속도를 측정합니다"
+      },
+      "residentNumber": {
+        "title": "주민등록번호 검증기",
+        "description": "주민등록번호 형식 유효성 검증"
+      },
+      "shippingCalc": {
+        "title": "배송비 계산기",
+        "description": "택배 배송비 견적 계산"
+      },
+      "parkingFee": {
+        "title": "주차 요금 계산기",
+        "description": "주차 시간별 요금 계산"
+      },
+      "bloodPressure": {
+        "title": "혈압 기록기",
+        "description": "혈압 기록 및 분류 관리"
+      },
+      "colorBlindTest": {
+        "title": "색약 테스트",
+        "description": "이시하라 색약 검사 테스트"
+      },
+      "monitorTest": {
+        "title": "모니터 테스트",
+        "description": "14가지 종합 모니터 품질 검사 도구"
+      },
+      "game2048": {
+        "title": "2048 게임",
+        "description": "같은 숫자를 합쳐 2048을 만드는 퍼즐 게임"
+      },
+      "minesweeper": {
+        "title": "지뢰찾기",
+        "description": "클래식 마인스위퍼 퍼즐 게임"
+      },
+      "sudoku": {
+        "title": "스도쿠",
+        "description": "4단계 난이도 숫자 퍼즐 게임"
+      },
+      "dutchPay": {
+        "title": "더치페이 계산기",
+        "description": "회식비, 모임비를 정확하게 N분의 1 정산"
+      },
+      "colorExtractor": {
+        "title": "이미지 색상 추출기",
+        "description": "이미지에서 색상 추출 및 팔레트 생성"
+      },
+      "imageMosaic": {
+        "title": "사진 모자이크/블러",
+        "description": "사진에 모자이크나 블러 효과 적용"
+      },
+      "imageWatermark": {
+        "title": "이미지 워터마크",
+        "description": "이미지에 텍스트/이미지 워터마크 추가"
+      },
+      "imageOcr": {
+        "title": "이미지 텍스트 추출 (OCR)",
+        "description": "이미지에서 텍스트를 자동 인식하여 추출"
+      },
+      "keyboardConverter": {
+        "title": "한영 타자 변환기",
+        "description": "영타를 한글로, 한타를 영문으로 변환"
+      },
+      "contrastChecker": {
+        "title": "색상 대비 체커",
+        "description": "WCAG 접근성 색상 대비율 검사"
+      },
+      "pdfTools": {
+        "title": "PDF 도구",
+        "description": "PDF 합치기, 분할, 회전, 이미지→PDF 변환"
+      },
+      "tetris": {
+        "title": "테트리스",
+        "description": "클래식 블록 퍼즐 게임"
+      },
+      "numberBaseball": {
+        "title": "숫자야구",
+        "description": "숫자 맞추기 두뇌 게임"
+      },
+      "boxShadow": {
+        "title": "CSS 박스 그림자",
+        "description": "다중 레이어 box-shadow CSS 코드 시각 생성"
+      },
+      "koreanWordle": {
+        "title": "한글 워들",
+        "description": "매일 새로운 한국어 단어 맞추기 게임"
+      },
+      "codeScreenshot": {
+        "title": "코드 스크린샷",
+        "description": "코드를 예쁜 이미지로 변환하여 공유"
+      },
+      "flexboxGrid": {
+        "title": "Flexbox & Grid 생성기",
+        "description": "CSS Flexbox/Grid 레이아웃을 시각적으로 생성"
+      },
+      "svgEditor": {
+        "title": "SVG 편집기",
+        "description": "SVG 코드 편집, 최적화, 이미지 변환"
+      },
+      "apiTester": {
+        "title": "API 테스터",
+        "description": "브라우저에서 REST API 테스트 및 디버깅"
+      },
+      "budgetCalculator": {
+        "title": "생활비 계산기",
+        "description": "카테고리별 월간 지출 관리 및 예산 계획"
+      },
+      "loanSchedule": {
+        "title": "대출 상환 스케줄러",
+        "description": "원리금균등/원금균등 상환 계획표 생성"
+      },
+      "movingCost": {
+        "title": "이사 비용 계산기",
+        "description": "평수/이사유형별 이사 비용 견적"
+      },
+      "carMaintenance": {
+        "title": "자동차 유지비 계산기",
+        "description": "연간 차량 유지 비용 종합 계산"
+      },
+      "memoryGame": {
+        "title": "타일 매칭 게임",
+        "description": "카드를 뒤집어 짝을 찾는 기억력 게임"
+      },
+      "snakeGame": {
+        "title": "스네이크 게임",
+        "description": "클래식 뱀 게임, 3가지 모드"
       }
     }
   },
@@ -3961,6 +4488,4841 @@
       "loading": "로딩 중...",
       "ready": "렌더링 준비 완료",
       "rendering": "렌더링 중..."
+    }
+  },
+  "passwordGenerator": {
+    "title": "비밀번호 생성기",
+    "description": "안전한 비밀번호와 패스프레이즈를 쉽고 빠르게 생성하세요",
+    "modes": {
+      "password": "비밀번호",
+      "passphrase": "패스프레이즈"
+    },
+    "settings": {
+      "title": "생성 설정",
+      "length": "비밀번호 길이",
+      "characters": "문자 유형",
+      "uppercase": "대문자 (A-Z)",
+      "lowercase": "소문자 (a-z)",
+      "numbers": "숫자 (0-9)",
+      "specialChars": "특수문자",
+      "customSpecialChars": "사용자 정의 특수문자",
+      "customSpecialCharsPlaceholder": "예: !@#$%",
+      "excludeAmbiguous": "모호한 문자 제외",
+      "excludeAmbiguousDesc": "0, O, o, l, 1, I 등 혼동하기 쉬운 문자 제외",
+      "count": "생성 개수",
+      "wordCount": "단어 수",
+      "separator": "구분자",
+      "separators": {
+        "hyphen": "하이픈 (-)",
+        "space": "공백",
+        "period": "마침표 (.)",
+        "underscore": "밑줄 (_)"
+      },
+      "capitalizeFirst": "첫 글자 대문자"
+    },
+    "generate": "비밀번호 생성",
+    "copyAll": "모두 복사",
+    "copied": "복사됨!",
+    "copy": "복사",
+    "result": {
+      "title": "생성된 비밀번호",
+      "empty": "설정을 선택하고 생성 버튼을 눌러주세요",
+      "count": "{count}개 생성됨"
+    },
+    "strength": {
+      "veryWeak": "매우 약함",
+      "weak": "약함",
+      "medium": "보통",
+      "strong": "강함",
+      "veryStrong": "매우 강함",
+      "entropy": "엔트로피",
+      "bits": "비트"
+    },
+    "history": {
+      "title": "히스토리",
+      "show": "히스토리 보기",
+      "hide": "히스토리 숨기기",
+      "empty": "생성된 비밀번호가 없습니다",
+      "clear": "히스토리 지우기"
+    },
+    "errors": {
+      "noCharType": "최소 하나의 문자 유형을 선택해주세요"
+    },
+    "guide": {
+      "title": "비밀번호 보안 가이드",
+      "tips": {
+        "title": "안전한 비밀번호 팁",
+        "items": [
+          "최소 12자 이상의 비밀번호를 사용하세요",
+          "대소문자, 숫자, 특수문자를 조합하세요",
+          "개인정보(생년월일, 전화번호)를 포함하지 마세요",
+          "각 사이트마다 다른 비밀번호를 사용하세요",
+          "비밀번호 관리자를 활용하세요"
+        ]
+      },
+      "passphrase": {
+        "title": "패스프레이즈의 장점",
+        "items": [
+          "기억하기 쉬우면서도 높은 보안성",
+          "무작위 단어 조합으로 충분한 엔트로피 확보",
+          "4개 이상의 단어 사용 권장",
+          "구분자를 추가하면 보안성이 더욱 향상"
+        ]
+      }
+    }
+  },
+  "ddayCalculator": {
+    "title": "디데이 계산기",
+    "description": "D-Day 카운트다운, 날짜 차이 계산, 날짜 더하기/빼기를 한 곳에서",
+    "modes": {
+      "dday": "D-Day 카운터",
+      "diff": "날짜 차이",
+      "add": "날짜 더하기/빼기"
+    },
+    "dday": {
+      "targetDate": "목표 날짜",
+      "eventName": "이벤트 이름",
+      "eventNamePlaceholder": "예: 시험, 결혼식, 여행...",
+      "today": "오늘",
+      "setToday": "오늘로 설정"
+    },
+    "diff": {
+      "startDate": "시작 날짜",
+      "endDate": "종료 날짜",
+      "swap": "날짜 바꾸기"
+    },
+    "add": {
+      "baseDate": "기준 날짜",
+      "value": "값",
+      "unit": "단위",
+      "units": {
+        "days": "일",
+        "weeks": "주",
+        "months": "개월",
+        "years": "년"
+      },
+      "direction": {
+        "add": "더하기",
+        "subtract": "빼기"
+      },
+      "businessDaysOnly": "영업일만 계산",
+      "resultDate": "결과 날짜"
+    },
+    "result": {
+      "title": "계산 결과",
+      "totalDays": "총 일수",
+      "weeks": "주",
+      "days": "일",
+      "months": "개월",
+      "years": "년",
+      "and": " ",
+      "businessDays": "영업일 (주말 제외)",
+      "businessDaysHoliday": "영업일 (주말+공휴일 제외)",
+      "holidaysInRange": "기간 내 공휴일",
+      "remaining": "남음",
+      "passed": "지남",
+      "dday": "D-Day!"
+    },
+    "presets": {
+      "title": "인기 D-Day",
+      "csat": "수능",
+      "seollal": "설날",
+      "chuseok": "추석",
+      "christmas": "크리스마스",
+      "newYear": "새해",
+      "childrensDay": "어린이날",
+      "liberationDay": "광복절"
+    },
+    "holidays": {
+      "title": "한국 공휴일",
+      "newYear": "새해",
+      "marchFirst": "삼일절",
+      "childrensDay": "어린이날",
+      "memorialDay": "현충일",
+      "liberationDay": "광복절",
+      "nationalFoundation": "개천절",
+      "hangeulDay": "한글날",
+      "christmas": "크리스마스",
+      "seollal": "설날",
+      "seollalEve": "설날 연휴",
+      "seollalAfter": "설날 연휴",
+      "buddhasBirthday": "부처님오신날",
+      "chuseok": "추석",
+      "chuseokEve": "추석 연휴",
+      "chuseokAfter": "추석 연휴",
+      "substituteHoliday": "대체공휴일"
+    },
+    "share": "결과 공유",
+    "guide": {
+      "title": "디데이 계산기 가이드",
+      "usage": {
+        "title": "사용 방법",
+        "items": [
+          "D-Day 카운터: 목표 날짜까지 남은 일수를 계산합니다",
+          "날짜 차이: 두 날짜 사이의 기간을 다양한 단위로 표시합니다",
+          "날짜 더하기/빼기: 특정 날짜에 일수를 더하거나 뺍니다"
+        ]
+      },
+      "businessDays": {
+        "title": "영업일 계산",
+        "description": "영업일은 주말(토, 일)과 한국 공휴일을 제외한 날을 의미합니다. 설날, 추석 등 음력 공휴일도 반영됩니다."
+      }
+    }
+  },
+  "percentCalculator": {
+    "title": "퍼센트 계산기",
+    "description": "다양한 퍼센트 계산을 한 곳에서 간편하게",
+    "modes": {
+      "basicPercent": "기본 퍼센트",
+      "whatPercent": "몇 퍼센트?",
+      "change": "증감률",
+      "addSubtract": "추가/차감"
+    },
+    "basicPercent": {
+      "title": "X의 Y%는?",
+      "description": "특정 값의 퍼센트를 계산합니다",
+      "valueLabel": "값 (X)",
+      "percentLabel": "퍼센트 (Y%)",
+      "resultPrefix": "의",
+      "resultMiddle": "%는",
+      "resultSuffix": "입니다"
+    },
+    "whatPercent": {
+      "title": "X는 Y의 몇 %?",
+      "description": "두 값의 비율을 퍼센트로 계산합니다",
+      "partLabel": "부분 값 (X)",
+      "wholeLabel": "전체 값 (Y)",
+      "resultPrefix": "은(는)",
+      "resultMiddle": "의",
+      "resultSuffix": "입니다"
+    },
+    "change": {
+      "title": "증감률 계산",
+      "description": "이전 값에서 현재 값으로의 변화율을 계산합니다",
+      "fromLabel": "이전 값",
+      "toLabel": "현재 값",
+      "increase": "증가",
+      "decrease": "감소",
+      "noChange": "변화 없음",
+      "resultPrefix": "에서",
+      "resultMiddle": "(으)로",
+      "resultSuffix": "변화",
+      "difference": "차이"
+    },
+    "addSubtract": {
+      "title": "퍼센트 추가/차감",
+      "description": "값에 퍼센트를 더하거나 빼서 최종 금액을 계산합니다 (세금, 할인 등)",
+      "valueLabel": "원래 값",
+      "percentLabel": "퍼센트 (%)",
+      "add": "추가 (+)",
+      "subtract": "차감 (-)",
+      "addResult": "추가 후",
+      "subtractResult": "차감 후",
+      "addedAmount": "추가 금액",
+      "subtractedAmount": "차감 금액"
+    },
+    "common": {
+      "calculate": "계산하기",
+      "result": "결과",
+      "copy": "복사",
+      "copied": "복사됨!",
+      "reset": "초기화",
+      "placeholder": "숫자 입력",
+      "history": "계산 기록",
+      "clearHistory": "기록 삭제",
+      "noHistory": "계산 기록이 없습니다",
+      "quickPercent": "빠른 퍼센트",
+      "tipTitle": "활용 팁",
+      "tips": [
+        "세금 계산: 물건값에 10% 추가 → 부가세 포함 금액",
+        "할인 계산: 원가에서 30% 차감 → 할인 적용 금액",
+        "성적 계산: 맞은 개수 ÷ 전체 문제 수 → 정답률",
+        "증감률: 전월 대비 매출 변화 → 성장률 파악"
+      ]
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "basicPercent": {
+        "title": "기본 퍼센트 계산",
+        "items": [
+          "값(X)과 퍼센트(Y%)를 입력하면 결과를 계산합니다",
+          "예: 50,000의 15% = 7,500",
+          "세금, 팁, 수수료 계산에 유용합니다"
+        ]
+      },
+      "whatPercent": {
+        "title": "비율(%) 계산",
+        "items": [
+          "부분 값(X)과 전체 값(Y)을 입력하면 비율을 계산합니다",
+          "예: 300은 1,200의 25%",
+          "시험 점수, 달성률 계산에 유용합니다"
+        ]
+      },
+      "change": {
+        "title": "증감률 계산",
+        "items": [
+          "이전 값과 현재 값을 입력하면 변화율을 계산합니다",
+          "예: 100에서 130으로 → 30% 증가",
+          "매출 변화, 물가 변동 분석에 유용합니다"
+        ]
+      },
+      "addSubtract": {
+        "title": "퍼센트 추가/차감",
+        "items": [
+          "원래 값에 퍼센트를 더하거나 빼서 최종 금액을 구합니다",
+          "예: 10,000에 10% 추가 = 11,000 (부가세 포함)",
+          "예: 50,000에서 20% 차감 = 40,000 (할인 적용)",
+          "세금 추가, 할인 적용, 마진 계산에 유용합니다"
+        ]
+      }
+    }
+  },
+  "ageCalculator": {
+    "title": "나이 계산기",
+    "description": "생년월일을 입력하면 만 나이, 연 나이, 띠, 별자리 등을 한눈에 확인하세요",
+    "birthDate": "생년월일",
+    "year": "년",
+    "month": "월",
+    "day": "일",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "baseDate": "기준 날짜",
+    "today": "오늘",
+    "result": {
+      "title": "계산 결과",
+      "internationalAge": "만 나이",
+      "koreanAge": "한국 나이 (세는 나이)",
+      "yearAge": "연 나이",
+      "years": "세",
+      "months": "개월",
+      "days": "일",
+      "totalDays": "살아온 날",
+      "totalWeeks": "살아온 주",
+      "totalMonths": "살아온 개월",
+      "nextBirthday": "다음 생일까지",
+      "daysUntilBirthday": "일 남음",
+      "birthdayToday": "오늘이 생일입니다!",
+      "zodiacAnimal": "띠",
+      "zodiacSign": "별자리",
+      "birthDay": "태어난 요일",
+      "generation": "세대",
+      "earlySchoolYear": "빠른년생 여부"
+    },
+    "zodiacAnimals": {
+      "rat": "쥐띠 🐭",
+      "ox": "소띠 🐂",
+      "tiger": "호랑이띠 🐅",
+      "rabbit": "토끼띠 🐇",
+      "dragon": "용띠 🐉",
+      "snake": "뱀띠 🐍",
+      "horse": "말띠 🐴",
+      "goat": "양띠 🐑",
+      "monkey": "원숭이띠 🐒",
+      "rooster": "닭띠 🐓",
+      "dog": "개띠 🐕",
+      "pig": "돼지띠 🐷"
+    },
+    "zodiacSigns": {
+      "capricorn": "염소자리 ♑",
+      "aquarius": "물병자리 ♒",
+      "pisces": "물고기자리 ♓",
+      "aries": "양자리 ♈",
+      "taurus": "황소자리 ♉",
+      "gemini": "쌍둥이자리 ♊",
+      "cancer": "게자리 ♋",
+      "leo": "사자자리 ♌",
+      "virgo": "처녀자리 ♍",
+      "libra": "천칭자리 ♎",
+      "scorpio": "전갈자리 ♏",
+      "sagittarius": "사수자리 ♐"
+    },
+    "days": {
+      "sunday": "일요일",
+      "monday": "월요일",
+      "tuesday": "화요일",
+      "wednesday": "수요일",
+      "thursday": "목요일",
+      "friday": "금요일",
+      "saturday": "토요일"
+    },
+    "generations": {
+      "genAlpha": "알파 세대 (2013~)",
+      "genZ": "Z세대 (1997~2012)",
+      "millennial": "밀레니얼 세대 (1981~1996)",
+      "genX": "X세대 (1965~1980)",
+      "babyBoomer": "베이비붐 세대 (1946~1964)",
+      "silent": "침묵 세대 (~1945)"
+    },
+    "earlySchool": {
+      "yes": "빠른년생 (1~2월생)",
+      "no": "해당 없음"
+    },
+    "ageExplanation": {
+      "title": "나이 계산 방식 안내",
+      "international": {
+        "title": "만 나이 (국제 표준)",
+        "description": "생일이 지나야 한 살이 추가되는 국제 표준 나이 계산법입니다. 2023년 6월부터 한국 법적 나이로 통일되었습니다."
+      },
+      "korean": {
+        "title": "한국 나이 (세는 나이)",
+        "description": "태어나면 1살, 매년 1월 1일에 한 살이 추가되는 전통적인 한국 나이 계산법입니다."
+      },
+      "year": {
+        "title": "연 나이",
+        "description": "현재 연도에서 출생 연도를 뺀 나이입니다. 생일 여부와 관계없이 같은 해에 태어난 사람은 같은 나이입니다."
+      }
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "생년월일을 입력하면 실시간으로 결과가 표시됩니다",
+          "기준 날짜를 변경하여 특정 시점의 나이를 계산할 수 있습니다",
+          "만 나이, 한국 나이(세는 나이), 연 나이를 모두 확인할 수 있습니다"
+        ]
+      },
+      "features": {
+        "title": "제공 정보",
+        "items": [
+          "만 나이 / 한국 나이 / 연 나이",
+          "살아온 일수, 주수, 개월수",
+          "다음 생일까지 남은 일수",
+          "띠 (12간지), 별자리, 태어난 요일",
+          "세대 구분, 빠른년생 여부"
+        ]
+      }
+    }
+  },
+  "gpaCalculator": {
+    "title": "학점 계산기",
+    "description": "과목별 학점과 성적을 입력하여 평점(GPA)을 계산하세요",
+    "scale": "만점 기준",
+    "scale45": "4.5 만점",
+    "scale43": "4.3 만점",
+    "semester": "학기",
+    "addSemester": "학기 추가",
+    "removeSemester": "학기 삭제",
+    "addCourse": "과목 추가",
+    "courseName": "과목명",
+    "credits": "학점",
+    "grade": "성적",
+    "remove": "삭제",
+    "reset": "초기화",
+    "result": {
+      "title": "계산 결과",
+      "semesterGpa": "학기 평점",
+      "cumulativeGpa": "누적 평점",
+      "totalCredits": "총 이수 학점",
+      "totalCourses": "총 과목 수",
+      "average": "평균",
+      "courses": "과목"
+    },
+    "grades45": {
+      "Aplus": "A+ (4.5)",
+      "A": "A (4.0)",
+      "Bplus": "B+ (3.5)",
+      "B": "B (3.0)",
+      "Cplus": "C+ (2.5)",
+      "C": "C (2.0)",
+      "Dplus": "D+ (1.5)",
+      "D": "D (1.0)",
+      "F": "F (0.0)"
+    },
+    "grades43": {
+      "Aplus": "A+ (4.3)",
+      "A": "A (4.0)",
+      "Aminus": "A- (3.7)",
+      "Bplus": "B+ (3.3)",
+      "B": "B (3.0)",
+      "Bminus": "B- (2.7)",
+      "Cplus": "C+ (2.3)",
+      "C": "C (2.0)",
+      "Cminus": "C- (1.7)",
+      "Dplus": "D+ (1.3)",
+      "D": "D (1.0)",
+      "Dminus": "D- (0.7)",
+      "F": "F (0.0)"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "만점 기준(4.5/4.3)을 선택합니다",
+          "과목명, 학점, 성적을 입력합니다",
+          "여러 학기를 추가하여 누적 평점을 계산할 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "참고 사항",
+        "items": [
+          "대부분의 한국 대학교는 4.5 만점제를 사용합니다",
+          "일부 대학(서울대 등)은 4.3 만점제를 사용합니다",
+          "P/F 과목은 평점 계산에서 제외하세요"
+        ]
+      }
+    }
+  },
+  "randomPicker": {
+    "title": "랜덤 뽑기",
+    "description": "랜덤 숫자 생성, 목록에서 뽑기, 팀 나누기를 간편하게",
+    "modes": {
+      "number": "숫자 뽑기",
+      "list": "목록 뽑기",
+      "team": "팀 나누기"
+    },
+    "number": {
+      "title": "랜덤 숫자 생성",
+      "min": "최솟값",
+      "max": "최댓값",
+      "count": "개수",
+      "allowDuplicates": "중복 허용",
+      "generate": "뽑기!",
+      "result": "결과"
+    },
+    "list": {
+      "title": "목록에서 뽑기",
+      "inputLabel": "항목 입력 (줄바꿈으로 구분)",
+      "placeholder": "김철수\n이영희\n박민수\n...",
+      "count": "뽑을 개수",
+      "pick": "뽑기!",
+      "result": "당첨!"
+    },
+    "team": {
+      "title": "팀 나누기",
+      "inputLabel": "참가자 입력 (줄바꿈으로 구분)",
+      "placeholder": "김철수\n이영희\n박민수\n최지우\n...",
+      "teamCount": "팀 수",
+      "divide": "나누기!",
+      "teamLabel": "팀"
+    },
+    "common": {
+      "copy": "복사",
+      "copied": "복사됨!",
+      "reset": "초기화",
+      "result": "결과",
+      "animation": "애니메이션"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "number": {
+        "title": "숫자 뽑기",
+        "items": [
+          "최솟값과 최댓값 범위에서 랜덤 숫자를 생성합니다",
+          "여러 개를 동시에 뽑을 수 있으며 중복 여부를 설정할 수 있습니다"
+        ]
+      },
+      "list": {
+        "title": "목록 뽑기",
+        "items": [
+          "이름이나 항목을 줄바꿈으로 입력합니다",
+          "뽑을 개수를 설정하고 랜덤으로 선택합니다"
+        ]
+      },
+      "team": {
+        "title": "팀 나누기",
+        "items": [
+          "참가자 이름을 줄바꿈으로 입력합니다",
+          "원하는 팀 수를 설정하면 균등하게 나눕니다"
+        ]
+      }
+    }
+  },
+  "timer": {
+    "title": "타이머 / 스톱워치",
+    "description": "스톱워치, 카운트다운 타이머, 뽀모도로 타이머를 한 곳에서",
+    "modes": {
+      "stopwatch": "스톱워치",
+      "timer": "타이머",
+      "pomodoro": "뽀모도로"
+    },
+    "stopwatch": {
+      "title": "스톱워치",
+      "start": "시작",
+      "stop": "정지",
+      "reset": "초기화",
+      "lap": "랩",
+      "laps": "랩 기록",
+      "noLaps": "랩 기록이 없습니다",
+      "lapNumber": "랩",
+      "lapTime": "랩 타임",
+      "totalTime": "총 시간"
+    },
+    "countdown": {
+      "title": "카운트다운 타이머",
+      "hours": "시간",
+      "minutes": "분",
+      "seconds": "초",
+      "start": "시작",
+      "pause": "일시정지",
+      "resume": "재개",
+      "reset": "초기화",
+      "finished": "타이머 종료!",
+      "presets": "빠른 설정",
+      "preset1min": "1분",
+      "preset3min": "3분",
+      "preset5min": "5분",
+      "preset10min": "10분",
+      "preset15min": "15분",
+      "preset30min": "30분"
+    },
+    "pomodoro": {
+      "title": "뽀모도로 타이머",
+      "work": "집중",
+      "shortBreak": "짧은 휴식",
+      "longBreak": "긴 휴식",
+      "start": "시작",
+      "pause": "일시정지",
+      "reset": "초기화",
+      "skip": "건너뛰기",
+      "session": "세션",
+      "workDuration": "집중 시간 (분)",
+      "shortBreakDuration": "짧은 휴식 (분)",
+      "longBreakDuration": "긴 휴식 (분)",
+      "sessionsBeforeLong": "긴 휴식까지 세션 수",
+      "completed": "완료된 세션"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "stopwatch": {
+        "title": "스톱워치",
+        "items": [
+          "시작/정지 버튼으로 시간을 측정합니다",
+          "랩 버튼으로 구간 기록을 남길 수 있습니다"
+        ]
+      },
+      "timer": {
+        "title": "카운트다운 타이머",
+        "items": [
+          "시간/분/초를 설정하고 시작합니다",
+          "빠른 설정 버튼으로 자주 쓰는 시간을 바로 설정합니다",
+          "타이머 종료 시 알림음이 울립니다"
+        ]
+      },
+      "pomodoro": {
+        "title": "뽀모도로 기법",
+        "items": [
+          "25분 집중 → 5분 휴식을 반복합니다",
+          "4세션 완료 후 15분 긴 휴식을 가집니다",
+          "집중/휴식 시간을 사용자 설정할 수 있습니다"
+        ]
+      }
+    }
+  },
+  "baseConverter": {
+    "title": "진법 변환기",
+    "description": "2진수, 8진수, 10진수, 16진수를 실시간으로 변환합니다",
+    "decimal": "10진수 (Decimal)",
+    "binary": "2진수 (Binary)",
+    "octal": "8진수 (Octal)",
+    "hex": "16진수 (Hex)",
+    "input": "변환할 값을 입력하세요",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "reset": "초기화",
+    "swap": "교환",
+    "bitVisualization": "비트 시각화",
+    "bit": "비트",
+    "signed": "부호 있는 정수 (signed)",
+    "unsigned": "부호 없는 정수 (unsigned)",
+    "commonValues": "자주 쓰는 값",
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "아무 진법의 입력칸에 값을 입력하면 나머지가 자동 변환됩니다",
+          "16진수는 0-9, A-F 문자를 사용합니다",
+          "복사 버튼으로 결과를 클립보드에 복사할 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "참고 사항",
+        "items": [
+          "2진수: 컴퓨터가 실제로 처리하는 0과 1의 숫자 체계",
+          "8진수: Unix 파일 권한(chmod 755) 등에 사용",
+          "16진수: 색상코드(#FF0000), 메모리 주소 등에 사용"
+        ]
+      }
+    }
+  },
+  "notepad": {
+    "title": "메모장",
+    "description": "여러 메모를 관리하고 자동 저장되는 온라인 메모장",
+    "newNote": "새 메모",
+    "noNotes": "메모가 없습니다",
+    "createFirstNote": "새 메모 버튼을 눌러 시작하세요",
+    "export": "내보내기",
+    "autoSaved": "자동 저장됨",
+    "stats": {
+      "chars": "글자",
+      "words": "단어",
+      "lines": "줄",
+      "bytes": "바이트"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "features": {
+        "title": "주요 기능",
+        "items": [
+          "여러 개의 메모를 생성하고 관리할 수 있습니다",
+          "제목과 내용을 자유롭게 작성할 수 있습니다",
+          "500ms 후 자동으로 저장됩니다",
+          "글자 수, 단어 수, 줄 수, 바이트 수를 실시간으로 확인할 수 있습니다",
+          "메모를 .txt 파일로 내보낼 수 있습니다",
+          "브라우저 localStorage에 자동으로 저장됩니다"
+        ]
+      },
+      "usage": {
+        "title": "사용 방법",
+        "items": [
+          "새 메모 버튼을 눌러 메모를 생성하세요",
+          "왼쪽 목록에서 메모를 선택하여 편집하세요",
+          "제목과 내용을 입력하면 자동으로 저장됩니다",
+          "휴지통 아이콘을 눌러 메모를 삭제할 수 있습니다",
+          "내보내기 버튼을 눌러 메모를 텍스트 파일로 다운로드하세요"
+        ]
+      },
+      "tips": {
+        "title": "유용한 팁",
+        "items": [
+          "메모는 브라우저 localStorage에 저장됩니다",
+          "브라우저 데이터를 삭제하면 메모도 함께 삭제됩니다",
+          "중요한 메모는 내보내기 기능으로 백업하세요",
+          "모바일에서는 메모 목록 버튼으로 사이드바를 열고 닫을 수 있습니다"
+        ]
+      }
+    }
+  },
+  "compoundCalculator": {
+    "title": "복리 계산기",
+    "description": "원금, 이율, 기간을 입력하여 복리 이자와 투자 수익을 계산하세요",
+    "principal": "원금 (원)",
+    "rate": "연이율 (%)",
+    "period": "투자 기간",
+    "periodUnit": {
+      "years": "년",
+      "months": "개월"
+    },
+    "compoundFrequency": "복리 주기",
+    "frequency": {
+      "yearly": "연 복리",
+      "semiannually": "반기 복리",
+      "quarterly": "분기 복리",
+      "monthly": "월 복리",
+      "daily": "일 복리"
+    },
+    "monthlyDeposit": "월 적립금 (원)",
+    "monthlyDepositDesc": "매월 추가 적립 (선택사항)",
+    "result": {
+      "title": "계산 결과",
+      "totalAmount": "최종 금액",
+      "totalInterest": "총 이자",
+      "totalDeposit": "총 투자 원금",
+      "effectiveRate": "실질 수익률",
+      "growthChart": "자산 성장 그래프",
+      "yearlyBreakdown": "연도별 상세",
+      "year": "년차",
+      "balance": "잔액",
+      "interest": "이자",
+      "deposit": "원금"
+    },
+    "comparison": {
+      "title": "단리 vs 복리 비교",
+      "simple": "단리",
+      "compound": "복리",
+      "difference": "차이"
+    },
+    "common": {
+      "calculate": "계산하기",
+      "reset": "초기화",
+      "copy": "복사",
+      "copied": "복사됨!",
+      "won": "원"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "원금, 연이율, 투자 기간을 입력합니다",
+          "복리 주기(연/반기/분기/월/일)를 선택합니다",
+          "월 적립금을 추가하면 적립식 투자 수익을 계산합니다"
+        ]
+      },
+      "tips": {
+        "title": "복리의 마법",
+        "items": [
+          "복리는 이자에 이자가 붙는 방식으로 장기 투자에 유리합니다",
+          "복리 주기가 짧을수록 (월복리 > 연복리) 이자가 더 많이 쌓입니다",
+          "72법칙: 72 ÷ 이율 = 원금이 2배가 되는 기간 (년)"
+        ]
+      }
+    }
+  },
+  "electricityCalculator": {
+    "title": "전기요금 계산기",
+    "description": "한국 주택용 전기요금을 누진제 기준으로 계산합니다",
+    "usage": "월 사용량 (kWh)",
+    "usagePlaceholder": "사용량을 입력하세요",
+    "season": "계절",
+    "seasons": {
+      "normal": "일반 (봄/가을)",
+      "summer": "여름 (7~8월)",
+      "winter": "겨울 (12~2월)"
+    },
+    "contractType": "계약 종별",
+    "contracts": {
+      "lowVoltage": "주택용 저압",
+      "highVoltage": "주택용 고압"
+    },
+    "result": {
+      "title": "예상 전기요금",
+      "baseFee": "기본요금",
+      "usageFee": "전력량요금",
+      "climateFee": "기후환경요금",
+      "fuelAdjust": "연료비조정액",
+      "subtotal": "소계",
+      "vat": "부가가치세 (10%)",
+      "elecFund": "전력산업기반기금 (3.7%)",
+      "totalMonthly": "월 예상 요금",
+      "perKwh": "kWh당 단가"
+    },
+    "tiers": {
+      "title": "누진 구간별 요금",
+      "tier": "구간",
+      "range": "사용량 범위",
+      "unitPrice": "단가",
+      "kwh": "kWh",
+      "used": "사용",
+      "fee": "요금"
+    },
+    "savingTips": {
+      "title": "전기요금 절약 팁",
+      "items": [
+        "여름/겨울에는 누진 구간이 올라가면 요금이 급격히 증가합니다",
+        "대기전력 차단: 사용하지 않는 가전제품의 플러그를 뽑으세요",
+        "에어컨 적정 온도: 여름 26°C, 겨울 20°C 권장",
+        "LED 조명으로 교체하면 조명 전기료를 80% 절감할 수 있습니다"
+      ]
+    },
+    "common": {
+      "calculate": "계산하기",
+      "reset": "초기화",
+      "won": "원"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "월 전기 사용량(kWh)을 입력합니다 (고지서 참고)",
+          "해당 계절을 선택합니다 (여름/겨울은 구간이 다릅니다)",
+          "자동으로 누진제 기준 예상 요금이 계산됩니다"
+        ]
+      },
+      "rateInfo": {
+        "title": "요금 체계 안내",
+        "items": [
+          "주택용 전기요금은 사용량에 따라 누진제가 적용됩니다",
+          "여름(7~8월)과 겨울(12~2월)에는 구간별 기준이 조정됩니다",
+          "기본요금 + 전력량요금 + 기후환경요금 + 연료비조정으로 구성됩니다",
+          "부가세(10%)와 전력산업기반기금(3.7%)이 추가됩니다"
+        ]
+      }
+    }
+  },
+  "screenInfo": {
+    "title": "화면/기기 정보",
+    "description": "현재 기기의 화면 크기, 해상도, 브라우저 정보를 확인하세요",
+    "screen": {
+      "title": "화면 정보",
+      "resolution": "화면 해상도",
+      "viewport": "뷰포트 크기",
+      "availableSize": "사용 가능 크기",
+      "colorDepth": "색 심도",
+      "pixelRatio": "픽셀 비율 (DPR)",
+      "orientation": "화면 방향",
+      "portrait": "세로",
+      "landscape": "가로",
+      "touchscreen": "터치스크린"
+    },
+    "browser": {
+      "title": "브라우저 정보",
+      "userAgent": "User Agent",
+      "language": "언어",
+      "languages": "지원 언어",
+      "cookiesEnabled": "쿠키",
+      "online": "온라인 상태",
+      "doNotTrack": "추적 금지"
+    },
+    "device": {
+      "title": "기기 정보",
+      "platform": "플랫폼",
+      "cores": "CPU 코어",
+      "memory": "메모리 (GB)",
+      "connection": "네트워크 유형",
+      "maxTouchPoints": "터치 포인트",
+      "deviceType": "기기 유형",
+      "desktop": "데스크톱",
+      "tablet": "태블릿",
+      "mobile": "모바일"
+    },
+    "common": {
+      "copy": "복사",
+      "copied": "복사됨!",
+      "copyAll": "전체 복사",
+      "yes": "예",
+      "no": "아니요",
+      "unknown": "알 수 없음",
+      "pixels": "px",
+      "bit": "비트",
+      "refresh": "새로고침"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "features": {
+        "title": "확인 가능한 정보",
+        "items": [
+          "화면 해상도, 뷰포트 크기, 사용 가능 영역",
+          "픽셀 비율 (레티나 디스플레이 여부 확인)",
+          "브라우저 종류, 버전, 언어 설정",
+          "CPU 코어 수, 메모리, 네트워크 유형"
+        ]
+      },
+      "usage": {
+        "title": "활용 방법",
+        "items": [
+          "웹 개발 시 반응형 디자인 확인에 유용합니다",
+          "기술 지원 요청 시 기기 정보를 전달할 수 있습니다",
+          "디스플레이 사양 확인 및 비교에 활용하세요"
+        ]
+      }
+    }
+  },
+  "emojiPicker": {
+    "title": "이모지 검색",
+    "description": "이모지를 검색하고 클릭 한 번으로 복사하세요",
+    "searchPlaceholder": "이모지 검색 (한글/영어)...",
+    "categories": {
+      "all": "전체",
+      "smileys": "표정",
+      "people": "사람",
+      "animals": "동물/자연",
+      "food": "음식",
+      "travel": "여행/장소",
+      "activities": "활동",
+      "objects": "사물",
+      "symbols": "기호",
+      "flags": "깃발"
+    },
+    "copied": "복사됨!",
+    "clickToCopy": "클릭하여 복사",
+    "recentlyUsed": "최근 사용",
+    "noResults": "검색 결과가 없습니다",
+    "totalEmojis": "개의 이모지",
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "이모지를 클릭하면 자동으로 클립보드에 복사됩니다",
+          "한글 또는 영어로 검색할 수 있습니다",
+          "카테고리 탭으로 원하는 분류를 빠르게 찾을 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "최근 사용한 이모지가 상단에 표시됩니다",
+          "복사한 이모지는 카카오톡, 메모장, SNS 등에 붙여넣기 하세요",
+          "같은 이모지도 OS/기기에 따라 디자인이 다를 수 있습니다"
+        ]
+      }
+    }
+  },
+  "lunarConverter": {
+    "title": "음력 양력 변환기",
+    "description": "음력 날짜를 양력으로, 양력 날짜를 음력으로 변환합니다",
+    "mode": {
+      "solarToLunar": "양력 → 음력",
+      "lunarToSolar": "음력 → 양력"
+    },
+    "solar": "양력 날짜",
+    "lunar": "음력 날짜",
+    "year": "년",
+    "month": "월",
+    "day": "일",
+    "leapMonth": "윤달",
+    "isLeapMonth": "윤달 여부",
+    "convert": "변환",
+    "reset": "초기화",
+    "result": {
+      "title": "변환 결과",
+      "solarDate": "양력",
+      "lunarDate": "음력",
+      "leapMonth": "(윤달)",
+      "dayOfWeek": "요일",
+      "zodiacAnimal": "띠",
+      "heavenlyStem": "천간",
+      "earthlyBranch": "지지",
+      "sexagenary": "간지 (60갑자)"
+    },
+    "copy": "복사",
+    "copied": "복사됨!",
+    "error": {
+      "invalidDate": "유효하지 않은 날짜입니다",
+      "outOfRange": "변환 가능 범위를 벗어났습니다 (1900~2100년)"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "변환 방향(양력→음력 / 음력→양력)을 선택합니다",
+          "날짜를 입력하면 자동으로 변환됩니다",
+          "윤달이 있는 달은 윤달 체크박스를 선택하세요"
+        ]
+      },
+      "tips": {
+        "title": "참고 사항",
+        "items": [
+          "음력 생일, 제사일, 명절 날짜 확인에 유용합니다",
+          "변환 가능 범위: 1900년 ~ 2100년",
+          "같은 음력 날짜라도 윤달 여부에 따라 양력 날짜가 다릅니다"
+        ]
+      }
+    }
+  },
+  "ipChecker": {
+    "title": "IP 주소 확인",
+    "description": "내 공인 IP 주소, 위치, ISP, 네트워크 정보를 한눈에 확인하세요.",
+    "myIp": "내 IP 주소",
+    "loading": "IP 정보를 불러오는 중...",
+    "error": "IP 정보를 불러오지 못했습니다",
+    "retry": "다시 시도",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "copyAll": "전체 복사",
+    "refresh": "새로고침",
+    "ipv4": "IPv4 주소",
+    "ipv6": "IPv6 주소",
+    "location": "위치 정보",
+    "city": "도시",
+    "region": "지역",
+    "country": "국가",
+    "timezone": "시간대",
+    "isp": "인터넷 서비스 제공자",
+    "org": "조직",
+    "asn": "AS 번호",
+    "network": "네트워크 정보",
+    "connectionType": "연결 유형",
+    "vpnDetected": "VPN 감지",
+    "proxyDetected": "프록시 감지",
+    "yes": "예",
+    "no": "아니오",
+    "guide": {
+      "title": "IP 주소 확인 가이드",
+      "whatIsIp": {
+        "title": "IP 주소란?",
+        "items": [
+          "IP(Internet Protocol) 주소는 인터넷에 연결된 기기의 고유 식별 번호입니다",
+          "공인 IP는 외부에서 보이는 주소이며, 사설 IP는 내부 네트워크 주소입니다",
+          "IPv4(예: 192.168.0.1)와 IPv6(예: 2001:db8::1) 두 가지 형식이 있습니다"
+        ]
+      },
+      "whyCheck": {
+        "title": "IP 확인이 필요한 경우",
+        "items": [
+          "원격 접속, 서버 설정 시 내 IP 주소 확인",
+          "VPN 연결 상태 확인",
+          "인터넷 서비스 제공자(ISP) 정보 확인",
+          "IP 기반 접근 제어 설정 시"
+        ]
+      }
+    }
+  },
+  "discountCalculator": {
+    "title": "할인 계산기",
+    "description": "할인율, 할인 금액, 원래 가격을 간편하게 계산하세요.",
+    "mode": {
+      "discountRate": "할인율로 계산",
+      "finalPrice": "최종가로 계산",
+      "discountAmount": "할인액으로 계산"
+    },
+    "originalPrice": "원래 가격",
+    "discountRate": "할인율 (%)",
+    "discountAmount": "할인 금액",
+    "finalPrice": "최종 가격",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": "계산 결과",
+    "savings": "절약 금액",
+    "effectiveRate": "실질 할인율",
+    "won": "원",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "enterPrice": "금액을 입력하세요",
+    "enterRate": "할인율을 입력하세요",
+    "quickRates": "빠른 할인율",
+    "multiDiscount": "중복 할인",
+    "addDiscount": "할인 추가",
+    "totalDiscount": "총 할인율",
+    "multiResult": "중복 할인 결과",
+    "discount1": "첫 번째 할인",
+    "discount2": "두 번째 할인",
+    "discount3": "세 번째 할인",
+    "guide": {
+      "title": "할인 계산 가이드",
+      "basic": {
+        "title": "기본 사용법",
+        "items": [
+          "원래 가격에서 할인율을 적용하면 최종 가격이 계산됩니다",
+          "빠른 할인율 버튼으로 10%~90% 할인을 바로 적용하세요",
+          "중복 할인은 순차적으로 적용됩니다 (예: 20%+10% = 28%)"
+        ]
+      },
+      "tips": {
+        "title": "할인 계산 팁",
+        "items": [
+          "1+1 행사는 실질 50% 할인입니다",
+          "2+1 행사는 실질 33.3% 할인입니다",
+          "중복 할인 시 할인율은 단순 합산이 아닌 순차 적용됩니다"
+        ]
+      }
+    }
+  },
+  "typingTest": {
+    "title": "타이핑 테스트",
+    "description": "타자 속도를 측정하고 한글/영어 타이핑 연습을 해보세요.",
+    "language": {
+      "korean": "한글",
+      "english": "영어"
+    },
+    "difficulty": {
+      "title": "난이도",
+      "easy": "쉬움",
+      "medium": "보통",
+      "hard": "어려움"
+    },
+    "duration": {
+      "title": "시간",
+      "sec30": "30초",
+      "min1": "1분",
+      "min2": "2분",
+      "min5": "5분"
+    },
+    "start": "시작하기",
+    "restart": "다시 시작",
+    "stop": "중지",
+    "result": "결과",
+    "timeLeft": "남은 시간",
+    "wpm": "타/분 (WPM)",
+    "cpm": "타/분 (CPM)",
+    "accuracy": "정확도",
+    "totalChars": "총 입력 수",
+    "correctChars": "정확 입력",
+    "wrongChars": "오류 입력",
+    "typingSpeed": "타이핑 속도",
+    "excellent": "매우 빠름",
+    "fast": "빠름",
+    "average": "보통",
+    "slow": "느림",
+    "beginTyping": "위 텍스트를 보고 타이핑을 시작하세요",
+    "timeUp": "시간 종료!",
+    "history": "기록",
+    "bestRecord": "최고 기록",
+    "averageSpeed": "평균 속도",
+    "totalTests": "총 테스트 횟수",
+    "clearHistory": "기록 삭제",
+    "guide": {
+      "title": "타이핑 테스트 가이드",
+      "howTo": {
+        "title": "사용 방법",
+        "items": [
+          "언어, 난이도, 시간을 선택한 후 시작 버튼을 클릭하세요",
+          "화면에 표시된 텍스트를 보고 그대로 입력하세요",
+          "정확하게 입력한 글자는 초록색, 틀린 글자는 빨간색으로 표시됩니다",
+          "시간이 종료되면 타자 속도와 정확도가 표시됩니다"
+        ]
+      },
+      "speed": {
+        "title": "속도 기준 (한글 CPM)",
+        "items": [
+          "100 이하: 초급 - 기본 타이핑 연습 필요",
+          "100~200: 중급 - 일반적인 사무 업무 가능",
+          "200~350: 상급 - 빠른 업무 처리 가능",
+          "350 이상: 전문가 - 전문 타이핑 수준"
+        ]
+      }
+    }
+  },
+  "numberToKorean": {
+    "title": "숫자 한글 변환",
+    "description": "숫자를 한글 금액 표기로 변환합니다. 수표, 계약서, 영수증 작성 시 유용합니다.",
+    "inputNumber": "숫자 입력",
+    "placeholder": "변환할 숫자를 입력하세요",
+    "result": "변환 결과",
+    "koreanFormal": "한글 금액 (공식)",
+    "koreanInformal": "한글 읽기",
+    "chineseNum": "한자 금액",
+    "currency": "통화 표기",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "reset": "초기화",
+    "won": "원정",
+    "examples": "예시",
+    "maxNumber": "최대 입력 가능: 9,999,999,999,999,999 (9999조)",
+    "invalidNumber": "올바른 숫자를 입력하세요",
+    "units": {
+      "il": "일",
+      "ship": "십",
+      "baek": "백",
+      "cheon": "천",
+      "man": "만",
+      "eok": "억",
+      "jo": "조"
+    },
+    "quickAmounts": "빠른 금액",
+    "guide": {
+      "title": "숫자 한글 변환 가이드",
+      "usage": {
+        "title": "활용처",
+        "items": [
+          "수표 발행 시 금액을 한글로 기재 (예: 금 삼백만원정)",
+          "계약서, 영수증의 금액 한글 표기",
+          "법률 문서의 정확한 금액 기재",
+          "공문서 작성 시 숫자와 한글 병기"
+        ]
+      },
+      "rules": {
+        "title": "한글 금액 표기 규칙",
+        "items": [
+          "'일'은 만 단위 이상에서만 생략 가능 (일백 → 백, 일만 → 만)",
+          "공식 문서에서는 '금 OOO원정'으로 표기합니다",
+          "한자 숫자: 壹(일) 貳(이) 參(삼) 四(사) 五(오) 六(육) 七(칠) 八(팔) 九(구) 拾(십)",
+          "금융기관에서는 위조 방지를 위해 한자 금액을 사용합니다"
+        ]
+      }
+    }
+  },
+  "qrScanner": {
+    "title": "QR코드 스캔",
+    "description": "카메라 또는 이미지 파일로 QR코드를 스캔하세요.",
+    "scanCamera": "카메라로 스캔",
+    "scanImage": "이미지로 스캔",
+    "startCamera": "카메라 시작",
+    "stopCamera": "카메라 중지",
+    "uploadImage": "이미지 업로드",
+    "dragDrop": "이미지를 드래그하거나 클릭하여 업로드",
+    "scanning": "스캔 중...",
+    "noQrFound": "QR코드를 찾을 수 없습니다",
+    "result": "스캔 결과",
+    "type": "유형",
+    "content": "내용",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "openLink": "링크 열기",
+    "scanAnother": "다시 스캔",
+    "history": "스캔 기록",
+    "clearHistory": "기록 삭제",
+    "cameraPermission": "카메라 접근 권한이 필요합니다",
+    "cameraError": "카메라를 사용할 수 없습니다",
+    "types": {
+      "url": "URL 링크",
+      "text": "텍스트",
+      "email": "이메일",
+      "phone": "전화번호",
+      "wifi": "Wi-Fi",
+      "vcard": "연락처",
+      "unknown": "기타"
+    },
+    "guide": {
+      "title": "QR코드 스캔 가이드",
+      "howTo": {
+        "title": "사용 방법",
+        "items": [
+          "카메라 탭에서 QR코드를 카메라에 비추면 자동 인식됩니다",
+          "이미지 탭에서 QR코드가 포함된 이미지를 업로드하세요",
+          "인식된 내용은 자동으로 표시되며 복사할 수 있습니다",
+          "URL인 경우 바로 링크를 열 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "스캔 팁",
+        "items": [
+          "QR코드가 선명하고 충분히 크게 보여야 합니다",
+          "조명이 밝은 환경에서 스캔하세요",
+          "카메라 흔들림을 최소화하세요",
+          "손상되거나 일부가 가려진 QR코드는 인식이 어려울 수 있습니다"
+        ]
+      }
+    }
+  },
+  "pyeongCalculator": {
+    "title": "평수 계산기",
+    "description": "평(坪)과 제곱미터(m²) 간 면적을 변환합니다. 부동산, 인테리어 면적 계산에 유용합니다.",
+    "pyeongToSqm": "평 → m²",
+    "sqmToPyeong": "m² → 평",
+    "inputPyeong": "평수 입력",
+    "inputSqm": "제곱미터 입력",
+    "result": "변환 결과",
+    "pyeong": "평",
+    "sqm": "m²",
+    "sqft": "ft²",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "reset": "초기화",
+    "quickValues": "빠른 입력",
+    "areaComparison": "면적 비교",
+    "roomSize": "방 크기 참고",
+    "sizes": {
+      "studio": "원룸 (5~8평)",
+      "small": "소형 아파트 (15~20평)",
+      "medium": "중형 아파트 (25~34평)",
+      "large": "대형 아파트 (40~60평)"
+    },
+    "formula": "1평 = 3.305785 m² = 35.5832 ft²",
+    "guide": {
+      "title": "평수 계산 가이드",
+      "what": {
+        "title": "평(坪)이란?",
+        "items": [
+          "평(坪)은 한국과 일본에서 사용하는 전통 면적 단위입니다",
+          "1평 = 약 3.3058m² (정확히 400/121 m²)",
+          "부동산 거래, 인테리어에서 주로 사용됩니다",
+          "공식적으로는 m²를 사용하지만 관습적으로 평을 많이 씁니다"
+        ]
+      },
+      "reference": {
+        "title": "아파트 면적 참고",
+        "items": [
+          "전용면적: 실제 사용 가능한 면적 (방, 거실, 주방 등)",
+          "공급면적: 전용면적 + 주거공용면적 (복도, 계단 등)",
+          "계약면적: 공급면적 + 기타공용면적 (주차장, 관리실 등)",
+          "보통 '25평 아파트'는 공급면적 기준 약 82.6m²입니다"
+        ]
+      }
+    }
+  },
+  "vatCalculator": {
+    "title": "부가세 계산기",
+    "description": "공급가액에서 부가가치세(VAT 10%)를 계산하거나, 합계금액에서 부가세를 역산합니다.",
+    "mode": {
+      "fromSupply": "공급가액 → 부가세",
+      "fromTotal": "합계금액 → 역산",
+      "fromVat": "부가세 → 역산"
+    },
+    "supplyAmount": "공급가액",
+    "vatAmount": "부가가치세 (10%)",
+    "totalAmount": "합계금액 (공급가액 + 부가세)",
+    "calculate": "계산",
+    "reset": "초기화",
+    "result": "계산 결과",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "copyAll": "전체 복사",
+    "enterAmount": "금액을 입력하세요",
+    "won": "원",
+    "vatRate": "부가세율",
+    "receipt": "세금계산서 양식",
+    "quickAmounts": "빠른 금액",
+    "guide": {
+      "title": "부가세 계산 가이드",
+      "basic": {
+        "title": "부가가치세란?",
+        "items": [
+          "부가가치세(VAT)는 재화나 용역의 공급에 대해 부과되는 세금입니다",
+          "한국의 부가세율은 10%입니다",
+          "공급가액 × 10% = 부가세",
+          "합계금액 = 공급가액 + 부가세"
+        ]
+      },
+      "reverse": {
+        "title": "부가세 역산 방법",
+        "items": [
+          "합계금액에서 역산: 공급가액 = 합계금액 ÷ 1.1",
+          "합계금액에서 역산: 부가세 = 합계금액 ÷ 11",
+          "세금계산서 발행 시 공급가액과 부가세를 분리해야 합니다",
+          "간이과세자는 업종별로 부가세율이 다릅니다 (1.5%~4%)"
+        ]
+      }
+    }
+  },
+  "alcoholCalculator": {
+    "title": "혈중알코올 계산기",
+    "description": "음주 후 혈중알코올 농도(BAC)를 위드마크 공식으로 추정합니다.",
+    "gender": "성별",
+    "male": "남성",
+    "female": "여성",
+    "weight": "체중 (kg)",
+    "drinks": "음주량",
+    "addDrink": "주류 추가",
+    "removeDrink": "삭제",
+    "drinkType": "주류 종류",
+    "amount": "양 (ml)",
+    "alcoholPercent": "도수 (%)",
+    "drinkingDuration": "음주 시간 (시간)",
+    "timeSinceDrinking": "음주 후 경과 시간 (시간)",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": "추정 결과",
+    "bac": "혈중알코올 농도",
+    "bacUnit": "%",
+    "status": "상태",
+    "legal": "법적 기준",
+    "driveLimit": "운전면허 정지: 0.03% 이상",
+    "driveRevoke": "운전면허 취소: 0.08% 이상",
+    "penalty": "형사처벌: 0.08% 이상",
+    "sober": "정상",
+    "buzzed": "미세 음주",
+    "drunk": "면허정지 수준",
+    "veryDrunk": "면허취소 수준",
+    "dangerous": "위험 수준",
+    "soberTime": "예상 정상 복귀 시간",
+    "hours": "시간",
+    "drinkTypes": {
+      "soju": "소주 (16.5%)",
+      "beer": "맥주 (4.5%)",
+      "wine": "와인 (13%)",
+      "makgeolli": "막걸리 (6%)",
+      "whiskey": "위스키 (40%)",
+      "custom": "직접 입력"
+    },
+    "drinkUnits": {
+      "sojuGlass": "소주잔 (50ml)",
+      "sojuBottle": "소주 1병 (360ml)",
+      "beerGlass": "맥주잔 (355ml)",
+      "beerBottle": "맥주 1병 (500ml)",
+      "wineGlass": "와인잔 (150ml)",
+      "makgeolliGlass": "막걸리잔 (300ml)"
+    },
+    "warning": "이 계산기는 참고용이며 실제 혈중알코올 농도와 차이가 있을 수 있습니다. 음주 후에는 절대 운전하지 마세요.",
+    "guide": {
+      "title": "혈중알코올 계산 가이드",
+      "formula": {
+        "title": "위드마크 공식",
+        "items": [
+          "BAC = (음주량(ml) × 알코올도수 × 0.7894) / (체중(kg) × 체내수분비율) - (경과시간 × 0.015)",
+          "체내수분비율: 남성 0.68, 여성 0.55",
+          "알코올 분해 속도: 시간당 약 0.015%",
+          "이 공식은 추정치이며 개인차가 있습니다"
+        ]
+      },
+      "factors": {
+        "title": "영향을 미치는 요인",
+        "items": [
+          "체중이 많을수록 BAC가 낮아집니다",
+          "공복 시 알코올 흡수가 빨라 BAC가 높아집니다",
+          "여성은 체내수분비율이 낮아 같은 양을 마셔도 BAC가 높습니다",
+          "피로, 약물 복용 등으로 알코올 분해 속도가 달라질 수 있습니다"
+        ]
+      }
+    }
+  },
+  "fontPreview": {
+    "title": "글꼴 미리보기",
+    "description": "다양한 웹 폰트로 텍스트를 미리보고 비교하세요.",
+    "sampleText": "미리보기 텍스트",
+    "defaultText": "다람쥐 헌 쳇바퀴에 타고파 The quick brown fox jumps over the lazy dog 0123456789",
+    "fontSize": "글자 크기",
+    "fontWeight": "굵기",
+    "lineHeight": "줄 간격",
+    "letterSpacing": "자간",
+    "textColor": "글자 색상",
+    "bgColor": "배경 색상",
+    "textAlign": "정렬",
+    "alignLeft": "왼쪽",
+    "alignCenter": "가운데",
+    "alignRight": "오른쪽",
+    "category": "카테고리",
+    "all": "전체",
+    "sansSerif": "고딕 (Sans-serif)",
+    "serif": "명조 (Serif)",
+    "monospace": "고정폭 (Monospace)",
+    "handwriting": "손글씨",
+    "display": "디스플레이",
+    "search": "폰트 검색",
+    "addToCompare": "비교에 추가",
+    "compare": "비교 모드",
+    "clearCompare": "비교 초기화",
+    "copyCSS": "CSS 복사",
+    "copiedCSS": "CSS 복사됨!",
+    "fonts": "폰트 목록",
+    "preview": "미리보기",
+    "guide": {
+      "title": "글꼴 미리보기 가이드",
+      "usage": {
+        "title": "사용 방법",
+        "items": [
+          "미리보기 텍스트를 입력하고 원하는 폰트를 선택하세요",
+          "글자 크기, 굵기, 줄 간격 등을 조절하여 미리보세요",
+          "비교 모드로 여러 폰트를 나란히 비교할 수 있습니다",
+          "CSS 복사 버튼으로 스타일 코드를 바로 복사하세요"
+        ]
+      },
+      "tips": {
+        "title": "폰트 선택 팁",
+        "items": [
+          "본문용: 가독성이 좋은 고딕체 (Noto Sans KR, Pretendard)",
+          "제목용: 굵고 인상적인 폰트 (Black Han Sans, Jua)",
+          "코딩용: 고정폭 폰트 (JetBrains Mono, D2Coding)",
+          "무료 웹폰트: Google Fonts에서 무료로 사용 가능"
+        ]
+      }
+    }
+  },
+  "worldClock": {
+    "title": "세계 시계",
+    "description": "전 세계 주요 도시의 현재 시간을 한눈에 확인하세요.",
+    "currentTime": "현재 시간",
+    "addCity": "도시 추가",
+    "removeCity": "삭제",
+    "search": "도시 검색",
+    "timeDifference": "시차",
+    "hours": "시간",
+    "ahead": "앞서",
+    "behind": "뒤져",
+    "same": "동일",
+    "myTime": "내 시간",
+    "format24h": "24시간제",
+    "format12h": "12시간제",
+    "am": "오전",
+    "pm": "오후",
+    "date": "날짜",
+    "dayOfWeek": "요일",
+    "days": {
+      "sun": "일",
+      "mon": "월",
+      "tue": "화",
+      "wed": "수",
+      "thu": "목",
+      "fri": "금",
+      "sat": "토"
+    },
+    "cities": {
+      "seoul": "서울",
+      "tokyo": "도쿄",
+      "beijing": "베이징",
+      "newYork": "뉴욕",
+      "losAngeles": "로스앤젤레스",
+      "london": "런던",
+      "paris": "파리",
+      "berlin": "베를린",
+      "moscow": "모스크바",
+      "dubai": "두바이",
+      "singapore": "싱가포르",
+      "sydney": "시드니",
+      "toronto": "토론토",
+      "chicago": "시카고",
+      "honolulu": "호놀룰루",
+      "bangkok": "방콕",
+      "mumbai": "뭄바이",
+      "istanbul": "이스탄불",
+      "cairo": "카이로",
+      "saoPaulo": "상파울루"
+    },
+    "guide": {
+      "title": "세계 시계 가이드",
+      "usage": {
+        "title": "사용 방법",
+        "items": [
+          "기본으로 주요 도시의 현재 시간이 표시됩니다",
+          "도시 추가 버튼으로 원하는 도시를 추가하세요",
+          "시차 정보로 각 도시와 내 시간의 차이를 확인하세요",
+          "12시간제/24시간제를 전환할 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "시차 참고",
+        "items": [
+          "한국(KST)은 UTC+9입니다",
+          "미국 동부(EST)는 한국보다 14시간 느립니다 (서머타임 시 13시간)",
+          "미국 서부(PST)는 한국보다 17시간 느립니다 (서머타임 시 16시간)",
+          "런던(GMT)은 한국보다 9시간 느립니다 (서머타임 시 8시간)"
+        ]
+      }
+    }
+  },
+  "rentConverter": {
+    "title": "전세/월세 전환 계산기",
+    "description": "전세 보증금과 월세를 전환율 기준으로 상호 변환합니다.",
+    "mode": {
+      "jeonseToWolse": "전세 → 월세",
+      "wolseToJeonse": "월세 → 전세"
+    },
+    "jeonseDeposit": "전세 보증금",
+    "wolseDeposit": "월세 보증금",
+    "monthlyRent": "월세",
+    "conversionRate": "전환율 (%)",
+    "result": "전환 결과",
+    "estimatedMonthlyRent": "예상 월세",
+    "estimatedJeonse": "예상 전세금",
+    "won": "원",
+    "monthlyWon": "원/월",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "reset": "초기화",
+    "currentRate": "현재 전환율 참고",
+    "rateInfo": "한국은행 기준금리 기반, 통상 4~6% 적용",
+    "quickRates": "빠른 전환율",
+    "quickDeposits": "빠른 보증금",
+    "formula": "월세 = (전세금 - 월세보증금) × 전환율 ÷ 12",
+    "yearlyRent": "연간 월세 합계",
+    "comparison": "전세 vs 월세 비교",
+    "guide": {
+      "title": "전세/월세 전환 가이드",
+      "what": {
+        "title": "전월세 전환이란?",
+        "items": [
+          "전세 보증금을 월세로, 또는 월세를 전세 보증금으로 환산하는 것입니다",
+          "전환율은 통상 연 4~6% 수준이며, 한국은행 기준금리 + 가산금리로 결정됩니다",
+          "주택임대차보호법상 전월세 전환율 상한은 기준금리 + 3.5%입니다"
+        ]
+      },
+      "example": {
+        "title": "계산 예시",
+        "items": [
+          "전세 3억 → 월세(보증금 5천만, 전환율 5%): (3억-5천만) × 5% ÷ 12 = 약 104만원",
+          "월세 100만원(보증금 1억, 전환율 5%) → 전세: 1억 + (100만 × 12 ÷ 5%) = 3.4억",
+          "전환율이 높을수록 같은 전세금에서 월세가 비싸집니다"
+        ]
+      }
+    }
+  },
+  "waterBill": {
+    "title": "수도요금 계산기",
+    "description": "월 수도 사용량(m³)으로 수도요금을 누진제 기준으로 계산합니다.",
+    "usage": "월 사용량 (m³)",
+    "householdSize": "가구원 수",
+    "persons": "인",
+    "waterType": "수도 종류",
+    "residential": "가정용",
+    "calculate": "계산하기",
+    "result": "계산 결과",
+    "basicFee": "기본요금",
+    "usageFee": "사용요금",
+    "sewageFee": "하수도요금",
+    "waterQualityFee": "물이용부담금",
+    "totalBeforeVat": "소계",
+    "vat": "부가가치세 (10%)",
+    "totalAmount": "총 수도요금",
+    "won": "원",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "reset": "초기화",
+    "tier": "구간",
+    "tierInfo": "누진 구간 정보",
+    "quickUsage": "빠른 사용량",
+    "averageUsage": "가구별 평균 사용량",
+    "avgInfo": {
+      "person1": "1인: 약 6m³/월",
+      "person2": "2인: 약 10m³/월",
+      "person3": "3인: 약 14m³/월",
+      "person4": "4인: 약 18m³/월"
+    },
+    "guide": {
+      "title": "수도요금 계산 가이드",
+      "structure": {
+        "title": "수도요금 구조",
+        "items": [
+          "기본요금: 구경별 정액 부과 (가정용 13mm 기준 약 1,080원)",
+          "사용요금: 사용량에 따라 누진제 적용",
+          "하수도요금: 상수도 사용량 기준 부과",
+          "물이용부담금: 수질 개선을 위한 부담금 (약 170원/m³)"
+        ]
+      },
+      "saving": {
+        "title": "수도요금 절약 팁",
+        "items": [
+          "절수형 수전, 양변기 설치로 30% 이상 절약 가능",
+          "세탁은 모아서 한 번에, 식기세척기 활용",
+          "샤워 시간 줄이기 (1분 줄이면 약 12리터 절약)",
+          "정기적인 수도 누수 점검 (화장실, 수도꼭지)"
+        ]
+      }
+    }
+  },
+  "cssGradient": {
+    "title": "CSS 그라디언트 생성기",
+    "description": "원하는 색상과 방향을 선택하여 CSS 그라데이션 코드를 생성하세요.",
+    "type": {
+      "linear": "선형 (Linear)",
+      "radial": "방사형 (Radial)",
+      "conic": "원뿔형 (Conic)"
+    },
+    "gradientType": "그라디언트 유형",
+    "direction": "방향",
+    "angle": "각도",
+    "shape": "모양",
+    "shapeCircle": "원형",
+    "shapeEllipse": "타원형",
+    "posCenter": "중앙",
+    "posTop": "상단",
+    "posBottom": "하단",
+    "posLeft": "왼쪽",
+    "posRight": "오른쪽",
+    "colors": "색상",
+    "addColor": "색상 추가",
+    "removeColor": "삭제",
+    "position": "위치",
+    "preview": "미리보기",
+    "cssCode": "CSS 코드",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "reset": "초기화",
+    "presets": "프리셋",
+    "random": "랜덤",
+    "reverse": "반전",
+    "fullscreen": "전체 화면",
+    "exitFullscreen": "닫기",
+    "exportPng": "PNG 저장",
+    "repeating": "반복 그라디언트",
+    "tools": "도구",
+    "maxColors": "최대 8개 색상까지 추가할 수 있습니다",
+    "stopLabel": "색상 #{n}",
+    "cssWithPrefix": "벤더 프리픽스 포함",
+    "tailwindHint": "Tailwind CSS 클래스",
+    "preset": {
+      "sunset": "석양",
+      "ocean": "바다",
+      "forest": "숲",
+      "fire": "불꽃",
+      "night": "밤",
+      "candy": "캔디",
+      "mint": "민트",
+      "aurora": "오로라",
+      "peach": "피치",
+      "sky": "하늘",
+      "lavender": "라벤더",
+      "neon": "네온",
+      "rainbow": "무지개",
+      "steel": "스틸",
+      "wine": "와인",
+      "spring": "봄"
+    },
+    "guide": {
+      "title": "CSS 그라디언트 가이드",
+      "types": {
+        "title": "그라디언트 유형",
+        "items": [
+          "선형(Linear): 한 방향으로 색상이 변하는 그라디언트",
+          "방사형(Radial): 중심에서 바깥으로 퍼지는 그라디언트",
+          "원뿔형(Conic): 중심점을 기준으로 회전하는 그라디언트"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "2~3개 색상이 가장 자연스럽습니다",
+          "대비가 큰 색상 조합으로 인상적인 효과를 낼 수 있습니다",
+          "background-size와 animation으로 움직이는 효과도 가능합니다",
+          "투명도를 활용하면 이미지 위에 오버레이 효과를 줄 수 있습니다"
+        ]
+      }
+    }
+  },
+  "koreanSyllable": {
+    "title": "한글 초성/자모 분리기",
+    "description": "한글 텍스트의 초성, 중성, 종성을 분리하고 초성만 추출합니다.",
+    "input": "텍스트 입력",
+    "placeholder": "한글 텍스트를 입력하세요",
+    "mode": {
+      "chosung": "초성 추출",
+      "decompose": "자모 분리",
+      "compose": "자모 합치기"
+    },
+    "result": "결과",
+    "original": "원본",
+    "chosung": "초성",
+    "jungsung": "중성",
+    "jongsung": "종성",
+    "decomposed": "분리 결과",
+    "composed": "합치기 결과",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "reset": "초기화",
+    "charCount": "글자 수",
+    "syllableCount": "한글 음절 수",
+    "examples": "예시",
+    "exampleList": {
+      "ex1": "대한민국 → ㄷㅎㅁㄱ",
+      "ex2": "안녕하세요 → ㅇㄴㅎㅅㅇ",
+      "ex3": "프로그래밍 → ㅍㄹㄱㄹㅁ"
+    },
+    "guide": {
+      "title": "한글 자모 분리 가이드",
+      "structure": {
+        "title": "한글 구조",
+        "items": [
+          "한글은 초성(자음) + 중성(모음) + 종성(받침)으로 구성됩니다",
+          "초성 19자: ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ",
+          "중성 21자: ㅏ ㅐ ㅑ ㅒ ㅓ ㅔ ㅕ ㅖ ㅗ ㅘ ㅙ ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ ㅠ ㅡ ㅢ ㅣ",
+          "종성 27자: (없음) ㄱ ㄲ ㄳ ㄴ ㄵ ㄶ ㄷ ㄹ ..."
+        ]
+      },
+      "usage": {
+        "title": "활용처",
+        "items": [
+          "초성 검색 기능 구현 (예: 'ㄷㅎㅁㄱ' → '대한민국')",
+          "한글 자모 학습 교육 자료",
+          "텍스트 분석 및 처리",
+          "유니코드 한글 처리 테스트"
+        ]
+      }
+    }
+  },
+  "romanNumeral": {
+    "title": "로마 숫자 변환기",
+    "description": "아라비아 숫자와 로마 숫자를 상호 변환합니다.",
+    "mode": {
+      "toRoman": "숫자 → 로마",
+      "toArabic": "로마 → 숫자"
+    },
+    "inputNumber": "숫자 입력",
+    "inputRoman": "로마 숫자 입력",
+    "result": "변환 결과",
+    "arabicNumber": "아라비아 숫자",
+    "romanNumeral": "로마 숫자",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "reset": "초기화",
+    "maxNumber": "최대 3,999까지 변환 가능",
+    "invalidRoman": "올바른 로마 숫자를 입력하세요",
+    "invalidNumber": "1~3999 사이의 숫자를 입력하세요",
+    "quickNumbers": "빠른 입력",
+    "referenceTable": "로마 숫자 표",
+    "symbols": {
+      "I": "1",
+      "V": "5",
+      "X": "10",
+      "L": "50",
+      "C": "100",
+      "D": "500",
+      "M": "1000"
+    },
+    "guide": {
+      "title": "로마 숫자 가이드",
+      "rules": {
+        "title": "표기 규칙",
+        "items": [
+          "같은 기호는 최대 3번까지 반복 가능 (III=3, XXX=30)",
+          "작은 값이 큰 값 앞에 오면 뺄셈 (IV=4, IX=9, XL=40, XC=90)",
+          "큰 값이 먼저 오면 덧셈 (VI=6, XI=11, LX=60)",
+          "표현 가능 범위: 1 ~ 3,999"
+        ]
+      },
+      "examples": {
+        "title": "변환 예시",
+        "items": [
+          "2024 = MMXXIV (M+M+X+X+IV)",
+          "1999 = MCMXCIX (M+CM+XC+IX)",
+          "58 = LVIII (L+V+III)",
+          "3999 = MMMCMXCIX (최대값)"
+        ]
+      }
+    }
+  },
+  "businessNumber": {
+    "title": "사업자등록번호 검증기",
+    "description": "사업자등록번호(10자리)의 유효성을 검증합니다. 검증 알고리즘으로 올바른 번호인지 확인하세요.",
+    "inputLabel": "사업자등록번호",
+    "inputPlaceholder": "000-00-00000 또는 숫자만 입력",
+    "verify": "검증하기",
+    "reset": "초기화",
+    "valid": "유효한 사업자등록번호",
+    "invalid": "유효하지 않은 사업자등록번호",
+    "validMessage": "검증 알고리즘을 통과한 올바른 형식의 사업자등록번호입니다.",
+    "invalidMessage": "검증 알고리즘을 통과하지 못했습니다. 번호를 다시 확인해주세요.",
+    "formatted": "형식화된 번호",
+    "digitCount": "자릿수",
+    "checkDigit": "검증 숫자",
+    "recentVerifications": "최근 검증 이력",
+    "clearHistory": "이력 삭제",
+    "noHistory": "검증 이력이 없습니다",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "guide": {
+      "title": "사업자등록번호 가이드",
+      "structure": {
+        "title": "번호 구조",
+        "items": [
+          "총 10자리 숫자로 구성 (XXX-XX-XXXXX)",
+          "앞 3자리: 지방국세청/세무서 코드",
+          "중간 2자리: 개인/법인 구분 코드",
+          "뒤 5자리: 일련번호 + 검증번호(마지막 1자리)"
+        ]
+      },
+      "validation": {
+        "title": "검증 방법",
+        "items": [
+          "가중치 배열을 사용한 체크섬 검증",
+          "마지막 자리가 검증 숫자(check digit)",
+          "본 도구는 형식 검증만 수행합니다",
+          "실제 사업자 존재 여부는 국세청에서 확인하세요"
+        ]
+      }
+    }
+  },
+  "dueDateCalculator": {
+    "title": "출산 예정일 계산기",
+    "description": "마지막 생리 시작일(LMP) 또는 배란일을 기준으로 출산 예정일을 계산합니다.",
+    "calcMethod": "계산 기준",
+    "lmpMethod": "마지막 생리 시작일 (LMP)",
+    "ovulationMethod": "배란일 / 수정일",
+    "lmpDate": "마지막 생리 시작일",
+    "ovulationDate": "배란일 / 수정일",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": {
+      "title": "계산 결과",
+      "dueDate": "출산 예정일",
+      "currentWeek": "현재 임신 주수",
+      "weeksAndDays": "{weeks}주 {days}일",
+      "trimester": "현재 삼분기",
+      "trimester1": "1삼분기 (1~12주)",
+      "trimester2": "2삼분기 (13~27주)",
+      "trimester3": "3삼분기 (28~40주)",
+      "daysRemaining": "남은 일수",
+      "daysElapsed": "경과 일수",
+      "progress": "진행률",
+      "conceptionDate": "추정 수정일",
+      "alreadyPassed": "이미 예정일이 지났습니다"
+    },
+    "milestones": {
+      "title": "주요 일정",
+      "heartbeat": "심장박동 확인 (6~7주)",
+      "firstTrimesterScreen": "1차 기형아 검사 (11~13주)",
+      "genderReveal": "성별 확인 가능 (16~20주)",
+      "secondTrimesterScreen": "2차 기형아 검사 (15~20주)",
+      "viability": "생존 가능 시기 (24주)",
+      "glucoseTest": "임신성 당뇨 검사 (24~28주)",
+      "fullTerm": "만삭 (37주)",
+      "dueDate": "출산 예정일 (40주)"
+    },
+    "guide": {
+      "title": "출산 예정일 가이드",
+      "calculation": {
+        "title": "계산 방법",
+        "items": [
+          "네겔레 법칙: LMP + 280일(40주)",
+          "배란일 기준: 배란일 + 266일(38주)",
+          "평균 임신 기간: 약 280일",
+          "실제 출산은 예정일 ±2주가 정상"
+        ]
+      },
+      "tips": {
+        "title": "참고 사항",
+        "items": [
+          "초음파 검사로 더 정확한 예정일 확인 가능",
+          "첫 임신은 예정일보다 늦어질 수 있음",
+          "37~42주 사이 출산이 정상 범위",
+          "정기 산전검진을 반드시 받으세요"
+        ]
+      }
+    }
+  },
+  "hourlyWage": {
+    "title": "시급 계산기",
+    "description": "시급, 일급, 월급, 연봉을 상호 변환합니다. 2024년 최저시급 기준 비교도 제공합니다.",
+    "inputType": "입력 기준",
+    "hourly": "시급",
+    "daily": "일급",
+    "monthly": "월급",
+    "yearly": "연봉",
+    "amount": "금액 (원)",
+    "amountPlaceholder": "금액을 입력하세요",
+    "workHoursPerDay": "1일 근무시간",
+    "workDaysPerWeek": "주 근무일수",
+    "workDaysPerMonth": "월 근무일수",
+    "hours": "시간",
+    "days": "일",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": {
+      "title": "환산 결과",
+      "hourlyWage": "시급",
+      "dailyWage": "일급",
+      "monthlyWage": "월급",
+      "yearlyWage": "연봉",
+      "won": "원"
+    },
+    "minimumWage": {
+      "title": "2024년 최저시급 비교",
+      "current": "최저시급",
+      "currentValue": "9,860원",
+      "monthlyMin": "월 환산액 (209시간)",
+      "monthlyMinValue": "2,060,740원",
+      "comparison": "입력 금액 대비",
+      "above": "최저시급 이상",
+      "below": "최저시급 미달",
+      "percent": "최저시급의 {percent}%"
+    },
+    "guide": {
+      "title": "시급 계산 가이드",
+      "conversion": {
+        "title": "환산 기준",
+        "items": [
+          "월급 → 시급: 월급 ÷ (주 근무시간 × 4.345주)",
+          "연봉 → 월급: 연봉 ÷ 12",
+          "일급 → 시급: 일급 ÷ 1일 근무시간",
+          "법정 근로시간: 주 40시간, 1일 8시간"
+        ]
+      },
+      "tips": {
+        "title": "참고 사항",
+        "items": [
+          "주휴수당 포함 여부에 따라 실 시급이 달라짐",
+          "연장근로(8시간 초과)는 1.5배 가산",
+          "야간근로(22시~06시)는 1.5배 가산",
+          "휴일근로는 1.5배(8시간 이내), 2배(8시간 초과) 가산"
+        ]
+      }
+    }
+  },
+  "colorPalette": {
+    "title": "색상 팔레트 생성기",
+    "description": "기준 색상에서 조화로운 색상 조합을 자동으로 생성합니다.",
+    "baseColor": "기준 색상",
+    "harmony": "조화 규칙",
+    "harmonies": {
+      "complementary": "보색",
+      "analogous": "유사색",
+      "triadic": "삼색",
+      "tetradic": "사색 (직사각형)",
+      "splitComplementary": "분할 보색",
+      "monochromatic": "단색"
+    },
+    "palette": "팔레트",
+    "shades": "음영",
+    "tints": "틴트",
+    "tones": "톤",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "export": "팔레트 내보내기",
+    "exportCSS": "CSS 변수로 복사",
+    "exportJSON": "JSON으로 복사",
+    "exportTailwind": "Tailwind 설정으로 복사",
+    "presets": "프리셋 팔레트",
+    "random": "랜덤 색상",
+    "savedPalettes": "저장된 팔레트",
+    "savePalette": "팔레트 저장",
+    "noPalettes": "저장된 팔레트가 없습니다",
+    "deletePalette": "삭제",
+    "colorInfo": {
+      "title": "색상 정보",
+      "hex": "HEX",
+      "rgb": "RGB",
+      "hsl": "HSL"
+    },
+    "guide": {
+      "title": "색상 팔레트 가이드",
+      "harmonies": {
+        "title": "색상 조화",
+        "items": [
+          "보색: 색상환에서 반대편 (대비 강조)",
+          "유사색: 인접한 색상들 (자연스러운 조화)",
+          "삼색: 120° 간격 3색 (균형 잡힌 대비)",
+          "단색: 같은 색상의 명도/채도 변형"
+        ]
+      },
+      "tips": {
+        "title": "디자인 팁",
+        "items": [
+          "주 색상 60%, 보조 색상 30%, 강조 색상 10%",
+          "배경과 텍스트의 명도 대비 충분히",
+          "색약/색맹 사용자를 위해 색상만으로 정보 전달 지양",
+          "웹 접근성 가이드라인(WCAG) 대비율 확인"
+        ]
+      }
+    }
+  },
+  "aspectRatio": {
+    "title": "화면 비율 계산기",
+    "description": "가로세로 비율(종횡비) 계산 및 해상도 변환을 합니다.",
+    "width": "가로 (px)",
+    "height": "세로 (px)",
+    "widthPlaceholder": "가로 입력",
+    "heightPlaceholder": "세로 입력",
+    "ratio": "비율",
+    "calculate": "계산하기",
+    "swap": "가로↔세로 전환",
+    "lockRatio": "비율 고정",
+    "unlockRatio": "비율 해제",
+    "result": {
+      "title": "계산 결과",
+      "aspectRatio": "종횡비",
+      "decimal": "소수점 비율",
+      "totalPixels": "총 픽셀 수",
+      "megapixels": "메가픽셀",
+      "orientation": "방향",
+      "landscape": "가로 (Landscape)",
+      "portrait": "세로 (Portrait)",
+      "square": "정사각형 (Square)"
+    },
+    "presets": {
+      "title": "주요 해상도",
+      "items": {
+        "hd": "HD (1280×720)",
+        "fullHd": "Full HD (1920×1080)",
+        "qhd": "QHD (2560×1440)",
+        "uhd4k": "4K UHD (3840×2160)",
+        "ultrawide": "울트라와이드 (2560×1080)",
+        "instagram": "인스타그램 (1080×1080)",
+        "instagramStory": "인스타 스토리 (1080×1920)",
+        "youtube": "유튜브 썸네일 (1280×720)",
+        "a4": "A4 (2480×3508, 300dpi)"
+      }
+    },
+    "resizer": {
+      "title": "비율 유지 리사이즈",
+      "targetWidth": "목표 가로",
+      "targetHeight": "목표 세로",
+      "resultSize": "결과 크기"
+    },
+    "guide": {
+      "title": "화면 비율 가이드",
+      "common": {
+        "title": "주요 비율",
+        "items": [
+          "16:9 - 표준 와이드스크린 (TV, 모니터, 유튜브)",
+          "4:3 - 구형 TV, iPad",
+          "21:9 - 울트라와이드 모니터, 시네마",
+          "1:1 - 정사각형 (인스타그램)",
+          "9:16 - 세로형 (스마트폰, 릴스, 쇼츠)"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "비율을 고정하면 가로/세로 중 하나만 입력해도 자동 계산",
+          "프리셋으로 빠르게 표준 해상도 적용 가능",
+          "인쇄물은 300dpi, 웹은 72dpi 기준",
+          "소셜미디어 플랫폼별 권장 이미지 크기 확인"
+        ]
+      }
+    },
+    "businessNumber": {
+      "title": "사업자등록번호 검증",
+      "description": "한국 사업자등록번호의 유효성을 체크섬 알고리즘으로 검증합니다",
+      "inputLabel": "사업자등록번호",
+      "inputPlaceholder": "예: 123-45-67890",
+      "verify": "검증하기",
+      "reset": "초기화",
+      "valid": "유효",
+      "invalid": "무효",
+      "validMessage": "올바른 사업자등록번호입니다",
+      "invalidMessage": "잘못된 사업자등록번호입니다",
+      "formatted": "형식화된 번호",
+      "digitCount": "자릿수",
+      "checkDigit": "검증 숫자",
+      "recentVerifications": "최근 검증 내역",
+      "clearHistory": "내역 지우기",
+      "noHistory": "검증 내역이 없습니다",
+      "copy": "복사",
+      "copied": "복사됨",
+      "guide": {
+        "title": "사용 가이드",
+        "structure": {
+          "title": "사업자등록번호 구조",
+          "items": [
+            "총 10자리 숫자로 구성 (XXX-XX-XXXXX 형식)",
+            "첫 3자리: 세무서 코드",
+            "중간 2자리: 개인/법인 구분 코드",
+            "다음 4자리: 일련번호",
+            "마지막 1자리: 검증 숫자 (체크섬)"
+          ]
+        },
+        "validation": {
+          "title": "검증 알고리즘",
+          "items": [
+            "가중치 배열 [1, 3, 7, 1, 3, 7, 1, 3, 5] 사용",
+            "첫 9자리 숫자에 각 가중치를 곱하여 합산",
+            "9번째 자리는 (숫자 × 5 ÷ 10)의 몫도 추가",
+            "합계를 10으로 나눈 나머지를 10에서 빼고 다시 10으로 나눈 나머지",
+            "결과가 마지막(10번째) 자리 숫자와 일치하면 유효"
+          ]
+        }
+      }
+    }
+  },
+  "severancePay": {
+    "title": "퇴직금 계산기",
+    "description": "근속연수, 평균임금을 기준으로 법정 퇴직금을 계산합니다.",
+    "startDate": "입사일",
+    "endDate": "퇴사일",
+    "monthlyPay": "월 기본급 (원)",
+    "monthlyPayPlaceholder": "월 기본급 입력",
+    "annualBonus": "연간 상여금 (원)",
+    "annualBonusPlaceholder": "0",
+    "annualLeaveAllowance": "연차수당 (원)",
+    "annualLeaveAllowancePlaceholder": "0",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": {
+      "title": "퇴직금 계산 결과",
+      "workPeriod": "재직 기간",
+      "years": "년",
+      "months": "개월",
+      "days": "일",
+      "totalDays": "총 재직일수",
+      "avgDailyWage": "1일 평균임금",
+      "severancePay": "퇴직금",
+      "won": "원",
+      "taxExempt": "퇴직소득 비과세 한도 참고",
+      "formula": "계산식: 1일 평균임금 × 30일 × (재직일수 ÷ 365)"
+    },
+    "guide": {
+      "title": "퇴직금 가이드",
+      "calculation": {
+        "title": "계산 방법",
+        "items": [
+          "퇴직금 = 1일 평균임금 × 30일 × (재직일수 ÷ 365)",
+          "1일 평균임금 = 퇴직 전 3개월 임금총액 ÷ 해당 일수",
+          "임금총액 = 기본급 + 상여금(3/12) + 연차수당(3/12)",
+          "1년 이상 근무 시 퇴직금 수급 자격"
+        ]
+      },
+      "tips": {
+        "title": "참고 사항",
+        "items": [
+          "근로기준법에 따라 1년 이상 근무 시 의무 지급",
+          "상여금, 연차수당도 평균임금에 포함",
+          "퇴직 후 14일 이내 지급이 원칙",
+          "퇴직연금(DC/DB형) 가입 시 별도 계산 필요"
+        ]
+      }
+    }
+  },
+  "annualLeave": {
+    "title": "연차 계산기",
+    "description": "입사일을 기준으로 발생한 연차 일수와 잔여 연차를 계산합니다.",
+    "joinDate": "입사일",
+    "usedLeaves": "사용한 연차 (일)",
+    "usedLeavesPlaceholder": "0",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": {
+      "title": "연차 계산 결과",
+      "workPeriod": "재직 기간",
+      "years": "년",
+      "months": "개월",
+      "totalEarned": "총 발생 연차",
+      "used": "사용 연차",
+      "remaining": "잔여 연차",
+      "days": "일",
+      "nextEarned": "다음 연차 발생",
+      "currentYearEarned": "올해 발생 연차"
+    },
+    "breakdown": {
+      "title": "연차 발생 내역",
+      "year": "년차",
+      "earned": "발생",
+      "type": "유형",
+      "monthly": "월차 (1년 미만)",
+      "annual": "연차",
+      "additional": "가산 연차"
+    },
+    "guide": {
+      "title": "연차 가이드",
+      "rules": {
+        "title": "연차 발생 규칙",
+        "items": [
+          "입사 1년 미만: 1개월 개근 시 1일 발생 (최대 11일)",
+          "입사 1년 이상: 15일 발생",
+          "3년 이상 근무 시 2년마다 1일 추가 (최대 25일)",
+          "연차는 발생일로부터 1년 내 사용"
+        ]
+      },
+      "tips": {
+        "title": "참고 사항",
+        "items": [
+          "미사용 연차는 연차수당으로 정산 가능",
+          "회사 취업규칙에 따라 다를 수 있음",
+          "연차 촉진제도 시행 시 미사용 수당 면제 가능",
+          "육아휴직 기간은 출근일수에 포함"
+        ]
+      }
+    }
+  },
+  "gasBill": {
+    "title": "가스 요금 계산기",
+    "description": "도시가스 사용량(MJ)을 기준으로 월 가스 요금을 계산합니다.",
+    "usage": "사용량 (MJ)",
+    "usagePlaceholder": "사용량 입력",
+    "region": "지역",
+    "regions": {
+      "seoul": "서울",
+      "gyeonggi": "경기",
+      "incheon": "인천",
+      "busan": "부산",
+      "daegu": "대구",
+      "gwangju": "광주",
+      "daejeon": "대전",
+      "ulsan": "울산",
+      "sejong": "세종",
+      "gangwon": "강원",
+      "chungbuk": "충북",
+      "chungnam": "충남",
+      "jeonbuk": "전북",
+      "jeonnam": "전남",
+      "gyeongbuk": "경북",
+      "gyeongnam": "경남",
+      "jeju": "제주"
+    },
+    "season": "계절",
+    "seasons": {
+      "summer": "하절기 (4~9월)",
+      "winter": "동절기 (10~3월)"
+    },
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": {
+      "title": "가스 요금 계산 결과",
+      "basicCharge": "기본 요금",
+      "usageCharge": "사용 요금",
+      "subtotal": "소계",
+      "vat": "부가가치세 (10%)",
+      "total": "총 요금",
+      "won": "원",
+      "unitPrice": "단가 (원/MJ)"
+    },
+    "averageUsage": {
+      "title": "월평균 사용량 참고",
+      "summer": "하절기: 약 15~30 MJ",
+      "winter": "동절기: 약 80~150 MJ",
+      "description": "난방, 온수, 취사 포함 기준"
+    },
+    "guide": {
+      "title": "가스 요금 가이드",
+      "structure": {
+        "title": "요금 구조",
+        "items": [
+          "기본요금 + 사용요금 + 부가세(10%)",
+          "지역별, 계절별로 단가가 다름",
+          "동절기(10~3월) 요금이 하절기보다 높음",
+          "도시가스 사용량은 MJ(메가줄) 단위"
+        ]
+      },
+      "tips": {
+        "title": "절약 팁",
+        "items": [
+          "보일러 외출 모드 활용으로 난방비 절감",
+          "온수 사용량 줄이기 (샤워 시간 단축)",
+          "단열 시공으로 열손실 방지",
+          "도시가스 요금 고지서로 정확한 사용량 확인"
+        ]
+      }
+    }
+  },
+  "imageConverter": {
+    "title": "이미지 변환기",
+    "description": "이미지 파일 형식을 변환합니다. JPEG, PNG, WebP, GIF 등 다양한 포맷을 지원합니다.",
+    "uploadLabel": "이미지 업로드",
+    "dragDrop": "이미지를 드래그하거나 클릭하여 업로드",
+    "supportedFormats": "지원 형식: JPEG, PNG, WebP, GIF, BMP",
+    "outputFormat": "출력 형식",
+    "quality": "품질",
+    "qualityPercent": "{value}%",
+    "convert": "변환하기",
+    "download": "다운로드",
+    "downloadAll": "모두 다운로드",
+    "reset": "초기화",
+    "preview": "미리보기",
+    "original": "원본",
+    "converted": "변환 결과",
+    "fileInfo": {
+      "name": "파일명",
+      "format": "형식",
+      "size": "크기",
+      "dimensions": "크기 (px)",
+      "reduction": "용량 변화"
+    },
+    "batchMode": "일괄 변환",
+    "singleMode": "단일 변환",
+    "guide": {
+      "title": "이미지 변환 가이드",
+      "formats": {
+        "title": "형식별 특징",
+        "items": [
+          "JPEG: 사진에 적합, 손실 압축, 작은 파일 크기",
+          "PNG: 투명도 지원, 무손실 압축, 그래픽에 적합",
+          "WebP: 웹 최적화, JPEG보다 25~34% 작은 크기",
+          "GIF: 애니메이션 지원, 256색 제한"
+        ]
+      },
+      "tips": {
+        "title": "변환 팁",
+        "items": [
+          "웹용은 WebP 형식이 가장 효율적",
+          "투명 배경이 필요하면 PNG 사용",
+          "사진은 JPEG 80~90% 품질이 최적",
+          "변환은 브라우저에서 처리되어 서버에 업로드되지 않음"
+        ]
+      }
+    }
+  },
+  "textToSpeech": {
+    "title": "텍스트 읽어주기 (TTS)",
+    "description": "텍스트를 입력하면 음성으로 읽어줍니다. 다양한 언어와 음성을 지원합니다.",
+    "textInput": "읽을 텍스트",
+    "textPlaceholder": "읽어줄 텍스트를 입력하세요...",
+    "voice": "음성 선택",
+    "rate": "속도",
+    "pitch": "높낮이",
+    "volume": "볼륨",
+    "play": "재생",
+    "pause": "일시정지",
+    "resume": "계속",
+    "stop": "정지",
+    "noVoices": "사용 가능한 음성이 없습니다",
+    "charCount": "글자 수",
+    "estimatedTime": "예상 소요 시간",
+    "seconds": "초",
+    "speaking": "재생 중...",
+    "paused": "일시정지됨",
+    "stopped": "정지됨",
+    "notSupported": "이 브라우저는 TTS를 지원하지 않습니다",
+    "presets": {
+      "title": "예제 텍스트",
+      "greeting": "안녕하세요, 툴허브입니다.",
+      "news": "오늘의 날씨는 맑고 기온은 20도입니다.",
+      "story": "옛날 옛적에 한 마을에 착한 소녀가 살았습니다."
+    },
+    "guide": {
+      "title": "TTS 가이드",
+      "usage": {
+        "title": "사용 방법",
+        "items": [
+          "텍스트를 입력하고 재생 버튼을 누르세요",
+          "음성, 속도, 높낮이를 조절할 수 있습니다",
+          "브라우저의 Web Speech API를 사용합니다",
+          "한국어, 영어 등 다양한 언어 지원"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "외국어 발음 확인에 유용",
+          "시각 장애인 접근성 테스트에 활용",
+          "프레젠테이션 연습에 사용",
+          "언어 학습 보조 도구로 활용 가능"
+        ]
+      }
+    }
+  },
+  "taxiFare": {
+    "title": "택시 요금 계산기",
+    "description": "출발지에서 도착지까지의 예상 택시 요금을 계산합니다.",
+    "distance": "이동 거리 (km)",
+    "distancePlaceholder": "거리 입력",
+    "time": "예상 소요 시간 (분)",
+    "timePlaceholder": "시간 입력",
+    "region": "지역",
+    "regions": {
+      "seoul": "서울",
+      "gyeonggi": "경기",
+      "busan": "부산",
+      "other": "기타 지역"
+    },
+    "taxiType": "택시 종류",
+    "types": {
+      "regular": "일반 택시",
+      "deluxe": "모범 택시",
+      "jumbo": "대형 택시"
+    },
+    "timeOfDay": "시간대",
+    "times": {
+      "day": "주간 (04:00~24:00)",
+      "night": "심야 (00:00~04:00)"
+    },
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": {
+      "title": "예상 택시 요금",
+      "baseFare": "기본 요금",
+      "distanceFare": "거리 요금",
+      "timeFare": "시간 요금",
+      "nightSurcharge": "심야 할증",
+      "total": "총 예상 요금",
+      "won": "원",
+      "note": "실제 요금은 교통 상황에 따라 달라질 수 있습니다"
+    },
+    "fareInfo": {
+      "title": "2024 택시 요금 기준 (서울)",
+      "baseFare": "기본 요금: 4,800원 (1.6km)",
+      "distanceRate": "거리 요금: 100원/131m",
+      "timeRate": "시간 요금: 100원/30초",
+      "nightRate": "심야 할증: 20% (00~04시)"
+    },
+    "guide": {
+      "title": "택시 요금 가이드",
+      "calculation": {
+        "title": "요금 계산 방법",
+        "items": [
+          "기본 요금 + 거리 요금 + 시간 요금",
+          "거리 요금: 기본 거리 초과분 × 단위 요금",
+          "시간 요금: 정차/저속 시 시간 단위로 추가",
+          "심야 할증: 00~04시 20% 가산"
+        ]
+      },
+      "tips": {
+        "title": "참고 사항",
+        "items": [
+          "모범 택시는 기본 요금이 약 2배",
+          "지역마다 요금 체계가 다름",
+          "카카오택시 등 앱 호출 시 호출비 별도",
+          "고속도로 톨비는 승객 부담"
+        ]
+      }
+    }
+  },
+  "installmentCalc": {
+    "title": "카드 할부 계산기",
+    "description": "신용카드 할부 결제 시 월 납부금액과 수수료를 계산합니다.",
+    "totalAmount": "결제 금액 (원)",
+    "totalAmountPlaceholder": "금액 입력",
+    "installmentMonths": "할부 개월 수",
+    "months": "개월",
+    "interestRate": "할부 수수료율 (%)",
+    "interestRatePlaceholder": "연 수수료율",
+    "freeInstallment": "무이자 할부",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": {
+      "title": "할부 계산 결과",
+      "monthlyPayment": "월 납부금",
+      "totalInterest": "총 수수료",
+      "totalPayment": "총 납부금",
+      "won": "원",
+      "effectiveRate": "실질 이자율"
+    },
+    "schedule": {
+      "title": "납부 스케줄",
+      "month": "회차",
+      "payment": "납부금",
+      "principal": "원금",
+      "interest": "수수료",
+      "balance": "잔여 원금"
+    },
+    "quickMonths": "빠른 선택",
+    "guide": {
+      "title": "할부 수수료 가이드",
+      "rates": {
+        "title": "일반적인 수수료율",
+        "items": [
+          "2~3개월: 무이자 행사 多",
+          "6개월: 연 8~12% 수준",
+          "12개월: 연 10~15% 수준",
+          "24개월: 연 12~18% 수준"
+        ]
+      },
+      "tips": {
+        "title": "참고 사항",
+        "items": [
+          "무이자 할부는 수수료 0%",
+          "부분 무이자 할부는 일부 회차만 무이자",
+          "할부 개월이 길수록 수수료율 높아짐",
+          "조기 상환 시 잔여 수수료 면제 가능"
+        ]
+      }
+    }
+  },
+  "signatureGenerator": {
+    "title": "서명 생성기",
+    "description": "마우스나 터치로 전자 서명을 생성하고 이미지로 다운로드합니다.",
+    "canvas": "서명 영역",
+    "drawHere": "여기에 서명하세요",
+    "penColor": "펜 색상",
+    "penSize": "펜 굵기",
+    "backgroundColor": "배경색",
+    "transparent": "투명",
+    "white": "흰색",
+    "clear": "지우기",
+    "undo": "되돌리기",
+    "download": "다운로드",
+    "downloadPNG": "PNG 다운로드",
+    "downloadSVG": "SVG 다운로드",
+    "copy": "클립보드에 복사",
+    "copied": "복사됨!",
+    "guide": {
+      "title": "서명 생성기 가이드",
+      "usage": {
+        "title": "사용 방법",
+        "items": [
+          "캔버스에 마우스나 터치로 서명을 그리세요",
+          "펜 색상과 굵기를 조절할 수 있습니다",
+          "투명 배경으로 문서에 합성 가능",
+          "PNG 또는 SVG 형식으로 다운로드"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "문서에 전자서명이 필요할 때 사용",
+          "투명 배경은 문서 합성에 적합",
+          "SVG는 크기 조절 시 품질 유지",
+          "이 서명은 법적 효력이 없을 수 있습니다"
+        ]
+      }
+    }
+  },
+  "morseCode": {
+    "title": "모스부호 변환기",
+    "description": "텍스트를 모스부호로, 모스부호를 텍스트로 변환합니다.",
+    "mode": {
+      "textToMorse": "텍스트 → 모스부호",
+      "morseToText": "모스부호 → 텍스트"
+    },
+    "textInput": "텍스트 입력",
+    "textPlaceholder": "변환할 텍스트를 입력하세요",
+    "morseInput": "모스부호 입력",
+    "morsePlaceholder": "모스부호 입력 (·  ─  /  사용)",
+    "result": "변환 결과",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "clear": "지우기",
+    "play": "소리 재생",
+    "stop": "정지",
+    "speed": "재생 속도",
+    "slow": "느리게",
+    "normal": "보통",
+    "fast": "빠르게",
+    "referenceTable": "모스부호 표",
+    "letters": "알파벳",
+    "numbers": "숫자",
+    "guide": {
+      "title": "모스부호 가이드",
+      "basics": {
+        "title": "기본 규칙",
+        "items": [
+          "· (점): 짧은 신호",
+          "─ (줄): 긴 신호 (점의 3배)",
+          "글자 사이: 공백 1칸",
+          "단어 사이: / (슬래시)"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "SOS = ··· ─── ···",
+          "영어 알파벳과 숫자 변환 지원",
+          "소리 재생으로 모스부호 학습 가능",
+          "긴급 상황 시 SOS 신호 활용"
+        ]
+      }
+    }
+  },
+  "reactionTest": {
+    "title": "반응속도 테스트",
+    "description": "화면이 변할 때 최대한 빠르게 클릭하여 반응 속도를 측정합니다.",
+    "instruction": "초록색으로 변하면 클릭하세요!",
+    "waiting": "기다리세요...",
+    "ready": "준비...",
+    "clickNow": "지금 클릭!",
+    "tooEarly": "너무 빨리 클릭했습니다! 다시 시도하세요.",
+    "result": "반응 속도",
+    "ms": "ms",
+    "tryAgain": "다시 하기",
+    "attempts": "시도 횟수",
+    "average": "평균",
+    "best": "최고 기록",
+    "rating": {
+      "excellent": "매우 빠름",
+      "good": "빠름",
+      "average": "보통",
+      "slow": "느림",
+      "verySlow": "매우 느림"
+    },
+    "history": "기록",
+    "clearHistory": "기록 삭제",
+    "guide": {
+      "title": "반응속도 가이드",
+      "howTo": {
+        "title": "측정 방법",
+        "items": [
+          "빨간색 화면이 초록색으로 변할 때 클릭",
+          "초록색이 되기 전에 클릭하면 무효",
+          "5회 측정 후 평균 반응 속도 계산",
+          "마우스 또는 터치스크린으로 측정"
+        ]
+      },
+      "standards": {
+        "title": "반응 속도 기준",
+        "items": [
+          "200ms 미만: 매우 빠름 (프로 게이머 수준)",
+          "200~300ms: 빠름 (평균 이상)",
+          "300~400ms: 보통 (일반 성인 평균)",
+          "400ms 초과: 느림"
+        ]
+      }
+    }
+  },
+  "residentNumber": {
+    "title": "주민등록번호 검증기",
+    "description": "주민등록번호 13자리의 유효성을 검증합니다. 형식 검증만 수행하며, 개인정보는 저장되지 않습니다.",
+    "inputLabel": "주민등록번호",
+    "inputPlaceholder": "000000-0000000",
+    "verify": "검증하기",
+    "reset": "초기화",
+    "valid": "유효한 주민등록번호",
+    "invalid": "유효하지 않은 주민등록번호",
+    "validMessage": "검증 알고리즘을 통과한 올바른 형식입니다.",
+    "invalidMessage": "형식이 올바르지 않습니다. 번호를 확인해주세요.",
+    "info": {
+      "birthDate": "생년월일",
+      "gender": "성별",
+      "male": "남성",
+      "female": "여성",
+      "region": "등록 지역 코드"
+    },
+    "privacy": "입력한 번호는 브라우저에서만 처리되며 서버에 전송되지 않습니다.",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "guide": {
+      "title": "주민등록번호 가이드",
+      "structure": {
+        "title": "번호 구조",
+        "items": [
+          "총 13자리: YYMMDD-GXXXXC",
+          "앞 6자리: 생년월일 (YYMMDD)",
+          "7번째 자리: 성별/세기 구분 (1,2=1900년대, 3,4=2000년대)",
+          "8~11자리: 출생지 코드, 12자리: 일련번호, 13자리: 검증번호"
+        ]
+      },
+      "validation": {
+        "title": "검증 방법",
+        "items": [
+          "가중치 [2,3,4,5,6,7,8,9,2,3,4,5]를 각 자리에 곱하여 합산",
+          "합을 11로 나눈 나머지를 11에서 빼기",
+          "결과를 10으로 나눈 나머지가 검증번호와 일치",
+          "본 도구는 알고리즘 검증만 수행합니다"
+        ]
+      }
+    }
+  },
+  "shippingCalc": {
+    "title": "배송비 계산기",
+    "description": "택배 상자 크기와 무게를 기준으로 예상 배송비를 계산합니다.",
+    "weight": "무게 (kg)",
+    "weightPlaceholder": "무게 입력",
+    "width": "가로 (cm)",
+    "height": "세로 (cm)",
+    "depth": "높이 (cm)",
+    "dimensionPlaceholder": "cm",
+    "carrier": "택배사",
+    "carriers": {
+      "cj": "CJ대한통운",
+      "hanjin": "한진택배",
+      "lotte": "롯데택배",
+      "post": "우체국택배",
+      "logen": "로젠택배"
+    },
+    "destination": "배송 지역",
+    "destinations": {
+      "local": "수도권/경기",
+      "national": "전국 (일반)",
+      "jeju": "제주/도서산간"
+    },
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": {
+      "title": "예상 배송비",
+      "actualWeight": "실제 무게",
+      "volumeWeight": "부피 무게",
+      "appliedWeight": "적용 무게",
+      "baseCost": "기본 운임",
+      "surcharge": "할증 (제주/도서산간)",
+      "total": "예상 배송비",
+      "won": "원",
+      "kg": "kg",
+      "note": "실제 요금은 택배사 정책에 따라 다를 수 있습니다"
+    },
+    "volumeWeightInfo": "부피 무게 = 가로 × 세로 × 높이 ÷ 6000",
+    "guide": {
+      "title": "배송비 가이드",
+      "calculation": {
+        "title": "계산 기준",
+        "items": [
+          "실제 무게와 부피 무게 중 큰 값 적용",
+          "부피 무게 = 가로 × 세로 × 높이 ÷ 6000 (cm, kg)",
+          "제주/도서산간 추가 운임 발생",
+          "택배사별 기본 요금 및 구간 요금 상이"
+        ]
+      },
+      "tips": {
+        "title": "절약 팁",
+        "items": [
+          "불필요한 포장재 줄여 부피 무게 절감",
+          "택배사 계약 고객은 할인 요금 적용",
+          "편의점 접수 시 할인되는 택배사 있음",
+          "대량 발송 시 택배사 견적 비교 권장"
+        ]
+      }
+    }
+  },
+  "parkingFee": {
+    "title": "주차 요금 계산기",
+    "description": "주차 시간을 입력하면 예상 주차 요금을 계산합니다.",
+    "parkingType": "주차장 유형",
+    "types": {
+      "public": "공영 주차장",
+      "private": "민영 주차장",
+      "apartment": "아파트 주차장"
+    },
+    "startTime": "입차 시간",
+    "endTime": "출차 시간",
+    "duration": "주차 시간",
+    "hours": "시간",
+    "minutes": "분",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": {
+      "title": "주차 요금 계산 결과",
+      "totalTime": "총 주차 시간",
+      "freeTime": "무료 시간",
+      "chargedTime": "과금 시간",
+      "baseFee": "기본 요금",
+      "additionalFee": "추가 요금",
+      "dailyMax": "1일 최대 요금 적용",
+      "total": "총 주차 요금",
+      "won": "원"
+    },
+    "settings": {
+      "title": "요금 설정",
+      "baseFee": "기본 요금 (원)",
+      "baseMinutes": "기본 시간 (분)",
+      "additionalFee": "추가 요금 (원)",
+      "additionalMinutes": "추가 단위 (분)",
+      "freeMinutes": "무료 시간 (분)",
+      "dailyMax": "1일 최대 요금 (원)"
+    },
+    "presets": {
+      "title": "프리셋",
+      "publicSeoul": "서울 공영 (기본 5분 300원)",
+      "privateAvg": "민영 평균 (30분 2,000원)",
+      "department": "백화점 (1시간 무료, 10분 1,000원)"
+    },
+    "guide": {
+      "title": "주차 요금 가이드",
+      "structure": {
+        "title": "요금 구조",
+        "items": [
+          "기본 요금: 일정 시간까지 고정 요금",
+          "추가 요금: 기본 시간 초과 시 단위별 부과",
+          "1일 최대 요금: 하루 최대 부과 금액 제한",
+          "무료 시간: 초기 무료 주차 시간"
+        ]
+      },
+      "tips": {
+        "title": "참고 사항",
+        "items": [
+          "공영 주차장은 민영보다 저렴한 편",
+          "장애인/경차 할인 적용 가능",
+          "백화점/마트 구매 시 주차 할인",
+          "정기권 이용 시 월정액 할인"
+        ]
+      }
+    }
+  },
+  "bloodPressure": {
+    "title": "혈압 기록기",
+    "description": "혈압을 기록하고 분류를 확인합니다. 기록은 브라우저에 저장됩니다.",
+    "systolic": "수축기 혈압 (mmHg)",
+    "systolicPlaceholder": "120",
+    "diastolic": "이완기 혈압 (mmHg)",
+    "diastolicPlaceholder": "80",
+    "pulse": "맥박 (bpm)",
+    "pulsePlaceholder": "72",
+    "memo": "메모",
+    "memoPlaceholder": "상태, 약 복용 등",
+    "record": "기록하기",
+    "reset": "초기화",
+    "classification": {
+      "title": "혈압 분류",
+      "normal": "정상",
+      "elevated": "주의",
+      "high1": "고혈압 1단계",
+      "high2": "고혈압 2단계",
+      "crisis": "고혈압 위기"
+    },
+    "ranges": {
+      "normal": "수축기 < 120 그리고 이완기 < 80",
+      "elevated": "수축기 120~129 그리고 이완기 < 80",
+      "high1": "수축기 130~139 또는 이완기 80~89",
+      "high2": "수축기 ≥ 140 또는 이완기 ≥ 90",
+      "crisis": "수축기 > 180 또는 이완기 > 120"
+    },
+    "history": {
+      "title": "기록 이력",
+      "date": "날짜",
+      "bp": "혈압",
+      "pulseLabel": "맥박",
+      "class": "분류",
+      "noRecords": "기록이 없습니다",
+      "clearAll": "전체 삭제",
+      "delete": "삭제"
+    },
+    "guide": {
+      "title": "혈압 가이드",
+      "measurement": {
+        "title": "측정 방법",
+        "items": [
+          "5분 이상 안정 후 측정",
+          "팔꿈치 높이에서 편안한 자세로",
+          "같은 시간대에 규칙적으로 측정",
+          "측정 30분 전 카페인, 운동 피하기"
+        ]
+      },
+      "tips": {
+        "title": "건강 관리",
+        "items": [
+          "정상 혈압: 120/80 mmHg 미만",
+          "매일 같은 시간에 측정 권장",
+          "이상 수치 반복 시 의사 상담",
+          "본 기록은 참고용이며 의료 진단이 아닙니다"
+        ]
+      }
+    }
+  },
+  "colorBlindTest": {
+    "title": "색약 테스트",
+    "description": "이시하라 스타일의 색약 검사 테스트입니다. 원 안의 숫자를 맞추어 보세요.",
+    "instruction": "원 안에 보이는 숫자를 입력하세요",
+    "plate": "검사판",
+    "of": "/",
+    "yourAnswer": "답변",
+    "answerPlaceholder": "보이는 숫자 입력",
+    "next": "다음",
+    "previous": "이전",
+    "submit": "결과 확인",
+    "restart": "다시 하기",
+    "skip": "모르겠음",
+    "result": {
+      "title": "검사 결과",
+      "correct": "정답",
+      "wrong": "오답",
+      "skipped": "건너뜀",
+      "total": "총 문제",
+      "score": "점수",
+      "normal": "정상 색각으로 추정됩니다",
+      "mild": "경미한 색약 가능성이 있습니다",
+      "moderate": "색약 가능성이 있습니다. 안과 검진을 권장합니다",
+      "disclaimer": "이 테스트는 참고용이며 정확한 진단은 안과에서 받으세요"
+    },
+    "guide": {
+      "title": "색약 테스트 가이드",
+      "about": {
+        "title": "검사 안내",
+        "items": [
+          "이시하라 검사법을 기반으로 한 스크리닝 테스트",
+          "밝은 조명 아래에서 모니터 정면으로 검사",
+          "각 판에 보이는 숫자를 입력하세요",
+          "총 10개 판으로 구성"
+        ]
+      },
+      "types": {
+        "title": "색각 이상 유형",
+        "items": [
+          "적록 색약: 빨간색-초록색 구분 어려움 (가장 흔함)",
+          "청황 색약: 파란색-노란색 구분 어려움",
+          "전색맹: 색상을 구분하지 못함 (매우 드묾)",
+          "남성의 약 8%, 여성의 약 0.5%가 색약"
+        ]
+      }
+    }
+  },
+  "monitorTest": {
+    "title": "모니터 테스트",
+    "description": "불량화소, 명암비, 색상, 감마, 번인 등 14가지 모니터 품질 테스트",
+    "startFullscreen": "전체화면 테스트 시작",
+    "preview": "미리보기",
+    "clickToStart": "클릭하여 전체화면 시작",
+    "howToUse": "테스트 방법",
+    "prev": "이전",
+    "next": "다음",
+    "hud": {
+      "clickToNext": "화면을 클릭하면 다음 단계",
+      "escToExit": "ESC 종료"
+    },
+    "tests": {
+      "deadPixel": {
+        "name": "불량화소",
+        "shortDesc": "8가지 단색으로 데드픽셀/스턱픽셀을 찾습니다",
+        "description": "모니터 전체 화면을 8가지 단색(검정, 흰색, 빨강, 초록, 파랑, 시안, 마젠타, 노랑)으로 채워 불량화소(데드픽셀, 스턱픽셀)를 찾습니다.",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "각 색상에서 화면에 점이나 다른 색 점이 있는지 확인하세요",
+          "화면을 클릭하면 다음 색상으로 넘어갑니다",
+          "8가지 색상 모두 확인 후 ESC로 종료하세요"
+        ]
+      },
+      "viewingAngle": {
+        "name": "시야각",
+        "shortDesc": "도트 패턴으로 모니터 시야각 성능을 측정합니다",
+        "description": "반복 도트 패턴을 6단계 크기로 표시하여 모니터의 시야각 성능을 측정합니다. 상하좌우 다양한 각도에서 패턴이 균일하게 보이는지 확인하세요.",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "모니터를 정면에서 본 후, 위/아래/좌/우로 시선을 이동하세요",
+          "도트 패턴이 모든 방향에서 균일하게 보이면 시야각 우수",
+          "클릭하면 도트 크기가 변경됩니다"
+        ]
+      },
+      "contrastRatio": {
+        "name": "명암비",
+        "shortDesc": "0%~100% 밝기를 14단계로 나눠 명암 표현력을 확인합니다",
+        "description": "0%에서 100%까지의 밝기를 14단계 구간으로 나누어, 각 구간에서 미세한 밝기 차이를 구분할 수 있는지 확인합니다.",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "각 단계에서 26개 칸의 미세한 밝기 차이가 구분되는지 확인하세요",
+          "모니터 밝기/명암비 설정을 조절하며 최적화하세요",
+          "클릭하면 다음 밝기 구간으로 넘어갑니다"
+        ]
+      },
+      "readability": {
+        "name": "가독성",
+        "shortDesc": "다양한 폰트 크기와 배경 조합으로 텍스트 가독성을 테스트합니다",
+        "description": "8px부터 28px까지 다양한 폰트 크기와 흑백 배경 조합으로 모니터의 텍스트 가독성을 테스트합니다.",
+        "step": "단계",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "화면 중앙과 주변부의 텍스트 가독성을 비교하세요",
+          "작은 글자도 선명하게 보이는지 확인하세요",
+          "클릭하면 다음 폰트 크기/배경 조합으로 넘어갑니다"
+        ]
+      },
+      "colorRatio": {
+        "name": "색상비",
+        "shortDesc": "RGB 채널별 0%~100% 그라데이션으로 색상 표현력을 확인합니다",
+        "description": "빨강(R), 초록(G), 파랑(B) 각 채널을 0%에서 100%까지 26단계로 표시하여 색상 표현 능력을 확인합니다.",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "각 색상 채널에서 0%~100% 사이 단계가 모두 구분되는지 확인하세요",
+          "모니터의 RGB 설정을 조절하며 최적화하세요",
+          "클릭하면 다음 채널/방향으로 넘어갑니다"
+        ]
+      },
+      "responseTime": {
+        "name": "응답속도",
+        "shortDesc": "5단계 fps 박스로 모니터의 응답속도와 잔상을 확인합니다",
+        "description": "1fps, 15fps, 30fps, 45fps, 60fps로 움직이는 5개 박스를 통해 모니터의 응답속도와 잔상 여부를 확인합니다.",
+        "instruction": "각 fps별 박스의 잔상 여부를 비교하세요",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "5개 박스가 각각 다른 속도로 움직입니다",
+          "빠른 박스에서 잔상이 보이면 응답속도가 느린 것입니다",
+          "ESC로 종료하세요"
+        ]
+      },
+      "gamma": {
+        "name": "감마",
+        "shortDesc": "4색(회색/빨강/초록/파랑)으로 모니터의 감마값을 측정합니다",
+        "description": "4가지 색상(회색, 빨강, 초록, 파랑)의 체크보드 패턴과 배경을 비교하여 현재 모니터의 감마값을 측정합니다.",
+        "instruction": "패턴과 배경이 일치하는 수치가 현재 감마값입니다",
+        "matchHint": "위(체크보드)와 아래(단색)의 밝기가 같아 보이는 수치가 현재 모니터의 감마값입니다. 표준값은 2.2입니다.",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "1~2m 떨어져서 보면 체크보드가 하나의 색으로 보입니다",
+          "체크보드와 아래 단색의 밝기가 같은 수치를 찾으세요 (표준: 2.2)",
+          "클릭하면 다음 색상으로 넘어갑니다"
+        ]
+      },
+      "lightBleed": {
+        "name": "빛샘/멍/한지",
+        "shortDesc": "15단계 밝기로 빛샘, 멍, 한지, 빗살무늬, 그레인을 확인합니다",
+        "description": "검정에서 밝은 색, 다시 검정까지 15단계 밝기를 순서대로 표시하여 빛샘, 멍(클라우딩), 한지현상, 빗살무늬, 그레인 등의 패널 결함을 확인합니다.",
+        "steps": [
+          "어두운 환경에서 전체화면 테스트를 시작하세요",
+          "검은 화면에서 가장자리 빛샘이 있는지 확인하세요",
+          "밝은 화면에서 얼룩이나 멍이 있는지 확인하세요",
+          "클릭하면 다음 밝기 단계로 넘어갑니다"
+        ]
+      },
+      "burnIn": {
+        "name": "잔상/번인",
+        "shortDesc": "7색 모자이크 비교로 번인(화면 자국)을 검사합니다",
+        "description": "7가지 색상의 모자이크 체크보드 패턴과 단색을 좌우 분할하여 비교하면서 번인(화면에 남은 잔상 자국)을 검사합니다.",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "마우스를 좌우로 움직여 단색/모자이크를 비교하세요",
+          "단색 영역에서 이전 화면 잔상이 보이면 번인입니다",
+          "클릭하면 다음 색상으로 넘어갑니다"
+        ]
+      },
+      "whiteBalance": {
+        "name": "화이트밸런스",
+        "shortDesc": "15단계 도트 패턴으로 밝은 영역의 색 균일성을 확인합니다",
+        "description": "3가지 도트 크기(대/중/소) × 5단계 밝기(92%~99%)로 총 15단계의 미세한 밝기 차이를 표시하여 화이트밸런스를 확인합니다.",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "화면의 여러 지역에서 도트 패턴과 배경이 구분되는지 확인하세요",
+          "모든 영역에서 균일하게 보이면 화이트밸런스 우수",
+          "클릭하면 다음 패턴/밝기로 넘어갑니다"
+        ]
+      },
+      "blackBalance": {
+        "name": "블랙밸런스",
+        "shortDesc": "15단계 격자 패턴으로 어두운 영역의 표현력을 확인합니다",
+        "description": "3가지 격자 크기(대/중/소) × 5단계 밝기(2%~10%)로 총 15단계의 어두운 격자 패턴을 표시하여 블랙밸런스를 확인합니다.",
+        "steps": [
+          "어두운 환경에서 전체화면 테스트를 시작하세요",
+          "화면의 여러 지역에서 격자 패턴이 보이는지 확인하세요",
+          "어두운 패턴도 식별 가능하면 블랙 표현력 우수",
+          "클릭하면 다음 패턴/밝기로 넘어갑니다"
+        ]
+      },
+      "imageQuality": {
+        "name": "이미지표현",
+        "shortDesc": "10종 테스트 패턴과 사용자 이미지로 색상 표현력을 확인합니다",
+        "description": "레인보우 스펙트럼, 그레이스케일, 컬러바, 피부톤 등 10종의 테스트 패턴과 사용자 업로드 이미지로 모니터의 색상 표현 능력을 종합적으로 확인합니다.",
+        "upload": "이미지 업로드",
+        "uploaded": "이미지가 업로드되었습니다",
+        "steps": [
+          "원하는 경우 자신의 이미지를 업로드하세요",
+          "전체화면 테스트를 시작하세요",
+          "각 패턴에서 색상이 자연스럽게 표현되는지 확인하세요",
+          "클릭하면 다음 패턴으로 넘어갑니다"
+        ]
+      },
+      "calibration": {
+        "name": "화면조정",
+        "shortDesc": "그리드, 컬러바, 세이프에어리어로 화면 위치를 조정합니다",
+        "description": "격자 그리드 + 크로스헤어, 8색 컬러바, 세이프에어리어 가이드를 통해 모니터의 화면 위치와 비율을 정밀하게 조정합니다.",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "격자와 십자선이 화면 중앙에 정확히 위치하는지 확인하세요",
+          "모니터의 위치/크기 설정을 조절하세요",
+          "클릭하면 다음 패턴(그리드→컬러바→세이프에어리어)으로 넘어갑니다"
+        ]
+      },
+      "pixelFix": {
+        "name": "불량화소 복구",
+        "shortDesc": "빠르게 깜빡이는 픽셀로 스턱픽셀 복구를 시도합니다",
+        "description": "빠르게 변하는 랜덤 RGB 픽셀 깜빡임을 통해 고정된 픽셀(스턱픽셀)에 전기 자극을 가하여 복구를 시도합니다. 드래그하여 위치를 이동하고 크기를 조절할 수 있습니다.",
+        "dragInstruction": "복구 박스를 드래그하여 불량화소 위치로 이동하세요",
+        "steps": [
+          "전체화면 테스트를 시작하세요",
+          "빨간 테두리의 깜빡이는 박스를 불량화소 위치로 드래그하세요",
+          "+/- 버튼으로 박스 크기를 조절하세요",
+          "30분~1시간 정도 두면 복구될 수 있습니다"
+        ]
+      }
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "preparation": {
+        "title": "테스트 준비사항",
+        "items": [
+          "모니터를 30분 이상 예열한 후 테스트하세요",
+          "어두운 환경에서 테스트하면 결함을 더 쉽게 발견할 수 있습니다",
+          "크롬(Chrome) 브라우저 사용을 권장합니다",
+          "전체화면(F11 또는 버튼)으로 테스트해야 정확한 결과를 얻을 수 있습니다",
+          "모니터 밝기와 명암비를 기본값으로 설정한 후 시작하세요"
+        ]
+      },
+      "tips": {
+        "title": "테스트 팁",
+        "items": [
+          "불량화소는 검은 점(데드픽셀)과 색이 있는 점(스턱픽셀)으로 나뉩니다",
+          "시야각 테스트 시 모니터에서 1m 이상 떨어져서 확인하세요",
+          "감마값 2.2가 표준이며, 대부분의 콘텐츠에 적합합니다",
+          "빛샘은 LED 백라이트 모니터에서 흔히 발생하는 현상입니다",
+          "불량화소 복구는 스턱픽셀에만 효과가 있으며, 데드픽셀은 복구가 어렵습니다"
+        ]
+      }
+    }
+  },
+  "game2048": {
+    "title": "2048",
+    "description": "같은 숫자 타일을 합쳐 2048을 만들어보세요!",
+    "score": "점수",
+    "bestScore": "최고 점수",
+    "newGame": "새 게임",
+    "undo": "되돌리기",
+    "gameOver": "게임 오버",
+    "youWin": "축하합니다!",
+    "tryAgain": "다시 시도",
+    "keepPlaying": "계속 하기",
+    "guide": {
+      "title": "게임 가이드",
+      "howToPlay": {
+        "title": "조작 방법",
+        "items": [
+          "방향키(↑↓←→) 또는 화면 스와이프로 타일을 이동합니다",
+          "같은 숫자의 타일이 만나면 하나로 합쳐집니다",
+          "합쳐진 숫자가 점수에 더해집니다",
+          "2048 타일을 만들면 승리! 이후에도 계속 플레이 가능합니다"
+        ]
+      },
+      "tips": {
+        "title": "공략 팁",
+        "items": [
+          "큰 숫자를 한쪽 코너에 모아두세요",
+          "한 방향으로 밀지 않도록 2~3방향만 사용하세요",
+          "가장 큰 타일을 절대 중앙에 두지 마세요",
+          "되돌리기 기능을 활용하면 실수를 만회할 수 있습니다"
+        ]
+      }
+    }
+  },
+  "minesweeper": {
+    "title": "지뢰찾기",
+    "description": "지뢰를 피해 모든 안전한 칸을 열어보세요!",
+    "mines": "지뢰",
+    "time": "시간",
+    "beginner": "초급",
+    "intermediate": "중급",
+    "expert": "고급",
+    "gameOver": "게임 오버",
+    "youWin": "축하합니다!",
+    "newGame": "새 게임",
+    "guide": {
+      "title": "게임 가이드",
+      "howToPlay": {
+        "title": "조작 방법",
+        "items": [
+          "좌클릭으로 칸을 엽니다",
+          "우클릭(또는 길게 터치)으로 깃발을 세웁니다",
+          "숫자는 주변 8칸에 있는 지뢰의 개수를 나타냅니다",
+          "모든 안전한 칸을 열면 승리합니다"
+        ]
+      },
+      "tips": {
+        "title": "공략 팁",
+        "items": [
+          "첫 클릭은 항상 안전합니다",
+          "코너와 가장자리부터 시작하면 유리합니다",
+          "숫자와 깃발 수가 같으면 주변 칸은 모두 안전합니다",
+          "확실하지 않은 칸에는 깃발 대신 빈 칸으로 두세요"
+        ]
+      }
+    }
+  },
+  "sudoku": {
+    "title": "스도쿠",
+    "description": "9×9 격자에 1~9를 겹치지 않게 채워보세요!",
+    "newGame": "새 게임",
+    "time": "시간",
+    "easy": "쉬움",
+    "medium": "보통",
+    "hard": "어려움",
+    "expert": "전문가",
+    "notes": "메모",
+    "hint": "힌트",
+    "undo": "되돌리기",
+    "erase": "지우기",
+    "completed": "완료!",
+    "congratulations": "축하합니다! 스도쿠를 완성했습니다!",
+    "errors": "오류",
+    "hintsUsed": "힌트 사용",
+    "guide": {
+      "title": "게임 가이드",
+      "howToPlay": {
+        "title": "조작 방법",
+        "items": [
+          "빈 칸을 클릭/터치하여 선택합니다",
+          "숫자 패드 또는 키보드(1~9)로 숫자를 입력합니다",
+          "메모 모드를 켜면 후보 숫자를 작게 기록할 수 있습니다",
+          "같은 행, 열, 3×3 박스에 같은 숫자가 없어야 합니다"
+        ]
+      },
+      "tips": {
+        "title": "공략 팁",
+        "items": [
+          "확실한 칸부터 채워나가세요",
+          "메모 기능을 활용하면 후보 숫자를 추적하기 쉽습니다",
+          "각 행/열/박스에서 빠진 숫자를 확인하세요",
+          "막히면 힌트 버튼으로 한 칸을 공개할 수 있습니다"
+        ]
+      }
+    }
+  },
+  "dutchPay": {
+    "title": "더치페이 계산기",
+    "description": "회식비, 모임비를 정확하게 나누는 더치페이 계산기입니다. 균등 분배와 각자 낸 금액 기반 차액 계산을 지원합니다.",
+    "totalAmount": "총 금액",
+    "numberOfPeople": "인원 수",
+    "perPerson": "1인당 금액",
+    "equalSplit": "균등 분배",
+    "customSplit": "커스텀 정산",
+    "addPerson": "참가자 추가",
+    "removePerson": "참가자 삭제",
+    "name": "참가자",
+    "paid": "낸 금액",
+    "consumed": "소비 금액",
+    "result": "정산 결과",
+    "transfers": "이체 목록",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "reset": "초기화",
+    "noTransfers": "정산이 필요 없습니다",
+    "won": "원",
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "균등 분배: 총 금액과 인원 수를 입력하면 1인당 금액을 계산합니다",
+          "커스텀 정산: 각 참가자가 낸 금액과 소비한 금액을 입력합니다",
+          "차액이 자동으로 계산되어 누가 누구에게 얼마를 보내야 하는지 알려줍니다",
+          "결과를 복사하여 카카오톡 등에 공유할 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "팁",
+        "items": [
+          "커스텀 정산은 각자 먹은 것이 다를 때 유용합니다",
+          "최소 이체 횟수로 정산을 최적화합니다",
+          "참가자 이름을 입력하면 결과를 더 쉽게 확인할 수 있습니다",
+          "정산 결과를 한 번에 복사하여 공유하세요"
+        ]
+      }
+    }
+  },
+  "colorExtractor": {
+    "title": "이미지 색상 추출기",
+    "description": "이미지에서 색상을 추출하세요. 클릭으로 색상 픽킹, 자동 팔레트 추출, HEX/RGB/HSL 변환을 지원합니다.",
+    "upload": "이미지 업로드",
+    "dragDrop": "이미지를 드래그하거나 클릭하여 업로드하세요",
+    "pickedColor": "선택한 색상",
+    "palette": "자동 팔레트",
+    "history": "추출 기록",
+    "export": "내보내기",
+    "hex": "HEX",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "cssVars": "CSS 변수",
+    "tailwind": "Tailwind",
+    "json": "JSON",
+    "noImage": "이미지를 업로드하세요",
+    "clickToExtract": "이미지를 클릭하여 색상을 추출하세요",
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "이미지를 드래그하거나 업로드 버튼으로 이미지를 불러옵니다",
+          "이미지 위를 클릭하면 해당 위치의 색상이 추출됩니다",
+          "돋보기로 정확한 위치를 확인할 수 있습니다",
+          "자동 팔레트는 이미지의 주요 색상 8가지를 추출합니다",
+          "추출된 색상을 CSS 변수, Tailwind, JSON 형식으로 내보낼 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "팁",
+        "items": [
+          "색상 카드를 클릭하면 HEX 값이 클립보드에 복사됩니다",
+          "팔레트 내보내기로 디자인 시스템에 바로 적용할 수 있습니다",
+          "추출 기록에서 이전에 뽑은 색상을 확인할 수 있습니다",
+          "웹 디자인, 브랜딩, UI 색상 참고에 유용합니다"
+        ]
+      }
+    }
+  },
+  "imageWatermark": {
+    "title": "이미지 워터마크",
+    "description": "이미지에 텍스트 또는 이미지 워터마크를 추가하세요. 위치, 크기, 투명도, 회전, 타일 반복 등 다양한 옵션을 지원합니다.",
+    "upload": "이미지 업로드",
+    "uploadDragDrop": "이미지를 드래그하거나 클릭하여 업로드",
+    "watermarkType": "워터마크 타입",
+    "textType": "텍스트",
+    "imageType": "이미지",
+    "text": "워터마크 텍스트",
+    "textPlaceholder": "워터마크 텍스트 입력",
+    "fontSize": "글자 크기",
+    "fontFamily": "폰트",
+    "fontColor": "글자 색상",
+    "bold": "굵게",
+    "watermarkImage": "워터마크 이미지",
+    "watermarkImageUpload": "로고 이미지 업로드",
+    "watermarkSize": "워터마크 크기",
+    "position": "위치",
+    "positions": {
+      "topLeft": "좌상",
+      "topCenter": "중상",
+      "topRight": "우상",
+      "middleLeft": "좌중",
+      "center": "중앙",
+      "middleRight": "우중",
+      "bottomLeft": "좌하",
+      "bottomCenter": "중하",
+      "bottomRight": "우하"
+    },
+    "opacity": "투명도",
+    "rotation": "회전",
+    "tileMode": "타일 반복",
+    "margin": "여백",
+    "preview": "미리보기",
+    "download": "다운로드",
+    "reset": "초기화",
+    "noImage": "이미지를 먼저 업로드하세요",
+    "guide": {
+      "title": "사용 가이드",
+      "features": {
+        "title": "주요 기능",
+        "items": [
+          "텍스트 또는 이미지 워터마크 지원",
+          "9가지 위치 선택 (좌상, 중앙, 우하 등)",
+          "투명도, 회전, 여백 세밀 조절",
+          "타일 반복 모드로 전체 영역 워터마크",
+          "원본 해상도 유지하여 다운로드"
+        ]
+      },
+      "tips": {
+        "title": "팁",
+        "items": [
+          "저작권 보호를 위해 투명도 30~50%가 적당합니다",
+          "타일 반복 모드는 전체 이미지에 워터마크를 넣을 때 유용합니다",
+          "회전 45도를 주면 대각선 워터마크를 만들 수 있습니다",
+          "이미지 워터마크로 로고를 넣을 수 있습니다"
+        ]
+      }
+    }
+  },
+  "imageOcr": {
+    "title": "이미지 텍스트 추출 (OCR)",
+    "description": "이미지에서 텍스트를 자동 인식하여 추출합니다. 한국어, 영어, 일본어, 중국어를 지원합니다.",
+    "upload": "이미지 업로드",
+    "uploadDragDrop": "이미지를 드래그하거나 클릭하여 업로드",
+    "pasteHint": "Ctrl+V로 클립보드에서 붙여넣기 가능",
+    "language": "인식 언어",
+    "languages": {
+      "kor": "한국어",
+      "eng": "영어",
+      "jpn": "일본어",
+      "chiSim": "중국어(간체)",
+      "chiTra": "중국어(번체)"
+    },
+    "rotateLeft": "왼쪽으로 90° 회전",
+    "rotateRight": "오른쪽으로 90° 회전",
+    "recognize": "텍스트 인식",
+    "recognizing": "인식 중...",
+    "progress": "진행률",
+    "result": "인식 결과",
+    "resultPlaceholder": "인식된 텍스트가 여기에 표시됩니다",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "download": "다운로드",
+    "downloadTxt": "TXT 다운로드",
+    "showConfidence": "신뢰도 표시",
+    "confidence": "신뢰도",
+    "noImage": "이미지를 먼저 업로드하세요",
+    "noResult": "인식 결과가 없습니다",
+    "reset": "초기화",
+    "guide": {
+      "title": "사용 가이드",
+      "features": {
+        "title": "주요 기능",
+        "items": [
+          "한국어, 영어, 일본어, 중국어 텍스트 인식",
+          "여러 언어를 동시에 선택하여 인식 가능",
+          "클립보드에서 이미지 직접 붙여넣기 (Ctrl+V)",
+          "인식된 텍스트 편집, 복사, TXT 다운로드",
+          "단어별 신뢰도(정확도) 표시 지원"
+        ]
+      },
+      "tips": {
+        "title": "팁",
+        "items": [
+          "깨끗하고 해상도가 높은 이미지일수록 인식률이 좋습니다",
+          "스캔한 문서, 영수증, 명함 등에 유용합니다",
+          "여러 언어가 섞인 문서는 해당 언어를 모두 선택하세요",
+          "처음 실행 시 언어 데이터 다운로드에 시간이 걸릴 수 있습니다"
+        ]
+      }
+    }
+  },
+  "keyboardConverter": {
+    "title": "한영 타자 변환기",
+    "description": "영문 타자를 한글로, 한글 타자를 영문으로 변환합니다. 한영키를 안 누르고 타자한 경우에 유용합니다.",
+    "engToKor": "영→한 변환",
+    "korToEng": "한→영 변환",
+    "input": "입력",
+    "inputPlaceholder": "변환할 텍스트를 입력하세요",
+    "output": "결과",
+    "swap": "입출력 교환",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "reset": "초기화",
+    "charCount": "글자",
+    "examples": "변환 예시",
+    "guide": {
+      "title": "사용 가이드",
+      "howTo": {
+        "title": "사용 방법",
+        "items": [
+          "변환 방향(영→한 또는 한→영)을 선택합니다",
+          "입력창에 변환할 텍스트를 입력하면 실시간으로 변환됩니다",
+          "예시 버튼을 클릭하면 바로 변환 결과를 확인할 수 있습니다",
+          "교환 버튼으로 입력과 결과를 바꿀 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "팁",
+        "items": [
+          "한영키를 안 누르고 타자한 경우 변환에 유용합니다",
+          "쌍자음(ㄲ, ㄸ 등)은 Shift+키에 해당합니다",
+          "영→한 변환은 영문 자판 위치 기준으로 한글을 조합합니다",
+          "한→영 변환은 한글을 자모 분해 후 영문으로 매핑합니다"
+        ]
+      }
+    }
+  },
+  "imageMosaic": {
+    "title": "사진 모자이크/블러",
+    "description": "사진에 모자이크나 블러를 적용하세요. 영역 선택 또는 브러시로 원하는 부분만 처리할 수 있습니다.",
+    "upload": "이미지 업로드",
+    "dragDrop": "이미지를 드래그하거나 클릭하여 업로드",
+    "mosaic": "모자이크",
+    "blur": "블러",
+    "rectangle": "영역 선택",
+    "brush": "브러시",
+    "intensity": "강도",
+    "brushSize": "브러시 크기",
+    "undo": "되돌리기",
+    "reset": "초기화",
+    "download": "다운로드",
+    "png": "PNG",
+    "jpeg": "JPEG",
+    "quality": "품질",
+    "noImage": "이미지를 업로드하세요",
+    "selectArea": "모자이크/블러를 적용할 영역을 선택하세요",
+    "mode": "모드",
+    "effectType": "효과 유형",
+    "format": "저장 형식",
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "이미지를 드래그하거나 업로드 버튼으로 이미지를 불러옵니다",
+          "영역 선택 모드: 드래그로 직사각형 영역을 선택하여 효과 적용",
+          "브러시 모드: 마우스로 칠하듯이 원하는 부분에 효과 적용",
+          "모자이크(픽셀화)와 블러(흐림) 중 효과를 선택하세요",
+          "강도 슬라이더로 효과의 세기를 조절할 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "팁",
+        "items": [
+          "얼굴, 차량 번호판 등 개인정보 보호에 유용합니다",
+          "되돌리기(Undo)로 실수한 효과를 취소할 수 있습니다",
+          "PNG는 무손실, JPEG는 파일 크기가 작습니다",
+          "브러시 크기를 조절하여 세밀하게 처리하세요"
+        ]
+      }
+    }
+  },
+  "pdfTools": {
+    "title": "PDF 도구",
+    "description": "PDF 합치기, 분할, 페이지 회전, 이미지→PDF 변환을 브라우저에서 무료로 처리하세요.",
+    "tabs": {
+      "merge": "합치기",
+      "split": "분할",
+      "rotate": "회전",
+      "imageToPdf": "이미지→PDF"
+    },
+    "common": {
+      "pages": "페이지",
+      "pdfOnly": "PDF 파일만 지원합니다",
+      "remove": "제거"
+    },
+    "merge": {
+      "dropzone": "PDF 파일을 드래그하거나 클릭하여 선택하세요",
+      "button": "PDF 합치기",
+      "processing": "합치는 중...",
+      "success": "PDF 합치기 완료!",
+      "errorMin": "2개 이상의 PDF 파일이 필요합니다",
+      "reorderHint": "드래그하여 순서를 변경할 수 있습니다"
+    },
+    "split": {
+      "dropzone": "분할할 PDF 파일을 선택하세요",
+      "button": "PDF 분할",
+      "processing": "분할 중...",
+      "success": "PDF 분할 완료!",
+      "errorSelect": "추출할 페이지를 선택하세요",
+      "selectHint": "추출할 페이지를 클릭하세요",
+      "modeExtract": "페이지 선택",
+      "modeRange": "범위 지정",
+      "rangeLabel": "페이지 범위",
+      "rangeHint": "예: 1-3, 5, 7-9"
+    },
+    "rotate": {
+      "dropzone": "회전할 PDF 파일을 선택하세요",
+      "button": "PDF 저장",
+      "processing": "처리 중...",
+      "success": "PDF 회전 완료!",
+      "allPages": "전체 페이지"
+    },
+    "imageToPdf": {
+      "dropzone": "이미지 파일을 드래그하거나 클릭하여 선택하세요",
+      "button": "PDF 변환",
+      "processing": "변환 중...",
+      "success": "PDF 변환 완료!",
+      "errorEmpty": "이미지를 하나 이상 추가하세요",
+      "formats": "JPG, PNG, GIF, WebP 지원",
+      "pageSize": "페이지 크기",
+      "custom": "사용자 지정",
+      "imagesAdded": "개 이미지"
+    },
+    "error": {
+      "generic": "오류가 발생했습니다",
+      "load": "파일을 불러올 수 없습니다"
+    },
+    "guide": {
+      "title": "PDF 도구 가이드",
+      "merge": {
+        "title": "PDF 합치기",
+        "items": [
+          "여러 PDF 파일을 하나로 합칩니다",
+          "드래그하여 파일 순서를 변경할 수 있습니다",
+          "모든 처리는 브라우저에서 이루어져 개인정보가 안전합니다"
+        ]
+      },
+      "split": {
+        "title": "PDF 분할",
+        "items": [
+          "PDF에서 원하는 페이지만 추출합니다",
+          "개별 페이지 선택 또는 범위 지정이 가능합니다",
+          "선택한 페이지만 포함된 새 PDF를 다운로드합니다"
+        ]
+      },
+      "rotate": {
+        "title": "페이지 회전",
+        "items": [
+          "PDF의 개별 페이지 또는 전체 페이지를 회전합니다",
+          "90°, 180°, 270° 회전을 지원합니다",
+          "스캔한 문서의 방향 교정에 유용합니다"
+        ]
+      },
+      "imageToPdf": {
+        "title": "이미지→PDF 변환",
+        "items": [
+          "JPG, PNG, GIF, WebP 이미지를 PDF로 변환합니다",
+          "여러 이미지를 하나의 PDF로 합칠 수 있습니다",
+          "A4, Letter 등 페이지 크기를 선택할 수 있습니다"
+        ]
+      }
+    }
+  },
+  "tetris": {
+    "title": "테트리스",
+    "description": "클래식 블록 퍼즐 게임. 홀드, 넥스트 미리보기, 고스트 피스, 레벨 시스템을 지원합니다.",
+    "score": "점수",
+    "bestScore": "최고 점수",
+    "level": "레벨",
+    "lines": "라인",
+    "next": "다음",
+    "hold": "홀드",
+    "holdUsed": "사용됨",
+    "newGame": "새 게임",
+    "gameOver": "게임 오버",
+    "newRecord": "새 기록!",
+    "pause": "일시정지",
+    "paused": "일시정지됨",
+    "resume": "계속하기",
+    "guide": {
+      "title": "게임 가이드",
+      "keyboard": {
+        "title": "키보드 조작",
+        "items": [
+          "← → : 좌우 이동",
+          "↑ : 시계방향 회전",
+          "↓ : 소프트 드롭 (빠르게 내리기)",
+          "스페이스바 : 하드 드롭 (즉시 떨어뜨리기)",
+          "C : 홀드 (현재 블록 저장)",
+          "P : 일시정지/재개"
+        ]
+      },
+      "touch": {
+        "title": "터치 조작",
+        "items": [
+          "좌우 스와이프 : 이동",
+          "아래 스와이프 : 소프트 드롭",
+          "위 스와이프 : 하드 드롭",
+          "탭 : 회전"
+        ]
+      },
+      "scoring": {
+        "title": "점수 시스템",
+        "items": [
+          "1줄 클리어 : 100 × 레벨",
+          "2줄 클리어 : 300 × 레벨",
+          "3줄 클리어 : 500 × 레벨",
+          "4줄 클리어 (테트리스) : 800 × 레벨",
+          "10줄 클리어마다 레벨이 올라가며 속도가 빨라집니다"
+        ]
+      }
+    }
+  },
+  "numberBaseball": {
+    "title": "숫자야구",
+    "description": "스트라이크, 볼, 아웃 판정으로 숨겨진 숫자를 추리하는 두뇌 게임입니다.",
+    "difficulty": "난이도",
+    "difficultyLabel": "난이도 선택",
+    "easy": "쉬움",
+    "normal": "보통",
+    "hard": "어려움",
+    "digitCount": "자리수",
+    "digits": "자리",
+    "guess": "추측",
+    "submit": "확인",
+    "strike": "스트라이크",
+    "ball": "볼",
+    "out": "아웃",
+    "strikeDesc": "숫자와 위치 모두 맞음",
+    "ballDesc": "숫자는 맞지만 위치가 다름",
+    "outDesc": "해당 숫자가 없음",
+    "attempt": "시도",
+    "currentAttempts": "현재 시도 횟수",
+    "times": "회",
+    "history": "추측 기록",
+    "hint": "힌트 보기",
+    "hintUsed": "힌트 사용됨",
+    "hintAvailableAfter": "회 시도 후 힌트 사용 가능",
+    "hintReveal": "{pos}번째 자리 숫자는 {digit}입니다",
+    "newGame": "새 게임",
+    "gameWon": "정답입니다!",
+    "gameWonMessage": "{attempts}번 만에 숫자를 맞췄습니다!",
+    "gameInfo": "게임 정보",
+    "legend": "판정 기준",
+    "errorDuplicate": "중복된 숫자가 있습니다",
+    "errorIncomplete": "모든 칸을 입력하세요",
+    "errorLeadingZero": "첫 자리는 0이 될 수 없습니다",
+    "stats": {
+      "title": "통계",
+      "gamesPlayed": "플레이 횟수",
+      "avgAttempts": "평균 시도",
+      "bestRecord": "최소 시도",
+      "winStreak": "연승"
+    },
+    "guide": {
+      "title": "게임 가이드",
+      "rules": {
+        "title": "게임 규칙",
+        "items": [
+          "컴퓨터가 겹치지 않는 숫자 조합을 선택합니다",
+          "플레이어가 숫자를 추측하면 판정 결과가 표시됩니다",
+          "스트라이크: 숫자와 위치 모두 정확",
+          "볼: 숫자는 포함되지만 위치가 다름",
+          "아웃: 해당 숫자가 없음",
+          "최소 횟수로 정답을 맞추는 것이 목표입니다"
+        ]
+      },
+      "example": {
+        "title": "예시",
+        "items": [
+          "정답이 1-2-3일 때 1-3-5를 추측하면: 1S 1B 1O",
+          "1은 위치도 맞으므로 스트라이크",
+          "3은 포함되지만 위치가 다르므로 볼",
+          "5는 포함되지 않으므로 아웃"
+        ]
+      },
+      "tips": {
+        "title": "공략 팁",
+        "items": [
+          "첫 추측으로 겹치지 않는 숫자를 사용하세요",
+          "아웃된 숫자를 기억하고 제외하세요",
+          "볼 판정을 활용하여 위치를 좁혀가세요",
+          "5회 이상 시도 후 힌트를 활용하세요"
+        ]
+      }
+    }
+  },
+  "contrastChecker": {
+    "title": "색상 대비 체커",
+    "description": "텍스트와 배경 색상의 WCAG 대비율을 검사하고 접근성 준수 여부를 확인합니다.",
+    "foreground": "전경색 (텍스트)",
+    "background": "배경색",
+    "contrastRatio": "대비율",
+    "swap": "색상 교환",
+    "random": "랜덤 색상",
+    "wcagGrades": "WCAG 등급",
+    "normalText": "일반 텍스트",
+    "largeText": "큰 텍스트",
+    "aa": "AA",
+    "aaa": "AAA",
+    "presets": "프리셋 색상 조합",
+    "copy": "복사",
+    "suggestion": "색상 추천",
+    "suggestionAA": "AA 기준 추천 색상",
+    "suggestionAAA": "AAA 기준 추천 색상",
+    "apply": "적용",
+    "textarea": "여기에 텍스트를 입력하여 미리보기를 확인하세요",
+    "preview": {
+      "title": "미리보기",
+      "normalText": "일반 텍스트 (16px) 미리보기입니다. WCAG 기준에 따른 가독성을 확인하세요.",
+      "largeText": "큰 텍스트 (24px) 미리보기"
+    },
+    "guide": {
+      "title": "색상 대비 가이드",
+      "wcag": {
+        "title": "WCAG 기준",
+        "items": [
+          "AA 등급: 일반 텍스트 4.5:1 이상, 큰 텍스트 3:1 이상",
+          "AAA 등급: 일반 텍스트 7:1 이상, 큰 텍스트 4.5:1 이상",
+          "큰 텍스트: 18pt(24px) 이상 또는 14pt(18.67px) 볼드",
+          "UI 요소와 그래픽은 3:1 이상 권장"
+        ]
+      },
+      "tips": {
+        "title": "접근성 팁",
+        "items": [
+          "순수 색상으로만 정보를 전달하지 마세요 (아이콘, 패턴 병행)",
+          "텍스트와 배경의 대비를 항상 확인하세요",
+          "색약 사용자를 위해 빨강-초록 조합을 피하세요",
+          "다크 모드에서도 충분한 대비를 유지하세요"
+        ]
+      }
+    }
+  },
+  "koreanWordle": {
+    "title": "한글 워들",
+    "description": "매일 새로운 2글자 한국어 단어를 6번 안에 맞춰보세요!",
+    "howToPlay": "게임 방법",
+    "statistics": "통계",
+    "played": "게임 수",
+    "winRate": "승률",
+    "currentStreak": "현재 연승",
+    "maxStreak": "최대 연승",
+    "guessDistribution": "추측 분포",
+    "nextWord": "다음 단어까지",
+    "share": "결과 공유",
+    "shared": "클립보드에 복사됨!",
+    "newGame": "새 게임",
+    "enter": "입력",
+    "delete": "삭제",
+    "notInList": "단어 목록에 없습니다",
+    "notEnoughLetters": "글자를 모두 입력하세요",
+    "youWin": "정답입니다! 🎉",
+    "youLose": "아쉽습니다! 정답: ",
+    "correct": "정확한 위치",
+    "present": "다른 위치에 존재",
+    "absent": "없는 글자",
+    "helpTitle": "게임 방법",
+    "helpDesc": "6번의 기회 안에 오늘의 2글자 단어를 맞춰보세요.",
+    "helpCorrect": "초록색은 해당 자모가 정확한 위치에 있음을 뜻합니다.",
+    "helpPresent": "노란색은 해당 자모가 단어에 있지만 위치가 다름을 뜻합니다.",
+    "helpAbsent": "회색은 해당 자모가 단어에 없음을 뜻합니다.",
+    "helpJamo": "각 글자는 초성·중성·종성으로 분리되어 개별 힌트를 제공합니다.",
+    "close": "닫기",
+    "attempt": "번째 시도",
+    "hardMode": "하드 모드",
+    "hardModeAfterStart": "게임 시작 후에는 하드 모드를 변경할 수 없습니다",
+    "invalidChars": "한글만 입력할 수 있습니다",
+    "shareTitle": "한글 워들",
+    "copyFailed": "복사에 실패했습니다",
+    "helpExampleTitle": "예시",
+    "helpJamoTitle": "자모 분석",
+    "helpKeyboard": "키보드의 색상은 해당 자모의 상태를 나타냅니다",
+    "hardModeCorrect": "{jamo}은(는) 정확한 위치에 있어야 합니다",
+    "hardModePresent": "{jamo}이(가) 포함되어야 합니다",
+    "winMessages": {
+      "0": "천재! 🎯",
+      "1": "대단해요! 🌟",
+      "2": "훌륭해요! ✨",
+      "3": "잘했어요! 👍",
+      "4": "괜찮아요! 😊",
+      "5": "간신히! 😅"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "rules": {
+        "title": "게임 규칙",
+        "items": [
+          "매일 새로운 2글자 한국어 단어가 출제됩니다",
+          "6번의 기회 안에 정답을 맞춰야 합니다",
+          "각 글자는 자모(초성·중성·종성)로 분리되어 힌트를 줍니다",
+          "🟩 초록: 정확한 위치 / 🟨 노랑: 다른 위치 / ⬛ 회색: 없음",
+          "결과를 복사하여 친구와 공유할 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "공략 팁",
+        "items": [
+          "첫 시도에는 다양한 자모가 포함된 단어를 사용하세요",
+          "종성이 있는 단어로 시작하면 더 많은 정보를 얻습니다",
+          "노란색 힌트를 활용해 위치를 좁혀가세요",
+          "자주 쓰이는 초성(ㅅ, ㄱ, ㅈ)을 우선 확인하세요"
+        ]
+      }
+    }
+  },
+  "boxShadow": {
+    "title": "CSS 박스 그림자 생성기",
+    "description": "다중 레이어 box-shadow CSS 코드를 시각적으로 생성하세요",
+    "preview": "미리보기",
+    "cssCode": "CSS 코드",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "cssWithPrefix": "벤더 프리픽스 포함",
+    "tailwindHint": "Tailwind CSS 클래스",
+    "layers": "그림자 레이어",
+    "addLayer": "레이어 추가",
+    "maxLayers": "최대 5개 레이어까지 추가할 수 있습니다",
+    "layerLabel": "#{n}",
+    "xOffset": "X 오프셋",
+    "yOffset": "Y 오프셋",
+    "blur": "블러",
+    "spread": "스프레드",
+    "color": "색상",
+    "opacity": "투명도",
+    "inset": "내부 그림자 (inset)",
+    "previewSettings": "미리보기 설정",
+    "bgColor": "배경색",
+    "elementColor": "요소 색상",
+    "borderRadius": "모서리 둥글기",
+    "elementSize": "요소 크기",
+    "elementWidth": "요소 너비",
+    "elementHeight": "요소 높이",
+    "tools": "도구",
+    "random": "랜덤",
+    "reset": "초기화",
+    "exportPng": "PNG 저장",
+    "presets": "프리셋",
+    "preset": {
+      "material1": "Material 1",
+      "material2": "Material 2",
+      "material3": "Material 3",
+      "material4": "Material 4",
+      "soft": "소프트 UI",
+      "sharp": "선명한 그림자",
+      "float": "플로팅",
+      "inner": "내부 그림자",
+      "layered": "다중 레이어",
+      "neon": "네온 글로우",
+      "retro": "레트로",
+      "minimal": "미니멀",
+      "glass": "글라스모피즘",
+      "deep": "딥 섀도우",
+      "colorful": "컬러풀",
+      "paper": "페이퍼 리프트"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "basics": {
+        "title": "box-shadow 기본 구문",
+        "items": [
+          "box-shadow: [inset] x-offset y-offset blur spread color",
+          "X 오프셋: 양수=오른쪽, 음수=왼쪽 방향 그림자",
+          "Y 오프셋: 양수=아래, 음수=위 방향 그림자",
+          "블러: 그림자 흐림 정도 (0=선명, 높을수록 부드러움)",
+          "스프레드: 그림자 확장/축소 크기",
+          "여러 그림자를 쉼표로 구분하여 중첩 가능"
+        ]
+      },
+      "tips": {
+        "title": "디자인 팁",
+        "items": [
+          "자연스러운 그림자는 Y 오프셋을 X보다 크게 설정하세요",
+          "블러 값은 오프셋의 2배 정도가 자연스럽습니다",
+          "투명도가 있는 색상(rgba)을 사용하면 더 세련된 효과를 얻습니다",
+          "다중 레이어를 활용하면 깊이감을 표현할 수 있습니다",
+          "Neumorphism 효과는 밝은/어두운 2개 그림자를 조합합니다"
+        ]
+      }
+    }
+  },
+  "codeScreenshot": {
+    "title": "코드 스크린샷",
+    "description": "코드를 아름다운 이미지로 변환하여 공유하세요",
+    "codeInput": "코드 입력",
+    "codePlaceholder": "여기에 코드를 붙여넣으세요...",
+    "preview": "미리보기",
+    "settings": "설정",
+    "theme": "테마",
+    "language": "언어",
+    "langAuto": "자동 감지",
+    "background": "배경",
+    "bgGradient": "그라디언트",
+    "bgSolid": "단색",
+    "bgTransparent": "투명",
+    "bgColor": "배경색",
+    "padding": "패딩",
+    "fontSize": "글꼴 크기",
+    "lineHeight": "줄 간격",
+    "lineNumbers": "줄 번호",
+    "windowChrome": "창 장식",
+    "windowTitle": "창 제목",
+    "shadow": "그림자",
+    "watermark": "워터마크",
+    "watermarkPlaceholder": "워터마크 텍스트",
+    "exportPng": "PNG 저장",
+    "exportSvg": "SVG 저장",
+    "copyImage": "이미지 복사",
+    "copied": "복사됨!",
+    "copy": "복사",
+    "borderRadius": "모서리 둥글기",
+    "detected": "감지됨",
+    "retina": "Retina (2x)",
+    "exportTitle": "내보내기",
+    "exportNote": "Retina 디스플레이용 2배 해상도로 내보냅니다",
+    "guide": {
+      "title": "사용 가이드",
+      "usage": {
+        "title": "사용 방법",
+        "items": [
+          "코드를 입력하거나 붙여넣으세요",
+          "테마, 배경, 글꼴 크기 등을 원하는 대로 설정하세요",
+          "PNG 또는 SVG로 다운로드하거나 클립보드에 복사하세요",
+          "Retina 디스플레이용 2배 해상도로 내보냅니다"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "블로그, SNS, 프레젠테이션에 코드를 공유할 때 유용합니다",
+          "Dracula, Monokai 등 인기 테마를 지원합니다",
+          "그라디언트 배경으로 더 세련된 이미지를 만들 수 있습니다",
+          "창 장식(macOS 스타일)으로 실제 에디터처럼 보이게 할 수 있습니다"
+        ]
+      }
+    }
+  },
+  "flexboxGrid": {
+    "title": "CSS Flexbox & Grid 생성기",
+    "description": "CSS Flexbox와 Grid 레이아웃을 시각적으로 만들고 코드를 복사하세요",
+    "flexbox": "Flexbox",
+    "grid": "Grid",
+    "container": "컨테이너 속성",
+    "children": "자식 요소",
+    "addChild": "자식 추가",
+    "removeChild": "삭제",
+    "maxChildren": "최대 8개까지 추가 가능",
+    "childLabel": "자식 #{n}",
+    "cssCode": "CSS 코드",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "preview": "미리보기",
+    "previewSize": "미리보기 크기",
+    "desktop": "데스크탑",
+    "tablet": "태블릿",
+    "mobile": "모바일",
+    "direction": "방향",
+    "justifyContent": "주축 정렬",
+    "alignItems": "교차축 정렬",
+    "flexWrap": "줄바꿈",
+    "gap": "간격",
+    "flexGrow": "확장",
+    "flexShrink": "축소",
+    "flexBasis": "기본 크기",
+    "alignSelf": "개별 정렬",
+    "order": "순서",
+    "columns": "열 수",
+    "rows": "행 수",
+    "columnSize": "열 크기",
+    "rowSize": "행 크기",
+    "justifyItems": "아이템 정렬",
+    "gridColumn": "열 범위",
+    "gridRow": "행 범위",
+    "resetBtn": "초기화",
+    "addColumn": "열 추가",
+    "addRow": "행 추가",
+    "presets": "프리셋",
+    "preset": {
+      "holyGrail": "Holy Grail",
+      "sidebar": "사이드바",
+      "cardGrid": "카드 그리드",
+      "navbar": "네비게이션 바",
+      "centered": "중앙 정렬",
+      "equalCards": "동일 높이 카드",
+      "masonry": "메이슨리"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "flexboxGuide": {
+        "title": "Flexbox 기본",
+        "items": [
+          "flex-direction으로 주축 방향을 설정합니다 (row/column)",
+          "justify-content로 주축 방향 정렬을 조절합니다",
+          "align-items로 교차축 방향 정렬을 조절합니다",
+          "flex-wrap으로 자식 요소의 줄바꿈 여부를 설정합니다",
+          "gap으로 요소 간 간격을 설정합니다"
+        ]
+      },
+      "gridGuide": {
+        "title": "Grid 기본",
+        "items": [
+          "grid-template-columns로 열 구조를 정의합니다",
+          "grid-template-rows로 행 구조를 정의합니다",
+          "fr 단위로 비율 기반 크기를 설정합니다",
+          "grid-column/grid-row로 아이템의 범위를 지정합니다",
+          "gap으로 셀 간 간격을 설정합니다"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "Flexbox는 1차원(행 또는 열) 레이아웃에, Grid는 2차원(행과 열) 레이아웃에 적합합니다",
+          "프리셋을 선택한 후 속성을 수정하면 빠르게 원하는 레이아웃을 만들 수 있습니다",
+          "반응형 미리보기로 데스크탑, 태블릿, 모바일에서의 모습을 확인하세요",
+          "생성된 CSS 코드를 복사하여 프로젝트에 바로 적용할 수 있습니다"
+        ]
+      }
+    }
+  },
+  "svgEditor": {
+    "title": "SVG 편집기 & 최적화",
+    "description": "SVG 코드를 편집하고 최적화하세요. PNG/JPEG 변환도 지원합니다.",
+    "dropzone": {
+      "title": "SVG 파일을 드래그하거나 클릭하여 업로드",
+      "subtitle": "또는 아래에 SVG 코드를 직접 붙여넣기"
+    },
+    "tabs": {
+      "editor": "편집기",
+      "optimize": "최적화",
+      "export": "내보내기",
+      "color": "색상"
+    },
+    "upload": "파일 열기",
+    "reset": "초기화",
+    "svgCode": "SVG 코드",
+    "optimizedCode": "최적화된 코드",
+    "lines": "줄",
+    "showOriginal": "원본 보기",
+    "showOptimized": "최적화 보기",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "placeholder": "여기에 SVG 코드를 붙여넣으세요...",
+    "preview": "미리보기",
+    "zoomIn": "확대",
+    "zoomOut": "축소",
+    "resetZoom": "배율 초기화",
+    "invalidSvg": "유효하지 않은 SVG 코드입니다",
+    "statistics": "통계",
+    "stats": {
+      "elements": "요소 수",
+      "originalSize": "원본 크기",
+      "optimizedSize": "최적화 크기",
+      "reduction": "절감률",
+      "width": "너비",
+      "height": "높이"
+    },
+    "optimizeOptions": "최적화 옵션",
+    "opt": {
+      "removeComments": "주석 제거",
+      "removeMetadata": "메타데이터 제거 (title, desc, editor 속성)",
+      "removeWhitespace": "불필요한 공백 제거",
+      "removeEmptyGroups": "빈 그룹(<g>) 제거",
+      "shortenHexColors": "색상 단축 (#ffffff → #fff)",
+      "removeDefaultAttrs": "기본값 속성 제거",
+      "removeXmlDeclaration": "XML 선언 제거",
+      "minify": "코드 압축 (줄바꿈/들여쓰기 제거)"
+    },
+    "optimize": "최적화 실행",
+    "sizeAdjust": "크기 조절",
+    "applySize": "크기 적용",
+    "applyToEditor": "편집기에 적용",
+    "optimizeHint": "왼쪽에서 옵션을 선택하고 최적화를 실행하세요",
+    "exportSettings": "내보내기 설정",
+    "exportFormat": "파일 형식",
+    "exportScale": "해상도 배율",
+    "jpegQuality": "JPEG 품질",
+    "useOptimized": "최적화된 코드 사용",
+    "download": "다운로드",
+    "exportPreview": "내보내기 미리보기",
+    "exportResolution": "출력 해상도",
+    "colorReplace": "색상 교체",
+    "findColor": "찾을 색상",
+    "replaceWith": "바꿀 색상",
+    "replaceAll": "모두 교체",
+    "detectedColors": "감지된 색상",
+    "noColors": "감지된 색상이 없습니다",
+    "guide": {
+      "title": "사용 가이드",
+      "features": {
+        "title": "주요 기능",
+        "items": [
+          "SVG 코드 실시간 편집 및 미리보기",
+          "주석, 메타데이터, 빈 그룹 등 불필요한 코드 제거",
+          "hex 색상 단축, XML 선언 제거 등 최적화",
+          "PNG/JPEG 변환 (1x~4x 해상도 지원)",
+          "색상 자동 감지 및 일괄 교체",
+          "width/height/viewBox 크기 조절",
+          "드래그 앤 드롭 SVG 파일 업로드"
+        ]
+      },
+      "tips": {
+        "title": "최적화 팁",
+        "items": [
+          "주석과 메타데이터 제거만으로도 20~30% 크기를 줄일 수 있습니다",
+          "색상 단축은 시각적 차이 없이 파일 크기를 줄입니다",
+          "PNG 변환 시 2x 해상도로 Retina 디스플레이를 지원하세요",
+          "색상 교체로 브랜드 컬러에 맞게 아이콘을 수정할 수 있습니다"
+        ]
+      }
+    }
+  },
+  "apiTester": {
+    "title": "API 테스터",
+    "description": "브라우저에서 직접 REST API를 테스트하세요",
+    "send": "전송",
+    "sending": "전송 중...",
+    "cancel": "취소",
+    "reset": "초기화",
+    "urlPlaceholder": "https://api.example.com/data",
+    "addRow": "행 추가",
+    "remove": "삭제",
+    "tabs": {
+      "params": "파라미터",
+      "headers": "헤더",
+      "body": "바디",
+      "auth": "인증",
+      "responseBody": "응답 바디",
+      "responseHeaders": "응답 헤더",
+      "codeGen": "코드 생성"
+    },
+    "paramsHint": "URL에 추가할 쿼리 파라미터를 입력하세요",
+    "headersHint": "요청에 포함할 HTTP 헤더를 입력하세요",
+    "bodyHint": "JSON 형식의 요청 본문을 입력하세요",
+    "keyPlaceholder": "파라미터 이름",
+    "valuePlaceholder": "값",
+    "headerKeyPlaceholder": "헤더 이름 (예: Content-Type)",
+    "headerValuePlaceholder": "헤더 값 (예: application/json)",
+    "bodyPlaceholder": "{\n  \"key\": \"value\"\n}",
+    "bodyInvalid": "올바르지 않은 JSON 형식입니다",
+    "authType": "인증 방식",
+    "authNone": "인증 없음",
+    "authBasic": "Basic Auth",
+    "authBearer": "Bearer Token",
+    "username": "사용자명",
+    "usernamePlaceholder": "사용자명 입력",
+    "password": "비밀번호",
+    "passwordPlaceholder": "비밀번호 입력",
+    "bearerToken": "Bearer Token",
+    "bearerTokenPlaceholder": "토큰을 입력하세요",
+    "envVars": "환경 변수",
+    "envVarsHint": "URL, 헤더, 바디에서 {{변수명}} 형태로 사용할 수 있습니다",
+    "envKeyPlaceholder": "변수명 (예: API_KEY)",
+    "envValuePlaceholder": "값",
+    "addEnvVar": "변수 추가",
+    "history": "요청 기록",
+    "clearHistory": "기록 삭제",
+    "noHistory": "아직 요청 기록이 없습니다",
+    "requestCancelled": "요청이 취소되었습니다",
+    "unknownError": "알 수 없는 오류가 발생했습니다",
+    "corsError": "CORS 에러가 발생했습니다",
+    "corsExplanation": "브라우저 보안 정책(CORS)으로 인해 일부 API에 직접 접근이 제한됩니다.",
+    "corsSuggestions": [
+      "CORS 프록시 서비스를 경유하여 요청하세요",
+      "브라우저 CORS 해제 확장 프로그램을 설치하세요",
+      "API 서버에서 Access-Control-Allow-Origin 헤더를 설정하세요",
+      "로컬 개발 시 프록시 서버를 사용하세요"
+    ],
+    "copy": "복사",
+    "copied": "복사됨!",
+    "prettyView": "정렬",
+    "rawView": "원본",
+    "previewView": "미리보기",
+    "htmlPreview": "HTML 미리보기",
+    "headerName": "이름",
+    "headerValue": "값",
+    "guide": {
+      "title": "사용 가이드",
+      "features": {
+        "title": "주요 기능",
+        "items": [
+          "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS 메서드 지원",
+          "요청 헤더와 쿼리 파라미터 편집",
+          "JSON 본문 편집 및 실시간 유효성 검사",
+          "Basic Auth, Bearer Token 인증 지원",
+          "응답 상태 코드, 시간, 크기 분석",
+          "cURL, fetch(), axios 코드 자동 생성",
+          "환경 변수로 API 키 등 재사용 가능"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "환경 변수를 활용하면 API 키를 재사용할 수 있습니다",
+          "요청 기록에서 이전 요청을 클릭하여 불러올 수 있습니다",
+          "Enter 키를 눌러 빠르게 요청을 전송할 수 있습니다",
+          "JSON 본문 입력 시 자동으로 Content-Type이 설정됩니다"
+        ]
+      },
+      "cors": {
+        "title": "CORS 안내",
+        "description": "이 도구는 브라우저에서 실행되므로 CORS 정책에 의해 일부 API 서버에 접근이 제한될 수 있습니다. CORS 에러 발생 시 프록시 서버를 사용하거나 API 서버의 CORS 설정을 확인하세요."
+      }
+    }
+  },
+  "budgetCalculator": {
+    "title": "생활비 계산기",
+    "description": "카테고리별 월간 지출을 관리하고 예산을 계획하세요",
+    "currency": "원",
+    "manWon": "만",
+    "income": {
+      "title": "수입",
+      "salary": "월급 (세후)",
+      "sideIncome": "부수입",
+      "otherIncome": "기타 수입"
+    },
+    "expenses": {
+      "title": "지출 카테고리",
+      "average": "한국 평균"
+    },
+    "categories": {
+      "housing": "주거비",
+      "food": "식비",
+      "transport": "교통비",
+      "communication": "통신비",
+      "insurance": "보험료",
+      "education": "교육비",
+      "medical": "의료비",
+      "leisure": "여가/문화",
+      "clothing": "의류/미용",
+      "social": "경조사비",
+      "savings": "저축/투자",
+      "other": "기타"
+    },
+    "budgetType": {
+      "need": "필수",
+      "want": "선택",
+      "saving": "저축"
+    },
+    "summary": {
+      "title": "수입 vs 지출",
+      "totalIncome": "총 수입",
+      "totalExpenses": "총 지출",
+      "remaining": "잔여 금액",
+      "surplus": "흑자",
+      "deficit": "적자",
+      "usageRate": "소비율",
+      "savingsRate": "저축률"
+    },
+    "chart": {
+      "title": "지출 비율",
+      "total": "총 지출",
+      "categoryBars": "카테고리별 지출",
+      "noData": "지출 데이터를 입력하세요"
+    },
+    "rule": {
+      "title": "50/30/20 규칙 분석",
+      "description": "수입의 50%는 필수 지출, 30%는 선택 지출, 20%는 저축/투자에 배분하는 것이 이상적입니다.",
+      "needs": "필수 지출",
+      "wants": "선택 지출",
+      "saving": "저축/투자",
+      "target": "목표",
+      "actual": "실제",
+      "recommendations": "개선 추천",
+      "rec": {
+        "needsHigh": "필수 지출이 수입의 55%를 초과합니다. 주거비나 통신비 절감을 검토해보세요.",
+        "wantsHigh": "선택 지출이 수입의 35%를 초과합니다. 여가비나 외식비를 줄여보세요.",
+        "savingLow": "저축 비율이 15% 미만입니다. 자동이체 적금 등으로 저축 습관을 만들어보세요.",
+        "good": "50/30/20 규칙에 부합하는 건전한 예산 구조입니다!",
+        "overBudget": "총 지출이 수입을 초과합니다. 지출 항목을 전반적으로 검토하세요."
+      }
+    },
+    "actions": {
+      "reset": "초기화",
+      "share": "공유",
+      "save": "저장",
+      "copied": "복사됨!"
+    },
+    "preset": {
+      "defaultName": "내 예산",
+      "placeholder": "프리셋 이름",
+      "saved": "저장된 예산"
+    },
+    "share": {
+      "title": "월간 예산 요약"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "usage": {
+        "title": "사용 방법",
+        "items": [
+          "월 수입(세후 월급, 부수입 등)을 입력하세요",
+          "각 카테고리별 지출 금액을 입력하거나 슬라이더로 조절하세요",
+          "도넛 차트와 카테고리별 막대 그래프를 확인하세요",
+          "50/30/20 규칙과 비교하여 개선점을 찾으세요",
+          "예산을 저장하고 나중에 불러올 수 있습니다"
+        ]
+      },
+      "rule": {
+        "title": "50/30/20 규칙이란?",
+        "items": [
+          "필수 지출(50%): 주거비, 식비, 교통비, 통신비, 보험료, 의료비 등 반드시 필요한 지출",
+          "선택 지출(30%): 외식, 여가, 쇼핑, 취미 등 원하는 것에 쓰는 지출",
+          "저축/투자(20%): 적금, 투자, 비상금 등 미래를 위한 저축"
+        ]
+      },
+      "tips": {
+        "title": "절약 팁",
+        "items": [
+          "식비는 전체 수입의 15~20% 이내가 적정합니다",
+          "고정 지출(주거비, 통신비)을 먼저 파악하세요",
+          "경조사비는 연간 예산을 월로 나눠 준비하세요",
+          "저축은 수입의 20% 이상을 목표로 하세요",
+          "한국 평균과 비교하여 초과 항목을 줄여보세요"
+        ]
+      }
+    }
+  },
+  "loanSchedule": {
+    "title": "대출 상환 스케줄러",
+    "description": "대출 상환 계획표를 생성하고 이자를 분석하세요",
+    "loanAmount": "대출 원금",
+    "annualRate": "연이자율",
+    "loanTerm": "대출 기간",
+    "repaymentType": "상환 방식",
+    "typeEqualPayment": "원리금균등상환",
+    "typeEqualPrincipal": "원금균등상환",
+    "typeBullet": "만기일시상환",
+    "gracePeriod": "거치 기간",
+    "startDate": "시작 날짜",
+    "unitWon": "원",
+    "unitManwon": "만원",
+    "unitEokwon": "억원",
+    "wonUnit": "원",
+    "unitYears": "년",
+    "unitMonths": "개월",
+    "monthsLabel": "개월",
+    "extraMonthly": "추가 월 납입금",
+    "period": "회차",
+    "periodSuffix": "회",
+    "date": "날짜",
+    "monthlyPayment": "월 납입금",
+    "principalPayment": "원금",
+    "interestPayment": "이자",
+    "remainingBalance": "잔여 원금",
+    "totalPayment": "총 납입금",
+    "totalInterest": "총 이자",
+    "interestRatio": "이자 비율",
+    "avgMonthly": "월 평균 납입금",
+    "totalPeriods": "총 상환 기간",
+    "earlyRepaymentSavings": "조기상환 절감 효과",
+    "interestSaved": "이자 절감액",
+    "termReduced": "기간 단축",
+    "scheduleTab": "상환 계획표",
+    "chartTab": "차트",
+    "scheduleTitle": "상세 상환 스케줄",
+    "copyText": "복사",
+    "copied": "복사됨!",
+    "loadMore": "더보기",
+    "rowsRemaining": "건 남음",
+    "compare": "비교",
+    "reset": "초기화",
+    "loanA": "대출 A",
+    "loanB": "대출 B",
+    "compareDiff": "A - B 차이",
+    "totalInterestDiff": "총 이자 차이",
+    "totalPaymentDiff": "총 납입금 차이",
+    "avgMonthlyDiff": "월 평균 차이",
+    "compareDiffNote": "양수는 대출 A가 더 많은 금액, 음수는 대출 B가 더 많은 금액을 의미합니다.",
+    "chartPrincipalInterest": "회차별 원금/이자 비율",
+    "chartBalance": "잔여 원금 추이",
+    "graceLabel": "거치",
+    "guide": {
+      "title": "사용 가이드",
+      "types": {
+        "title": "상환 방식 안내",
+        "items": [
+          "원리금균등: 매월 동일 금액 납부, 초기 이자 비중 높음",
+          "원금균등: 원금 균등 납부, 초기 부담 크지만 총 이자 적음",
+          "만기일시: 매월 이자만 납부, 만기에 원금 일시 상환"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "거치 기간은 이자 부담을 늘리므로 최소화하세요",
+          "조기상환으로 이자를 크게 절감할 수 있습니다",
+          "원금균등이 총 이자 면에서 유리합니다",
+          "금리 변동 시 재계산하여 비교해 보세요"
+        ]
+      }
+    }
+  },
+  "movingCost": {
+    "title": "이사 비용 계산기",
+    "description": "이사 유형과 조건별 예상 비용을 계산하세요",
+    "sizeLabel": "집 크기",
+    "customSize": "직접 입력",
+    "pyeong": "평",
+    "sqm": "㎡",
+    "sizePresets": {
+      "oneRoom": "원룸(6평)",
+      "twoRoom": "투룸(10평)",
+      "twenty": "20평",
+      "thirty": "30평",
+      "forty": "40평",
+      "fiftyPlus": "50평+"
+    },
+    "movingTypeLabel": "이사 유형",
+    "movingTypes": {
+      "full": "포장이사",
+      "semi": "반포장이사",
+      "regular": "일반이사"
+    },
+    "movingTypeDesc": {
+      "full": "전 과정을 업체가 진행 (가장 편리)",
+      "semi": "대형 가구/가전은 업체, 소형은 본인 포장",
+      "regular": "본인이 짐 포장, 업체는 운반만 담당 (가장 저렴)"
+    },
+    "distanceLabel": "이사 거리",
+    "distances": {
+      "inCity": "시내",
+      "nearBy": "근거리",
+      "longRange": "원거리",
+      "veryLong": "장거리",
+      "custom": "직접 입력"
+    },
+    "floorLabel": "층수 정보",
+    "currentFloor": "현재 층수",
+    "newFloor": "이사갈 층수",
+    "floor": "층",
+    "hasElevator": "엘리베이터 있음",
+    "ladderTruck": "사다리차 필요",
+    "extrasLabel": "추가 서비스",
+    "extras": {
+      "acUnits": "에어컨 탈착 (대)",
+      "piano": "피아노 운반",
+      "pianoNone": "없음",
+      "pianoUpright": "업라이트 피아노",
+      "pianoGrand": "그랜드 피아노",
+      "largeAppliances": "대형가전 추가 (개)",
+      "storageDays": "보관 서비스 (일)",
+      "organization": "정리정돈 서비스",
+      "cleaning": "청소 서비스"
+    },
+    "dateLabel": "이사 날짜",
+    "peakSeason": "성수기 (3월, 9월)",
+    "weekend": "주말/공휴일",
+    "auspiciousDay": "손없는 날",
+    "normalDay": "비수기 평일",
+    "peakSeasonNote": "3월, 9월은 이사 성수기로 20~30% 할증이 적용됩니다.",
+    "weekendNote": "주말/공휴일은 10~20% 할증이 적용됩니다.",
+    "reset": "초기화",
+    "manwon": "만원",
+    "won": "원",
+    "copied": "복사됨!",
+    "copyResult": "결과 복사",
+    "disclaimer": "※ 본 계산기의 금액은 2024~2025년 평균 시세 기준 예상치이며, 실제 비용은 업체와 상황에 따라 다를 수 있습니다. 정확한 견적은 이사 업체에 직접 문의하세요.",
+    "result": {
+      "title": "예상 비용",
+      "estimatedTotal": "총 예상 비용",
+      "empty": "좌측 옵션을 설정하면 예상 비용이 표시됩니다",
+      "base": "기본 이사비",
+      "distance": "거리 추가비",
+      "floor": "층수 추가비",
+      "ladder": "사다리차 비용",
+      "ac": "에어컨 비용",
+      "otherServices": "기타 서비스",
+      "peakSeason": "성수기 할증",
+      "weekend": "주말 할증",
+      "total": "총 예상 비용"
+    },
+    "checklist": {
+      "title": "이사 준비 체크리스트",
+      "items": [
+        "이사 업체 견적 비교 (최소 3곳)",
+        "이사 날짜 및 시간 확정",
+        "전입신고 준비 (주민센터)",
+        "우편물 주소 변경 신청",
+        "인터넷/TV/전화 이전 신청",
+        "전기/가스/수도 명의 변경",
+        "관리비 정산",
+        "불필요한 짐 정리/폐기",
+        "귀중품/중요서류 별도 보관",
+        "이사 당일 청소 도구 준비",
+        "새 집 청소 및 방충/방역",
+        "이웃에게 이사 알림 (소음 양해)",
+        "냉장고 전원 24시간 전 차단",
+        "가전제품 포장/고정",
+        "반려동물 이동 준비"
+      ]
+    },
+    "guide": {
+      "title": "이사 가이드",
+      "priceRef": {
+        "title": "평수별 기본 비용 (포장이사 기준)",
+        "items": [
+          "원룸(6평): 30~50만원",
+          "투룸(10평): 50~80만원",
+          "20평: 80~120만원",
+          "30평: 120~180만원",
+          "40평: 180~250만원",
+          "50평 이상: 250~350만원",
+          "일반이사는 기본비의 50~60% 수준",
+          "반포장이사는 기본비의 70~80% 수준"
+        ]
+      },
+      "tips": {
+        "title": "절약 팁",
+        "items": [
+          "비수기(4~8월, 10~2월)에 이사하면 20~30% 절약",
+          "평일 이사가 주말보다 10~20% 저렴합니다",
+          "최소 3곳 이상 견적을 비교하세요",
+          "불필요한 짐은 미리 정리하면 비용이 줄어듭니다",
+          "손없는 날은 수요가 많아 가격이 올라갈 수 있습니다",
+          "에어컨 탈착은 이사 업체보다 전문 업체가 저렴할 수 있습니다"
+        ]
+      }
+    }
+  },
+  "carMaintenance": {
+    "title": "자동차 유지비 계산기",
+    "description": "보험, 세금, 주유비, 정비비, 감가상각까지 연간 차량 유지 비용을 한번에 계산하세요",
+    "vehicleInfo": "차량 정보",
+    "vehicleType": "차종",
+    "vehicleTypes": {
+      "light": "경차",
+      "small": "소형차",
+      "medium": "중형차",
+      "large": "대형차",
+      "suv": "SUV",
+      "import": "수입차"
+    },
+    "displacement": "배기량",
+    "modelYear": "연식",
+    "year": "년",
+    "yearsOld": "년차",
+    "fuelType": "연료 종류",
+    "fuelTypes": {
+      "gasoline": "가솔린",
+      "diesel": "디젤",
+      "lpg": "LPG",
+      "hybrid": "하이브리드",
+      "electric": "전기"
+    },
+    "fuelEfficiency": "연비",
+    "customInput": "직접 입력",
+    "drivingCosts": "주행 및 비용",
+    "annualDistance": "연간 주행거리",
+    "fuelPrice": "연료 가격",
+    "wonPerLiter": "원/L",
+    "wonPerKwh": "원/kWh",
+    "won": "원",
+    "monthlyParking": "월 주차비",
+    "carWashFrequency": "월 세차 횟수",
+    "timesPerMonth": "회/월",
+    "carWashCost": "1회 세차비",
+    "monthlyToll": "월 통행료 (하이패스)",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "annualTotal": "연간 총비용",
+    "monthlyAverage": "월평균 비용",
+    "costPerKm": "km당 비용",
+    "wonPerKm": "원/km",
+    "costBreakdown": "비용 구성",
+    "categories": {
+      "autoTax": "자동차세",
+      "insurance": "자동차보험",
+      "fuelCost": "유류비",
+      "maintenance": "정비비",
+      "parking": "주차비",
+      "carWash": "세차비",
+      "tollFees": "통행료",
+      "depreciation": "감가상각"
+    },
+    "monthly": "월",
+    "total": "합계",
+    "monthlyBreakdown": "월별 상세 내역",
+    "category": "항목",
+    "monthlyAmount": "월 비용",
+    "annualAmount": "연 비용",
+    "percentage": "비율",
+    "transitComparison": "대중교통 비교",
+    "carAnnualCost": "자동차 연간 비용",
+    "transitAnnualCost": "대중교통 연간 비용",
+    "transitComparisonResult": "자동차 유지비는 대중교통 대비 약 {ratio}배입니다 (서울 기준 교통카드 월 65,000원 기준)",
+    "maintenanceSchedule": "정비 스케줄",
+    "scheduleItem": "정비 항목",
+    "scheduleInterval": "교환 주기",
+    "scheduleUnitCost": "1회 비용",
+    "scheduleAnnualCost": "연간 비용",
+    "months": "개월",
+    "maintenanceItems": {
+      "engineOil": "엔진 오일",
+      "oilFilter": "오일 필터",
+      "airFilter": "에어 필터",
+      "cabinFilter": "에어컨 필터",
+      "brakePads": "브레이크 패드",
+      "tires": "타이어",
+      "battery": "배터리",
+      "coolant": "냉각수",
+      "transmissionFluid": "미션 오일",
+      "sparkPlugs": "점화 플러그",
+      "wiperBlades": "와이퍼 블레이드",
+      "brakeFluid": "브레이크 오일"
+    },
+    "placeholderTitle": "차량 정보를 입력하세요",
+    "placeholderDescription": "왼쪽 패널에서 차량 정보와 비용 항목을 입력하고 계산하기 버튼을 누르면 연간 유지비를 확인할 수 있습니다.",
+    "guide": {
+      "title": "자동차 유지비 가이드",
+      "taxSection": {
+        "title": "자동차세 안내",
+        "items": [
+          "비영업용 승용차: 1000cc 이하 80원/cc, 1600cc 이하 140원/cc, 1600cc 초과 200원/cc",
+          "교육세 30%가 추가됩니다",
+          "차령 3년 초과 시 매년 5%씩 할인 (최대 50%)",
+          "전기차는 배기량 없이 연 13만원 정액",
+          "1월 또는 3월에 연납 시 약 10% 할인"
+        ]
+      },
+      "savingsSection": {
+        "title": "유지비 절약 팁",
+        "items": [
+          "경차는 자동차세와 보험료가 크게 절약됩니다",
+          "연비 운전(급가속/급제동 자제)으로 유류비 10~20% 절감",
+          "보험 비교 사이트로 최저가 보험 찾기",
+          "셀프 세차, 셀프 주유로 비용 절감",
+          "하이패스 할인 시간대 활용"
+        ]
+      },
+      "maintenanceSection": {
+        "title": "정비 관리 요령",
+        "items": [
+          "엔진 오일은 10,000km 또는 6개월마다 교환",
+          "타이어 공기압을 정기적으로 체크하세요",
+          "브레이크 패드는 마모 한계선 확인 필수",
+          "에어컨 필터는 매년 교체 권장",
+          "겨울철 냉각수 부동액 비율 확인"
+        ]
+      },
+      "depreciationSection": {
+        "title": "감가상각 이해",
+        "items": [
+          "신차 출고 후 1년간 감가가 가장 큽니다 (약 20~30%)",
+          "3~5년차부터 감가 속도가 완만해집니다",
+          "수입차는 국산차 대비 감가가 더 큰 편입니다",
+          "인기 차종과 흰색/검정 색상이 리세일 가치가 높습니다",
+          "정기적인 관리 이력이 중고차 가치를 높입니다"
+        ]
+      }
+    }
+  },
+  "memoryGame": {
+    "title": "타일 매칭 게임",
+    "description": "카드를 뒤집어 같은 짝을 찾으세요!",
+    "selectDifficulty": "난이도 선택",
+    "difficulty": {
+      "easy": "쉬움",
+      "normal": "보통",
+      "hard": "어려움",
+      "expert": "매우 어려움"
+    },
+    "selectTheme": "테마 선택",
+    "theme": {
+      "emoji": "이모지",
+      "food": "음식",
+      "sports": "스포츠",
+      "korean": "한글",
+      "numbers": "숫자"
+    },
+    "pairs": "짝",
+    "startGame": "게임 시작",
+    "playAgain": "다시 하기",
+    "backToMenu": "메뉴로",
+    "menu": "메뉴",
+    "movesLabel": "시도",
+    "movesUnit": "회",
+    "timeLabel": "시간",
+    "comboLabel": "콤보",
+    "maxCombo": "최대 콤보",
+    "bestRecord": "최고 기록",
+    "newRecord": "신기록!",
+    "congratulations": "축하합니다!",
+    "winMessage": "모든 짝을 찾았습니다!",
+    "soundOn": "소리 켜기",
+    "soundOff": "소리 끄기",
+    "guide": {
+      "title": "게임 방법",
+      "howToPlay": {
+        "title": "플레이 방법",
+        "items": [
+          "카드를 클릭하면 뒤집어집니다",
+          "두 장의 카드가 같으면 짝이 맞아 그대로 남습니다",
+          "짝이 맞지 않으면 다시 뒤집어집니다",
+          "모든 짝을 찾으면 게임 클리어!"
+        ]
+      },
+      "scoring": {
+        "title": "점수 시스템",
+        "items": [
+          "적은 시도로 클리어하면 별 3개를 받습니다",
+          "연속으로 짝을 맞추면 콤보 보너스!",
+          "난이도별, 테마별 최고 기록이 저장됩니다",
+          "시간도 기록되니 빠르게 도전해보세요"
+        ]
+      }
+    }
+  },
+  "snakeGame": {
+    "title": "스네이크 게임",
+    "description": "클래식 뱀 게임 - 3가지 모드, 4단계 난이도, 커스텀 스킨으로 즐기세요!",
+    "score": "점수",
+    "highScore": "최고 점수",
+    "speed": "속도",
+    "mode": "게임 모드",
+    "difficulty": "난이도",
+    "skin": "뱀 스킨",
+    "startGame": "게임 시작",
+    "startHint": "모드와 난이도를 선택한 후 시작하세요",
+    "pause": "일시정지",
+    "paused": "일시정지됨",
+    "resume": "계속하기",
+    "gameOver": "게임 오버",
+    "newRecord": "새 기록!",
+    "playAgain": "다시 하기",
+    "backToMenu": "메뉴로",
+    "modes": {
+      "classic": "클래식",
+      "classicDesc": "벽에 부딪히면 게임 오버",
+      "infinite": "무한",
+      "infiniteDesc": "벽을 통과해 반대편으로 이동",
+      "obstacles": "장애물",
+      "obstaclesDesc": "랜덤 장애물이 나타남"
+    },
+    "difficulties": {
+      "slow": "느리게",
+      "normal": "보통",
+      "fast": "빠르게",
+      "accelerating": "가속"
+    },
+    "skins": {
+      "green": "초록",
+      "blue": "파랑",
+      "purple": "보라",
+      "rainbow": "무지개"
+    },
+    "foods": {
+      "title": "먹이 종류",
+      "normal": "일반 먹이",
+      "bonus": "보너스 먹이",
+      "special": "스페셜 먹이"
+    },
+    "guide": {
+      "title": "게임 가이드",
+      "keyboard": {
+        "title": "키보드 조작",
+        "items": [
+          "← → ↑ ↓ : 방향 전환",
+          "W A S D : 방향 전환 (대체키)",
+          "스페이스바 / P : 일시정지/재개"
+        ]
+      },
+      "touch": {
+        "title": "터치 조작",
+        "items": [
+          "스와이프 : 방향 전환",
+          "화면 D-pad : 방향 버튼 터치",
+          "가운데 버튼 : 일시정지/재개"
+        ]
+      },
+      "scoring": {
+        "title": "점수 시스템",
+        "items": [
+          "일반 먹이 (빨강) : +1점",
+          "보너스 먹이 (주황) : +3점, 일정 시간 후 사라짐",
+          "스페셜 먹이 (노랑 별) : +5점, 3초 후 사라짐",
+          "가속 모드: 점수가 올라갈수록 속도 증가"
+        ]
+      }
     }
   }
 }

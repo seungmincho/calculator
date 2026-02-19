@@ -35,6 +35,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
     const categoryLabels: Record<string, string> = {
       calculators: t('navigation.financialCalculators'),
       tools: t('navigation.developmentTools'),
+      media: t('navigation.mediaTools'),
       health: t('navigation.healthTools'),
       games: t('navigation.simpleGames'),
     }

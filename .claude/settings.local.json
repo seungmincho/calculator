@@ -11,7 +11,22 @@
       "Bash(ls:*)",
       "WebFetch(domain:developers.facebook.com)",
       "Bash(pnpm build:*)",
-      "Bash(pnpm add:*)"
+      "Bash(pnpm add:*)",
+      "Bash(npx tsc:*)",
+      "Bash(pnpm --version:*)",
+      "Bash(pnpm config:*)",
+      "Bash(pnpm install:*)",
+      "Bash(npm install:*)",
+      "Bash(npx next build:*)",
+      "Bash(python3:*)",
+      "Bash(timeout 15 npm run dev:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npx next lint:*)",
+      "WebFetch(domain:www.monitor.co.kr)",
+      "Bash(npx jsonlint:*)",
+      "Bash(timeout 30 npm run dev:*)",
+      "Bash(timeout 25 npx next dev:*)",
+      "Bash(done)"
     ],
     "deny": []
   }
