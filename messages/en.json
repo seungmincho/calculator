@@ -1102,6 +1102,7 @@
       "flexboxGrid": "Flexbox & Grid Generator",
       "svgEditor": "SVG Editor",
       "apiTester": "API Tester",
+      "faviconGenerator": "Favicon Generator",
       "budgetCalculator": "Budget Calculator",
       "loanSchedule": "Loan Schedule",
       "movingCost": "Moving Cost Calculator",
@@ -3674,6 +3675,10 @@
       "apiTester": {
         "title": "API Tester",
         "description": "Test and debug REST APIs in your browser"
+      },
+      "faviconGenerator": {
+        "title": "Favicon Generator",
+        "description": "Generate all platform favicons at once"
       },
       "budgetCalculator": {
         "title": "Budget Calculator",
@@ -9322,6 +9327,113 @@
           "Bonus food (orange) : +3 points, disappears after a while",
           "Special food (yellow star) : +5 points, disappears after 3 seconds",
           "Accelerating mode: speed increases with score"
+        ]
+      }
+    }
+  },
+  "homePage": {
+    "hero": {
+      "title": "All the tools you need, in one place",
+      "subtitle": "Financial calculators, developer tools, image editors, health tools, and games - 126+ free online tools",
+      "searchPlaceholder": "Search for a tool... (Ctrl+K)",
+      "totalTools": "Total Tools"
+    },
+    "popular": {
+      "title": "Popular Tools TOP 5"
+    },
+    "categories": {
+      "title": "Browse by Category",
+      "toolCount": "tools"
+    },
+    "allTools": {
+      "title": "All Tools",
+      "filterPlaceholder": "Filter by tool name..."
+    },
+    "features": {
+      "title": "Why ToolHub?",
+      "free": "Completely Free",
+      "freeDesc": "All tools available for free",
+      "pwa": "Install as App",
+      "pwaDesc": "Add to your home screen",
+      "offline": "Offline Support",
+      "offlineDesc": "Works without internet",
+      "darkMode": "Dark Mode",
+      "darkModeDesc": "Easy on your eyes"
+    }
+  },
+  "faviconGenerator": {
+    "title": "Favicon Generator",
+    "description": "Upload an image to generate favicons for all platforms - Web, iOS, Android, and Windows at once",
+    "upload": {
+      "title": "Upload Image",
+      "dragDrop": "Drag & drop or click to upload an image",
+      "formats": "PNG, JPG, SVG, WebP (512x512 or larger recommended)",
+      "change": "Click to change image",
+      "remove": "Remove image"
+    },
+    "editor": {
+      "title": "Image Editor",
+      "crop": "Crop",
+      "colorPick": "Pick Color",
+      "reset": "Reset",
+      "cropHint": "Drag to select an area",
+      "colorPickHint": "Click a color to remove",
+      "cropActive": "Selected area",
+      "cancelCrop": "Clear selection",
+      "selectedColor": "Color to remove",
+      "colorThreshold": "Tolerance",
+      "clearColor": "Clear"
+    },
+    "options": {
+      "title": "Options",
+      "bgColor": "Background Color",
+      "transparent": "Transparent",
+      "padding": "Padding",
+      "borderRadius": "Border Radius"
+    },
+    "generate": "Generate Favicons",
+    "generating": "Generating...",
+    "filter": {
+      "all": "All",
+      "web": "Web Standard",
+      "apple": "Apple",
+      "android": "Android",
+      "ms": "Microsoft"
+    },
+    "result": {
+      "title": "Generated Favicons",
+      "files": "files",
+      "downloadAll": "Download All (ZIP)",
+      "download": "Download",
+      "empty": "No favicons generated",
+      "emptyHint": "Upload an image and click 'Generate Favicons'"
+    },
+    "code": {
+      "htmlTitle": "HTML Setup Code",
+      "nextjsTitle": "Next.js Setup Code",
+      "copy": "Copy",
+      "copied": "Copied!"
+    },
+    "guide": {
+      "title": "Favicon Guide",
+      "sizes": {
+        "title": "Favicon Sizes by Platform",
+        "items": [
+          "Web Standard: 16x16, 32x32, 48x48, 64x64, 96x96 (browser tabs, bookmarks)",
+          "Apple Touch Icon: 57~180px (iPhone, iPad home screen icons)",
+          "Android Chrome: 192x192, 512x512 (home screen icons, splash screens)",
+          "Microsoft Tile: 70~310px (Windows Start menu, tiles)",
+          "favicon.ico: Multi-size icon (legacy browser compatibility)"
+        ]
+      },
+      "tips": {
+        "title": "Favicon Tips",
+        "items": [
+          "Use a square PNG image of 512x512 or larger",
+          "Simple designs look better at small sizes",
+          "Use transparent background PNGs for any theme compatibility",
+          "Apple automatically applies rounded corners, so use square images",
+          "Put the downloaded ZIP in a /favicons/ folder and add the HTML code to <head>"
         ]
       }
     }

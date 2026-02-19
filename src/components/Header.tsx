@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { Calculator, Menu, X, ChevronDown, Clock, Grid3X3, Search } from 'lucide-react';
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
@@ -183,10 +184,10 @@ const Header = () => {
     <header ref={headerRef} className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
             <Calculator className="w-8 h-8 text-blue-600" />
             <span className="text-xl font-bold text-gray-900 dark:text-white">{t('header.title')}</span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1" aria-label={t('common.menu')}>

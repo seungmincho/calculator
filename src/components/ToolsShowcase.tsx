@@ -17,6 +17,9 @@ export default function ToolsShowcase() {
     setFavorites(getFavorites())
   }, [])
 
+  // Hide on home page since HomePage has its own tools grid
+  if (pathname === '/') return null
+
   const handleToggleFavorite = (e: React.MouseEvent, href: string) => {
     e.preventDefault()
     e.stopPropagation()

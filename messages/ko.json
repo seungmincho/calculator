@@ -1376,6 +1376,7 @@
       "flexboxGrid": "Flexbox & Grid 생성기",
       "svgEditor": "SVG 편집기",
       "apiTester": "API 테스터",
+      "faviconGenerator": "파비콘 생성기",
       "budgetCalculator": "생활비 계산기",
       "loanSchedule": "대출 상환 스케줄러",
       "movingCost": "이사 비용 계산기",
@@ -3673,6 +3674,10 @@
       "apiTester": {
         "title": "API 테스터",
         "description": "브라우저에서 REST API 테스트 및 디버깅"
+      },
+      "faviconGenerator": {
+        "title": "파비콘 생성기",
+        "description": "모든 플랫폼용 파비콘 한 번에 생성"
       },
       "budgetCalculator": {
         "title": "생활비 계산기",
@@ -9321,6 +9326,113 @@
           "보너스 먹이 (주황) : +3점, 일정 시간 후 사라짐",
           "스페셜 먹이 (노랑 별) : +5점, 3초 후 사라짐",
           "가속 모드: 점수가 올라갈수록 속도 증가"
+        ]
+      }
+    }
+  },
+  "homePage": {
+    "hero": {
+      "title": "필요한 모든 도구, 한 곳에서",
+      "subtitle": "금융 계산기, 개발 도구, 이미지 편집, 건강 관리, 게임까지 126개 이상의 무료 온라인 도구를 제공합니다",
+      "searchPlaceholder": "도구를 검색하세요... (Ctrl+K)",
+      "totalTools": "전체 도구"
+    },
+    "popular": {
+      "title": "인기 도구 TOP 5"
+    },
+    "categories": {
+      "title": "카테고리별 둘러보기",
+      "toolCount": "개 도구"
+    },
+    "allTools": {
+      "title": "전체 도구 모음",
+      "filterPlaceholder": "도구 이름으로 필터링..."
+    },
+    "features": {
+      "title": "왜 툴허브인가요?",
+      "free": "완전 무료",
+      "freeDesc": "모든 도구를 무료로 이용",
+      "pwa": "앱처럼 설치",
+      "pwaDesc": "홈 화면에 추가 가능",
+      "offline": "오프라인 지원",
+      "offlineDesc": "인터넷 없이도 사용",
+      "darkMode": "다크모드",
+      "darkModeDesc": "눈이 편한 다크 테마"
+    }
+  },
+  "faviconGenerator": {
+    "title": "파비콘 생성기",
+    "description": "이미지를 업로드하면 웹, iOS, Android, Windows 등 모든 플랫폼에 필요한 파비콘을 한 번에 생성합니다",
+    "upload": {
+      "title": "이미지 업로드",
+      "dragDrop": "이미지를 드래그하거나 클릭하여 업로드",
+      "formats": "PNG, JPG, SVG, WebP (512x512 이상 권장)",
+      "change": "클릭하여 이미지 변경",
+      "remove": "이미지 삭제"
+    },
+    "editor": {
+      "title": "이미지 편집",
+      "crop": "영역 선택",
+      "colorPick": "색상 선택",
+      "reset": "초기화",
+      "cropHint": "드래그하여 영역을 선택하세요",
+      "colorPickHint": "제거할 색상을 클릭하세요",
+      "cropActive": "선택 영역",
+      "cancelCrop": "선택 해제",
+      "selectedColor": "제거할 색상",
+      "colorThreshold": "허용 범위",
+      "clearColor": "해제"
+    },
+    "options": {
+      "title": "옵션",
+      "bgColor": "배경색",
+      "transparent": "투명",
+      "padding": "여백",
+      "borderRadius": "모서리 둥글기"
+    },
+    "generate": "파비콘 생성하기",
+    "generating": "생성 중...",
+    "filter": {
+      "all": "전체",
+      "web": "웹 표준",
+      "apple": "Apple",
+      "android": "Android",
+      "ms": "Microsoft"
+    },
+    "result": {
+      "title": "생성된 파비콘",
+      "files": "개 파일",
+      "downloadAll": "전체 다운로드 (ZIP)",
+      "download": "다운로드",
+      "empty": "생성된 파비콘이 없습니다",
+      "emptyHint": "이미지를 업로드하고 '파비콘 생성하기' 버튼을 눌러주세요"
+    },
+    "code": {
+      "htmlTitle": "HTML 설정 코드",
+      "nextjsTitle": "Next.js 설정 코드",
+      "copy": "복사",
+      "copied": "복사됨!"
+    },
+    "guide": {
+      "title": "파비콘 가이드",
+      "sizes": {
+        "title": "플랫폼별 파비콘 사이즈",
+        "items": [
+          "웹 표준: 16x16, 32x32, 48x48, 64x64, 96x96 (브라우저 탭, 즐겨찾기)",
+          "Apple Touch Icon: 57~180px (iPhone, iPad 홈 화면 아이콘)",
+          "Android Chrome: 192x192, 512x512 (홈 화면 아이콘, 스플래시 스크린)",
+          "Microsoft Tile: 70~310px (Windows 시작 메뉴, 타일)",
+          "favicon.ico: 멀티 사이즈 아이콘 (레거시 브라우저 호환)"
+        ]
+      },
+      "tips": {
+        "title": "파비콘 제작 팁",
+        "items": [
+          "512x512 이상의 정사각형 PNG 이미지를 사용하세요",
+          "심플한 디자인이 작은 사이즈에서도 잘 보입니다",
+          "배경이 투명한 PNG를 사용하면 어떤 테마에도 어울립니다",
+          "Apple은 둥근 모서리를 자동으로 적용하므로 정사각형 이미지를 사용하세요",
+          "다운로드한 ZIP을 /favicons/ 폴더에 넣고 HTML 코드를 <head>에 추가하세요"
         ]
       }
     }

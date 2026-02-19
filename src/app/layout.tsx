@@ -13,6 +13,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 import ToolJsonLd from '@/components/ToolJsonLd'
 import SkipToContent from '@/components/SkipToContent'
+import ToolTracker from '@/components/ToolTracker'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import I18nWrapper from '@/components/I18nWrapper'
 
@@ -266,6 +267,7 @@ export default function RootLayout({
           <I18nWrapper>
             <SkipToContent />
             <ProgressBar />
+            <ToolTracker />
             <Header />
             {/* Breadcrumb Navigation */}
             <Breadcrumb />

@@ -25,7 +25,7 @@ export const menuConfig: MenuConfig = {
   calculators: {
     titleKey: 'navigation.financialCalculators',
     items: [
-      { href: '/', labelKey: 'footer.links.salaryCalculator', descriptionKey: 'toolsShowcase.tools.salary.description', icon: '💰' },
+      { href: '/salary-calculator', labelKey: 'footer.links.salaryCalculator', descriptionKey: 'toolsShowcase.tools.salary.description', icon: '💰' },
       { href: '/loan-calculator', labelKey: 'footer.links.loanCalculator', descriptionKey: 'toolsShowcase.tools.loan.description', icon: '🏦' },
       { href: '/savings-calculator', labelKey: 'footer.links.savingsCalculator', descriptionKey: 'toolsShowcase.tools.savings.description', icon: '📈' },
       { href: '/stock-calculator', labelKey: 'footer.links.stockCalculator', descriptionKey: 'toolsShowcase.tools.stock.description', icon: '📊' },
@@ -121,6 +121,7 @@ export const menuConfig: MenuConfig = {
       { href: '/flexbox-grid', labelKey: 'footer.links.flexboxGrid', descriptionKey: 'toolsShowcase.tools.flexboxGrid.description', icon: '📐' },
       { href: '/svg-editor', labelKey: 'footer.links.svgEditor', descriptionKey: 'toolsShowcase.tools.svgEditor.description', icon: '🎨' },
       { href: '/api-tester', labelKey: 'footer.links.apiTester', descriptionKey: 'toolsShowcase.tools.apiTester.description', icon: '🔌' },
+      { href: '/favicon-generator', labelKey: 'footer.links.faviconGenerator', descriptionKey: 'toolsShowcase.tools.faviconGenerator.description', icon: '🌐' },
     ],
   },
   media: {

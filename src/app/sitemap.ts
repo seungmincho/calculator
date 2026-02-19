@@ -12,6 +12,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: 'https://toolhub.ai.kr/salary-calculator/',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
       url: 'https://toolhub.ai.kr/loan-calculator/',
       lastModified: new Date(),
       changeFrequency: 'weekly',
@@ -769,6 +775,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: 'https://toolhub.ai.kr/snake-game/',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/favicon-generator/',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
