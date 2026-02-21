@@ -74,11 +74,46 @@ export default function OmokPage() {
     }
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '오목의 기본 규칙은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '오목은 15×15 바둑판에서 흑돌과 백돌을 번갈아 놓아 가로, 세로, 대각선으로 5개를 먼저 연속으로 놓는 사람이 이기는 게임입니다. 프로 규칙(렌주룰)에서는 흑이 선공 이점이 크므로 흑에게 삼삼(3-3), 사사(4-4), 장목(6목 이상) 금수를 적용합니다. 백에게는 금수가 없습니다. 캐주얼 게임에서는 금수 없이 플레이하기도 합니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '오목 AI는 어떻게 작동하나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '오목 AI는 미니맥스(Minimax) 알고리즘과 알파-베타 가지치기(Alpha-Beta Pruning)를 사용합니다. 미니맥스는 상대가 최선의 수를 둔다고 가정하고 여러 수 앞을 탐색합니다. 알파-베타 가지치기는 불필요한 탐색을 줄여 효율을 높입니다. 난이도에 따라 탐색 깊이를 조절하며, 패턴 인식으로 위협적인 수(열린 4, 열린 3 등)를 우선 평가합니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '오목에서 이기는 전략은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '① 열린 3(양쪽이 막히지 않은 3연속)을 만들어 상대를 방어에 몰아넣기 ② 동시에 두 방향으로 위협하는 쌍삼(4-3) 만들기 ③ 중앙 근처에서 시작하여 영향력 확보 ④ 상대의 열린 3을 즉시 차단하기 ⑤ L자, T자 형태의 복합 위협 구축. 가장 중요한 것은 공격과 방어의 균형이며, 한 수로 공격과 방어를 동시에 하는 수가 좋은 수입니다.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
         <BoardGamePage

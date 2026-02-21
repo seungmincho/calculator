@@ -50,11 +50,38 @@ export default function CronTesterPage() {
     ]
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '크론(Cron) 표현식이란 무엇인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '크론 표현식은 작업 예약 시간을 정의하는 형식으로, 5개 필드로 구성됩니다: 분(0-59) 시(0-23) 일(1-31) 월(1-12) 요일(0-7, 0과 7은 일요일). 예: \'0 9 * * 1-5\'는 평일 오전 9시, \'*/5 * * * *\'는 매 5분마다, \'0 0 1 * *\'는 매월 1일 자정을 의미합니다. Linux 서버, CI/CD, 클라우드 스케줄러에서 사용됩니다.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: '자주 사용하는 크론 표현식 예시는?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '매분: * * * * *. 매시 정각: 0 * * * *. 매일 자정: 0 0 * * *. 매주 월요일 오전 9시: 0 9 * * 1. 매월 1일 자정: 0 0 1 * *. 매 5분: */5 * * * *. 평일 오전 9시: 0 9 * * 1-5. 매월 마지막 날: 0 0 L * * (일부 시스템). 3개월마다: 0 0 1 */3 *. @reboot, @hourly, @daily 등 단축 표현도 일부 시스템에서 지원합니다.'
+        }
+      }
+    ]
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
