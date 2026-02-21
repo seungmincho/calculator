@@ -17,9 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function CharacterCounterPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '글자수 세기',
+    description: '텍스트의 글자수, 공백제외, 단어수, 문장수, 단락수를 실시간으로 계산합니다. SNS 글자수 제한 확인에 유용합니다.',
+    url: 'https://toolhub.ai.kr/character-counter',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['글자수 세기', '단어수 세기', '줄수 세기', '공백 포함/제외', '바이트 수 계산']
+  }
+
   return (
-    <I18nWrapper>
-      <CharacterCounter />
-    </I18nWrapper>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
+        <CharacterCounter />
+      </I18nWrapper>
+    </>
   )
 }

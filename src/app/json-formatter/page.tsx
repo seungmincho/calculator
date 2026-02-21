@@ -17,9 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function JsonFormatterPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'JSON 포맷터 Pro',
+    description: 'JSON 데이터를 검증하고 포맷팅하세요. 구문 강조 에디터, 인터랙티브 트리뷰, JSONPath 쿼리, JSON5/JSONC 지원, 통계 분석을 제공합니다.',
+    url: 'https://toolhub.ai.kr/json-formatter',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['JSON 포맷팅/압축', 'JSONPath 쿼리', 'JSON5/JSONC 지원', '트리뷰 모드', '자동 오류 수정']
+  }
+
   return (
-    <I18nWrapper>
-      <JsonFormatter />
-    </I18nWrapper>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
+        <JsonFormatter />
+      </I18nWrapper>
+    </>
   )
 }

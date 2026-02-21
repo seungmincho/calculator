@@ -64,11 +64,27 @@ export const metadata: Metadata = {
 }
 
 export default function RegexExtractorPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '정규식 추출기',
+    description: '강력한 정규식으로 텍스트를 검색, 추출, 변환하세요. grep 필터링, 패턴 매칭, 문자열 치환을 한 곳에서!',
+    url: 'https://toolhub.ai.kr/regex-extractor',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['정규식 패턴 매칭', '매칭 결과 추출', '플래그 설정', '실시간 미리보기']
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-      <div className="container mx-auto px-4">
-        <RegexExtractor />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+        <div className="container mx-auto px-4">
+          <RegexExtractor />
+        </div>
       </div>
-    </div>
+    </>
   )
 }

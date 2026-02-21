@@ -17,9 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function ColorConverterPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '색상 변환기',
+    description: '색상 코드를 HEX, RGB, HSL, HSV, CMYK 형식으로 변환합니다. 컬러 피커와 색상 팔레트 기능을 제공합니다.',
+    url: 'https://toolhub.ai.kr/color-converter',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['HEX 변환', 'RGB 변환', 'HSL 변환', 'CMYK 변환', '실시간 미리보기']
+  }
+
   return (
-    <I18nWrapper>
-      <ColorConverter />
-    </I18nWrapper>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
+        <ColorConverter />
+      </I18nWrapper>
+    </>
   )
 }

@@ -17,9 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function DiffViewerPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '텍스트 비교 도구 (Diff)',
+    description: '두 텍스트나 코드를 비교하여 차이점을 시각적으로 확인합니다. 추가, 삭제, 변경된 부분을 하이라이트로 표시합니다.',
+    url: 'https://toolhub.ai.kr/diff-viewer',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['텍스트 차이점 비교', '줄 단위 비교', '단어 단위 비교', '병합 뷰']
+  }
+
   return (
-    <I18nWrapper>
-      <DiffViewer />
-    </I18nWrapper>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
+        <DiffViewer />
+      </I18nWrapper>
+    </>
   )
 }

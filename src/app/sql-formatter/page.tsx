@@ -17,7 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function SqlFormatterPage() {
-  return <I18nWrapper>
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'SQL 포맷터',
+    description: 'SQL 쿼리를 예쁘게 포맷팅하고 압축하세요. 문법 검증과 쿼리 최적화 제안을 제공합니다.',
+    url: 'https://toolhub.ai.kr/sql-formatter',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['SQL 구문 포맷팅', '다양한 SQL 방언 지원', '구문 강조', '들여쓰기 설정']
+  }
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
         <SqlFormatter />
       </I18nWrapper>
+    </>
+  )
 }

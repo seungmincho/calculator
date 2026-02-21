@@ -17,7 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function MarkdownViewerPage() {
-  return <I18nWrapper>
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '마크다운 뷰어',
+    description: '마크다운 텍스트를 실시간으로 미리보고 편집하세요. HTML 변환, PDF 내보내기, 테이블 지원을 제공합니다.',
+    url: 'https://toolhub.ai.kr/markdown-viewer',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['마크다운 미리보기', '실시간 렌더링', '구문 강조', '내보내기']
+  }
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
         <MarkdownViewer />
       </I18nWrapper>
+    </>
+  )
 }

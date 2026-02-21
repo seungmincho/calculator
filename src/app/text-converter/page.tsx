@@ -17,9 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function TextConverterPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '텍스트 변환기',
+    description: '텍스트 대소문자 변환, camelCase, snake_case, kebab-case 등 다양한 케이스 변환을 지원합니다.',
+    url: 'https://toolhub.ai.kr/text-converter',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['대소문자 변환', 'camelCase 변환', 'snake_case 변환', 'kebab-case 변환', 'URI 인코딩']
+  }
+
   return (
-    <I18nWrapper>
-      <TextConverter />
-    </I18nWrapper>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
+        <TextConverter />
+      </I18nWrapper>
+    </>
   )
 }

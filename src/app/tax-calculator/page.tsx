@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     description: '한국 기준 소득세, 부가가치세, 양도소득세를 정확하게 계산하세요',
     images: ['/og-image-1200x630.png'],
   },
+  alternates: { canonical: 'https://toolhub.ai.kr/tax-calculator' },
 }
 
 export default function TaxCalculatorPage() {

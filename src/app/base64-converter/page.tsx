@@ -17,9 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function Base64ConverterPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Base64 변환기',
+    description: 'Base64 인코딩/디코딩 도구. 텍스트를 Base64로 변환하거나 Base64를 원본으로 복원합니다. 이미지 파일도 지원합니다.',
+    url: 'https://toolhub.ai.kr/base64-converter',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['Base64 인코딩', 'Base64 디코딩', '파일 변환', 'URL-safe Base64']
+  }
+
   return (
-    <I18nWrapper>
-      <Base64Converter />
-    </I18nWrapper>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
+        <Base64Converter />
+      </I18nWrapper>
+    </>
   )
 }

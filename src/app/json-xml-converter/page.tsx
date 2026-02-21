@@ -38,9 +38,25 @@ export const metadata: Metadata = {
 }
 
 export default function JsonXmlConverterPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'JSON/XML 변환기',
+    description: 'JSON을 XML로, XML을 JSON으로 상호 변환하는 개발자 도구. 실시간 구문 검증, 포맷팅, 다양한 프리셋 지원',
+    url: 'https://toolhub.ai.kr/json-xml-converter',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['JSON to XML', 'XML to JSON', '구문 강조', '포맷팅']
+  }
+
   return (
-    <I18nWrapper>
-      <JsonXmlConverter />
-    </I18nWrapper>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
+        <JsonXmlConverter />
+      </I18nWrapper>
+    </>
   )
 }

@@ -17,9 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function UnitConverterPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '단위 변환기',
+    description: '길이, 무게, 온도, 면적, 부피, 데이터, CSS 단위를 변환합니다. px/rem/em 변환, 평수 계산 등 실용적인 단위 변환 기능.',
+    url: 'https://toolhub.ai.kr/unit-converter',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['길이 변환', '무게 변환', '온도 변환', '면적 변환', '속도 변환']
+  }
+
   return (
-    <I18nWrapper>
-      <UnitConverter />
-    </I18nWrapper>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
+        <UnitConverter />
+      </I18nWrapper>
+    </>
   )
 }

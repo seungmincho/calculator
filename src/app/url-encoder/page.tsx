@@ -17,9 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function UrlEncoderPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'URL 인코더/디코더',
+    description: 'URL 인코딩/디코딩 도구. URL 파라미터를 안전하게 인코딩하거나 인코딩된 URL을 원본으로 디코딩합니다. URL 분석 기능 포함.',
+    url: 'https://toolhub.ai.kr/url-encoder',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['URL 인코딩', 'URL 디코딩', 'URI 컴포넌트 변환', '실시간 변환']
+  }
+
   return (
-    <I18nWrapper>
-      <UrlEncoder />
-    </I18nWrapper>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
+        <UrlEncoder />
+      </I18nWrapper>
+    </>
   )
 }

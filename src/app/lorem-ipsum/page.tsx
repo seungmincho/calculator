@@ -17,9 +17,25 @@ export const metadata: Metadata = {
 }
 
 export default function LoremIpsumPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Lorem Ipsum 생성기',
+    description: '웹 디자인과 개발에 사용할 Lorem Ipsum 더미 텍스트를 생성합니다. 한글 Lorem Ipsum도 지원합니다.',
+    url: 'https://toolhub.ai.kr/lorem-ipsum',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['문단 생성', '문장 생성', '단어 생성', '커스텀 길이']
+  }
+
   return (
-    <I18nWrapper>
-      <LoremIpsumGenerator />
-    </I18nWrapper>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <I18nWrapper>
+        <LoremIpsumGenerator />
+      </I18nWrapper>
+    </>
   )
 }
