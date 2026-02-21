@@ -38,9 +38,41 @@ export default function ImageResizerPage() {
     featureList: ['이미지 크기 조정', '비율 유지', '다양한 포맷 지원', '브라우저에서 처리']
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '이미지 리사이즈 시 화질 손실을 최소화하는 방법은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '① 원본보다 크게 확대하지 않기 (업스케일링은 항상 화질 저하) ② 비율을 유지한 채 축소하기 ③ JPEG의 경우 품질 85% 이상 유지 ④ PNG는 무손실이므로 투명 배경이나 텍스트가 있는 이미지에 적합 ⑤ WebP는 같은 화질에서 JPEG보다 25-35% 작은 파일 크기를 제공합니다. 큰 이미지를 작게 축소하는 것은 화질 손실이 거의 없습니다.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: '웹에 적합한 이미지 크기와 포맷은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '웹 이미지 권장 사항: 블로그/본문 이미지 800-1200px 너비, 히어로 이미지 1920px, 썸네일 300-400px. 포맷별 용도: JPEG는 사진, WebP는 웹 최적화(모든 모던 브라우저 지원), PNG는 투명 배경/로고, SVG는 아이콘/일러스트. 파일 크기는 페이지당 총 1MB 이내가 이상적이며, 지연 로딩(lazy loading)을 활용하세요.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'JPEG, PNG, WebP 포맷의 차이점은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'JPEG: 손실 압축, 사진에 최적, 투명 배경 불가, 파일 크기 작음. PNG: 무손실 압축, 투명 배경 지원, 텍스트/로고에 적합, 파일 크기 큼. WebP: 구글이 개발, 손실/무손실 모두 지원, 투명 배경 가능, JPEG 대비 25-35% 작음. AVIF: 차세대 포맷, WebP보다 20% 더 작지만 브라우저 지원이 제한적입니다.'
+        }
+      },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <ImageResizerComponent />
       </I18nWrapper>
