@@ -370,7 +370,6 @@ const JsonCsvConverter = () => {
               setViewMode('table')
             }
             
-            console.log('Table data set:', { headers, rowCount: rows.length }) // 디버깅용
           }
         } catch (err) {
           console.error('Failed to parse CSV for table view:', err)

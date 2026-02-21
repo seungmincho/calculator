@@ -65,8 +65,6 @@ const ExchangeRateCalculatorContent = () => {
       const response = await fetch('https://open.er-api.com/v6/latest/USD');
       const data = await response.json();
       
-      console.log('API Response:', data); // 디버깅용
-      
       if (data && data.rates) {
         setExchangeRates(data.rates);
         setLastUpdated(new Date(data.time_last_update_utc || Date.now()));
@@ -93,7 +91,6 @@ const ExchangeRateCalculatorContent = () => {
       
       setExchangeRates(fallbackRates);
       setLastUpdated(new Date());
-      console.log('Using fallback exchange rates:', fallbackRates);
     } finally {
       setLoading(false);
     }
@@ -101,15 +98,6 @@ const ExchangeRateCalculatorContent = () => {
 
   // 환율 계산
   const calculateExchange = () => {
-    console.log('Calculating exchange...', {
-      amount,
-      fromCurrency,
-      toCurrency,
-      exchangeRates,
-      fromRate: exchangeRates[fromCurrency],
-      toRate: exchangeRates[toCurrency]
-    });
-
     if (!amount || !exchangeRates[fromCurrency] || !exchangeRates[toCurrency]) {
       setResult(null);
       return;
@@ -125,7 +113,6 @@ const ExchangeRateCalculatorContent = () => {
     const usdAmount = fromCurrency === 'USD' ? amountNum : amountNum / exchangeRates[fromCurrency];
     const convertedAmount = toCurrency === 'USD' ? usdAmount : usdAmount * exchangeRates[toCurrency];
     
-    console.log('Calculation result:', convertedAmount);
     setResult(convertedAmount);
     setShowSaveButton(true); // 계산 결과가 있으면 저장 버튼 표시
   };

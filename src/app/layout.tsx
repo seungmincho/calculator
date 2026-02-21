@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
-import { Calculator } from 'lucide-react'
 // import { Analytics } from "@vercel/analytics/next" // Removed for Cloudflare Pages
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -199,8 +198,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
         
         {/* DNS Prefetch */}
-        <link rel="dns-prefetch" href="//www.google-analytics.com" />
-        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
 
         {/* hreflang for multilingual content */}
         <link rel="alternate" hrefLang="ko" href="https://toolhub.ai.kr" />

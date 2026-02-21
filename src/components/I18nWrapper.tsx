@@ -13,12 +13,10 @@ const I18nWrapper: React.FC<I18nWrapperProps> = ({ children }) => {
   const { language, isInitialized } = useLanguage();
   const { messages, loading } = useMessages(language);
 
-  console.log('I18nWrapper state:', { language, isInitialized, loading, hasMessages: !!messages }); // 디버깅용
-
   if (!isInitialized || loading || !messages) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">Loading...</div>
+        <div className="text-lg text-gray-900 dark:text-white">Loading...</div>
       </div>
     );
   }

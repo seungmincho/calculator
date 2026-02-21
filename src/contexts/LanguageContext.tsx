@@ -39,7 +39,6 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   }, []);
 
   const changeLanguage = (newLang: Language) => {
-    console.log('Context: Changing language to:', newLang);
     setLanguage(newLang);
     localStorage.setItem('language', newLang);
     
