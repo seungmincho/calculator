@@ -39,9 +39,33 @@ export default function FlexboxGridPage() {
     featureList: ['Flexbox 레이아웃', 'CSS Grid 레이아웃', '실시간 미리보기', '프리셋 레이아웃', '반응형 테스트', 'CSS 코드 복사'],
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Flexbox와 CSS Grid의 차이점은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Flexbox는 1차원 레이아웃(행 또는 열 중 하나)에 적합합니다. 네비게이션 바, 카드 목록, 정렬 등에 사용합니다. CSS Grid는 2차원 레이아웃(행과 열 동시)에 적합합니다. 전체 페이지 레이아웃, 대시보드, 갤러리 등에 사용합니다. 실무에서는 둘을 함께 사용합니다: Grid로 전체 구조를 잡고, Flex로 내부 요소를 배치합니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Flexbox에서 자주 사용하는 속성은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '컨테이너: display: flex, flex-direction(row/column), justify-content(main 축 정렬: center, space-between), align-items(cross 축 정렬: center, stretch), flex-wrap(줄바꿈), gap(간격). 아이템: flex-grow(남은 공간 비율), flex-shrink(축소 비율), flex-basis(기본 크기), order(순서 변경). 가장 자주 쓰는 패턴: display:flex + justify-content:center + align-items:center로 완벽한 중앙 정렬.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>
