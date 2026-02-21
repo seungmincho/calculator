@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: '디자인용 더미 텍스트를 생성하세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/lorem-ipsum',
+  },
 }
 
 export default function LoremIpsumPage() {

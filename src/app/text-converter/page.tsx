@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: '다양한 텍스트 케이스를 손쉽게 변환하세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/text-converter',
+  },
 }
 
 export default function TextConverterPage() {

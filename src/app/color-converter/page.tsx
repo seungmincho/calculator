@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: '다양한 색상 형식을 손쉽게 변환하세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/color-converter',
+  },
 }
 
 export default function ColorConverterPage() {

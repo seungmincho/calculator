@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: '텍스트와 파일의 해시값을 생성하세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/hash-generator',
+  },
 }
 
 export default function HashGeneratorPage() {

@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: '글자수, 단어수, 문장수를 실시간으로 분석하세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/character-counter',
+  },
 }
 
 export default function CharacterCounterPage() {

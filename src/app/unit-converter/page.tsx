@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: '길이, 무게, 온도, CSS 단위 등을 변환하세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/unit-converter',
+  },
 }
 
 export default function UnitConverterPage() {

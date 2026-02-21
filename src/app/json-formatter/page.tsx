@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: '구문 강조, JSONPath 쿼리, JSON5 지원, 트리뷰, 통계 분석까지 - 프로급 JSON 포맷터',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/json-formatter',
+  },
 }
 
 export default function JsonFormatterPage() {

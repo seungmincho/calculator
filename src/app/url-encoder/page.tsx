@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: 'URL을 안전하게 인코딩/디코딩하세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/url-encoder',
+  },
 }
 
 export default function UrlEncoderPage() {

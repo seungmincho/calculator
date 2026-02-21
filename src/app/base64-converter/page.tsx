@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: '텍스트와 파일을 Base64로 인코딩/디코딩하세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/base64-converter',
+  },
 }
 
 export default function Base64ConverterPage() {

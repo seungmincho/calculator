@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: '두 텍스트의 차이점을 시각적으로 비교하세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/diff-viewer',
+  },
 }
 
 export default function DiffViewerPage() {
