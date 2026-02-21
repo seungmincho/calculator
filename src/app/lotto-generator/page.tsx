@@ -112,11 +112,37 @@ export const metadata: Metadata = {
 }
 
 export default function LottoGeneratorPage() {
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '로또 당첨 확률은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '로또 6/45의 1등 당첨 확률은 45개 중 6개를 맞추는 것으로 1/8,145,060(약 814만분의 1)입니다. 2등(5개+보너스)은 1/1,357,510, 3등(5개)은 1/35,724, 4등(4개)은 1/733, 5등(3개)은 1/45입니다. 전체 당첨 확률(5등 이상)은 약 1/28입니다. 매주 약 800만 게임이 판매되므로 매주 평균 1명의 1등 당첨자가 나옵니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '로또 번호 선택 전략이 있나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '수학적으로 모든 번호 조합의 당첨 확률은 동일합니다(1/8,145,060). 하지만 당첨금을 극대화하려면 다른 사람이 잘 선택하지 않는 번호를 고르는 것이 유리합니다. 많은 사람이 선택하는 패턴: 생일(1-31), 연속번호(1,2,3,4,5,6), 직선 패턴 등을 피하면 1등 당첨 시 분배금이 높아집니다. 고정 번호를 매주 사는 것과 매주 바꾸는 것의 확률 차이는 없습니다.',
+        },
+      },
+    ],
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-      <div className="container mx-auto px-4">
-        <LottoGenerator />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+        <div className="container mx-auto px-4">
+          <LottoGenerator />
+        </div>
       </div>
-    </div>
+    </>
   )
 }

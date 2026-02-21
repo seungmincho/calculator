@@ -36,11 +36,38 @@ export default function JsonCsvConverterPage() {
     }
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'JSON과 CSV의 차이점은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'JSON(JavaScript Object Notation): 중첩 구조, 다양한 데이터 타입(문자열, 숫자, 배열, 객체, boolean, null) 지원, API 통신에 적합. CSV(Comma-Separated Values): 평면적 테이블 구조, 텍스트 값만 지원, 스프레드시트/데이터 분석에 적합. JSON은 복잡한 데이터를 표현할 수 있지만 CSV보다 파일 크기가 큽니다. CSV는 엑셀에서 바로 열 수 있어 비개발자와의 데이터 공유에 유리합니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'JSON을 CSV로 변환할 때 주의할 점은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '① 중첩 객체: JSON의 중첩 구조는 CSV의 평면 구조에 맞지 않아 \'점 표기법\'(address.city)이나 JSON 문자열로 처리 ② 배열 값: 세미콜론 등 다른 구분자로 연결하거나 별도 행으로 분리 ③ 특수문자: 쉼표, 줄바꿈, 큰따옴표가 포함된 값은 큰따옴표로 감싸야 함 ④ 인코딩: 한글이 포함된 CSV는 UTF-8 BOM을 추가해야 엑셀에서 깨지지 않음.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <I18nWrapper>
         <JsonCsvConverter />
