@@ -33,7 +33,8 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "load": "Load",
-    "convert": "Convert"
+    "convert": "Convert",
+    "copyLink": "Copy Link"
   },
   "accessibility": {
     "skipToContent": "Skip to main content"
@@ -97,6 +98,7 @@
   "searchDialog": {
     "placeholder": "Search tools by name or keyword...",
     "noResults": "No results found",
+    "popular": "Popular",
     "navigate": "Navigate",
     "open": "Open",
     "results": "tools"
@@ -978,6 +980,7 @@
   "footer": {
     "title": "ToolHub",
     "description": "We provide various calculators needed in daily life.",
+    "privacy": "Privacy Policy",
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
@@ -1110,7 +1113,7 @@
       "memoryGame": "Memory Game",
       "snakeGame": "Snake Game"
     },
-    "copyright": "© 2025 ToolHub. All rights reserved."
+    "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
   "characterCounter": {
     "title": "Character Counter",
@@ -3195,8 +3198,15 @@
     "simpleGames": "Simple Games",
     "financialTips": "💡 Financial Tips"
   },
+  "dailyTips": {
+    "title": "Tip of the Day",
+    "showTips": "Show Tips",
+    "prev": "Prev",
+    "next": "Next"
+  },
   "relatedTools": {
-    "title": "Related Tools"
+    "title": "Related Tools",
+    "discover": "Discover Other Tools"
   },
   "favorites": {
     "title": "Favorites",
@@ -3207,6 +3217,7 @@
     "title": "Other Useful Tools",
     "description": "Explore professional calculators and tools across finance, health, development, and more",
     "viewTips": "View Financial Tips",
+    "collapse": "Collapse",
     "categories": {
       "financial": "Financial Calculators",
       "health": "Health Tools",
@@ -9396,6 +9407,9 @@
       "title": "All Tools",
       "filterPlaceholder": "Filter by tool name..."
     },
+    "recentlyViewed": {
+      "title": "Recently Used"
+    },
     "features": {
       "title": "Why ToolHub?",
       "free": "Completely Free",
@@ -9583,5 +9597,79 @@
     "submitted": "Submitted!",
     "you": "(You)",
     "today": "Today"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "section1": {
+      "title": "1. Information We Collect",
+      "content": "ToolHub collects minimal information necessary to provide our services. Most tools can be used without any personal information collection.",
+      "items": [
+        "Automatically collected: Visit logs, service usage records, device information (browser type, OS)",
+        "Cookies: Service settings (dark mode, language, favorites, etc.) are stored in your browser's localStorage and are not sent to our servers",
+        "Advertising: Google AdSense may use cookies for ad delivery"
+      ]
+    },
+    "section2": {
+      "title": "2. Purpose of Information Use",
+      "items": [
+        "Service provision and operation",
+        "Statistical analysis for service improvement",
+        "Advertising (Google AdSense)"
+      ]
+    },
+    "section3": {
+      "title": "3. Data Retention Period",
+      "content": "ToolHub does not store personal information on servers. User settings are stored only in your browser's localStorage and are deleted when you clear your browser data."
+    },
+    "section4": {
+      "title": "4. Third-Party Sharing",
+      "content": "ToolHub does not share your personal information with third parties. However, Google's Privacy Policy applies when ads are served through Google AdSense."
+    },
+    "section5": {
+      "title": "5. Cookies and Advertising",
+      "content": "ToolHub serves ads through Google AdSense, which may use cookies in the process.",
+      "items": [
+        "Google uses cookies for ad delivery",
+        "You can disable cookies in your browser settings",
+        "To opt out of personalized ads, visit Google Ad Settings (ads.google.com/settings)"
+      ]
+    },
+    "section6": {
+      "title": "6. Your Rights",
+      "items": [
+        "You can delete or disable cookies in your browser settings",
+        "You can clear localStorage data to reset all settings",
+        "For privacy inquiries, please contact us using the information below"
+      ]
+    },
+    "section7": {
+      "title": "7. Technical Security Measures",
+      "items": [
+        "HTTPS (SSL/TLS) encrypted communication",
+        "Client-side processing that avoids storing personal data on servers",
+        "Sensitive calculation data is processed only on your device"
+      ]
+    },
+    "section8": {
+      "title": "8. Contact Information",
+      "content": "For questions about this Privacy Policy, please contact us at toolhub.ai.kr@gmail.com."
+    },
+    "effectiveDate": "Effective Date: February 21, 2026"
+  },
+  "tipsPage": {
+    "title": "Financial Tips Collection",
+    "subtitle": "From smart budgeting to investment strategies, discover practical financial tips for everyday life.",
+    "tipCount": "{count} tips are ready for you.",
+    "searchPlaceholder": "Search tips...",
+    "categoryFilter": "Browse by Category",
+    "allCategories": "All",
+    "readMore": "Read more →",
+    "noResults": "No results found",
+    "noResultsHint": "Try searching with different keywords or categories.",
+    "ctaTitle": "Need more financial tools?",
+    "ctaDescription": "Try our salary calculator, loan calculator, and many other financial calculators.",
+    "salaryCalculator": "Salary Calculator",
+    "loanCalculator": "Loan Calculator",
+    "savingsCalculator": "Savings Calculator"
   }
 }

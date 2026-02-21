@@ -4,10 +4,11 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import {
-  Search, Star, TrendingUp, Zap, Smartphone, Moon, WifiOff, ArrowRight
+  Search, Star, TrendingUp, Zap, Smartphone, Moon, WifiOff, ArrowRight, Clock
 } from 'lucide-react'
 import { menuConfig, categoryKeys, type CategoryKey, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
+import { getAllRecentTools } from '@/utils/recentTools'
 import { usePopularTools } from '@/hooks/useToolAnalytics'
 import SearchDialog from './SearchDialog'
 
@@ -37,8 +38,28 @@ export default function HomePage() {
     setFavorites(getFavorites())
   }, [])
 
+  const recentlyViewedItems = useMemo(() => {
+    if (typeof window === 'undefined') return []
+    const allRecent = getAllRecentTools()
+    const items: (MenuItem & { categoryKey: CategoryKey })[] = []
+    for (const recent of allRecent.slice(0, 8)) {
+      for (const catKey of categoryKeys) {
+        const found = menuConfig[catKey].items.find(i => i.href === recent.href)
+        if (found) {
+          items.push({ ...found, categoryKey: catKey })
+          break
+        }
+      }
+    }
+    return items
+  }, [])
+
   const totalTools = useMemo(() => {
     return categoryKeys.reduce((sum, key) => sum + menuConfig[key].items.length, 0)
+  }, [])
+
+  const newToolsCount = useMemo(() => {
+    return categoryKeys.reduce((sum, key) => sum + menuConfig[key].items.filter(i => i.isNew).length, 0)
   }, [])
 
   const filteredTools = useMemo(() => {
@@ -119,9 +140,17 @@ export default function HomePage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 md:pt-24 md:pb-28">
           <div className="text-center">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-medium mb-7 tracking-wide bg-white/60 border-gray-200 text-gray-600 dark:bg-white/[0.04] dark:border-white/[0.08] dark:text-slate-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              {totalTools}+ {t('homePage.hero.totalTools')}
+            <div className="inline-flex items-center gap-3 mb-7">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-medium tracking-wide bg-white/60 border-gray-200 text-gray-600 dark:bg-white/[0.04] dark:border-white/[0.08] dark:text-slate-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                {totalTools}+ {t('homePage.hero.totalTools')}
+              </div>
+              {newToolsCount > 0 && (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium tracking-wide bg-red-50 border-red-200 text-red-600 dark:bg-red-950/30 dark:border-red-800 dark:text-red-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                  +{newToolsCount} NEW
+                </div>
+              )}
             </div>
 
             {/* Title */}
@@ -228,6 +257,41 @@ export default function HomePage() {
             </div>
           )}
         </section>
+
+        {/* ===== RECENTLY VIEWED ===== */}
+        {recentlyViewedItems.length > 0 && (
+          <section className="py-8">
+            <div className="flex items-center gap-2 mb-6">
+              <Clock className="w-5 h-5 text-blue-500" />
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                {t('homePage.recentlyViewed.title')}
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {recentlyViewedItems.map(item => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="group bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-600 transition-all hover:-translate-y-1"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center text-xl">
+                      {item.icon}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
+                        {t(item.labelKey)}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                        {t(item.descriptionKey)}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ===== CATEGORY SHOWCASE ===== */}
         <section className="py-12">
@@ -382,8 +446,13 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <h3 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-1.5">
                         {t(item.labelKey)}
+                        {item.isNew && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full leading-none">
+                            NEW
+                          </span>
+                        )}
                       </h3>
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">
                         {t(item.descriptionKey)}

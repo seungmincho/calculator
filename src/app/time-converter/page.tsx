@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     description: '타임존 변환부터 Unix 타임스탬프까지, 모든 시간 변환을 한 곳에서',
     images: ['/logo.png'],
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/time-converter',
+  },
 };
 
 export default function TimeConverterPage() {

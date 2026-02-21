@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/json-csv-converter',
+  },
 }
 
 export default function JsonCsvConverterPage() {

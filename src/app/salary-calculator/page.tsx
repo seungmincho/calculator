@@ -3,12 +3,12 @@ import SalaryCalculator from '@/components/SalaryCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
-  title: '연봉 실수령액 계산기 | 툴허브 - 2025년 기준 정확한 계산',
-  description: '2025년 기준 4대보험, 소득세를 제외한 실제 받을 수 있는 연봉을 계산해보세요. 무료 온라인 연봉 계산기로 월급 실수령액을 확인하세요. 대출, 적금, 세금 등 다양한 금융 계산기도 함께 제공됩니다.',
-  keywords: '연봉계산기, 실수령액계산, 월급계산기, 세후연봉, 4대보험계산, 소득세계산, 2025년연봉, 금융계산기, 대출계산기, 적금계산기, 세금계산기, BMI계산기, 개발도구, 정규식추출기',
+  title: '연봉 실수령액 계산기 | 툴허브 - 2026년 기준 정확한 계산',
+  description: '2026년 기준 4대보험, 소득세를 제외한 실제 받을 수 있는 연봉을 계산해보세요. 무료 온라인 연봉 계산기로 월급 실수령액을 확인하세요. 대출, 적금, 세금 등 다양한 금융 계산기도 함께 제공됩니다.',
+  keywords: '연봉계산기, 실수령액계산, 월급계산기, 세후연봉, 4대보험계산, 소득세계산, 2026년연봉, 금융계산기, 대출계산기, 적금계산기, 세금계산기, BMI계산기, 개발도구, 정규식추출기',
   openGraph: {
     title: '연봉 실수령액 계산기 | 툴허브 - 종합 금융 도구',
-    description: '2025년 기준 정확한 연봉 실수령액 계산 + 대출, 적금, 세금 등 126+ 전문 도구 모음',
+    description: '2026년 기준 정확한 연봉 실수령액 계산 + 대출, 적금, 세금 등 126+ 전문 도구 모음',
     url: 'https://toolhub.ai.kr/salary-calculator',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '연봉 실수령액 계산기 | 툴허브',
-    description: '2025년 기준 정확한 연봉 계산 + 126+ 전문 도구',
+    description: '2026년 기준 정확한 연봉 계산 + 126+ 전문 도구',
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   robots: {
@@ -50,7 +50,7 @@ export default function SalaryCalculatorPage() {
     '@type': 'WebApplication',
     name: '연봉 실수령액 계산기',
     alternateName: '툴허브 연봉계산기',
-    description: '2025년 기준 4대보험, 소득세를 제외한 정확한 연봉 실수령액을 계산하는 무료 온라인 도구',
+    description: '2026년 기준 4대보험, 소득세를 제외한 정확한 연봉 실수령액을 계산하는 무료 온라인 도구',
     url: 'https://toolhub.ai.kr/salary-calculator',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
@@ -67,7 +67,7 @@ export default function SalaryCalculatorPage() {
       '4대보험 계산 (국민연금, 건강보험, 고용보험, 산재보험)',
       '소득세 및 지방소득세 계산',
       '부양가족공제 적용',
-      '2025년 세법 기준 적용',
+      '2026년 세법 기준 적용',
       '비과세 소득 계산',
       '계산 결과 저장 및 공유',
       '다크모드 지원'
@@ -80,11 +80,62 @@ export default function SalaryCalculatorPage() {
     isAccessibleForFree: true,
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '연봉 3000만원의 실수령액은 얼마인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '연봉 3000만원의 월 실수령액은 약 224만원입니다. 4대보험(국민연금, 건강보험, 고용보험, 장기요양보험)과 소득세, 지방소득세를 공제한 금액입니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '4대보험 계산은 어떻게 하나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '4대보험은 국민연금(4.5%), 건강보험(3.545%), 장기요양보험(건강보험의 12.95%), 고용보험(0.9%)으로 구성됩니다. 월급에서 각 비율을 적용하여 계산합니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '연봉과 월급의 차이는 무엇인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '연봉은 1년간 받는 총 급여액이고, 월급은 연봉을 12개월로 나눈 세전 월 급여입니다. 실수령액은 4대보험과 소득세를 공제한 후 실제 받는 금액입니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '비과세 소득이란 무엇인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '비과세 소득은 식대(월 20만원), 자가운전보조금(월 20만원) 등 세금이 부과되지 않는 소득입니다. 비과세 소득이 있으면 실수령액이 증가합니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '2026년 최저임금은 얼마인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '2026년 최저임금은 시간당 10,030원이며, 주 40시간 기준 월 환산액은 약 2,096,270원입니다.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <I18nWrapper>
         <SalaryCalculator />

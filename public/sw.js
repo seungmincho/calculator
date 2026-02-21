@@ -1,7 +1,7 @@
 // Service Worker for ToolHub PWA
-const CACHE_NAME = 'toolhub-v1.0.0'
-const STATIC_CACHE_NAME = 'toolhub-static-v1.0.0'
-const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v1.0.0'
+const CACHE_NAME = 'toolhub-v3.0.0'
+const STATIC_CACHE_NAME = 'toolhub-static-v3.0.0'
+const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v3.0.0'
 
 // Files to cache immediately
 const STATIC_FILES = [
@@ -47,8 +47,7 @@ self.addEventListener('install', (event) => {
     Promise.all([
       caches.open(STATIC_CACHE_NAME).then((cache) => {
         console.log('Service Worker: Caching static files')
-        return cache.addAll(STATIC_FILES.map(url => {
-          // Handle potential cache failures gracefully
+        return Promise.all(STATIC_FILES.map(url => {
           return fetch(url).then(response => {
             if (response.ok) {
               return cache.put(url, response)
@@ -306,43 +305,4 @@ function updateDynamicContent() {
   )
 }
 
-// Handle push notifications (future feature)
-self.addEventListener('push', (event) => {
-  if (event.data) {
-    const data = event.data.json()
-    
-    const options = {
-      body: data.body || '새로운 기능이나 업데이트가 있습니다.',
-      icon: '/android-chrome-192x192.png',
-      badge: '/favicon-96x96.png',
-      tag: 'toolhub-notification',
-      renotify: true,
-      requireInteraction: false,
-      actions: [
-        {
-          action: 'open',
-          title: '열기'
-        },
-        {
-          action: 'close',
-          title: '닫기'
-        }
-      ]
-    }
-    
-    event.waitUntil(
-      self.registration.showNotification(data.title || '툴허브', options)
-    )
-  }
-})
-
-// Handle notification clicks
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close()
-  
-  if (event.action === 'open' || !event.action) {
-    event.waitUntil(
-      clients.openWindow('/')
-    )
-  }
-})
+// Push notification handlers removed - no subscription logic exists

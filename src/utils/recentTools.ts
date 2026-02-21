@@ -65,6 +65,18 @@ export const hasRecentTools = (category: string): boolean => {
   return recentHrefs.length > 0
 }
 
+// 모든 카테고리에서 최근 사용 도구를 시간순으로 가져오기
+export const getAllRecentTools = (): { href: string; category: string; timestamp: number }[] => {
+  const data = getRecentTools()
+  const allTools: { href: string; category: string; timestamp: number }[] = []
+  for (const [category, entries] of Object.entries(data)) {
+    for (const entry of entries) {
+      allTools.push({ href: entry.href, category, timestamp: entry.timestamp })
+    }
+  }
+  return allTools.sort((a, b) => b.timestamp - a.timestamp)
+}
+
 // 모든 최근 사용 기록 삭제
 export const clearRecentTools = (): void => {
   if (typeof window === 'undefined') return

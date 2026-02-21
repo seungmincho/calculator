@@ -1,9 +1,10 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { ChevronRight, Home } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { menuConfig, categoryKeys } from '@/config/menuConfig'
+import { menuConfig, categoryKeys, type CategoryKey } from '@/config/menuConfig'
 
 export default function Breadcrumb() {
   const rawPathname = usePathname()
@@ -13,6 +14,7 @@ export default function Breadcrumb() {
   // Find the current tool and its category from menuConfig
   let currentTool: { label: string; href: string } | null = null
   let categoryLabel = ''
+  let categoryKey: CategoryKey | null = null
 
   for (const catKey of categoryKeys) {
     const category = menuConfig[catKey]
@@ -20,6 +22,7 @@ export default function Breadcrumb() {
     if (found) {
       currentTool = { label: t(found.labelKey), href: found.href }
       categoryLabel = t(category.titleKey)
+      categoryKey = catKey
       break
     }
   }
@@ -58,21 +61,24 @@ export default function Breadcrumb() {
       >
         <ol className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 flex-wrap">
           <li>
-            <a
+            <Link
               href="/"
               className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               <Home className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">{t('header.title')}</span>
-            </a>
+            </Link>
           </li>
           <li aria-hidden="true">
             <ChevronRight className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600" />
           </li>
           <li>
-            <span className="text-gray-400 dark:text-gray-500">
+            <Link
+              href={`/?category=${categoryKey}#tools-grid`}
+              className="text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
               {categoryLabel}
-            </span>
+            </Link>
           </li>
           <li aria-hidden="true">
             <ChevronRight className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600" />

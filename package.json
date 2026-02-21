@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -p 3033",
-    "build": "next build",
-    "export": "next build && next export",
+    "build": "next build && node scripts/fix-rsc-paths.js",
+    "export": "next build && node scripts/fix-rsc-paths.js",
     "start": "next start",
     "lint": "next lint",
     "wrangler:dev": "wrangler pages dev out --compatibility-date=2025-12-09",
-    "wrangler:deploy": "next build && wrangler pages deploy out",
+    "wrangler:deploy": "next build && node scripts/fix-rsc-paths.js && wrangler pages deploy out",
     "deploy": "wrangler pages deploy out",
     "cf:deploy": "npm run build && wrangler pages deploy out"
   },

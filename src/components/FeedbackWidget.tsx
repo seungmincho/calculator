@@ -83,6 +83,24 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
       const success = safeStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(updatedFeedbacks))
       
       if (success) {
+        // Send to Supabase (fire-and-forget, don't block UI)
+        try {
+          const { getSupabase } = await import('@/utils/webrtc/supabaseClient')
+          const supabase = getSupabase()
+          if (supabase) {
+            supabase.from('feedback').insert([{
+              id: newFeedback.id,
+              calculator_type: newFeedback.calculatorType,
+              rating: newFeedback.rating,
+              comment: newFeedback.comment || null,
+              user_agent: newFeedback.userAgent,
+              created_at: new Date(newFeedback.timestamp).toISOString(),
+            }]).then(() => {}).catch(() => {})
+          }
+        } catch {
+          // Silently fail - localStorage is the primary storage
+        }
+
         setHasSubmitted(true)
         setShowThankYou(true)
         setCanShowWidget(false)

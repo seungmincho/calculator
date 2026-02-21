@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Wrench, Star } from 'lucide-react'
+import { Wrench, Star, ChevronDown } from 'lucide-react'
 import { menuConfig, categoryKeys, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
 
@@ -12,6 +12,7 @@ export default function ToolsShowcase() {
   const t = useTranslations()
   const pathname = usePathname()
   const [favorites, setFavorites] = useState<string[]>([])
+  const [isExpanded, setIsExpanded] = useState(false)
 
   useEffect(() => {
     setFavorites(getFavorites())
@@ -19,6 +20,8 @@ export default function ToolsShowcase() {
 
   // Hide on home page since HomePage has its own tools grid
   if (pathname === '/') return null
+
+  const totalTools = categoryKeys.reduce((sum, key) => sum + menuConfig[key].items.length, 0)
 
   const handleToggleFavorite = (e: React.MouseEvent, href: string) => {
     e.preventDefault()
@@ -67,6 +70,28 @@ export default function ToolsShowcase() {
 
   return (
     <section className="mt-16 mb-8">
+      {/* Collapsed header - click to expand */}
+      {!isExpanded && (
+        <div className="text-center">
+          <button
+            onClick={() => setIsExpanded(true)}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-750 rounded-2xl border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-600 transition-all group"
+          >
+            <Wrench className="w-5 h-5 text-blue-600" />
+            <span className="text-lg font-semibold text-gray-900 dark:text-white">
+              {t('toolsShowcase.title')}
+            </span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              ({totalTools})
+            </span>
+            <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
+          </button>
+        </div>
+      )}
+
+      {/* Expanded content */}
+      {isExpanded && (
+        <>
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
           {t('toolsShowcase.title')}
@@ -171,8 +196,13 @@ export default function ToolsShowcase() {
                           </div>
                         </div>
                         <div className="min-w-0 flex-1">
-                          <h4 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                          <h4 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-1.5">
                             {t(item.labelKey)}
+                            {item.isNew && (
+                              <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full leading-none">
+                                NEW
+                              </span>
+                            )}
                           </h4>
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">
                             {t(item.descriptionKey)}
@@ -188,7 +218,7 @@ export default function ToolsShowcase() {
         })}
       </div>
 
-      <div className="text-center mt-12">
+      <div className="text-center mt-12 flex flex-col items-center gap-3">
         <Link
           href="/tips"
           className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
@@ -196,7 +226,15 @@ export default function ToolsShowcase() {
           <Wrench className="w-5 h-5 mr-2" />
           {t('toolsShowcase.viewTips')}
         </Link>
+        <button
+          onClick={() => setIsExpanded(false)}
+          className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+        >
+          {t('toolsShowcase.collapse')}
+        </button>
       </div>
+        </>
+      )}
     </section>
   )
 }

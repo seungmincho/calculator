@@ -10,6 +10,7 @@ export interface MenuItem {
   descriptionKey: string; // 설명 번역 키 (toolsShowcase.tools.xxx.description)
   icon: string;
   modes?: GameMode[]; // 게임 지원 모드 (games 카테고리만 사용)
+  isNew?: boolean; // 신규 도구 표시
 }
 
 export interface MenuCategory {
@@ -62,10 +63,10 @@ export const menuConfig: MenuConfig = {
       { href: '/shipping-calculator', labelKey: 'footer.links.shippingCalc', descriptionKey: 'toolsShowcase.tools.shippingCalc.description', icon: '📦' },
       { href: '/parking-fee', labelKey: 'footer.links.parkingFee', descriptionKey: 'toolsShowcase.tools.parkingFee.description', icon: '🅿️' },
       { href: '/dutch-pay', labelKey: 'footer.links.dutchPay', descriptionKey: 'toolsShowcase.tools.dutchPay.description', icon: '🍽️' },
-      { href: '/budget-calculator', labelKey: 'footer.links.budgetCalculator', descriptionKey: 'toolsShowcase.tools.budgetCalculator.description', icon: '💸' },
-      { href: '/loan-schedule', labelKey: 'footer.links.loanSchedule', descriptionKey: 'toolsShowcase.tools.loanSchedule.description', icon: '📊' },
-      { href: '/moving-cost', labelKey: 'footer.links.movingCost', descriptionKey: 'toolsShowcase.tools.movingCost.description', icon: '🚛' },
-      { href: '/car-maintenance', labelKey: 'footer.links.carMaintenance', descriptionKey: 'toolsShowcase.tools.carMaintenance.description', icon: '🔧' },
+      { href: '/budget-calculator', labelKey: 'footer.links.budgetCalculator', descriptionKey: 'toolsShowcase.tools.budgetCalculator.description', icon: '💸', isNew: true },
+      { href: '/loan-schedule', labelKey: 'footer.links.loanSchedule', descriptionKey: 'toolsShowcase.tools.loanSchedule.description', icon: '📊', isNew: true },
+      { href: '/moving-cost', labelKey: 'footer.links.movingCost', descriptionKey: 'toolsShowcase.tools.movingCost.description', icon: '🚛', isNew: true },
+      { href: '/car-maintenance', labelKey: 'footer.links.carMaintenance', descriptionKey: 'toolsShowcase.tools.carMaintenance.description', icon: '🔧', isNew: true },
     ],
   },
   tools: {
@@ -123,9 +124,9 @@ export const menuConfig: MenuConfig = {
       { href: '/box-shadow', labelKey: 'footer.links.boxShadow', descriptionKey: 'toolsShowcase.tools.boxShadow.description', icon: '🔳' },
       { href: '/code-screenshot', labelKey: 'footer.links.codeScreenshot', descriptionKey: 'toolsShowcase.tools.codeScreenshot.description', icon: '📸' },
       { href: '/flexbox-grid', labelKey: 'footer.links.flexboxGrid', descriptionKey: 'toolsShowcase.tools.flexboxGrid.description', icon: '📐' },
-      { href: '/svg-editor', labelKey: 'footer.links.svgEditor', descriptionKey: 'toolsShowcase.tools.svgEditor.description', icon: '🎨' },
-      { href: '/api-tester', labelKey: 'footer.links.apiTester', descriptionKey: 'toolsShowcase.tools.apiTester.description', icon: '🔌' },
-      { href: '/favicon-generator', labelKey: 'footer.links.faviconGenerator', descriptionKey: 'toolsShowcase.tools.faviconGenerator.description', icon: '🌐' },
+      { href: '/svg-editor', labelKey: 'footer.links.svgEditor', descriptionKey: 'toolsShowcase.tools.svgEditor.description', icon: '🎨', isNew: true },
+      { href: '/api-tester', labelKey: 'footer.links.apiTester', descriptionKey: 'toolsShowcase.tools.apiTester.description', icon: '🔌', isNew: true },
+      { href: '/favicon-generator', labelKey: 'footer.links.faviconGenerator', descriptionKey: 'toolsShowcase.tools.faviconGenerator.description', icon: '🌐', isNew: true },
     ],
   },
   media: {

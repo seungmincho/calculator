@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: '마크다운을 쉽게 편집하고 미리보세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/markdown-viewer',
+  },
 }
 
 export default function MarkdownViewerPage() {

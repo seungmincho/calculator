@@ -14,6 +14,8 @@ import RelatedTools from '@/components/RelatedTools'
 import ToolJsonLd from '@/components/ToolJsonLd'
 import SkipToContent from '@/components/SkipToContent'
 import ToolTracker from '@/components/ToolTracker'
+import ToolShareButton from '@/components/ToolShareButton'
+import BackToTop from '@/components/BackToTop'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import I18nWrapper from '@/components/I18nWrapper'
 
@@ -90,10 +92,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code', // Google Search Console에서 받은 코드
-    // naver: 'your-naver-verification-code', // 네이버 웹마스터도구 코드
-  },
+  // verification: { google: 'xxx' }, // Google Search Console 인증 후 실제 코드 입력
 }
 
 export default function RootLayout({
@@ -102,6 +101,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-2070759131396958'
+  const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -121,14 +121,6 @@ export default function RootLayout({
       '연봉계산기', '대출계산기', '적금계산기', '시간변환기', '바코드생성기', 
       'QR코드생성기', 'JSON포맷터', 'SQL포맷터', '정규식추출기', '개발자도구'
     ],
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://toolhub.ai.kr/search?q={search_term_string}'
-      },
-      'query-input': 'required name=search_term_string'
-    },
     publisher: {
       '@type': 'Organization',
       name: '툴허브',
@@ -209,6 +201,11 @@ export default function RootLayout({
         {/* DNS Prefetch */}
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
         <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+
+        {/* hreflang for multilingual content */}
+        <link rel="alternate" hrefLang="ko" href="https://toolhub.ai.kr" />
+        <link rel="alternate" hrefLang="en" href="https://toolhub.ai.kr" />
+        <link rel="alternate" hrefLang="x-default" href="https://toolhub.ai.kr" />
         
         <script
           type="application/ld+json"
@@ -277,6 +274,10 @@ export default function RootLayout({
             <main id="main-content">
               {children}
             </main>
+
+            {/* Social Share FAB + Back to Top */}
+            <ToolShareButton />
+            <BackToTop />
 
             {/* Related Tools */}
             <RelatedTools />
@@ -359,7 +360,14 @@ export default function RootLayout({
           }}
         />
         
-        {/* <Analytics/> Removed for Cloudflare Pages */}
+        {/* Cloudflare Web Analytics */}
+        {cfAnalyticsToken && (
+          <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={`{"token":"${cfAnalyticsToken}"}`}
+          />
+        )}
       </body>
     </html>
   )

@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { Search, X, ArrowRight } from 'lucide-react'
+import { Search, X, ArrowRight, TrendingUp, Clock } from 'lucide-react'
+import { getAllRecentTools } from '@/utils/recentTools'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
@@ -54,6 +55,29 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
     })
     return items
   }, [t])
+
+  // Popular/suggested items when no query
+  const suggestedItems = useMemo(() => {
+    // Show recently used tools first, then fall back to curated popular tools
+    const recentTools = getAllRecentTools()
+    const recentHrefs = recentTools.slice(0, 5).map(r => r.href)
+    const recentItems = recentHrefs
+      .map(href => allItems.find(item => item.href === href))
+      .filter(Boolean) as SearchItem[]
+
+    // Curated popular tools
+    const popularHrefs = [
+      '/salary-calculator', '/loan-calculator', '/json-formatter',
+      '/password-generator', '/qr-generator', '/lotto-generator',
+      '/exchange-calculator', '/dday-calculator',
+    ]
+    const popularItems = popularHrefs
+      .filter(href => !recentHrefs.includes(href))
+      .map(href => allItems.find(item => item.href === href))
+      .filter(Boolean) as SearchItem[]
+
+    return { recentItems, popularItems: popularItems.slice(0, 5) }
+  }, [allItems])
 
   // Filter items based on query
   const filteredItems = useMemo(() => {
@@ -204,7 +228,75 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           className="max-h-[50vh] overflow-y-auto overscroll-contain"
           role="listbox"
         >
-          {filteredItems.length === 0 ? (
+          {!query.trim() && (suggestedItems.recentItems.length > 0 || suggestedItems.popularItems.length > 0) ? (
+            <>
+              {/* Recent tools */}
+              {suggestedItems.recentItems.length > 0 && (
+                <div>
+                  <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0 flex items-center gap-1.5">
+                    <Clock className="w-3 h-3" />
+                    {t('header.recent')}
+                  </div>
+                  {suggestedItems.recentItems.map((item, i) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      role="option"
+                      aria-selected={i === selectedIndex}
+                      data-selected={i === selectedIndex}
+                      onClick={(e) => { e.preventDefault(); navigateToItem(item) }}
+                      onMouseEnter={() => setSelectedIndex(i)}
+                      className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
+                        i === selectedIndex
+                          ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                          : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                      }`}
+                    >
+                      <span className="text-xl flex-shrink-0 w-8 text-center">{item.icon}</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium truncate">{item.label}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{item.description}</div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              )}
+              {/* Popular tools */}
+              {suggestedItems.popularItems.length > 0 && (
+                <div>
+                  <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0 flex items-center gap-1.5">
+                    <TrendingUp className="w-3 h-3" />
+                    {t('searchDialog.popular')}
+                  </div>
+                  {suggestedItems.popularItems.map((item, i) => {
+                    const idx = suggestedItems.recentItems.length + i
+                    return (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        role="option"
+                        aria-selected={idx === selectedIndex}
+                        data-selected={idx === selectedIndex}
+                        onClick={(e) => { e.preventDefault(); navigateToItem(item) }}
+                        onMouseEnter={() => setSelectedIndex(idx)}
+                        className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
+                          idx === selectedIndex
+                            ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                            : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                        }`}
+                      >
+                        <span className="text-xl flex-shrink-0 w-8 text-center">{item.icon}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-medium truncate">{item.label}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{item.description}</div>
+                        </div>
+                      </a>
+                    )
+                  })}
+                </div>
+              )}
+            </>
+          ) : filteredItems.length === 0 ? (
             <div className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
               <p className="text-sm">{t('searchDialog.noResults')}</p>
             </div>

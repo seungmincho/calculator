@@ -14,9 +14,40 @@ export const metadata: Metadata = {
 
 export default function SeverancePayPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '퇴직금 계산기', description: '법정 퇴직금 계산', url: 'https://toolhub.ai.kr/severance-pay', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['퇴직금 계산', '평균임금 산출', '근속연수 계산', '상여금 포함'] }
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '퇴직금은 언제부터 받을 수 있나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '근로기준법에 따라 1년 이상 계속 근로하고 퇴직하는 경우 퇴직금을 받을 수 있습니다. 4주간 평균 주 15시간 이상 근무한 근로자가 대상이며, 정규직·계약직·아르바이트 모두 해당됩니다. 퇴직일로부터 14일 이내에 지급해야 합니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '퇴직금은 어떻게 계산하나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '퇴직금 = 1일 평균임금 × 30일 × (총 재직일수 / 365)로 계산합니다. 평균임금은 퇴직 전 3개월간 지급된 임금 총액을 해당 기간의 총 일수로 나눈 금액입니다. 상여금, 연차수당 등 정기적으로 지급되는 금액도 평균임금에 포함됩니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '퇴직금에 세금이 얼마나 부과되나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '퇴직소득세는 퇴직금 전체가 아닌 퇴직소득공제 후 금액에 부과됩니다. 근속연수공제(근속기간에 따라 공제), 환산급여공제가 적용되며, 장기 근속자일수록 세금 부담이 적습니다. IRP(개인형퇴직연금)로 이체하면 퇴직소득세를 30~40% 절감할 수 있습니다.',
+        },
+      },
+    ],
+  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center">Loading...</div>}><I18nWrapper><SeverancePay /></I18nWrapper></Suspense>

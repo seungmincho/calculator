@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     images: [
       {
-        url: 'https://toolhub.ai.kr/og-image.png',
+        url: 'https://toolhub.ai.kr/og-image-1200x630.png',
         width: 1200,
         height: 630,
         alt: '정규식 추출기 - 툴허브',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '정규식 추출기 | grep, 패턴 매칭, 문자열 치환 도구',
     description: '강력한 정규식으로 텍스트를 검색, 추출, 변환하세요. grep 필터링, 패턴 매칭, 문자열 치환을 한 곳에서!',
-    images: ['https://toolhub.ai.kr/og-image.png'],
+    images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/regex-extractor',

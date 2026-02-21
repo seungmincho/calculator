@@ -26,7 +26,10 @@ const Header = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [recentTools, setRecentTools] = useState<Record<string, string[]>>({});
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [expandedMobileCategory, setExpandedMobileCategory] = useState<string | null>(null);
+  const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const headerRef = useRef<HTMLDivElement>(null);
+  const mobileSearchRef = useRef<HTMLInputElement>(null);
   const t = useTranslations();
 
   // 최근 사용 도구 로드 (클라이언트에서만)
@@ -216,7 +219,7 @@ const Header = () => {
                         </div>
                         <div className="space-y-1">
                           {getRecentOrDefaultItems(key).map((item) => item && (
-                            <a
+                            <Link
                               key={item.href}
                               href={item.href}
                               onClick={() => handleToolClick(key, item.href)}
@@ -224,7 +227,7 @@ const Header = () => {
                             >
                               <span className="text-lg">{item.icon}</span>
                               <span className="text-sm font-medium truncate">{item.label}</span>
-                            </a>
+                            </Link>
                           ))}
                         </div>
                       </div>
@@ -237,7 +240,7 @@ const Header = () => {
                         <div className="max-h-[280px] overflow-y-auto pr-1">
                           <div className="grid grid-cols-3 gap-1.5">
                             {menuItems[key].items.map((item) => (
-                              <a
+                              <Link
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => handleToolClick(key, item.href)}
@@ -245,7 +248,7 @@ const Header = () => {
                               >
                                 <span className="text-xl mb-1">{item.icon}</span>
                                 <span className="text-[11px] font-medium leading-tight line-clamp-2">{item.label}</span>
-                              </a>
+                              </Link>
                             ))}
                           </div>
                         </div>
@@ -257,12 +260,12 @@ const Header = () => {
             ))}
 
             {/* 금융 팁 */}
-            <a
+            <Link
               href="/tips"
               className="px-3 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
               {t('navigation.financialTips')}
-            </a>
+            </Link>
 
             {/* 검색 */}
             <button
@@ -313,40 +316,115 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="lg:hidden py-4 border-t border-gray-200 dark:border-gray-700 max-h-[calc(100vh-5rem)] overflow-y-auto">
-            <nav className="space-y-4">
+            {/* Mobile Search */}
+            <div className="px-3 pb-3">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  ref={mobileSearchRef}
+                  type="text"
+                  value={mobileSearchQuery}
+                  onChange={(e) => setMobileSearchQuery(e.target.value)}
+                  placeholder={t('common.search')}
+                  className="w-full pl-10 pr-8 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                />
+                {mobileSearchQuery && (
+                  <button
+                    onClick={() => setMobileSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Mobile search results */}
+            {mobileSearchQuery.trim() ? (
+              <nav className="space-y-1 px-1">
+                {(() => {
+                  const q = mobileSearchQuery.toLowerCase()
+                  const results: { href: string; label: string; icon: string; catTitle: string }[] = []
+                  for (const key of categoryKeys) {
+                    for (const item of menuItems[key].items) {
+                      if (item.label.toLowerCase().includes(q) || item.href.toLowerCase().includes(q)) {
+                        results.push({ ...item, catTitle: menuItems[key].title })
+                      }
+                    }
+                  }
+                  if (results.length === 0) {
+                    return (
+                      <div className="text-center py-6 text-gray-500 dark:text-gray-400 text-sm">
+                        {t('searchDialog.noResults')}
+                      </div>
+                    )
+                  }
+                  return results.slice(0, 15).map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => { setIsMobileMenuOpen(false); setMobileSearchQuery('') }}
+                      className="flex items-center space-x-3 px-4 py-2.5 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <div className="min-w-0 flex-1">
+                        <span className="block text-sm">{item.label}</span>
+                        <span className="block text-xs text-gray-400 dark:text-gray-500">{item.catTitle}</span>
+                      </div>
+                    </Link>
+                  ))
+                })()}
+              </nav>
+            ) : (
+            <nav className="space-y-1">
               {categoryKeys.map((key) => (
                 <div key={key}>
-                  <h3 className="px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
-                    {categoryIcons[key]} {menuItems[key].title}
-                  </h3>
-                  <div className="space-y-1">
-                    {menuItems[key].items.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center space-x-3 px-6 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                      >
-                        <span className="text-lg">{item.icon}</span>
-                        <span>{item.label}</span>
-                      </a>
-                    ))}
-                  </div>
+                  <button
+                    onClick={() => setExpandedMobileCategory(expandedMobileCategory === key ? null : key)}
+                    className="w-full flex items-center justify-between px-3 py-3 text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>{categoryIcons[key]}</span>
+                      <span>{menuItems[key].title}</span>
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="text-xs font-normal text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">
+                        {menuItems[key].items.length}
+                      </span>
+                      <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${expandedMobileCategory === key ? 'rotate-180' : ''}`} />
+                    </span>
+                  </button>
+                  {expandedMobileCategory === key && (
+                    <div className="space-y-1 pb-2">
+                      {menuItems[key].items.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="flex items-center space-x-3 px-6 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                        >
+                          <span className="text-lg">{item.icon}</span>
+                          <span>{item.label}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
 
               {/* 금융 팁 */}
               <div>
-                <a
+                <Link
                   href="/tips"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center space-x-3 px-3 py-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg mx-3 transition-colors font-medium"
                 >
                   <span className="text-lg">💡</span>
                   <span>{t('navigation.financialTips')}</span>
-                </a>
+                </Link>
               </div>
             </nav>
+            )}
           </div>
         )}
       </div>

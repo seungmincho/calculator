@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: 'SQL 쿼리를 쉽게 포맷팅하고 검증하세요',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://toolhub.ai.kr/sql-formatter',
+  },
 }
 
 export default function SqlFormatterPage() {

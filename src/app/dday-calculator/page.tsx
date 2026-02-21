@@ -50,12 +50,46 @@ export default function DdayCalculatorPage() {
       'URL 공유'
     ]
   }
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'D-Day는 당일을 포함하나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'D-Day는 보통 목표 당일을 D-0으로 세고, 오늘부터 남은 날을 D-N으로 표기합니다. 예를 들어 시험이 3일 후면 D-3입니다. 다만 일상에서는 당일을 D-1로 세는 경우도 있어 혼동이 있으니, "남은 일수"와 "D-Day" 표기를 구분하여 사용하세요.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '영업일 계산이란 무엇인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '영업일 계산은 주말(토·일)과 공휴일을 제외한 근무일만 계산하는 방식입니다. 예를 들어 "서류 접수 후 5영업일 이내 처리"라면 주말과 공휴일을 빼고 5일을 세면 됩니다. 금요일에 접수하면 다음 주 금요일이 아닌, 공휴일이 없다면 다음 주 금요일이 5영업일째입니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '한국의 법정 공휴일은 몇 일인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '한국의 법정 공휴일은 연간 약 15~16일입니다. 신정(1일), 설날(3일), 삼일절, 어린이날, 부처님오신날, 현충일, 광복절, 추석(3일), 개천절, 한글날, 크리스마스가 있으며, 대체공휴일 제도로 공휴일이 주말과 겹치면 다음 평일이 휴일이 됩니다.',
+        },
+      },
+    ],
+  }
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

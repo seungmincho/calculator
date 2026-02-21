@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Lightbulb, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface Tip {
   id: number;
@@ -10,6 +11,7 @@ interface Tip {
 }
 
 const DailyTips = () => {
+  const t = useTranslations('dailyTips');
   const [tips, setTips] = useState<Tip[]>([]);
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
@@ -81,7 +83,7 @@ const DailyTips = () => {
         <button
           onClick={showTips}
           className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-colors"
-          title="오늘의 팁 보기"
+          title={t('showTips')}
         >
           <Lightbulb className="w-5 h-5" />
         </button>
@@ -99,7 +101,7 @@ const DailyTips = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Lightbulb className="w-5 h-5 text-white" />
-              <h3 className="text-white font-semibold text-sm">오늘의 팁</h3>
+              <h3 className="text-white font-semibold text-sm">{t('title')}</h3>
             </div>
             <button
               onClick={hideTips}
@@ -128,7 +130,7 @@ const DailyTips = () => {
               className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
-              <span className="text-xs">이전</span>
+              <span className="text-xs">{t('prev')}</span>
             </button>
 
             <div className="flex items-center space-x-1">
@@ -148,7 +150,7 @@ const DailyTips = () => {
               onClick={nextTip}
               className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
             >
-              <span className="text-xs">다음</span>
+              <span className="text-xs">{t('next')}</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
