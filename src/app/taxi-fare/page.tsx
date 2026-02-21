@@ -14,9 +14,19 @@ export const metadata: Metadata = {
 
 export default function TaxiFarePage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '택시 요금 계산기', description: '예상 택시 요금 계산', url: 'https://toolhub.ai.kr/taxi-fare', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['택시 요금 계산', '일반/모범 택시', '심야 할증', '지역별 요금'] }
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: '택시 심야 할증은 몇 시부터인가요?', acceptedAnswer: { '@type': 'Answer', text: '택시 심야 할증은 밤 10시(22:00)부터 새벽 4시(04:00)까지 적용되며, 일반 요금의 20~40%가 할증됩니다. 서울 기준 일반택시 심야 할증은 20%이며, 기본요금 4,800원이 심야에는 5,760원이 됩니다. 모범택시는 심야 할증이 없는 대신 기본요금이 7,000원으로 높습니다.' } },
+      { '@type': 'Question', name: '택시 기본요금은 지역마다 다른가요?', acceptedAnswer: { '@type': 'Answer', text: '네, 택시 기본요금은 지역별로 다릅니다. 2024년 기준 서울 일반택시 기본요금은 4,800원(1.6km), 경기도는 4,800원, 부산 4,800원, 대구 4,500원, 대전 4,500원입니다. 거리 요금도 지역마다 차이가 있으며, 서울은 131m당 100원, 시간 요금은 30초당 100원이 가산됩니다.' } },
+      { '@type': 'Question', name: '카카오택시와 일반 택시 요금 차이는?', acceptedAnswer: { '@type': 'Answer', text: '카카오택시 일반 호출은 추가 요금 없이 미터 요금만 부과됩니다. 다만 카카오T 블루(가맹택시)는 호출 수수료 1,000~2,000원이 추가될 수 있고, 카카오T 블랙(모범급)은 별도 요금 체계를 적용합니다. 우버나 타다 등 플랫폼 택시는 수요에 따라 동적 요금제(서지 프라이싱)가 적용될 수 있어 출퇴근 시간에 더 비쌀 수 있습니다.' } },
+    ],
+  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center">Loading...</div>}><I18nWrapper><TaxiFare /></I18nWrapper></Suspense>
