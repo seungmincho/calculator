@@ -88,14 +88,14 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
           const { getSupabase } = await import('@/utils/webrtc/supabaseClient')
           const supabase = getSupabase()
           if (supabase) {
-            supabase.from('feedback').insert([{
+            Promise.resolve(supabase.from('feedback').insert([{
               id: newFeedback.id,
               calculator_type: newFeedback.calculatorType,
               rating: newFeedback.rating,
               comment: newFeedback.comment || null,
               user_agent: newFeedback.userAgent,
               created_at: new Date(newFeedback.timestamp).toISOString(),
-            }]).then(() => {}).catch(() => {})
+            }])).catch(() => {})
           }
         } catch {
           // Silently fail - localStorage is the primary storage
