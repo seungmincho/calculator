@@ -300,44 +300,33 @@ export default function RootLayout({
                 window.addEventListener('load', function() {
                   navigator.serviceWorker.register('/sw.js')
                     .then(function(registration) {
-                      console.log('Service Worker registered successfully:', registration);
-                      
-                      // Check for updates
                       registration.addEventListener('updatefound', function() {
-                        const newWorker = registration.installing;
+                        var newWorker = registration.installing;
                         if (newWorker) {
                           newWorker.addEventListener('statechange', function() {
                             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                              // Show update notification
-                              if (confirm('새로운 버전이 있습니다. 지금 업데이트하시겠습니까?')) {
-                                window.location.reload();
-                              }
+                              var toast = document.createElement('div');
+                              toast.innerHTML = '<div style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#1e40af;color:#fff;padding:16px 20px;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.2);display:flex;align-items:center;gap:12px;font-size:14px;font-family:sans-serif;max-width:360px;animation:slideUp .3s ease"><span>새 버전이 있습니다</span><button onclick="window.location.reload()" style="background:#fff;color:#1e40af;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;white-space:nowrap">업데이트</button><button onclick="this.closest(\'div\').parentElement.remove()" style="background:none;border:none;color:#93c5fd;cursor:pointer;font-size:18px;padding:0 4px">✕</button></div>';
+                              document.body.appendChild(toast);
                             }
                           });
                         }
                       });
                     })
-                    .catch(function(error) {
-                      console.log('Service Worker registration failed:', error);
-                    });
+                    .catch(function() {});
                 });
 
                 // Listen for app install prompt
-                let deferredPrompt;
+                var deferredPrompt;
                 window.addEventListener('beforeinstallprompt', function(event) {
                   event.preventDefault();
                   deferredPrompt = event;
-                  
-                  // Show custom install button (can be added later)
-                  const installButton = document.getElementById('install-button');
+                  var installButton = document.getElementById('install-button');
                   if (installButton) {
                     installButton.style.display = 'block';
                     installButton.addEventListener('click', function() {
                       deferredPrompt.prompt();
                       deferredPrompt.userChoice.then(function(choiceResult) {
-                        if (choiceResult.outcome === 'accepted') {
-                          console.log('User accepted the install prompt');
-                        }
                         deferredPrompt = null;
                       });
                     });
