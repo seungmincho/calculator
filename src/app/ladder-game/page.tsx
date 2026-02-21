@@ -61,11 +61,31 @@ export const metadata: Metadata = {
 }
 
 export default function LadderGamePage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'VideoGame',
+    name: '사다리타기',
+    description: '사다리타기 - 온라인 사다리 게임으로 결정을 내려보세요',
+    url: 'https://toolhub.ai.kr/ladder-game',
+    genre: 'Party Game',
+    gamePlatform: 'Web Browser',
+    applicationCategory: 'Game',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    numberOfPlayers: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 10 },
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-      <div className="container mx-auto px-4">
-        <LadderGame />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+        <div className="container mx-auto px-4">
+          <LadderGame />
+        </div>
       </div>
-    </div>
+    </>
   )
 }

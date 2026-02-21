@@ -55,7 +55,7 @@ export default function OmokPage() {
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
     name: '오목 (Gomoku)',
-    description: '19x19 바둑판에서 5개를 먼저 연결하면 승리! AI 대전 및 온라인 대전',
+    description: '오목 - AI 대전 및 온라인 대전을 지원하는 오목 게임',
     url: 'https://toolhub.ai.kr/omok',
     genre: 'Board Game',
     gamePlatform: 'Web Browser',

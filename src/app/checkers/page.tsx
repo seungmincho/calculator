@@ -31,7 +31,7 @@ export default function CheckersPage() {
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
     name: '체커 (Checkers)',
-    description: '8x8 보드에서 상대 말을 모두 잡거나 움직이지 못하게 하면 승리! AI 대전 및 온라인 대전',
+    description: '체커 - AI 대전을 지원하는 클래식 체커 보드게임',
     url: 'https://toolhub.ai.kr/checkers',
     genre: 'Board Game',
     gamePlatform: 'Web Browser',

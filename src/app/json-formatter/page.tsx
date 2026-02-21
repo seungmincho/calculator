@@ -30,9 +30,41 @@ export default function JsonFormatterPage() {
     featureList: ['JSON 포맷팅/압축', 'JSONPath 쿼리', 'JSON5/JSONC 지원', '트리뷰 모드', '자동 오류 수정']
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'JSON과 JSON5의 차이점은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'JSON5는 JSON의 확장 형식으로, 주석(//, /* */), 후행 쉼표, 작은따옴표 문자열, 16진수 숫자, Infinity/NaN 등을 허용합니다. 설정 파일(tsconfig.json 등)에서 주로 사용되며, 표준 JSON보다 사람이 읽고 쓰기 편합니다. JSON5 파서가 필요하며 대부분의 API는 표준 JSON만 허용합니다.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'JSONPath란 무엇인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'JSONPath는 JSON 데이터에서 특정 값을 찾기 위한 쿼리 언어입니다. XPath가 XML에서 사용되는 것처럼 JSON에서 사용됩니다. $.store.book[0].title처럼 경로를 지정하며, 와일드카드($..price), 필터([?(@.price<10)]), 슬라이스([0:5]) 등을 지원합니다. API 응답에서 필요한 데이터만 추출할 때 유용합니다.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'JSON 포맷팅과 압축(Minify)의 차이는?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'JSON 포맷팅(Pretty Print)은 들여쓰기와 줄바꿈을 추가하여 가독성을 높이는 것으로, 개발 및 디버깅 시 사용합니다. 압축(Minify)은 모든 공백과 줄바꿈을 제거하여 파일 크기를 최소화하는 것으로, API 전송이나 저장 시 사용합니다. 보통 포맷팅된 JSON은 압축 대비 30-50% 크기가 증가합니다.'
+        }
+      },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <JsonFormatter />
       </I18nWrapper>

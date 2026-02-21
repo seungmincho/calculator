@@ -30,7 +30,7 @@ export default function Connect4Page() {
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
     name: '커넥트4 (Connect Four)',
-    description: '7x6 보드에서 같은 색 디스크 4개를 먼저 연결하면 승리! AI 대전 및 온라인 대전',
+    description: '사목 - AI 대전을 지원하는 4목 연결 보드게임',
     url: 'https://toolhub.ai.kr/connect4',
     genre: 'Board Game',
     gamePlatform: 'Web Browser',

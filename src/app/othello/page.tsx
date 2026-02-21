@@ -55,7 +55,7 @@ export default function OthelloPage() {
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
     name: '오셀로 (Reversi)',
-    description: '8x8 보드에서 상대 돌을 뒤집어 더 많은 돌을 차지하면 승리! AI 대전 및 온라인 대전',
+    description: '오셀로 - AI 대전을 지원하는 리버시 보드게임',
     url: 'https://toolhub.ai.kr/othello',
     genre: 'Board Game',
     gamePlatform: 'Web Browser',

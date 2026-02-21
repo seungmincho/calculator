@@ -31,7 +31,7 @@ export default function MancalaPage() {
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
     name: '만칼라 (Mancala)',
-    description: '고대 보드게임 만칼라! 돌을 전략적으로 움직여 더 많이 모으면 승리! AI 대전 및 온라인 대전',
+    description: '만칼라 - AI 대전을 지원하는 전략 보드게임',
     url: 'https://toolhub.ai.kr/mancala',
     genre: 'Board Game',
     gamePlatform: 'Web Browser',

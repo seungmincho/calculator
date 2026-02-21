@@ -31,7 +31,7 @@ export default function DotsAndBoxesPage() {
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
     name: '점과선 (Dots and Boxes)',
-    description: '점을 연결해 상자를 완성하는 전략 게임! 더 많은 상자를 차지하면 승리! AI 대전 및 온라인 대전',
+    description: '점과선 - AI 대전을 지원하는 점잇기 전략 게임',
     url: 'https://toolhub.ai.kr/dots-and-boxes',
     genre: 'Strategy Game',
     gamePlatform: 'Web Browser',

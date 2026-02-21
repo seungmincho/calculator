@@ -31,7 +31,7 @@ export default function BattleshipPage() {
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
     name: '배틀쉽 (Battleship)',
-    description: '10x10 바다에서 상대 함선을 모두 격침시키면 승리! AI 대전 및 온라인 대전',
+    description: '배틀쉽 - AI 대전을 지원하는 해전 전략 게임',
     url: 'https://toolhub.ai.kr/battleship',
     genre: 'Strategy Game',
     gamePlatform: 'Web Browser',
