@@ -36,6 +36,18 @@ export default function OmokBoard({
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
   const [hoverPos, setHoverPos] = useState<{ x: number; y: number } | null>(null)
+  const [keyboardPos, setKeyboardPos] = useState<{ x: number; y: number } | null>(null)
+  const [useKeyboard, setUseKeyboard] = useState(false)
+
+  // Pre-generate wood texture positions to avoid flickering on redraw
+  const woodTextureRef = useRef<{ x: number; y: number; w: number; h: number }[]>(
+    Array.from({ length: 50 }, () => ({
+      x: Math.random() * BOARD_PIXEL_SIZE,
+      y: Math.random() * BOARD_PIXEL_SIZE,
+      w: Math.random() * 3,
+      h: Math.random() * 20
+    }))
+  )
 
   // 반응형 스케일 계산
   useEffect(() => {
@@ -61,12 +73,10 @@ export default function OmokBoard({
       ctx.fillStyle = '#DEB887'
       ctx.fillRect(0, 0, BOARD_PIXEL_SIZE, BOARD_PIXEL_SIZE)
 
-      // 나무 질감 효과
+      // 나무 질감 효과 (pre-generated positions to prevent flickering)
       ctx.fillStyle = 'rgba(139, 90, 43, 0.1)'
-      for (let i = 0; i < 50; i++) {
-        const x = Math.random() * BOARD_PIXEL_SIZE
-        const y = Math.random() * BOARD_PIXEL_SIZE
-        ctx.fillRect(x, y, Math.random() * 3, Math.random() * 20)
+      for (const t of woodTextureRef.current!) {
+        ctx.fillRect(t.x, t.y, t.w, t.h)
       }
 
       // 격자선
@@ -155,15 +165,17 @@ export default function OmokBoard({
           if (lastMove && lastMove.x === x && lastMove.y === y) {
             ctx.beginPath()
             ctx.arc(px, py, 5, 0, Math.PI * 2)
-            ctx.fillStyle = stone === 'black' ? '#ff4444' : '#ff4444'
+            ctx.fillStyle = stone === 'black' ? '#ff4444' : '#1565C0'
             ctx.fill()
           }
+
         }
       }
 
       // 호버 표시 (내 턴일 때만)
-      if (hoverPos && isMyTurn && myColor && !winner && !disabled) {
-        const { x, y } = hoverPos
+      const showPos = useKeyboard ? keyboardPos : hoverPos
+      if (showPos && isMyTurn && myColor && !winner && !disabled) {
+        const { x, y } = showPos
         if (board[y][x] === null) {
           const px = PADDING + x * CELL_SIZE
           const py = PADDING + y * CELL_SIZE
@@ -172,13 +184,13 @@ export default function OmokBoard({
           ctx.arc(px, py, STONE_RADIUS, 0, Math.PI * 2)
           ctx.fillStyle = myColor === 'black' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.6)'
           ctx.fill()
-          ctx.strokeStyle = myColor === 'black' ? '#333' : '#999'
-          ctx.lineWidth = 2
+          ctx.strokeStyle = useKeyboard ? '#FFC107' : (myColor === 'black' ? '#333' : '#999')
+          ctx.lineWidth = useKeyboard ? 3 : 2
           ctx.stroke()
         }
       }
     },
-    [gameState, hoverPos, isMyTurn, myColor, disabled]
+    [gameState, hoverPos, keyboardPos, useKeyboard, isMyTurn, myColor, disabled]
   )
 
   // 캔버스 렌더링
@@ -234,21 +246,110 @@ export default function OmokBoard({
     setHoverPos(null)
   }
 
+  // 키보드 처리
+  const keyboardPosRef = useRef(keyboardPos)
+  keyboardPosRef.current = keyboardPos
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLCanvasElement>) => {
+    if (disabled || !isMyTurn || !myColor || gameState.winner) return
+
+    const key = e.key
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(key)) {
+      e.preventDefault()
+      setUseKeyboard(true)
+
+      const pos = keyboardPosRef.current || { x: Math.floor(BOARD_SIZE / 2), y: Math.floor(BOARD_SIZE / 2) }
+
+      if (key === 'Enter' || key === ' ') {
+        if (gameState.board[pos.y][pos.x] === null) {
+          onMove(pos.x, pos.y)
+        }
+      } else {
+        let newPos = pos
+        switch (key) {
+          case 'ArrowUp': newPos = { x: pos.x, y: Math.max(0, pos.y - 1) }; break
+          case 'ArrowDown': newPos = { x: pos.x, y: Math.min(BOARD_SIZE - 1, pos.y + 1) }; break
+          case 'ArrowLeft': newPos = { x: Math.max(0, pos.x - 1), y: pos.y }; break
+          case 'ArrowRight': newPos = { x: Math.min(BOARD_SIZE - 1, pos.x + 1), y: pos.y }; break
+        }
+        setKeyboardPos(newPos)
+      }
+    }
+  }, [disabled, isMyTurn, myColor, gameState.winner, gameState.board, onMove])
+
+  // Switch back to mouse mode on mouse move
+  const handleMouseMoveWrapped = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    setUseKeyboard(false)
+    handleMouseMove(e)
+  }
+
+  // 터치 위치를 보드 좌표로 변환
+  const getTouchPosition = (e: React.TouchEvent<HTMLCanvasElement>): { x: number; y: number } | null => {
+    const canvas = canvasRef.current
+    if (!canvas) return null
+    const touch = e.touches[0] || e.changedTouches[0]
+    if (!touch) return null
+
+    const rect = canvas.getBoundingClientRect()
+    const scaleX = BOARD_PIXEL_SIZE / rect.width
+    const scaleY = BOARD_PIXEL_SIZE / rect.height
+
+    const touchX = (touch.clientX - rect.left) * scaleX
+    const touchY = (touch.clientY - rect.top) * scaleY
+
+    const x = Math.round((touchX - PADDING) / CELL_SIZE)
+    const y = Math.round((touchY - PADDING) / CELL_SIZE)
+
+    if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE) {
+      return { x, y }
+    }
+    return null
+  }
+
   return (
     <div ref={containerRef} className="w-full flex justify-center">
       <canvas
         ref={canvasRef}
         width={BOARD_PIXEL_SIZE}
         height={BOARD_PIXEL_SIZE}
+        tabIndex={0}
+        aria-label="Omok game board"
+        role="grid"
         style={{
           width: BOARD_PIXEL_SIZE * scale,
           height: BOARD_PIXEL_SIZE * scale,
-          cursor: isMyTurn && myColor && !gameState.winner && !disabled ? 'pointer' : 'default'
+          cursor: isMyTurn && myColor && !gameState.winner && !disabled ? 'pointer' : 'default',
+          outline: 'none',
+          touchAction: 'none'
         }}
         onClick={handleClick}
-        onMouseMove={handleMouseMove}
+        onMouseMove={handleMouseMoveWrapped}
         onMouseLeave={handleMouseLeave}
-        className="rounded-lg shadow-xl"
+        onKeyDown={handleKeyDown}
+        onTouchStart={(e) => {
+          e.preventDefault()
+          setUseKeyboard(false)
+          const pos = getTouchPosition(e)
+          if (pos) setHoverPos(pos)
+        }}
+        onTouchMove={(e) => {
+          e.preventDefault()
+          const pos = getTouchPosition(e)
+          if (pos) setHoverPos(pos)
+        }}
+        onTouchEnd={(e) => {
+          e.preventDefault()
+          const pos = getTouchPosition(e)
+          if (pos) {
+            if (!disabled && isMyTurn && myColor && !gameState.winner) {
+              if (gameState.board[pos.y][pos.x] === null) {
+                onMove(pos.x, pos.y)
+              }
+            }
+          }
+          setHoverPos(null)
+        }}
+        className="rounded-lg shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       />
     </div>
   )

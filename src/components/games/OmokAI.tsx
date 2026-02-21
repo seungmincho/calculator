@@ -2,12 +2,17 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from 'next-intl'
-import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3, AlertCircle, X } from 'lucide-react'
+import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3, AlertCircle, X, Undo2 } from 'lucide-react'
 import OmokBoardComponent from '@/components/OmokBoard'
+import GameConfetti from '@/components/GameConfetti'
+import GameResultShare from '@/components/GameResultShare'
 import { OmokGameState, OmokMove } from '@/utils/webrtc'
 import { getOmokAIMove, Difficulty } from '@/utils/gameAI'
 import { useAIGameStats } from '@/hooks/useAIGameStats'
 import { createInitialGameState, checkWinner, checkForbiddenMove } from '@/utils/gameRules/omokRules'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import { useGameSounds } from '@/hooks/useGameSounds'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 interface OmokAIProps {
   difficulty: Difficulty
@@ -17,6 +22,7 @@ interface OmokAIProps {
 export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
   const t = useTranslations('omok')
   const tHub = useTranslations('gameHub')
+  const tSounds = useTranslations('gameSounds')
 
   const [gameState, setGameState] = useState<OmokGameState>(createInitialGameState())
   const [playerColor] = useState<'black' | 'white'>('black') // Player is always black (first)
@@ -29,6 +35,8 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
 
   // AI 게임 통계
   const { stats, recordResult } = useAIGameStats('omok', difficulty)
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const { playMove, playWin, playLose, playDraw, playInvalid, enabled: soundEnabled, setEnabled: setSoundEnabled } = useGameSounds()
 
   const aiColor = playerColor === 'black' ? 'white' : 'black'
   const isPlayerTurn = gameState.currentTurn === playerColor
@@ -63,6 +71,7 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
             lastMove: newMove
           }
         })
+        playMove()
       }
       setIsThinking(false)
     }, 500 + Math.random() * 500)
@@ -77,15 +86,24 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
 
       if (gameState.winner === 'draw') {
         recordResult('draw')
+        playDraw()
       } else if (gameState.winner === playerColor) {
         setWinCount(prev => ({ ...prev, player: prev.player + 1 }))
         recordResult('win')
+        playWin()
       } else {
         setWinCount(prev => ({ ...prev, ai: prev.ai + 1 }))
         recordResult('loss')
+        playLose()
       }
+      recordGameResult({
+        gameType: 'omok',
+        result: gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss',
+        difficulty,
+        moves: gameState.moveHistory.length
+      })
     }
-  }, [gameState.winner, playerColor, recordResult])
+  }, [gameState.winner, gameState.moveHistory.length, playerColor, recordResult, recordGameResult, difficulty, playWin, playLose, playDraw])
 
   // Get forbidden move message
   const getForbiddenMessage = (reason: string): string => {
@@ -112,6 +130,7 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
       if (forbidden.forbidden && forbidden.reason) {
         setForbiddenToast(getForbiddenMessage(forbidden.reason))
         setTimeout(() => setForbiddenToast(null), 2000)
+        playInvalid()
         return
       }
     }
@@ -136,7 +155,30 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
       winner,
       lastMove: newMove
     }))
-  }, [gameState, isPlayerTurn, playerColor, aiColor, isThinking, t])
+    playMove()
+  }, [gameState, isPlayerTurn, playerColor, aiColor, isThinking, t, playMove, playInvalid])
+
+  // Undo last 2 moves (only on easy difficulty)
+  const handleUndo = useCallback(() => {
+    if (difficulty !== 'easy' || gameState.moveHistory.length < 2 || gameState.winner) return
+    setGameState(prev => {
+      const newHistory = prev.moveHistory.slice(0, -2)
+      const newBoard = Array(19).fill(null).map(() => Array(19).fill(null))
+      // Replay all remaining moves
+      for (const move of newHistory) {
+        newBoard[move.y][move.x] = move.player
+      }
+      const lastMove = newHistory.length > 0 ? newHistory[newHistory.length - 1] : null
+      return {
+        ...prev,
+        board: newBoard,
+        currentTurn: playerColor,
+        moveHistory: newHistory,
+        winner: null,
+        lastMove
+      }
+    })
+  }, [difficulty, gameState.moveHistory.length, gameState.winner])
 
   // Restart game
   const handleRestart = () => {
@@ -175,6 +217,13 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
           <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
             {getDifficultyLabel(difficulty)}
           </span>
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            title={soundEnabled ? tSounds('disabled') : tSounds('enabled')}
+          >
+            {soundEnabled ? '🔊' : '🔇'}
+          </button>
         </div>
       </div>
 
@@ -241,17 +290,21 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
 
       {/* Winner Message */}
       {gameState.winner && (
-        <div className={`text-center py-4 px-6 rounded-2xl ${
+        <div className={`text-center py-6 px-6 rounded-2xl ${
           gameState.winner === playerColor
             ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
             : gameState.winner === 'draw'
             ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
             : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
         }`}>
-          <Trophy className="w-8 h-8 mx-auto mb-2" />
-          <p className="text-xl font-bold">{getWinnerMessage()}</p>
+          <Trophy className="w-10 h-10 mx-auto mb-2" />
+          <p className="text-2xl font-bold mb-1">{getWinnerMessage()}</p>
+          <p className="text-sm opacity-80">{gameState.moveHistory.length} {t('moves') || 'moves'} · {getDifficultyLabel(difficulty)}</p>
         </div>
       )}
+
+      {/* Confetti */}
+      <GameConfetti active={!!gameState.winner && gameState.winner === playerColor} />
 
       {/* Game Board */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 overflow-x-auto">
@@ -266,14 +319,25 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
 
       {/* Move Count */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
-        <div className="text-sm text-gray-600 dark:text-gray-400">
-          {t('moves') || 'Moves'}: {gameState.moveHistory.length}
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            {t('moves') || 'Moves'}: {gameState.moveHistory.length}
+          </div>
+          {difficulty === 'easy' && !gameState.winner && isPlayerTurn && gameState.moveHistory.length >= 2 && (
+            <button
+              onClick={handleUndo}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-800/40 rounded-lg transition-colors"
+            >
+              <Undo2 className="w-4 h-4" />
+              {tSounds('undo')}
+            </button>
+          )}
         </div>
       </div>
 
       {/* Game End Buttons */}
       {gameState.winner && (
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <button
             onClick={handleRestart}
             className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-xl"
@@ -281,6 +345,13 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
             <RefreshCw className="w-5 h-5" />
             {t('playAgain') || 'Play Again'}
           </button>
+          <GameResultShare
+            gameName={t('title') || '오목'}
+            result={gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss'}
+            difficulty={getDifficultyLabel(difficulty) || difficulty}
+            moves={gameState.moveHistory.length}
+            url="https://toolhub.ai.kr/omok"
+          />
           <button
             onClick={onBack}
             className="py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl"
@@ -338,6 +409,13 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
         )}
       </div>
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Rules */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
         <button
@@ -376,6 +454,10 @@ export default function OmokAI({ difficulty, onBack }: OmokAIProps) {
           </div>
         </div>
       )}
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

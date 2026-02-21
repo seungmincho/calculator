@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from 'next-intl'
-import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3 } from 'lucide-react'
+import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3, Undo2 } from 'lucide-react'
+import GameConfetti from '@/components/GameConfetti'
+import GameResultShare from '@/components/GameResultShare'
 import OthelloBoardComponent, {
   OthelloGameState,
   createInitialOthelloState,
@@ -11,6 +13,9 @@ import OthelloBoardComponent, {
 } from '@/components/OthelloBoard'
 import { getOthelloAIMove, Difficulty } from '@/utils/gameAI'
 import { useAIGameStats } from '@/hooks/useAIGameStats'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import { useGameSounds } from '@/hooks/useGameSounds'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 interface OthelloAIProps {
   difficulty: Difficulty
@@ -20,6 +25,7 @@ interface OthelloAIProps {
 export default function OthelloAI({ difficulty, onBack }: OthelloAIProps) {
   const t = useTranslations('othello')
   const tHub = useTranslations('gameHub')
+  const tSounds = useTranslations('gameSounds')
 
   const [gameState, setGameState] = useState<OthelloGameState>(createInitialOthelloState())
   const [playerColor] = useState<'black' | 'white'>('black') // Player is always black (first)
@@ -30,6 +36,8 @@ export default function OthelloAI({ difficulty, onBack }: OthelloAIProps) {
 
   // AI 게임 통계
   const { stats, recordResult } = useAIGameStats('othello', difficulty)
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const { playMove, playCapture, playWin, playLose, playDraw, enabled: soundEnabled, setEnabled: setSoundEnabled } = useGameSounds()
 
   const aiColor = playerColor === 'black' ? 'white' : 'black'
   const isPlayerTurn = gameState.currentTurn === playerColor
@@ -46,6 +54,7 @@ export default function OthelloAI({ difficulty, onBack }: OthelloAIProps) {
           const newState = makeMove(prev, move.x, move.y, aiColor)
           return newState || prev
         })
+        playMove()
       }
       setIsThinking(false)
     }, 500 + Math.random() * 500)
@@ -64,8 +73,17 @@ export default function OthelloAI({ difficulty, onBack }: OthelloAIProps) {
       } else {
         recordResult('loss')
       }
+      recordGameResult({
+        gameType: 'othello',
+        result: gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss',
+        difficulty,
+        moves: gameState.moveHistory.length
+      })
+      if (gameState.winner === playerColor) { playWin() }
+      else if (gameState.winner === 'draw') { playDraw() }
+      else { playLose() }
     }
-  }, [gameState.winner, playerColor, recordResult])
+  }, [gameState.winner, gameState.moveHistory.length, playerColor, difficulty, recordResult, recordGameResult, playWin, playDraw, playLose])
 
   // Player move
   const handleMove = useCallback((x: number, y: number) => {
@@ -74,8 +92,24 @@ export default function OthelloAI({ difficulty, onBack }: OthelloAIProps) {
     const newState = makeMove(gameState, x, y, playerColor)
     if (newState) {
       setGameState(newState)
+      playMove()
     }
-  }, [gameState, isPlayerTurn, playerColor, isThinking])
+  }, [gameState, isPlayerTurn, playerColor, isThinking, playMove])
+
+  // Undo last 2 moves (only on easy difficulty)
+  const handleUndo = useCallback(() => {
+    if (difficulty !== 'easy' || gameState.moveHistory.length < 2 || gameState.winner) return
+    setGameState(prev => {
+      const newHistory = prev.moveHistory.slice(0, -2)
+      // Rebuild from initial state by replaying moves
+      let state = createInitialOthelloState()
+      for (const move of newHistory) {
+        const nextState = makeMove(state, move.x, move.y, move.player)
+        if (nextState) state = nextState
+      }
+      return state
+    })
+  }, [difficulty, gameState.moveHistory.length, gameState.winner])
 
   // Restart game
   const handleRestart = () => {
@@ -110,6 +144,13 @@ export default function OthelloAI({ difficulty, onBack }: OthelloAIProps) {
           {tHub('backToHub')}
         </button>
         <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            title={soundEnabled ? tSounds('disabled') : tSounds('enabled')}
+          >
+            {soundEnabled ? '🔊' : '🔇'}
+          </button>
           <span>{tHub('vsComputer')}</span>
           <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
             {getDifficultyLabel(difficulty)}
@@ -180,20 +221,22 @@ export default function OthelloAI({ difficulty, onBack }: OthelloAIProps) {
 
       {/* Winner Message */}
       {gameState.winner && (
-        <div className={`text-center py-4 px-6 rounded-2xl ${
+        <div className={`text-center py-6 px-6 rounded-2xl ${
           gameState.winner === playerColor
             ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
             : gameState.winner === 'draw'
             ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
             : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
         }`}>
-          <Trophy className="w-8 h-8 mx-auto mb-2" />
-          <p className="text-xl font-bold">{getWinnerMessage()}</p>
+          <Trophy className="w-10 h-10 mx-auto mb-2" />
+          <p className="text-2xl font-bold mb-1">{getWinnerMessage()}</p>
+          <p className="text-sm opacity-80">{getDifficultyLabel(difficulty)}</p>
           <p className="text-sm mt-1">
             {t('black') || 'Black'}: {gameState.blackCount} - {t('white') || 'White'}: {gameState.whiteCount}
           </p>
         </div>
       )}
+      <GameConfetti active={!!gameState.winner && gameState.winner === playerColor} />
 
       {/* Game Board */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
@@ -206,9 +249,27 @@ export default function OthelloAI({ difficulty, onBack }: OthelloAIProps) {
         />
       </div>
 
+      {/* Move Count */}
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Moves: {gameState.moveHistory.length}
+          </div>
+          {difficulty === 'easy' && !gameState.winner && isPlayerTurn && gameState.moveHistory.length >= 2 && (
+            <button
+              onClick={handleUndo}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-800/40 rounded-lg transition-colors"
+            >
+              <Undo2 className="w-4 h-4" />
+              {tSounds('undo')}
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* Game End Buttons */}
       {gameState.winner && (
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <button
             onClick={handleRestart}
             className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-xl"
@@ -216,6 +277,13 @@ export default function OthelloAI({ difficulty, onBack }: OthelloAIProps) {
             <RefreshCw className="w-5 h-5" />
             {t('playAgain') || 'Play Again'}
           </button>
+          <GameResultShare
+            gameName={t('title') || '오셀로'}
+            result={gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss'}
+            difficulty={getDifficultyLabel(difficulty) || difficulty}
+            score={`${gameState.blackCount} - ${gameState.whiteCount}`}
+            url="https://toolhub.ai.kr/othello"
+          />
           <button
             onClick={onBack}
             className="py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl"
@@ -294,6 +362,18 @@ export default function OthelloAI({ difficulty, onBack }: OthelloAIProps) {
           </div>
         )}
       </div>
+
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

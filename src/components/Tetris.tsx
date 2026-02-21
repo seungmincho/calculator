@@ -3,6 +3,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Trophy, RotateCcw, Pause, Play, Gamepad2 } from 'lucide-react'
+import { useLeaderboard } from '@/hooks/useLeaderboard'
+import LeaderboardPanel from '@/components/LeaderboardPanel'
+import NameInputModal from '@/components/NameInputModal'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type TetrominoType = 'I' | 'O' | 'T' | 'S' | 'Z' | 'J' | 'L'
@@ -240,6 +243,10 @@ export default function Tetris() {
   // Touch refs
   const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null)
 
+  const leaderboard = useLeaderboard('tetris', undefined)
+  const [showNameModal, setShowNameModal] = useState(false)
+  const gameStartTimeRef = useRef<number>(Date.now())
+
   // Load best score
   useEffect(() => {
     try {
@@ -467,6 +474,7 @@ export default function Tetris() {
     setGameState('playing')
     lastDropRef.current = performance.now()
     softDropRef.current = false
+    gameStartTimeRef.current = Date.now()
 
     if (rafRef.current) cancelAnimationFrame(rafRef.current)
     rafRef.current = requestAnimationFrame(gameLoop)
@@ -603,6 +611,24 @@ export default function Tetris() {
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
   }, [])
+
+  // Leaderboard: detect game over
+  useEffect(() => {
+    if (gameState === 'gameover') {
+      if (leaderboard.checkQualifies(score)) {
+        setShowNameModal(true)
+      }
+      leaderboard.fetchLeaderboard()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState])
+
+  const handleLeaderboardSubmit = useCallback(async (name: string) => {
+    const duration = Date.now() - gameStartTimeRef.current
+    await leaderboard.submitScore(score, name, duration)
+    leaderboard.savePlayerName(name)
+    setShowNameModal(false)
+  }, [leaderboard, score])
 
   // ── Render helpers ─────────────────────────────────────────────────────
   const isDarkMode = typeof window !== 'undefined'
@@ -935,6 +961,17 @@ export default function Tetris() {
           </div>
         </div>
       </div>
+
+      {/* Leaderboard */}
+      <LeaderboardPanel leaderboard={leaderboard} />
+      <NameInputModal
+        isOpen={showNameModal}
+        onSubmit={handleLeaderboardSubmit}
+        onClose={() => setShowNameModal(false)}
+        score={score}
+        formatScore={leaderboard.config.formatScore}
+        defaultName={leaderboard.savedPlayerName}
+      />
 
       {/* Controls guide */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">

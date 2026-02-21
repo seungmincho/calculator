@@ -3,6 +3,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Target, RotateCcw, Trophy, Lightbulb, BookOpen } from 'lucide-react'
+import { useLeaderboard } from '@/hooks/useLeaderboard'
+import LeaderboardPanel from '@/components/LeaderboardPanel'
+import NameInputModal from '@/components/NameInputModal'
 
 // ── Types ──
 
@@ -103,6 +106,11 @@ export default function NumberBaseball() {
   const [stats, setStats] = useState<GameStats>(() => loadStats())
   const [showGuide, setShowGuide] = useState(false)
 
+  const leaderboardDifficulty = difficulty === 'easy' ? '3digit' : difficulty === 'normal' ? '4digit' : undefined
+  const leaderboard = useLeaderboard('numberBaseball', leaderboardDifficulty)
+  const [showNameModal, setShowNameModal] = useState(false)
+  const gameStartTimeRef = useRef<number>(Date.now())
+
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   // Start new game
@@ -118,6 +126,7 @@ export default function NumberBaseball() {
       setHintUsed(false)
       setHintText('')
       setError('')
+      gameStartTimeRef.current = Date.now()
       setTimeout(() => inputRefs.current[0]?.focus(), 50)
     },
     []
@@ -127,6 +136,24 @@ export default function NumberBaseball() {
   useEffect(() => {
     startGame('normal')
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Win detection for leaderboard
+  useEffect(() => {
+    if (isWon) {
+      if (leaderboard.checkQualifies(history.length)) {
+        setShowNameModal(true)
+      }
+      leaderboard.fetchLeaderboard()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isWon])
+
+  const handleLeaderboardSubmit = useCallback(async (name: string) => {
+    const duration = Date.now() - gameStartTimeRef.current
+    await leaderboard.submitScore(history.length, name, duration)
+    leaderboard.savePlayerName(name)
+    setShowNameModal(false)
+  }, [leaderboard, history.length])
 
   // Handle digit input
   const handleInput = useCallback(
@@ -501,6 +528,17 @@ export default function NumberBaseball() {
           </div>
         </div>
       </div>
+
+      {/* Leaderboard */}
+      <LeaderboardPanel leaderboard={leaderboard} />
+      <NameInputModal
+        isOpen={showNameModal}
+        onSubmit={handleLeaderboardSubmit}
+        onClose={() => setShowNameModal(false)}
+        score={history.length}
+        formatScore={leaderboard.config?.formatScore ?? ((s) => `${s}`)}
+        defaultName={leaderboard.savedPlayerName}
+      />
 
       {/* Guide */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">

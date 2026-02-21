@@ -3,6 +3,9 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { BarChart3, HelpCircle, Share2, Check, X } from 'lucide-react'
+import { useLeaderboard } from '@/hooks/useLeaderboard'
+import LeaderboardPanel from '@/components/LeaderboardPanel'
+import NameInputModal from '@/components/NameInputModal'
 
 // ═══════════════════════════════════════════════════════════
 // Types
@@ -529,8 +532,21 @@ export default function KoreanWordle() {
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const boardRef = useRef<HTMLDivElement>(null)
 
+  const leaderboard = useLeaderboard('koreanWordle', undefined)
+  const [showNameModal, setShowNameModal] = useState(false)
+  const gameStartTimeRef = useRef<number>(Date.now())
+
   // Current input text from hangul state machine
   const currentInput = getCurrentText(hangulState)
+
+  // Detect if current input has incomplete jamo (standalone consonants/vowels)
+  const hasIncompleteJamo = useMemo(() => {
+    if (!currentInput) return false
+    for (const ch of currentInput) {
+      if (!isHangulSyllable(ch)) return true
+    }
+    return false
+  }, [currentInput])
 
   // ── Load saved game state on mount ──
   useEffect(() => {
@@ -561,6 +577,24 @@ export default function KoreanWordle() {
       })
     }
   }, [guesses, gameStatus, answer, hardMode])
+
+  // ── Win detection for leaderboard ──
+  useEffect(() => {
+    if (gameStatus === 'won') {
+      if (leaderboard.checkQualifies(guesses.length)) {
+        setShowNameModal(true)
+      }
+      leaderboard.fetchLeaderboard()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameStatus])
+
+  const handleLeaderboardSubmit = useCallback(async (name: string) => {
+    const duration = Date.now() - gameStartTimeRef.current
+    await leaderboard.submitScore(guesses.length, name, duration)
+    leaderboard.savePlayerName(name)
+    setShowNameModal(false)
+  }, [leaderboard, guesses.length])
 
   // ── Toast helper ──
   const showToast = useCallback((msg: string, duration = 2000) => {
@@ -731,18 +765,10 @@ export default function KoreanWordle() {
       return
     }
 
-    // Check if we already have enough characters
-    const flushed = flushHangulState(hangulState)
-    const completedSyllables = flushed.chars.filter(c => isHangulSyllable(c)).length
-    if (completedSyllables >= WORD_LENGTH && hangulState.cho < 0 && hangulState.jung < 0 && hangulState.jong < 0) {
-      // Already have 2 complete syllables and nothing composing - ignore
-      return
-    }
-    // Also check: if we have 1 complete syllable and current composing might push to 3
+    // Check if adding this jamo would exceed the max character length
     const nextState = addJamo(hangulState, key)
-    const nextFlushed = flushHangulState(nextState)
-    const nextCompleted = nextFlushed.chars.filter(c => isHangulSyllable(c)).length
-    if (nextCompleted > WORD_LENGTH) {
+    const nextText = getCurrentText(nextState)
+    if (nextText.length > WORD_LENGTH) {
       return
     }
 
@@ -993,6 +1019,8 @@ export default function KoreanWordle() {
                       : 'absent')
                     : 'empty'
 
+                  const isIncompleteJamo = !isGuessed && hasContent && !isHangulSyllable(syll.char)
+
                   return (
                     <div key={cellIdx} className="flex flex-col items-center gap-1">
                       {/* Main syllable cell */}
@@ -1002,10 +1030,11 @@ export default function KoreanWordle() {
                           flex items-center justify-center
                           border-2 rounded-lg text-2xl sm:text-3xl font-bold
                           transition-all duration-300
-                          ${hasContent && !isGuessed ? 'border-gray-500 dark:border-gray-400 scale-105' : ''}
+                          ${isIncompleteJamo ? 'border-amber-400 dark:border-amber-500 scale-105' : ''}
+                          ${hasContent && !isGuessed && !isIncompleteJamo ? 'border-gray-500 dark:border-gray-400 scale-105' : ''}
                           ${isGuessed && row.revealed
                             ? `${getStatusColor(overallStatus)} ${getStatusBorder(overallStatus)} text-white`
-                            : `${hasContent ? 'border-gray-400 dark:border-gray-500' : 'border-gray-200 dark:border-gray-700'} text-gray-900 dark:text-white`
+                            : `${hasContent ? (isIncompleteJamo ? 'border-amber-400 dark:border-amber-500' : 'border-gray-400 dark:border-gray-500') : 'border-gray-200 dark:border-gray-700'} text-gray-900 dark:text-white`
                           }
                           ${isRevealing ? 'animate-flip-cell' : ''}
                         `}
@@ -1052,6 +1081,13 @@ export default function KoreanWordle() {
             )
           })}
         </div>
+
+        {/* Hint for incomplete jamo */}
+        {hasIncompleteJamo && gameStatus === 'playing' && (
+          <p className="text-center text-sm text-amber-600 dark:text-amber-400 mt-3 animate-pulse">
+            {t('needVowelHint')}
+          </p>
+        )}
       </div>
 
       {/* Virtual Keyboard */}
@@ -1189,6 +1225,20 @@ export default function KoreanWordle() {
                 </div>
               </div>
 
+              {/* Input guide */}
+              <div className="bg-amber-50 dark:bg-amber-950 rounded-lg p-3 space-y-2">
+                <p className="font-semibold text-amber-800 dark:text-amber-300">{t('helpInputTitle')}</p>
+                <p className="text-amber-700 dark:text-amber-400">{t('helpInputDesc')}</p>
+                <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                  <span className="font-mono bg-amber-100 dark:bg-amber-900 px-1.5 py-0.5 rounded text-xs">ㅅ</span>
+                  <span>+</span>
+                  <span className="font-mono bg-amber-100 dark:bg-amber-900 px-1.5 py-0.5 rounded text-xs">ㅏ</span>
+                  <span>=</span>
+                  <span className="font-mono bg-amber-100 dark:bg-amber-900 px-1.5 py-0.5 rounded text-xs font-bold">사</span>
+                  <span className="text-xs ml-1">{t('helpInputExample')}</span>
+                </div>
+              </div>
+
               <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3 space-y-1">
                 <p className="font-semibold text-blue-800 dark:text-blue-300">{t('helpJamoTitle')}</p>
                 <p className="text-blue-700 dark:text-blue-400">{t('helpJamo')}</p>
@@ -1266,6 +1316,17 @@ export default function KoreanWordle() {
           </div>
         </div>
       )}
+
+      {/* Leaderboard */}
+      <LeaderboardPanel leaderboard={leaderboard} />
+      <NameInputModal
+        isOpen={showNameModal}
+        onSubmit={handleLeaderboardSubmit}
+        onClose={() => setShowNameModal(false)}
+        score={guesses.length}
+        formatScore={leaderboard.config?.formatScore ?? ((s) => `${s}/6`)}
+        defaultName={leaderboard.savedPlayerName}
+      />
 
       {/* Guide Section */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">

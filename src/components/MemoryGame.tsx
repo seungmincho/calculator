@@ -3,6 +3,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { RotateCcw, Trophy, Star, Clock, Zap, Volume2, VolumeX, BookOpen } from 'lucide-react'
+import { useLeaderboard } from '@/hooks/useLeaderboard'
+import LeaderboardPanel from '@/components/LeaderboardPanel'
+import NameInputModal from '@/components/NameInputModal'
 
 // ── Types ──
 type Difficulty = 'easy' | 'normal' | 'hard' | 'expert'
@@ -172,6 +175,10 @@ export default function MemoryGame() {
   const confettiRef = useRef<HTMLCanvasElement>(null)
   const comboTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  const leaderboard = useLeaderboard('memoryGame', difficulty)
+  const [showNameModal, setShowNameModal] = useState(false)
+  const gameStartTimeRef = useRef<number>(Date.now())
+
   // Load best scores
   useEffect(() => {
     try {
@@ -212,6 +219,17 @@ export default function MemoryGame() {
     }
   }, [matchedPairs, gameState, difficulty, theme, moves, timer, soundEnabled, bestScores])
 
+  // Leaderboard: detect win
+  useEffect(() => {
+    if (gameState === 'won') {
+      if (leaderboard.checkQualifies(timer)) {
+        setShowNameModal(true)
+      }
+      leaderboard.fetchLeaderboard()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState])
+
   // Start game
   const startGame = useCallback(() => {
     const config = DIFFICULTY_CONFIG[difficulty]
@@ -228,6 +246,7 @@ export default function MemoryGame() {
     setMaxCombo(0)
     setLocked(false)
     setGameState('playing')
+    gameStartTimeRef.current = Date.now()
   }, [difficulty, theme])
 
   // Flip card
@@ -294,6 +313,13 @@ export default function MemoryGame() {
     if (timerRef.current) clearInterval(timerRef.current)
     setGameState('menu')
   }, [])
+
+  const handleLeaderboardSubmit = useCallback(async (name: string) => {
+    const duration = Date.now() - gameStartTimeRef.current
+    await leaderboard.submitScore(timer, name, duration)
+    leaderboard.savePlayerName(name)
+    setShowNameModal(false)
+  }, [leaderboard, timer])
 
   const config = DIFFICULTY_CONFIG[difficulty]
   const stars = calcStars(moves, config.pairs)
@@ -400,6 +426,17 @@ export default function MemoryGame() {
           </button>
         </div>
 
+        {/* Leaderboard */}
+        <LeaderboardPanel leaderboard={leaderboard} />
+        <NameInputModal
+          isOpen={showNameModal}
+          onSubmit={handleLeaderboardSubmit}
+          onClose={() => setShowNameModal(false)}
+          score={timer}
+          formatScore={leaderboard.config.formatScore}
+          defaultName={leaderboard.savedPlayerName}
+        />
+
         {/* Guide */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-xl mx-auto">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
@@ -439,6 +476,14 @@ export default function MemoryGame() {
   if (gameState === 'won') {
     return (
       <div className="space-y-8">
+        <NameInputModal
+          isOpen={showNameModal}
+          onSubmit={handleLeaderboardSubmit}
+          onClose={() => setShowNameModal(false)}
+          score={timer}
+          formatScore={leaderboard.config.formatScore}
+          defaultName={leaderboard.savedPlayerName}
+        />
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
         </div>

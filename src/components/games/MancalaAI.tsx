@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3 } from 'lucide-react'
+import GameConfetti from '@/components/GameConfetti'
+import GameResultShare from '@/components/GameResultShare'
 import MancalaBoardComponent, {
   MancalaGameState,
   createInitialMancalaState,
@@ -11,6 +13,9 @@ import MancalaBoardComponent, {
 } from '@/components/MancalaBoard'
 import { getMancalaAIMove, Difficulty } from '@/utils/gameAI'
 import { useAIGameStats } from '@/hooks/useAIGameStats'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import { useGameSounds } from '@/hooks/useGameSounds'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 interface MancalaAIProps {
   difficulty: Difficulty
@@ -20,6 +25,7 @@ interface MancalaAIProps {
 export default function MancalaAI({ difficulty, onBack }: MancalaAIProps) {
   const t = useTranslations('mancala')
   const tHub = useTranslations('gameHub')
+  const tSounds = useTranslations('gameSounds')
 
   const [gameState, setGameState] = useState<MancalaGameState>(createInitialMancalaState())
   const [playerRole] = useState<'player1' | 'player2'>('player1') // Player is always player1 (bottom)
@@ -31,6 +37,8 @@ export default function MancalaAI({ difficulty, onBack }: MancalaAIProps) {
 
   // AI 게임 통계
   const { stats, recordResult } = useAIGameStats('mancala', difficulty)
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const { playMove, playWin, playLose, playDraw, enabled: soundEnabled, setEnabled: setSoundEnabled } = useGameSounds()
 
   const aiRole = playerRole === 'player1' ? 'player2' : 'player1'
   const isPlayerTurn = gameState.currentTurn === playerRole
@@ -47,6 +55,7 @@ export default function MancalaAI({ difficulty, onBack }: MancalaAIProps) {
           const newState = makeMancalaMove(prev, pitIndex, aiRole)
           return newState || prev
         })
+        playMove()
       }
       setIsThinking(false)
     }, 500 + Math.random() * 500)
@@ -60,15 +69,21 @@ export default function MancalaAI({ difficulty, onBack }: MancalaAIProps) {
       resultRecordedRef.current = true
       if (gameState.winner === 'draw') {
         recordResult('draw')
+        recordGameResult({ gameType: 'mancala', result: 'draw', difficulty, moves: gameState.moveHistory?.length ?? 0 })
+        playDraw()
       } else if (gameState.winner === playerRole) {
         setWinCount(prev => ({ ...prev, player: prev.player + 1 }))
         recordResult('win')
+        recordGameResult({ gameType: 'mancala', result: 'win', difficulty, moves: gameState.moveHistory?.length ?? 0 })
+        playWin()
       } else {
         setWinCount(prev => ({ ...prev, ai: prev.ai + 1 }))
         recordResult('loss')
+        recordGameResult({ gameType: 'mancala', result: 'loss', difficulty, moves: gameState.moveHistory?.length ?? 0 })
+        playLose()
       }
     }
-  }, [gameState.winner, playerRole, recordResult])
+  }, [gameState.winner, gameState.moveHistory, playerRole, recordResult, recordGameResult, difficulty, playWin, playLose, playDraw])
 
   // Player move
   const handleMove = useCallback((pitIndex: number) => {
@@ -81,8 +96,9 @@ export default function MancalaAI({ difficulty, onBack }: MancalaAIProps) {
     const newState = makeMancalaMove(gameState, pitIndex, playerRole)
     if (newState) {
       setGameState(newState)
+      playMove()
     }
-  }, [gameState, isPlayerTurn, playerRole, isThinking])
+  }, [gameState, isPlayerTurn, playerRole, isThinking, playMove])
 
   // Restart game
   const handleRestart = () => {
@@ -120,6 +136,13 @@ export default function MancalaAI({ difficulty, onBack }: MancalaAIProps) {
           {tHub('backToHub')}
         </button>
         <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            title={soundEnabled ? tSounds('disabled') : tSounds('enabled')}
+          >
+            {soundEnabled ? '🔊' : '🔇'}
+          </button>
           <span>{tHub('vsComputer')}</span>
           <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
             {getDifficultyLabel(difficulty)}
@@ -203,20 +226,22 @@ export default function MancalaAI({ difficulty, onBack }: MancalaAIProps) {
 
       {/* Winner Message */}
       {gameState.winner && (
-        <div className={`text-center py-4 px-6 rounded-2xl ${
+        <div className={`text-center py-6 px-6 rounded-2xl ${
           gameState.winner === playerRole
             ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
             : gameState.winner === 'draw'
             ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
             : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
         }`}>
-          <Trophy className="w-8 h-8 mx-auto mb-2" />
-          <p className="text-xl font-bold">{getWinnerMessage()}</p>
+          <Trophy className="w-10 h-10 mx-auto mb-2" />
+          <p className="text-2xl font-bold mb-1">{getWinnerMessage()}</p>
+          <p className="text-sm opacity-80">{getDifficultyLabel(difficulty)}</p>
           <p className="text-sm mt-1">
             {tHub('you')}: {gameState.board[playerStore]} - AI: {gameState.board[aiStore]}
           </p>
         </div>
       )}
+      <GameConfetti active={!!gameState.winner && gameState.winner === playerRole} />
 
       {/* Game Board */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
@@ -231,7 +256,7 @@ export default function MancalaAI({ difficulty, onBack }: MancalaAIProps) {
 
       {/* Game End Buttons */}
       {gameState.winner && (
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <button
             onClick={handleRestart}
             className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-xl"
@@ -239,6 +264,12 @@ export default function MancalaAI({ difficulty, onBack }: MancalaAIProps) {
             <RefreshCw className="w-5 h-5" />
             {t('playAgain') || 'Play Again'}
           </button>
+          <GameResultShare
+            gameName={t('title') || '만칼라'}
+            result={gameState.winner === playerRole ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss'}
+            difficulty={getDifficultyLabel(difficulty) || difficulty}
+            url="https://toolhub.ai.kr/mancala"
+          />
           <button
             onClick={onBack}
             className="py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl"
@@ -318,6 +349,17 @@ export default function MancalaAI({ difficulty, onBack }: MancalaAIProps) {
           </div>
         )}
       </div>
+
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

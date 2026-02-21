@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3 } from 'lucide-react'
+import GameConfetti from '@/components/GameConfetti'
+import GameResultShare from '@/components/GameResultShare'
 import CheckersBoardComponent, {
   CheckersGameState,
   createInitialCheckersState,
@@ -12,6 +14,9 @@ import CheckersBoardComponent, {
 } from '@/components/CheckersBoard'
 import { getCheckersAIMove, Difficulty } from '@/utils/gameAI'
 import { useAIGameStats } from '@/hooks/useAIGameStats'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import { useGameSounds } from '@/hooks/useGameSounds'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 interface CheckersAIProps {
   difficulty: Difficulty
@@ -21,6 +26,7 @@ interface CheckersAIProps {
 export default function CheckersAI({ difficulty, onBack }: CheckersAIProps) {
   const t = useTranslations('checkers')
   const tHub = useTranslations('gameHub')
+  const tSounds = useTranslations('gameSounds')
 
   const [gameState, setGameState] = useState<CheckersGameState>(() => {
     const initial = createInitialCheckersState()
@@ -35,6 +41,8 @@ export default function CheckersAI({ difficulty, onBack }: CheckersAIProps) {
 
   // AI 게임 통계
   const { stats, recordResult } = useAIGameStats('checkers', difficulty)
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const { playMove, playWin, playLose, playDraw, enabled: soundEnabled, setEnabled: setSoundEnabled } = useGameSounds()
 
   const aiColor = playerColor === 'red' ? 'black' : 'red'
   const isPlayerTurn = gameState.currentTurn === playerColor
@@ -89,6 +97,7 @@ export default function CheckersAI({ difficulty, onBack }: CheckersAIProps) {
           const newState = makeCheckersMove(withSelection, move.to.row, move.to.col)
           return newState || prev
         })
+        playMove()
       }
       setIsThinking(false)
     }, 500 + Math.random() * 500)
@@ -102,15 +111,21 @@ export default function CheckersAI({ difficulty, onBack }: CheckersAIProps) {
       resultRecordedRef.current = true
       if (gameState.winner === 'draw') {
         recordResult('draw')
+        recordGameResult({ gameType: 'checkers', result: 'draw', difficulty, moves: gameState.moveHistory?.length ?? 0 })
+        playDraw()
       } else if (gameState.winner === playerColor) {
         setWinCount(prev => ({ ...prev, player: prev.player + 1 }))
         recordResult('win')
+        recordGameResult({ gameType: 'checkers', result: 'win', difficulty, moves: gameState.moveHistory?.length ?? 0 })
+        playWin()
       } else {
         setWinCount(prev => ({ ...prev, ai: prev.ai + 1 }))
         recordResult('loss')
+        recordGameResult({ gameType: 'checkers', result: 'loss', difficulty, moves: gameState.moveHistory?.length ?? 0 })
+        playLose()
       }
     }
-  }, [gameState.winner, playerColor, recordResult])
+  }, [gameState.winner, gameState.moveHistory, playerColor, recordResult, recordGameResult, difficulty, playWin, playLose, playDraw])
 
   // Select piece
   const handleSelectPiece = useCallback((row: number, col: number) => {
@@ -133,8 +148,9 @@ export default function CheckersAI({ difficulty, onBack }: CheckersAIProps) {
     const newState = makeCheckersMove(gameState, toRow, toCol)
     if (newState) {
       setGameState(newState)
+      playMove()
     }
-  }, [gameState, isPlayerTurn, isThinking])
+  }, [gameState, isPlayerTurn, isThinking, playMove])
 
   // Restart game
   const handleRestart = () => {
@@ -169,6 +185,13 @@ export default function CheckersAI({ difficulty, onBack }: CheckersAIProps) {
           {tHub('backToHub')}
         </button>
         <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            title={soundEnabled ? tSounds('disabled') : tSounds('enabled')}
+          >
+            {soundEnabled ? '🔊' : '🔇'}
+          </button>
           <span>{tHub('vsComputer')}</span>
           <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
             {getDifficultyLabel(difficulty)}
@@ -245,17 +268,19 @@ export default function CheckersAI({ difficulty, onBack }: CheckersAIProps) {
 
       {/* Winner Message */}
       {gameState.winner && (
-        <div className={`text-center py-4 px-6 rounded-2xl ${
+        <div className={`text-center py-6 px-6 rounded-2xl ${
           gameState.winner === playerColor
             ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
             : gameState.winner === 'draw'
             ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
             : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
         }`}>
-          <Trophy className="w-8 h-8 mx-auto mb-2" />
-          <p className="text-xl font-bold">{getWinnerMessage()}</p>
+          <Trophy className="w-10 h-10 mx-auto mb-2" />
+          <p className="text-2xl font-bold mb-1">{getWinnerMessage()}</p>
+          <p className="text-sm opacity-80">{getDifficultyLabel(difficulty)}</p>
         </div>
       )}
+      <GameConfetti active={!!gameState.winner && gameState.winner === playerColor} />
 
       {/* Game Board */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
@@ -271,7 +296,7 @@ export default function CheckersAI({ difficulty, onBack }: CheckersAIProps) {
 
       {/* Game End Buttons */}
       {gameState.winner && (
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <button
             onClick={handleRestart}
             className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-xl"
@@ -279,6 +304,12 @@ export default function CheckersAI({ difficulty, onBack }: CheckersAIProps) {
             <RefreshCw className="w-5 h-5" />
             {t('playAgain') || 'Play Again'}
           </button>
+          <GameResultShare
+            gameName={t('title') || '체커'}
+            result={gameState.winner === playerColor ? 'win' : gameState.winner === 'draw' ? 'draw' : 'loss'}
+            difficulty={getDifficultyLabel(difficulty) || difficulty}
+            url="https://toolhub.ai.kr/checkers"
+          />
           <button
             onClick={onBack}
             className="py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl"
@@ -358,6 +389,17 @@ export default function CheckersAI({ difficulty, onBack }: CheckersAIProps) {
           </div>
         )}
       </div>
+
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

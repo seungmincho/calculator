@@ -56,6 +56,11 @@ export default function OthelloBoard({
   const [scale, setScale] = useState(1)
   const [hoverPos, setHoverPos] = useState<{ x: number; y: number } | null>(null)
 
+  // Flip animation state
+  const [flipProgress, setFlipProgress] = useState(1) // 0→1, 1 = done
+  const prevMoveCountRef = useRef(gameState.moveHistory.length)
+  const flipRafRef = useRef<number | null>(null)
+
   // 반응형 스케일 계산
   useEffect(() => {
     const updateScale = () => {
@@ -70,6 +75,33 @@ export default function OthelloBoard({
     window.addEventListener('resize', updateScale)
     return () => window.removeEventListener('resize', updateScale)
   }, [])
+
+  // Trigger flip animation when a new move is made
+  useEffect(() => {
+    const currentCount = gameState.moveHistory.length
+    if (currentCount > prevMoveCountRef.current && gameState.lastMove?.flipped.length) {
+      setFlipProgress(0)
+      let start: number | null = null
+      const duration = 400
+
+      const animate = (timestamp: number) => {
+        if (!start) start = timestamp
+        const elapsed = timestamp - start
+        const progress = Math.min(elapsed / duration, 1)
+        setFlipProgress(progress)
+        if (progress < 1) {
+          flipRafRef.current = requestAnimationFrame(animate)
+        }
+      }
+
+      flipRafRef.current = requestAnimationFrame(animate)
+    }
+    prevMoveCountRef.current = currentCount
+
+    return () => {
+      if (flipRafRef.current) cancelAnimationFrame(flipRafRef.current)
+    }
+  }, [gameState.moveHistory.length, gameState.lastMove])
 
   // 보드 그리기
   const drawBoard = useCallback(
@@ -127,6 +159,36 @@ export default function OthelloBoard({
         })
       }
 
+      // Helper to draw a stone
+      const drawStone = (px: number, py: number, color: 'black' | 'white', scaleX = 1) => {
+        ctx.save()
+        ctx.translate(px, py)
+        ctx.scale(scaleX, 1)
+
+        // 그림자
+        ctx.beginPath()
+        ctx.arc(2, 2, STONE_RADIUS, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.4)'
+        ctx.fill()
+
+        // 돌
+        const gradient = ctx.createRadialGradient(-6, -6, 2, 0, 0, STONE_RADIUS)
+        if (color === 'black') {
+          gradient.addColorStop(0, '#444')
+          gradient.addColorStop(1, '#111')
+        } else {
+          gradient.addColorStop(0, '#fff')
+          gradient.addColorStop(1, '#ddd')
+        }
+
+        ctx.beginPath()
+        ctx.arc(0, 0, STONE_RADIUS, 0, Math.PI * 2)
+        ctx.fillStyle = gradient
+        ctx.fill()
+
+        ctx.restore()
+      }
+
       // 돌 그리기
       for (let y = 0; y < BOARD_SIZE; y++) {
         for (let x = 0; x < BOARD_SIZE; x++) {
@@ -136,30 +198,19 @@ export default function OthelloBoard({
           const px = PADDING + x * CELL_SIZE + CELL_SIZE / 2
           const py = PADDING + y * CELL_SIZE + CELL_SIZE / 2
 
-          // 그림자
-          ctx.beginPath()
-          ctx.arc(px + 2, py + 2, STONE_RADIUS, 0, Math.PI * 2)
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.4)'
-          ctx.fill()
+          // Check if this stone was flipped on the last move
+          const isFlipped = lastMove?.flipped.some(f => f.x === x && f.y === y)
 
-          // 돌
-          const gradient = ctx.createRadialGradient(
-            px - 6, py - 6, 2,
-            px, py, STONE_RADIUS
-          )
-
-          if (stone === 'black') {
-            gradient.addColorStop(0, '#444')
-            gradient.addColorStop(1, '#111')
+          if (isFlipped && flipProgress < 1) {
+            // Flip animation: scale X from 1→0→1, color changes at midpoint
+            const absScale = Math.abs(Math.cos(flipProgress * Math.PI))
+            const showColor = flipProgress < 0.5
+              ? (stone === 'black' ? 'white' : 'black')  // Show old color in first half
+              : stone  // Show new color in second half
+            drawStone(px, py, showColor, Math.max(0.05, absScale))
           } else {
-            gradient.addColorStop(0, '#fff')
-            gradient.addColorStop(1, '#ddd')
+            drawStone(px, py, stone)
           }
-
-          ctx.beginPath()
-          ctx.arc(px, py, STONE_RADIUS, 0, Math.PI * 2)
-          ctx.fillStyle = gradient
-          ctx.fill()
 
           // 마지막 착수 위치 표시
           if (lastMove && lastMove.x === x && lastMove.y === y) {
@@ -169,8 +220,8 @@ export default function OthelloBoard({
             ctx.fill()
           }
 
-          // 뒤집힌 돌 표시 (마지막 수에서 뒤집힌 돌들)
-          if (lastMove?.flipped.some(f => f.x === x && f.y === y)) {
+          // 뒤집힌 돌 표시 (animation done)
+          if (isFlipped && flipProgress >= 1) {
             ctx.beginPath()
             ctx.arc(px, py, 4, 0, Math.PI * 2)
             ctx.fillStyle = '#FFC107'
@@ -196,7 +247,7 @@ export default function OthelloBoard({
         }
       }
     },
-    [gameState, hoverPos, isMyTurn, myColor, disabled]
+    [gameState, hoverPos, isMyTurn, myColor, disabled, flipProgress]
   )
 
   // 캔버스 렌더링
@@ -255,21 +306,104 @@ export default function OthelloBoard({
     setHoverPos(null)
   }
 
+  // 키보드 처리
+  const hoverPosRef = useRef(hoverPos)
+  hoverPosRef.current = hoverPos
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLCanvasElement>) => {
+    if (disabled || !isMyTurn || !myColor || gameState.winner) return
+
+    const key = e.key
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(key)) {
+      e.preventDefault()
+
+      const pos = hoverPosRef.current || { x: 3, y: 3 }
+
+      if (key === 'Enter' || key === ' ') {
+        const isValid = gameState.validMoves.some(m => m.x === pos.x && m.y === pos.y)
+        if (isValid) {
+          onMove(pos.x, pos.y)
+        }
+      } else {
+        let newPos = pos
+        switch (key) {
+          case 'ArrowUp': newPos = { x: pos.x, y: Math.max(0, pos.y - 1) }; break
+          case 'ArrowDown': newPos = { x: pos.x, y: Math.min(BOARD_SIZE - 1, pos.y + 1) }; break
+          case 'ArrowLeft': newPos = { x: Math.max(0, pos.x - 1), y: pos.y }; break
+          case 'ArrowRight': newPos = { x: Math.min(BOARD_SIZE - 1, pos.x + 1), y: pos.y }; break
+        }
+        setHoverPos(newPos)
+      }
+    }
+  }, [disabled, isMyTurn, myColor, gameState.winner, gameState.validMoves, onMove])
+
+  // 터치 위치를 보드 좌표로 변환
+  const getTouchPosition = (e: React.TouchEvent<HTMLCanvasElement>): { x: number; y: number } | null => {
+    const canvas = canvasRef.current
+    if (!canvas) return null
+    const touch = e.touches[0] || e.changedTouches[0]
+    if (!touch) return null
+
+    const rect = canvas.getBoundingClientRect()
+    const scaleX = BOARD_PIXEL_SIZE / rect.width
+    const scaleY = BOARD_PIXEL_SIZE / rect.height
+
+    const touchX = (touch.clientX - rect.left) * scaleX
+    const touchY = (touch.clientY - rect.top) * scaleY
+
+    const x = Math.floor((touchX - PADDING) / CELL_SIZE)
+    const y = Math.floor((touchY - PADDING) / CELL_SIZE)
+
+    if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE) {
+      return { x, y }
+    }
+    return null
+  }
+
   return (
     <div ref={containerRef} className="w-full flex justify-center">
       <canvas
         ref={canvasRef}
         width={BOARD_PIXEL_SIZE}
         height={BOARD_PIXEL_SIZE}
+        tabIndex={0}
+        aria-label="Othello game board"
+        role="grid"
         style={{
           width: BOARD_PIXEL_SIZE * scale,
           height: BOARD_PIXEL_SIZE * scale,
-          cursor: isMyTurn && myColor && !gameState.winner && !disabled ? 'pointer' : 'default'
+          cursor: isMyTurn && myColor && !gameState.winner && !disabled ? 'pointer' : 'default',
+          outline: 'none',
+          touchAction: 'none'
         }}
         onClick={handleClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="rounded-lg shadow-xl"
+        onKeyDown={handleKeyDown}
+        onTouchStart={(e) => {
+          e.preventDefault()
+          const pos = getTouchPosition(e)
+          if (pos) setHoverPos(pos)
+        }}
+        onTouchMove={(e) => {
+          e.preventDefault()
+          const pos = getTouchPosition(e)
+          if (pos) setHoverPos(pos)
+        }}
+        onTouchEnd={(e) => {
+          e.preventDefault()
+          const pos = getTouchPosition(e)
+          if (pos) {
+            if (!disabled && isMyTurn && myColor && !gameState.winner) {
+              const isValid = gameState.validMoves.some(m => m.x === pos.x && m.y === pos.y)
+              if (isValid) {
+                onMove(pos.x, pos.y)
+              }
+            }
+          }
+          setHoverPos(null)
+        }}
+        className="rounded-lg shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       />
     </div>
   )

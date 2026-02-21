@@ -3,6 +3,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Flag, Bomb, RotateCcw } from 'lucide-react'
+import { useLeaderboard } from '@/hooks/useLeaderboard'
+import LeaderboardPanel from '@/components/LeaderboardPanel'
+import NameInputModal from '@/components/NameInputModal'
 
 type Difficulty = 'beginner' | 'intermediate' | 'expert'
 
@@ -50,6 +53,9 @@ export default function Minesweeper() {
   const isLongPressRef = useRef(false)
 
   const config = DIFFICULTIES[difficulty]
+  const leaderboard = useLeaderboard('minesweeper', difficulty)
+  const [showNameModal, setShowNameModal] = useState(false)
+  const gameStartTimeRef = useRef<number>(Date.now())
 
   const initializeBoard = useCallback((rows: number, cols: number): Cell[][] => {
     const newBoard: Cell[][] = []
@@ -113,6 +119,7 @@ export default function Minesweeper() {
     setTimer(0)
     setIsFirstClick(true)
     setClickedMine(null)
+    gameStartTimeRef.current = Date.now()
     if (timerRef.current) {
       clearInterval(timerRef.current)
       timerRef.current = null
@@ -122,6 +129,23 @@ export default function Minesweeper() {
   useEffect(() => {
     resetGame()
   }, [resetGame])
+
+  useEffect(() => {
+    if (gameStatus === 'won') {
+      if (leaderboard.checkQualifies(timer)) {
+        setShowNameModal(true)
+      }
+      leaderboard.fetchLeaderboard()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameStatus])
+
+  const handleLeaderboardSubmit = useCallback(async (name: string) => {
+    const duration = Date.now() - gameStartTimeRef.current
+    await leaderboard.submitScore(timer, name, duration)
+    leaderboard.savePlayerName(name)
+    setShowNameModal(false)
+  }, [leaderboard, timer])
 
   useEffect(() => {
     if (gameStatus === 'playing' && !isFirstClick) {
@@ -439,6 +463,17 @@ export default function Minesweeper() {
           </div>
         </div>
       </div>
+
+      {/* Leaderboard */}
+      <LeaderboardPanel leaderboard={leaderboard} />
+      <NameInputModal
+        isOpen={showNameModal}
+        onSubmit={handleLeaderboardSubmit}
+        onClose={() => setShowNameModal(false)}
+        score={timer}
+        formatScore={leaderboard.config.formatScore}
+        defaultName={leaderboard.savedPlayerName}
+      />
 
       {/* Guide Section */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">

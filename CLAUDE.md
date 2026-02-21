@@ -137,8 +137,8 @@ src/
 - `ImageOcr`: Image text extraction (OCR) using Tesseract.js with rotation support, multi-language
 - `KeyboardConverter`: Korean-English keyboard mistype converter with Hangul jamo assembly/disassembly
 
-#### Games (10 tools)
-- `GameHub`: Game listing/hub page with game stats
+#### Games (20+ tools)
+- `GameHub`: Game listing/hub page with game stats + achievements panel
 - `LottoGenerator`: Korean lottery number generation with statistics
 - `LadderGame`: Online ladder game for decision making
 - `Omok`: 오목 (Gomoku) with AI opponent and online P2P multiplayer
@@ -148,6 +148,11 @@ src/
 - `Mancala`: 만칼라 with AI opponent
 - `Battleship`: 배틀쉽 with AI opponent
 - `DotsAndBoxes`: 점과선 with AI opponent
+- `Game2048`: 2048 puzzle game
+- `Minesweeper`: 지뢰찾기
+- `Sudoku`: 스도쿠
+- `SnakeGame`: 스네이크 게임
+- Plus: WordRelay, NumberBaseball, MemoryGame, TetrisGame, TypingGame, WordQuiz
 
 #### Shared Components
 - `Header`: Sticky navigation with dropdown menus, recent tools tracking, global search (Ctrl+K), mobile responsive
@@ -168,6 +173,9 @@ src/
 - `PDFExport`: PDF export for calculation results
 - `GameLobby`: Reusable online game lobby (Supabase rooms)
 - `GameStats`: AI game win/loss statistics with recharts
+- `GameAchievements`: Achievement badge grid (collapsible) + `AchievementToast` (named export)
+- `GameResultShare`: Game result sharing with native share API, clipboard, X/Twitter
+- `GameConfetti`: Canvas-based confetti animation for win celebrations
 - `AdSense`: Google AdSense ad component
 - `I18nWrapper`: Client-side i18n provider
 
@@ -178,6 +186,8 @@ src/
 - `useGameRoom`: Supabase-based game room management
 - `usePeerConnection`: WebRTC P2P connection for multiplayer games
 - `useAIGameStats`: AI game statistics tracking (wins, losses, draws)
+- `useGameAchievements`: 12-achievement system with localStorage persistence, streak/stat tracking
+- `useGameSounds`: Web Audio API synthesized sounds (no audio files), toggle with localStorage
 
 ### Utility Files
 - `localStorage.ts`: Type-safe localStorage wrapper with history titles
@@ -193,7 +203,7 @@ Central configuration in `/src/config/menuConfig.ts` with 4 categories:
 - **calculators**: 33 financial/life calculators
 - **tools**: 57 development & utility tools (including image/media tools)
 - **health**: 7 health & fitness tools
-- **games**: 15 games (including GameHub)
+- **games**: 20+ games (including GameHub, 7 AI board games, 13+ solo games)
 
 Header and ToolsShowcase auto-read from menuConfig. Footer is minimal (no menu links).
 
@@ -207,7 +217,7 @@ Header and ToolsShowcase auto-read from menuConfig. Footer is minimal (no menu l
 ### SEO & Metadata
 - Comprehensive Korean SEO metadata in layout.tsx
 - OpenGraph and Twitter card support
-- JSON-LD structured data: site-level (WebSite + SoftwareApplication) + per-tool (WebApplication via ToolJsonLd)
+- JSON-LD structured data: site-level (WebSite + SoftwareApplication) + per-tool (WebApplication via ToolJsonLd) + per-game (VideoGame schema)
 - Breadcrumb JSON-LD structured data (auto-generated via Breadcrumb component)
 - Static sitemap generation (`src/app/sitemap.ts`) with all 110+ routes
 - Naver site verification configured
@@ -264,12 +274,46 @@ const updateURL = (params: Record<string, any>) => {
 ```
 
 ### Game Architecture Pattern
-All board games follow a consistent pattern:
-- Wrapper component (e.g., `Omok.tsx`) handles mode selection (AI/Online)
-- Board component (e.g., `OmokBoard.tsx`) handles game logic and rendering
-- AI opponents use minimax/alpha-beta pruning algorithms
-- Online multiplayer via `useGameRoom` (Supabase) + `usePeerConnection` (WebRTC)
-- Game stats tracked via `useAIGameStats` hook with localStorage persistence
+
+All board games follow a consistent 3-layer pattern:
+
+```
+src/components/games/*AI.tsx    ← AI game wrapper (state, hooks, UI chrome)
+src/components/*Board.tsx       ← Board renderer (canvas, touch/mouse/keyboard)
+src/utils/gameAI/*.ts           ← AI algorithm (minimax/alpha-beta, pure logic)
+```
+
+**AI Game Wrapper (`*AI.tsx`)** — integrates all hooks and UI:
+- `useAIGameStats` — win/loss/draw statistics (localStorage)
+- `useGameAchievements` — 12-achievement tracking with `recordGameResult()` on game end
+- `useGameSounds` — synthesized sound effects (`playMove`, `playWin`, `playLose`, `playDraw`, `playInvalid`)
+- `GameAchievements` panel + `AchievementToast` for unlock notifications
+- `GameResultShare` for sharing results
+- `GameConfetti` on win
+- Sound toggle button (`🔊`/`🔇`) with i18n label via `useTranslations('gameSounds')`
+- Undo support (Easy mode only, Omok/Connect4/Othello): replays move history from initial state
+
+**Board Renderer (`*Board.tsx`)** — canvas-based rendering:
+- Mouse hover preview + click to move
+- Touch support (`onTouchStart/Move/End` + `touchAction: 'none'`) on Omok/Connect4/Othello
+- Keyboard navigation (arrow keys + Enter) on Omok/Connect4/Othello
+
+**AI Algorithm (`gameAI/*.ts`)** — pure functions:
+- Minimax with alpha-beta pruning, iterative deepening
+- Difficulty levels control search depth
+- No side effects, testable in isolation
+
+**Online Multiplayer** (Omok only currently):
+- `useGameRoom` (Supabase signaling) + `usePeerConnection` (WebRTC P2P)
+- `GameLobby` component for room management
+
+**SEO**: Each game page has JSON-LD `VideoGame` schema + canonical URL
+
+**i18n Namespaces for games**:
+- `achievements` — badge names/descriptions, UI labels (title, progress, locked, unlocked, dismiss)
+- `gameSounds` — sound toggle labels (enabled, disabled), undo label
+- `gameResultShare` — share dialog labels
+- `{gameName}` (e.g., `omok`, `othello`) — game-specific labels (title, rules, difficulty, etc.)
 
 ### Recent Tools Tracking
 Header shows recently used tools per category (max 4) using `recentTools.ts` utility with localStorage.
@@ -287,14 +331,32 @@ Header shows recently used tools per category (max 4) using `recentTools.ts` uti
 | 5 | `/src/app/[tool-name]/page.tsx` | 페이지 생성 | 새 디렉토리 + page.tsx |
 | 6 | `/src/components/[ToolName].tsx` | 컴포넌트 생성 | 새 파일 |
 
-**Header, ToolsShowcase, SearchDialog는 menuConfig에서 자동 반영되므로 별도 수정 불필요.**
+**Header, ToolsShowcase, SearchDialog, GameHub는 menuConfig에서 자동 반영되므로 별도 수정 불필요.**
 
 ### Step 1: menuConfig.ts
 
 ```typescript
 // /src/config/menuConfig.ts — 카테고리: calculators | tools | health | games
+
+// 일반 도구/계산기
 { href: '/new-tool', labelKey: 'footer.links.newTool', descriptionKey: 'toolsShowcase.tools.newTool.description', icon: '🔧' }
+
+// 게임 (games 카테고리) — modes 필드 필수!
+// modes: ['ai', 'online'] → AI 대전 + 온라인 대전 지원 보드게임 (GameHub에서 모드 선택 후 인라인 플레이)
+// modes: ['solo']         → 솔로 게임 (GameHub 카드 클릭 시 해당 페이지로 이동)
+{ href: '/new-game', labelKey: 'footer.links.newGame', descriptionKey: 'toolsShowcase.tools.newGame.description', icon: '🎮', modes: ['solo'] }
 ```
+
+**새 게임 추가 시 GameHub 수정 불필요** — menuConfig에 `modes` 포함해서 추가하면 자동으로 GameHub에 표시됨.
+- 보드게임(`['ai', 'online']`) 추가 시: `/src/app/games/page.tsx`의 dynamic import 맵에도 컴포넌트 추가 필요
+- 솔로게임(`['solo']`) 추가 시: GameHub.tsx 수정 불필요, 개별 페이지만 생성
+
+**AI 보드게임 추가 시 추가 파일:**
+- `/src/components/games/NewGameAI.tsx` — AI wrapper (useGameAchievements, useGameSounds, useAIGameStats 통합)
+- `/src/components/NewGameBoard.tsx` — Canvas 기반 보드 렌더러
+- `/src/utils/gameAI/newGameAI.ts` — AI 알고리즘 (minimax/alpha-beta)
+- page.tsx에 JSON-LD `VideoGame` 스키마 추가
+- `useGameAchievements`의 `GameType` 유니온에 새 게임 타입 추가 (`src/hooks/useGameAchievements.ts`)
 
 ### Step 2: 번역 파일 (ko.json, en.json) — 3곳 수정
 

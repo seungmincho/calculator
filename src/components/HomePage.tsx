@@ -101,58 +101,79 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* ===== HERO SECTION ===== */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 dark:from-gray-900 dark:via-indigo-950 dark:to-purple-950">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-300 rounded-full blur-3xl" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-white dark:bg-none" style={{ ['--hero-bg' as string]: 'none' }}>
+        {/* Dark mode background overlay */}
+        <div className="absolute inset-0 hidden dark:block" style={{ background: 'linear-gradient(160deg, #0a0f1e 0%, #0d1117 40%, #0f1623 100%)' }} />
+
+        {/* Ambient glow blobs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-32 -left-32 w-[480px] h-[480px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)' }} />
+          <div className="absolute top-0 right-0 w-[360px] h-[360px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 70%)' }} />
+          <div className="absolute bottom-0 left-1/3 w-[400px] h-[300px] rounded-full hidden dark:block" style={{ background: 'radial-gradient(circle, rgba(20,184,166,0.10) 0%, transparent 70%)' }} />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        {/* Dot grid */}
+        <div className="absolute inset-0 opacity-[0.06] dark:opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
+
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 md:pt-24 md:pb-28">
           <div className="text-center">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-medium mb-7 tracking-wide bg-white/60 border-gray-200 text-gray-600 dark:bg-white/[0.04] dark:border-white/[0.08] dark:text-slate-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              {totalTools}+ {t('homePage.hero.totalTools')}
+            </div>
+
+            {/* Title */}
+            <h1 className="text-3xl md:text-5xl lg:text-[3.75rem] font-bold leading-tight tracking-tight mb-5 text-gray-900 dark:text-slate-100">
               {t('homePage.hero.title')}
             </h1>
-            <p className="text-lg md:text-xl text-blue-100 dark:text-gray-300 max-w-3xl mx-auto mb-8">
+            <p className="text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed text-gray-500 dark:text-slate-500">
               {t('homePage.hero.subtitle')}
             </p>
 
             {/* Search Bar */}
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-xl mx-auto relative group">
+              {/* Glow ring on hover */}
+              <div className="absolute -inset-0.5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.4), rgba(99,102,241,0.4))' }} />
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="w-full flex items-center gap-3 px-6 py-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-xl text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800 transition-all group cursor-text"
+                className="relative w-full flex items-center gap-3 px-5 py-3.5 rounded-2xl cursor-text transition-all duration-300 bg-white/80 border border-gray-200 shadow-sm backdrop-blur-sm dark:bg-white/[0.06] dark:border-white/10 dark:shadow-none"
               >
-                <Search className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
-                <span className="flex-1 text-left">{t('homePage.hero.searchPlaceholder')}</span>
-                <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-mono text-gray-400 bg-gray-100 dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
-                  Ctrl+K
+                <Search className="w-4 h-4 shrink-0 text-gray-400 dark:text-slate-600" />
+                <span className="flex-1 text-left text-sm text-gray-400 dark:text-slate-500">{t('homePage.hero.searchPlaceholder')}</span>
+                <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono rounded text-gray-400 bg-gray-100 border border-gray-200 dark:text-slate-600 dark:bg-white/5 dark:border-white/[0.08]">
+                  Ctrl K
                 </kbd>
               </button>
             </div>
 
-            {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-6 md:gap-10 mt-10">
+            {/* Stats */}
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 md:gap-x-12 mt-12">
               {categoryKeys.map(key => (
-                <div key={key} className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-white">
+                <button
+                  key={key}
+                  onClick={() => {
+                    setActiveCategory(key)
+                    document.getElementById('tools-grid')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="text-center group/stat transition-all"
+                >
+                  <div className="text-xl md:text-2xl font-bold tabular-nums transition-colors text-gray-800 dark:text-slate-200">
                     {menuConfig[key].items.length}
                   </div>
-                  <div className="text-sm text-blue-200 dark:text-gray-400">
-                    {t(menuConfig[key].titleKey)}
+                  <div className="text-xs mt-0.5 transition-colors text-gray-500 dark:text-slate-600">
+                    {categoryMeta[key].emoji} {t(menuConfig[key].titleKey)}
                   </div>
-                </div>
+                </button>
               ))}
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-yellow-300">
-                  {totalTools}+
-                </div>
-                <div className="text-sm text-blue-200 dark:text-gray-400">
-                  {t('homePage.hero.totalTools')}
-                </div>
-              </div>
             </div>
           </div>
         </div>
+
+        {/* Bottom fade — light mode: white, dark mode: gray-900 */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 dark:hidden" style={{ background: 'linear-gradient(to bottom, transparent, #ffffff)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-24 hidden dark:block" style={{ background: 'linear-gradient(to bottom, transparent, #111827)' }} />
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

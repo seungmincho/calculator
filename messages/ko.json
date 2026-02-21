@@ -1992,6 +1992,11 @@
     "allGames": "전체",
     "boardGames": "보드게임",
     "strategyGames": "전략게임",
+    "filterAll": "전체",
+    "filterMultiplayer": "보드게임",
+    "filterSolo": "솔로게임",
+    "badgeSolo": "솔로",
+    "playNow": "바로 플레이",
     "playMode": "플레이 모드",
     "vsComputer": "컴퓨터 대전",
     "vsOnline": "온라인 대전",
@@ -2103,7 +2108,26 @@
     "noGlobalStats": "아직 통계 데이터가 없습니다",
     "aiGames": "AI 대전",
     "onlineGames": "온라인 대전",
-    "roomsCreated": "생성된 방"
+    "roomsCreated": "생성된 방",
+    "vsComputerDesc": "AI와 1인 플레이",
+    "vsOnlineDesc": "실시간 온라인 대전",
+    "closePanel": "✕ 닫기"
+  },
+  "boardGamePage": {
+    "selectPlayMode": "플레이 방식 선택",
+    "vsComputer": "컴퓨터 대전",
+    "vsComputerDesc": "AI와 1인 플레이 · 인터넷 불필요",
+    "difficulty": "난이도",
+    "easy": "쉬움",
+    "normal": "보통",
+    "hard": "어려움",
+    "easyDesc": "AI가 느리게 반응",
+    "normalDesc": "기본 전략 사용",
+    "hardDesc": "최적의 수 계산",
+    "startAI": "AI와 대전 시작",
+    "vsOnline": "온라인 대전",
+    "vsOnlineDesc": "친구와 실시간 P2P 대전 · 방 생성/참가",
+    "moreGames": "게임 센터에서 더 많은 게임 보기"
   },
   "gameStats": {
     "title": "게임 통계",
@@ -2170,7 +2194,8 @@
       "rule1": "흑돌이 먼저 시작합니다. 플레이어는 번갈아 가며 돌을 놓습니다.",
       "rule2": "목표는 가로, 세로 또는 대각선으로 5개의 돌을 연속으로 놓는 것입니다.",
       "rule3": "한번 놓은 돌은 움직일 수 없습니다.",
-      "rule4": "먼저 5개를 연속으로 놓는 사람이 승리합니다!"
+      "rule4": "먼저 5개를 연속으로 놓는 사람이 승리합니다!",
+      "rule5": "흑돌에는 금수가 있습니다: 쌍삼(3-3), 쌍사(4-4), 장목(6개 이상)."
     }
   },
   "othello": {
@@ -7122,17 +7147,35 @@
   "reactionTest": {
     "title": "반응속도 테스트",
     "description": "화면이 변할 때 최대한 빠르게 클릭하여 반응 속도를 측정합니다.",
-    "instruction": "초록색으로 변하면 클릭하세요!",
+    "clickToStart": "클릭하여 시작!",
+    "idleSubtext": "화면이 초록색으로 변하면 최대한 빠르게 클릭하세요",
+    "roundInfo": "총 {total}라운드 측정 후 결과를 확인합니다",
     "waiting": "기다리세요...",
-    "ready": "준비...",
+    "waitSubtext": "초록색으로 변할 때까지 기다리세요!",
     "clickNow": "지금 클릭!",
-    "tooEarly": "너무 빨리 클릭했습니다! 다시 시도하세요.",
-    "result": "반응 속도",
+    "tooEarly": "너무 일찍 클릭!",
+    "tooEarlySubtext": "초록색이 될 때까지 기다려야 합니다",
     "ms": "ms",
-    "tryAgain": "다시 하기",
-    "attempts": "시도 횟수",
+    "percentileText": "상위 {percentile}%보다 빠릅니다",
+    "clickForNext": "클릭하여 {next}라운드 시작",
+    "clickForResult": "클릭하여 최종 결과 보기",
+    "sessionComplete": "측정 완료!",
+    "newSession": "다시 측정하기",
     "average": "평균",
     "best": "최고 기록",
+    "yourRanking": "당신의 순위",
+    "topPercent": "상위 {percent}%",
+    "comparison": "다른 사람들과 비교",
+    "compProGamer": "프로 게이머",
+    "compAboveAvg": "평균 이상",
+    "compAvgAdult": "일반 성인 평균",
+    "compYou": "나",
+    "roundProgress": "{current}/{total} 라운드",
+    "currentBest": "최고",
+    "currentRound": "현재 라운드",
+    "totalAttempts": "총 시도",
+    "sessionAvg": "이번 세션 평균",
+    "allTimeBest": "역대 최고",
     "rating": {
       "excellent": "매우 빠름",
       "good": "빠름",
@@ -7147,10 +7190,10 @@
       "howTo": {
         "title": "측정 방법",
         "items": [
-          "빨간색 화면이 초록색으로 변할 때 클릭",
-          "초록색이 되기 전에 클릭하면 무효",
-          "5회 측정 후 평균 반응 속도 계산",
-          "마우스 또는 터치스크린으로 측정"
+          "파란색 화면을 클릭하여 시작합니다",
+          "빨간색 화면이 초록색으로 변할 때 최대한 빠르게 클릭",
+          "초록색이 되기 전에 클릭하면 무효 처리됩니다",
+          "5라운드 측정 후 평균 반응 속도와 다른 사람과의 비교 결과를 확인합니다"
         ]
       },
       "standards": {
@@ -8318,9 +8361,13 @@
     "hardMode": "하드 모드",
     "hardModeAfterStart": "게임 시작 후에는 하드 모드를 변경할 수 없습니다",
     "invalidChars": "한글만 입력할 수 있습니다",
+    "needVowelHint": "모음(ㅏ, ㅓ 등)을 입력해 글자를 완성하세요",
     "shareTitle": "한글 워들",
     "copyFailed": "복사에 실패했습니다",
     "helpExampleTitle": "예시",
+    "helpInputTitle": "입력 방법",
+    "helpInputDesc": "자음과 모음을 순서대로 눌러 글자를 완성하세요. 자음만 입력하면 글자가 완성되지 않습니다.",
+    "helpInputExample": "자음 + 모음 → 글자 완성",
     "helpJamoTitle": "자모 분석",
     "helpKeyboard": "키보드의 색상은 해당 자모의 상태를 나타냅니다",
     "hardModeCorrect": "{jamo}은(는) 정확한 위치에 있어야 합니다",
@@ -9381,7 +9428,9 @@
       "cancelCrop": "선택 해제",
       "selectedColor": "제거할 색상",
       "colorThreshold": "허용 범위",
-      "clearColor": "해제"
+      "clearColor": "해제",
+      "precise": "정밀",
+      "broad": "넓게"
     },
     "options": {
       "title": "옵션",
@@ -9436,5 +9485,102 @@
         ]
       }
     }
+  },
+  "achievements": {
+    "title": "업적",
+    "progress": "달성 진행률",
+    "locked": "잠김",
+    "unlocked": "업적 달성!",
+    "dismiss": "닫기",
+    "noAchievements": "아직 달성한 업적이 없습니다",
+    "allUnlocked": "모든 업적을 달성했습니다!",
+    "first_win": {
+      "name": "첫 승리",
+      "desc": "첫 번째 AI 대전 승리"
+    },
+    "win_streak_3": {
+      "name": "연승 행진",
+      "desc": "3연승 달성"
+    },
+    "win_streak_5": {
+      "name": "무적 행진",
+      "desc": "5연승 달성"
+    },
+    "win_streak_10": {
+      "name": "레전드",
+      "desc": "10연승 달성"
+    },
+    "beat_hard": {
+      "name": "하드 정복자",
+      "desc": "하드 난이도 AI를 이기세요"
+    },
+    "games_10": {
+      "name": "게이머",
+      "desc": "10판 플레이"
+    },
+    "games_50": {
+      "name": "열정 게이머",
+      "desc": "50판 플레이"
+    },
+    "games_100": {
+      "name": "게임 마스터",
+      "desc": "100판 플레이"
+    },
+    "all_games_played": {
+      "name": "탐험가",
+      "desc": "모든 보드게임 플레이"
+    },
+    "all_games_won": {
+      "name": "올라운더",
+      "desc": "모든 보드게임에서 승리"
+    },
+    "speed_win": {
+      "name": "번개 승리",
+      "desc": "15수 이내로 승리"
+    },
+    "comeback_king": {
+      "name": "역전의 귀재",
+      "desc": "3연패 후 역전승"
+    }
+  },
+  "gameResultShare": {
+    "share": "결과 공유",
+    "shareTitle": "결과 공유",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "xPost": "𝕏 포스트",
+    "difficultyLabel": "난이도",
+    "movesLabel": "수",
+    "scoreLabel": "점수",
+    "challenge": "에서 도전해보세요!",
+    "hashtags": "#툴허브 #게임센터"
+  },
+  "gameSounds": {
+    "title": "효과음",
+    "enabled": "효과음 켜기",
+    "disabled": "효과음 끄기",
+    "undo": "되돌리기"
+  },
+  "leaderboard": {
+    "title": "리더보드",
+    "rank": "순위",
+    "playerName": "이름",
+    "score": "기록",
+    "date": "날짜",
+    "myRank": "내 순위",
+    "noEntries": "아직 기록이 없습니다. 첫 번째 기록을 남겨보세요!",
+    "loading": "불러오는 중...",
+    "error": "리더보드를 불러올 수 없습니다",
+    "qualifiedTitle": "Top 10 진입!",
+    "qualifiedMessage": "축하합니다! 리더보드에 이름을 등록하세요.",
+    "yourScore": "기록",
+    "enterName": "닉네임 입력",
+    "namePlaceholder": "닉네임 (최대 20자)",
+    "submit": "등록",
+    "submitting": "등록 중...",
+    "skip": "건너뛰기",
+    "submitted": "등록 완료!",
+    "you": "(나)",
+    "today": "오늘"
   }
 }

@@ -48,6 +48,20 @@ export default function Connect4BoardComponent({
   const [scale, setScale] = useState(1)
   const [hoverCol, setHoverCol] = useState<number | null>(null)
 
+  // Drop animation state
+  const animRef = useRef<{
+    col: number
+    targetRow: number
+    currentY: number
+    color: 'red' | 'yellow'
+    rafId: number
+  } | null>(null)
+  const prevMoveCountRef = useRef(gameState.moveHistory.length)
+  const [animY, setAnimY] = useState<number | null>(null)
+  const animColRef = useRef<number | null>(null)
+  const animColorRef = useRef<'red' | 'yellow' | null>(null)
+  const animTargetRowRef = useRef<number | null>(null)
+
   // 반응형 스케일 계산
   useEffect(() => {
     const updateScale = () => {
@@ -62,6 +76,48 @@ export default function Connect4BoardComponent({
     window.addEventListener('resize', updateScale)
     return () => window.removeEventListener('resize', updateScale)
   }, [])
+
+  // Trigger drop animation when a new move is made
+  useEffect(() => {
+    const currentCount = gameState.moveHistory.length
+    if (currentCount > prevMoveCountRef.current && gameState.lastMove) {
+      const { col, row, player } = gameState.lastMove
+      animColRef.current = col
+      animColorRef.current = player
+      animTargetRowRef.current = row
+
+      const startY = PADDING - CELL_SIZE
+      const targetY = PADDING + row * CELL_SIZE + CELL_SIZE / 2
+      let currentYPos = startY
+      const gravity = 1.8
+
+      const animate = () => {
+        currentYPos += (targetY - currentYPos) * 0.15 + gravity
+        if (currentYPos >= targetY) {
+          setAnimY(null)
+          animColRef.current = null
+          animColorRef.current = null
+          animTargetRowRef.current = null
+          animRef.current = null
+        } else {
+          setAnimY(currentYPos)
+          const nextRafId = requestAnimationFrame(animate)
+          animRef.current = { col, targetRow: row, currentY: currentYPos, color: player, rafId: nextRafId }
+        }
+      }
+
+      setAnimY(startY)
+      const rafId = requestAnimationFrame(animate)
+      animRef.current = { col, targetRow: row, currentY: startY, color: player, rafId }
+    }
+    prevMoveCountRef.current = currentCount
+
+    return () => {
+      if (animRef.current) {
+        cancelAnimationFrame(animRef.current.rafId)
+      }
+    }
+  }, [gameState.moveHistory.length, gameState.lastMove])
 
   // 보드 그리기
   const drawBoard = useCallback(
@@ -91,12 +147,42 @@ export default function Connect4BoardComponent({
         }
       }
 
+      // Helper to draw a disc at a given position
+      const drawDisc = (px: number, py: number, color: 'red' | 'yellow') => {
+        ctx.beginPath()
+        ctx.arc(px, py, DISC_RADIUS, 0, Math.PI * 2)
+        const gradient = ctx.createRadialGradient(px - 8, py - 8, 2, px, py, DISC_RADIUS)
+        if (color === 'red') {
+          gradient.addColorStop(0, '#EF5350')
+          gradient.addColorStop(1, '#C62828')
+        } else {
+          gradient.addColorStop(0, '#FFEE58')
+          gradient.addColorStop(1, '#F9A825')
+        }
+        ctx.fillStyle = gradient
+        ctx.fill()
+        ctx.strokeStyle = color === 'red' ? '#B71C1C' : '#F57F17'
+        ctx.lineWidth = 2
+        ctx.stroke()
+      }
+
       // 셀 및 디스크 그리기
+      const isAnimating = animY !== null && animColRef.current !== null
       for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLS; col++) {
           const px = PADDING + col * CELL_SIZE + CELL_SIZE / 2
           const py = PADDING + row * CELL_SIZE + CELL_SIZE / 2
           const cell = board[row][col]
+
+          // Skip the animating disc at its final position
+          const isAnimCell = isAnimating && col === animColRef.current && row === animTargetRowRef.current
+          if (isAnimCell) {
+            ctx.beginPath()
+            ctx.arc(px, py, DISC_RADIUS, 0, Math.PI * 2)
+            ctx.fillStyle = '#E3F2FD'
+            ctx.fill()
+            continue
+          }
 
           // 구멍/디스크 그리기
           ctx.beginPath()
@@ -107,27 +193,7 @@ export default function Connect4BoardComponent({
             ctx.fillStyle = '#E3F2FD'
             ctx.fill()
           } else {
-            // 디스크
-            const gradient = ctx.createRadialGradient(
-              px - 8, py - 8, 2,
-              px, py, DISC_RADIUS
-            )
-
-            if (cell === 'red') {
-              gradient.addColorStop(0, '#EF5350')
-              gradient.addColorStop(1, '#C62828')
-            } else {
-              gradient.addColorStop(0, '#FFEE58')
-              gradient.addColorStop(1, '#F9A825')
-            }
-
-            ctx.fillStyle = gradient
-            ctx.fill()
-
-            // 디스크 테두리
-            ctx.strokeStyle = cell === 'red' ? '#B71C1C' : '#F57F17'
-            ctx.lineWidth = 2
-            ctx.stroke()
+            drawDisc(px, py, cell)
           }
 
           // 승리 라인 하이라이트
@@ -139,6 +205,12 @@ export default function Connect4BoardComponent({
             ctx.stroke()
           }
         }
+      }
+
+      // Draw the animating disc
+      if (isAnimating && animColorRef.current) {
+        const animPx = PADDING + animColRef.current! * CELL_SIZE + CELL_SIZE / 2
+        drawDisc(animPx, animY!, animColorRef.current)
       }
 
       // 열 번호
@@ -153,7 +225,7 @@ export default function Connect4BoardComponent({
         )
       }
     },
-    [gameState, hoverCol, isMyTurn, myColor, disabled]
+    [gameState, hoverCol, isMyTurn, myColor, disabled, animY]
   )
 
   // 캔버스 렌더링
@@ -207,21 +279,89 @@ export default function Connect4BoardComponent({
     setHoverCol(null)
   }
 
+  // 키보드 처리
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLCanvasElement>) => {
+    if (disabled || !isMyTurn || !myColor || gameState.winner) return
+
+    const key = e.key
+    if (['ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(key)) {
+      e.preventDefault()
+
+      if (key === 'ArrowLeft') {
+        setHoverCol(prev => prev === null ? 3 : Math.max(0, prev - 1))
+      } else if (key === 'ArrowRight') {
+        setHoverCol(prev => prev === null ? 3 : Math.min(COLS - 1, prev + 1))
+      } else if (key === 'Enter' || key === ' ') {
+        if (hoverCol !== null) {
+          const row = getDropRow(gameState.board, hoverCol)
+          if (row !== -1) {
+            onMove(hoverCol)
+          }
+        }
+      }
+    }
+  }, [disabled, isMyTurn, myColor, gameState.winner, gameState.board, hoverCol, onMove])
+
+  // 터치 위치를 열로 변환
+  const getTouchCol = (e: React.TouchEvent<HTMLCanvasElement>): number | null => {
+    const canvas = canvasRef.current
+    if (!canvas) return null
+    const touch = e.touches[0] || e.changedTouches[0]
+    if (!touch) return null
+
+    const rect = canvas.getBoundingClientRect()
+    const scaleX = BOARD_WIDTH / rect.width
+    const touchX = (touch.clientX - rect.left) * scaleX
+
+    const col = Math.floor((touchX - PADDING) / CELL_SIZE)
+    if (col >= 0 && col < COLS) return col
+    return null
+  }
+
   return (
     <div ref={containerRef} className="w-full flex justify-center">
       <canvas
         ref={canvasRef}
         width={BOARD_WIDTH}
         height={BOARD_HEIGHT}
+        tabIndex={0}
+        aria-label="Connect4 game board"
+        role="grid"
         style={{
           width: BOARD_WIDTH * scale,
           height: BOARD_HEIGHT * scale,
-          cursor: isMyTurn && myColor && !gameState.winner && !disabled ? 'pointer' : 'default'
+          cursor: isMyTurn && myColor && !gameState.winner && !disabled ? 'pointer' : 'default',
+          outline: 'none',
+          touchAction: 'none'
         }}
         onClick={handleClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="rounded-lg shadow-xl"
+        onKeyDown={handleKeyDown}
+        onTouchStart={(e) => {
+          e.preventDefault()
+          const col = getTouchCol(e)
+          if (col !== null) setHoverCol(col)
+        }}
+        onTouchMove={(e) => {
+          e.preventDefault()
+          const col = getTouchCol(e)
+          if (col !== null) setHoverCol(col)
+        }}
+        onTouchEnd={(e) => {
+          e.preventDefault()
+          const col = getTouchCol(e)
+          if (col !== null) {
+            if (!disabled && isMyTurn && myColor && !gameState.winner) {
+              const row = getDropRow(gameState.board, col)
+              if (row !== -1) {
+                onMove(col)
+              }
+            }
+          }
+          setHoverCol(null)
+        }}
+        className="rounded-lg shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       />
     </div>
   )

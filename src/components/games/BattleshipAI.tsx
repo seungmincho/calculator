@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { ArrowLeft, Trophy, RefreshCw, HelpCircle, RotateCw, Shuffle, BarChart3 } from 'lucide-react'
+import GameConfetti from '@/components/GameConfetti'
+import GameResultShare from '@/components/GameResultShare'
 import BattleshipBoardComponent, {
   ShipPlacementBoard,
   BattleshipGameState,
@@ -23,6 +25,9 @@ import {
   Difficulty
 } from '@/utils/gameAI'
 import { useAIGameStats } from '@/hooks/useAIGameStats'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import { useGameSounds } from '@/hooks/useGameSounds'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 interface BattleshipAIProps {
   difficulty: Difficulty
@@ -34,6 +39,7 @@ type Phase = 'setup' | 'playing' | 'finished'
 export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) {
   const t = useTranslations('battleship')
   const tHub = useTranslations('gameHub')
+  const tSounds = useTranslations('gameSounds')
 
   const [gameState, setGameState] = useState<BattleshipGameState>(createInitialBattleshipState())
   const [phase, setPhase] = useState<Phase>('setup')
@@ -46,6 +52,8 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
 
   // AI 게임 통계
   const { stats, recordResult } = useAIGameStats('battleship', difficulty)
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const { playMove, playWin, playLose, enabled: soundEnabled, setEnabled: setSoundEnabled } = useGameSounds()
 
   // Ship placement state
   const [currentShipIndex, setCurrentShipIndex] = useState(0)
@@ -92,6 +100,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
           )
           setAIState(newAIState)
           setGameState(newState)
+          playMove()
         }
       }
       setIsThinking(false)
@@ -105,15 +114,20 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
     if (gameState.winner && !resultRecordedRef.current) {
       resultRecordedRef.current = true
       setPhase('finished')
+      const totalAttacks = (gameState.player1Attacks?.flat().filter(Boolean).length ?? 0) + (gameState.player2Attacks?.flat().filter(Boolean).length ?? 0)
       if (gameState.winner === playerRole) {
         setWinCount(prev => ({ ...prev, player: prev.player + 1 }))
         recordResult('win')
+        recordGameResult({ gameType: 'battleship', result: 'win', difficulty, moves: totalAttacks })
+        playWin()
       } else {
         setWinCount(prev => ({ ...prev, ai: prev.ai + 1 }))
         recordResult('loss')
+        recordGameResult({ gameType: 'battleship', result: 'loss', difficulty, moves: totalAttacks })
+        playLose()
       }
     }
-  }, [gameState.winner, playerRole, recordResult])
+  }, [gameState.winner, gameState.player1Attacks, gameState.player2Attacks, playerRole, recordResult, recordGameResult, difficulty, playWin, playLose])
 
   // Ship placement
   const handlePlaceShip = useCallback((row: number, col: number) => {
@@ -157,8 +171,9 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
     const newState = makeAttack(gameState, row, col, playerRole)
     if (newState) {
       setGameState(newState)
+      playMove()
     }
-  }, [gameState, phase, isPlayerTurn, playerRole, isThinking])
+  }, [gameState, phase, isPlayerTurn, playerRole, isThinking, playMove])
 
   // Restart game
   const handleRestart = () => {
@@ -292,6 +307,13 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
           {tHub('backToHub')}
         </button>
         <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            title={soundEnabled ? tSounds('disabled') : tSounds('enabled')}
+          >
+            {soundEnabled ? '🔊' : '🔇'}
+          </button>
           <span>{tHub('vsComputer')}</span>
           <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
             {getDifficultyLabel(difficulty)}
@@ -319,18 +341,19 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
 
       {/* Winner Message */}
       {gameState.winner && (
-        <div className={`text-center py-4 px-6 rounded-2xl ${
+        <div className={`text-center py-6 px-6 rounded-2xl ${
           gameState.winner === playerRole
             ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
             : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
         }`}>
-          <Trophy className="w-8 h-8 mx-auto mb-2" />
-          <p className="text-xl font-bold">{getWinnerMessage()}</p>
-          <p className="text-sm mt-1">
-            {tHub('you')}: {winCount.player} - AI: {winCount.ai}
+          <Trophy className="w-10 h-10 mx-auto mb-2" />
+          <p className="text-2xl font-bold mb-1">{getWinnerMessage()}</p>
+          <p className="text-sm opacity-80">
+            {tHub('you')}: {winCount.player} - AI: {winCount.ai} · {getDifficultyLabel(difficulty)}
           </p>
         </div>
       )}
+      <GameConfetti active={!!gameState.winner && gameState.winner === playerRole} />
 
       {/* Boards */}
       <div className="grid md:grid-cols-2 gap-4">
@@ -373,7 +396,7 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
 
       {/* Game End Buttons */}
       {gameState.winner && (
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <button
             onClick={handleRestart}
             className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-xl"
@@ -381,6 +404,12 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
             <RefreshCw className="w-5 h-5" />
             {t('playAgain') || 'Play Again'}
           </button>
+          <GameResultShare
+            gameName={t('title') || '배틀쉽'}
+            result={gameState.winner === playerRole ? 'win' : 'loss'}
+            difficulty={getDifficultyLabel(difficulty) || difficulty}
+            url="https://toolhub.ai.kr/battleship"
+          />
           <button
             onClick={onBack}
             className="py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl"
@@ -459,6 +488,17 @@ export default function BattleshipAI({ difficulty, onBack }: BattleshipAIProps) 
           </div>
         )}
       </div>
+
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

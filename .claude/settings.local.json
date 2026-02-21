@@ -29,7 +29,9 @@
       "Bash(done)",
       "Bash(pnpm dev)",
       "Bash(npx next dev:*)",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(taskkill:*)",
+      "Bash(python:*)"
     ],
     "deny": []
   }

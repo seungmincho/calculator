@@ -1993,6 +1993,11 @@
     "allGames": "All",
     "boardGames": "Board Games",
     "strategyGames": "Strategy",
+    "filterAll": "All",
+    "filterMultiplayer": "Board Games",
+    "filterSolo": "Solo Games",
+    "badgeSolo": "Solo",
+    "playNow": "Play Now",
     "playMode": "Play Mode",
     "vsComputer": "vs Computer",
     "vsOnline": "Online Match",
@@ -2104,7 +2109,26 @@
     "myNickname": "My Nickname",
     "aiGames": "AI Games",
     "onlineGames": "Online Games",
-    "roomsCreated": "Rooms Created"
+    "roomsCreated": "Rooms Created",
+    "vsComputerDesc": "Single player vs AI",
+    "vsOnlineDesc": "Real-time online match",
+    "closePanel": "✕ Close"
+  },
+  "boardGamePage": {
+    "selectPlayMode": "Select Play Mode",
+    "vsComputer": "VS Computer",
+    "vsComputerDesc": "Single player vs AI · No internet needed",
+    "difficulty": "Difficulty",
+    "easy": "Easy",
+    "normal": "Normal",
+    "hard": "Hard",
+    "easyDesc": "AI responds slowly",
+    "normalDesc": "Basic strategy",
+    "hardDesc": "Optimal move calculation",
+    "startAI": "Start AI Match",
+    "vsOnline": "Online Match",
+    "vsOnlineDesc": "Real-time P2P match · Create/Join rooms",
+    "moreGames": "See more games in Game Center"
   },
   "gameStats": {
     "title": "Game Statistics",
@@ -2171,7 +2195,8 @@
       "rule1": "Black plays first. Players take turns placing stones on the board.",
       "rule2": "The goal is to get 5 stones in a row (horizontally, vertically, or diagonally).",
       "rule3": "Once placed, stones cannot be moved.",
-      "rule4": "The first player to connect 5 stones wins!"
+      "rule4": "The first player to connect 5 stones wins!",
+      "rule5": "Black has forbidden moves: double-three (3-3), double-four (4-4), and overline (6+)."
     }
   },
   "othello": {
@@ -7123,17 +7148,35 @@
   "reactionTest": {
     "title": "Reaction Time Test",
     "description": "Click as fast as you can when the screen changes color to measure your reaction time.",
-    "instruction": "Click when it turns green!",
+    "clickToStart": "Click to Start!",
+    "idleSubtext": "Click as fast as you can when the screen turns green",
+    "roundInfo": "Results shown after {total} rounds of testing",
     "waiting": "Wait...",
-    "ready": "Get ready...",
+    "waitSubtext": "Wait until the screen turns green!",
     "clickNow": "Click NOW!",
-    "tooEarly": "Too early! Try again.",
-    "result": "Reaction Time",
+    "tooEarly": "Too Early!",
+    "tooEarlySubtext": "You must wait until the screen turns green",
     "ms": "ms",
-    "tryAgain": "Try Again",
-    "attempts": "Attempts",
+    "percentileText": "Faster than {percentile}% of people",
+    "clickForNext": "Click to start round {next}",
+    "clickForResult": "Click to see final results",
+    "sessionComplete": "Test Complete!",
+    "newSession": "Test Again",
     "average": "Average",
     "best": "Best",
+    "yourRanking": "Your Ranking",
+    "topPercent": "Top {percent}%",
+    "comparison": "Compare with Others",
+    "compProGamer": "Pro Gamer",
+    "compAboveAvg": "Above Average",
+    "compAvgAdult": "Average Adult",
+    "compYou": "You",
+    "roundProgress": "Round {current}/{total}",
+    "currentBest": "Best",
+    "currentRound": "Current Round",
+    "totalAttempts": "Total Attempts",
+    "sessionAvg": "Session Average",
+    "allTimeBest": "All-Time Best",
     "rating": {
       "excellent": "Excellent",
       "good": "Good",
@@ -7148,10 +7191,10 @@
       "howTo": {
         "title": "How to Test",
         "items": [
-          "Click when the red screen turns green",
-          "Clicking before green is invalid",
-          "Average calculated after 5 attempts",
-          "Use mouse or touch screen"
+          "Click the blue screen to start",
+          "Click as fast as you can when the screen turns green",
+          "Clicking before green is counted as invalid",
+          "After 5 rounds, see your average reaction time and comparison with others"
         ]
       },
       "standards": {
@@ -8319,9 +8362,13 @@
     "hardMode": "Hard Mode",
     "hardModeAfterStart": "Hard mode cannot be changed after game starts",
     "invalidChars": "Only Korean characters are allowed",
+    "needVowelHint": "Add a vowel (ㅏ, ㅓ, etc.) to complete the character",
     "shareTitle": "Korean Wordle",
     "copyFailed": "Failed to copy",
     "helpExampleTitle": "Example",
+    "helpInputTitle": "How to Input",
+    "helpInputDesc": "Press consonants and vowels in order to form characters. Consonants alone won't complete a character.",
+    "helpInputExample": "consonant + vowel → complete character",
     "helpJamoTitle": "Jamo Analysis",
     "helpKeyboard": "Keyboard colors indicate the status of each jamo",
     "hardModeCorrect": "{jamo} must be in the correct position",
@@ -9382,7 +9429,9 @@
       "cancelCrop": "Clear selection",
       "selectedColor": "Color to remove",
       "colorThreshold": "Tolerance",
-      "clearColor": "Clear"
+      "clearColor": "Clear",
+      "precise": "Precise",
+      "broad": "Broad"
     },
     "options": {
       "title": "Options",
@@ -9437,5 +9486,102 @@
         ]
       }
     }
+  },
+  "achievements": {
+    "title": "Achievements",
+    "progress": "Progress",
+    "locked": "Locked",
+    "unlocked": "Achievement Unlocked!",
+    "dismiss": "Dismiss",
+    "noAchievements": "No achievements yet",
+    "allUnlocked": "All achievements unlocked!",
+    "first_win": {
+      "name": "First Victory",
+      "desc": "Win your first AI game"
+    },
+    "win_streak_3": {
+      "name": "Win Streak",
+      "desc": "Win 3 games in a row"
+    },
+    "win_streak_5": {
+      "name": "Unstoppable",
+      "desc": "Win 5 games in a row"
+    },
+    "win_streak_10": {
+      "name": "Legend",
+      "desc": "Win 10 games in a row"
+    },
+    "beat_hard": {
+      "name": "Hard Conqueror",
+      "desc": "Beat the Hard AI"
+    },
+    "games_10": {
+      "name": "Gamer",
+      "desc": "Play 10 games"
+    },
+    "games_50": {
+      "name": "Passionate Gamer",
+      "desc": "Play 50 games"
+    },
+    "games_100": {
+      "name": "Game Master",
+      "desc": "Play 100 games"
+    },
+    "all_games_played": {
+      "name": "Explorer",
+      "desc": "Play all board games"
+    },
+    "all_games_won": {
+      "name": "All-Rounder",
+      "desc": "Win in all board games"
+    },
+    "speed_win": {
+      "name": "Lightning Win",
+      "desc": "Win in under 15 moves"
+    },
+    "comeback_king": {
+      "name": "Comeback King",
+      "desc": "Win after 3+ consecutive losses"
+    }
+  },
+  "gameResultShare": {
+    "share": "Share Result",
+    "shareTitle": "Share Result",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "xPost": "𝕏 Post",
+    "difficultyLabel": "Difficulty",
+    "movesLabel": "Moves",
+    "scoreLabel": "Score",
+    "challenge": "Try it out!",
+    "hashtags": "#ToolHub #GameCenter"
+  },
+  "gameSounds": {
+    "title": "Sound Effects",
+    "enabled": "Sound On",
+    "disabled": "Sound Off",
+    "undo": "Undo"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "rank": "Rank",
+    "playerName": "Player",
+    "score": "Score",
+    "date": "Date",
+    "myRank": "My Rank",
+    "noEntries": "No entries yet. Be the first to set a record!",
+    "loading": "Loading...",
+    "error": "Could not load leaderboard",
+    "qualifiedTitle": "Top 10!",
+    "qualifiedMessage": "Congratulations! Register your name on the leaderboard.",
+    "yourScore": "Score",
+    "enterName": "Enter Nickname",
+    "namePlaceholder": "Nickname (max 20 chars)",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "skip": "Skip",
+    "submitted": "Submitted!",
+    "you": "(You)",
+    "today": "Today"
   }
 }

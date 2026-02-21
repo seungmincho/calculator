@@ -1,11 +1,15 @@
 // 공통 메뉴 설정 파일
 // Header, Footer, ToolsShowcase에서 동일한 메뉴 구조를 사용합니다.
 
+// 게임 플레이 모드 타입 (games 카테고리 전용)
+export type GameMode = 'ai' | 'online' | 'solo'
+
 export interface MenuItem {
   href: string;
   labelKey: string; // 번역 키 (footer.links.xxx)
   descriptionKey: string; // 설명 번역 키 (toolsShowcase.tools.xxx.description)
   icon: string;
+  modes?: GameMode[]; // 게임 지원 모드 (games 카테고리만 사용)
 }
 
 export interface MenuCategory {
@@ -154,25 +158,25 @@ export const menuConfig: MenuConfig = {
     titleKey: 'navigation.simpleGames',
     items: [
       { href: '/games', labelKey: 'footer.links.gameHub', descriptionKey: 'toolsShowcase.tools.gameHub.description', icon: '🎮' },
-      { href: '/lotto-generator', labelKey: 'footer.links.lottoGenerator', descriptionKey: 'toolsShowcase.tools.lotto.description', icon: '🎲' },
-      { href: '/ladder-game', labelKey: 'footer.links.ladderGame', descriptionKey: 'toolsShowcase.tools.ladder.description', icon: '🪜' },
-      { href: '/omok', labelKey: 'footer.links.omok', descriptionKey: 'toolsShowcase.tools.omok.description', icon: '⚫' },
-      { href: '/othello', labelKey: 'footer.links.othello', descriptionKey: 'toolsShowcase.tools.othello.description', icon: '🟢' },
-      { href: '/connect4', labelKey: 'footer.links.connect4', descriptionKey: 'toolsShowcase.tools.connect4.description', icon: '🔴' },
-      { href: '/checkers', labelKey: 'footer.links.checkers', descriptionKey: 'toolsShowcase.tools.checkers.description', icon: '🏁' },
-      { href: '/mancala', labelKey: 'footer.links.mancala', descriptionKey: 'toolsShowcase.tools.mancala.description', icon: '🥜' },
-      { href: '/battleship', labelKey: 'footer.links.battleship', descriptionKey: 'toolsShowcase.tools.battleship.description', icon: '🚢' },
-      { href: '/dots-and-boxes', labelKey: 'footer.links.dotsAndBoxes', descriptionKey: 'toolsShowcase.tools.dotsAndBoxes.description', icon: '📦' },
-      { href: '/reaction-test', labelKey: 'footer.links.reactionTest', descriptionKey: 'toolsShowcase.tools.reactionTest.description', icon: '⚡' },
-      { href: '/color-blind-test', labelKey: 'footer.links.colorBlindTest', descriptionKey: 'toolsShowcase.tools.colorBlindTest.description', icon: '👁️' },
-      { href: '/2048', labelKey: 'footer.links.game2048', descriptionKey: 'toolsShowcase.tools.game2048.description', icon: '🔢' },
-      { href: '/minesweeper', labelKey: 'footer.links.minesweeper', descriptionKey: 'toolsShowcase.tools.minesweeper.description', icon: '💣' },
-      { href: '/sudoku', labelKey: 'footer.links.sudoku', descriptionKey: 'toolsShowcase.tools.sudoku.description', icon: '9️⃣' },
-      { href: '/tetris', labelKey: 'footer.links.tetris', descriptionKey: 'toolsShowcase.tools.tetris.description', icon: '🧱' },
-      { href: '/number-baseball', labelKey: 'footer.links.numberBaseball', descriptionKey: 'toolsShowcase.tools.numberBaseball.description', icon: '⚾' },
-      { href: '/korean-wordle', labelKey: 'footer.links.koreanWordle', descriptionKey: 'toolsShowcase.tools.koreanWordle.description', icon: '🟩' },
-      { href: '/memory-game', labelKey: 'footer.links.memoryGame', descriptionKey: 'toolsShowcase.tools.memoryGame.description', icon: '🃏' },
-      { href: '/snake-game', labelKey: 'footer.links.snakeGame', descriptionKey: 'toolsShowcase.tools.snakeGame.description', icon: '🐍' },
+      { href: '/omok', labelKey: 'footer.links.omok', descriptionKey: 'toolsShowcase.tools.omok.description', icon: '⚫', modes: ['ai', 'online'] },
+      { href: '/othello', labelKey: 'footer.links.othello', descriptionKey: 'toolsShowcase.tools.othello.description', icon: '🟢', modes: ['ai', 'online'] },
+      { href: '/connect4', labelKey: 'footer.links.connect4', descriptionKey: 'toolsShowcase.tools.connect4.description', icon: '🔴', modes: ['ai', 'online'] },
+      { href: '/checkers', labelKey: 'footer.links.checkers', descriptionKey: 'toolsShowcase.tools.checkers.description', icon: '🏁', modes: ['ai', 'online'] },
+      { href: '/mancala', labelKey: 'footer.links.mancala', descriptionKey: 'toolsShowcase.tools.mancala.description', icon: '🥜', modes: ['ai', 'online'] },
+      { href: '/battleship', labelKey: 'footer.links.battleship', descriptionKey: 'toolsShowcase.tools.battleship.description', icon: '🚢', modes: ['ai', 'online'] },
+      { href: '/dots-and-boxes', labelKey: 'footer.links.dotsAndBoxes', descriptionKey: 'toolsShowcase.tools.dotsAndBoxes.description', icon: '📦', modes: ['ai', 'online'] },
+      { href: '/snake-game', labelKey: 'footer.links.snakeGame', descriptionKey: 'toolsShowcase.tools.snakeGame.description', icon: '🐍', modes: ['solo'] },
+      { href: '/2048', labelKey: 'footer.links.game2048', descriptionKey: 'toolsShowcase.tools.game2048.description', icon: '🔢', modes: ['solo'] },
+      { href: '/memory-game', labelKey: 'footer.links.memoryGame', descriptionKey: 'toolsShowcase.tools.memoryGame.description', icon: '🃏', modes: ['solo'] },
+      { href: '/reaction-test', labelKey: 'footer.links.reactionTest', descriptionKey: 'toolsShowcase.tools.reactionTest.description', icon: '⚡', modes: ['solo'] },
+      { href: '/color-blind-test', labelKey: 'footer.links.colorBlindTest', descriptionKey: 'toolsShowcase.tools.colorBlindTest.description', icon: '👁️', modes: ['solo'] },
+      { href: '/lotto-generator', labelKey: 'footer.links.lottoGenerator', descriptionKey: 'toolsShowcase.tools.lotto.description', icon: '🎲', modes: ['solo'] },
+      { href: '/ladder-game', labelKey: 'footer.links.ladderGame', descriptionKey: 'toolsShowcase.tools.ladder.description', icon: '🪜', modes: ['solo'] },
+      { href: '/minesweeper', labelKey: 'footer.links.minesweeper', descriptionKey: 'toolsShowcase.tools.minesweeper.description', icon: '💣', modes: ['solo'] },
+      { href: '/sudoku', labelKey: 'footer.links.sudoku', descriptionKey: 'toolsShowcase.tools.sudoku.description', icon: '9️⃣', modes: ['solo'] },
+      { href: '/tetris', labelKey: 'footer.links.tetris', descriptionKey: 'toolsShowcase.tools.tetris.description', icon: '🧱', modes: ['solo'] },
+      { href: '/number-baseball', labelKey: 'footer.links.numberBaseball', descriptionKey: 'toolsShowcase.tools.numberBaseball.description', icon: '⚾', modes: ['solo'] },
+      { href: '/korean-wordle', labelKey: 'footer.links.koreanWordle', descriptionKey: 'toolsShowcase.tools.koreanWordle.description', icon: '🟩', modes: ['solo'] },
     ],
   },
 };

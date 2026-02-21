@@ -3,6 +3,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { RotateCcw, Trophy } from 'lucide-react'
+import { useLeaderboard } from '@/hooks/useLeaderboard'
+import LeaderboardPanel from '@/components/LeaderboardPanel'
+import NameInputModal from '@/components/NameInputModal'
 
 type Tile = {
   id: number
@@ -46,6 +49,10 @@ export default function Game2048() {
   const gridRef = useRef<HTMLDivElement>(null)
   const touchStartRef = useRef<{ x: number; y: number } | null>(null)
 
+  const leaderboard = useLeaderboard('game2048', undefined)
+  const [showNameModal, setShowNameModal] = useState(false)
+  const gameStartTimeRef = useRef<number>(Date.now())
+
   // Load best score from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('game2048_best')
@@ -62,6 +69,24 @@ export default function Game2048() {
     }
   }, [score, bestScore])
 
+  // Leaderboard: detect game over
+  useEffect(() => {
+    if (gameOver) {
+      if (leaderboard.checkQualifies(score)) {
+        setShowNameModal(true)
+      }
+      leaderboard.fetchLeaderboard()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameOver])
+
+  const handleLeaderboardSubmit = useCallback(async (name: string) => {
+    const duration = Date.now() - gameStartTimeRef.current
+    await leaderboard.submitScore(score, name, duration)
+    leaderboard.savePlayerName(name)
+    setShowNameModal(false)
+  }, [leaderboard, score])
+
   // Initialize game
   const initializeGame = useCallback(() => {
     tileIdCounter.current = 0
@@ -74,6 +99,7 @@ export default function Game2048() {
     setWon(false)
     setKeepPlayingAfterWin(false)
     setPreviousState(null)
+    gameStartTimeRef.current = Date.now()
   }, [])
 
   useEffect(() => {
@@ -407,6 +433,17 @@ export default function Game2048() {
             : '방향키로 타일을 움직이세요'}
         </p>
       </div>
+
+      {/* Leaderboard */}
+      <LeaderboardPanel leaderboard={leaderboard} />
+      <NameInputModal
+        isOpen={showNameModal}
+        onSubmit={handleLeaderboardSubmit}
+        onClose={() => setShowNameModal(false)}
+        score={score}
+        formatScore={leaderboard.config.formatScore}
+        defaultName={leaderboard.savedPlayerName}
+      />
 
       {/* Guide Section */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">

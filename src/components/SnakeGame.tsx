@@ -3,6 +3,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Trophy, RotateCcw, Pause, Play, Gamepad2, BookOpen, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useLeaderboard } from '@/hooks/useLeaderboard'
+import LeaderboardPanel from '@/components/LeaderboardPanel'
+import NameInputModal from '@/components/NameInputModal'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type GameMode = 'classic' | 'infinite' | 'obstacles'
@@ -111,6 +114,10 @@ export default function SnakeGame() {
   const [isTouchDevice, setIsTouchDevice] = useState(false)
   const [deathFlash, setDeathFlash] = useState(false)
 
+  const leaderboard = useLeaderboard('snakeGame', mode === 'classic' && difficulty !== 'accelerating' ? difficulty : undefined)
+  const [showNameModal, setShowNameModal] = useState(false)
+  const gameStartTimeRef = useRef<number>(Date.now())
+
   // ── Game State Refs (no re-renders during gameplay) ──
   const snakeRef = useRef<Position[]>([])
   const foodRef = useRef<Food | null>(null)
@@ -146,6 +153,17 @@ export default function SnakeGame() {
   useEffect(() => {
     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
   }, [])
+
+  // Leaderboard: detect game over
+  useEffect(() => {
+    if (gameState === 'gameover' && mode === 'classic' && difficulty !== 'accelerating') {
+      if (leaderboard.checkQualifies(score)) {
+        setShowNameModal(true)
+      }
+      leaderboard.fetchLeaderboard()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState])
 
   // ── Canvas sizing ──
   const updateCanvasSize = useCallback(() => {
@@ -564,6 +582,7 @@ export default function SnakeGame() {
     nextDirectionRef.current = 'right'
     scoreRef.current = 0
     setScore(0)
+    gameStartTimeRef.current = Date.now()
 
     // Load high score for current mode
     const best = loadHighScore(mode)
@@ -692,6 +711,13 @@ export default function SnakeGame() {
     }
     return `${SPEED_MAP[difficulty]}ms`
   }
+
+  const handleLeaderboardSubmit = useCallback(async (name: string) => {
+    const duration = Date.now() - gameStartTimeRef.current
+    await leaderboard.submitScore(score, name, duration)
+    leaderboard.savePlayerName(name)
+    setShowNameModal(false)
+  }, [leaderboard, score])
 
   // ── Render ──
   return (
@@ -978,6 +1004,17 @@ export default function SnakeGame() {
           )}
         </div>
       </div>
+
+      {/* Leaderboard */}
+      <LeaderboardPanel leaderboard={leaderboard} />
+      <NameInputModal
+        isOpen={showNameModal}
+        onSubmit={handleLeaderboardSubmit}
+        onClose={() => setShowNameModal(false)}
+        score={score}
+        formatScore={leaderboard.config.formatScore}
+        defaultName={leaderboard.savedPlayerName}
+      />
 
       {/* Guide section */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">

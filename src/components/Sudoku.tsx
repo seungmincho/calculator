@@ -1,8 +1,11 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo } from 'react'
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Play, Lightbulb, Undo, Eraser, Clock, BookOpen } from 'lucide-react'
+import { useLeaderboard } from '@/hooks/useLeaderboard'
+import LeaderboardPanel from '@/components/LeaderboardPanel'
+import NameInputModal from '@/components/NameInputModal'
 
 type Cell = {
   value: number
@@ -34,6 +37,10 @@ export default function Sudoku() {
   const [time, setTime] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
 
+  const leaderboard = useLeaderboard('sudoku', difficulty)
+  const [showNameModal, setShowNameModal] = useState(false)
+  const gameStartTimeRef = useRef<number>(Date.now())
+
   // Timer
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null
@@ -46,6 +53,24 @@ export default function Sudoku() {
       if (interval) clearInterval(interval)
     }
   }, [isRunning, completed])
+
+  // Leaderboard: detect completion
+  useEffect(() => {
+    if (completed) {
+      if (leaderboard.checkQualifies(time)) {
+        setShowNameModal(true)
+      }
+      leaderboard.fetchLeaderboard()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [completed])
+
+  const handleLeaderboardSubmit = useCallback(async (name: string) => {
+    const duration = Date.now() - gameStartTimeRef.current
+    await leaderboard.submitScore(time, name, duration)
+    leaderboard.savePlayerName(name)
+    setShowNameModal(false)
+  }, [leaderboard, time])
 
   // Format time
   const formatTime = useCallback((seconds: number) => {
@@ -144,6 +169,7 @@ export default function Sudoku() {
     setCompleted(false)
     setTime(0)
     setIsRunning(true)
+    gameStartTimeRef.current = Date.now()
   }, [difficulty, generateSolution, generatePuzzle])
 
   // Initialize game on mount
@@ -520,6 +546,17 @@ export default function Sudoku() {
           </div>
         </div>
       </div>
+
+      {/* Leaderboard */}
+      <LeaderboardPanel leaderboard={leaderboard} />
+      <NameInputModal
+        isOpen={showNameModal}
+        onSubmit={handleLeaderboardSubmit}
+        onClose={() => setShowNameModal(false)}
+        score={time}
+        formatScore={leaderboard.config.formatScore}
+        defaultName={leaderboard.savedPlayerName}
+      />
 
       {/* Guide */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">

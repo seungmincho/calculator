@@ -107,6 +107,39 @@ function evaluateBoard(
   return score
 }
 
+// Get all 4-cell windows that include position (row, col) for move ordering
+function getWindowsAt(board: Connect4Board, row: number, col: number): (string | null)[][] {
+  const windows: (string | null)[][] = []
+
+  // Horizontal
+  for (let startCol = Math.max(0, col - 3); startCol <= Math.min(COLS - 4, col); startCol++) {
+    windows.push([board[row][startCol], board[row][startCol + 1], board[row][startCol + 2], board[row][startCol + 3]])
+  }
+
+  // Vertical
+  for (let startRow = Math.max(0, row - 3); startRow <= Math.min(ROWS - 4, row); startRow++) {
+    windows.push([board[startRow][col], board[startRow + 1][col], board[startRow + 2][col], board[startRow + 3][col]])
+  }
+
+  // Diagonal ↘
+  for (let d = -3; d <= 0; d++) {
+    const r = row + d, c = col + d
+    if (r >= 0 && c >= 0 && r + 3 < ROWS && c + 3 < COLS) {
+      windows.push([board[r][c], board[r + 1][c + 1], board[r + 2][c + 2], board[r + 3][c + 3]])
+    }
+  }
+
+  // Diagonal ↗
+  for (let d = -3; d <= 0; d++) {
+    const r = row - d, c = col + d
+    if (r >= 0 && r < ROWS && r - 3 >= 0 && c >= 0 && c + 3 < COLS) {
+      windows.push([board[r][c], board[r - 1][c + 1], board[r - 2][c + 2], board[r - 3][c + 3]])
+    }
+  }
+
+  return windows
+}
+
 // Get valid columns (not full)
 function getValidColumns(board: Connect4Board): number[] {
   const validCols: number[] = []
@@ -220,12 +253,34 @@ export function getConnect4AIMove(
   let bestCol = validCols[Math.floor(validCols.length / 2)] // Default to center-ish
   let bestScore = -Infinity
 
-  // Order columns by center preference for better pruning
-  const orderedCols = [...validCols].sort((a, b) =>
-    Math.abs(a - 3) - Math.abs(b - 3)
-  )
+  // Score each column for move ordering (quick heuristic for better alpha-beta pruning)
+  const moveScores = validCols.map(col => {
+    const row = getDropRow(state.board, col)
+    const newBoard = state.board.map(r => [...r])
+    newBoard[row][col] = aiPlayer
 
-  for (const col of orderedCols) {
+    let score = (3 - Math.abs(col - 3)) * 2 // Center preference
+
+    // Check threats created by this move
+    for (const w of getWindowsAt(newBoard, row, col)) {
+      const playerCount = w.filter(c => c === aiPlayer).length
+      const emptyCount = w.filter(c => c === null).length
+      if (playerCount === 3 && emptyCount === 1) score += 20
+      if (playerCount === 2 && emptyCount === 2) score += 5
+    }
+
+    // Check if opponent would benefit from this position
+    newBoard[row][col] = opponent
+    for (const w of getWindowsAt(newBoard, row, col)) {
+      const oppCount = w.filter(c => c === opponent).length
+      const emptyCount = w.filter(c => c === null).length
+      if (oppCount === 3 && emptyCount === 1) score += 15
+    }
+
+    return { col, score }
+  }).sort((a, b) => b.score - a.score)
+
+  for (const { col } of moveScores) {
     const row = getDropRow(state.board, col)
     const newBoard = state.board.map(r => [...r])
     newBoard[row][col] = aiPlayer

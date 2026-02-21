@@ -148,9 +148,7 @@ function getNormalMove(
     if (target) {
       return target
     }
-    // No valid targets, switch to hunt mode
-    aiState.mode = 'hunt'
-    aiState.targetStack = []
+    // No valid targets, fall through to hunt mode
   }
 
   // Hunt mode with checkerboard pattern
@@ -164,8 +162,8 @@ function getNormalMove(
 
   const movesToConsider = checkerboardMoves.length > 0 ? checkerboardMoves : validMoves
 
-  // 60% chance to use probability map
-  if (Math.random() < 0.6 && remainingShips.length > 0) {
+  // 80% chance to use probability map
+  if (Math.random() < 0.8 && remainingShips.length > 0) {
     const probMap = calculateProbabilityMap(attackBoard, remainingShips)
     let bestMove = movesToConsider[0]
     let bestProb = 0
@@ -182,6 +180,39 @@ function getNormalMove(
 
   // Random from valid moves
   return movesToConsider[Math.floor(Math.random() * movesToConsider.length)]
+}
+
+// Find unsunk hit cells on the board (hits that belong to ships not yet sunk)
+function getUnsunkHits(attackBoard: BattleshipBoard): { row: number; col: number }[] {
+  const hits: { row: number; col: number }[] = []
+  for (let row = 0; row < 10; row++) {
+    for (let col = 0; col < 10; col++) {
+      if (attackBoard[row][col] === 'hit') {
+        hits.push({ row, col })
+      }
+    }
+  }
+  return hits
+}
+
+// Enhanced probability map that boosts cells adjacent to unsunk hits
+function calculateEnhancedProbabilityMap(
+  attackBoard: BattleshipBoard,
+  remainingShips: number[]
+): number[][] {
+  const probMap = calculateProbabilityMap(attackBoard, remainingShips)
+  const unsunkHits = getUnsunkHits(attackBoard)
+
+  // Boost probability near unsunk hits (these cells are more likely to have ship segments)
+  for (const hit of unsunkHits) {
+    for (const adj of getAdjacentCells(hit.row, hit.col)) {
+      if (isValidTarget(attackBoard, adj.row, adj.col)) {
+        probMap[adj.row][adj.col] *= 3
+      }
+    }
+  }
+
+  return probMap
 }
 
 // Hard AI: Full probability-based strategy with advanced targeting
@@ -211,39 +242,51 @@ function getHardMove(
       return target
     }
 
-    // No valid targets, switch to hunt mode
-    aiState.mode = 'hunt'
-    aiState.targetStack = []
-    aiState.hitDirection = null
+    // No valid targets in stack, but check for other unsunk hits
+    const unsunkHits = getUnsunkHits(attackBoard)
+    if (unsunkHits.length > 0) {
+      // Re-target around unsunk hits
+      for (const hit of unsunkHits) {
+        for (const adj of getAdjacentCells(hit.row, hit.col)) {
+          if (isValidTarget(attackBoard, adj.row, adj.col)) {
+            return adj
+          }
+        }
+      }
+    }
+
+    // No valid targets, fall through to hunt mode
   }
 
-  // Hunt mode with full probability map
-  const probMap = calculateProbabilityMap(attackBoard, remainingShips)
+  // Hunt mode with enhanced probability map
+  const probMap = calculateEnhancedProbabilityMap(attackBoard, remainingShips)
   const validMoves = getValidAttacks(attackBoard)
 
-  // Apply checkerboard bonus based on smallest remaining ship
+  // Apply parity-based search: for ships of size N, only need to check every Nth cell
   const smallestShip = Math.min(...remainingShips)
-  const useCheckerboard = smallestShip <= 3
+  const parityMoves = validMoves.filter(
+    m => (m.row + m.col) % smallestShip === 0
+  )
+  const movesToConsider = parityMoves.length > 0 ? parityMoves : validMoves
 
-  let bestMove = validMoves[0]
+  let bestMove = movesToConsider[0]
   let bestScore = -1
 
-  for (const move of validMoves) {
+  for (const move of movesToConsider) {
     let score = probMap[move.row][move.col]
 
-    // Checkerboard pattern bonus
-    if (useCheckerboard && (move.row + move.col) % 2 === 0) {
-      score *= 1.1
-    }
+    // Center preference (ships more likely in center)
+    const centerDist = Math.abs(move.row - 4.5) + Math.abs(move.col - 4.5)
+    score *= 1 + (9 - centerDist) * 0.02
 
     // Edge avoidance (ships less likely at edges)
     if (move.row === 0 || move.row === 9 || move.col === 0 || move.col === 9) {
-      score *= 0.9
+      score *= 0.85
     }
 
     // Corner avoidance
     if ((move.row === 0 || move.row === 9) && (move.col === 0 || move.col === 9)) {
-      score *= 0.8
+      score *= 0.7
     }
 
     if (score > bestScore) {
@@ -303,11 +346,30 @@ export function updateBattleshipAIState(
       })
     }
   } else if (result === 'sunk') {
-    // Ship sunk, clear targeting
-    newState.mode = 'hunt'
-    newState.targetStack = []
-    newState.lastHit = null
-    newState.hitDirection = null
+    // Ship sunk - check if there are other unsunk hits to continue targeting
+    const unsunkHits = getUnsunkHits(attackBoard)
+    if (unsunkHits.length > 0) {
+      // Switch to targeting the next unsunk hit
+      newState.mode = 'target'
+      newState.lastHit = unsunkHits[0]
+      newState.hitDirection = null
+      newState.targetStack = []
+      for (const hit of unsunkHits) {
+        for (const adj of getAdjacentCells(hit.row, hit.col)) {
+          if (isValidTarget(attackBoard, adj.row, adj.col)) {
+            if (!newState.targetStack.some(t => t.row === adj.row && t.col === adj.col)) {
+              newState.targetStack.push(adj)
+            }
+          }
+        }
+      }
+    } else {
+      // No more unsunk hits, go back to hunt mode
+      newState.mode = 'hunt'
+      newState.targetStack = []
+      newState.lastHit = null
+      newState.hitDirection = null
+    }
     // Switch checkerboard phase
     newState.checkerboardPhase = !newState.checkerboardPhase
   } else if (result === 'miss') {
