@@ -58,12 +58,28 @@ export default function MonitorTestPage() {
     ],
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '모니터 테스트로 확인할 수 있는 것은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '① 데드픽셀: 빨강/초록/파랑/흰색/검정 전체 화면으로 불량 픽셀 확인 ② 색상 정확도: 색상 그라디언트에서 밴딩(줄무늬) 확인 ③ 명암비(Contrast): 검정과 흰색 경계에서 디테일 확인 ④ 백라이트 균일성: 전체 회색 화면에서 밝기 불균일 확인 ⑤ 응답 속도: 움직이는 물체로 잔상 확인 ⑥ 시야각: 다른 각도에서 색상 변화 확인. 새 모니터 구매 후 불량 교환 기간 내 테스트를 권장합니다.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>

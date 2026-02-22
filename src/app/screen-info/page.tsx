@@ -14,9 +14,24 @@ export const metadata: Metadata = {
 
 export default function ScreenInfoPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '화면/기기 정보', description: '화면 해상도, 뷰포트, 브라우저, OS 정보 확인', url: 'https://toolhub.ai.kr/screen-info', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['화면 해상도/뷰포트', '브라우저 정보', '기기 정보', '전체 복사'] }
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '화면 해상도와 관련 용어는?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '해상도: 화면의 픽셀 수 (예: 1920×1080 = FHD). 주요 해상도: HD(1280×720), FHD(1920×1080), QHD/2K(2560×1440), 4K/UHD(3840×2160). DPI/PPI: 인치당 픽셀 수, 높을수록 선명. 일반 모니터 96-110ppi, 레티나 디스플레이 220+ppi. Device Pixel Ratio: CSS 픽셀과 물리 픽셀의 비율 (레티나는 2x 또는 3x). 색 심도: 8bit(1,670만 색), 10bit(10억 색).',
+        },
+      },
+    ],
+  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><ScreenInfo /></I18nWrapper></Suspense>

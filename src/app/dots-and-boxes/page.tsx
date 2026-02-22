@@ -50,11 +50,30 @@ export default function DotsAndBoxesPage() {
     }
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '점과선 게임 규칙은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '점과선(Dots and Boxes)은 격자의 점 사이에 선을 그어 사각형을 완성하는 전략 게임입니다. 두 명이 번갈아 한 변씩 그리며, 사각형을 완성하면 자기 것이 되고 한 번 더 플레이합니다. 게임이 끝나면 더 많은 사각형을 차지한 사람이 승리합니다. 핵심 전략: 긴 체인(연속된 사각형)을 상대에게 양보하지 않고, 이중 거래(double-dealing)로 체인의 마지막 2개를 양보하여 다음 체인의 주도권을 가져오는 것입니다.'
+        }
+      }
+    ]
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
         <BoardGamePage

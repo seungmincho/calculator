@@ -75,11 +75,30 @@ export default function LadderGamePage() {
     numberOfPlayers: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 10 },
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '사다리타기의 원리는?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '사다리타기는 수직선과 수평 가로선으로 구성됩니다. 위에서 출발하여 아래로 내려가다가 가로선을 만나면 반드시 옆으로 이동해야 합니다. 수학적으로 사다리타기는 순열(permutation)을 표현하며, 가로선의 배치에 따라 1:1 대응이 보장됩니다. 즉, 각 출발점은 반드시 하나의 도착점에 연결됩니다. 한국에서는 술래 정하기, 팀 배정, 벌칙 정하기 등에 널리 사용됩니다.'
+        }
+      }
+    ]
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
         <div className="container mx-auto px-4">

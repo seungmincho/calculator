@@ -26,9 +26,24 @@ export default function ImageMosaicPage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['영역 선택 모자이크', '브러시 모자이크', '블러 효과', '강도 조절', '되돌리기', 'PNG/JPEG 다운로드'],
   }
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '이미지 모자이크란 무엇인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '이미지 모자이크(Pixelation)는 이미지의 특정 영역을 블록화하여 식별할 수 없게 만드는 기법입니다. 개인정보 보호를 위해 얼굴, 차량 번호판, 주소 등을 가릴 때 사용합니다. 원리: 선택 영역을 큰 픽셀 블록으로 분할하고 각 블록의 평균 색상으로 채워 세부 정보를 제거합니다. 이 도구는 브라우저에서 Canvas API로 처리하므로 서버에 이미지가 전송되지 않습니다.',
+        },
+      },
+    ],
+  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>

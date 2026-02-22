@@ -50,11 +50,30 @@ export default function MancalaPage() {
     }
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '만칼라 게임 규칙은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '만칼라는 세계에서 가장 오래된 보드게임 중 하나로, 아프리카에서 기원했습니다. 6개의 구멍(pit)과 1개의 저장소(store)가 각 플레이어에게 있습니다. 자기 쪽 구멍 하나를 선택해 돌을 집어 반시계 방향으로 하나씩 놓습니다. 마지막 돌이 자기 저장소에 들어가면 한 번 더 플레이합니다. 마지막 돌이 자기 쪽 빈 구멍에 들어가면 그 맞은편 상대 구멍의 돌까지 가져옵니다. 한쪽의 구멍이 모두 비면 게임이 끝나고 돌이 많은 쪽이 승리합니다.'
+        }
+      }
+    ]
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
         <BoardGamePage
