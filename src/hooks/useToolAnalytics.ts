@@ -39,8 +39,8 @@ export const useTrackToolVisit = () => {
 
 export const usePopularTools = (limit: number = 5): UsePopularToolsReturn => {
   const [popularTools, setPopularTools] = useState<PopularToolItem[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [isConfigured] = useState(() => isSupabaseConfigured())
+  const [isLoading, setIsLoading] = useState(isConfigured)
 
   useEffect(() => {
     if (!isConfigured) {

@@ -379,6 +379,7 @@ const Header = () => {
                 <div key={key}>
                   <button
                     onClick={() => setExpandedMobileCategory(expandedMobileCategory === key ? null : key)}
+                    aria-expanded={expandedMobileCategory === key}
                     className="w-full flex items-center justify-between px-3 py-3 text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
                   >
                     <span className="flex items-center gap-2">

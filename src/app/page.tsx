@@ -54,12 +54,7 @@ export default function Home() {
       alternateName: 'ToolHub',
       description: '126개 이상의 무료 온라인 도구 - 금융 계산기, 개발 도구, 이미지 편집, 게임',
       url: 'https://toolhub.ai.kr',
-      inLanguage: ['ko-KR', 'en-US'],
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: 'https://toolhub.ai.kr?q={search_term_string}',
-        'query-input': 'required name=search_term_string'
-      }
+      inLanguage: ['ko-KR', 'en-US']
     },
     {
       '@context': 'https://schema.org',

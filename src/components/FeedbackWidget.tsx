@@ -178,7 +178,7 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {t('feedback.rating.label')}
                 </label>
-                <div className="flex gap-1">
+                <div className="flex gap-1" role="group" aria-label={t('feedback.rating.label')}>
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
@@ -186,6 +186,8 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
                       onClick={() => setRating(star)}
                       onMouseEnter={() => setHoveredRating(star)}
                       onMouseLeave={() => setHoveredRating(0)}
+                      aria-label={`${star}점`}
+                      aria-pressed={rating === star}
                       className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <svg

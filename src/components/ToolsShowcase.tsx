@@ -75,6 +75,7 @@ export default function ToolsShowcase() {
         <div className="text-center">
           <button
             onClick={() => setIsExpanded(true)}
+            aria-expanded={false}
             className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-750 rounded-2xl border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-600 transition-all group"
           >
             <Wrench className="w-5 h-5 text-blue-600" />
@@ -228,6 +229,7 @@ export default function ToolsShowcase() {
         </Link>
         <button
           onClick={() => setIsExpanded(false)}
+          aria-expanded={true}
           className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           {t('toolsShowcase.collapse')}

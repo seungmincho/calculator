@@ -100,7 +100,7 @@ export default function RelatedTools() {
       {crossCategoryTools.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
-            {t('relatedTools.discover') || '다른 도구 둘러보기'}
+            {t('relatedTools.discover')}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {crossCategoryTools.map(renderToolCard)}

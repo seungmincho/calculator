@@ -74,12 +74,17 @@ export default function ToolShareButton() {
     window.open(kakaoUrl, '_blank', 'noopener,noreferrer,width=600,height=400')
   }, [shareUrl])
 
-  // Close on outside click
+  // Close on outside click or Escape key
   useEffect(() => {
     if (!isOpen) return
     const handleClick = () => setIsOpen(false)
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsOpen(false) }
     document.addEventListener('click', handleClick)
-    return () => document.removeEventListener('click', handleClick)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('click', handleClick)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
   }, [isOpen])
 
   // Don't render on home page or if tool not found

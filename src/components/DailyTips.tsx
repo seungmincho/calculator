@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Lightbulb, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -21,7 +21,7 @@ const DailyTips = () => {
   useEffect(() => {
     const loadTips = async () => {
       try {
-        const response = await fetch('/tips.json');
+        const response = await fetch('/tips.json', { cache: 'force-cache' });
         const tipsData = await response.json();
         setTips(tipsData);
         
@@ -48,24 +48,24 @@ const DailyTips = () => {
   }, []);
 
   // 다음 팁
-  const nextTip = () => {
+  const nextTip = useCallback(() => {
     const newIndex = (currentTipIndex + 1) % tips.length;
     setCurrentTipIndex(newIndex);
     localStorage.setItem('dailyTipIndex', newIndex.toString());
-  };
+  }, [currentTipIndex, tips.length]);
 
   // 이전 팁
-  const prevTip = () => {
+  const prevTip = useCallback(() => {
     const newIndex = currentTipIndex === 0 ? tips.length - 1 : currentTipIndex - 1;
     setCurrentTipIndex(newIndex);
     localStorage.setItem('dailyTipIndex', newIndex.toString());
-  };
+  }, [currentTipIndex, tips.length]);
 
   // 팁 숨기기
-  const hideTips = () => {
+  const hideTips = useCallback(() => {
     setIsVisible(false);
     localStorage.setItem('dailyTipsHidden', 'true');
-  };
+  }, []);
 
   // 팁 다시 보기
   const showTips = () => {
@@ -84,6 +84,7 @@ const DailyTips = () => {
           onClick={showTips}
           className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-colors"
           title={t('showTips')}
+          aria-label={t('showTips')}
         >
           <Lightbulb className="w-5 h-5" />
         </button>
@@ -106,6 +107,7 @@ const DailyTips = () => {
             <button
               onClick={hideTips}
               className="text-white hover:text-gray-200 transition-colors"
+              aria-label={t('closeTip')}
             >
               <X className="w-4 h-4" />
             </button>
@@ -114,14 +116,16 @@ const DailyTips = () => {
 
         {/* 컨텐츠 */}
         <div className="p-4">
-          <div className="mb-3">
-            <span className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded-full">
-              {currentTip.category}
-            </span>
+          <div aria-live="polite" aria-atomic="true">
+            <div className="mb-3">
+              <span className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded-full">
+                {currentTip.category}
+              </span>
+            </div>
+            <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-4">
+              {currentTip.tip}
+            </p>
           </div>
-          <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-4">
-            {currentTip.tip}
-          </p>
 
           {/* 네비게이션 */}
           <div className="flex items-center justify-between">
@@ -132,19 +136,6 @@ const DailyTips = () => {
               <ChevronLeft className="w-4 h-4" />
               <span className="text-xs">{t('prev')}</span>
             </button>
-
-            <div className="flex items-center space-x-1">
-              {tips.slice(0, 5).map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    index === currentTipIndex % 5
-                      ? 'bg-blue-600'
-                      : 'bg-gray-300 dark:bg-gray-600'
-                  }`}
-                />
-              ))}
-            </div>
 
             <button
               onClick={nextTip}

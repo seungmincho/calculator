@@ -374,6 +374,15 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           </div>
           <span>{filteredItems.length} {t('searchDialog.results')}</span>
         </div>
+
+        {/* Screen reader live region for result count */}
+        <span
+          role="status"
+          aria-live="polite"
+          style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}
+        >
+          {query.trim() ? `${filteredItems.length} ${t('searchDialog.results')}` : ''}
+        </span>
       </div>
     </div>
   )
