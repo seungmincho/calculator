@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { Calculator, Menu, X, ChevronDown, Clock, Grid3X3, Search } from 'lucide-react';
 import LanguageToggle from './LanguageToggle';
@@ -44,8 +44,8 @@ const Header = () => {
     loadRecentTools();
   }, []);
 
-  // menuConfig에서 번역된 메뉴 아이템 생성 (카테고리 자동 반영)
-  const getMenuItems = () => {
+  // menuConfig에서 번역된 메뉴 아이템 생성 (카테고리 자동 반영, 메모이즈)
+  const menuItems = useMemo(() => {
     const result: Record<string, { title: string; items: { href: string; label: string; icon: string }[] }> = {};
     for (const key of categoryKeys) {
       result[key] = {
@@ -58,9 +58,7 @@ const Header = () => {
       };
     }
     return result;
-  };
-
-  const menuItems = getMenuItems();
+  }, [t]);
 
   const handleDropdownToggle = (dropdown: string) => {
     setOpenDropdown(openDropdown === dropdown ? null : dropdown);

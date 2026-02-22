@@ -34,7 +34,8 @@
     "terms": "이용약관",
     "load": "불러오기",
     "convert": "변환",
-    "copyLink": "링크 복사"
+    "copyLink": "링크 복사",
+    "backToTop": "맨 위로 이동"
   },
   "accessibility": {
     "skipToContent": "본문으로 건너뛰기"
