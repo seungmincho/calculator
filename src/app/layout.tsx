@@ -13,6 +13,7 @@ import SkipToContent from '@/components/SkipToContent'
 import ToolTracker from '@/components/ToolTracker'
 import ToolShareButton from '@/components/ToolShareButton'
 import BackToTop from '@/components/BackToTop'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import I18nWrapper from '@/components/I18nWrapper'
 
@@ -189,7 +190,9 @@ export default function RootLayout({
             <ToolJsonLd />
             {/* Main Content */}
             <main id="main-content">
-              {children}
+              <ErrorBoundary>
+                {children}
+              </ErrorBoundary>
             </main>
 
             {/* Social Share FAB + Back to Top */}

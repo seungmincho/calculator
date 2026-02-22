@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: 'https://toolhub.ai.kr/',
-      lastModified: '2026-02-21',
+      lastModified: new Date().toISOString().split('T')[0],
       changeFrequency: 'daily',
       priority: 1,
     },
@@ -357,7 +357,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: 'https://toolhub.ai.kr/gpa-calculator/',
       lastModified: '2026-02-21',
       changeFrequency: 'weekly',
-      priority: 0.9,
+      priority: 0.8,
     },
     {
       url: 'https://toolhub.ai.kr/random-picker/',
@@ -429,7 +429,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: 'https://toolhub.ai.kr/typing-test/',
       lastModified: '2026-02-21',
       changeFrequency: 'monthly',
-      priority: 0.9,
+      priority: 0.8,
     },
     {
       url: 'https://toolhub.ai.kr/number-to-korean/',
@@ -512,8 +512,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: 'https://toolhub.ai.kr/due-date/',
       lastModified: '2026-02-21',
-      changeFrequency: 'monthly',
-      priority: 0.9,
+      changeFrequency: 'weekly',
+      priority: 0.8,
     },
     {
       url: 'https://toolhub.ai.kr/hourly-wage/',
@@ -627,7 +627,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: 'https://toolhub.ai.kr/monitor-test/',
       lastModified: '2026-02-21',
       changeFrequency: 'monthly',
-      priority: 0.9,
+      priority: 0.8,
     },
     {
       url: 'https://toolhub.ai.kr/2048/',
