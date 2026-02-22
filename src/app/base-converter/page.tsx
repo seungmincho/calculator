@@ -28,9 +28,25 @@ export default function BaseConverterPage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['10진수 ↔ 2진수 변환', '10진수 ↔ 16진수 변환', '비트 시각화', '자주 쓰는 값 참조'],
   }
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '2진수, 8진수, 16진수란?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '진법은 숫자를 표현하는 체계입니다. 2진수(Binary): 0과 1만 사용, 컴퓨터 내부 데이터 표현의 기본. 8진수(Octal): 0-7 사용, Unix 파일 권한(chmod 755) 등에 사용. 10진수(Decimal): 일상에서 사용하는 0-9 체계. 16진수(Hexadecimal): 0-9와 A-F 사용, 메모리 주소, 색상 코드(#FF5733), MAC 주소 등에 사용. 프로그래밍에서 0b(2진), 0o(8진), 0x(16진) 접두사로 구분합니다.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>

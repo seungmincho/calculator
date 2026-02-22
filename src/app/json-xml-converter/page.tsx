@@ -51,9 +51,25 @@ export default function JsonXmlConverterPage() {
     featureList: ['JSON to XML', 'XML to JSON', '구문 강조', '포맷팅']
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'JSON과 XML의 차이점은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'JSON: 경량, 가독성 좋음, JavaScript와 호환, REST API에 주로 사용. 배열 지원, 주석 미지원. XML: 태그 기반, 스키마 검증(XSD), 네임스페이스 지원, SOAP API/기업 시스템에 사용. 속성(attribute) 지원, 주석 가능. JSON이 더 간결하고(같은 데이터에 XML보다 30-50% 작음) 파싱이 빠르지만, XML은 문서 구조 정의와 복잡한 데이터 모델링에 강합니다.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <JsonXmlConverter />
       </I18nWrapper>

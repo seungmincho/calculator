@@ -30,9 +30,25 @@ export default function CharacterCounterPage() {
     featureList: ['글자수 세기', '단어수 세기', '줄수 세기', '공백 포함/제외', '바이트 수 계산']
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '글자수 세기에서 공백 포함/제외 차이는?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '공백 포함 글자수는 띄어쓰기, 줄바꿈을 모두 포함한 전체 문자 수입니다. 공백 제외 글자수는 순수 텍스트만 셉니다. 트위터/X는 280자(한글 140자), 카카오톡 메시지는 1만 자, 네이버 블로그 제목은 70자, 인스타그램 캡션은 2,200자 제한입니다. 한글은 UTF-8에서 3바이트, EUC-KR에서 2바이트를 차지하므로 바이트 수도 확인이 필요합니다.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <CharacterCounter />
       </I18nWrapper>
