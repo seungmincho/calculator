@@ -100,61 +100,6 @@ export default function RootLayout({
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-2070759131396958'
   const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: '툴허브',
-    alternateName: 'ToolHub',
-    description: '연봉, 대출, 적금 계산기부터 시간변환, 바코드 생성, JSON 포맷터까지 실용적인 온라인 도구 모음',
-    url: 'https://toolhub.ai.kr',
-    inLanguage: 'ko-KR',
-    audience: {
-      '@type': 'Audience',
-      audienceType: ['developers', 'financial professionals', 'general users']
-    },
-    applicationCategory: 'FinanceApplication',
-    operatingSystem: 'All',
-    keywords: [
-      '연봉계산기', '대출계산기', '적금계산기', '시간변환기', '바코드생성기', 
-      'QR코드생성기', 'JSON포맷터', 'SQL포맷터', '정규식추출기', '개발자도구'
-    ],
-    publisher: {
-      '@type': 'Organization',
-      name: '툴허브',
-      url: 'https://toolhub.ai.kr',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://toolhub.ai.kr/logo.png',
-        width: 120,
-        height: 120
-      }
-    },
-    mainEntity: {
-      '@type': 'SoftwareApplication',
-      name: '툴허브',
-      applicationCategory: 'WebApplication',
-      applicationSubCategory: 'FinanceApplication',
-      operatingSystem: 'All',
-      offers: {
-        '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'KRW'
-      },
-      featureList: [
-        '연봉 실수령액 계산',
-        '대출 상환금 계산', 
-        '적금 이자 계산',
-        '시간대 변환',
-        'Unix 타임스탬프 변환',
-        '바코드 생성',
-        'QR 코드 생성',
-        'JSON 포맷팅',
-        'SQL 포맷팅',
-        '정규식 추출'
-      ]
-    }
-  }
-
   return (
     <html lang="ko">
       <head suppressHydrationWarning>
@@ -183,11 +128,6 @@ export default function RootLayout({
 
         {/* hreflang - same URL for all languages (client-side i18n) */}
         <link rel="alternate" hrefLang="x-default" href="https://toolhub.ai.kr" />
-        
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
         
         {/* AdSense Script in Head */}
         {adsenseId && (
