@@ -74,8 +74,7 @@ export const fetchLottoData = async (drawNo: number): Promise<LottoData | null> 
           data = JSON.parse(text);
           break;
         }
-      } catch (proxyError) {
-        console.warn(`Proxy failed: ${proxyUrl}`, proxyError);
+      } catch {
         continue;
       }
     }
@@ -162,13 +161,10 @@ export const fetchLatestLottoByDate = async (): Promise<LottoData | null> => {
   const lastSaturday = getLastSaturday();
   const expectedDrawNo = getDrawNumberByDate(lastSaturday);
 
-  console.log(`📅 마지막 토요일: ${formatDateToString(lastSaturday)}, 예상 회차: ${expectedDrawNo}`);
-
   // 예상 회차부터 시도, 없으면 이전 회차 시도
   for (let drawNo = expectedDrawNo; drawNo >= expectedDrawNo - 2; drawNo--) {
     const data = await fetchLottoData(drawNo);
     if (data) {
-      console.log(`✅ ${drawNo}회차 당첨번호 조회 성공`);
       return data;
     }
   }
@@ -198,8 +194,6 @@ export const updateMissingLottoData = async (): Promise<{
     const currentLatest = await getLatestDrawNumber();
     const expectedLatest = getExpectedLatestDrawNumber();
     
-    console.log(`Current latest: ${currentLatest}, Expected latest: ${expectedLatest}`);
-    
     if (currentLatest >= expectedLatest) {
       return {
         success: true,
@@ -214,14 +208,10 @@ export const updateMissingLottoData = async (): Promise<{
     const endAt = Math.min(expectedLatest, startFrom + 9);
     
     for (let drawNo = startFrom; drawNo <= endAt; drawNo++) {
-      console.log(`Fetching draw ${drawNo}...`);
-      
       const data = await fetchLottoData(drawNo);
       if (data) {
         newDraws.push(data);
-        console.log(`✅ Draw ${drawNo} fetched successfully:`, data);
       } else {
-        console.log(`❌ Draw ${drawNo} not available yet`);
         break; // 해당 회차가 없으면 더 이상 조회하지 않음
       }
       

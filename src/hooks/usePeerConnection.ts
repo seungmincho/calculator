@@ -39,14 +39,12 @@ export const usePeerConnection = (): UsePeerConnectionReturn => {
   // 콜백 설정
   const setupCallbacks = useCallback((manager: PeerManager) => {
     manager.onMessage((message) => {
-      console.log('[usePeerConnection] Message received:', message)
       if (isMountedRef.current) {
         setLastMessage(message)
       }
     })
 
     manager.onConnected(() => {
-      console.log('[usePeerConnection] Connected')
       if (isMountedRef.current) {
         setIsConnected(true)
         setError(null)
@@ -54,7 +52,6 @@ export const usePeerConnection = (): UsePeerConnectionReturn => {
     })
 
     manager.onDisconnected(() => {
-      console.log('[usePeerConnection] Disconnected callback')
       if (isMountedRef.current) {
         setIsConnected(false)
         // 외부 콜백 호출
@@ -72,7 +69,6 @@ export const usePeerConnection = (): UsePeerConnectionReturn => {
 
       // 이미 전역 PeerManager가 있고 peerId가 있으면 재사용
       if (globalPeerManager.instance && globalPeerManager.peerId) {
-        console.log('[usePeerConnection] Reusing existing peer ID:', globalPeerManager.peerId)
         setPeerId(globalPeerManager.peerId)
         setIsHost(globalPeerManager.isHost)
         setupCallbacks(globalPeerManager.instance)
@@ -81,14 +77,12 @@ export const usePeerConnection = (): UsePeerConnectionReturn => {
 
       // 기존 매니저가 있으면 정리
       if (globalPeerManager.instance) {
-        console.log('[usePeerConnection] Cleaning up existing manager')
         globalPeerManager.instance.disconnect()
         globalPeerManager.instance = null
         globalPeerManager.peerId = ''
         globalPeerManager.isHost = false
       }
 
-      console.log('[usePeerConnection] Creating new PeerManager...')
       const manager = new PeerManager()
       globalPeerManager.instance = manager
       setupCallbacks(manager)
@@ -101,7 +95,6 @@ export const usePeerConnection = (): UsePeerConnectionReturn => {
         setPeerId(id)
         setIsHost(true)
       }
-      console.log('[usePeerConnection] Room created with peer ID:', id)
       return id
     } catch (err) {
       console.error('[usePeerConnection] Create room error:', err)
@@ -119,14 +112,12 @@ export const usePeerConnection = (): UsePeerConnectionReturn => {
 
       // 기존 매니저가 있으면 정리
       if (globalPeerManager.instance) {
-        console.log('[usePeerConnection] Cleaning up existing manager before join')
         globalPeerManager.instance.disconnect()
         globalPeerManager.instance = null
         globalPeerManager.peerId = ''
         globalPeerManager.isHost = false
       }
 
-      console.log('[usePeerConnection] Creating new PeerManager for joining...')
       const manager = new PeerManager()
       globalPeerManager.instance = manager
       setupCallbacks(manager)
@@ -140,7 +131,6 @@ export const usePeerConnection = (): UsePeerConnectionReturn => {
         setPeerId(myPeerId)
         setIsHost(false)
       }
-      console.log('[usePeerConnection] Joined room')
       return true
     } catch (err) {
       console.error('[usePeerConnection] Join room error:', err)
@@ -162,7 +152,6 @@ export const usePeerConnection = (): UsePeerConnectionReturn => {
 
   // 연결 해제
   const disconnect = useCallback(() => {
-    console.log('[usePeerConnection] Disconnect called')
     if (globalPeerManager.instance) {
       globalPeerManager.instance.disconnect()
       globalPeerManager.instance = null
@@ -185,18 +174,15 @@ export const usePeerConnection = (): UsePeerConnectionReturn => {
   // 마운트/언마운트 추적 - 전역 매니저는 정리하지 않음
   useEffect(() => {
     isMountedRef.current = true
-    console.log('[usePeerConnection] Hook mounted')
 
     // 기존 전역 매니저가 있으면 상태 동기화
     if (globalPeerManager.instance && globalPeerManager.peerId) {
-      console.log('[usePeerConnection] Syncing with existing global manager:', globalPeerManager.peerId)
       setPeerId(globalPeerManager.peerId)
       setIsHost(globalPeerManager.isHost)
       setupCallbacks(globalPeerManager.instance)
     }
 
     return () => {
-      console.log('[usePeerConnection] Hook unmounting')
       isMountedRef.current = false
       onDisconnectCallbackRef.current = null
       // 전역 매니저는 유지 - 다른 컴포넌트에서 재사용할 수 있음

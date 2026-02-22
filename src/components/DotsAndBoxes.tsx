@@ -134,17 +134,14 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
 
     // 이미 설정 중이면 스킵 (React Strict Mode 대응)
     if (setupInProgressRef.current) {
-      console.log('[DotsAndBoxes] Setup already in progress, skipping...')
       return
     }
 
-    console.log('[DotsAndBoxes] Processing initialRoom:', initialRoom.id, 'isHost:', isHostProp)
     initialRoomIdRef.current = initialRoom.id
     setupInProgressRef.current = true
 
     // 방 생성한 호스트인 경우 - GameHub에서 이미 PeerJS 방 생성됨
     if (isHostProp) {
-      console.log('[DotsAndBoxes] Setting up as host (PeerJS already created by GameHub)')
       setCurrentRoom(initialRoom)
       setPlayerName(initialRoom.host_name)
       setOpponentName('')
@@ -158,7 +155,6 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
     }
 
     // 게스트로 방 입장 - GameHub에서 이미 Supabase 방 상태 변경됨
-    console.log('[DotsAndBoxes] Setting up as guest')
     const joinInitialRoom = async () => {
       // GameHub에서 넘어온 경우 gameNickname 사용, 아니면 dotsandboxes_player_name 사용
       const gameNickname = localStorage.getItem('gameNickname')
@@ -175,9 +171,7 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
       setGamePhase('waiting')
 
       // PeerJS로 호스트에 연결
-      console.log('[DotsAndBoxes] Connecting to host:', initialRoom.host_id)
       const success = await joinPeerRoomRef.current(initialRoom.host_id)
-      console.log('[DotsAndBoxes] Join result:', success)
       setupInProgressRef.current = false
       if (!success) {
         await leaveSupabaseRoomRef.current(initialRoom.id)
@@ -207,7 +201,6 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
   useEffect(() => {
     if (onDisconnect) {
       onDisconnect(() => {
-        console.log('[DotsAndBoxes] Opponent disconnected')
         if (gamePhase === 'playing' || gamePhase === 'waiting' || gamePhase === 'finished') {
           showToast(t('opponentDisconnected') || 'Opponent has disconnected', 'error')
           handleBackToLobby()
@@ -219,8 +212,6 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
   // 연결 성공
   useEffect(() => {
     if (isConnected && gamePhase === 'waiting') {
-      console.log('[DotsAndBoxes] Connected! Starting game...')
-
       if (isHostRef.current) {
         setMyRole('player1')
         sendMessage('ready', { playerName, role: 'player1' })
@@ -244,8 +235,6 @@ export default function DotsAndBoxes({ initialRoom, isHost: isHostProp, hostPeer
     if (!lastMessage) return
 
     const { type, payload } = lastMessage as PeerMessage
-
-    console.log('[DotsAndBoxes] Message received:', type, payload)
 
     switch (type) {
       case 'ready':

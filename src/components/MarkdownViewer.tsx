@@ -206,7 +206,7 @@ const MarkdownViewer = () => {
 
   // 예제 마크다운
   const insertExample = useCallback(() => {
-    const example = '# 마크다운 예제\n\n## 소개\n이것은 **마크다운** 문서의 예제입니다. *이탤릭* 텍스트와 ~~취소선~~ 텍스트도 지원합니다.\n\n## 코드 예제\n```javascript\nfunction greet(name) {\n  console.log("Hello, " + name + "!");\n}\n\ngreet(\'World\');\n```\n\n인라인 코드도 가능합니다: `const x = 42;`\n\n## 목록\n\n### 순서 없는 목록\n- 첫 번째 항목\n- 두 번째 항목\n- 세 번째 항목\n\n### 순서 있는 목록\n1. 첫 번째 단계\n2. 두 번째 단계\n3. 세 번째 단계\n\n## 인용문\n> 이것은 인용문입니다.\n> 여러 줄로 작성할 수 있습니다.\n\n## 테이블\n| 이름 | 나이 | 직업 |\n|------|------|------|\n| 김철수 | 30 | 개발자 |\n| 이영희 | 25 | 디자이너 |\n| 박민수 | 35 | 기획자 |\n\n## 링크와 이미지\n[Google](https://www.google.com)로 이동할 수 있습니다.\n\n---\n\n이상으로 마크다운 예제를 마칩니다.';
+    const example = '# 마크다운 예제\n\n## 소개\n이것은 **마크다운** 문서의 예제입니다. *이탤릭* 텍스트와 ~~취소선~~ 텍스트도 지원합니다.\n\n## 코드 예제\n```javascript\nfunction greet(name) {\n  return "Hello, " + name + "!";\n}\n\ngreet(\'World\');\n```\n\n인라인 코드도 가능합니다: `const x = 42;`\n\n## 목록\n\n### 순서 없는 목록\n- 첫 번째 항목\n- 두 번째 항목\n- 세 번째 항목\n\n### 순서 있는 목록\n1. 첫 번째 단계\n2. 두 번째 단계\n3. 세 번째 단계\n\n## 인용문\n> 이것은 인용문입니다.\n> 여러 줄로 작성할 수 있습니다.\n\n## 테이블\n| 이름 | 나이 | 직업 |\n|------|------|------|\n| 김철수 | 30 | 개발자 |\n| 이영희 | 25 | 디자이너 |\n| 박민수 | 35 | 기획자 |\n\n## 링크와 이미지\n[Google](https://www.google.com)로 이동할 수 있습니다.\n\n---\n\n이상으로 마크다운 예제를 마칩니다.';
     setInput(example);
   }, []);
 
@@ -997,8 +997,7 @@ awesome.start({
                       <pre className="text-sm text-orange-600 font-mono mb-2">
 {`\`\`\`javascript
 function greetUser(name) {
-  console.log("Hello, " + name + "!");
-  return true;
+  return "Hello, " + name + "!";
 }
 \`\`\``}
                       </pre>

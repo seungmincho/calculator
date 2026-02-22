@@ -7,7 +7,6 @@ let supabaseInstance: SupabaseClient | null = null
 
 export const getSupabase = (): SupabaseClient | null => {
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('Supabase credentials not found. Game room features will be disabled.')
     return null
   }
 

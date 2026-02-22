@@ -68,7 +68,6 @@ export const recordAIGameResult = async (
 
     if (error) {
       // RPC가 없으면 직접 upsert 시도
-      console.warn('RPC not available, using direct upsert:', error)
       return await upsertAIStats(playerId, gameType, difficulty, result)
     }
 

@@ -507,7 +507,7 @@ export default function ApiTester() {
       if (finalBody) opts.body = finalBody
       return `fetch('${finalUrl}', ${JSON.stringify(opts, null, 2)})
   .then(response => response.json())
-  .then(data => console.log(data))
+  .then(data => { /* handle data */ })
   .catch(error => console.error('Error:', error));`
     }
 
@@ -525,7 +525,7 @@ export default function ApiTester() {
       }
     }
     return `axios(${JSON.stringify(axiosOpts, null, 2)})
-  .then(response => console.log(response.data))
+  .then(response => { /* handle response.data */ })
   .catch(error => console.error('Error:', error));`
   }, [buildUrl, buildHeaders, method, body, envVars, codeGenLang])
 

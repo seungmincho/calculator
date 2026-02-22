@@ -196,7 +196,6 @@ export const incrementGamesPlayed = async (roomId: string): Promise<boolean> => 
 
   if (error) {
     // RPC가 없으면 일반 update 시도
-    console.warn('RPC not available, using regular update:', error)
     const room = await getRoom(roomId)
     if (!room) return false
 

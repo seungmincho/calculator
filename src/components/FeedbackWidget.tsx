@@ -49,8 +49,8 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
         if (recentFeedback) {
           setCanShowWidget(false)
         }
-      } catch (error) {
-        console.warn('Failed to parse feedback data:', error)
+      } catch {
+        // ignore invalid feedback data
       }
     }
 

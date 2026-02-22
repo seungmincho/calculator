@@ -135,11 +135,9 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
 
     // 이미 설정 중이면 스킵 (React Strict Mode 대응)
     if (setupInProgressRef.current) {
-      console.log('[Omok] Setup already in progress, skipping...')
       return
     }
 
-    console.log('[Omok] Processing initialRoom:', initialRoom.id, 'isHost:', isHostProp)
     initialRoomIdRef.current = initialRoom.id
     setupInProgressRef.current = true
 
@@ -147,7 +145,6 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
     // GameHub에서 이미 PeerJS 연결을 생성하고 실제 PeerID로 Supabase에 등록함
     // 여기서는 기존 연결을 재사용하기만 하면 됨
     if (isHostProp) {
-      console.log('[Omok] Setting up as host (PeerJS already created by GameHub)')
       setCurrentRoom(initialRoom)
       setPlayerName(initialRoom.host_name)
       setOpponentName('')
@@ -166,7 +163,6 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
     }
 
     // 게스트로 방 입장
-    console.log('[Omok] Setting up as guest')
     const joinInitialRoom = async () => {
       // 다른 사람 방에 입장
       // GameHub에서 넘어온 경우 gameNickname 사용, 아니면 omok_player_name 사용
@@ -187,11 +183,9 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
       // GameHub에서 실제 PeerID로 방이 생성되므로 pending_ 체크 불필요
       // 하위 호환성을 위해 pending_ 체크는 유지하되, 빠르게 실패 처리
       let hostId = initialRoom.host_id
-      console.log('[Omok] Host ID:', hostId)
 
       if (hostId.startsWith('pending_')) {
         // 이 경우는 이전 버전 호환성을 위해 남겨둠 (드물게 발생)
-        console.log('[Omok] Host ID is pending (legacy), polling for real ID...')
         for (let i = 0; i < 3; i++) {
           await new Promise(resolve => setTimeout(resolve, 1000))
           const updatedRoom = await getRoom(initialRoom.id)
@@ -202,7 +196,6 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
         }
 
         if (hostId.startsWith('pending_')) {
-          console.log('[Omok] Host ID still pending')
           await leaveSupabaseRoomRef.current(initialRoom.id)
           setGamePhase('lobby')
           showToastRef.current(t('connectionFailed') || '호스트에 연결할 수 없습니다.', 'error')
@@ -212,9 +205,7 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
         }
       }
 
-      console.log('[Omok] Connecting to host:', hostId)
       const success = await joinPeerRoomRef.current(hostId)
-      console.log('[Omok] Join result:', success)
       setupInProgressRef.current = false
       if (!success) {
         await leaveSupabaseRoomRef.current(initialRoom.id)
@@ -251,8 +242,6 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
   // PeerJS 연결 성공 시 게임 시작
   useEffect(() => {
     if (isConnected && gamePhase === 'waiting') {
-      console.log('[Omok] Connected! Starting game...')
-
       if (isHostRef.current) {
         // 호스트는 흑돌
         setMyColor('black')
@@ -278,8 +267,6 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
     if (!lastMessage) return
 
     const { type, payload } = lastMessage as PeerMessage
-
-    console.log('[Omok] Message received:', type, payload)
 
     switch (type) {
       case 'ready':
@@ -544,7 +531,6 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
   useEffect(() => {
     if (onDisconnect) {
       onDisconnect(() => {
-        console.log('[Omok] Disconnect callback called, wasConnected:', wasConnectedRef.current)
         // 실제로 연결된 적이 있고, 게임 중이거나 끝났을 때만 로비로 이동
         if (wasConnectedRef.current && (gamePhase === 'playing' || gamePhase === 'finished')) {
           showToast(t('opponentDisconnected') || 'Opponent has disconnected', 'error')

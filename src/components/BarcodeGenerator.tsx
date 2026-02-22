@@ -236,7 +236,6 @@ const BarcodeGenerator = () => {
               setIsCopied(true)
               setTimeout(() => setIsCopied(false), 2000)
             } catch (clipboardError) {
-              console.warn('Image clipboard failed, trying text fallback:', clipboardError)
               // Fallback to text if image copy fails
               if (navigator.clipboard.writeText) {
                 await navigator.clipboard.writeText(barcodeUrl)

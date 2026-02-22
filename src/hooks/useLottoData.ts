@@ -137,7 +137,6 @@ export const useLottoData = (): UseLottoDataReturn => {
           await loadData(false, true);
 
           setUpdateStatus(`✅ ${latestData.drwNo}회차 업데이트 완료!`);
-          console.log(`✅ 로또 데이터 업데이트 완료: ${latestData.drwNo}회차`);
         } else {
           setUpdateStatus(`✅ 최신 상태 (${currentStats.latestDraw}회차)`);
         }
@@ -183,7 +182,6 @@ export const useLottoData = (): UseLottoDataReturn => {
   useEffect(() => {
     const checkAutoUpdate = async () => {
       if (shouldUpdate() && !isUpdating) {
-        console.log('📅 일일 로또 데이터 업데이트 확인 시작');
         await checkForUpdates();
       }
     };
@@ -198,7 +196,6 @@ export const useLottoData = (): UseLottoDataReturn => {
   useEffect(() => {
     const interval = setInterval(async () => {
       if (shouldUpdate() && !isUpdating) {
-        console.log('🔄 주기적 로또 데이터 업데이트 확인');
         await checkForUpdates();
       }
     }, 60 * 60 * 1000); // 1시간

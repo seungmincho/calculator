@@ -506,8 +506,8 @@ export default function LadderGame() {
         if (Array.isArray(parsedParticipants)) {
           setParticipants(parsedParticipants)
         }
-      } catch (err) {
-        console.warn('Failed to parse participants from URL:', err)
+      } catch {
+        // invalid URL param, ignore
       }
     }
 
@@ -517,8 +517,8 @@ export default function LadderGame() {
         if (Array.isArray(parsedOutcomes)) {
           setOutcomes(parsedOutcomes)
         }
-      } catch (err) {
-        console.warn('Failed to parse outcomes from URL:', err)
+      } catch {
+        // invalid URL param, ignore
       }
     }
 

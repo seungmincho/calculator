@@ -28,8 +28,7 @@ export const safeStorage = {
     if (typeof window === 'undefined') return null;
     try {
       return localStorage.getItem(key);
-    } catch (error) {
-      console.warn('localStorage.getItem failed:', error);
+    } catch {
       return null;
     }
   },
@@ -39,8 +38,7 @@ export const safeStorage = {
     try {
       localStorage.setItem(key, value);
       return true;
-    } catch (error) {
-      console.warn('localStorage.setItem failed:', error);
+    } catch {
       return false;
     }
   },
@@ -50,8 +48,7 @@ export const safeStorage = {
     try {
       localStorage.removeItem(key);
       return true;
-    } catch (error) {
-      console.warn('localStorage.removeItem failed:', error);
+    } catch {
       return false;
     }
   }
@@ -66,8 +63,7 @@ export const historyStorage = {
     
     try {
       return JSON.parse(data);
-    } catch (error) {
-      console.warn('Failed to parse calculation history:', error);
+    } catch {
       return [];
     }
   },

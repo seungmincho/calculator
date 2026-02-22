@@ -314,7 +314,6 @@ export default function RootLayout({
 
                 // Handle app installed
                 window.addEventListener('appinstalled', function(event) {
-                  console.log('PWA was successfully installed');
                   // Hide install button
                   const installButton = document.getElementById('install-button');
                   if (installButton) {

@@ -23,8 +23,7 @@ const loadStaticLottoData = async (): Promise<LottoDataMap> => {
     // Next.js 13+ App Router에서 정적 파일 가져오기
     const module = await import('../../public/lottoData');
     return module.lottoData || {};
-  } catch (error) {
-    console.warn('Failed to load static lotto data:', error);
+  } catch {
     return {};
   }
 };
@@ -78,11 +77,9 @@ export const addNewLottoData = (newDraws: LottoDrawData[]): void => {
     });
     
     localStorage.setItem('additionalLottoData', JSON.stringify(existingData));
-    
+
     // 캐시 무효화
     cachedLottoData = null;
-    
-    console.log(`✅ Added ${newDraws.length} new lotto draws to localStorage`);
   } catch (error) {
     console.error('Failed to save new lotto data:', error);
   }

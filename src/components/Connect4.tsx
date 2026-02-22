@@ -140,17 +140,14 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
 
     // 이미 설정 중이면 스킵 (React Strict Mode 대응)
     if (setupInProgressRef.current) {
-      console.log('[Connect4] Setup already in progress, skipping...')
       return
     }
 
-    console.log('[Connect4] Processing initialRoom:', initialRoom.id, 'isHost:', isHostProp)
     initialRoomIdRef.current = initialRoom.id
     setupInProgressRef.current = true
 
     // 방 생성한 호스트인 경우 - GameHub에서 이미 PeerJS 방 생성됨
     if (isHostProp) {
-      console.log('[Connect4] Setting up as host (PeerJS already created by GameHub)')
       setCurrentRoom(initialRoom)
       setPlayerName(initialRoom.host_name)
       setOpponentName('')
@@ -164,7 +161,6 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
     }
 
     // 게스트로 방 입장 - GameHub에서 이미 Supabase 방 상태 변경됨
-    console.log('[Connect4] Setting up as guest')
     const joinInitialRoom = async () => {
       // GameHub에서 넘어온 경우 gameNickname 사용, 아니면 connect4_player_name 사용
       const gameNickname = localStorage.getItem('gameNickname')
@@ -181,9 +177,7 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
       setGamePhase('waiting')
 
       // PeerJS로 호스트에 연결
-      console.log('[Connect4] Connecting to host:', initialRoom.host_id)
       const success = await joinPeerRoomRef.current(initialRoom.host_id)
-      console.log('[Connect4] Join result:', success)
       setupInProgressRef.current = false
       if (!success) {
         await leaveSupabaseRoomRef.current(initialRoom.id)

@@ -490,8 +490,8 @@ export default function LottoGenerator() {
         if (Array.isArray(parsedExcluded)) {
           setExcludedNumbers(parsedExcluded)
         }
-      } catch (err) {
-        console.warn('Failed to parse excluded numbers from URL:', err)
+      } catch {
+        // ignore invalid excluded numbers param
       }
     }
 
@@ -528,7 +528,6 @@ export default function LottoGenerator() {
       winningData.sort((a, b) => b.round - a.round)
       
       setWinningHistory(winningData)
-      console.log(`로또 이력 ${winningData.length}회차 로드 완료`)
     } catch (error) {
       console.error('당첨번호 이력 로드 실패:', error)
     }

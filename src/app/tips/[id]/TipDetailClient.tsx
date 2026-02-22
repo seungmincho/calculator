@@ -70,8 +70,8 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
           text: tip?.tip,
           url: window.location.href,
         });
-      } catch (error) {
-        console.log('Error sharing:', error);
+      } catch {
+        // share failed, fall through to clipboard copy
       }
     } else {
       // Fallback to copying URL
@@ -89,8 +89,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
           document.body.removeChild(textArea);
           showNotification();
         }
-      } catch (error) {
-        console.log('Error copying to clipboard:', error);
+      } catch {
         // Final fallback - just show the URL
         alert(`다음 링크를 복사하세요: ${window.location.href}`);
       }

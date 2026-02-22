@@ -301,8 +301,8 @@ const MonthlyRentSubsidyCalculatorContent = () => {
           url: url,
         });
         return;
-      } catch (error) {
-        console.log('공유 실패:', error);
+      } catch {
+        // share failed, fall through to clipboard copy
       }
     }
 

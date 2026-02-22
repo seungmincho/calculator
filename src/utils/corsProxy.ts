@@ -24,8 +24,7 @@ export const fetchWithCorsProxy = async (url: string, options?: RequestInit) => 
       if (response.ok) {
         return response;
       }
-    } catch (error) {
-      console.warn(`Failed to fetch via ${proxyUrl}:`, error);
+    } catch {
       // 다음 프록시로 계속 시도
     }
   }

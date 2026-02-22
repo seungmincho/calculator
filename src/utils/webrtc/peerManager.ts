@@ -22,13 +22,11 @@ export class PeerManager {
       this.peer = new Peer()
 
       this.peer.on('open', (id) => {
-        console.log('[PeerManager] Peer created with ID:', id)
         this.peerId = id
         resolve(id)
       })
 
       this.peer.on('connection', (conn) => {
-        console.log('[PeerManager] Incoming connection from:', conn.peer)
         this.connection = conn
         this.setupConnectionHandlers()
       })
@@ -46,20 +44,16 @@ export class PeerManager {
       this.peer = new Peer()
 
       this.peer.on('open', (myId) => {
-        console.log('[PeerManager] Guest peer opened with ID:', myId)
         this.peerId = myId
 
-        console.log('[PeerManager] Connecting to host:', hostPeerId)
         this.connection = this.peer!.connect(hostPeerId, {
           reliable: true
         })
 
         this.connection.on('open', () => {
-          console.log('[PeerManager] Connected to host, connection open')
           this.setupConnectionHandlers()
           // 게스트 측: 연결이 열리면 바로 콜백 호출
           if (this.onConnectedCallback) {
-            console.log('[PeerManager] Guest calling onConnected callback')
             this.onConnectedCallback()
           }
           resolve()
@@ -83,7 +77,6 @@ export class PeerManager {
     if (!this.connection) return
 
     this.connection.on('data', (data) => {
-      console.log('[PeerManager] Data received:', data)
       if (this.onMessageCallback) {
         this.onMessageCallback(data as PeerMessage)
       }
@@ -91,15 +84,12 @@ export class PeerManager {
 
     // 호스트 측: 연결이 열릴 때 콜백 호출
     this.connection.on('open', () => {
-      console.log('[PeerManager] Connection opened (host side)')
       if (this.onConnectedCallback) {
-        console.log('[PeerManager] Host calling onConnected callback')
         this.onConnectedCallback()
       }
     })
 
     this.connection.on('close', () => {
-      console.log('[PeerManager] Connection closed')
       if (this.onDisconnectedCallback) {
         this.onDisconnectedCallback()
       }
@@ -111,7 +101,6 @@ export class PeerManager {
 
     // 이미 연결이 열려있는 경우 (호스트 측에서 이미 open일 수 있음)
     if (this.connection.open && this.onConnectedCallback) {
-      console.log('[PeerManager] Connection already open, calling callback')
       this.onConnectedCallback()
     }
   }
@@ -131,7 +120,6 @@ export class PeerManager {
 
     try {
       this.connection.send(message)
-      console.log('[PeerManager] Message sent:', type)
       return true
     } catch (error) {
       console.error('[PeerManager] Send error:', error)
@@ -173,7 +161,6 @@ export class PeerManager {
       this.peer = null
     }
     this.peerId = ''
-    console.log('[PeerManager] Disconnected')
   }
 }
 

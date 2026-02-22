@@ -145,13 +145,10 @@ export default function Viewer3D() {
 
     const initEngine = async () => {
       try {
-        console.log('Loading Babylon.js...')
         const BABYLON = await import('@babylonjs/core')
         await import('@babylonjs/loaders')
-        console.log('Babylon.js loaded')
 
         if (disposed || !canvasRef.current) {
-          console.log('Cancelled: component unmounted during load')
           return
         }
 
@@ -160,10 +157,8 @@ export default function Viewer3D() {
 
         if ((navigator as any).gpu) {
           try {
-            console.log('Checking WebGPU support...')
             const adapter = await (navigator as any).gpu.requestAdapter()
             if (adapter) {
-              console.log('WebGPU adapter found, initializing...')
               const webgpuEngine = new BABYLON.WebGPUEngine(canvasRef.current, {
                 antialias: true,
                 stencil: true,
@@ -181,20 +176,17 @@ export default function Viewer3D() {
 
               engine = webgpuEngine
               useWebGPU = true
-              console.log('WebGPU engine initialized!')
             }
-          } catch (e) {
-            console.warn('WebGPU failed, falling back to WebGL:', e)
+          } catch {
+            // fall back to WebGL
           }
         }
 
         if (!engine) {
-          console.log('Initializing WebGL engine...')
           engine = new BABYLON.Engine(canvasRef.current, true, {
             preserveDrawingBuffer: true,
             stencil: true,
           })
-          console.log('WebGL engine initialized')
         }
 
         if (disposed) {
@@ -255,7 +247,6 @@ export default function Viewer3D() {
         window.addEventListener('resize', handleResize)
 
         setIsReady(true)
-        console.log('3D Engine ready!')
 
       } catch (err) {
         console.error('Failed to initialize Babylon.js:', err)

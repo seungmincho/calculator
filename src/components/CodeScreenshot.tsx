@@ -157,7 +157,7 @@ const DEFAULT_CODE = `function fibonacci(n) {
 }
 
 // Calculate the 10th Fibonacci number
-console.log(fibonacci(10)); // 55`
+const result = fibonacci(10); // 55`
 
 // ── Tokenizer ──
 

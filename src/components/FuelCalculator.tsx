@@ -178,8 +178,8 @@ const FuelCalculator = () => {
       try {
         const parsed = JSON.parse(savedLogs)
         setDrivingLogs(parsed)
-      } catch (e) {
-        console.warn('Failed to parse driving logs:', e)
+      } catch {
+        // ignore invalid driving log data
       }
     }
   }, [])
@@ -275,8 +275,8 @@ const FuelCalculator = () => {
         setFuelPrices(settings.fuelPrices)
         setSettingsFeedback(t('vehicleSettings.loaded'))
         setTimeout(() => setSettingsFeedback(null), 2000)
-      } catch (e) {
-        console.warn('Failed to load vehicle settings:', e)
+      } catch {
+        // ignore invalid vehicle settings data
       }
     } else {
       setSettingsFeedback(t('vehicleSettings.noSaved'))
