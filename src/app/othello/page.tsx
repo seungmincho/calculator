@@ -74,11 +74,38 @@ export default function OthelloPage() {
     }
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '오셀로(리버시) 기본 규칙은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '오셀로는 8×8 보드에서 흑돌과 백돌로 플레이합니다. 상대 돌을 자신의 돌 사이에 끼우면 뒤집을 수 있으며, 뒤집을 수 있는 위치에만 돌을 놓을 수 있습니다. 가로, 세로, 대각선 모든 방향으로 뒤집기가 가능합니다. 더 이상 놓을 곳이 없으면 패스하며, 양측 모두 놓을 수 없으면 게임이 끝납니다. 돌이 더 많은 쪽이 승리합니다.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: '오셀로에서 이기는 전략은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '① 코너 확보: 4개 코너는 절대 뒤집히지 않는 최강의 위치 ② 코너 인접 칸(X칸, C칸) 피하기: 상대에게 코너를 헌납하게 됨 ③ 변(edge) 확보: 변을 따라 안정적인 돌 라인 만들기 ④ 이동성 유지: 놓을 수 있는 위치를 많이 확보 ⑤ 초반에 적게 뒤집기: 상대의 선택지를 제한하는 전략. 돌의 \'수\'보다 \'위치\'가 중요합니다.'
+        }
+      }
+    ]
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
         <BoardGamePage

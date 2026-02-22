@@ -50,11 +50,38 @@ export default function BattleshipPage() {
     }
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '배틀쉽 게임 규칙은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '배틀쉽은 10×10 격자에 함선을 배치하고 상대 함선 위치를 추측하여 격침시키는 전략 게임입니다. 함선은 5칸(항공모함), 4칸(전함), 3칸(순양함), 3칸(잠수함), 2칸(구축함) 총 5척입니다. 번갈아 한 칸씩 공격하여 명중(Hit) 또는 빗나감(Miss)을 확인하고, 한 함선의 모든 칸을 명중하면 격침(Sunk)됩니다. 상대 함선을 모두 격침하면 승리합니다.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: '배틀쉽에서 효과적인 공격 전략은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '① 체스판 패턴: 격자를 체스판처럼 한 칸 건너 공격하면 2칸 이상 함선을 빠짐없이 발견 ② 명중 후 십자 탐색: Hit 주변 상하좌우를 순서대로 공격하여 함선 방향 파악 ③ 확률 밀도 계산: 남은 함선 크기를 고려하여 가장 가능성 높은 칸 공격 ④ 가장자리보다 중앙 우선: 중앙에 배치 확률이 더 높음 ⑤ 격침된 함선 크기를 기록하여 남은 함선 추정.'
+        }
+      }
+    ]
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
         <BoardGamePage

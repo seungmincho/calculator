@@ -37,9 +37,25 @@ export default function MemoryGamePage() {
     featureList: ['4가지 난이도', '5가지 테마', '카드 뒤집기 애니메이션', '최고 기록 저장', '콤보 시스템', '사운드 효과'],
   }
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '기억력 게임(메모리 게임)의 규칙은?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '카드를 뒤집어 놓고 같은 그림의 카드 쌍을 찾는 게임입니다. 한 번에 2장을 뒤집을 수 있으며, 같은 그림이면 제거되고 다르면 다시 뒤집힙니다. 모든 쌍을 찾으면 게임 클리어입니다. 적은 시도 횟수로 완료할수록 높은 점수를 받습니다. 카드 수를 늘리면 난이도가 올라가며, 뇌의 단기 기억력과 공간 기억력을 훈련할 수 있습니다.'
+        }
+      }
+    ]
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>

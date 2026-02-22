@@ -50,12 +50,30 @@ export default function CarMaintenancePage() {
       'km당 비용 분석',
     ],
   }
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '자동차 정기 점검 주기는?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '주요 정기 점검 항목: ① 엔진오일: 5,000~10,000km 또는 6개월마다 (합성유 기준 10,000km) ② 에어필터: 15,000~20,000km마다 ③ 브레이크 패드: 30,000~40,000km마다 (주행 습관에 따라 차이) ④ 타이어 교체: 40,000~50,000km 또는 트레드 깊이 1.6mm 이하 시 ⑤ 냉각수: 2년 또는 40,000km마다 ⑥ 미션오일: 60,000~80,000km마다. 차량 매뉴얼의 점검 주기표를 따르는 것이 가장 정확합니다.',
+        },
+      },
+    ],
+  }
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
