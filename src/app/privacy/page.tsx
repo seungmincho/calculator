@@ -5,6 +5,7 @@ import PrivacyPolicy from '@/components/PrivacyPolicy'
 export const metadata: Metadata = {
   title: '개인정보처리방침 - 툴허브',
   description: '툴허브의 개인정보처리방침입니다. 개인정보의 수집, 이용, 보호에 관한 사항을 안내합니다.',
+  robots: { index: false, follow: false },
   openGraph: {
     title: '개인정보처리방침 | 툴허브',
     description: '툴허브의 개인정보처리방침',

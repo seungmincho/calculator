@@ -573,7 +573,7 @@ export default function MonitorTest() {
         if (uploadedImage && step === 0) {
           return (
             <div className="w-full h-full bg-black flex items-center justify-center">
-              <img src={uploadedImage} alt="uploaded" className="max-w-full max-h-full object-contain" />
+              <img src={uploadedImage} alt="" className="max-w-full max-h-full object-contain" />
             </div>
           )
         }
