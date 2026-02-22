@@ -3,7 +3,7 @@ const CACHE_NAME = 'toolhub-v3.0.0'
 const STATIC_CACHE_NAME = 'toolhub-static-v3.0.0'
 const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v3.0.0'
 
-// Files to cache immediately
+// Files to cache immediately (trailing slashes match trailingSlash:true in next.config)
 const STATIC_FILES = [
   '/',
   '/manifest.json',
@@ -12,49 +12,44 @@ const STATIC_FILES = [
   '/android-chrome-512x512.png',
   '/apple-touch-icon.png',
   // Core calculator pages
-  '/lotto-generator',
-  '/loan-calculator',
-  '/real-estate-calculator',
-  '/savings-calculator',
-  '/retirement-calculator',
+  '/lotto-generator/',
+  '/loan-calculator/',
+  '/real-estate-calculator/',
+  '/savings-calculator/',
+  '/retirement-calculator/',
   // Popular utility pages
-  '/json-formatter',
-  '/uuid-generator',
-  '/qr-generator',
+  '/json-formatter/',
+  '/uuid-generator/',
+  '/qr-generator/',
   // Offline page
-  '/offline'
+  '/offline/'
 ]
 
 // Files to cache dynamically
 const DYNAMIC_FILES = [
   // Other calculator pages will be cached when visited
-  '/tax-calculator',
-  '/stock-calculator',
-  '/exchange-calculator',
-  '/bmi-calculator',
-  '/calorie-calculator',
+  '/tax-calculator/',
+  '/stock-calculator/',
+  '/exchange-calculator/',
+  '/bmi-calculator/',
+  '/calorie-calculator/',
   // Development tools
-  '/jwt-decoder',
-  '/regex-extractor',
-  '/sql-formatter'
+  '/jwt-decoder/',
+  '/regex-extractor/',
+  '/sql-formatter/'
 ]
 
 // Install event - cache static files
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing...')
-  
   event.waitUntil(
     Promise.all([
       caches.open(STATIC_CACHE_NAME).then((cache) => {
-        console.log('Service Worker: Caching static files')
         return Promise.all(STATIC_FILES.map(url => {
           return fetch(url).then(response => {
             if (response.ok) {
               return cache.put(url, response)
             }
-          }).catch(error => {
-            console.warn(`Failed to cache ${url}:`, error)
-          })
+          }).catch(() => {})
         }))
       }),
       // Skip waiting to activate immediately
@@ -65,18 +60,15 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating...')
-  
   event.waitUntil(
     Promise.all([
       // Clean up old caches
       caches.keys().then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            if (cacheName !== STATIC_CACHE_NAME && 
-                cacheName !== DYNAMIC_CACHE_NAME && 
+            if (cacheName !== STATIC_CACHE_NAME &&
+                cacheName !== DYNAMIC_CACHE_NAME &&
                 cacheName !== CACHE_NAME) {
-              console.log('Service Worker: Deleting old cache:', cacheName)
               return caches.delete(cacheName)
             }
           })
@@ -100,8 +92,16 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
+  // Normalize URL: ensure trailing slash for page requests (matches trailingSlash:true)
+  const url = new URL(event.request.url)
+  const hasExtension = url.pathname.split('/').pop().includes('.')
+  if (!hasExtension && !url.pathname.endsWith('/')) {
+    url.pathname += '/'
+  }
+  const normalizedRequest = new Request(url.toString(), event.request)
+
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+    caches.match(normalizedRequest).then((cachedResponse) => {
       // Return cached version if available
       if (cachedResponse) {
         // Update cache in background for dynamic content
@@ -112,7 +112,7 @@ self.addEventListener('fetch', (event) => {
       }
 
       // Network first for new requests
-      return fetch(event.request).then((response) => {
+      return fetch(normalizedRequest).then((response) => {
         // Don't cache if response is not valid
         if (!response || response.status !== 200 || response.type !== 'basic') {
           return response
@@ -120,17 +120,15 @@ self.addEventListener('fetch', (event) => {
 
         // Clone the response before caching
         const responseClone = response.clone()
-        
+
         // Cache the response
-        cacheResponse(event.request, responseClone)
+        cacheResponse(normalizedRequest, responseClone)
 
         return response
-      }).catch((error) => {
-        console.log('Service Worker: Network failed, serving offline page')
-        
+      }).catch(() => {
         // Serve offline page for navigation requests
         if (event.request.destination === 'document') {
-          return caches.match('/offline') || new Response(
+          return caches.match('/offline/') || new Response(
             generateOfflinePage(),
             { 
               headers: { 'Content-Type': 'text/html' },
@@ -150,9 +148,9 @@ self.addEventListener('fetch', (event) => {
 function isDynamicContent(url) {
   const dynamicPatterns = [
     '/api/',
-    '/lotto-generator', // For lottery data updates
+    '/lotto-generator/',
     '/tips/',
-    '/exchange-calculator' // For currency rates
+    '/exchange-calculator/'
   ]
   
   return dynamicPatterns.some(pattern => url.includes(pattern))
@@ -164,9 +162,7 @@ function cacheResponse(request, response) {
   
   caches.open(cacheName).then((cache) => {
     cache.put(request, response)
-  }).catch((error) => {
-    console.warn('Failed to cache response:', error)
-  })
+  }).catch(() => {})
 }
 
 // Helper function to update cache in background
@@ -176,9 +172,7 @@ function updateCache(request) {
       const responseClone = response.clone()
       cacheResponse(request, responseClone)
     }
-  }).catch((error) => {
-    console.log('Background cache update failed:', error)
-  })
+  }).catch(() => {})
 }
 
 // Generate offline page HTML
@@ -286,21 +280,19 @@ self.addEventListener('sync', (event) => {
 
 function updateDynamicContent() {
   const dynamicUrls = [
-    '/lotto-generator', // Update lottery data
-    '/exchange-calculator' // Update exchange rates if needed
+    '/lotto-generator/',
+    '/exchange-calculator/'
   ]
-  
+
   return Promise.all(
-    dynamicUrls.map(url => 
+    dynamicUrls.map(url =>
       fetch(url).then(response => {
         if (response.ok) {
-          return caches.open(DYNAMIC_CACHE_NAME).then(cache => 
+          return caches.open(DYNAMIC_CACHE_NAME).then(cache =>
             cache.put(url, response)
           )
         }
-      }).catch(error => {
-        console.log('Background sync failed for', url, error)
-      })
+      }).catch(() => {})
     )
   )
 }

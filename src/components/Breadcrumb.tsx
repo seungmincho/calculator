@@ -43,6 +43,12 @@ export default function Breadcrumb() {
       {
         '@type': 'ListItem',
         position: 2,
+        name: categoryLabel,
+        item: `https://toolhub.ai.kr/?category=${categoryKey}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
         name: currentTool.label,
         item: `https://toolhub.ai.kr${currentTool.href}`,
       },
