@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import dynamic from 'next/dynamic'
 import {
   Check,
   Save,
@@ -15,6 +16,8 @@ import {
   PiggyBank,
   RotateCcw,
 } from 'lucide-react'
+
+const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
 // ── Types ──
 
@@ -201,6 +204,45 @@ export default function BudgetCalculator() {
     }
     return `conic-gradient(${segments.join(', ')})`
   }, [categoryBreakdown])
+
+  // ECharts donut chart option
+  const budgetChartOption = useMemo(() => {
+    const data = categoryBreakdown.map((item) => ({
+      value: item.amount,
+      name: t(`categories.${item.labelKey}`),
+      itemStyle: { color: item.color },
+    }))
+    if (data.length === 0) return {}
+
+    return {
+      tooltip: {
+        trigger: 'item' as const,
+        formatter: '{b}: {c}원 ({d}%)',
+        backgroundColor: 'rgba(255,255,255,0.95)',
+        borderColor: '#e5e7eb',
+        textStyle: { color: '#1f2937', fontSize: 12 },
+      },
+      legend: {
+        orient: 'vertical' as const,
+        right: '5%',
+        top: 'center',
+        textStyle: { fontSize: 11, color: '#6b7280' },
+      },
+      series: [
+        {
+          type: 'pie',
+          radius: ['40%', '70%'],
+          center: ['40%', '50%'],
+          avoidLabelOverlap: true,
+          label: { show: false },
+          emphasis: {
+            label: { show: true, fontSize: 14, fontWeight: 'bold' as const },
+          },
+          data,
+        },
+      ],
+    }
+  }, [categoryBreakdown, t])
 
   // ── Handlers ──
 
@@ -551,27 +593,29 @@ export default function BudgetCalculator() {
               <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
                 {t('chart.title')}
               </h3>
-              <div className="flex justify-center mb-4">
-                <div className="relative w-48 h-48">
-                  <div
-                    className="w-full h-full rounded-full"
-                    style={{ background: donutGradient }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-28 h-28 rounded-full bg-white dark:bg-gray-800 flex flex-col items-center justify-center">
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {t('chart.total')}
-                      </span>
-                      <span className="text-sm font-bold text-gray-900 dark:text-white">
-                        {formatWon(totalExpenses)}
-                      </span>
-                      <span className="text-[10px] text-gray-400">{t('currency')}</span>
+              {categoryBreakdown.length > 0 ? (
+                <ReactECharts option={budgetChartOption} style={{ height: '300px' }} />
+              ) : (
+                <div className="flex justify-center mb-4">
+                  <div className="relative w-48 h-48">
+                    <div
+                      className="w-full h-full rounded-full"
+                      style={{ background: 'conic-gradient(#e5e7eb 0deg 360deg)' }}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-28 h-28 rounded-full bg-white dark:bg-gray-800 flex flex-col items-center justify-center">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {t('chart.total')}
+                        </span>
+                        <span className="text-sm font-bold text-gray-900 dark:text-white">0</span>
+                        <span className="text-[10px] text-gray-400">{t('currency')}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
               {/* Legend */}
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 mt-4">
                 {categoryBreakdown.map((item) => (
                   <div key={item.id} className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2">

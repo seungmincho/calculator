@@ -8,7 +8,8 @@ import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import FeedbackWidget from '@/components/FeedbackWidget';
 import PDFExport from '@/components/PDFExport';
-import { LineChart as RechartsLineChart, Line, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import dynamic from 'next/dynamic'
+const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
 const SalaryCalculatorContent = () => {
   const router = useRouter();
@@ -895,44 +896,22 @@ const SalaryCalculatorContent = () => {
                   <LineChart className="w-6 h-6 mr-2 text-blue-600" />
                   월별 실수령액 변화 (상여금 포함)
                 </h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <RechartsLineChart data={calculateMonthlyTakeHome()}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                    <XAxis dataKey="month" />
-                    <YAxis tickFormatter={(value) => `${(value / 10000).toFixed(0)}만`} />
-                    <Tooltip 
-                      formatter={(value?: number) => formatNumber(value ?? 0) + '원'}
-                      labelStyle={{ color: '#000' }}
-                    />
-                    <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="takeHome" 
-                      stroke="#3B82F6" 
-                      strokeWidth={2}
-                      name="실수령액"
-                      dot={{ fill: '#3B82F6', r: 4 }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="bonus" 
-                      stroke="#10B981" 
-                      strokeWidth={2}
-                      name="상여금"
-                      strokeDasharray="5 5"
-                      dot={{ fill: '#10B981', r: 4 }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="performance" 
-                      stroke="#F59E0B" 
-                      strokeWidth={2}
-                      name="성과급"
-                      strokeDasharray="2 2"
-                      dot={{ fill: '#F59E0B', r: 4 }}
-                    />
-                  </RechartsLineChart>
-                </ResponsiveContainer>
+                <ReactECharts option={{
+                  tooltip: { trigger: 'axis', formatter: (params: { seriesName?: string; value?: number; marker?: string }[]) => {
+                    if (!Array.isArray(params)) return '';
+                    const month = (params[0] as { axisValue?: string }).axisValue || '';
+                    return `<strong>${month}</strong><br/>` + params.map((p: { seriesName?: string; value?: number; marker?: string }) => `${p.marker} ${p.seriesName}: ${formatNumber(p.value ?? 0)}원`).join('<br/>');
+                  }},
+                  legend: { data: ['실수령액', '상여금', '성과급'], bottom: 0 },
+                  grid: { left: '3%', right: '4%', bottom: '12%', containLabel: true },
+                  xAxis: { type: 'category', data: calculateMonthlyTakeHome().map(d => d.month) },
+                  yAxis: { type: 'value', axisLabel: { formatter: (v: number) => `${(v / 10000).toFixed(0)}만` } },
+                  series: [
+                    { name: '실수령액', type: 'line', smooth: true, data: calculateMonthlyTakeHome().map(d => d.takeHome), lineStyle: { width: 2, color: '#3B82F6' }, itemStyle: { color: '#3B82F6' }, symbolSize: 8 },
+                    { name: '상여금', type: 'line', smooth: true, data: calculateMonthlyTakeHome().map(d => d.bonus), lineStyle: { width: 2, color: '#10B981', type: 'dashed' }, itemStyle: { color: '#10B981' }, symbolSize: 8 },
+                    { name: '성과급', type: 'line', smooth: true, data: calculateMonthlyTakeHome().map(d => d.performance), lineStyle: { width: 2, color: '#F59E0B', type: 'dotted' }, itemStyle: { color: '#F59E0B' }, symbolSize: 8 }
+                  ]
+                }} style={{ height: '300px' }} />
                 <div className="mt-4 space-y-2">
                   <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
                     <p className="text-sm text-blue-800 dark:text-blue-200">
@@ -968,30 +947,30 @@ const SalaryCalculatorContent = () => {
                   <BarChart3 className="w-6 h-6 mr-2 text-green-600" />
                   경력별 평균 연봉 비교
                 </h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={careerAverageSalary}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                    <XAxis dataKey="experience" />
-                    <YAxis tickFormatter={(value) => `${(value / 100000000).toFixed(1)}억`} />
-                    <Tooltip 
-                      formatter={(value?: number) => formatNumber(value ?? 0) + '원'}
-                      labelStyle={{ color: '#000' }}
-                    />
-                    <Bar dataKey="average" fill="#3B82F6" name="평균 연봉">
-                      {careerAverageSalary.map((entry, index) => {
-                        const isCurrentExperience = 
-                          (experienceYears === '0' && entry.experience === '신입') ||
-                          (experienceYears === '1' && entry.experience === '1-2년') ||
-                          (experienceYears === '3' && entry.experience === '3-4년') ||
-                          (experienceYears === '5' && entry.experience === '5-7년') ||
-                          (experienceYears === '8' && entry.experience === '8-10년') ||
-                          (experienceYears === '10' && entry.experience === '10년+');
-                        
-                        return <Cell key={`cell-${index}`} fill={isCurrentExperience ? '#10B981' : '#3B82F6'} />;
-                      })}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
+                <ReactECharts option={{
+                  tooltip: { trigger: 'axis', formatter: (params: { seriesName?: string; value?: number; marker?: string }[]) => {
+                    if (!Array.isArray(params)) return '';
+                    const label = (params[0] as { axisValue?: string }).axisValue || '';
+                    return `<strong>${label}</strong><br/>` + params.map((p: { seriesName?: string; value?: number; marker?: string }) => `${p.marker} ${p.seriesName}: ${formatNumber(p.value ?? 0)}원`).join('<br/>');
+                  }},
+                  grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                  xAxis: { type: 'category', data: careerAverageSalary.map(d => d.experience) },
+                  yAxis: { type: 'value', axisLabel: { formatter: (v: number) => `${(v / 100000000).toFixed(1)}억` } },
+                  series: [{
+                    name: '평균 연봉', type: 'bar', barWidth: '60%',
+                    itemStyle: { borderRadius: [4, 4, 0, 0] },
+                    data: careerAverageSalary.map(entry => {
+                      const isCurrentExperience =
+                        (experienceYears === '0' && entry.experience === '신입') ||
+                        (experienceYears === '1' && entry.experience === '1-2년') ||
+                        (experienceYears === '3' && entry.experience === '3-4년') ||
+                        (experienceYears === '5' && entry.experience === '5-7년') ||
+                        (experienceYears === '8' && entry.experience === '8-10년') ||
+                        (experienceYears === '10' && entry.experience === '10년+');
+                      return { value: entry.average, itemStyle: { color: isCurrentExperience ? '#10B981' : '#3B82F6' } };
+                    })
+                  }]
+                }} style={{ height: '300px' }} />
                 {result && (
                   <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
                     <p className="text-sm text-blue-800 dark:text-blue-300">
@@ -1015,25 +994,16 @@ const SalaryCalculatorContent = () => {
                   공제항목별 구성
                 </h3>
                 <div className="grid lg:grid-cols-2 gap-8">
-                  <ResponsiveContainer width="100%" height={300}>
-                    <RechartsPieChart>
-                      <Pie
-                        data={getTaxCompositionData()}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={(entry) => `${entry.name}: ${(((entry.value || 0) / result.deductions.total) * 100).toFixed(1)}%`}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {getTaxCompositionData().map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip formatter={(value?: number) => formatNumber(value ?? 0) + '원'} />
-                    </RechartsPieChart>
-                  </ResponsiveContainer>
+                  <ReactECharts option={{
+                    tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+                    series: [{
+                      type: 'pie',
+                      radius: ['40%', '70%'],
+                      avoidLabelOverlap: false,
+                      label: { show: true, formatter: '{b}\n{d}%' },
+                      data: getTaxCompositionData().map(d => ({ value: d.value, name: d.name, itemStyle: { color: d.color } }))
+                    }]
+                  }} style={{ height: '300px' }} />
                   
                   <div className="space-y-3">
                     {getTaxCompositionData().map((item, index) => (

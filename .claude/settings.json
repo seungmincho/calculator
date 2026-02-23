@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for f in src/app/*/page.tsx)",
+      "Bash(do grep -qL \"FAQPage\\\\|faqJsonLd\" \"$f\")",
+      "Bash(echo:*)"
+    ]
+  }
+}

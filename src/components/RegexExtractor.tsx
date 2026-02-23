@@ -123,7 +123,8 @@ export default function RegexExtractor() {
       placeholder: t('smartModes.removeDuplicates.placeholder'),
       generatePattern: () => '', // 특별 처리
       operation: 'grep' as const,
-      special: true
+      special: true,
+      noInput: true
     },
     {
       id: 'extract-numbers',
@@ -131,7 +132,8 @@ export default function RegexExtractor() {
       description: t('smartModes.extractNumbers.description'),
       placeholder: t('smartModes.extractNumbers.placeholder'),
       generatePattern: () => '\\d+',
-      operation: 'extract' as const
+      operation: 'extract' as const,
+      noInput: true
     },
     {
       id: 'replace-spaces',
@@ -148,7 +150,8 @@ export default function RegexExtractor() {
       placeholder: t('smartModes.capitalizeWords.placeholder'),
       generatePattern: () => '\\b(\\w)',
       operation: 'replace' as const,
-      defaultReplacement: (match: string) => match.toUpperCase()
+      defaultReplacement: (match: string) => match.toUpperCase(),
+      noInput: true
     },
     {
       id: 'extract-urls',
@@ -156,7 +159,8 @@ export default function RegexExtractor() {
       description: t('smartModes.extractUrls.description'),
       placeholder: t('smartModes.extractUrls.placeholder'),
       generatePattern: () => 'https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)',
-      operation: 'extract' as const
+      operation: 'extract' as const,
+      noInput: true
     },
     {
       id: 'extract-emails',
@@ -164,7 +168,8 @@ export default function RegexExtractor() {
       description: t('smartModes.extractEmails.description'),
       placeholder: t('smartModes.extractEmails.placeholder'),
       generatePattern: () => '\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b',
-      operation: 'extract' as const
+      operation: 'extract' as const,
+      noInput: true
     }
   ]
 
@@ -204,22 +209,22 @@ export default function RegexExtractor() {
   // 패턴 설명 생성
   const explainPattern = (pattern: string) => {
     const explanations: { [key: string]: string } = {
-      '\\d': '숫자 (0-9)',
-      '\\w': '문자 (a-z, A-Z, 0-9, _)',
-      '\\s': '공백문자 (스페이스, 탭, 줄바꿈)',
-      '.': '임의의 한 문자',
-      '*': '앞 문자가 0개 이상',
-      '+': '앞 문자가 1개 이상',
-      '?': '앞 문자가 0개 또는 1개',
-      '^': '줄의 시작',
-      '$': '줄의 끝',
-      '\\b': '단어 경계',
-      '[0-9]': '숫자 범위',
-      '[a-z]': '소문자 범위',
-      '[A-Z]': '대문자 범위',
-      '()': '그룹 (캡처)',
-      '|': 'OR 조건',
-      '\\': '특수문자 이스케이프'
+      '\\d': t('explain.digit'),
+      '\\w': t('explain.word'),
+      '\\s': t('explain.space'),
+      '.': t('explain.dot'),
+      '*': t('explain.star'),
+      '+': t('explain.plus'),
+      '?': t('explain.question'),
+      '^': t('explain.caret'),
+      '$': t('explain.dollar'),
+      '\\b': t('explain.boundary'),
+      '[0-9]': t('explain.digitRange'),
+      '[a-z]': t('explain.lowerRange'),
+      '[A-Z]': t('explain.upperRange'),
+      '()': t('explain.group'),
+      '|': t('explain.or'),
+      '\\': t('explain.escape')
     }
 
     let explanation = pattern
@@ -311,7 +316,7 @@ export default function RegexExtractor() {
       
     } catch (error) {
       setIsValid(false)
-      setErrorMessage(error instanceof Error ? error.message : '정규식 오류')
+      setErrorMessage(error instanceof Error ? error.message : t('error.invalidRegex'))
       setOutputText('')
       setMatches([])
     }
@@ -568,7 +573,7 @@ export default function RegexExtractor() {
               onChange={(e) => setUserDescription(e.target.value)}
               placeholder={smartModes.find(m => m.id === smartMode)?.placeholder}
               className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-              disabled={smartModes.find(m => m.id === smartMode)?.placeholder.includes('별도 입력이 필요하지 않습니다')}
+              disabled={!!smartModes.find(m => m.id === smartMode)?.noInput}
             />
             <button
               onClick={applySmartMode}
@@ -603,30 +608,19 @@ export default function RegexExtractor() {
                 {t('guide.basicSymbols')}
               </h4>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">\\d</code>
-                  <span className="text-gray-600 dark:text-gray-400">숫자 (0-9)</span>
-                </div>
-                <div className="flex justify-between">
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">\\w</code>
-                  <span className="text-gray-600 dark:text-gray-400">문자+숫자+_</span>
-                </div>
-                <div className="flex justify-between">
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">\\s</code>
-                  <span className="text-gray-600 dark:text-gray-400">공백문자</span>
-                </div>
-                <div className="flex justify-between">
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">.</code>
-                  <span className="text-gray-600 dark:text-gray-400">임의의 문자</span>
-                </div>
-                <div className="flex justify-between">
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">*</code>
-                  <span className="text-gray-600 dark:text-gray-400">0개 이상</span>
-                </div>
-                <div className="flex justify-between">
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">+</code>
-                  <span className="text-gray-600 dark:text-gray-400">1개 이상</span>
-                </div>
+                {[
+                  { symbol: '\\d', key: 'digit' },
+                  { symbol: '\\w', key: 'word' },
+                  { symbol: '\\s', key: 'space' },
+                  { symbol: '.', key: 'dot' },
+                  { symbol: '*', key: 'star' },
+                  { symbol: '+', key: 'plus' }
+                ].map((item) => (
+                  <div key={item.key} className="flex justify-between">
+                    <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{item.symbol}</code>
+                    <span className="text-gray-600 dark:text-gray-400">{t(`guide.symbolDescs.${item.key}`)}</span>
+                  </div>
+                ))}
               </div>
             </div>
             
@@ -635,22 +629,17 @@ export default function RegexExtractor() {
                 {t('guide.examples')}
               </h4>
               <div className="space-y-2 text-sm">
-                <div>
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">\\d{3}</code>
-                  <p className="text-gray-600 dark:text-gray-400">정확히 3개의 숫자</p>
-                </div>
-                <div>
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">[a-z]+</code>
-                  <p className="text-gray-600 dark:text-gray-400">1개 이상의 소문자</p>
-                </div>
-                <div>
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">^Hello</code>
-                  <p className="text-gray-600 dark:text-gray-400">Hello로 시작하는 라인</p>
-                </div>
-                <div>
-                  <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">.*world$</code>
-                  <p className="text-gray-600 dark:text-gray-400">world로 끝나는 라인</p>
-                </div>
+                {[
+                  { pattern: '\\d{3}', key: 'threeDigits' },
+                  { pattern: '[a-z]+', key: 'lowerLetters' },
+                  { pattern: '^Hello', key: 'startsWithHello' },
+                  { pattern: '.*world$', key: 'endsWithWorld' }
+                ].map((item) => (
+                  <div key={item.key}>
+                    <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{item.pattern}</code>
+                    <p className="text-gray-600 dark:text-gray-400">{t(`guide.exampleDescs.${item.key}`)}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -679,18 +668,18 @@ export default function RegexExtractor() {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {[
-              { symbol: '\\d', desc: '숫자' },
-              { symbol: '\\w', desc: '문자' },
-              { symbol: '\\s', desc: '공백' },
-              { symbol: '.', desc: '임의문자' },
-              { symbol: '*', desc: '0개이상' },
-              { symbol: '+', desc: '1개이상' },
-              { symbol: '?', desc: '0또는1개' },
-              { symbol: '^', desc: '행시작' },
-              { symbol: '$', desc: '행끝' },
-              { symbol: '\\b', desc: '단어경계' },
-              { symbol: '()', desc: '그룹' },
-              { symbol: '[]', desc: '문자집합' }
+              { symbol: '\\d', key: 'digit' },
+              { symbol: '\\w', key: 'word' },
+              { symbol: '\\s', key: 'space' },
+              { symbol: '.', key: 'dot' },
+              { symbol: '*', key: 'star' },
+              { symbol: '+', key: 'plus' },
+              { symbol: '?', key: 'question' },
+              { symbol: '^', key: 'caret' },
+              { symbol: '$', key: 'dollar' },
+              { symbol: '\\b', key: 'boundary' },
+              { symbol: '()', key: 'group' },
+              { symbol: '[]', key: 'charSet' }
             ].map((item) => (
               <button
                 key={item.symbol}
@@ -698,7 +687,7 @@ export default function RegexExtractor() {
                 className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-center"
               >
                 <code className="block font-mono text-sm">{item.symbol}</code>
-                <span className="text-xs text-gray-500 dark:text-gray-400">{item.desc}</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">{t(`patternBuilder.symbols.${item.key}`)}</span>
               </button>
             ))}
           </div>
@@ -894,7 +883,7 @@ export default function RegexExtractor() {
                       {t(`presets.patterns.${preset.name}`)}
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
-                      {preset.description}
+                      {t(`presets.descriptions.${preset.name}`)}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-500 font-mono mt-1">
                       {preset.example}
@@ -1004,8 +993,8 @@ export default function RegexExtractor() {
                       <div key={index} className="text-xs bg-gray-50 dark:bg-gray-700 p-2 rounded">
                         <div className="font-mono text-gray-900 dark:text-white">"{match.match}"</div>
                         <div className="text-gray-500 dark:text-gray-400">
-                          Line {match.line}, Index {match.index}
-                          {match.groups.length > 0 && ` | Groups: ${match.groups.join(', ')}`}
+                          {t('matchDetail.line', { line: match.line })}, {t('matchDetail.index', { index: match.index })}
+                          {match.groups.length > 0 && ` | ${t('matchDetail.groups', { groups: match.groups.join(', ') })}`}
                         </div>
                       </div>
                     ))}
@@ -1114,9 +1103,9 @@ export default function RegexExtractor() {
               {t('guide.examplesTitle')}
             </h4>
             <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-              <li>• {t('guide.examples.0')}</li>
-              <li>• {t('guide.examples.1')}</li>
-              <li>• {t('guide.examples.2')}</li>
+              <li>• {t('guide.exampleItems.0')}</li>
+              <li>• {t('guide.exampleItems.1')}</li>
+              <li>• {t('guide.exampleItems.2')}</li>
             </ul>
           </div>
         </div>

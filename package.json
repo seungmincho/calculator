@@ -20,9 +20,13 @@
     "@codemirror/lang-json": "^6.0.2",
     "@codemirror/search": "^6.6.0",
     "@supabase/supabase-js": "^2.89.0",
+    "@types/js-yaml": "^4.0.9",
     "@types/qrcode": "^1.5.6",
     "@uiw/react-codemirror": "^4.25.4",
+    "echarts": "^6.0.0",
+    "echarts-for-react": "^3.0.6",
     "gif.js": "^0.2.0",
+    "js-yaml": "^4.1.1",
     "jsbarcode": "^3.12.1",
     "json5": "^2.2.3",
     "jsonpath-plus": "^10.3.0",
@@ -38,7 +42,6 @@
     "qrcode": "^1.5.4",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
-    "recharts": "^3.5.1",
     "tesseract.js": "^6.0.1"
   },
   "devDependencies": {

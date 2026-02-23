@@ -1,11 +1,14 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import { Activity, Calculator, Heart, Scale, TrendingUp, Share2, Check, Save } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
+
+const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
 interface BMIResult {
   bmi: number
@@ -250,6 +253,43 @@ export default function BMICalculator() {
     }
   }
 
+  const bmiGaugeOption = useMemo(() => {
+    if (!result) return {}
+    return {
+      series: [{
+        type: 'gauge',
+        min: 10,
+        max: 40,
+        splitNumber: 6,
+        axisLine: {
+          lineStyle: {
+            width: 20,
+            color: [
+              [0.283, '#3B82F6'],   // 10-18.5: Underweight
+              [0.433, '#10B981'],   // 18.5-23: Normal
+              [0.5, '#F59E0B'],     // 23-25: Overweight
+              [0.667, '#F97316'],   // 25-30: Obese
+              [1, '#EF4444'],       // 30-40: Severely Obese
+            ]
+          }
+        },
+        pointer: { width: 5, length: '60%', itemStyle: { color: 'auto' } },
+        axisTick: { distance: -20, length: 6, lineStyle: { color: '#fff', width: 1 } },
+        splitLine: { distance: -25, length: 20, lineStyle: { color: '#fff', width: 2 } },
+        axisLabel: { distance: 30, fontSize: 11, color: '#6B7280' },
+        detail: {
+          valueAnimation: true,
+          formatter: (value: number) => `${value.toFixed(1)}`,
+          fontSize: 28,
+          fontWeight: 'bold',
+          offsetCenter: [0, '70%'],
+          color: 'auto',
+        },
+        data: [{ value: Math.round(result.bmi * 10) / 10 }]
+      }]
+    }
+  }, [result])
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* 헤더 */}
@@ -443,6 +483,11 @@ export default function BMICalculator() {
                     )}
                   </div>
                 </div>
+              </div>
+
+              {/* BMI 게이지 차트 */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <ReactECharts option={bmiGaugeOption} style={{ height: '280px' }} />
               </div>
 
               {/* BMI 단계별 설명 */}

@@ -34,7 +34,7 @@ import {
   Link,
   Wand2,
 } from 'lucide-react'
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
 // Lazy-load CodeMirror (browser-only)
 const JsonCodeEditor = dynamic(() => import('./JsonCodeEditor'), {
@@ -1205,24 +1205,19 @@ const JsonFormatter = () => {
                   <div>
                     <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('stats.typeDistribution')}</h3>
                     <div className="flex flex-col sm:flex-row items-center gap-4">
-                      <ResponsiveContainer width="100%" height={200}>
-                        <PieChart>
-                          <Pie
-                            data={stats.typeDistribution}
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={70}
-                            dataKey="value"
-                            label={({ name, percent }: { name?: string; percent?: number }) => `${name ?? ''} (${((percent ?? 0) * 100).toFixed(0)}%)`}
-                            labelLine={false}
-                          >
-                            {stats.typeDistribution.map((entry, i) => (
-                              <Cell key={i} fill={entry.color || CHART_COLORS[i % CHART_COLORS.length]} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                        </PieChart>
-                      </ResponsiveContainer>
+                      <ReactECharts option={{
+                        tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+                        series: [{
+                          type: 'pie',
+                          radius: ['35%', '65%'],
+                          data: stats.typeDistribution.map((d, i) => ({
+                            value: d.value,
+                            name: d.name,
+                            itemStyle: { color: d.color || CHART_COLORS[i % CHART_COLORS.length] }
+                          })),
+                          label: { show: true, formatter: '{b}\n{d}%', fontSize: 11 }
+                        }]
+                      }} style={{ height: '200px', width: '100%' }} />
                       <div className="flex flex-wrap gap-2">
                         {stats.typeDistribution.map(({ name, value, color }) => (
                           <div key={name} className="flex items-center gap-1.5 text-xs">
@@ -1240,14 +1235,18 @@ const JsonFormatter = () => {
                   {stats.depthDistribution.length > 1 && (
                     <div>
                       <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('stats.depthDistribution')}</h3>
-                      <ResponsiveContainer width="100%" height={200}>
-                        <BarChart data={stats.depthDistribution}>
-                          <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                          <YAxis tick={{ fontSize: 12 }} />
-                          <Tooltip />
-                          <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                      </ResponsiveContainer>
+                      <ReactECharts option={{
+                        tooltip: { trigger: 'axis' },
+                        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                        xAxis: { type: 'category', data: stats.depthDistribution.map(d => d.name), axisLabel: { fontSize: 12 } },
+                        yAxis: { type: 'value', axisLabel: { fontSize: 12 } },
+                        series: [{
+                          type: 'bar',
+                          data: stats.depthDistribution.map(d => d.value),
+                          barWidth: '60%',
+                          itemStyle: { color: '#3b82f6', borderRadius: [4, 4, 0, 0] }
+                        }]
+                      }} style={{ height: '200px', width: '100%' }} />
                     </div>
                   )}
 

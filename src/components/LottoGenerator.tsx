@@ -8,7 +8,8 @@ import FeedbackWidget from './FeedbackWidget'
 import PDFExport from './PDFExport'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from 'next-intl'
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from 'recharts'
+import dynamic from 'next/dynamic'
+const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 import { useLottoData } from '@/hooks/useLottoData'
 
 interface LottoResult {
@@ -1205,19 +1206,21 @@ export default function LottoGenerator() {
           </summary>
           <div className="mt-4 space-y-4">
             {/* 번호별 출현 빈도 차트 */}
-            <ResponsiveContainer width="100%" height={150}>
-              <BarChart data={numberStats.slice(0, 20)}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis dataKey="number" tick={{ fontSize: 10 }} />
-                <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip />
-                <Bar dataKey="frequency">
-                  {numberStats.slice(0, 20).map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index < 6 ? '#EF4444' : '#3B82F6'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+            <ReactECharts option={{
+              tooltip: { trigger: 'axis' },
+              grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+              xAxis: { type: 'category', data: numberStats.slice(0, 20).map(d => d.number), axisLabel: { rotate: 45, fontSize: 10 } },
+              yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
+              series: [{
+                type: 'bar',
+                data: numberStats.slice(0, 20).map((d, index) => ({
+                  value: d.frequency,
+                  itemStyle: { color: index < 6 ? '#EF4444' : '#3B82F6' }
+                })),
+                barWidth: '70%',
+                itemStyle: { borderRadius: [4, 4, 0, 0] }
+              }]
+            }} style={{ height: '150px' }} />
 
             {/* 핫/콜드 번호 나란히 */}
             <div className="grid grid-cols-2 gap-4">

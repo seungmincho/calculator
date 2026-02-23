@@ -1,7 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import { Activity, Calculator, Target, Utensils, Zap, Share2, Check, Save, TrendingUp } from 'lucide-react'
+
+const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from 'next-intl'
@@ -250,6 +253,58 @@ export default function CalorieCalculator() {
     if (goalType.includes('gain')) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-600'
     return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-600'
   }
+
+  const macroChartOption = useMemo(() => {
+    if (!result || result.goalCalories <= 0) return null
+
+    const cal = result.goalCalories
+    const carbsCal = Math.round(cal * 0.5)
+    const proteinCal = Math.round(cal * 0.3)
+    const fatCal = Math.round(cal * 0.2)
+    const carbsGram = Math.round(carbsCal / 4)
+    const proteinGram = Math.round(proteinCal / 4)
+    const fatGram = Math.round(fatCal / 9)
+
+    return {
+      tooltip: {
+        trigger: 'item' as const,
+        formatter: '{b}: {c}kcal ({d}%)'
+      },
+      legend: {
+        bottom: 0,
+        textStyle: { fontSize: 12 }
+      },
+      series: [{
+        type: 'pie' as const,
+        radius: ['40%', '70%'],
+        center: ['50%', '45%'],
+        avoidLabelOverlap: false,
+        label: {
+          show: true,
+          formatter: (params: { name: string; value: number; percent?: number }) =>
+            `${params.name}\n${params.value}kcal\n(${Math.round(params.percent ?? 0)}%)`,
+          fontSize: 12
+        },
+        data: [
+          {
+            value: carbsCal,
+            name: `${t('result.carbs')} ${carbsGram}g`,
+            itemStyle: { color: '#3B82F6' }
+          },
+          {
+            value: proteinCal,
+            name: `${t('result.protein')} ${proteinGram}g`,
+            itemStyle: { color: '#EF4444' }
+          },
+          {
+            value: fatCal,
+            name: `${t('result.fat')} ${fatGram}g`,
+            itemStyle: { color: '#F59E0B' }
+          }
+        ]
+      }]
+    }
+  }, [result, t])
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
@@ -570,6 +625,21 @@ export default function CalorieCalculator() {
                   </div>
                 </div>
               </div>
+
+              {/* 영양소 비율 도넛 차트 */}
+              {macroChartOption && (
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                  <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <Zap className="w-5 h-5 mr-2 text-yellow-500" />
+                    {t('result.macroChartTitle')}
+                  </h4>
+                  <ReactECharts
+                    option={macroChartOption}
+                    style={{ height: 320 }}
+                    opts={{ renderer: 'svg' }}
+                  />
+                </div>
+              )}
             </>
           )}
 

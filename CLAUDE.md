@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Korean all-in-one web tool platform ("툴허브") built with Next.js 16, providing 110+ tools across financial calculators, developer utilities, health tools, and browser games. Deployed on Cloudflare Pages as a static PWA with offline support, SEO optimization, and AdSense integration.
+Korean all-in-one web tool platform ("툴허브") built with Next.js 16, providing 140+ tools across financial calculators, developer utilities, media tools, health tools, and browser games. Deployed on Cloudflare Pages as a static PWA with offline support, SEO optimization, and AdSense integration.
 
 ## Development Commands
 
@@ -65,13 +65,13 @@ src/app/
 │   ├── page.tsx
 │   └── [id]/page.tsx  # generateStaticParams for static generation
 ├── offline/page.tsx    # PWA offline fallback page
-└── [tool-name]/page.tsx  # 50+ individual tool pages
+└── [tool-name]/page.tsx  # 100+ individual tool pages
 ```
 
 #### Component Architecture
 ```
 src/
-├── components/        # All UI components (70+ files)
+├── components/        # All UI components (100+ files)
 ├── config/
 │   └── menuConfig.ts  # Central menu configuration (4 categories)
 ├── contexts/
@@ -105,7 +105,7 @@ src/
 - `BodyFatCalculator`: Body fat percentage calculation
 - `WorkHoursCalculator`: Part-time work hours and overtime
 
-#### Development & Utility Tools (29 tools)
+#### Development & Utility Tools (33 tools)
 - `JsonFormatter`: JSON Formatter Pro - CodeMirror 6 editor, 4 modes (format/minify/tree/stats), JSONPath queries, JSON5/JSONC support, auto-fix broken JSON (jsonrepair), drag-and-drop, URL import, keyboard shortcuts
 - `JsonCodeEditor`: CodeMirror 6 React wrapper with dark mode, error line decoration
 - `JsonCsvConverter`: JSON to CSV conversion
@@ -114,8 +114,11 @@ src/
 - `UuidGenerator`: UUID generation (v1, v4, v7, nil)
 - `CronTester`: Cron expression validation
 - `SqlFormatter`: SQL query formatting
-- `RegexExtractor`: Regex pattern matching
-- `MarkdownViewer`: Markdown preview
+- `RegexExtractor`: Regex pattern matching with smart mode, preset patterns
+- `MarkdownEditor`: Markdown editor with live preview, file upload, TOC, formatting toolbar (merged from MarkdownViewer)
+- `CrontabGenerator`: Visual crontab builder with Korean descriptions
+- `RegexBuilder`: Visual regex builder with pattern library
+- `EnvEditor`: Environment variable editor with multi-format export
 - `TimeConverter`: Timezone conversion and Unix timestamps
 - `ImageResizer`: Image resizing and compression
 - `ImageEditor`: Basic image editing tools
@@ -136,8 +139,11 @@ src/
 - `ImageWatermark`: Text/image watermark with position, opacity, rotation, tile repeat (Canvas API)
 - `ImageOcr`: Image text extraction (OCR) using Tesseract.js with rotation support, multi-language
 - `KeyboardConverter`: Korean-English keyboard mistype converter with Hangul jamo assembly/disassembly
+- `GifMaker`: GIF animation creator from images (inline GIF89a encoder, no external libs)
+- `BackgroundRemover`: Color-based background removal with chroma key
+- `CollageMaker`: Photo collage maker with 5 layout templates
 
-#### Games (20+ tools)
+#### Games (25+ tools)
 - `GameHub`: Game listing/hub page with game stats + achievements panel
 - `LottoGenerator`: Korean lottery number generation with statistics
 - `LadderGame`: Online ladder game for decision making
@@ -152,6 +158,10 @@ src/
 - `Minesweeper`: 지뢰찾기
 - `Sudoku`: 스도쿠
 - `SnakeGame`: 스네이크 게임
+- `FifteenPuzzle`: 15-puzzle (3x3/4x4/5x5) with solvability check
+- `FlappyBird`: Flappy Bird clone with tuned physics
+- `Hangman`: Korean hangman with jamo decomposition
+- `PacMan`: Pac-Man with 4 ghost AI strategies
 - Plus: WordRelay, NumberBaseball, MemoryGame, TetrisGame, TypingGame, WordQuiz
 
 #### Shared Components
@@ -199,11 +209,12 @@ src/
 - `koreanHolidays.ts`: Korean public holiday data (2024-2030, lunar included) + business day calculation
 
 ### Menu System
-Central configuration in `/src/config/menuConfig.ts` with 4 categories:
-- **calculators**: 33 financial/life calculators
-- **tools**: 57 development & utility tools (including image/media tools)
-- **health**: 7 health & fitness tools
-- **games**: 20+ games (including GameHub, 7 AI board games, 13+ solo games)
+Central configuration in `/src/config/menuConfig.ts` with 5 categories:
+- **calculators**: 44 financial/life calculators
+- **tools**: 72 development & utility tools
+- **media**: 16 image/media tools
+- **health**: 13 health & fitness tools
+- **games**: 25+ games (including GameHub, 7 AI board games, 17+ solo games)
 
 Header and ToolsShowcase auto-read from menuConfig. Footer is minimal (no menu links).
 

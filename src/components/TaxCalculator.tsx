@@ -1,10 +1,13 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic'
 import { Receipt, Building2, TrendingUp, Calculator, Share2, Check, Save } from 'lucide-react';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
+
+const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
 type TaxType = 'income' | 'vat' | 'capital-gains';
 
@@ -49,6 +52,61 @@ const TaxCalculatorContent = () => {
 
   const [result, setResult] = useState<TaxResult | null>(null);
   const [showSaveButton, setShowSaveButton] = useState(false);
+
+  // 세금 구성 도넛 차트 옵션
+  const taxChartOption = useMemo(() => {
+    if (!result || !result.breakdown) return {}
+
+    let items: { name: string; value: number; color: string }[] = []
+
+    if (result.type === 'income') {
+      items = [
+        { name: '소득세', value: result.breakdown.incomeTax || 0, color: '#3B82F6' },
+        { name: '지방소득세', value: result.breakdown.localIncomeTax || 0, color: '#6366F1' },
+        { name: '국민연금', value: result.breakdown.nationalPension || 0, color: '#10B981' },
+        { name: '건강보험', value: result.breakdown.healthInsurance || 0, color: '#F59E0B' },
+        { name: '장기요양보험', value: result.breakdown.longTermCare || 0, color: '#F97316' },
+        { name: '고용보험', value: result.breakdown.employmentInsurance || 0, color: '#EF4444' },
+      ]
+    } else if (result.type === 'vat') {
+      items = [
+        { name: '공급가액', value: result.netAmount || 0, color: '#3B82F6' },
+        { name: '부가가치세', value: result.breakdown.vatAmount || 0, color: '#F59E0B' },
+      ]
+    } else if (result.type === 'capital-gains') {
+      items = [
+        { name: '양도소득세', value: result.breakdown.capitalGainsTax || 0, color: '#F97316' },
+        { name: '지방소득세', value: result.breakdown.localTax || 0, color: '#6366F1' },
+      ]
+    }
+
+    items = items.filter(item => item.value > 0)
+    if (items.length === 0) return {}
+
+    return {
+      tooltip: {
+        trigger: 'item' as const,
+        formatter: (params: { name: string; value: number; percent: number; marker: string }) =>
+          `${params.marker} ${params.name}: ${Math.round(params.value).toLocaleString('ko-KR')}원 (${Math.round(params.percent ?? 0)}%)`
+      },
+      legend: {
+        bottom: 0,
+        textStyle: { fontSize: 11 }
+      },
+      series: [{
+        type: 'pie' as const,
+        radius: ['35%', '65%'],
+        avoidLabelOverlap: true,
+        itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
+        label: { show: true, formatter: '{b}\n{d}%', fontSize: 11 },
+        data: items.map(item => ({
+          value: item.value,
+          name: item.name,
+          itemStyle: { color: item.color }
+        }))
+      }]
+    }
+  }, [result])
 
   // 계산 이력 관리
   const {
@@ -834,6 +892,16 @@ const TaxCalculatorContent = () => {
                   )}
                 </ul>
               </div>
+
+              {/* 세금 구성 도넛 차트 */}
+              {Object.keys(taxChartOption).length > 0 && (
+                <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    {activeTab === 'income' ? '공제 항목별 비중' : activeTab === 'vat' ? '공급가액 vs 부가세' : '양도세 구성'}
+                  </h3>
+                  <ReactECharts option={taxChartOption} style={{ height: '280px' }} />
+                </div>
+              )}
             </div>
           ) : (
             <div className="text-center py-12">
