@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/work-hours-calculator',
+    canonical: 'https://toolhub.ai.kr/work-hours-calculator/',
   },
   robots: {
     index: true,
@@ -82,7 +82,7 @@ export default function WorkHoursCalculatorPage() {
         name: '2026년 최저시급은 얼마인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '2026년 최저임금은 시간당 10,030원입니다. 주 40시간 근무 기준 월 최저임금은 약 2,096,270원(주휴수당 포함)이며, 연봉으로 환산하면 약 25,155,240원입니다. 최저임금은 모든 사업장에 동일하게 적용되며, 이보다 낮은 급여를 지급하면 근로기준법 위반입니다.',
+          text: '2026년 최저임금은 시간당 10,320원입니다. 주 40시간 근무 기준 월 최저임금은 2,156,880원(주휴수당 포함, 월 소정근로시간 209시간 기준)이며, 연봉으로 환산하면 약 25,882,560원입니다. 최저임금은 모든 사업장에 동일하게 적용되며, 이보다 낮은 급여를 지급하면 근로기준법 위반입니다.',
         },
       },
       {
@@ -115,6 +115,27 @@ export default function WorkHoursCalculatorPage() {
           </div>
         </div>
       </I18nWrapper>
+
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            근무시간 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            근무시간 계산기는 근로기준법에 따라 알바비, 야근수당, 주휴수당, 연장근로수당을 정확하게 계산해 드리는 도구입니다. 출퇴근 시간, 휴게 시간, 시급을 입력하면 기본급과 각종 가산 수당을 항목별로 분리하여 보여줍니다. 2026년 최저시급 10,320원(월 2,156,880원)을 기준으로 하며, 야간근로(밤 10시~새벽 6시) 및 휴일근로 가산수당도 자동으로 반영합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            근무시간 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>급여 명세서 검증:</strong> 사업주로부터 받은 급여 명세서의 수당 계산이 정확한지 직접 검증하여 임금 체불 여부를 확인하세요.</li>
+            <li><strong>야간 알바 수당:</strong> 밤 10시 이후 근무는 기본 시급의 150%(시급 + 50% 가산)를 받아야 합니다. 편의점·식당 야간 알바 시 반드시 확인하세요.</li>
+            <li><strong>휴게시간 공제:</strong> 4시간 근무 시 30분, 8시간 근무 시 1시간의 휴게시간이 법적으로 보장되며, 해당 시간은 급여 계산에서 제외됩니다.</li>
+            <li><strong>월급 환산:</strong> 주당 근무 일수와 시급을 입력하면 주휴수당 포함 월 예상 급여를 환산하여 취업 전 수입을 미리 계획할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

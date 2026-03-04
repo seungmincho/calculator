@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: '4-7-8, 박스 호흡 등 과학적 호흡법으로 스트레스 해소.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/breathing-exercise',
+    canonical: 'https://toolhub.ai.kr/breathing-exercise/',
   },
 }
 
@@ -91,6 +91,27 @@ export default function BreathingExercisePage() {
           </Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              호흡 운동 가이드란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              호흡 운동 가이드는 <strong>4-7-8 호흡법, 박스 호흡(Box Breathing), 릴렉싱 호흡</strong> 등 과학적으로 검증된 호흡 기법을 SVG 애니메이션으로 시각적으로 안내하는 도구입니다. 스트레스 해소, 불안 완화, 수면 개선에 효과적이며 별도 앱 설치 없이 브라우저에서 바로 사용할 수 있습니다. 명상과 마음챙김에 관심 있는 분, 공황장애·불안장애 관리가 필요한 분에게 특히 유용합니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              호흡 운동 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>4-7-8 호흡:</strong> 잠들기 전 3~4세트 반복하면 수면 유도에 효과적입니다.</li>
+              <li><strong>박스 호흡:</strong> 발표·시험 전 긴장을 빠르게 낮추고 집중력을 높이는 데 적합합니다.</li>
+              <li><strong>코호흡 유지:</strong> 들이쉴 때는 반드시 코로 호흡하여 공기를 충분히 가온·가습합니다.</li>
+              <li><strong>매일 꾸준히:</strong> 하루 5~10분씩 2~4주 연습하면 평소 스트레스 반응이 현저히 줄어듭니다.</li>
+              <li><strong>진동 피드백:</strong> 모바일에서 진동 피드백을 켜면 눈을 감고도 호흡 타이밍을 맞출 수 있습니다.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

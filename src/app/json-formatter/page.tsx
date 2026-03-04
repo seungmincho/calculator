@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/json-formatter',
+    canonical: 'https://toolhub.ai.kr/json-formatter/',
   },
 }
 
@@ -68,6 +68,27 @@ export default function JsonFormatterPage() {
       <I18nWrapper>
         <JsonFormatter />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            JSON 포맷터 Pro란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            JSON 포맷터 Pro는 JSON 데이터를 검증·포맷팅·압축하고 JSONPath 쿼리로 원하는 값을 추출할 수 있는 고급 개발자 도구입니다. CodeMirror 6 기반의 구문 강조 에디터, 인터랙티브 트리뷰, JSON5/JSONC 주석 지원, 깨진 JSON 자동 수정 기능을 갖추고 있으며 드래그 앤 드롭과 URL에서 직접 가져오기도 지원합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            JSON 포맷터 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>API 응답 가독성 향상:</strong> 압축된 API 응답 JSON을 포맷터에 붙여넣으면 들여쓰기된 구조로 즉시 변환되어 디버깅이 쉬워집니다.</li>
+            <li><strong>JSONPath 쿼리 활용:</strong> <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">$.data[*].name</code>처럼 JSONPath를 입력하면 대용량 JSON에서 원하는 필드만 빠르게 추출할 수 있습니다.</li>
+            <li><strong>JSON5 설정 파일:</strong> tsconfig.json이나 .babelrc처럼 주석이 포함된 JSONC/JSON5 파일도 파싱하고 검증할 수 있습니다.</li>
+            <li><strong>자동 오류 수정:</strong> 따옴표 누락, 후행 쉼표 등 흔한 JSON 오류를 자동으로 감지하고 수정하는 jsonrepair 기능을 제공합니다.</li>
+            <li><strong>트리뷰 모드:</strong> 복잡한 중첩 JSON 구조를 트리 형태로 펼쳐보며 데이터 구조를 한눈에 파악할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     }
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/omok'
+    canonical: 'https://toolhub.ai.kr/omok/'
   }
 }
 
@@ -123,6 +123,26 @@ export default function OmokPage() {
           description="19x19 바둑판에서 5개를 먼저 연결하면 승리"
         />
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            온라인 오목 게임이란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            오목은 19×19 바둑판에서 흑돌과 백돌을 번갈아 놓아 가로·세로·대각선 방향으로 5개를 먼저 연속으로 놓으면 이기는 전통 보드게임입니다. 본 도구에서는 쉬움·보통·어려움 세 가지 난이도의 AI와 1인 대전을 즐기거나, 친구와 실시간 P2P 온라인 대전을 할 수 있습니다. 미니맥스 알고리즘 기반 AI가 강력한 수를 구사하여 실력 향상에도 도움이 됩니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            오목 게임 전략 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>열린 3 만들기:</strong> 양쪽이 막히지 않은 3연속(열린 3)을 만들면 상대가 한 방향만 막을 수 있어 주도권을 잡을 수 있습니다.</li>
+            <li><strong>쌍삼(4-3) 전략:</strong> 동시에 두 방향에서 위협(4-3 포크)을 만들면 상대가 한 곳만 막을 수 있으므로 반드시 이길 수 있습니다.</li>
+            <li><strong>중앙 선점:</strong> 초반에 바둑판 중앙 근처에 돌을 놓아 사방으로 뻗을 수 있는 영향력을 확보하세요.</li>
+            <li><strong>공수 균형:</strong> 공격에만 집중하다 상대의 열린 4를 방치하면 역전패하기 쉽습니다. 한 수로 공격과 방어를 동시에 해결하는 수를 찾는 것이 핵심입니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

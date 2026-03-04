@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: 'QR코드 스캔, QR 스캐너, QR코드 인식, QR코드 읽기, qr code scanner, QR 리더',
   openGraph: { title: 'QR코드 스캔 | 툴허브', description: '카메라/이미지로 QR코드 스캔', url: 'https://toolhub.ai.kr/qr-scanner', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: 'QR코드 스캔 | 툴허브', description: 'QR코드 스캔, 인식, 복사' },
-  alternates: { canonical: 'https://toolhub.ai.kr/qr-scanner' },
+  alternates: { canonical: 'https://toolhub.ai.kr/qr-scanner/' },
 }
 
 export default function QrScannerPage() {
@@ -45,6 +45,26 @@ export default function QrScannerPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><QrScanner /></I18nWrapper></Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            QR코드 스캐너란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            QR코드 스캐너는 카메라 또는 이미지 파일을 이용해 QR코드를 인식하고, 담긴 URL, 텍스트, Wi-Fi 비밀번호, 연락처 등 다양한 정보를 즉시 추출하는 무료 온라인 도구입니다. 별도 앱 설치 없이 브라우저에서 바로 사용할 수 있으며, 촬영한 이미지나 스크린샷 파일을 업로드하는 방식으로도 QR코드를 읽을 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            QR코드 스캐너 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>이미지 파일 업로드:</strong> 스마트폰으로 찍은 QR코드 사진이나 스크린샷을 업로드하면 카메라 없이도 내용을 확인할 수 있습니다. 오래된 QR코드나 인쇄물 속 QR코드를 해석할 때 유용합니다.</li>
+            <li><strong>카메라 스캔 모드:</strong> 웹캠이나 스마트폰 카메라를 연결해 실시간으로 QR코드를 스캔하세요. 충분한 조명과 안정적인 화면 고정이 인식 성공률을 높입니다.</li>
+            <li><strong>스캔 기록 활용:</strong> 여러 QR코드를 연속으로 스캔할 때 이전 스캔 기록을 보관하면 정보를 비교하거나 나중에 참고하기 편리합니다.</li>
+            <li><strong>보안 주의:</strong> 출처를 알 수 없는 QR코드를 스캔하면 피싱 사이트로 연결될 수 있습니다. 스캔 결과에 표시된 URL을 클릭하기 전에 반드시 내용을 확인하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

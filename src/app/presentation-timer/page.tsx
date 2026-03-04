@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '발표, 회의, 세미나에 최적화된 프레젠테이션 타이머. 경고/위험 단계 색상 변화, 전체화면 모드, 알림음 지원.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/presentation-timer',
+    canonical: 'https://toolhub.ai.kr/presentation-timer/',
   },
 }
 
@@ -98,6 +98,26 @@ export default function PresentationTimerPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            프레젠테이션 타이머란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            프레젠테이션 타이머는 발표, 강연, 회의, 세미나에서 시간을 효과적으로 관리할 수 있도록 설계된 무료 온라인 카운트다운 도구입니다. 남은 시간에 따라 초록→노랑→빨강으로 색상이 자동 변화하여 발표자가 한눈에 시간 상황을 파악할 수 있습니다. 전체화면 모드로 청중도 함께 볼 수 있으며, 3·5·10·15·20·30분 프리셋으로 즉시 설정이 가능합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            프레젠테이션 타이머 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>전체화면 모드 활용:</strong> 발표장 노트북에 타이머를 전체화면으로 띄우면 발표자와 청중이 모두 남은 시간을 확인할 수 있어 시간 관리가 용이합니다.</li>
+            <li><strong>경고 시간 설정:</strong> 총 발표 시간의 80% 지점을 경고 시간으로, 90% 지점을 위험 시간으로 설정하면 마무리 준비 신호를 체계적으로 받을 수 있습니다.</li>
+            <li><strong>+1분/-1분 빠른 조절:</strong> 발표 중 질문이 길어지거나 앞당겨야 할 경우, +1분/-1분 버튼으로 실시간 조절이 가능합니다.</li>
+            <li><strong>초과 시간 확인:</strong> 설정 시간을 초과하면 타이머가 초과 시간을 표시하여 얼마나 넘겼는지 정확히 알 수 있습니다. 시간 초과를 최소화하는 연습에 활용하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

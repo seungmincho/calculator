@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '가스 요금 계산기, 도시가스 요금, 가스비 계산, 가스 사용량, gas bill calculator',
   openGraph: { title: '가스 요금 계산기 | 툴허브', description: '도시가스 사용량별 요금 계산', url: 'https://toolhub.ai.kr/gas-bill', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '가스 요금 계산기 | 툴허브', description: '도시가스 사용량별 요금 계산' },
-  alternates: { canonical: 'https://toolhub.ai.kr/gas-bill' },
+  alternates: { canonical: 'https://toolhub.ai.kr/gas-bill/' },
 }
 
 export default function GasBillPage() {
@@ -32,6 +32,26 @@ export default function GasBillPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><GasBill /></I18nWrapper></Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            가스 요금 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            가스 요금 계산기는 도시가스 사용량(MJ)을 입력하면 지역별·계절별 단가를 적용하여 기본요금·사용요금·부가가치세를 합산한 월 가스비를 계산합니다. 서울·경기·인천 등 지역마다 도시가스 단가가 다르고, 동절기(11~3월)에는 난방 수요 증가로 요금이 올라가므로, 계절별 요금 변동을 미리 파악하여 가스비를 효율적으로 관리할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            가스비 절약 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>보일러 온도 설정:</strong> 난방 온도를 1도 낮추면 가스비를 5~7% 절약할 수 있습니다. 18~20도를 권장 설정 온도로 유지하세요.</li>
+            <li><strong>외출 모드 활용:</strong> 외출 시 보일러를 완전히 끄지 말고 외출 모드로 설정하면 동파 방지와 재가열 비용 절감을 동시에 달성합니다.</li>
+            <li><strong>단열 보강:</strong> 창문 틈새 단열 테이프, 문풍지 시공으로 열 손실을 줄이면 같은 온도에서 가스 소비량을 20% 이상 줄일 수 있습니다.</li>
+            <li><strong>보일러 정기 점검:</strong> 연 1회 배관 청소와 점검으로 보일러 효율을 최적 상태로 유지하면 장기적으로 가스비 절감 효과가 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

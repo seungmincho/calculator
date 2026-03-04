@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/text-converter',
+    canonical: 'https://toolhub.ai.kr/text-converter/',
   },
 }
 
@@ -68,6 +68,26 @@ export default function TextConverterPage() {
       <I18nWrapper>
         <TextConverter />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            텍스트 변환기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            텍스트 변환기는 대소문자 변환, camelCase·snake_case·kebab-case·PascalCase 등 다양한 텍스트 케이스 변환을 클릭 한 번으로 처리해 주는 개발자·작가용 온라인 도구입니다. 코드 변수명 규칙 변환, URL 슬러그 생성, 데이터베이스 컬럼명 변환 등 개발 작업에서 반복적으로 필요한 텍스트 처리를 빠르게 완료할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            텍스트 변환기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>언어별 케이스 규칙:</strong> JavaScript·TypeScript 변수명은 camelCase, 클래스명은 PascalCase, Python·DB 컬럼은 snake_case, CSS 클래스·URL은 kebab-case를 사용하는 것이 표준입니다.</li>
+            <li><strong>URL 슬러그 생성:</strong> 한글 제목을 영문 kebab-case로 변환하면 SEO 친화적인 URL 슬러그를 만들 수 있습니다. 공백은 하이픈으로 자동 변환됩니다.</li>
+            <li><strong>상수명 변환:</strong> SCREAMING_SNAKE_CASE(전체 대문자 + 밑줄)는 프로그램 상수(MAX_VALUE, API_KEY)에 주로 사용되며, 변환 후 바로 코드에 복사할 수 있습니다.</li>
+            <li><strong>한글 초성 추출:</strong> 한글 텍스트에서 초성만 추출하는 기능은 주소록 정렬, 검색 자동완성 구현, 단어 퀴즈 제작 등에 활용할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

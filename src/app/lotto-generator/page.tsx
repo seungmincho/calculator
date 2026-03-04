@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/lotto-generator',
+    canonical: 'https://toolhub.ai.kr/lotto-generator/',
   },
   robots: {
     index: true,
@@ -143,6 +143,26 @@ export default function LottoGeneratorPage() {
           <LottoGenerator />
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              로또번호 생성기란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              로또번호 생성기는 로또 6/45 역대 당첨번호 데이터를 분석해 통계 기반 번호 추천과 순수 랜덤 번호 생성을 제공합니다. 번호별 출현 빈도, 핫번호(자주 나온 번호)·콜드번호(오래 안 나온 번호) 분석, 특정 번호 포함·제외 설정까지 지원해 나만의 로또 전략을 세울 수 있습니다. 매주 최신 당첨번호가 자동 업데이트됩니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              로또번호 생성기 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>통계 기반 추천:</strong> 과거 출현 빈도가 높은 핫번호와 오랫동안 나오지 않은 콜드번호를 조합해 번호를 선택해보세요.</li>
+              <li><strong>번호 포함/제외:</strong> 꼭 포함하고 싶은 번호나 제외할 번호를 설정하고 나머지는 자동 생성할 수 있습니다.</li>
+              <li><strong>당첨번호 조회:</strong> 회차별 역대 당첨번호를 조회해 특정 번호의 출현 패턴을 직접 분석해보세요.</li>
+              <li><strong>다수 게임 생성:</strong> 한 번에 여러 게임 번호를 생성해 다양한 조합을 미리 준비할 수 있습니다.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

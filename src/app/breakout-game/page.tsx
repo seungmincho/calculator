@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '클래식 아케이드 벽돌깨기 게임',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/breakout-game',
+    canonical: 'https://toolhub.ai.kr/breakout-game/',
   },
 }
 
@@ -81,6 +81,27 @@ export default function BreakoutGamePage() {
           </Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              벽돌깨기 게임이란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              벽돌깨기(Breakout)는 1976년 아타리가 개발한 클래식 아케이드 게임으로, <strong>패들로 공을 튕겨 화면 상단의 벽돌을 모두 깨는</strong> 단순하면서도 중독성 있는 게임입니다. 툴허브의 벽돌깨기는 브라우저에서 무료로 플레이할 수 있으며 키보드·마우스·터치를 모두 지원해 PC와 스마트폰 어디서든 즐길 수 있습니다. 다양한 레벨과 파워업 아이템으로 더욱 재미있게 즐겨보세요.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              벽돌깨기 게임 공략 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>모서리 노리기:</strong> 공이 벽과 천장 모서리에 끼면 자동으로 여러 벽돌이 한 번에 깨집니다.</li>
+              <li><strong>패들 가장자리 활용:</strong> 패들 끝으로 공을 받으면 각도가 날카로워져 벽돌 진입이 쉬워집니다.</li>
+              <li><strong>파워업 우선 수집:</strong> 멀티볼 아이템은 진행 속도를 크게 높여주므로 놓치지 마세요.</li>
+              <li><strong>터치 조작:</strong> 모바일에서는 화면을 좌우로 드래그해 패들을 빠르게 이동할 수 있습니다.</li>
+              <li><strong>최고 점수 도전:</strong> 점수는 로컬에 저장되므로 계속 도전하며 기록을 갱신해보세요.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: '3.3% 원천징수 vs 실제 종합소득세. 환급액 자동 계산.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/freelancer-tax',
+    canonical: 'https://toolhub.ai.kr/freelancer-tax/',
   },
 }
 
@@ -89,6 +89,26 @@ export default function FreelancerTaxPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            프리랜서 세금 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            프리랜서 세금 계산기는 프리랜서·자영업자의 3.3% 원천징수세와 다음 해 5월에 신고하는 종합소득세를 간편하게 계산합니다. 업종별 단순경비율·기준경비율을 자동 적용하고 인적공제·국민연금·건강보험 등 소득공제를 반영하여, 예상 환급액 또는 추가납부액을 미리 파악할 수 있어 프리랜서 세금 신고 준비에 유용합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            프리랜서 세금 절약 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>경비 영수증 보관:</strong> 업무 관련 소프트웨어·장비·교육비 영수증을 보관하면 기준경비율 적용 시 실제 경비로 인정받아 세금을 줄일 수 있습니다.</li>
+            <li><strong>국민연금·건강보험 공제:</strong> 지역가입자로 납부한 국민연금과 건강보험료는 전액 소득공제됩니다. 꼭 입력하세요.</li>
+            <li><strong>종합소득세 신고 기한:</strong> 매년 5월 1일~31일이 신고·납부 기한입니다. 기한을 넘기면 가산세가 발생합니다.</li>
+            <li><strong>홈택스 모두채움 신고:</strong> 연 수입 2,400만원 미만 소규모 프리랜서는 홈택스 모두채움 신고 서비스로 간편하게 신고할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '모든 플랫폼 파비콘 한 번에 생성',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/favicon-generator',
+    canonical: 'https://toolhub.ai.kr/favicon-generator/',
   },
 }
 
@@ -77,6 +77,26 @@ export default function FaviconGeneratorPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            파비콘 생성기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            파비콘 생성기는 로고 이미지 하나를 업로드하면 웹(16×16, 32×32), iOS(Apple Touch Icon 180×180), Android Chrome(192×192, 512×512), Windows 타일(150×150) 등 21가지 크기의 파비콘을 자동으로 생성합니다. HTML 코드, Next.js 설정, site.webmanifest, browserconfig.xml까지 한 번에 제공하여 별도 개발 없이 웹사이트 아이콘을 완성할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            파비콘 생성기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>원본 이미지 품질:</strong> 최소 512×512px 이상의 정사각형 PNG(투명 배경) 이미지를 업로드하면 모든 사이즈에서 선명하게 렌더링됩니다.</li>
+            <li><strong>ZIP 일괄 다운로드:</strong> 생성된 파비콘 파일 전체를 ZIP으로 한 번에 다운로드하여 public 폴더에 바로 넣으세요.</li>
+            <li><strong>Next.js 통합:</strong> 제공된 Next.js 코드를 layout.tsx의 metadata.icons에 그대로 붙여넣으면 바로 적용됩니다.</li>
+            <li><strong>PWA 필수 아이콘:</strong> Android Chrome 192×192, 512×512 아이콘은 PWA(Progressive Web App) 설치에 반드시 필요합니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

@@ -1943,20 +1943,41 @@
   },
   "workHours": {
     "title": "근무시간 계산기",
-    "description": "근로기준법에 따른 정확한 알바비 계산! 기본급, 야근수당, 주휴수당, 연장근로수당을 자동으로 계산하세요",
+    "description": "2026년 최저임금 기준 알바비, 야근수당, 주휴수당 자동 계산",
+    "tabs": {
+      "daily": "근무일 계산",
+      "conversion": "시급 환산"
+    },
     "input": {
       "title": "근무 정보 입력",
       "hourlyWage": "시급 (원)",
-      "hourlyWageNote": "2024년 최저임금: 9,860원",
+      "hourlyWageNote": "2026년 최저임금: 10,320원",
       "weeklyHours": "주 소정근로시간",
       "weeklyHoursNote": "일반적으로 40시간 (주 5일 × 8시간)",
       "workSchedule": "근무 일정",
-      "addDay": "날짜 추가",
+      "addDay": "+ 날짜 추가",
       "date": "날짜",
-      "startTime": "출근시간",
-      "endTime": "퇴근시간",
-      "breakTime": "휴게시간 (분)",
-      "holiday": "휴일"
+      "startTime": "출근",
+      "endTime": "퇴근",
+      "breakTime": "휴게(분)",
+      "holiday": "휴일근무",
+      "presets": "빠른 입력",
+      "presetConvenience": "편의점 야간",
+      "presetCafe": "카페 오전",
+      "presetRestaurant": "식당 저녁",
+      "presetOffice": "사무직",
+      "presetLogistics": "물류창고",
+      "periodMode": "기간 설정",
+      "individualMode": "날짜별 입력",
+      "startDate": "시작일",
+      "endDate": "종료일",
+      "workDays": "근무 요일",
+      "workTime": "근무 시간",
+      "generateDays": "근무일 생성",
+      "generatedDays": "근무일 자동 생성됨",
+      "noDateRange": "시작일과 종료일을 선택하세요",
+      "noWorkDays": "근무 요일을 선택하세요",
+      "totalWorkDays": "총 {count}일 근무"
     },
     "result": {
       "title": "급여 계산 결과",
@@ -1966,9 +1987,36 @@
       "breakdown": "상세 내역",
       "basicPay": "기본급",
       "overtimePay": "연장근로수당 (1.5배)",
-      "nightPay": "야간근로수당 (0.5배)",
+      "nightPay": "야간근로수당 (0.5배 추가)",
       "holidayPay": "휴일근로수당 (1.5배)",
-      "weeklyHolidayPay": "주휴수당"
+      "weeklyHolidayPay": "주휴수당",
+      "monthlyEstimate": "월 예상 급여 (4주 기준)",
+      "yearlyEstimate": "연 예상 급여"
+    },
+    "conversion": {
+      "title": "시급 환산 계산기",
+      "description": "시급과 주 근무시간을 입력하면 일급/주급/월급/연봉을 자동 계산합니다",
+      "hourlyWage": "시급 (원)",
+      "weeklyWorkHours": "주 근무시간 (시간)",
+      "workDaysPerWeek": "주 근무일수",
+      "wageTable": "급여 환산표",
+      "daily": "일급",
+      "weekly": "주급",
+      "monthly": "월급",
+      "yearly": "연봉",
+      "weeklyHolidayLabel": "주휴수당",
+      "withHoliday": "(주휴 포함)",
+      "withoutHoliday": "(주휴 미포함)",
+      "insuranceTitle": "4대보험 공제 추정 (월급 기준)",
+      "nationalPension": "국민연금 (4.5%)",
+      "healthInsurance": "건강보험 (3.545%)",
+      "longTermCare": "장기요양보험 (0.46%)",
+      "employmentInsurance": "고용보험 (0.9%)",
+      "totalDeduction": "총 공제액",
+      "netMonthly": "실수령 예상",
+      "insuranceNote": "* 월 60시간 이상 근무시 4대보험 의무가입. 소득세는 개인 공제 조건에 따라 별도 적용.",
+      "hoursPerDay": "일 평균 근무",
+      "eligibleWeeklyHoliday": "주휴수당 대상 (주 15시간 이상)"
     },
     "guide": {
       "title": "근로기준법 가이드",
@@ -1988,11 +2036,11 @@
       }
     },
     "minimumWage": {
-      "title": "2024년 최저임금 정보",
-      "2024": "2024년 시급",
-      "monthly": "월급 환산 (209시간)",
+      "title": "2026년 최저임금 정보",
+      "2026": "2026년 최저시급",
+      "monthly": "월 최저임금 (주휴 포함)",
       "monthlyHours": "월 소정근로시간",
-      "note": "* 수습기간에도 최저임금의 90% 이상 지급 의무"
+      "note": "* 주 40시간 근무 기준, 월 소정근로시간 209시간 적용 (주휴수당 포함)"
     },
     "rights": {
       "title": "근로자 권리 및 보호",

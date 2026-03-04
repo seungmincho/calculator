@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: '타일 매칭 게임 | 툴허브',
     description: '카드를 뒤집어 같은 짝을 찾으세요!',
   },
-  alternates: { canonical: 'https://toolhub.ai.kr/memory-game' },
+  alternates: { canonical: 'https://toolhub.ai.kr/memory-game/' },
 }
 
 export default function MemoryGamePage() {
@@ -63,6 +63,26 @@ export default function MemoryGamePage() {
           </Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              타일 매칭(기억력) 게임이란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              타일 매칭 게임(메모리 게임)은 뒤집어 놓인 카드 중 같은 그림 쌍을 찾아 모두 제거하면 클리어하는 기억력 훈련 게임입니다. 이모지, 음식, 스포츠, 한글, 숫자 등 5가지 테마와 초급부터 전문가까지 4단계 난이도를 제공해 연령 불문 모든 분이 즐길 수 있습니다. 단기 기억력과 집중력 향상에 효과적인 브레인 트레이닝 게임입니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              타일 매칭 게임 공략 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>위치 기억법:</strong> 카드를 뒤집을 때 그림뿐만 아니라 위치(행·열)를 함께 기억하면 짝을 더 빠르게 찾을 수 있습니다.</li>
+              <li><strong>체계적 탐색:</strong> 왼쪽 위에서 오른쪽 아래로 순서대로 뒤집어가면 뒤집지 않은 카드를 놓치지 않습니다.</li>
+              <li><strong>콤보 노리기:</strong> 연속으로 짝을 맞추면 콤보 보너스가 적용되므로 확실한 짝부터 먼저 맞추세요.</li>
+              <li><strong>난이도 도전:</strong> 초급(4x3)으로 시작해 점차 카드 수를 늘려가며 기억력 한계에 도전해보세요.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

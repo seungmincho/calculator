@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     description: '한국 기준 소득세, 부가가치세, 양도소득세를 정확하게 계산하세요',
     images: ['/og-image-1200x630.png'],
   },
-  alternates: { canonical: 'https://toolhub.ai.kr/tax-calculator' },
+  alternates: { canonical: 'https://toolhub.ai.kr/tax-calculator/' },
 }
 
 export default function TaxCalculatorPage() {
@@ -95,6 +95,26 @@ export default function TaxCalculatorPage() {
       <I18nWrapper>
         <TaxCalculator />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            세금 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            세금 계산기는 2026년 한국 세법 기준으로 소득세, 부가가치세(VAT), 양도소득세를 정확하게 계산해 주는 무료 온라인 도구입니다. 프리랜서·사업자의 종합소득세 신고, 부동산 양도 시 세금 예측, 공급가액과 부가세 분리 계산 등 다양한 납세 상황에서 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            세금 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>종합소득세 누진세율:</strong> 2026년 기준 소득에 따라 6%~45%의 누진세율이 적용됩니다. 과세표준이 1,400만원 이하면 6%, 5,000만원 이하면 15%입니다.</li>
+            <li><strong>부가세 역산:</strong> 공급가액에 10%가 부가세이므로, 부가세 포함 금액에서 공급가액을 구하려면 총액 ÷ 1.1을 계산하세요.</li>
+            <li><strong>양도소득세 절세:</strong> 보유 기간이 길수록 장기보유특별공제율이 높아집니다. 1세대 1주택은 2년 이상 보유 시 비과세 혜택을 받을 수 있습니다.</li>
+            <li><strong>신고 기간 확인:</strong> 종합소득세는 매년 5월, 부가가치세는 1월과 7월이 신고·납부 기간으로, 기간을 놓치면 가산세가 부과됩니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

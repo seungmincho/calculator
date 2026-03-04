@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/hash-generator',
+    canonical: 'https://toolhub.ai.kr/hash-generator/',
   },
 }
 
@@ -68,6 +68,26 @@ export default function HashGeneratorPage() {
       <I18nWrapper>
         <HashGenerator />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            해시 생성기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            해시 생성기는 텍스트나 파일을 입력하면 MD5·SHA-1·SHA-256·SHA-384·SHA-512 등 다양한 암호화 해시 알고리즘으로 해시값을 즉시 생성하는 무료 온라인 도구입니다. 파일 무결성 검증, 비밀번호 저장 방식 확인, 데이터 변조 탐지, 체크섬 계산 등 보안 및 개발 업무에 폭넓게 활용됩니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            해시 생성기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>파일 무결성 확인:</strong> 소프트웨어 다운로드 후 공식 사이트의 SHA-256 체크섬과 비교하면 파일 변조 여부를 검증할 수 있습니다.</li>
+            <li><strong>알고리즘 선택:</strong> 보안이 중요한 용도에는 SHA-256 이상을 사용하세요. MD5와 SHA-1은 충돌 취약점이 발견되어 보안 목적으로는 사용을 권장하지 않습니다.</li>
+            <li><strong>비밀번호 저장 검증:</strong> 서비스에서 비밀번호를 어떤 방식으로 해시하는지 확인할 때 활용할 수 있습니다. bcrypt·Argon2가 비밀번호 저장에 권장됩니다.</li>
+            <li><strong>대소문자 구분:</strong> 해시값은 대소문자 구분 없이 동일하게 인식되지만, 입력 텍스트의 공백 한 칸 차이도 완전히 다른 해시를 생성합니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

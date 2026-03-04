@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '모스부호 변환기, morse code converter, 모스부호 변환, 모스코드, SOS 모스부호',
   openGraph: { title: '모스부호 변환기 | 툴허브', description: '텍스트↔모스부호 변환', url: 'https://toolhub.ai.kr/morse-code', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '모스부호 변환기 | 툴허브', description: '텍스트↔모스부호 변환' },
-  alternates: { canonical: 'https://toolhub.ai.kr/morse-code' },
+  alternates: { canonical: 'https://toolhub.ai.kr/morse-code/' },
 }
 
 export default function MorseCodePage() {
@@ -45,6 +45,26 @@ export default function MorseCodePage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><MorseCode /></I18nWrapper></Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            모스부호 변환기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            모스부호 변환기는 영문 텍스트를 모스부호(·과 -)로 변환하거나, 모스부호를 다시 텍스트로 해독하는 무료 온라인 도구입니다. 소리 재생 기능을 통해 실제 전신 신호음을 들을 수 있으며, SOS를 비롯한 국제 표준 모스 알파벳 표를 함께 제공합니다. 아마추어 무선 통신(햄 라디오), 교육, 퀴즈 풀이, 비밀 메시지 작성에 유용하게 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            모스부호 변환기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>SOS 신호 학습:</strong> ···---···(SOS)는 국제 조난 신호로, 손전등이나 소리로 반복하면 구조 요청에 사용할 수 있습니다.</li>
+            <li><strong>소리 재생 기능:</strong> 변환된 모스부호를 재생하여 실제 전신 신호음으로 듣고, 청각적으로 모스부호를 익힐 수 있습니다.</li>
+            <li><strong>모스 알파벳 표 참고:</strong> A(·-)부터 Z(--..)까지 26개 알파벳과 0~9 숫자의 모스부호를 표에서 쉽게 확인할 수 있습니다.</li>
+            <li><strong>비밀 메시지 작성:</strong> 텍스트를 모스부호로 변환해 암호 메시지처럼 활용하거나, 모스부호 입력란에 직접 타이핑해 해독할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

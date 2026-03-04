@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description: '8가지 카테고리, 3가지 톤으로 한국어·영어 비즈니스 이메일 자동 생성.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/email-template',
+    canonical: 'https://toolhub.ai.kr/email-template/',
   },
 }
 
@@ -100,6 +100,26 @@ export default function EmailTemplatePage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            비즈니스 이메일 템플릿 생성기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            비즈니스 이메일 템플릿 생성기는 업무에서 자주 쓰이는 이메일을 클릭 몇 번으로 자동 작성해주는 도구입니다. 거래 제안, 감사 인사, 사과, 회의 요청, 견적 요청, 협업 제안, 불만 접수, 공지 등 8가지 카테고리에서 격식체·비즈니스·친근한 3가지 톤을 선택하면 한국어와 영어 이메일이 즉시 생성됩니다. 이름과 회사명을 입력하면 맞춤형 이메일이 완성됩니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            비즈니스 이메일 작성 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>제목 작성:</strong> 제목은 5~10단어로 핵심 내용을 담아야 합니다. &apos;안녕하세요&apos;나 &apos;문의드립니다&apos;만으로는 부족하며, 목적을 명확하게 적어야 열람률이 높아집니다.</li>
+            <li><strong>톤 선택 기준:</strong> 처음 연락하는 외부 업체에는 격식체, 거래 중인 파트너에는 비즈니스, 내부 팀원에게는 친근한 톤이 적합합니다.</li>
+            <li><strong>영어 이메일 활용:</strong> 해외 업체와 협업 시 생성된 영어 이메일을 기반으로 수정하면 번역 시간을 크게 줄일 수 있습니다.</li>
+            <li><strong>답장 기대 시점 명시:</strong> &apos;이번 주 금요일까지 답변 부탁드립니다&apos; 처럼 구체적인 회신 기한을 적으면 빠른 응답을 받을 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

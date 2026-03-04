@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/diff-viewer',
+    canonical: 'https://toolhub.ai.kr/diff-viewer/',
   },
 }
 
@@ -60,6 +60,26 @@ export default function DiffViewerPage() {
       <I18nWrapper>
         <DiffViewer />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            Diff 비교 도구란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            Diff 비교 도구는 두 개의 텍스트나 코드를 나란히 놓고 추가·삭제·변경된 부분을 색상으로 강조하여 시각적으로 비교해주는 도구입니다. 소스 코드 리뷰, 문서 개정판 비교, 설정 파일 변경 확인 등 다양한 용도로 사용되며, 줄 단위와 단어 단위 비교 모드를 모두 지원합니다. Git diff와 동일한 원리로 동작하여 개발자와 문서 작업자 모두에게 유용합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            Diff 비교 도구 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>코드 리뷰:</strong> Pull Request 리뷰 전 로컬에서 변경 사항을 빠르게 확인하거나, 두 버전의 설정 파일(nginx.conf, docker-compose.yml 등)을 비교할 때 유용합니다.</li>
+            <li><strong>문서 교정:</strong> 계약서, 보고서의 이전 버전과 새 버전을 비교하여 변경된 조항이나 수정 내용을 정확히 파악할 수 있습니다.</li>
+            <li><strong>줄 vs 단어 비교:</strong> 줄 단위 비교는 전체 줄 변경을, 단어 단위 비교는 줄 내 세부 변경을 보여줍니다. 짧은 변경이 많은 문서에는 단어 단위가 더 직관적입니다.</li>
+            <li><strong>JSON·YAML 비교:</strong> API 응답이나 설정 파일의 JSON/YAML을 붙여넣어 포맷 차이까지 한눈에 비교하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

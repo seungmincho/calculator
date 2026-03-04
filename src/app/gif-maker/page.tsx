@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '여러 이미지로 애니메이션 GIF를 무료로 만드세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/gif-maker',
+    canonical: 'https://toolhub.ai.kr/gif-maker/',
   },
 }
 
@@ -88,6 +88,26 @@ export default function GifMakerPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            GIF 메이커란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            GIF 메이커는 여러 장의 이미지(JPG·PNG·WebP 등)를 업로드하여 애니메이션 GIF를 무료로 만드는 온라인 도구입니다. 프레임 간격·출력 크기·반복 횟수를 자유롭게 설정하고 브라우저에서 즉시 미리볼 수 있으며, 별도 소프트웨어 없이 움짤(GIF)을 완성하고 다운로드할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            GIF 메이커 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>파일 크기 줄이기:</strong> 출력 너비를 400~500px 이하로 설정하고 프레임 수를 5~10장으로 줄이면 GIF 파일 크기를 크게 낮출 수 있습니다.</li>
+            <li><strong>프레임 간격 조절:</strong> 프레임 딜레이를 80~120ms로 설정하면 자연스러운 애니메이션 속도를 만들 수 있습니다.</li>
+            <li><strong>무한 반복 설정:</strong> SNS 업로드용 움짤은 무한 반복(loop)으로 설정하고, 특정 횟수 재생이 필요한 경우 반복 횟수를 지정하세요.</li>
+            <li><strong>이미지 순서 정렬:</strong> 업로드 전에 파일명에 숫자를 붙여 순서를 정리하거나, 드래그로 프레임 순서를 변경할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

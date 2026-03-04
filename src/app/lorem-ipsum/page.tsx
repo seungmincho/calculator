@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/lorem-ipsum',
+    canonical: 'https://toolhub.ai.kr/lorem-ipsum/',
   },
 }
 
@@ -60,6 +60,26 @@ export default function LoremIpsumPage() {
       <I18nWrapper>
         <LoremIpsumGenerator />
       </I18nWrapper>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              Lorem Ipsum 생성기란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              Lorem Ipsum 생성기는 웹 디자인, 앱 개발, 인쇄물 제작 시 레이아웃 확인용 더미 텍스트(placeholder text)를 즉시 생성해주는 도구입니다. 문단, 문장, 단어 단위로 원하는 분량을 만들 수 있으며, 한글 Lorem Ipsum도 지원해 한국어 UI 목업에 바로 활용할 수 있습니다. 디자이너와 개발자라면 매일 쓰는 필수 유틸리티입니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              Lorem Ipsum 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>UI 목업:</strong> 실제 콘텐츠 없이도 텍스트 영역의 레이아웃, 여백, 폰트 가독성을 검토할 수 있습니다.</li>
+              <li><strong>한글 Lorem:</strong> 한국어 프로젝트에는 한글 더미 텍스트를 사용해 실제 한글 폰트 렌더링과 줄 바꿈을 확인하세요.</li>
+              <li><strong>분량 조절:</strong> 문단 수, 문장 수, 단어 수를 자유롭게 설정해 카드, 본문, 툴팁 등 다양한 컴포넌트에 맞게 생성합니다.</li>
+              <li><strong>복사 후 붙여넣기:</strong> 생성된 텍스트를 클릭 한 번으로 복사해 Figma, Sketch, VS Code 등에 바로 붙여넣기하세요.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

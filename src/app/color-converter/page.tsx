@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/color-converter',
+    canonical: 'https://toolhub.ai.kr/color-converter/',
   },
 }
 
@@ -68,6 +68,27 @@ export default function ColorConverterPage() {
       <I18nWrapper>
         <ColorConverter />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            색상 변환기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            색상 변환기는 <strong>HEX, RGB, HSL, HSV, CMYK 색상 코드를 실시간으로 상호 변환</strong>하는 무료 온라인 도구입니다. 컬러 피커로 직접 색상을 선택하거나 코드를 입력하면 모든 형식으로 동시에 변환되며 미리보기를 통해 정확한 색상을 확인할 수 있습니다. 웹 개발자, UI/UX 디자이너, 그래픽 디자이너에게 필수적인 도구입니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            색상 변환기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>웹 개발:</strong> 디자이너에게 받은 HEX 코드를 CSS rgba()로 변환해 투명도를 조절하세요.</li>
+            <li><strong>인쇄 작업:</strong> 화면의 RGB 색상을 CMYK로 변환하여 인쇄 결과와의 차이를 미리 확인하세요.</li>
+            <li><strong>HSL 직관적 조절:</strong> HSL로 변환하면 밝기와 채도를 수치로 정밀하게 조절하기 쉽습니다.</li>
+            <li><strong>접근성 확인:</strong> 전경색과 배경색의 대비율이 WCAG 기준(4.5:1 이상)을 충족하는지 확인하세요.</li>
+            <li><strong>브랜드 가이드라인:</strong> 브랜드 색상을 HEX·RGB·CMYK 값으로 모두 기록해 일관성을 유지하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

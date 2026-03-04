@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '파이프 사이를 날아가는 캐주얼 게임',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/flappy-bird',
+    canonical: 'https://toolhub.ai.kr/flappy-bird/',
   },
 }
 
@@ -87,6 +87,26 @@ export default function FlappyBirdPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            플래피버드 게임이란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            플래피버드(Flappy Bird)는 화면을 클릭하거나 탭할 때마다 새가 위로 날아오르고, 손을 떼면 중력으로 아래로 떨어지는 원탭 캐주얼 브라우저 게임입니다. 파이프 사이의 틈을 통과할 때마다 점수가 오르며, 파이프나 바닥에 닿으면 게임이 종료됩니다. 모바일 터치와 PC 키보드(스페이스바/클릭) 모두 지원하며, 최고 점수는 자동 저장됩니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            플래피버드 고득점 전략
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>리듬 유지:</strong> 일정한 간격으로 탭하여 새의 높이를 중간 부근에서 유지하는 것이 핵심입니다.</li>
+            <li><strong>파이프 중앙 통과:</strong> 파이프 틈의 중앙을 목표로 날아가면 위아래 여유 공간이 생겨 실수를 줄일 수 있습니다.</li>
+            <li><strong>예측 비행:</strong> 다음 파이프의 위치를 미리 보고 현재 높이를 조절하는 습관을 들이세요.</li>
+            <li><strong>집중 모드:</strong> 화면 전환이나 다른 소리를 차단하고 게임에만 집중하면 고득점 달성에 유리합니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

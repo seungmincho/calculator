@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '클래식 블록 퍼즐 게임',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/tetris',
+    canonical: 'https://toolhub.ai.kr/tetris/',
   },
 }
 
@@ -81,6 +81,26 @@ export default function TetrisPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            테트리스란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            테트리스는 위에서 떨어지는 7가지 블록(테트로미노)을 회전·이동시켜 가로줄을 완성하면 줄이 사라지는 클래식 블록 퍼즐 게임입니다. 1984년 알렉세이 파지트노프가 개발한 이래 전 세계에서 가장 많이 플레이된 게임 중 하나로, 홀드, 넥스트 미리보기, 고스트 피스, 레벨 시스템을 갖춘 완성도 높은 브라우저 버전을 무료로 즐길 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            테트리스 고득점 전략 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>4줄 동시 클리어(테트리스):</strong> I 블록을 위해 오른쪽이나 왼쪽에 세로 빈 공간을 남겨두고 4줄을 쌓은 뒤 한 번에 클리어하면 최고 점수를 얻을 수 있습니다.</li>
+            <li><strong>홀드 기능 전략적 활용:</strong> I 블록이나 S/Z 블록처럼 상황에 따라 필요한 블록을 홀드에 보관해 두면 위기 상황을 타개하거나 고점 기회를 만들 수 있습니다.</li>
+            <li><strong>평평하게 쌓기:</strong> 표면을 최대한 고르게 유지해야 다음 블록을 배치하기 쉽습니다. 산 모양으로 쌓이면 빈 공간이 생겨 줄을 완성하기 어려워집니다.</li>
+            <li><strong>T-스핀 기술:</strong> T 블록을 틈새에 회전 삽입하면 좁은 공간에서 줄을 완성하는 고급 기술로 보너스 점수가 부여됩니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

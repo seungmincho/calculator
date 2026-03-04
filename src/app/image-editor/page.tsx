@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '브라우저에서 바로 이미지를 편집하고 다운로드하세요',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/image-editor',
+    canonical: 'https://toolhub.ai.kr/image-editor/',
   },
 }
 
@@ -83,6 +83,27 @@ export default function ImageEditorPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            온라인 이미지 편집기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            온라인 이미지 편집기는 별도의 프로그램 설치 없이 브라우저에서 바로 사진을 편집할 수 있는 도구입니다. 크롭(자르기), 회전, 반전, 필터 효과, 텍스트 추가 등 기본적인 사진 편집 기능을 무료로 제공하며, 모든 처리가 클라이언트에서 이루어져 이미지가 서버에 업로드되지 않아 개인정보 보호에도 안전합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            이미지 편집기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>SNS 업로드 전 크롭:</strong> 인스타그램(1:1), 트위터(16:9) 등 플랫폼별 최적 비율로 크롭하여 이미지를 최적화하세요.</li>
+            <li><strong>명함 사진 보정:</strong> 밝기와 대비를 높여 스캔한 명함이나 문서 사진의 텍스트 가독성을 개선할 수 있습니다.</li>
+            <li><strong>이미지 회전 교정:</strong> 스마트폰으로 찍은 사진이 90도 또는 180도 틀어졌을 때 빠르게 방향을 바로잡을 수 있습니다.</li>
+            <li><strong>블러 효과 활용:</strong> 개인정보가 포함된 사진 일부를 블러 처리하거나, 배경을 흐릿하게 만들어 피사체를 강조하세요.</li>
+            <li><strong>텍스트 오버레이:</strong> 이미지에 캡션, 날짜, 이름 등을 직접 삽입하여 간단한 이미지 콘텐츠를 제작할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

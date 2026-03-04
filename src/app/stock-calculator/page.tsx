@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/stock-calculator',
+    canonical: 'https://toolhub.ai.kr/stock-calculator/',
   },
 }
 
@@ -100,6 +100,26 @@ export default function StockCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <StockCalculator />
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            주식 수익률 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            주식 수익률 계산기는 매수 가격과 현재 가격, 수량을 입력하면 수익률(%), 총 손익 금액, 세금 및 수수료 차감 후 실수익을 즉시 계산해 주는 주식 투자 도구입니다. 국내 주식의 증권거래세와 증권사 수수료까지 반영하여 실제 투자 성과를 정확히 분석하고 수익 실현 시점을 판단하는 데 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            주식 수익률 계산 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>수수료·세금 포함 계산:</strong> 매도 시 코스피·코스닥 증권거래세 0.18%와 증권사 수수료(0.01~0.15%)를 반드시 포함해야 정확한 실수익을 파악할 수 있습니다.</li>
+            <li><strong>손익분기점 계산:</strong> 매수 금액에 수수료를 더한 금액이 손익분기점(BEP)입니다. 이 가격 이상에서 매도해야 수익이 발생합니다.</li>
+            <li><strong>분할 매수 평균 단가:</strong> 여러 번에 나눠 매수했다면 총 투자 금액을 총 수량으로 나눠 평균 매수 단가를 계산한 뒤 수익률을 산출하세요.</li>
+            <li><strong>해외 주식 세금:</strong> 해외 주식은 연간 250만원 초과 수익에 대해 양도소득세 22%(지방세 포함)가 부과되므로 세후 수익률도 함께 확인하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

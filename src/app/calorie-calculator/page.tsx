@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/calorie-calculator',
+    canonical: 'https://toolhub.ai.kr/calorie-calculator/',
   },
   robots: {
     index: true,
@@ -115,6 +115,27 @@ export default function CalorieCalculatorPage() {
           </div>
         </div>
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            칼로리 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            칼로리 계산기는 <strong>기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트·체중 증량·유지를 위한 일일 칼로리 목표</strong>를 제시하는 도구입니다. Mifflin-St Jeor 공식을 기반으로 성별·나이·키·몸무게·활동량을 반영한 정확한 에너지 소비량을 산출하며, 음식 칼로리와 운동 소모 칼로리도 함께 확인할 수 있어 체중 관리 계획 수립에 도움이 됩니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            칼로리 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>다이어트 목표:</strong> TDEE보다 300~500kcal 적게 섭취하면 건강한 체중 감량이 가능합니다.</li>
+            <li><strong>근육 증가:</strong> TDEE보다 200~300kcal 더 섭취하고 단백질을 체중 1kg당 1.6g 이상 섭취하세요.</li>
+            <li><strong>활동량 정확 입력:</strong> 운동 빈도를 과대 평가하면 TDEE가 높게 나와 다이어트에 실패할 수 있습니다.</li>
+            <li><strong>최소 칼로리 준수:</strong> 여성 1,200kcal, 남성 1,500kcal 이하로 내려가면 근손실과 영양결핍이 발생합니다.</li>
+            <li><strong>주간 단위 관리:</strong> 일일 칼로리보다 7일 합계로 관리하면 하루 폭식해도 전략적으로 조절할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

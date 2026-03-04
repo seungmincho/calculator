@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: ['/og-image-1200x630.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/median-income',
+    canonical: 'https://toolhub.ai.kr/median-income/',
   },
 }
 
@@ -97,6 +97,26 @@ export default function MedianIncomePage() {
       <I18nWrapper>
         <MedianIncomeTable />
       </I18nWrapper>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              기준 중위소득이란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              기준 중위소득은 보건복지부가 매년 고시하는 전국 가구 소득의 중간값으로, 생계급여·의료급여·주거급여·교육급여 등 기초생활보장 수급자 선정과 각종 정부 복지사업의 자격기준으로 활용됩니다. 2026년 4인 가구 기준 중위소득은 약 609만 원이며, 가구원 수와 비율(30%~200%)에 따라 다양한 복지 급여 기준이 결정됩니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              기준 중위소득 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>복지 자격 확인:</strong> 내 가구 소득이 중위소득 몇 %에 해당하는지 확인해 신청 가능한 복지사업을 파악하세요.</li>
+              <li><strong>급여별 기준 숙지:</strong> 생계급여(32%), 의료급여(40%), 주거급여(48%), 교육급여(50%) 각각의 소득 기준을 확인하세요.</li>
+              <li><strong>차상위계층 확인:</strong> 중위소득 50% 이하이지만 기초수급자가 아닌 경우 차상위 혜택(통신비 감면, 에너지 바우처 등)을 신청할 수 있습니다.</li>
+              <li><strong>연도별 비교:</strong> 2025년과 2026년 기준 중위소득을 비교해 인상률과 수급 기준 변화를 확인하세요.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

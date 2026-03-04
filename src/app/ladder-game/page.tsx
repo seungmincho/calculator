@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/ladder-game',
+    canonical: 'https://toolhub.ai.kr/ladder-game/',
   },
   robots: {
     index: true,
@@ -105,6 +105,26 @@ export default function LadderGamePage() {
           <LadderGame />
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              온라인 사다리 타기란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              사다리 타기는 수직선과 가로선으로 구성된 공정한 선택 도구로, 참가자 수만큼 세로선을 만들고 무작위 가로선으로 결과를 결정합니다. 순서 정하기, 벌칙 정하기, 팀 나누기, 업무 분배 등 다양한 상황에서 편리하게 활용할 수 있습니다. 툴허브 사다리 타기는 참가자 이름과 결과를 자유롭게 입력할 수 있어 모임, 회식, 학교 등 어디서든 바로 사용 가능합니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              사다리 타기 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>순서 정하기:</strong> 발표 순서, 청소 당번, 주문 순서 등 공정한 배정이 필요할 때 사용하세요.</li>
+              <li><strong>벌칙 정하기:</strong> 게임 패자 벌칙, 회식 계산 담당 등을 투명하게 결정할 수 있습니다.</li>
+              <li><strong>팀 나누기:</strong> 스포츠 팀, 모둠 구성 등 균형 잡힌 팀 배정에 활용합니다.</li>
+              <li><strong>공정성 보장:</strong> 수학적으로 모든 참가자에게 동일한 확률이 보장되어 투명한 결정이 가능합니다.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

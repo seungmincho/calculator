@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '브라우저에서 바로 음성을 녹음하세요. 실시간 파형, 다운로드, 일시정지 지원.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/voice-memo',
+    canonical: 'https://toolhub.ai.kr/voice-memo/',
   },
 }
 
@@ -101,6 +101,27 @@ export default function VoiceMemoPage() {
           </Suspense>
         </div>
       </div>
+
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            온라인 음성 메모란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            온라인 음성 메모는 별도 앱 설치 없이 브라우저에서 바로 마이크로 음성을 녹음하고 저장하는 무료 도구입니다. 실시간 오디오 파형 시각화, 일시정지 및 재개, 녹음 목록 관리, 파일 다운로드(WebM 형식)를 지원합니다. 회의 내용 기록, 아이디어 메모, 강의 녹음, 인터뷰 기록 등 다양한 상황에서 활용할 수 있으며 녹음 데이터는 서버에 전송되지 않아 개인정보가 안전하게 보호됩니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            음성 메모 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>회의·강의 녹음:</strong> 노트 필기 대신 음성으로 빠르게 기록하고 나중에 재생하며 정리하면 내용을 더 완전하게 보존할 수 있습니다.</li>
+            <li><strong>아이디어 스케치:</strong> 갑자기 떠오른 아이디어를 즉시 음성으로 메모하면 글로 정리하기 전 핵심 내용을 잃지 않습니다.</li>
+            <li><strong>파일 다운로드 필수:</strong> 페이지를 닫으면 녹음이 삭제되므로, 중요한 녹음은 반드시 다운로드 버튼으로 기기에 저장하세요.</li>
+            <li><strong>마이크 권한:</strong> 처음 사용 시 브라우저의 마이크 접근 권한 요청이 표시됩니다. &apos;허용&apos;을 선택해야 녹음이 시작됩니다. HTTPS 사이트에서만 마이크 접근이 가능합니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

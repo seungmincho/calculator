@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: 'PDF 도구',
     description: 'PDF 합치기, 분할, 회전, 변환',
   },
-  alternates: { canonical: 'https://toolhub.ai.kr/pdf-tools' },
+  alternates: { canonical: 'https://toolhub.ai.kr/pdf-tools/' },
 }
 
 export default function PdfToolsPage() {
@@ -79,6 +79,26 @@ export default function PdfToolsPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            온라인 PDF 도구란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            온라인 PDF 도구는 PDF 파일 합치기, 분할, 페이지 회전, 이미지를 PDF로 변환하는 기능을 브라우저에서 무료로 제공하는 도구입니다. 모든 처리가 서버 전송 없이 브라우저 내에서 완결되어 개인정보 보호가 완벽하게 보장됩니다. 계약서, 보고서, 이력서 등 중요한 문서를 안심하고 편집할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            PDF 도구 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>PDF 합치기:</strong> 여러 개의 계약서, 첨부 서류를 하나의 PDF로 합쳐 이메일 첨부 파일 수를 줄이고 관리를 편리하게 하세요.</li>
+            <li><strong>페이지 분할:</strong> 대용량 PDF에서 필요한 페이지만 추출하여 별도 파일로 저장하면 공유와 보관이 편리합니다.</li>
+            <li><strong>이미지→PDF 변환:</strong> 스마트폰으로 찍은 영수증, 계약서 사진을 PDF로 변환하면 공식 문서로 제출하기 좋은 형식이 됩니다.</li>
+            <li><strong>페이지 회전:</strong> 스캔 시 뒤집힌 페이지를 회전하여 올바른 방향으로 수정하세요. 90도·180도·270도 회전을 지원합니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

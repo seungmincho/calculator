@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: '수면·집중을 위한 백색소음 생성기',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/white-noise',
+    canonical: 'https://toolhub.ai.kr/white-noise/',
   },
 }
 
@@ -88,6 +88,27 @@ export default function WhiteNoisePage() {
           </Suspense>
         </div>
       </div>
+
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            백색소음 생성기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            백색소음 생성기는 수면의 질 향상, 집중력 강화, 이명 완화에 도움이 되는 다양한 소음을 브라우저에서 직접 재생하는 도구입니다. 화이트 노이즈, 핑크 노이즈, 브라운 노이즈의 3가지 색 소음과 빗소리, 바람 소리, 파도 소리 등 자연의 소리를 제공합니다. 수면 타이머 기능으로 원하는 시간에 자동 정지되어 밤새 재생될 걱정 없이 잠들 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            백색소음 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>수면 환경 개선:</strong> 층간소음, 도로 소음이 신경 쓰이는 환경에서 백색소음을 틀면 외부 소음을 마스킹하여 더 깊게 잠들 수 있습니다.</li>
+            <li><strong>공부·재택근무 집중:</strong> 조용한 환경보다 적절한 배경 소음이 오히려 집중력을 높인다는 연구 결과가 있습니다. 핑크 노이즈나 빗소리를 낮은 볼륨으로 설정하면 방해 없이 작업에 몰입할 수 있습니다.</li>
+            <li><strong>이명 완화:</strong> 귀에서 소리가 나는 이명 증상이 있는 경우 백색소음이 이명 소리를 가려 불편함을 줄여줄 수 있습니다.</li>
+            <li><strong>수면 타이머 활용:</strong> 잠들기까지 보통 10~20분이 걸리므로 30분 타이머를 설정하면 잠든 후 소음이 자동으로 꺼져 배터리 소모를 줄일 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

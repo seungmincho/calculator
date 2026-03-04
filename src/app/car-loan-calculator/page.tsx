@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/car-loan-calculator/',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/car-loan-calculator',
+    canonical: 'https://toolhub.ai.kr/car-loan-calculator/',
   },
 }
 
@@ -80,6 +80,27 @@ export default function CarLoanCalculatorPage() {
           <CarLoanCalculator />
         </div>
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            자동차 할부 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            자동차 할부 계산기는 <strong>차량 가격, 할부 기간, 금리를 입력하면 월 납입금과 총 이자 부담을 자동으로 계산</strong>하는 도구입니다. 신차·중고차 구매 전 다양한 할부 시나리오를 비교해 가장 합리적인 금융 조건을 선택하는 데 도움을 줍니다. 캐피털사·은행 대출을 앞두고 있거나 무이자 할부와 일반 할부를 비교하려는 분에게 유용합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            자동차 할부 계산 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>선수금 효과:</strong> 차량가의 20~30%를 선수금으로 납부하면 월 납입금과 총 이자를 크게 줄일 수 있습니다.</li>
+            <li><strong>할부 기간 비교:</strong> 36개월 vs 60개월 시뮬레이션으로 월 부담과 총 이자 차이를 확인하세요.</li>
+            <li><strong>할부 vs 리스:</strong> 사업자라면 리스가 세금 처리에 유리할 수 있으니 세무사와 상담하세요.</li>
+            <li><strong>금리 협상:</strong> 같은 캐피털사도 영업점별로 금리가 다를 수 있으니 2~3곳 견적을 비교하세요.</li>
+            <li><strong>중도상환 계획:</strong> 조기 상환 수수료를 확인하고, 여유 자금 생기면 원금을 빠르게 줄이는 전략이 유리합니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

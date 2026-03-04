@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '전기요금 계산기, 전기세 계산, 전기요금 누진제, 한전 전기요금, 전기세 계산기, electricity bill calculator',
   openGraph: { title: '전기요금 계산기 | 툴허브', description: '한국 주택용 전기요금 누진제 계산', url: 'https://toolhub.ai.kr/electricity-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '전기요금 계산기 | 툴허브', description: '한국 주택용 전기요금 누진제 계산' },
-  alternates: { canonical: 'https://toolhub.ai.kr/electricity-calculator' },
+  alternates: { canonical: 'https://toolhub.ai.kr/electricity-calculator/' },
 }
 
 export default function ElectricityCalculatorPage() {
@@ -53,6 +53,26 @@ export default function ElectricityCalculatorPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><ElectricityCalculator /></I18nWrapper></Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            전기요금 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            전기요금 계산기는 월 사용량(kWh)을 입력하면 한국전력(한전)의 주택용 전기요금을 누진제 기준으로 계산하는 도구입니다. 기본요금, 사용요금(3단계 누진제), 부가가치세(10%), 전력산업기반기금(3.7%)까지 포함한 최종 청구 금액을 예측할 수 있습니다. 여름·겨울 냉난방 시즌에 요금이 얼마나 늘어나는지 미리 확인하고 절약 계획을 세워보세요.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            전기요금 절약 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>누진 구간 관리:</strong> 월 200kWh 이하는 1구간, 201~400kWh는 2구간, 400kWh 초과는 3구간으로 요금이 크게 올라갑니다. 사용량이 구간 경계에 걸리지 않도록 관리하는 것이 중요합니다.</li>
+            <li><strong>에너지캐시백 활용:</strong> 전년 동월 대비 전기 사용량을 3% 이상 절감하면 kWh당 30원의 에너지캐시백을 받을 수 있습니다. 절감 목표를 계산기로 미리 확인하세요.</li>
+            <li><strong>대기전력 차단:</strong> TV, 셋톱박스, 컴퓨터의 대기전력은 가정 전기 사용량의 약 11%를 차지합니다. 멀티탭 스위치로 차단하면 연간 수만 원을 절약할 수 있습니다.</li>
+            <li><strong>에너지효율 가전 선택:</strong> 1등급 에어컨은 5등급 대비 최대 40% 전기를 덜 씁니다. 가전 구입 시 에너지 소비효율 등급을 반드시 확인하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

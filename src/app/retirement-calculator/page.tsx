@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: ['/og-image-1200x630.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/retirement-calculator',
+    canonical: 'https://toolhub.ai.kr/retirement-calculator/',
   },
 }
 
@@ -104,6 +104,26 @@ export default function RetirementCalculatorPage() {
       <I18nWrapper>
         <RetirementCalculator />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            퇴직금 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            퇴직금 계산기는 평균임금과 근무기간을 입력해 법정 퇴직금 금액과 퇴직소득세를 자동으로 계산해 주는 근로자 필수 금융 도구입니다. 근로기준법에 따라 1년 이상 근속한 모든 근로자(정규직·계약직·아르바이트)에게 퇴직금이 지급되며, 이 계산기로 세후 실수령 퇴직금을 미리 파악해 이직이나 퇴직 계획을 세울 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            퇴직금 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>평균임금 정확히 입력:</strong> 퇴직 전 3개월간 지급된 기본급뿐 아니라 정기 상여금, 연차 미사용 수당도 평균임금에 포함됩니다. 정확한 금액을 입력해야 실제 퇴직금과 일치합니다.</li>
+            <li><strong>DB형 vs DC형 퇴직연금 비교:</strong> 임금 인상이 많을 경우 DB형(확정급여형)이, 운용 수익에 자신 있다면 DC형(확정기여형)이 유리합니다. 두 형태의 예상 수령액을 미리 비교해보세요.</li>
+            <li><strong>IRP 이체로 세금 절감:</strong> 퇴직금을 IRP(개인형 퇴직연금)로 이체하면 퇴직소득세의 30~40%를 절감할 수 있습니다. 55세 이후 연금으로 수령하면 더 낮은 세율이 적용됩니다.</li>
+            <li><strong>이직 시기 전략:</strong> 근속연수에 따라 퇴직금 공제액이 커지므로, 특정 기간(예: 5년, 10년 초과) 이후 퇴직하면 세금 부담이 줄어듭니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

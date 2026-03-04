@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '방 치수 입력만으로 페인트·벽지·타일 소요량과 비용을 즉시 계산',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/interior-calculator',
+    canonical: 'https://toolhub.ai.kr/interior-calculator/',
   },
 }
 
@@ -94,6 +94,27 @@ export default function InteriorCalculatorPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            인테리어 면적 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            인테리어 면적 계산기는 방의 가로·세로·높이를 입력하면 페인트·벽지·타일 소요량과 예상 비용을 자동으로 계산해주는 도구입니다. 리모델링이나 셀프 인테리어를 계획할 때 자재 구입량을 정확히 파악하여 낭비를 줄이고 예산을 효율적으로 관리할 수 있습니다. 문·창문 면적 자동 공제, 다중 방 지원, 10% 여유분 포함 기능을 제공합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            인테리어 면적 계산 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>페인트 선택 시 도포율 확인:</strong> 제품별로 1L당 도포 면적이 다릅니다. 일반 수성 페인트는 10~12㎡/L, 프리미엄 제품은 더 넓습니다.</li>
+            <li><strong>벽지 패턴 반복 고려:</strong> 패턴 있는 벽지는 패턴 반복 길이(리피트)가 있어 실제보다 더 많은 롤이 필요합니다. 이 계산기에 리피트 값을 입력하세요.</li>
+            <li><strong>타일 줄눈 폭:</strong> 욕실 타일은 줄눈 폭에 따라 필요 장수가 달라집니다. 일반적으로 3~5mm 줄눈을 사용합니다.</li>
+            <li><strong>여유분 중요성:</strong> 자재는 반드시 10% 이상 여유분을 구매하세요. 추후 보수용으로도 동일 제품이 필요할 수 있습니다.</li>
+            <li><strong>다중 방 계산:</strong> 거실, 침실, 주방 등 여러 방을 각각 입력하여 전체 자재 소요량을 한 번에 파악할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

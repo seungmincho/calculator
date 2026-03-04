@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: '실시간 데시벨(dB) 소음 측정.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/noise-meter',
+    canonical: 'https://toolhub.ai.kr/noise-meter/',
   },
 }
 
@@ -89,6 +89,26 @@ export default function NoiseMeterPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            소음 측정기(데시벨 미터)란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            소음 측정기는 스마트폰이나 PC의 마이크를 이용하여 주변 소음을 실시간으로 측정하는 무료 온라인 도구입니다. 데시벨(dB) 수치, 최대·최소·평균값, 히스토리 그래프를 실시간으로 확인할 수 있어 층간소음 체크, 작업환경 소음 확인, 강의실·회의실 소음 측정에 유용합니다. 별도 앱 설치 없이 브라우저에서 바로 사용 가능합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            데시벨 측정기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>층간소음 기록:</strong> 최대·평균 dB 수치를 캡처하여 층간소음 분쟁 시 참고 자료로 활용하세요. 한국 환경부 기준 43dB(주간) 이상이면 층간소음입니다.</li>
+            <li><strong>작업환경 점검:</strong> 85dB 이상 소음에 지속 노출되면 청력 손실 위험이 있으므로, 공장이나 공사 현장 근무 시 소음 수준을 주기적으로 체크하세요.</li>
+            <li><strong>마이크 위치 조정:</strong> 소음 발생원에 가까이 두면 더 정확한 측정값을 얻을 수 있습니다. 직접 소음원과 측정 기기 사이에 장애물이 없도록 하세요.</li>
+            <li><strong>참고용으로 활용:</strong> 웹 측정기는 전문 장비 대비 오차가 있으므로 법적 분쟁용 공식 측정은 전문 기관에 의뢰하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

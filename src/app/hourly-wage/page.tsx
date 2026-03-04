@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '시급 계산기, 시급 계산, 일급 계산, 월급 시급 변환, hourly wage calculator, 최저시급',
   openGraph: { title: '시급 계산기 | 툴허브', description: '시급/일급/월급/연봉 상호 변환', url: 'https://toolhub.ai.kr/hourly-wage', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '시급 계산기 | 툴허브', description: '시급/일급/월급/연봉 상호 변환' },
-  alternates: { canonical: 'https://toolhub.ai.kr/hourly-wage' },
+  alternates: { canonical: 'https://toolhub.ai.kr/hourly-wage/' },
 }
 
 export default function HourlyWagePage() {
@@ -53,6 +53,26 @@ export default function HourlyWagePage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><HourlyWage /></I18nWrapper></Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            시급 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            시급 계산기는 시급·일급·월급·연봉을 상호 변환하는 무료 온라인 도구입니다. 2025년 최저시급(10,030원) 기준 비교, 주휴수당 포함 월급 환산, 아르바이트·파트타임·정규직 등 다양한 근무 형태에 맞춰 실수령액을 계산합니다. 취업 협상, 아르바이트 급여 확인, 연봉 협상 등에 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            시급 계산 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>주휴수당 포함 여부 확인:</strong> 주 15시간 이상 근무하면 주휴수당이 발생합니다. 월급 협상 시 주휴수당 포함 여부를 반드시 확인하세요.</li>
+            <li><strong>4대보험 공제:</strong> 월 소득이 일정 기준 이상이면 국민연금·건강보험·고용보험·산재보험이 공제됩니다. 실수령액은 세전 금액의 약 88~92% 수준입니다.</li>
+            <li><strong>연봉 협상 활용:</strong> 연봉을 시급으로 환산하면 시간당 가치를 구체적으로 파악하여 협상 기준을 세울 수 있습니다.</li>
+            <li><strong>최저시급 위반 확인:</strong> 받은 시급이 2025년 최저시급(10,030원) 미만이라면 고용노동부에 신고할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

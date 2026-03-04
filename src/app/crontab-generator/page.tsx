@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: 'Crontab 표현식을 클릭 한 번으로 생성하세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/crontab-generator',
+    canonical: 'https://toolhub.ai.kr/crontab-generator/',
   },
 }
 
@@ -92,6 +92,26 @@ export default function CrontabGeneratorPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            Crontab 생성기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            Crontab 생성기는 Linux·Unix 서버의 정기 작업 예약(cron)에 사용하는 크론 표현식을 비주얼 UI로 간편하게 만들어주는 개발 도구입니다. 분·시·일·월·요일을 클릭으로 설정하면 표현식이 자동 생성되고 한국어 설명과 다음 실행 시간 미리보기가 제공됩니다. 백엔드 개발자, DevOps 엔지니어, 서버 관리자가 복잡한 크론 문법을 외우지 않고도 정확한 스케줄을 설정할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            Crontab 생성기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>프리셋 활용:</strong> 매분, 매시, 매일, 매주, 매월 등 자주 쓰는 스케줄은 프리셋 버튼으로 즉시 적용할 수 있습니다.</li>
+            <li><strong>인터벌 설정:</strong> &apos;*/5&apos; 형태로 5분마다, &apos;*/6&apos;으로 6시간마다 등 일정 간격으로 반복 실행하는 표현식을 만들 수 있습니다.</li>
+            <li><strong>다음 실행 시간 확인:</strong> 생성된 표현식으로 실제 서버에 등록하기 전, 미리보기로 다음 5회 실행 시간을 확인하여 의도대로 동작하는지 검증하세요.</li>
+            <li><strong>요일 번호 규칙:</strong> 0과 7 모두 일요일, 1=월요일, 5=금요일입니다. 평일만 실행하려면 요일 필드에 1-5를 입력하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '카테고리별 월간 지출을 관리하고 예산을 계획하세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/budget-calculator',
+    canonical: 'https://toolhub.ai.kr/budget-calculator/',
   },
 }
 
@@ -77,6 +77,27 @@ export default function BudgetCalculatorPage() {
           </Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              생활비 계산기란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              생활비 계산기는 <strong>월간 소득 대비 지출을 카테고리별로 분석하고 예산을 체계적으로 관리</strong>하는 도구입니다. 식비·주거비·교통비 등 12개 한국형 지출 항목을 입력하면 50/30/20 규칙 충족 여부, 한국 평균 지출 비교, 절약 추천까지 자동으로 제공됩니다. 가계부 쓰기가 어려운 분, 월말마다 남는 돈이 없는 분, 저축률을 높이고 싶은 분에게 적합합니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              생활비 관리 및 절약 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>50/30/20 규칙:</strong> 필수 생활비 50%, 여가/소비 30%, 저축/투자 20%를 목표로 설정하세요.</li>
+              <li><strong>고정비 최소화:</strong> 통신비·구독 서비스·보험을 정기적으로 점검해 불필요한 지출을 줄이세요.</li>
+              <li><strong>식비 절약:</strong> 주 1회 장보기와 도시락 지참으로 외식비를 월 5~10만 원 줄일 수 있습니다.</li>
+              <li><strong>프리셋 저장:</strong> 현재 예산 구성을 저장해두면 다음 달 빠르게 불러와 비교할 수 있습니다.</li>
+              <li><strong>한국 평균 비교:</strong> 항목별 평균과 내 지출을 비교해 어느 영역이 과다 지출인지 파악하세요.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

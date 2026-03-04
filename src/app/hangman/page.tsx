@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '한글 자음과 모음으로 숨겨진 단어를 맞추는 행맨 게임',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/hangman',
+    canonical: 'https://toolhub.ai.kr/hangman/',
   },
 }
 
@@ -78,6 +78,26 @@ export default function HangmanPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            단어 맞추기 (행맨) 게임이란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            행맨(Hangman)은 숨겨진 한글 단어를 자음과 모음을 하나씩 선택하며 추측하는 고전 단어 게임입니다. 동물·음식·나라·과일 4가지 카테고리에서 무작위로 단어가 출제되며, 7번 안에 단어를 완성해야 합니다. 한글 자음·모음 분해 방식으로 한국어 단어를 공부하는 어린이와 외국인 한국어 학습자에게도 유용합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            행맨 게임 전략 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>자주 쓰이는 자음 먼저:</strong> ㅇ·ㄴ·ㄱ·ㄹ·ㅅ은 한국어에서 출현 빈도가 높은 자음입니다. 먼저 선택하면 단어 윤곽을 빠르게 파악할 수 있습니다.</li>
+            <li><strong>모음 전략:</strong> ㅏ·ㅣ·ㅡ·ㅓ·ㅗ 순서로 선택하면 대부분의 한국어 단어에서 1~2개 이상 적중합니다.</li>
+            <li><strong>카테고리 활용:</strong> 카테고리가 표시되므로 해당 분야 단어 목록을 떠올리며 자음 선택에 활용하세요.</li>
+            <li><strong>글자 수 참고:</strong> 빈칸 수로 단어 길이를 파악하고, 짧은 단어(2~3글자)와 긴 단어(4~5글자)에 따라 접근 방식을 달리하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

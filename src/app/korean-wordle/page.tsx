@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '매일 새로운 한국어 단어 맞추기 게임',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/korean-wordle',
+    canonical: 'https://toolhub.ai.kr/korean-wordle/',
   },
 }
 
@@ -67,6 +67,26 @@ export default function KoreanWordlePage() {
           </Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              한글 워들이란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              한글 워들은 뉴욕타임즈의 인기 단어 게임 'Wordle'을 한국어로 즐기는 게임입니다. 매일 새롭게 출제되는 2글자 한국어 단어를 6번의 시도 안에 맞추는 방식으로, 자모(자음·모음) 단위 힌트 덕분에 영어 워들보다 더욱 전략적인 플레이가 가능합니다. 한글 어휘력을 키우고 싶은 분, 단어 게임을 좋아하는 분 모두에게 추천합니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              한글 워들 플레이 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>자모 힌트 활용:</strong> 초록색은 정확한 자리, 노란색은 단어에 있지만 위치가 다름, 회색은 단어에 없음을 뜻합니다.</li>
+              <li><strong>첫 시도 전략:</strong> 모음이 다양하게 포함된 단어(예: '아이', '요리')로 시작하면 힌트를 빠르게 좁힐 수 있습니다.</li>
+              <li><strong>매일 새 단어:</strong> 하루에 한 번 새 단어가 출제되므로 매일 도전해 연속 클리어 기록을 쌓아보세요.</li>
+              <li><strong>결과 공유:</strong> 클리어 후 결과를 카카오톡·SNS에 공유해 친구들과 비교해보세요.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/tips',
+    canonical: 'https://toolhub.ai.kr/tips/',
   },
 }
 

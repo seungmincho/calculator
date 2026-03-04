@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/unit-converter',
+    canonical: 'https://toolhub.ai.kr/unit-converter/',
   },
 }
 
@@ -68,6 +68,27 @@ export default function UnitConverterPage() {
       <I18nWrapper>
         <UnitConverter />
       </I18nWrapper>
+
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            단위 변환기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            단위 변환기는 길이, 무게, 온도, 면적, 부피, 속도, 데이터, CSS 단위 등 다양한 측정 단위를 즉시 변환해 주는 도구입니다. 미터·킬로미터·마일·인치 간 길이 변환, 섭씨·화씨·켈빈 온도 변환, 평·제곱미터 면적 변환, 그리고 웹 개발자를 위한 px·rem·em·vw 변환을 모두 지원합니다. 해외 쇼핑, 요리 레시피 단위 변환, 부동산 평수 계산, 웹 디자인 작업에 유용합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            단위 변환기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>부동산 평수 계산:</strong> 1평은 약 3.306㎡입니다. 아파트 분양 광고의 평수를 제곱미터로 변환하거나 등기부등본의 ㎡ 면적을 평으로 환산할 때 활용하세요.</li>
+            <li><strong>해외 레시피 단위:</strong> 미국 요리 레시피의 컵(cup), 온스(oz), 파운드(lb)를 그램·리터로 변환하여 정확한 계량이 가능합니다.</li>
+            <li><strong>CSS px↔rem 변환:</strong> 기본 폰트 사이즈(16px) 기준으로 픽셀과 rem을 변환하여 반응형 웹 개발 시 일관된 타이포그래피를 설계할 수 있습니다.</li>
+            <li><strong>속도 단위 변환:</strong> km/h, mph, m/s, knots 간 변환으로 자동차 속도 표지판 이해, 항공·해양 속도 계산에 활용합니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: '연봉 2~4개를 나란히 비교! 4대보험, 소득세, 월 실수령액 차이를 한눈에 확인하세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/salary-comparison',
+    canonical: 'https://toolhub.ai.kr/salary-comparison/',
   },
 }
 
@@ -93,6 +93,26 @@ export default function SalaryComparisonPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            연봉 비교 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            연봉 비교 계산기는 최대 4개의 연봉 시나리오를 나란히 비교하여 4대보험, 소득세, 실수령액 차이를 한눈에 확인할 수 있는 이직·연봉 협상 전용 도구입니다. 현재 직장과 이직 제안을 동시에 입력하면 표면적인 연봉 차이뿐 아니라 세후 실제 수령 금액의 차이를 정확히 파악할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            연봉 비교 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>비과세 수당 포함 비교:</strong> 회사마다 식대, 차량유지비 등 비과세 수당이 다릅니다. 이를 포함해 비교하면 동일 연봉이라도 실수령액 차이가 수십만 원 발생할 수 있습니다.</li>
+            <li><strong>실효세율 확인:</strong> 연봉이 높을수록 누진세율이 적용돼 세금 비율이 높아집니다. 각 연봉의 실효세율을 비교하면 인상분에서 세금이 얼마나 빠져나가는지 파악할 수 있습니다.</li>
+            <li><strong>이직 손익 분기점 계산:</strong> 이직 시 발생하는 퇴직금 정산, 복리후생 변화 등을 감안하면 실질 이익이 달라집니다. 연봉 차이와 함께 종합적으로 검토하세요.</li>
+            <li><strong>부양가족 수 동일 조건 설정:</strong> 공정한 비교를 위해 모든 시나리오에서 부양가족 수와 비과세 항목을 동일하게 설정하면 순수한 연봉 차이의 세후 영향을 확인할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

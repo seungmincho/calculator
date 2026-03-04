@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '클래식 뱀 게임 - 3가지 모드, 4단계 난이도',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/snake-game',
+    canonical: 'https://toolhub.ai.kr/snake-game/',
   },
 }
 
@@ -81,6 +81,26 @@ export default function SnakeGamePage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            스네이크 게임이란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            스네이크 게임(뱀 게임)은 뱀을 조종해 먹이를 먹어 길이를 늘려가는 클래식 아케이드 게임입니다. 1998년 노키아 휴대폰에 탑재되면서 전 세계적으로 유명해진 이 게임은 클래식·무한·장애물 3가지 모드와 4단계 난이도를 제공하며, PC 키보드와 모바일 터치 모두 지원합니다. 설치 없이 브라우저에서 바로 무료로 즐길 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            스네이크 게임 고득점 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>외곽 따라 이동:</strong> 벽을 따라 이동하여 중앙 공간을 최대한 확보하면 뱀이 길어져도 이동 경로를 확보하기 쉽습니다.</li>
+            <li><strong>급격한 방향 전환 금지:</strong> 자기 몸에 부딪히는 주요 원인이므로, 이동 방향을 미리 계획하고 여유롭게 조작하세요.</li>
+            <li><strong>S자 패턴 활용:</strong> 뱀이 충분히 길어지면 S자 패턴으로 공간을 효율적으로 채워 이동하면 막다른 상황을 피할 수 있습니다.</li>
+            <li><strong>난이도 선택:</strong> 처음에는 느린 난이도로 시작해 뱀의 이동 패턴을 익힌 후 빠른 난이도에 도전하면 실력이 빠르게 늘어납니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

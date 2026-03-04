@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: 'BPM 박자기, 탭 템포, 모바일 진동 지원 메트로놈',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/metronome',
+    canonical: 'https://toolhub.ai.kr/metronome/',
   },
 }
 
@@ -90,6 +90,26 @@ export default function MetronomePage() {
           </Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              온라인 메트로놈이란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              온라인 메트로놈은 악기 연습, 노래 연습, 작곡 시 정확한 박자를 유지할 수 있도록 일정한 간격으로 클릭음을 내주는 도구입니다. BPM(분당 박자수) 20~300 범위를 지원하며, 4/4·3/4·2/4·6/8 박자표, 탭 템포(듣고 있는 곡의 BPM 자동 측정), 모바일 진동 기능까지 제공합니다. 설치 없이 브라우저에서 바로 사용할 수 있어 편리합니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              메트로놈 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>느린 BPM으로 시작:</strong> 새 곡을 배울 때는 목표 BPM의 60~70%로 시작해 정확성을 익힌 후 점진적으로 속도를 높이세요.</li>
+              <li><strong>탭 템포 활용:</strong> 즐겨 듣는 노래의 BPM을 모를 때 탭 버튼을 박자에 맞춰 두드리면 자동으로 BPM이 측정됩니다.</li>
+              <li><strong>박자표 변경:</strong> 왈츠는 3/4, 록은 4/4, 6/8은 빠른 셋잇단음표 느낌으로 장르에 맞는 박자표를 선택하세요.</li>
+              <li><strong>진동 활용:</strong> 이어폰 착용 시 소리와 함께 진동으로 박자를 감지하면 주변 소음 환경에서도 박자를 유지할 수 있습니다.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

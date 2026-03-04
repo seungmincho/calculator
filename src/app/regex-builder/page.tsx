@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/regex-builder',
+    canonical: 'https://toolhub.ai.kr/regex-builder/',
   },
   robots: {
     index: true,
@@ -119,6 +119,26 @@ export default function RegexBuilderPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            정규식 빌더란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            정규식 빌더는 복잡한 정규표현식(RegExp)을 시각적으로 구성하고 실시간으로 테스트할 수 있는 개발자 도구입니다. 이메일, 전화번호, URL, 날짜 등 자주 사용하는 패턴 라이브러리를 클릭 한 번으로 불러올 수 있으며, 각 정규식 구성 요소를 한국어로 설명해 줘 정규표현식을 처음 배우는 분들도 쉽게 이해하고 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            정규식 빌더 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>패턴 라이브러리 활용:</strong> 이메일, 주민등록번호, 전화번호, IP 주소 등 검증된 패턴을 라이브러리에서 바로 가져와 수정해 사용하면 처음부터 작성하는 수고를 줄일 수 있습니다.</li>
+            <li><strong>플래그 조합:</strong> g(전체 검색)와 i(대소문자 무시)를 함께 사용하면 대소문자에 관계없이 모든 매칭을 찾을 수 있습니다. m 플래그는 여러 줄 텍스트를 처리할 때 유용합니다.</li>
+            <li><strong>문자열 치환 테스트:</strong> 치환 기능으로 정규식 패턴과 치환 문자열을 함께 확인하면 실제 코드에 적용하기 전 결과를 미리 검증할 수 있습니다.</li>
+            <li><strong>구성 요소 설명 참조:</strong> 작성한 정규식의 각 구성 요소(\\d, +, [], () 등)에 대한 한국어 설명을 참고하면 패턴의 의미를 정확히 파악하고 수정할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

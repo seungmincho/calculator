@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     }
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/othello'
+    canonical: 'https://toolhub.ai.kr/othello/'
   }
 }
 
@@ -115,6 +115,26 @@ export default function OthelloPage() {
           description="8x8 보드에서 상대 돌을 뒤집어 더 많이 차지하면 승리"
         />
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            온라인 오셀로(리버시) 게임이란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            오셀로(리버시)는 8×8 보드에서 흑돌과 백돌을 번갈아 놓으며 상대 돌을 자신의 돌 사이에 끼워 뒤집고, 게임이 끝났을 때 돌이 더 많은 쪽이 이기는 보드게임입니다. 단순한 규칙에 비해 전략 깊이가 매우 높아 '배우기 쉽고 마스터하기 어렵다'는 평가를 받습니다. AI 대전(쉬움·보통·어려움)과 친구와의 실시간 온라인 대전을 모두 지원합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            오셀로 게임 전략 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>코너 우선 확보:</strong> 4개 모서리(코너)는 절대 뒤집히지 않는 최강의 위치입니다. 코너를 차지하면 안정적인 돌 라인을 구축할 수 있습니다.</li>
+            <li><strong>X칸·C칸 피하기:</strong> 코너 바로 대각선(X칸)과 코너 옆(C칸)은 상대에게 코너를 헌납하는 위험한 자리이므로 초반에는 피하세요.</li>
+            <li><strong>초반 적게 뒤집기:</strong> 초반에 많이 뒤집는 것이 유리해 보이지만, 오히려 상대의 선택지를 넓혀줄 수 있습니다. 이동성을 제한하는 전략이 효과적입니다.</li>
+            <li><strong>변 라인 장악:</strong> 보드 가장자리(변)를 따라 안정적인 돌 라인을 만들면 상대가 뒤집기 어려운 구조를 만들 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     description: 'WCAG 접근성 색상 대비 검사',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/contrast-checker',
+    canonical: 'https://toolhub.ai.kr/contrast-checker/',
   },
 }
 
@@ -87,6 +87,26 @@ export default function ContrastCheckerPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            색상 대비 체커(WCAG 접근성 검사)란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            색상 대비 체커는 텍스트와 배경 색상 간의 명도 대비율을 WCAG 2.1 국제 접근성 기준에 따라 검사하는 도구입니다. 웹 디자이너, 퍼블리셔, 프론트엔드 개발자가 색각 이상 사용자 포함 모든 사람이 텍스트를 쉽게 읽을 수 있도록 AA·AAA 등급 준수 여부를 실시간으로 확인할 수 있습니다. 한국의 웹 접근성 인증(KWCAG)과 장애인차별금지법 준수에도 필수적인 도구입니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            색상 대비 체커 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>AA 등급 최소 요건:</strong> 일반 텍스트(18pt 미만)는 4.5:1, 큰 텍스트(18pt 이상 또는 굵은 14pt)는 3:1의 대비율이 필요합니다. 대부분의 웹사이트가 이 기준을 목표로 합니다.</li>
+            <li><strong>AAA 등급 도전:</strong> 일반 텍스트 7:1, 큰 텍스트 4.5:1의 최고 등급으로, 시력이 약한 사용자까지 배려하는 고품질 접근성을 제공합니다.</li>
+            <li><strong>버튼·아이콘 검사:</strong> UI 컴포넌트와 그래픽 요소도 배경 대비 3:1 이상을 확보해야 접근성 기준을 충족합니다.</li>
+            <li><strong>색맹 배려:</strong> 빨강-초록 조합은 피하고, 색상 외에 텍스트·아이콘·패턴을 병행하여 색각 이상 사용자도 정보를 인식할 수 있도록 설계하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

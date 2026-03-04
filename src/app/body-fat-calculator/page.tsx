@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/body-fat-calculator',
+    canonical: 'https://toolhub.ai.kr/body-fat-calculator/',
   },
   robots: {
     index: true,
@@ -115,6 +115,27 @@ export default function BodyFatCalculatorPage() {
           </div>
         </div>
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            체지방률 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            체지방률 계산기는 미 해군(Navy) 공식과 YMCA 공식을 이용해 허리·목·엉덩이 둘레 측정값으로 체지방률을 추정하는 무료 온라인 건강 도구입니다. 인바디 기계 없이 줄자만으로 체성분을 분석하고, 체지방량·제지방량·이상 체지방률 목표까지 한번에 계산할 수 있습니다. 다이어트, 운동 계획 수립, 체성분 관리에 관심 있는 분들에게 적합하며 남성·여성 기준을 각각 적용합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            체지방률 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>정확한 측정 방법:</strong> 줄자를 피부에 밀착시키되 너무 조이지 않게 하고, 허리는 배꼽 위, 목은 후두부 아래를 측정하면 오차를 최소화할 수 있습니다.</li>
+            <li><strong>두 공식 비교:</strong> Navy 공식과 YMCA 공식 결과를 비교하여 두 값의 중간 정도를 실제 체지방률로 참고하면 신뢰도가 높아집니다.</li>
+            <li><strong>정상 범위 기준:</strong> 건강한 체지방률은 남성 10~20%, 여성 18~28%이며, 남성 25% 이상, 여성 32% 이상이면 비만에 해당합니다.</li>
+            <li><strong>체지방 감소 전략:</strong> 칼로리 적자(TDEE보다 300~500kcal 감소)와 근력 운동을 병행하면 근육을 유지하면서 체지방을 효과적으로 줄일 수 있습니다.</li>
+            <li><strong>주기적 측정:</strong> 한 달에 한 번 같은 조건(아침, 공복, 동일 자세)에서 측정하면 체성분 변화 추이를 정확하게 추적할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: '지뢰찾기 | 툴허브',
     description: '클래식 마인스위퍼를 온라인에서 즐기세요!',
   },
-  alternates: { canonical: 'https://toolhub.ai.kr/minesweeper' },
+  alternates: { canonical: 'https://toolhub.ai.kr/minesweeper/' },
 }
 
 export default function MinesweeperPage() {
@@ -71,6 +71,26 @@ export default function MinesweeperPage() {
           </Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              지뢰찾기(마인스위퍼)란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              지뢰찾기(마인스위퍼, Minesweeper)는 격자 위의 숫자 힌트를 이용해 지뢰 위치를 추론하고 지뢰가 없는 칸을 모두 열면 승리하는 클래식 퍼즐 게임입니다. 1990년대 윈도우 기본 게임으로 큰 인기를 끌었으며, 논리적 추론 능력과 집중력을 키우는 데 효과적입니다. 초급(9x9, 지뢰 10개)부터 고급(16x30, 지뢰 99개)까지 3단계 난이도를 제공합니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              지뢰찾기 공략 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>숫자 해석:</strong> 숫자는 인접한 8칸 중 지뢰 개수를 의미합니다. '1'이 적힌 칸 주변에 아직 안 열린 칸이 하나뿐이라면 그곳이 지뢰입니다.</li>
+              <li><strong>깃발 활용:</strong> 확실한 지뢰 위치에 오른쪽 클릭으로 깃발을 꽂으면 주변 숫자를 해석하기 쉬워집니다.</li>
+              <li><strong>코너부터 시작:</strong> 첫 클릭은 코너나 가장자리부터 시작하면 안전한 칸이 한 번에 많이 열릴 가능성이 높습니다.</li>
+              <li><strong>1-2 패턴:</strong> 가장자리에서 1-2가 나란히 놓인 경우 2 옆의 미개방 칸이 지뢰인 패턴을 익혀두면 빠른 진행이 가능합니다.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

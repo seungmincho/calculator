@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '차종별 연비와 실시간 유가로 정확한 유류비를 계산하세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/fuel-calculator',
+    canonical: 'https://toolhub.ai.kr/fuel-calculator/',
   },
 }
 
@@ -100,6 +100,26 @@ export default function FuelCalculatorPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            유류비 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            유류비 계산기는 회사 업무용 차량의 연료비와 감가상각비를 차종별 연비·주행거리·유가 기준으로 자동 계산하는 온라인 도구입니다. 법인차·개인사업자 차량의 출장비·교통비 정산, 경비 처리 근거 산출, 차량 운행일지 작성 지원 등 업무용 차량 비용 관리에 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            유류비 절감 및 경비 처리 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>차량운행일지 필수:</strong> 업무용 차량 유류비를 경비로 인정받으려면 출발지·목적지·주행거리를 기록한 차량운행일지가 필요합니다.</li>
+            <li><strong>감가상각 한도 확인:</strong> 업무용 승용차의 연간 감가상각 경비 인정 한도는 800만원이므로, 고가 차량은 미리 한도를 확인하세요.</li>
+            <li><strong>유종별 비용 비교:</strong> 휘발유·경유·LPG·전기 등 유종별 연료비를 비교하면 장기적으로 유지비가 낮은 차종을 선택하는 데 도움이 됩니다.</li>
+            <li><strong>연비 향상 방법:</strong> 급가속·급제동 자제, 적정 타이어 공기압 유지, 에어컨 절제 사용으로 실연비를 10~20% 향상시킬 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

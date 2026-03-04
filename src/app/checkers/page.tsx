@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     type: 'website'
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/checkers'
+    canonical: 'https://toolhub.ai.kr/checkers/'
   }
 }
 
@@ -83,6 +83,27 @@ export default function CheckersPage() {
           description="8x8 보드에서 상대 말을 모두 잡거나 움직이지 못하게 하면 승리"
         />
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            체커(서양 장기)란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            체커(Checkers, Draughts)는 <strong>8×8 체스판에서 두 사람이 각 12개의 말을 대각선으로 이동하며 상대 말을 모두 잡는</strong> 클래식 전략 보드게임입니다. 간단한 규칙이지만 깊은 전략이 필요하며, 수천 년의 역사를 가진 전 세계적으로 사랑받는 게임입니다. 툴허브의 체커는 AI와 1:1 대전 및 친구와의 온라인 실시간 대전을 모두 지원합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            체커 게임 전략 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>킹 만들기:</strong> 말을 상대편 맨 끝 줄까지 보내 킹을 만들면 전후 이동이 가능해 유리합니다.</li>
+            <li><strong>연속 점프:</strong> 여러 말을 연속으로 뛰어넘을 수 있으면 반드시 실행해야 하는 규칙을 활용하세요.</li>
+            <li><strong>양쪽 측면 장악:</strong> 보드 가장자리를 먼저 차지하면 상대의 공격 각도를 제한할 수 있습니다.</li>
+            <li><strong>교환 전략:</strong> 말 수가 같을 때 유리한 위치를 얻기 위한 교환을 계산하여 전략적으로 활용하세요.</li>
+            <li><strong>난이도 선택:</strong> 처음에는 쉬움 난이도로 기본 전략을 익힌 후 어려움에 도전하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

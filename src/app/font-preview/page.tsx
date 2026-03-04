@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '폰트 미리보기, 글꼴 테스트, 웹폰트 비교, font preview, 한글 폰트, 구글 폰트',
   openGraph: { title: '글꼴 미리보기 | 툴허브', description: '다양한 폰트로 텍스트 미리보기', url: 'https://toolhub.ai.kr/font-preview', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '글꼴 미리보기 | 툴허브', description: '폰트 미리보기, 비교, CSS 복사' },
-  alternates: { canonical: 'https://toolhub.ai.kr/font-preview' },
+  alternates: { canonical: 'https://toolhub.ai.kr/font-preview/' },
 }
 
 export default function FontPreviewPage() {
@@ -45,6 +45,26 @@ export default function FontPreviewPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><FontPreview /></I18nWrapper></Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            글꼴 미리보기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            글꼴 미리보기는 나눔고딕·본고딕·프리텐다드·IBM Plex Sans KR 등 다양한 한글·영문 웹폰트로 내 텍스트가 어떻게 보이는지 실시간으로 확인하고, 폰트 크기·굵기·줄간격을 조절한 뒤 CSS 코드를 바로 복사할 수 있는 무료 온라인 폰트 테스트 도구입니다. 디자인 시안 검토, 웹사이트 폰트 선정, 인쇄물 폰트 비교 등에 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            글꼴 미리보기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>한글 본문 가독성 비교:</strong> 실제 본문 문단 텍스트를 입력하여 가독성이 높은 폰트를 빠르게 비교하세요.</li>
+            <li><strong>CSS 코드 복사:</strong> 마음에 드는 폰트를 선택하고 CSS 코드를 복사하면 Google Fonts 링크와 font-family 선언이 바로 생성됩니다.</li>
+            <li><strong>굵기 테스트:</strong> 제목(700~900)과 본문(400~500) 굵기를 각각 확인하여 웹사이트 타이포그래피를 완성하세요.</li>
+            <li><strong>줄간격 조절:</strong> line-height를 1.5~1.8로 조절하면 한글 본문의 가독성이 크게 향상됩니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

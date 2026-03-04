@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: { card: 'summary_large_image', title: '타이머/스톱워치 | 툴허브', description: '스톱워치, 타이머, 뽀모도로' },
-  alternates: { canonical: 'https://toolhub.ai.kr/timer' },
+  alternates: { canonical: 'https://toolhub.ai.kr/timer/' },
 }
 
 export default function TimerPage() {
@@ -61,6 +61,27 @@ export default function TimerPage() {
           </Suspense>
         </div>
       </div>
+
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            온라인 타이머·스톱워치란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            온라인 타이머·스톱워치는 설치 없이 브라우저에서 바로 사용할 수 있는 시간 측정 도구입니다. 카운트다운 타이머, 스톱워치(랩 기록), 뽀모도로 타이머를 하나의 도구에서 지원합니다. 요리, 운동, 공부, 회의, 시험 준비 등 다양한 상황에서 집중력과 시간 관리를 도와줍니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            타이머·스톱워치 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>뽀모도로 기법:</strong> 25분 집중 후 5분 휴식을 반복하는 시간 관리법으로, 뽀모도로 모드를 선택하면 자동으로 집중·휴식 사이클을 관리해 드립니다.</li>
+            <li><strong>스톱워치 랩 기록:</strong> 운동 구간 기록, 프리젠테이션 파트별 소요 시간 측정 등 여러 구간을 연속으로 기록하고 비교할 수 있습니다.</li>
+            <li><strong>요리 타이머:</strong> 여러 음식의 조리 시간을 동시에 측정하려면 카운트다운 타이머를 설정하고 알람을 활용하세요.</li>
+            <li><strong>시험 시간 연습:</strong> 수험생이 실전과 동일하게 시간을 재며 문제를 풀 때 카운트다운 타이머가 효과적입니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

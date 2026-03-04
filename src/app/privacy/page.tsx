@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     url: 'https://toolhub.ai.kr/privacy',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/privacy',
+    canonical: 'https://toolhub.ai.kr/privacy/',
   },
 }
 

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '혈중알코올 계산기, 음주 측정, BAC 계산, 혈중알코올 농도, 음주운전 기준, 위드마크 공식',
   openGraph: { title: '혈중알코올 계산기 | 툴허브', description: '음주 후 혈중알코올 농도 추정', url: 'https://toolhub.ai.kr/alcohol-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '혈중알코올 계산기 | 툴허브', description: '음주 후 BAC 농도 추정' },
-  alternates: { canonical: 'https://toolhub.ai.kr/alcohol-calculator' },
+  alternates: { canonical: 'https://toolhub.ai.kr/alcohol-calculator/' },
 }
 
 export default function AlcoholCalculatorPage() {
@@ -32,6 +32,27 @@ export default function AlcoholCalculatorPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><AlcoholCalculator /></I18nWrapper></Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            혈중알코올 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            혈중알코올 계산기는 위드마크(Widmark) 공식을 이용해 음주 후 혈중알코올농도(BAC)를 추정하는 무료 온라인 도구입니다. 소주, 맥주, 와인, 막걸리 등 주류 종류와 음주량, 체중, 성별, 경과 시간을 입력하면 현재 예상 BAC와 음주운전 기준(0.03%, 0.08%) 초과 여부를 안내합니다. 음주운전 예방과 안전한 귀가 계획을 세우는 데 참고할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            혈중알코올 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>공복 여부 고려:</strong> 공복 음주는 식사 후보다 BAC가 더 빠르게 오르므로 음식 섭취 후 음주가 실제 수치를 낮추는 데 도움이 됩니다.</li>
+            <li><strong>개인차 존재:</strong> 계산 결과는 추정치입니다. 체질, 간 기능, 피로 상태에 따라 실제 BAC는 달라질 수 있습니다.</li>
+            <li><strong>알코올 분해 속도:</strong> 체내 알코올은 시간당 약 0.015% 분해되므로, 운전 전 충분한 시간이 필요합니다.</li>
+            <li><strong>숙취 해소 오해:</strong> 커피, 사우나, 찬물은 BAC를 낮추지 않습니다. 시간이 지나는 것만이 유일한 방법입니다.</li>
+            <li><strong>음주운전 기준:</strong> 한국 기준 0.03% 이상이면 면허 정지 처분을 받으므로, 조금이라도 마셨다면 운전을 삼가세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

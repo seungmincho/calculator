@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: ['/og-image-1200x630.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/exchange-calculator',
+    canonical: 'https://toolhub.ai.kr/exchange-calculator/',
   },
 }
 
@@ -97,6 +97,26 @@ export default function ExchangeCalculatorPage() {
       <I18nWrapper>
         <ExchangeRateCalculator />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            환율 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            환율 계산기는 실시간 환율 데이터를 기반으로 원화(KRW), 미국 달러(USD), 유로(EUR), 일본 엔(JPY) 등 주요 통화 간 환전 금액을 정확하게 계산하는 도구입니다. 해외여행 전 환전 금액 예측, 해외 직구 시 실제 원화 금액 확인, 외화 송금 계획 수립 등에 활용할 수 있습니다. 환율 우대율과 수수료 정보도 함께 제공하여 가장 유리한 환전 방법을 찾을 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            환율 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>환전 수수료 비교:</strong> 공항 환전소보다 시중은행 인터넷뱅킹이 50~90% 환율 우대를 받을 수 있어 유리합니다. 환전 금액이 클수록 우대율 차이가 큰 영향을 미칩니다.</li>
+            <li><strong>분할 환전 전략:</strong> 환율 변동이 클 때는 한 번에 모두 환전하지 않고 여러 번에 나눠 환전하면 평균 환율로 위험을 분산할 수 있습니다.</li>
+            <li><strong>해외 직구 계산:</strong> 상품 가격에 현재 환율을 곱하고 관세(일반 8%)와 부가세(10%)를 추가하면 실제 수령 비용을 예측할 수 있습니다. 150달러 이하 면세 한도도 확인하세요.</li>
+            <li><strong>외화 통장 활용:</strong> 환율이 낮을 때 외화 통장에 미리 달러를 사두면 환율 상승 시 환차익을 얻거나 해외여행 시 유리한 환율로 활용할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

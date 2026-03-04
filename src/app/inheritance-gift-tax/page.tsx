@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: '상속세·증여세 간편 계산. 2025년 세율과 모든 공제를 반영.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/inheritance-gift-tax',
+    canonical: 'https://toolhub.ai.kr/inheritance-gift-tax/',
   },
 }
 
@@ -89,6 +89,27 @@ export default function InheritanceGiftTaxPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            상속세·증여세 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            상속세·증여세 계산기는 2025년 최신 세율을 기준으로 상속 및 증여 시 납부해야 할 세금을 미리 계산해볼 수 있는 온라인 도구입니다. 배우자 상속공제(최소 5억), 일괄공제(5억), 금융재산공제, 증여재산공제(배우자 6억·성인 자녀 5천만원) 등 모든 공제 항목을 반영하여 정확한 세금 예상 금액을 확인할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            상속세·증여세 절세 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>사전 증여 활용:</strong> 10년마다 공제 한도가 초기화되므로 자녀에게 10년 주기로 5천만원씩 증여하면 증여세 없이 재산을 이전할 수 있습니다.</li>
+            <li><strong>혼인·출산 공제 활용:</strong> 2024년부터 자녀 결혼 또는 출산 시 직계존속으로부터 최대 1억원 추가 공제가 가능하니 활용하세요.</li>
+            <li><strong>배우자 상속공제 최대화:</strong> 배우자가 실제로 상속받는 금액에 따라 최대 30억까지 공제되므로 배우자 상속 비율을 조절하세요.</li>
+            <li><strong>부담부 증여 검토:</strong> 부채가 있는 재산을 증여하면 부채 부분은 양도세, 나머지는 증여세가 적용되어 세금을 줄일 수 있습니다.</li>
+            <li><strong>전문가 상담 권장:</strong> 실제 세금 신고는 세무사와 상담하세요. 이 계산기는 참고용으로만 사용하시기 바랍니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

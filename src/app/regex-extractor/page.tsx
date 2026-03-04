@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/regex-extractor',
+    canonical: 'https://toolhub.ai.kr/regex-extractor/',
   },
   robots: {
     index: true,
@@ -117,6 +117,26 @@ export default function RegexExtractorPage() {
           <RegexExtractor />
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            정규식 추출기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            정규식 추출기는 강력한 정규표현식(RegExp)으로 대용량 텍스트에서 원하는 데이터를 검색·추출·치환하는 개발자용 도구입니다. 로그 파일 분석, 데이터 마이닝, CSV 파싱, 텍스트 필터링 등 반복적인 문자열 처리 작업을 빠르게 수행할 수 있어 백엔드 개발자, 데이터 분석가, 시스템 관리자에게 특히 유용합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            정규식 추출기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>로그 파일 분석:</strong> 서버 로그에서 에러 코드, IP 주소, 타임스탬프를 정규식으로 한 번에 추출하면 수동 검색 대비 분석 시간을 크게 줄일 수 있습니다.</li>
+            <li><strong>grep 필터링 활용:</strong> 여러 줄의 텍스트 중 패턴과 일치하는 줄만 필터링하는 grep 모드를 사용하면 필요한 데이터만 빠르게 선별할 수 있습니다.</li>
+            <li><strong>캡처 그룹으로 데이터 추출:</strong> 괄호 ()로 그룹을 만들면 매칭된 전체 문자열이 아닌 원하는 부분만 선택적으로 추출할 수 있습니다.</li>
+            <li><strong>문자열 치환으로 데이터 변환:</strong> 추출과 함께 치환 기능을 사용하면 데이터 포맷을 변환하거나 개인정보를 마스킹하는 작업을 일괄 처리할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description: '브라우저에서 바로 이미지 크기를 조정하고 다운로드하세요',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/image-resizer',
+    canonical: 'https://toolhub.ai.kr/image-resizer/',
   },
 };
 
@@ -76,6 +76,27 @@ export default function ImageResizerPage() {
       <I18nWrapper>
         <ImageResizerComponent />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            이미지 리사이저란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            이미지 리사이저는 사진이나 그림 파일의 크기(해상도)를 조정하는 온라인 도구입니다. 대용량 원본 이미지를 웹·블로그·SNS에 최적화된 크기로 축소하거나, JPEG·PNG·WebP 등 포맷을 변환할 수 있습니다. 모든 처리가 브라우저 내에서 이루어지므로 이미지가 서버에 업로드되지 않아 개인정보 보호에 안전합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            이미지 리사이즈 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>웹 최적화:</strong> 블로그·홈페이지 이미지는 너비 800~1200px로 줄이면 로딩 속도를 크게 향상시킬 수 있습니다.</li>
+            <li><strong>이메일 첨부용:</strong> 스마트폰 사진은 보통 4~10MB인데, 너비 1200px로 리사이즈하면 수백 KB 수준으로 줄어듭니다.</li>
+            <li><strong>비율 고정:</strong> 가로세로 비율 유지 옵션을 체크하면 이미지가 찌그러지지 않고 올바른 비율로 조정됩니다.</li>
+            <li><strong>포맷 선택 팁:</strong> 사진은 JPEG, 투명 배경이 필요하면 PNG, 웹 최적화에는 WebP 형식을 사용하세요.</li>
+            <li><strong>SNS 권장 크기:</strong> 인스타그램 정사각형 1080×1080px, 유튜브 썸네일 1280×720px, 카카오톡 프로필 640×640px가 적합합니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   );
 }

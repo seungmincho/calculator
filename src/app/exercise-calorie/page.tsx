@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: '운동별 소모 칼로리 MET 기반 계산.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/exercise-calorie',
+    canonical: 'https://toolhub.ai.kr/exercise-calorie/',
   },
 }
 
@@ -88,6 +88,26 @@ export default function ExerciseCaloriePage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            운동 칼로리 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            운동 칼로리 계산기는 MET(대사당량, Metabolic Equivalent of Task) 기반으로 걷기·달리기·수영·자전거·헬스 등 40가지 이상의 운동에서 소모되는 칼로리를 체중과 운동시간에 맞춰 정확하게 계산합니다. 다이어트 계획 수립, 운동 효과 비교, 체지방 감량 목표 설정 등 건강 관리에 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            운동 칼로리 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>운동 조합 비교:</strong> 같은 시간 대비 소모 칼로리가 높은 운동을 찾아 효율적인 운동 루틴을 구성하세요.</li>
+            <li><strong>체지방 환산:</strong> 체지방 1kg은 약 7,700kcal이므로, 목표 감량량에 필요한 운동량을 역산할 수 있습니다.</li>
+            <li><strong>운동 복수 조합:</strong> 유산소(달리기)와 무산소(웨이트) 운동을 함께 입력하면 하루 총 소모 칼로리를 한눈에 확인할 수 있습니다.</li>
+            <li><strong>실제 칼로리 보정:</strong> MET 기반 계산은 평균값이므로 개인 체력 수준, 운동 강도, 체형에 따라 실제 값은 ±20% 차이가 날 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

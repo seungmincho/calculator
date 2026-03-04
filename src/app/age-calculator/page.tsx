@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '만 나이, 한국 나이, 띠, 별자리 등 다양한 나이 정보를 한눈에 확인하세요',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/age-calculator',
+    canonical: 'https://toolhub.ai.kr/age-calculator/',
   },
 }
 
@@ -71,6 +71,27 @@ export default function AgeCalculatorPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            나이 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            나이 계산기는 생년월일을 입력하면 만 나이, 한국 나이(세는 나이), 연 나이를 한 번에 확인할 수 있는 무료 온라인 도구입니다. 2023년 6월부터 한국도 법적으로 만 나이를 기준으로 통일했으며, 이 계산기는 세 가지 나이 방식을 모두 제공합니다. 띠(12간지), 별자리, 태어난 후 지난 일수와 다음 생일까지 남은 날도 함께 확인할 수 있어 생일 이벤트 준비와 세대 확인에도 유용합니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            나이 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>만 나이 기준 확인:</strong> 법적·의료적 서류에는 만 나이를 사용해야 하며, 생일이 지났는지 여부에 따라 1살 차이가 납니다.</li>
+            <li><strong>연 나이 활용:</strong> 병역법, 청소년보호법 등 일부 법령에서는 연 나이(현재 연도 - 출생 연도)를 기준으로 적용합니다.</li>
+            <li><strong>띠 확인:</strong> 음력 설 이전에 태어난 경우 전년도 띠에 해당할 수 있으므로 정확한 음력 확인이 필요합니다.</li>
+            <li><strong>D-Day 계산:</strong> 다음 생일까지 남은 일수를 확인하여 기념일 선물이나 파티를 미리 준비하세요.</li>
+            <li><strong>세대 구분:</strong> 출생 연도를 입력하면 베이비부머, X세대, 밀레니얼, Z세대 등 세대 구분을 자동으로 확인할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

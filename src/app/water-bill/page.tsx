@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '수도요금 계산기, 수도요금 계산, 수도세 계산, 물값 계산, water bill calculator',
   openGraph: { title: '수도요금 계산기 | 툴허브', description: '수도 사용량별 요금 계산', url: 'https://toolhub.ai.kr/water-bill', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '수도요금 계산기 | 툴허브', description: '수도요금 누진제 계산' },
-  alternates: { canonical: 'https://toolhub.ai.kr/water-bill' },
+  alternates: { canonical: 'https://toolhub.ai.kr/water-bill/' },
 }
 
 export default function WaterBillPage() {
@@ -32,6 +32,27 @@ export default function WaterBillPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><WaterBillCalculator /></I18nWrapper></Suspense>
         </div>
       </div>
+
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            수도요금 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            수도요금 계산기는 월별 수도 사용량(㎥)을 입력하면 누진제 기준에 따라 상수도 요금, 하수도 요금, 물이용부담금, 부가가치세를 포함한 실제 납부 예상액을 자동으로 산출하는 도구입니다. 수도요금은 사용량이 늘수록 단가가 높아지는 누진제가 적용되며, 지역별로 단가 차이가 있습니다. 매월 고지서를 받기 전에 미리 예상 요금을 파악하고 수도 사용을 계획적으로 관리하는 데 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            수도요금 절약 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>누진제 구간 파악:</strong> 사용량이 누진 구간 경계를 넘지 않도록 관리하면 요금 절감 효과가 큽니다. 서울 기준 30㎥, 50㎥가 주요 경계입니다.</li>
+            <li><strong>절수 샤워헤드:</strong> 일반 샤워헤드 대비 최대 40% 물을 절약하는 절수 제품으로 교체하면 매월 상당한 요금 차이가 납니다.</li>
+            <li><strong>세탁물 모아 빨기:</strong> 세탁기를 소량으로 자주 돌리는 것보다 모아서 적게 돌리는 것이 물과 전기 모두 절약됩니다.</li>
+            <li><strong>누수 점검:</strong> 화장실 변기나 수도꼭지의 미세 누수는 눈에 잘 띄지 않지만 한 달에 수 ㎥의 물을 낭비합니다. 정기적으로 점검하여 즉시 수리하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

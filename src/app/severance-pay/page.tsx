@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '퇴직금 계산기, 퇴직금 계산, 퇴직금 산출, severance pay calculator, 평균임금 계산',
   openGraph: { title: '퇴직금 계산기 | 툴허브', description: '법정 퇴직금 계산', url: 'https://toolhub.ai.kr/severance-pay', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '퇴직금 계산기 | 툴허브', description: '법정 퇴직금 계산' },
-  alternates: { canonical: 'https://toolhub.ai.kr/severance-pay' },
+  alternates: { canonical: 'https://toolhub.ai.kr/severance-pay/' },
 }
 
 export default function SeverancePayPage() {
@@ -53,6 +53,26 @@ export default function SeverancePayPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><SeverancePay /></I18nWrapper></Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            퇴직금 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            퇴직금 계산기는 입사일, 퇴사일, 월 기본급을 입력하면 근로기준법에 따른 법정 퇴직금을 자동으로 산출해 주는 도구입니다. 평균임금 계산, 상여금 및 연차수당 반영, 근속연수별 퇴직금 산출까지 지원하며, 정규직·계약직·아르바이트 모두 1년 이상 근무하고 주 15시간 이상 일했다면 퇴직금 수급 자격이 주어집니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            퇴직금 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>정확한 퇴사일 입력:</strong> 퇴직금은 총 재직일수를 365로 나누어 계산합니다. 퇴사일을 하루 늦추면 근속 기간이 늘어 퇴직금이 증가할 수 있습니다. 특히 365일 미만 직전에는 날짜를 꼼꼼히 확인하세요.</li>
+            <li><strong>상여금·연차수당 포함:</strong> 퇴직 전 1년간 지급된 상여금의 3/12, 미사용 연차수당을 평균임금에 포함해야 정확한 퇴직금이 계산됩니다. 급여 명세서로 금액을 확인하세요.</li>
+            <li><strong>IRP 계좌로 세금 절감:</strong> 퇴직금을 IRP(개인형 퇴직연금) 계좌로 이체하면 퇴직소득세의 30~40%를 절감할 수 있습니다. 55세 이후 연금 형태로 수령하면 연금소득세(3.3~5.5%)가 적용되어 더 유리합니다.</li>
+            <li><strong>미지급 시 구제 방법:</strong> 퇴직 후 14일 이내에 퇴직금이 지급되지 않으면 고용노동부 임금체불 신고 또는 노동청 진정을 통해 권리를 행사할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

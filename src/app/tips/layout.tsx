@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     description: '실생활에 도움되는 40개의 금융 팁 - 재정 관리부터 투자까지',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/tips',
+    canonical: 'https://toolhub.ai.kr/tips/',
   },
 };
 

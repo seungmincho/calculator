@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '강력하고 안전한 비밀번호와 패스프레이즈를 생성하세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/password-generator',
+    canonical: 'https://toolhub.ai.kr/password-generator/',
   },
 }
 
@@ -101,6 +101,26 @@ export default function PasswordGeneratorPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            비밀번호 생성기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            비밀번호 생성기는 해킹에 강한 안전한 랜덤 비밀번호와 기억하기 쉬운 패스프레이즈를 즉시 생성해주는 무료 보안 도구입니다. 대소문자·숫자·특수문자 조합, 길이(8~128자), 제외 문자 설정 등 세밀한 커스텀이 가능하며, 비밀번호 강도와 엔트로피(비트)를 실시간으로 분석합니다. 생성된 비밀번호는 서버에 전송되지 않아 완전한 개인정보 보호가 보장됩니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            안전한 비밀번호 만들기 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>최소 16자 이상 권장:</strong> 12자 비밀번호는 수백 년, 16자 이상은 현실적으로 크래킹이 불가능합니다. 길이가 보안의 핵심입니다.</li>
+            <li><strong>패스프레이즈 활용:</strong> 무작위 단어 4~5개 조합(예: ocean-table-forest-lamp)은 기억하기 쉬우면서도 엔트로피가 높아 보안성이 우수합니다.</li>
+            <li><strong>사이트마다 다른 비밀번호:</strong> 하나의 비밀번호를 여러 사이트에서 사용하면 한 곳이 해킹당할 때 모든 계정이 위험해집니다. 패스워드 매니저 사용을 권장합니다.</li>
+            <li><strong>특수문자 포함:</strong> !@#$% 등 특수문자를 포함하면 가능한 조합의 수가 급격히 늘어나 무차별 대입 공격(브루트 포스)에 훨씬 강해집니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

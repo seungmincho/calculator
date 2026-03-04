@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '색약 테스트, 색맹 검사, 색각 이상, color blind test, 이시하라 테스트',
   openGraph: { title: '색약 테스트 | 툴허브', description: '색각 이상 검사 (이시하라 테스트)', url: 'https://toolhub.ai.kr/color-blind-test', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '색약 테스트 | 툴허브', description: '색각 이상 검사 (이시하라 테스트)' },
-  alternates: { canonical: 'https://toolhub.ai.kr/color-blind-test' },
+  alternates: { canonical: 'https://toolhub.ai.kr/color-blind-test/' },
 }
 
 export default function ColorBlindTestPage() {
@@ -37,6 +37,27 @@ export default function ColorBlindTestPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><ColorBlindTest /></I18nWrapper></Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              색약 테스트란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              색약 테스트는 <strong>이시하라(Ishihara) 색각 검사를 통해 적록 색약·청황 색약 등 색각 이상 여부를 간편하게 확인</strong>하는 도구입니다. 점들로 이루어진 원판 속에 숨겨진 숫자나 선을 얼마나 잘 인식하는지 테스트하며, 결과를 통해 색각 유형을 분류합니다. 운전면허 취득, 특수 직업 지원, 디자인·그래픽 작업 전 색각 상태를 확인하는 데 활용할 수 있습니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              색약 테스트 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>정확한 환경:</strong> 밝은 자연광 또는 적절한 조명 아래서 테스트해야 가장 정확한 결과를 얻습니다.</li>
+              <li><strong>화면 밝기:</strong> 모니터 밝기를 적정 수준(50~70%)으로 설정하고 테스트하세요.</li>
+              <li><strong>스크리닝 용도:</strong> 이 테스트는 참고용이며 정확한 진단은 안과 전문의에게 받아야 합니다.</li>
+              <li><strong>디자이너 활용:</strong> 색각 이상자를 위한 접근성 디자인을 고려할 때 색약 시뮬레이터와 함께 활용하세요.</li>
+              <li><strong>어린이 검사:</strong> 만 4세 이상 어린이도 테스트할 수 있으며 조기 발견이 교육에 도움이 됩니다.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

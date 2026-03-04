@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/sql-formatter',
+    canonical: 'https://toolhub.ai.kr/sql-formatter/',
   },
 }
 
@@ -68,6 +68,26 @@ export default function SqlFormatterPage() {
       <I18nWrapper>
         <SqlFormatter />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            SQL 포맷터란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            SQL 포맷터는 복잡하고 읽기 어려운 SQL 쿼리를 들여쓰기와 줄 바꿈을 적용해 가독성 높게 정리하는 온라인 개발자 도구입니다. MySQL, PostgreSQL, Oracle, SQL Server 등 다양한 SQL 방언을 지원하며, 쿼리 압축(minify)과 문법 검증 기능도 제공합니다. 개발자, DBA, 데이터 분석가가 코드 리뷰나 쿼리 최적화 시 빠르게 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            SQL 포맷터 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>SQL 방언 선택:</strong> MySQL의 백틱(`)이나 PostgreSQL의 이중콜론(::) 캐스팅처럼 DB마다 고유 문법이 다르므로, 사용 중인 데이터베이스에 맞는 방언을 선택하세요.</li>
+            <li><strong>들여쓰기 가독성:</strong> 포맷팅된 SQL은 JOIN 관계, WHERE 조건, 서브쿼리 구조를 한눈에 파악할 수 있어 코드 리뷰와 디버깅에 효과적입니다.</li>
+            <li><strong>쿼리 압축(Minify):</strong> 프로그램에서 SQL을 문자열로 포함할 때 공백을 제거해 용량을 줄이거나, 로그에서 쿼리를 한 줄로 기록할 때 유용합니다.</li>
+            <li><strong>성능 최적화 힌트:</strong> SELECT * 대신 필요한 컬럼만 선택하고, WHERE 절에 인덱스 컬럼을 사용하면 쿼리 실행 속도를 크게 향상시킬 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

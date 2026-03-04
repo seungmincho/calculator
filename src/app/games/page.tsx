@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/games',
+    canonical: 'https://toolhub.ai.kr/games/',
   },
 }
 

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     type: 'website'
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/connect4'
+    canonical: 'https://toolhub.ai.kr/connect4/'
   }
 }
 
@@ -90,6 +90,26 @@ export default function Connect4Page() {
           description="7x6 보드에서 같은 색 디스크 4개를 먼저 연결하면 승리"
         />
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            커넥트4(사목)란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            커넥트4(Connect Four, 사목)는 7열 6행의 수직 보드에서 두 명이 번갈아 디스크를 떨어뜨려 가로, 세로, 대각선으로 4개를 먼저 연결하면 승리하는 전략 보드게임입니다. AI 대전(쉬움·보통·어려움)과 온라인 실시간 P2P 대전을 모두 지원하며, 수학적으로 완전 분석된 게임이라 선공이 최적 전략을 사용하면 반드시 이길 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            커넥트4 전략 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>중앙 열 선점:</strong> 4번째 열(중앙)은 가로·대각선 연결 가능성이 가장 높습니다. 게임 초반 중앙을 선점하는 것이 핵심 전략입니다.</li>
+            <li><strong>이중 위협 만들기:</strong> 두 방향으로 동시에 3개를 만들면 상대가 한 곳밖에 막을 수 없어 승리 확률이 높아집니다.</li>
+            <li><strong>짝수/홀수 전략:</strong> 위협 위치가 짝수 행이면 후공에게 유리하고, 홀수 행이면 선공에게 유리합니다. 턴 타이밍을 계산하세요.</li>
+            <li><strong>수직 연결 주의:</strong> 같은 열에 4개를 쌓아 이기려 하면 상대가 쉽게 차단할 수 있습니다. 다양한 방향으로 위협을 분산하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

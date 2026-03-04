@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '불량화소, 명암비, 감마, 번인 등 14가지 모니터 품질 테스트를 무료로 제공합니다.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/monitor-test',
+    canonical: 'https://toolhub.ai.kr/monitor-test/',
   },
 }
 
@@ -89,6 +89,26 @@ export default function MonitorTestPage() {
           </Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              모니터 테스트란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              모니터 테스트는 새 모니터 구매 후 불량화소(데드픽셀)·명암비·색상 정확도·감마·빛샘·번인(잔상) 등 디스플레이 품질을 직접 확인할 수 있는 무료 온라인 검사 도구입니다. 14가지 테스트 항목을 전체 화면으로 실행해 육안으로 문제를 발견하고, 교환·반품 기간 내 신속하게 대처할 수 있습니다. PC·노트북·TV·태블릿 모니터 모두 테스트 가능합니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              모니터 테스트 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>불량화소 확인:</strong> 빨강·초록·파랑·흰색·검정 순서로 전체 화면 색상 테스트를 실행해 밝거나 어두운 점(불량화소)을 확인하세요.</li>
+              <li><strong>구매 직후 테스트:</strong> 새 모니터는 반품·교환 기간(보통 7~14일) 내에 반드시 테스트해 불량이면 즉시 교환을 요청하세요.</li>
+              <li><strong>빛샘 테스트:</strong> 완전 어두운 방에서 검정 화면 테스트를 실행하면 모서리·가장자리의 백라이트 빛샘을 쉽게 확인할 수 있습니다.</li>
+              <li><strong>번인 확인:</strong> 오래된 OLED·플라즈마 모니터는 잔상 테스트로 특정 이미지 잔상(번인) 발생 여부를 확인하세요.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

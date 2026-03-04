@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: 'HTML 특수문자 인코딩·디코딩 도구.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/html-entity-converter',
+    canonical: 'https://toolhub.ai.kr/html-entity-converter/',
   },
 }
 
@@ -89,6 +89,26 @@ export default function HtmlEntityConverterPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            HTML 엔티티 변환기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            HTML 엔티티 변환기는 HTML에서 특수문자(&lt; &gt; &amp; &quot; 등)를 안전한 엔티티 코드로 인코딩하거나, 엔티티를 원래 문자로 디코딩하는 무료 온라인 개발 도구입니다. Named(&amp;amp;)·Decimal(&#38;)·Hex(&#x26;) 세 가지 형식을 모두 지원하며, XSS(크로스 사이트 스크립팅) 방지와 HTML 코드 안전 처리에 필수입니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            HTML 엔티티 변환기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>XSS 방지 필수 문자:</strong> 사용자 입력을 HTML에 출력할 때 &amp;·&lt;·&gt;·&quot;·&#39; 다섯 가지 문자를 반드시 엔티티로 변환하세요.</li>
+            <li><strong>이메일 주소 숨기기:</strong> 이메일을 Decimal 또는 Hex 엔티티로 변환하면 스팸 봇의 자동 수집을 일부 방지할 수 있습니다.</li>
+            <li><strong>복사 붙여넣기 검증:</strong> 외부에서 가져온 HTML 코드에 특수문자가 포함된 경우, 디코딩하여 원본 텍스트를 확인할 수 있습니다.</li>
+            <li><strong>비 ASCII 문자 인코딩:</strong> 한글·중국어·이모지 등 비 ASCII 문자 전체를 Decimal 엔티티로 변환하면 인코딩 문제가 발생하는 구형 시스템과의 호환성을 확보할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

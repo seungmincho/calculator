@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description: '영문 텍스트를 15가지 유니코드 스타일로 변환. SNS 프로필·게시물에 바로 사용.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/fancy-text',
+    canonical: 'https://toolhub.ai.kr/fancy-text/',
   },
 }
 
@@ -124,6 +124,26 @@ export default function FancyTextPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            유니코드 텍스트 꾸미기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            유니코드 텍스트 꾸미기는 영문 알파벳을 유니코드 수학 기호 블록(Mathematical Alphanumeric Symbols)의 특수 문자로 변환하여 볼드·이탤릭·스크립트·프랙처·이중선 등 15가지 스타일로 꾸미는 무료 온라인 도구입니다. 변환된 텍스트는 인스타그램·X(트위터)·유튜브·틱톡 등 SNS 프로필, 닉네임, 게시물에 별도 앱 없이 그대로 붙여넣기해서 사용할 수 있어 SNS 텍스트 꾸미기 도구로 인기입니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            유니코드 텍스트 꾸미기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>SNS 프로필 이름:</strong> 수학 볼드·이탤릭 스타일로 닉네임을 변환하면 플랫폼 기본 폰트에서도 강조 효과를 낼 수 있습니다.</li>
+            <li><strong>게시물 강조:</strong> 스크립트나 프랙처 스타일로 제목이나 태그라인을 꾸미면 피드에서 시선을 끕니다.</li>
+            <li><strong>전체 복사:</strong> 모든 스타일을 한 번에 복사하는 기능으로 원하는 스타일을 빠르게 골라 사용하세요.</li>
+            <li><strong>폰트 지원 확인:</strong> 뒤집기(Upside Down)·거울 반전(Mirror)·전각 문자는 일부 기기에서 다르게 보일 수 있으므로 미리보기 후 사용하세요.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

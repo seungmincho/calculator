@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '텍스트, URL, 연락처 정보를 QR 코드로 변환하세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/qr-generator',
+    canonical: 'https://toolhub.ai.kr/qr-generator/',
   },
 }
 
@@ -100,6 +100,26 @@ export default function QrGeneratorPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            QR 코드 생성기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            QR 코드 생성기는 URL, 텍스트, 연락처, Wi-Fi 정보 등 다양한 데이터를 QR 코드 이미지로 변환해 주는 무료 온라인 도구입니다. 명함, 메뉴판, 포스터, 마케팅 자료 제작에 활용되며, 로고 삽입과 색상 커스터마이징으로 브랜드 정체성을 유지한 개성 있는 큐알코드를 손쉽게 만들 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            QR 코드 생성기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>URL 단축 후 생성:</strong> 긴 URL을 QR 코드에 넣으면 패턴이 복잡해져 인식률이 낮아집니다. 단축 URL을 사용하면 더 단순하고 빠르게 인식되는 QR 코드를 만들 수 있습니다.</li>
+            <li><strong>오류 정정 레벨 선택:</strong> 로고를 삽입하거나 QR 코드가 훼손될 가능성이 있는 환경(야외, 포장재 등)에서는 오류 정정 레벨을 H(30%)로 설정하세요.</li>
+            <li><strong>적절한 크기 유지:</strong> 인쇄물에 사용할 경우 최소 2cm × 2cm 이상으로 생성하고, 스캔 거리에 따라 크기를 조정하면 인식 오류를 줄일 수 있습니다.</li>
+            <li><strong>색상 대비 확인:</strong> 전경색(패턴)과 배경색의 명암 대비가 충분해야 스마트폰 카메라가 정확히 인식합니다. 밝은 배경에 어두운 패턴이 기본 원칙입니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

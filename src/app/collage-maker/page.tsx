@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '2~9분할 레이아웃으로 여러 사진을 합쳐 콜라주 이미지를 만드세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/collage-maker',
+    canonical: 'https://toolhub.ai.kr/collage-maker/',
   },
 }
 
@@ -90,6 +90,27 @@ export default function CollageMakerPage() {
           </Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              사진 콜라주 메이커란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              사진 콜라주 메이커는 <strong>여러 장의 사진을 2·3·4·6·9분할 레이아웃으로 하나의 이미지로 합쳐주는</strong> 무료 온라인 도구입니다. 인스타그램용 정사각형(1080×1080), OG 이미지(1200×630), HD 와이드(1920×1080) 등 다양한 크기를 지원하며 모든 처리가 브라우저에서 이루어져 사진이 서버에 업로드되지 않습니다. 여행 사진 정리, SNS 포스팅, 기념 앨범 제작에 활용하세요.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              사진 콜라주 메이커 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>인스타그램 9분할:</strong> 인스타그램 그리드에 9장을 일관된 레이아웃으로 올릴 때 9분할 프리셋을 활용하세요.</li>
+              <li><strong>모서리 둥글기:</strong> 모서리를 둥글게 설정하면 더 부드럽고 트렌디한 콜라주를 만들 수 있습니다.</li>
+              <li><strong>배경색 선택:</strong> 흰색 배경은 깔끔한 느낌, 검정 배경은 고급스러운 느낌을 줍니다.</li>
+              <li><strong>드래그 앤 드롭:</strong> 사진을 원하는 순서로 드래그해 배치를 자유롭게 조정할 수 있습니다.</li>
+              <li><strong>개인정보 안전:</strong> 모든 이미지 처리가 브라우저에서 이루어지므로 사진이 외부 서버로 전송되지 않습니다.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

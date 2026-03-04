@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: { card: 'summary_large_image', title: '랜덤 뽑기 | 툴허브', description: '랜덤 숫자, 이름 뽑기, 팀 나누기' },
-  alternates: { canonical: 'https://toolhub.ai.kr/random-picker' },
+  alternates: { canonical: 'https://toolhub.ai.kr/random-picker/' },
 }
 
 export default function RandomPickerPage() {
@@ -53,6 +53,26 @@ export default function RandomPickerPage() {
           </Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            랜덤 뽑기 도구란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            랜덤 뽑기 도구는 공정한 무작위 추첨, 숫자 생성, 팀 나누기를 제공하는 온라인 추첨기입니다. 교실에서의 발표자 선정, 회식 장소 결정, 경품 이벤트 당첨자 추첨, 팀 프로젝트 역할 배정 등 결정이 필요한 모든 상황에서 공정하고 빠르게 활용할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            랜덤 뽑기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>이름 추첨:</strong> 참가자 이름을 줄 바꿈으로 구분해 입력하면 공정한 제비뽑기가 가능합니다. 발표자 선정, 당번 정하기, 경품 추첨 등에 활용하세요.</li>
+            <li><strong>팀 나누기:</strong> 인원수와 팀 수를 입력하면 자동으로 균등하게 팀을 나눠 줍니다. 스포츠 대회, 조별 과제, 워크샵 그룹 편성에 편리합니다.</li>
+            <li><strong>랜덤 숫자 생성:</strong> 범위와 개수를 지정해 중복 없는 난수를 생성할 수 있습니다. 로또 번호 참고, 행운의 번호 뽑기, 순서 정하기에 사용하세요.</li>
+            <li><strong>돌림판 모드:</strong> 시각적인 돌림판으로 뽑기를 진행하면 이벤트나 게임에서 현장감과 참여 흥미를 높일 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

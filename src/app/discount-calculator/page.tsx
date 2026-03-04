@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '할인 계산기, 할인율 계산, 할인가 계산, 세일 계산, discount calculator, 퍼센트 할인',
   openGraph: { title: '할인 계산기 | 툴허브', description: '할인율, 할인가, 원가 간편 계산', url: 'https://toolhub.ai.kr/discount-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '할인 계산기 | 툴허브', description: '할인율, 할인가 간편 계산' },
-  alternates: { canonical: 'https://toolhub.ai.kr/discount-calculator' },
+  alternates: { canonical: 'https://toolhub.ai.kr/discount-calculator/' },
 }
 
 export default function DiscountCalculatorPage() {
@@ -53,6 +53,26 @@ export default function DiscountCalculatorPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><DiscountCalculator /></I18nWrapper></Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            할인 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            할인 계산기는 세일·할인 행사에서 최종 결제 금액을 빠르게 계산하는 생활 편의 도구입니다. 원가에서 할인율을 적용한 할인가 계산, 판매가에서 원가를 역산하는 할인율 계산, 쿠폰과 카드 할인을 동시에 적용하는 중복 할인 계산 등을 지원합니다. 쇼핑몰 세일 시즌, 블랙프라이데이, 백화점 정기세일 등에서 실제 얼마나 절약되는지 즉시 확인할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            할인 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>할인율 역산:</strong> 정가와 세일가를 입력하면 실제 할인율이 몇 %인지 자동으로 계산됩니다. 광고의 &apos;50% 할인&apos;이 실제인지 확인할 때 유용합니다.</li>
+            <li><strong>중복 할인 주의:</strong> 30% 할인 + 추가 20% 할인은 합계 50%가 아니라 44% 할인입니다. 중복 할인은 순차 적용되므로 반드시 계산기로 확인하세요.</li>
+            <li><strong>카드 즉시할인 포함:</strong> 쇼핑몰 할인과 특정 카드 즉시할인이 중복 적용될 때 최종 결제금액을 미리 계산하여 가장 유리한 카드를 선택하세요.</li>
+            <li><strong>1+1 vs 50% 할인:</strong> 두 개를 모두 소비할 경우 동일하지만, 하나만 필요하거나 유통기한이 있다면 단순 50% 할인이 더 유리할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     description: 'BMI(체질량지수)를 계산하여 건강 상태를 확인해보세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/bmi-calculator',
+    canonical: 'https://toolhub.ai.kr/bmi-calculator/',
   },
 }
 
@@ -100,6 +100,27 @@ export default function BMICalculatorPage() {
           <BMICalculator />
         </div>
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            BMI(체질량지수) 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            BMI 계산기는 키와 몸무게를 입력하면 체질량지수(BMI, Body Mass Index)를 계산하고 저체중·정상·과체중·비만 여부를 자동으로 판정하는 무료 온라인 건강 도구입니다. 대한비만학회 기준(정상: 18.5~22.9, 과체중: 23~24.9, 비만: 25 이상)을 적용하며, 표준 체중과 함께 현재 건강 상태를 한눈에 확인할 수 있습니다. 다이어트 목표 설정, 건강검진 사전 준비, 체중 관리에 널리 활용됩니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            BMI 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>아시아인 기준 주의:</strong> WHO 국제 기준(25 이상 비만)과 달리 한국을 포함한 아시아에서는 23 이상을 과체중, 25 이상을 비만으로 더 엄격하게 적용합니다.</li>
+            <li><strong>BMI의 한계:</strong> BMI는 근육량을 반영하지 않아 운동선수처럼 근육이 많으면 비만으로 오분류될 수 있으므로 체지방률과 함께 확인하세요.</li>
+            <li><strong>표준 체중 목표:</strong> 표준 체중(BMI 22 기준) = 키(m)² × 22 공식으로 건강한 목표 체중을 설정하고 단계적으로 달성하세요.</li>
+            <li><strong>어린이 BMI:</strong> 18세 미만은 성별·연령별 백분위수로 판정해야 하며, 성인 기준 BMI 수치를 그대로 적용해서는 안 됩니다.</li>
+            <li><strong>복부비만 함께 확인:</strong> BMI와 함께 허리둘레(남성 90cm, 여성 85cm 이상 복부비만)를 체크하면 심혈관 질환 위험을 더 정확히 평가할 수 있습니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

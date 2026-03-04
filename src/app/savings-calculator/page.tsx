@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/savings-calculator',
+    canonical: 'https://toolhub.ai.kr/savings-calculator/',
   },
 }
 
@@ -103,6 +103,26 @@ export default function SavingsCalculatorPage() {
       <I18nWrapper>
         <SavingsCalculator />
       </I18nWrapper>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            적금 계산기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            적금 계산기는 정기적금, 자유적금, 복리적금, 목표적금 등 다양한 저축 상품의 만기 수령액과 이자 금액을 미리 계산해 주는 무료 재테크 도구입니다. 월 납입액, 금리, 납입 기간, 이자 방식(단리/복리)을 입력하면 세전·세후 수령액을 즉시 확인하고, 여러 적금 상품을 비교하여 최적의 저축 계획을 세울 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            적금 계산기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>이자소득세 반영:</strong> 적금 이자에는 15.4%의 이자소득세가 원천징수됩니다. 세후 실수령액을 기준으로 적금 상품을 비교해야 실제 이익을 정확히 파악할 수 있습니다.</li>
+            <li><strong>복리 적금의 장기 효과:</strong> 단리와 복리의 차이는 단기에는 미미하지만 3년 이상 장기 적금에서 크게 벌어집니다. 복리 상품이 있다면 우선적으로 검토해보세요.</li>
+            <li><strong>목표 금액 역산:</strong> 목표 금액이 정해진 경우 역산 기능을 이용하면 월 납입액을 자동으로 계산해 현실적인 저축 계획을 세울 수 있습니다.</li>
+            <li><strong>비과세·세금우대 상품 비교:</strong> 청년희망적금, 청년도약계좌, 농협·신협 등의 비과세 적금은 이자소득세가 면제되거나 9.5%로 낮아 같은 금리라도 더 유리합니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

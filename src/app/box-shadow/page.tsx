@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: 'CSS box-shadow 코드를 시각적으로 생성',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/box-shadow',
+    canonical: 'https://toolhub.ai.kr/box-shadow/',
   },
 }
 
@@ -75,6 +75,27 @@ export default function BoxShadowPage() {
           </Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              CSS 박스 그림자 생성기란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              CSS 박스 그림자 생성기는 <strong>box-shadow 코드를 시각적으로 직접 확인하며 생성</strong>할 수 있는 무료 온라인 도구입니다. Material Design, Neumorphism(뉴모피즘) 등 다양한 프리셋을 제공하며, 다중 레이어 그림자를 쌓아 입체적인 UI 효과를 손쉽게 만들 수 있습니다. 웹 개발자와 UI 디자이너가 반복 코드 작성 없이 완성된 CSS 코드를 바로 복사하여 프로젝트에 적용할 수 있습니다.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              CSS 박스 그림자 생성기 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>다중 레이어 활용:</strong> 여러 그림자를 쌓으면 뉴모피즘·입체 카드 효과를 구현할 수 있습니다.</li>
+              <li><strong>inset 그림자:</strong> 안쪽 그림자로 눌린 버튼, 오목한 텍스트 필드 효과를 연출하세요.</li>
+              <li><strong>Material Design 프리셋:</strong> 구글 머티리얼 디자인 고도별 그림자 값을 한 번에 적용합니다.</li>
+              <li><strong>성능 최적화:</strong> blur 반경이 클수록 GPU 부담이 늘어나므로 적절한 값을 사용하세요.</li>
+              <li><strong>PNG 내보내기:</strong> 완성된 그림자 미리보기를 이미지로 저장해 디자인 시안에 활용합니다.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }

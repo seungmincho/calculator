@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '서명 생성기, 전자 서명, e-signature generator, 서명 이미지, 서명 만들기',
   openGraph: { title: '서명 생성기 | 툴허브', description: '전자 서명 생성 및 다운로드', url: 'https://toolhub.ai.kr/signature-generator', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '서명 생성기 | 툴허브', description: '전자 서명 생성 및 다운로드' },
-  alternates: { canonical: 'https://toolhub.ai.kr/signature-generator' },
+  alternates: { canonical: 'https://toolhub.ai.kr/signature-generator/' },
 }
 
 export default function SignatureGeneratorPage() {
@@ -45,6 +45,26 @@ export default function SignatureGeneratorPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><SignatureGenerator /></I18nWrapper></Suspense>
         </div>
       </div>
+      {/* SEO 콘텐츠 */}
+      <section className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            서명 생성기란?
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            서명 생성기는 마우스 드래그나 모바일 터치만으로 나만의 전자 서명 이미지를 만들고 PNG·SVG 파일로 다운로드할 수 있는 무료 온라인 도구입니다. 투명 배경을 지원하여 Word, 한글, PDF, 이메일 서명 등 다양한 문서에 바로 삽입해 사용할 수 있으며, 펜 굵기와 색상을 자유롭게 설정할 수 있습니다.
+          </p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            서명 생성기 활용 팁
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>투명 PNG 저장:</strong> 배경 없는 PNG로 저장하면 어떤 색상의 문서에도 깔끔하게 삽입할 수 있어 이메일 서명과 계약서에 활용하기 좋습니다.</li>
+            <li><strong>Word/한글 삽입:</strong> 다운로드한 PNG를 삽입 후 텍스트 줄 바꿈을 '앞으로' 설정하면 서명을 원하는 위치에 자유롭게 배치할 수 있습니다.</li>
+            <li><strong>모바일에서 그리기:</strong> 스마트폰 화면에서 손가락으로 그리면 더욱 자연스러운 필기체 서명을 만들 수 있습니다.</li>
+            <li><strong>법적 주의사항:</strong> 이 도구로 만든 서명 이미지는 문서 장식·개인 용도로 사용하세요. 법적 효력이 필요한 경우 공동인증서나 전자계약 플랫폼을 이용하시기 바랍니다.</li>
+          </ul>
+        </div>
+      </section>
     </>
   )
 }

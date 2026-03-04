@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: '음력 양력 변환, 음력 변환기, 양력 음력 변환, 음력 생일, 음력 날짜, lunar calendar converter',
   openGraph: { title: '음력 양력 변환기 | 툴허브', description: '음력 ↔ 양력 날짜 변환, 띠, 간지 정보', url: 'https://toolhub.ai.kr/lunar-converter', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '음력 양력 변환기 | 툴허브', description: '음력 ↔ 양력 날짜 변환' },
-  alternates: { canonical: 'https://toolhub.ai.kr/lunar-converter' },
+  alternates: { canonical: 'https://toolhub.ai.kr/lunar-converter/' },
 }
 
 export default function LunarConverterPage() {
@@ -37,6 +37,26 @@ export default function LunarConverterPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><LunarConverter /></I18nWrapper></Suspense>
         </div>
       </div>
+        {/* SEO 콘텐츠 */}
+        <section className="max-w-4xl mx-auto px-4 pb-12">
+          <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              음력 양력 변환기란?
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              음력 양력 변환기는 음력 날짜를 양력으로, 양력 날짜를 음력으로 즉시 변환해주는 도구입니다. 음력 생일, 제삿날, 설날·추석·동지 등 명절 날짜의 양력 확인에 필수적이며, 60갑자(간지)와 띠 정보, 윤달 여부까지 함께 제공합니다. 매년 달라지는 음력 기념일의 양력 날짜를 빠르게 조회하세요.
+            </p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              음력 양력 변환기 활용 팁
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+              <li><strong>음력 생일 확인:</strong> 음력으로 생일을 기억하는 어르신의 올해 양력 생일을 쉽게 찾을 수 있습니다.</li>
+              <li><strong>제사·기일 조회:</strong> 음력으로 기록된 제삿날을 매년 양력으로 변환해 일정 앱에 등록하세요.</li>
+              <li><strong>윤달 주의:</strong> 윤달이 있는 해는 같은 음력 날짜가 두 번 등장할 수 있으므로 윤달 여부를 반드시 확인하세요.</li>
+              <li><strong>띠·간지 확인:</strong> 출생 연도의 띠와 60갑자 간지를 함께 조회해 명리학적 참고 자료로 활용할 수 있습니다.</li>
+            </ul>
+          </div>
+        </section>
     </>
   )
 }
