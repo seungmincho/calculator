@@ -117,25 +117,13 @@ function calculateSubnet(ipStr: string, cidr: number): SubnetResult | null {
 }
 
 // ── CIDR 참고 테이블 ──
-const CIDR_TABLE = [
-  { cidr: 32, mask: '255.255.255.255', hosts: 1 },
-  { cidr: 31, mask: '255.255.255.254', hosts: 2 },
-  { cidr: 30, mask: '255.255.255.252', hosts: 2 },
-  { cidr: 29, mask: '255.255.255.248', hosts: 6 },
-  { cidr: 28, mask: '255.255.255.240', hosts: 14 },
-  { cidr: 27, mask: '255.255.255.224', hosts: 30 },
-  { cidr: 26, mask: '255.255.255.192', hosts: 62 },
-  { cidr: 25, mask: '255.255.255.128', hosts: 126 },
-  { cidr: 24, mask: '255.255.255.0', hosts: 254 },
-  { cidr: 23, mask: '255.255.254.0', hosts: 510 },
-  { cidr: 22, mask: '255.255.252.0', hosts: 1022 },
-  { cidr: 21, mask: '255.255.248.0', hosts: 2046 },
-  { cidr: 20, mask: '255.255.240.0', hosts: 4094 },
-  { cidr: 16, mask: '255.255.0.0', hosts: 65534 },
-  { cidr: 12, mask: '255.240.0.0', hosts: 1048574 },
-  { cidr: 8, mask: '255.0.0.0', hosts: 16777214 },
-  { cidr: 0, mask: '0.0.0.0', hosts: 4294967294 },
-]
+const CIDR_TABLE = Array.from({ length: 33 }, (_, i) => {
+  const c = 32 - i
+  const mask = c === 0 ? 0 : (0xffffffff << (32 - c)) >>> 0
+  const total = Math.pow(2, 32 - c)
+  const hosts = c >= 31 ? (c === 32 ? 1 : 2) : total - 2
+  return { cidr: c, mask: numToIp(mask), hosts }
+})
 
 export default function SubnetCalculator() {
   const t = useTranslations('subnetCalculator')
@@ -237,8 +225,22 @@ export default function SubnetCalculator() {
               <input
                 type="text"
                 value={ipInput}
-                onChange={e => setIpInput(e.target.value)}
-                placeholder="192.168.1.100"
+                onChange={e => {
+                  const val = e.target.value.trim()
+                  // CIDR 표기 자동 파싱: "10.252.0.0/19" → IP: 10.252.0.0, CIDR: 19
+                  const cidrMatch = val.match(/^([\d.]+)\/(\d{1,2})$/)
+                  if (cidrMatch) {
+                    setIpInput(cidrMatch[1])
+                    const prefix = parseInt(cidrMatch[2], 10)
+                    if (prefix >= 0 && prefix <= 32) {
+                      setCidrInput(cidrMatch[2])
+                      setInputMode('cidr')
+                    }
+                  } else {
+                    setIpInput(val)
+                  }
+                }}
+                placeholder="192.168.1.100 또는 10.0.0.0/24"
                 className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono ${
                   ipError ? 'border-red-400 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
@@ -249,13 +251,31 @@ export default function SubnetCalculator() {
             {/* CIDR or Mask mode toggle */}
             <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-0.5">
               <button
-                onClick={() => setInputMode('cidr')}
+                onClick={() => {
+                  if (inputMode === 'mask') {
+                    // 마스크 → CIDR 전환 시 값 동기화
+                    const maskNum = ipToNum(maskInput)
+                    if (maskNum >= 0 && isValidMask(maskNum)) {
+                      setCidrInput(String(maskToCidr(maskNum)))
+                    }
+                  }
+                  setInputMode('cidr')
+                }}
                 className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors ${inputMode === 'cidr' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
               >
                 CIDR (/24)
               </button>
               <button
-                onClick={() => setInputMode('mask')}
+                onClick={() => {
+                  if (inputMode === 'cidr') {
+                    // CIDR → 마스크 전환 시 값 동기화
+                    const c = parseInt(cidrInput, 10)
+                    if (!isNaN(c) && c >= 0 && c <= 32) {
+                      setMaskInput(numToIp(cidrToMask(c)))
+                    }
+                  }
+                  setInputMode('mask')
+                }}
                 className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-colors ${inputMode === 'mask' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
               >
                 {t('subnetMask')}
@@ -316,7 +336,14 @@ export default function SubnetCalculator() {
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {CIDR_TABLE.map(row => (
-                    <tr key={row.cidr} className={cidr === row.cidr ? 'bg-blue-50 dark:bg-blue-950/30' : ''}>
+                    <tr
+                      key={row.cidr}
+                      onClick={() => {
+                        setCidrInput(String(row.cidr))
+                        setInputMode('cidr')
+                      }}
+                      className={`cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors ${cidr === row.cidr ? 'bg-blue-50 dark:bg-blue-950/30 font-semibold' : ''}`}
+                    >
                       <td className="px-2 py-1 font-mono text-gray-900 dark:text-white">/{row.cidr}</td>
                       <td className="px-2 py-1 font-mono text-gray-600 dark:text-gray-400">{row.mask}</td>
                       <td className="px-2 py-1 text-right text-gray-900 dark:text-white">{row.hosts.toLocaleString()}</td>
