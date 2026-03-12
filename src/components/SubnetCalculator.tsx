@@ -225,19 +225,19 @@ export default function SubnetCalculator() {
               <input
                 type="text"
                 value={ipInput}
-                onChange={e => {
-                  const val = e.target.value.trim()
-                  // CIDR 표기 자동 파싱: "10.252.0.0/19" → IP: 10.252.0.0, CIDR: 19
-                  const cidrMatch = val.match(/^([\d.]+)\/(\d{1,2})$/)
+                onChange={e => setIpInput(e.target.value.trim())}
+                onPaste={e => {
+                  const pasted = e.clipboardData.getData('text').trim()
+                  // 붙여넣기 시 CIDR 표기 자동 파싱: "10.252.0.0/19" → IP + CIDR 분리
+                  const cidrMatch = pasted.match(/^([\d.]+)\/(\d{1,2})$/)
                   if (cidrMatch) {
+                    e.preventDefault()
                     setIpInput(cidrMatch[1])
                     const prefix = parseInt(cidrMatch[2], 10)
                     if (prefix >= 0 && prefix <= 32) {
                       setCidrInput(cidrMatch[2])
                       setInputMode('cidr')
                     }
-                  } else {
-                    setIpInput(val)
                   }
                 }}
                 placeholder="192.168.1.100 또는 10.0.0.0/24"
