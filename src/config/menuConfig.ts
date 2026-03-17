@@ -154,6 +154,8 @@ export const menuConfig: MenuConfig = {
       { href: '/crontab-generator', labelKey: 'footer.links.crontabGenerator', descriptionKey: 'toolsShowcase.tools.crontabGenerator.description', icon: '⏰', isNew: true },
       { href: '/regex-builder', labelKey: 'footer.links.regexBuilder', descriptionKey: 'toolsShowcase.tools.regexBuilder.description', icon: '🔍', isNew: true },
       { href: '/env-editor', labelKey: 'footer.links.envEditor', descriptionKey: 'toolsShowcase.tools.envEditor.description', icon: '📋', isNew: true },
+      { href: '/llm-token-calculator', labelKey: 'footer.links.llmTokenCalculator', descriptionKey: 'toolsShowcase.tools.llmTokenCalculator.description', icon: '🤖', isNew: true },
+      { href: '/webserver-config', labelKey: 'footer.links.webserverConfig', descriptionKey: 'toolsShowcase.tools.webserverConfig.description', icon: '⚙️', isNew: true },
     ],
   },
   media: {

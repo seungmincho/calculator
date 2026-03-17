@@ -1091,5 +1091,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    {
+      url: 'https://toolhub.ai.kr/llm-token-calculator/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/webserver-config/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
   ]
 }

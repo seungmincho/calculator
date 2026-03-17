@@ -1155,6 +1155,8 @@
       "crontabGenerator": "Crontab Generator",
       "regexBuilder": "Regex Builder",
       "envEditor": "Env Editor",
+      "llmTokenCalculator": "LLM Token Calculator",
+      "webserverConfig": "Web Server Config Generator",
       "markdownEditor": "Markdown Editor",
       "gifMaker": "GIF Maker",
       "backgroundRemover": "Background Remover",
@@ -4081,6 +4083,14 @@
       "envEditor": {
         "title": "Env Editor",
         "description": "Edit .env files, export as Docker/YAML/JSON/Shell formats"
+      },
+      "llmTokenCalculator": {
+        "title": "LLM Token Calculator",
+        "description": "Estimate token counts and API costs for GPT, Claude, Gemini, and more"
+      },
+      "webserverConfig": {
+        "title": "Web Server Config Generator",
+        "description": "Generate Nginx and Caddy configs with best-practice presets"
       },
       "markdownEditor": {
         "title": "Markdown Editor",
@@ -10399,6 +10409,23 @@
     "binaryRepresentation": "Binary Representation",
     "inputPrompt": "Enter an IP address and CIDR prefix to see the subnet details.",
     "note": "This calculator supports IPv4 only. IPv6 subnet calculation is not supported.",
+    "tabCalculator": "Subnet Calc",
+    "tabOverlap": "Overlap Check",
+    "tabLookup": "IP Lookup",
+    "addCidr": "Add Range",
+    "overlapTitle": "CIDR Ranges",
+    "overlapDesc": "Enter multiple CIDR ranges to check if any overlap with each other.",
+    "overlapResult": "Overlap Analysis",
+    "parsedRanges": "Valid Ranges",
+    "overlapFound": "{count} overlap(s) found",
+    "noOverlap": "No overlapping ranges found.",
+    "overlapPrompt": "Enter 2 or more CIDR ranges.",
+    "lookupCidrTitle": "CIDR Ranges",
+    "lookupIpTitle": "IP Addresses to Check",
+    "lookupIpDesc": "Enter one IP address per line.",
+    "lookupResult": "Lookup Results",
+    "lookupPrompt": "Enter CIDR ranges and IP addresses.",
+    "noMatch": "No match",
     "guide": {
       "title": "User Guide",
       "basics": {
@@ -13388,6 +13415,203 @@
           "Eat all dots to clear the level",
           "Getting caught by ghosts costs a life",
           "Eat power pellets to temporarily eat ghosts"
+        ]
+      }
+    }
+  },
+  "llmTokenCalculator": {
+    "title": "LLM Token Calculator",
+    "description": "Estimate LLM token counts and calculate API call costs.",
+    "inputLabel": "Text Input",
+    "inputPlaceholder": "Enter or paste text to calculate token count...",
+    "fileUpload": "File Upload",
+    "fileUploadDesc": "Drag or click to upload .txt, .md, .json, .csv files",
+    "selectedModel": "Selected Model",
+    "allModels": "All Models",
+    "tokenCount": "Token Count (Est.)",
+    "charCount": "Characters",
+    "wordCount": "Words",
+    "lineCount": "Lines",
+    "estimatedCost": "Estimated Cost",
+    "inputTokens": "Input Tokens",
+    "outputTokens": "Output Tokens",
+    "inputCost": "Input Cost",
+    "outputCost": "Output Cost",
+    "totalCost": "Total Cost",
+    "outputTokensLabel": "Expected Output Tokens",
+    "outputTokensPlaceholder": "e.g., 1000",
+    "perMillionTokens": "/ 1M tokens",
+    "modelComparison": "Model Comparison",
+    "modelName": "Model",
+    "provider": "Provider",
+    "contextWindow": "Context",
+    "inputPrice": "Input Price",
+    "outputPrice": "Output Price",
+    "estCost": "Est. Cost",
+    "clear": "Clear",
+    "copy": "Copy",
+    "copied": "Copied",
+    "noText": "Enter text to see token count.",
+    "koreanNote": "Korean text uses ~1.5-3x more tokens than English.",
+    "exchangeRate": "Exchange Rate",
+    "krw": "KRW",
+    "usd": "USD",
+    "guide": {
+      "title": "User Guide",
+      "whatIsToken": {
+        "title": "What is a Token?",
+        "items": [
+          "Tokens are the basic units LLMs use to process text",
+          "In English, ~4 characters ≈ 1 token; in Korean, ~1-2 characters ≈ 1 token",
+          "The same text may have different token counts depending on the model's tokenizer",
+          "Special characters, spaces, and line breaks also count as tokens"
+        ]
+      },
+      "koreanTokens": {
+        "title": "Korean Token Characteristics",
+        "items": [
+          "Korean is less token-efficient than English, consuming more tokens",
+          "Claude has relatively good Korean token efficiency",
+          "Frequently used Korean words require fewer tokens",
+          "Mixing English can reduce overall token count"
+        ]
+      },
+      "costTips": {
+        "title": "Cost Saving Tips",
+        "items": [
+          "Writing concise prompts reduces input token usage",
+          "System prompts consume tokens on every request — optimize them",
+          "Setting appropriate max_tokens saves unnecessary output costs",
+          "Batch APIs can save up to 50% on costs (OpenAI, Anthropic)"
+        ]
+      }
+    }
+  },
+  "webserverConfig": {
+    "title": "Web Server Config Generator",
+    "description": "Generate Nginx and Caddy config files with best-practice presets.",
+    "serverType": "Server Type",
+    "scenario": "Scenario",
+    "domain": "Domain",
+    "domainPlaceholder": "example.com",
+    "backendHost": "Backend Address",
+    "backendHostPlaceholder": "127.0.0.1:3000",
+    "staticRoot": "Static Files Path",
+    "staticRootPlaceholder": "/var/www/html",
+    "enableSsl": "Enable SSL/HTTPS",
+    "enableHttp2": "Enable HTTP/2",
+    "enableGzip": "Gzip Compression",
+    "enableWwwRedirect": "www → non-www Redirect",
+    "enableSecurityHeaders": "Security Headers",
+    "enableCors": "Enable CORS",
+    "corsOrigin": "CORS Origin",
+    "corsOriginPlaceholder": "* or https://example.com",
+    "enableRateLimit": "Rate Limiting",
+    "rateLimitValue": "Rate Limit",
+    "rateLimitPlaceholder": "e.g., 10r/s",
+    "enableWebSocket": "WebSocket Support",
+    "enableCache": "Static File Caching",
+    "cacheDuration": "Cache Duration",
+    "cacheDurationPlaceholder": "e.g., 30d",
+    "sslCertPath": "SSL Certificate Path",
+    "sslKeyPath": "SSL Key Path",
+    "customDirective": "Custom Directives",
+    "customDirectivePlaceholder": "Add custom config...",
+    "tabGenerate": "Generate",
+    "tabAnalyze": "Analyze",
+    "analyzeTitle": "Analyze Existing Config",
+    "analyzeDesc": "Paste your Nginx or Caddy config file to analyze it automatically.",
+    "analyzePlaceholder": "Paste your Nginx or Caddy configuration here...",
+    "analyzeResult": "Analysis Result",
+    "analyzePrompt": "Paste a config file to analyze security and performance.",
+    "analyzeChecklist": "Security / Performance Check",
+    "analyzeWarnings": "Recommended Improvements",
+    "applyToGenerator": "Apply to Generator",
+    "analysis": {
+      "domain": "Domain",
+      "ssl": "SSL/HTTPS",
+      "http2": "HTTP/2",
+      "gzip": "Gzip Compression",
+      "securityHeaders": "Security Headers",
+      "hsts": "HSTS",
+      "serverTokens": "Server Version",
+      "sslProtocols": "SSL Protocols",
+      "cors": "CORS",
+      "rateLimit": "Rate Limiting",
+      "backend": "Backend"
+    },
+    "analysisAdvice": {
+      "ssl": "Enable HTTPS to encrypt data transmission. Get free certificates from Let's Encrypt.",
+      "http2": "Enable HTTP/2 to improve page loading speed.",
+      "gzip": "Enable Gzip compression to reduce transfer size by 60-80%.",
+      "securityHeaders": "Add security headers (X-Frame-Options, X-Content-Type-Options) to prevent XSS and clickjacking.",
+      "hsts": "Add HSTS header to force browsers to always use HTTPS.",
+      "serverTokens": "Set server_tokens off to hide the Nginx version number.",
+      "sslProtocols": "Disable old protocols (TLSv1.0, SSLv3) — use TLSv1.2+ only for security.",
+      "cors": "Access-Control-Allow-Origin: * allows all origins. Restrict to specific domains for safety."
+    },
+    "generatedConfig": "Generated Config",
+    "copy": "Copy",
+    "copied": "Copied",
+    "download": "Download",
+    "reset": "Reset",
+    "presetLabel": "Best Presets",
+    "applyPreset": "Apply",
+    "scenarios": {
+      "reverseProxy": "Reverse Proxy",
+      "reverseProxyDesc": "Place in front of Node.js, Python, etc.",
+      "staticSite": "Static Site",
+      "staticSiteDesc": "Serve HTML/CSS/JS static files (incl. SPA)",
+      "spa": "SPA (React/Vue)",
+      "spaDesc": "Single Page App with client-side routing",
+      "loadBalancer": "Load Balancer",
+      "loadBalancerDesc": "Distribute traffic across backend servers",
+      "redirect": "Redirect",
+      "redirectDesc": "HTTP→HTTPS, domain redirects",
+      "api": "API Gateway",
+      "apiDesc": "API proxy + CORS + Rate Limiting"
+    },
+    "presets": {
+      "nextjs": "Next.js Production",
+      "nextjsDesc": "Next.js reverse proxy + static caching + WebSocket(HMR)",
+      "wordpress": "WordPress",
+      "wordpressDesc": "PHP-FPM + caching + security headers + upload limits",
+      "react": "React/Vue SPA",
+      "reactDesc": "SPA routing + Gzip + cache optimization",
+      "django": "Django/FastAPI",
+      "djangoDesc": "Python WSGI/ASGI reverse proxy + static files",
+      "spring": "Spring Boot",
+      "springDesc": "Java app reverse proxy + large request body",
+      "fileServer": "File Server",
+      "fileServerDesc": "Directory listing + large file download optimization"
+    },
+    "guide": {
+      "title": "User Guide",
+      "nginx": {
+        "title": "Nginx Tips",
+        "items": [
+          "Save config files in /etc/nginx/conf.d/ or /etc/nginx/sites-available/",
+          "After changes, run nginx -t to validate, then systemctl reload nginx",
+          "Adjust worker_connections and worker_processes based on server specs",
+          "Get free SSL certificates with Let's Encrypt (use certbot)"
+        ]
+      },
+      "caddy": {
+        "title": "Caddy Tips",
+        "items": [
+          "Caddy has automatic HTTPS by default — minimal SSL config needed",
+          "Caddyfile goes in /etc/caddy/Caddyfile",
+          "After changes, run systemctl reload caddy",
+          "Use reverse_proxy directive for simple proxy setup"
+        ]
+      },
+      "security": {
+        "title": "Security Best Practices",
+        "items": [
+          "Always use HTTPS and set up HTTP→HTTPS redirects",
+          "Add security headers (X-Frame-Options, CSP) to prevent XSS, clickjacking",
+          "Use server_tokens off to hide server version (Nginx)",
+          "Block unnecessary HTTP methods (TRACE, DELETE, etc.)"
         ]
       }
     }
