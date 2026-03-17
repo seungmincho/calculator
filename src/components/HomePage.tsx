@@ -4,13 +4,14 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import {
-  Search, Star, TrendingUp, Zap, Smartphone, Moon, WifiOff, ArrowRight, Clock
+  Search, Star, TrendingUp, Zap, Smartphone, Moon, WifiOff, ArrowRight, Clock, BarChart3
 } from 'lucide-react'
 import { menuConfig, categoryKeys, type CategoryKey, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'
 import { usePopularTools } from '@/hooks/useToolAnalytics'
 import SearchDialog from './SearchDialog'
+import ToolAnalyticsDashboard from './ToolAnalyticsDashboard'
 
 const categoryMeta: Record<CategoryKey, {
   emoji: string
@@ -32,6 +33,7 @@ export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState<CategoryKey | 'all'>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [favorites, setFavorites] = useState<string[]>([])
+  const [isDashboardOpen, setIsDashboardOpen] = useState(false)
   const { popularTools, isLoading: isPopularLoading } = usePopularTools(5)
 
   useEffect(() => {
@@ -209,11 +211,20 @@ export default function HomePage() {
 
         {/* ===== POPULAR TOOLS TOP 5 ===== */}
         <section className="py-12">
-          <div className="flex items-center gap-2 mb-6">
-            <TrendingUp className="w-6 h-6 text-red-500" />
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              {t('homePage.popular.title')}
-            </h2>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-6 h-6 text-red-500" />
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                {t('homePage.popular.title')}
+              </h2>
+            </div>
+            <button
+              onClick={() => setIsDashboardOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg transition-colors"
+            >
+              <BarChart3 className="w-3.5 h-3.5" />
+              {t('homePage.popular.detailView')}
+            </button>
           </div>
 
           {isPopularLoading ? (
@@ -499,6 +510,7 @@ export default function HomePage() {
       </div>
 
       <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <ToolAnalyticsDashboard isOpen={isDashboardOpen} onClose={() => setIsDashboardOpen(false)} />
     </div>
   )
 }

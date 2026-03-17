@@ -44,6 +44,26 @@ export const recordToolClick = async (toolHref: string): Promise<void> => {
   }
 }
 
+export const getAllPopularTools = async (): Promise<PopularTool[]> => {
+  if (!isSupabaseConfigured()) return []
+  const supabase = getSupabase()
+  if (!supabase) return []
+
+  try {
+    const { data, error } = await supabase
+      .from('popular_tools')
+      .select('tool_href, click_count')
+      .order('click_count', { ascending: false })
+      .limit(500)
+
+    if (error) throw error
+    return (data as PopularTool[]) || []
+  } catch (e) {
+    console.error('Failed to fetch all popular tools:', e)
+    return []
+  }
+}
+
 export const getPopularTools = async (limit: number = 5): Promise<PopularTool[]> => {
   if (!isSupabaseConfigured()) return []
   const supabase = getSupabase()

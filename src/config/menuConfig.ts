@@ -75,6 +75,9 @@ export const menuConfig: MenuConfig = {
       { href: '/investment-calculator', labelKey: 'footer.links.investmentCalculator', descriptionKey: 'toolsShowcase.tools.investmentCalculator.description', icon: '📈', isNew: true },
       { href: '/unemployment-benefit', labelKey: 'footer.links.unemploymentBenefit', descriptionKey: 'toolsShowcase.tools.unemploymentBenefit.description', icon: '📋', isNew: true },
       { href: '/weekly-holiday-pay', labelKey: 'footer.links.weeklyHolidayPay', descriptionKey: 'toolsShowcase.tools.weeklyHolidayPay.description', icon: '💵', isNew: true },
+      { href: '/housing-subscription', labelKey: 'footer.links.housingSubscription', descriptionKey: 'toolsShowcase.tools.housingSubscription.description', icon: '🏗️', isNew: true },
+      { href: '/capital-gains-tax', labelKey: 'footer.links.capitalGainsTax', descriptionKey: 'toolsShowcase.tools.capitalGainsTax.description', icon: '🏢', isNew: true },
+      { href: '/military-discharge', labelKey: 'footer.links.militaryDischarge', descriptionKey: 'toolsShowcase.tools.militaryDischarge.description', icon: '🎖️', isNew: true },
     ],
   },
   tools: {
