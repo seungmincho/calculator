@@ -7687,7 +7687,7 @@
   },
   "shippingCalc": {
     "title": "Shipping Calculator",
-    "description": "Calculate estimated shipping costs based on package size and weight.",
+    "description": "Compare Korean courier & convenience store shipping rates (2025 pricing)",
     "weight": "Weight (kg)",
     "weightPlaceholder": "Enter weight",
     "width": "Width (cm)",
@@ -7704,9 +7704,9 @@
     },
     "destination": "Destination",
     "destinations": {
-      "local": "Metro/Gyeonggi",
-      "national": "Nationwide",
-      "jeju": "Jeju/Islands"
+      "mainland": "Mainland",
+      "jeju": "Jeju Island",
+      "island": "Remote Islands"
     },
     "calculate": "Calculate",
     "reset": "Reset",
@@ -7720,7 +7720,9 @@
       "total": "Estimated Cost",
       "won": "KRW",
       "kg": "kg",
-      "note": "Actual rates may vary by carrier policy"
+      "note": "Actual rates may vary by carrier policy",
+      "unavailable": "Not available",
+      "cheapest": "Cheapest"
     },
     "volumeWeightInfo": "Volume Weight = W × H × D ÷ 6000",
     "guide": {
@@ -7728,19 +7730,20 @@
       "calculation": {
         "title": "Calculation Basis",
         "items": [
-          "Greater of actual weight vs volume weight applies",
-          "Volume Weight = W × H × D ÷ 6000 (cm, kg)",
-          "Additional charges for Jeju/remote islands",
-          "Base rates and tiers vary by carrier"
+          "Greater of actual weight vs volume weight (W×H×D÷6000) applies",
+          "Package rejected if girth (W+H+D) exceeds carrier limit",
+          "Surcharges apply for Jeju Island and remote islands",
+          "Same-zone shipping (same city/province) is ~1,000 KRW cheaper"
         ]
       },
       "tips": {
         "title": "Saving Tips",
         "items": [
-          "Reduce packaging to lower volume weight",
-          "Contract customers get discounted rates",
-          "Some carriers offer convenience store discounts",
-          "Compare quotes for bulk shipments"
+          "CU Economy / GS25 Half-Price (CVS pickup) offer the lowest rates for ≤5kg",
+          "Korea Post regular parcel (counter) is cheapest when tracking is not needed",
+          "Reduce box size to cut volume weight (W×H×D÷6000)",
+          "Jeju surcharges vary widely between carriers — compare before sending",
+          "Korea Post accepts up to 30kg — more generous than other carriers"
         ]
       }
     }
