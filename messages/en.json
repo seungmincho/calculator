@@ -2778,7 +2778,16 @@
       "empty": "No saved game history",
       "format": "{participants} participants, {results} results"
     },
-    "placeholder": "Set participants and outcomes, then generate a ladder"
+    "placeholder": "Set participants and outcomes, then generate a ladder",
+    "showResultsOnly": "Show Results Only",
+    "presets": {
+      "title": "Quick Start Presets",
+      "lunch": "🍱 Lunch Menu",
+      "duty": "🧹 Duty Assignment",
+      "gameOrder": "🎮 Game Order",
+      "teams": "👥 Team Division",
+      "coffee": "☕ Coffee Bet"
+    }
   },
   "regexExtractor": {
     "title": "Regex Extractor",

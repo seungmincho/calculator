@@ -2778,7 +2778,16 @@
       "empty": "저장된 게임 이력이 없습니다",
       "format": "{participants}명 참가, {results}개 결과"
     },
-    "placeholder": "참가자와 결과를 설정한 후 사다리를 생성해주세요"
+    "placeholder": "참가자와 결과를 설정한 후 사다리를 생성해주세요",
+    "showResultsOnly": "결과만 보기",
+    "presets": {
+      "title": "빠른 시작 프리셋",
+      "lunch": "🍱 점심 메뉴",
+      "duty": "🧹 당번 정하기",
+      "gameOrder": "🎮 게임 순서",
+      "teams": "👥 팀 나누기",
+      "coffee": "☕ 커피 내기"
+    }
   },
   "regexExtractor": {
     "title": "정규식 추출기",

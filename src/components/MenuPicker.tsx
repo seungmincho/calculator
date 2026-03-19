@@ -231,21 +231,37 @@ export default function MenuPicker() {
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showGuide, setShowGuide] = useState(false)
   const [canvasSize, setCanvasSize] = useState(380)
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    if (typeof window === 'undefined') return []
+    try {
+      return JSON.parse(localStorage.getItem('menuPicker_favorites') || '[]')
+    } catch { return [] }
+  })
+  const [eatenToday, setEatenToday] = useState<string[]>(() => {
+    if (typeof window === 'undefined') return []
+    try {
+      return JSON.parse(sessionStorage.getItem('menuPicker_eaten') || '[]')
+    } catch { return [] }
+  })
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const rotationRef = useRef(0)
   const animFrameRef = useRef<number>(0)
   const pendingSpinRef = useRef(false)
 
-  // Pool of items based on selected categories and situation
+  // Pool of items based on selected categories and situation (excluding eaten today)
   const itemPool = useMemo(() => {
-    if (situation === 'hangover') return HANGOVER_ITEMS
-    const pool: FoodItem[] = []
-    selectedCategories.forEach(cat => {
-      if (FOOD_DB[cat]) pool.push(...FOOD_DB[cat].items)
-    })
-    return pool
-  }, [selectedCategories, situation])
+    let pool: FoodItem[]
+    if (situation === 'hangover') {
+      pool = HANGOVER_ITEMS
+    } else {
+      pool = []
+      selectedCategories.forEach(cat => {
+        if (FOOD_DB[cat]) pool.push(...FOOD_DB[cat].items)
+      })
+    }
+    return eatenToday.length > 0 ? pool.filter(item => !eatenToday.includes(item.name)) : pool
+  }, [selectedCategories, situation, eatenToday])
 
   // Pick items for the wheel
   const pickWheelItems = useCallback(() => {
@@ -525,6 +541,23 @@ export default function MenuPicker() {
     } catch { /* ignore */ }
   }, [])
 
+  const toggleFavorite = useCallback((name: string) => {
+    setFavorites(prev => {
+      const next = prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]
+      try { localStorage.setItem('menuPicker_favorites', JSON.stringify(next)) } catch {}
+      return next
+    })
+  }, [])
+
+  const markEatenToday = useCallback((name: string) => {
+    setEatenToday(prev => {
+      if (prev.includes(name)) return prev
+      const next = [...prev, name]
+      try { sessionStorage.setItem('menuPicker_eaten', JSON.stringify(next)) } catch {}
+      return next
+    })
+  }, [])
+
   const situationKeys = ['any', 'solo', 'group', 'date', 'lateNight', 'hangover', 'diet'] as const
 
   return (
@@ -584,6 +617,29 @@ export default function MenuPicker() {
           {t('itemCount', { count: itemPool.length })}
         </p>
       </div>
+
+      {/* Favorites */}
+      {favorites.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
+            ⭐ 즐겨찾기
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {favorites.map(name => (
+              <div key={name} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
+                <span>{name}</span>
+                <button
+                  onClick={() => toggleFavorite(name)}
+                  className="text-yellow-500 hover:text-yellow-700 dark:hover:text-yellow-100 leading-none ml-0.5"
+                  title="즐겨찾기 해제"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Roulette Wheel */}
       <div className="flex flex-col items-center">
@@ -659,7 +715,30 @@ export default function MenuPicker() {
                 {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                 {copiedId === 'result' ? t('copied') : t('copy')}
               </button>
+              <button
+                onClick={() => markEatenToday(result.name)}
+                disabled={eatenToday.includes(result.name)}
+                className="text-xs px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {eatenToday.includes(result.name) ? '오늘 제외됨' : '오늘 이미 먹었어요'}
+              </button>
+              <button
+                onClick={() => toggleFavorite(result.name)}
+                className="text-xs px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-lg hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors"
+              >
+                {favorites.includes(result.name) ? '⭐ 즐겨찾기 해제' : '☆ 즐겨찾기 추가'}
+              </button>
             </div>
+            {eatenToday.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-1 mt-3">
+                <span className="text-xs text-gray-500 dark:text-gray-400">오늘 제외:</span>
+                {eatenToday.map(name => (
+                  <span key={name} className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full line-through">
+                    {name}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

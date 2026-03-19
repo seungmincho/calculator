@@ -8,7 +8,7 @@ import CalculationHistory from '@/components/CalculationHistory';
 
 type LoanType = 'general' | 'first' | 'newlywed' | 'multichild';
 
-// 2026년 2월 기준 금리 (아낌e 보금자리론)
+// 2026년 기준 금리 (아낌e 보금자리론 - 기준일 2026.03, 실제 금리는 한국주택금융공사 홈페이지 확인)
 const PERIOD_RATES: Record<string, number> = {
   '10': 4.05,
   '15': 4.10,
@@ -630,6 +630,56 @@ const BogeumjariLoanCalculatorContent = () => {
               )}
             </div>
           )}
+        </div>
+      </div>
+
+      {/* 관련 사이트 */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <span>🔗</span>
+          관련 사이트
+        </h3>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {[
+            {
+              name: 'LH 청약센터',
+              url: 'https://apply.lh.or.kr',
+              desc: 'LH 보금자리론 청약 신청 및 상담',
+              icon: '🏠'
+            },
+            {
+              name: '한국주택금융공사',
+              url: 'https://www.hf.go.kr',
+              desc: '주택담보대출 상품 안내 및 금리 확인',
+              icon: '🏦'
+            },
+            {
+              name: '국토교통부 실거래가',
+              url: 'https://rt.molit.go.kr',
+              desc: '아파트·주택 실거래가 공개 시스템',
+              icon: '📊'
+            },
+            {
+              name: '부동산 공시가격 알리미',
+              url: 'https://www.realtyprice.kr',
+              desc: '공동주택 공시가격 조회',
+              icon: '📋'
+            },
+          ].map(link => (
+            <a
+              key={link.name}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors group"
+            >
+              <span className="text-2xl flex-shrink-0">{link.icon}</span>
+              <div>
+                <div className="font-medium text-blue-700 dark:text-blue-300 group-hover:underline text-sm">{link.name}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{link.desc}</div>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
 

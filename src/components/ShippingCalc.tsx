@@ -2,7 +2,9 @@
 
 import { useState, useMemo, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
-import { Package, Truck, Calculator, Copy, Check, RotateCcw, BookOpen } from 'lucide-react'
+import { Package, Truck, Calculator, Copy, Check, RotateCcw, BookOpen, Save } from 'lucide-react'
+import { useCalculationHistory } from '@/hooks/useCalculationHistory'
+import CalculationHistory from './CalculationHistory'
 
 type DestinationType = 'domestic' | 'international' | 'sameDay'
 
@@ -23,6 +25,8 @@ const CARRIERS: Record<string, CarrierRate> = {
 export default function ShippingCalc() {
   const t = useTranslations('shippingCalc')
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('shipping')
+  const [showSaveButton, setShowSaveButton] = useState(false)
 
   const [weight, setWeight] = useState<string>('2')
   const [width, setWidth] = useState<string>('30')
@@ -142,7 +146,7 @@ export default function ShippingCalc() {
                 step="0.1"
                 min="0"
                 value={weight}
-                onChange={(e) => setWeight(e.target.value)}
+                onChange={(e) => { setWeight(e.target.value); setShowSaveButton(true) }}
                 placeholder={t('weightPlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
               />
@@ -163,7 +167,7 @@ export default function ShippingCalc() {
                     step="0.1"
                     min="0"
                     value={width}
-                    onChange={(e) => setWidth(e.target.value)}
+                    onChange={(e) => { setWidth(e.target.value); setShowSaveButton(true) }}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -176,7 +180,7 @@ export default function ShippingCalc() {
                     step="0.1"
                     min="0"
                     value={height}
-                    onChange={(e) => setHeight(e.target.value)}
+                    onChange={(e) => { setHeight(e.target.value); setShowSaveButton(true) }}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -189,7 +193,7 @@ export default function ShippingCalc() {
                     step="0.1"
                     min="0"
                     value={depth}
-                    onChange={(e) => setDepth(e.target.value)}
+                    onChange={(e) => { setDepth(e.target.value); setShowSaveButton(true) }}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -209,7 +213,7 @@ export default function ShippingCalc() {
               </label>
               <div className="grid grid-cols-1 gap-2">
                 <button
-                  onClick={() => setDestination('domestic')}
+                  onClick={() => { setDestination('domestic'); setShowSaveButton(true) }}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     destination === 'domestic'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
@@ -219,7 +223,7 @@ export default function ShippingCalc() {
                   국내 배송
                 </button>
                 <button
-                  onClick={() => setDestination('international')}
+                  onClick={() => { setDestination('international'); setShowSaveButton(true) }}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     destination === 'international'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
@@ -229,7 +233,7 @@ export default function ShippingCalc() {
                   국제 배송
                 </button>
                 <button
-                  onClick={() => setDestination('sameDay')}
+                  onClick={() => { setDestination('sameDay'); setShowSaveButton(true) }}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     destination === 'sameDay'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
@@ -350,6 +354,27 @@ export default function ShippingCalc() {
                 최대 {(highestRate - cheapestRate).toLocaleString()}원 차이
               </div>
             </div>
+
+            {/* Save Button */}
+            {showSaveButton && (
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => {
+                    const result: Record<string, number> = {}
+                    carrierRates.forEach((c) => { result[c.key] = c.rate })
+                    saveCalculation(
+                      { weight, width, height, depth, destination },
+                      result
+                    )
+                    setShowSaveButton(false)
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                >
+                  <Save className="w-4 h-4" />
+                  저장하기
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -392,6 +417,31 @@ export default function ShippingCalc() {
           </div>
         </div>
       </div>
+
+      {/* Calculation History */}
+      <CalculationHistory
+        histories={histories}
+        isLoading={false}
+        onRemoveHistory={removeHistory}
+        onClearHistories={clearHistories}
+        onLoadHistory={(id) => {
+          const inputs = loadFromHistory(id)
+          if (inputs) {
+            if (inputs.weight !== undefined) setWeight(String(inputs.weight))
+            if (inputs.width !== undefined) setWidth(String(inputs.width))
+            if (inputs.height !== undefined) setHeight(String(inputs.height))
+            if (inputs.depth !== undefined) setDepth(String(inputs.depth))
+            if (inputs.destination !== undefined) setDestination(inputs.destination as DestinationType)
+          }
+          setShowSaveButton(false)
+        }}
+        formatResult={(result) => {
+          const rates = Object.values(result as Record<string, number>).filter(Boolean)
+          if (rates.length === 0) return ''
+          const min = Math.min(...rates)
+          return `최저: ${min.toLocaleString()}원`
+        }}
+      />
     </div>
   )
 }

@@ -100,6 +100,7 @@ const FuelCalculator = () => {
 
   // Driving log state
   const [drivingLogs, setDrivingLogs] = useState<DrivingLogEntry[]>([])
+  const [dateFilter, setDateFilter] = useState<'thisMonth' | 'last3Months' | 'all'>('all')
   const [newLogEntry, setNewLogEntry] = useState<Omit<DrivingLogEntry, 'id'>>({
     date: new Date().toISOString().slice(0, 10),
     distance: 0,
@@ -405,6 +406,22 @@ const FuelCalculator = () => {
       grandTotal
     }
   }, [drivingLogs, calculateLogFuelCost])
+
+  // Filtered logs by date
+  const filteredLogs = useMemo(() => {
+    const now = new Date()
+    if (dateFilter === 'thisMonth') {
+      return drivingLogs.filter(log => {
+        const d = new Date(log.date)
+        return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()
+      })
+    }
+    if (dateFilter === 'last3Months') {
+      const cutoff = new Date(now.getFullYear(), now.getMonth() - 2, 1)
+      return drivingLogs.filter(log => new Date(log.date) >= cutoff)
+    }
+    return drivingLogs
+  }, [drivingLogs, dateFilter])
 
   // Export driving logs to CSV
   const exportToCSV = useCallback(() => {
@@ -1114,11 +1131,59 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
               </div>
             </div>
 
+            {/* 날짜 필터 */}
+            {drivingLogs.length > 0 && (
+              <div className="flex gap-2 mb-4 flex-wrap">
+                {(['all', 'thisMonth', 'last3Months'] as const).map(f => (
+                  <button
+                    key={f}
+                    onClick={() => setDateFilter(f)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                      dateFilter === f
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    {f === 'all' ? '전체' : f === 'thisMonth' ? '이번 달' : '최근 3개월'}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* 요약 카드 */}
+            {filteredLogs.length > 0 && (
+              <div className="grid grid-cols-3 gap-3 mb-4">
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-center">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">총 주행거리</div>
+                  <div className="text-sm font-bold text-blue-700 dark:text-blue-300">
+                    {filteredLogs.reduce((sum, l) => sum + l.distance, 0).toLocaleString()} km
+                  </div>
+                </div>
+                <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 text-center">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">총 연료비</div>
+                  <div className="text-sm font-bold text-orange-700 dark:text-orange-300">
+                    {filteredLogs.reduce((sum, l) => sum + calculateLogFuelCost(l.distance), 0).toLocaleString()} 원
+                  </div>
+                </div>
+                <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 text-center">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">기록 수</div>
+                  <div className="text-sm font-bold text-green-700 dark:text-green-300">
+                    {filteredLogs.length}건
+                  </div>
+                </div>
+              </div>
+            )}
+
             {drivingLogs.length === 0 ? (
               <div className="text-center py-12">
                 <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-gray-500 dark:text-gray-400">{t('drivingLog.noEntries')}</p>
                 <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('drivingLog.addFirst')}</p>
+              </div>
+            ) : filteredLogs.length === 0 ? (
+              <div className="text-center py-12">
+                <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">해당 기간의 주행 기록이 없습니다.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -1136,7 +1201,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                     </tr>
                   </thead>
                   <tbody>
-                    {drivingLogs.map((log) => {
+                    {filteredLogs.map((log) => {
                       const fuelCost = calculateLogFuelCost(log.distance)
                       const total = log.tollFee + log.parkingFee + fuelCost
                       return (

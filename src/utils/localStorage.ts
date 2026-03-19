@@ -6,7 +6,7 @@ export interface CalculationHistory {
   | 'tax' | 'exchange' | 'real-estate' | 'stock' 
   | 'car-loan' | 'car-tax' | 'fuel' | 'regex' | 'bmi' | 'calorie' 
   | 'bodyFat' | 'workHours' | 'lotto' | 'ladder' 
-  | 'rentSubsidy' | 'bogeumjariLoan';
+  | 'rentSubsidy' | 'bogeumjariLoan' | 'shipping';
   timestamp: number;
   inputs: Record<string, any>;
   result: Record<string, any>;
@@ -357,6 +357,23 @@ export const generateHistoryTitle = {
     const rentAmount = Math.floor(rent / 10000);
     
     return `${typeLabel} ${members}인 월소득${incomeAmount}백만원 월세${rentAmount}만원`;
+  },
+
+  shipping: (inputs: any): string => {
+    const weight = inputs.weight || '0';
+    const width = inputs.width || '0';
+    const height = inputs.height || '0';
+    const depth = inputs.depth || '0';
+    const destination = inputs.destination || 'domestic';
+
+    const destLabels: Record<string, string> = {
+      domestic: '국내',
+      international: '국제',
+      sameDay: '당일'
+    };
+
+    const destLabel = destLabels[destination] || '국내';
+    return `${destLabel} ${weight}kg ${width}×${height}×${depth}cm`;
   },
 
   bogeumjariLoan: (inputs: any): string => {

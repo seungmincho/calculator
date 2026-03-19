@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { GitBranch, Play, RefreshCw, Share2, Check, Save, Users, Target, Zap } from 'lucide-react'
+import { GitBranch, Play, RefreshCw, Share2, Check, Save, Users, Target, Zap, BookMarked } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from 'next-intl'
@@ -35,6 +35,54 @@ interface Sparkle {
 const COLORS = [
   '#EF4444', '#3B82F6', '#22C55E', '#F59E0B',
   '#8B5CF6', '#EC4899', '#14B8A6', '#F97316',
+]
+
+// Preset configurations
+interface Preset {
+  id: string
+  participants: ParticipantInfo[]
+  outcomes: string[]
+}
+
+const PRESETS: Preset[] = [
+  {
+    id: 'lunch',
+    participants: [
+      { name: '나', animal: '🐶' }, { name: '친구1', animal: '🐱' },
+      { name: '친구2', animal: '🐭' }, { name: '친구3', animal: '🐹' }
+    ],
+    outcomes: ['짜장면', '짬뽕', '라면', '김밥']
+  },
+  {
+    id: 'duty',
+    participants: [
+      { name: '1번', animal: '🐶' }, { name: '2번', animal: '🐱' }, { name: '3번', animal: '🐭' }
+    ],
+    outcomes: ['당번', '당번', '면제']
+  },
+  {
+    id: 'gameOrder',
+    participants: [
+      { name: '플레이어1', animal: '🐶' }, { name: '플레이어2', animal: '🐱' },
+      { name: '플레이어3', animal: '🐭' }, { name: '플레이어4', animal: '🐹' }
+    ],
+    outcomes: ['1순위', '2순위', '3순위', '4순위']
+  },
+  {
+    id: 'teams',
+    participants: [
+      { name: '참가자1', animal: '🐶' }, { name: '참가자2', animal: '🐱' },
+      { name: '참가자3', animal: '🐭' }, { name: '참가자4', animal: '🐹' }
+    ],
+    outcomes: ['A팀', 'B팀', 'A팀', 'B팀']
+  },
+  {
+    id: 'coffee',
+    participants: [
+      { name: '나', animal: '🐶' }, { name: '동료1', animal: '🐱' }, { name: '동료2', animal: '🐭' }
+    ],
+    outcomes: ['구매', '구매', '면제']
+  },
 ]
 
 // Easing functions
@@ -110,6 +158,17 @@ export default function LadderGame() {
   const sparkleCounter = useRef(0)
 
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('ladder')
+
+  const applyPreset = useCallback((preset: Preset) => {
+    setParticipants(preset.participants)
+    setOutcomes(preset.outcomes)
+    setLadderLines([])
+    setResults({})
+    setShowResults(false)
+    setCompletedSet(new Set())
+    setAnimProgress({})
+    setTokenPos({})
+  }, [])
 
   // ── SVG layout ──────────────────────────────────────────────────
   const svgWidth = Math.max(320, participants.length * 90)
@@ -503,13 +562,33 @@ export default function LadderGame() {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* ── Settings panel ── */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <Users className="w-6 h-6 mr-2 text-green-600" />
             {t('settings.title')}
           </h2>
 
           <div className="space-y-6">
+            {/* Presets */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <BookMarked className="inline w-4 h-4 mr-1 mb-0.5" />
+                {t('presets.title')}
+              </label>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {PRESETS.map(preset => (
+                  <button
+                    key={preset.id}
+                    onClick={() => applyPreset(preset)}
+                    disabled={isPlaying}
+                    className="flex-shrink-0 px-3 py-1.5 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-700 rounded-lg text-xs font-medium hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  >
+                    {t(`presets.${preset.id}`)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Participants */}
             <div>
               <div className="flex justify-between items-center mb-3">
@@ -651,7 +730,7 @@ export default function LadderGame() {
                 >
                   <div className="flex items-center justify-center gap-2">
                     <Zap className="w-5 h-5" />
-                    <span>결과만 보기</span>
+                    <span>{t('showResultsOnly')}</span>
                   </div>
                 </button>
               )}
@@ -670,7 +749,7 @@ export default function LadderGame() {
             {/* Participant labels (top) */}
             <div
               className="flex mb-2"
-              style={{ paddingLeft: `${colWidth * 0.5}px`, paddingRight: `${colWidth * 0.5}px` }}
+              style={{ paddingLeft: `${100 / (2 * (participants.length + 1))}%`, paddingRight: `${100 / (2 * (participants.length + 1))}%` }}
             >
               {participants.map((p, i) => (
                 <button
@@ -849,7 +928,7 @@ export default function LadderGame() {
             {ladderReady && (
               <div
                 className="flex mt-2"
-                style={{ paddingLeft: `${colWidth * 0.5}px`, paddingRight: `${colWidth * 0.5}px` }}
+                style={{ paddingLeft: `${100 / (2 * (participants.length + 1))}%`, paddingRight: `${100 / (2 * (participants.length + 1))}%` }}
               >
                 {outcomes.map((o, i) => (
                   <div key={i} className="flex-1 flex justify-center">
