@@ -124,6 +124,15 @@ export default function BudgetCalculator() {
   const [presetName, setPresetName] = useState('')
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showGuide, setShowGuide] = useState(false)
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains('dark'))
+    check()
+    const observer = new MutationObserver(check)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
 
   // Load presets from localStorage
   useEffect(() => {
@@ -214,19 +223,24 @@ export default function BudgetCalculator() {
     }))
     if (data.length === 0) return {}
 
+    const tooltipBg = isDark ? 'rgba(31,41,55,0.97)' : 'rgba(255,255,255,0.97)'
+    const tooltipBorder = isDark ? '#4b5563' : '#e5e7eb'
+    const tooltipText = isDark ? '#f9fafb' : '#1f2937'
+    const legendText = isDark ? '#9ca3af' : '#6b7280'
+
     return {
       tooltip: {
         trigger: 'item' as const,
         formatter: '{b}: {c}원 ({d}%)',
-        backgroundColor: 'rgba(255,255,255,0.95)',
-        borderColor: '#e5e7eb',
-        textStyle: { color: '#1f2937', fontSize: 12 },
+        backgroundColor: tooltipBg,
+        borderColor: tooltipBorder,
+        textStyle: { color: tooltipText, fontSize: 12 },
       },
       legend: {
         orient: 'vertical' as const,
         right: '5%',
         top: 'center',
-        textStyle: { fontSize: 11, color: '#6b7280' },
+        textStyle: { fontSize: 11, color: legendText },
       },
       series: [
         {
@@ -242,7 +256,7 @@ export default function BudgetCalculator() {
         },
       ],
     }
-  }, [categoryBreakdown, t])
+  }, [categoryBreakdown, t, isDark])
 
   // ── Handlers ──
 
@@ -467,7 +481,7 @@ export default function BudgetCalculator() {
                 {presets.map((preset) => (
                   <div
                     key={preset.id}
-                    className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-750 rounded-lg"
+                    className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
                   >
                     <button
                       onClick={() => handleLoadPreset(preset)}
@@ -508,7 +522,7 @@ export default function BudgetCalculator() {
                     className={`p-4 rounded-lg border transition-colors ${
                       isOverAvg
                         ? 'border-amber-300 dark:border-amber-600 bg-amber-50 dark:bg-amber-950/30'
-                        : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-750'
+                        : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
@@ -875,7 +889,7 @@ export default function BudgetCalculator() {
 
             {/* Recommendations */}
             {totalIncome > 0 && (
-              <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-750 rounded-lg">
+              <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
                   {t('rule.recommendations')}
                 </h4>
