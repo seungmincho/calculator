@@ -888,7 +888,7 @@ export default function LadderGame() {
   const allCompleted = completedSet.size === participants.length
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 overflow-x-hidden">
+    <div className="max-w-6xl mx-auto space-y-8 w-full min-w-0">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 gap-3 min-w-0">
         <div className="min-w-0 flex-1">
