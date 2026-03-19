@@ -9,9 +9,9 @@
     "start": "next start",
     "lint": "next lint",
     "wrangler:dev": "wrangler pages dev out --compatibility-date=2025-12-09",
-    "wrangler:deploy": "next build && node scripts/fix-rsc-paths.js && wrangler pages deploy out",
-    "deploy": "wrangler pages deploy out",
-    "cf:deploy": "npm run build && wrangler pages deploy out"
+    "wrangler:deploy": "next build && node scripts/fix-rsc-paths.js && wrangler pages deploy out --commit-dirty=true --commit-message=deploy --branch=main",
+    "deploy": "wrangler pages deploy out --commit-dirty=true --commit-message=deploy --branch=main",
+    "cf:deploy": "npm run build && wrangler pages deploy out --commit-dirty=true --commit-message=deploy --branch=main"
   },
   "dependencies": {
     "@babylonjs/core": "^8.40.1",
