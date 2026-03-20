@@ -1178,7 +1178,16 @@
       "averageCalculator": "Average Calculator",
       "gradeCalculator": "Grade/Rank Calculator",
       "gpaConverter": "GPA Converter",
-      "pcElectricity": "PC Electricity Cost Calculator"
+      "pcElectricity": "PC Electricity Cost Calculator",
+      "parentalLeave": "Parental Leave Benefit Calculator",
+      "healthInsurance": "Health Insurance Premium Calculator",
+      "weddingCalculator": "Wedding Cost Planner",
+      "curlBuilder": "cURL Builder",
+      "comprehensivePropertyTax": "Comprehensive Property Tax Calculator",
+      "cagrCalculator": "CAGR Calculator",
+      "chess": "Chess",
+      "biorhythm": "Biorhythm Calculator",
+      "pomodoro": "Pomodoro Timer"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -1720,7 +1729,11 @@
       "empty": "No saved calculation history",
       "format": "Height {height}cm, Weight {weight}kg, BMI {bmi}"
     },
-    "placeholder": "BMI calculation results will appear when you enter height and weight"
+    "placeholder": "BMI calculation results will appear when you enter height and weight",
+    "common": {
+      "copied": "Copied",
+      "save": "Save"
+    }
   },
   "calorie": {
     "title": "Calorie Calculator",
@@ -2052,8 +2065,8 @@
       }
     },
     "minimumWage": {
-      "title": "2026 Minimum Wage Info",
       "2026": "2026 Minimum Hourly Rate",
+      "title": "2026 Minimum Wage Info",
       "monthly": "Monthly Min. Wage (incl. holiday pay)",
       "monthlyHours": "Monthly Standard Hours",
       "note": "* Based on 40 hours/week, 209 monthly hours including weekly holiday pay"
@@ -2318,7 +2331,11 @@
       "rule3": "Once placed, stones cannot be moved.",
       "rule4": "The first player to connect 5 stones wins!",
       "rule5": "Black has forbidden moves: double-three (3-3), double-four (4-4), and overline (6+)."
-    }
+    },
+    "doubleFourForbidden": "Double four (4-4) is forbidden!",
+    "overlineForbidden": "Overline (6+ in a row) is forbidden!",
+    "forbiddenMove": "Forbidden move!",
+    "draw": "Draw!"
   },
   "othello": {
     "title": "Online Othello",
@@ -2369,7 +2386,9 @@
       "rule2": "Place a disc to flip at least one opponent disc.",
       "rule3": "Flip all opponent discs in a straight line between your new disc and another of your discs.",
       "rule4": "The game ends when neither player can move. Most discs wins!"
-    }
+    },
+    "win": "You Win!",
+    "loss": "You Lose!"
   },
   "connect4": {
     "title": "Connect4",
@@ -2409,7 +2428,9 @@
       "rule2": "Discs fall to the lowest available space in the column.",
       "rule3": "First player to connect 4 discs in a row (horizontally, vertically, or diagonally) wins!",
       "rule4": "If the board fills up with no winner, the game is a draw."
-    }
+    },
+    "win": "You Win!",
+    "loss": "You Lose!"
   },
   "checkers": {
     "title": "Checkers",
@@ -2452,7 +2473,10 @@
       "rule3": "If you can capture, you must capture.",
       "rule4": "Reach the opposite end to become a King (can move backwards).",
       "rule5": "Win by capturing all opponent pieces or blocking all their moves."
-    }
+    },
+    "win": "You Win!",
+    "loss": "You Lose!",
+    "draw": "Draw!"
   },
   "mancala": {
     "title": "Mancala",
@@ -2500,8 +2524,24 @@
       "rule2": "If your last stone lands in your store, you get another turn.",
       "rule3": "If your last stone lands in an empty pit on your side, capture it and the opposite pit's stones.",
       "rule4": "The game ends when one side is empty. Remaining stones go to that player's store.",
-      "rule5": "The player with the most stones in their store wins!"
-    }
+      "rule5": "The player with the most stones in their store wins!",
+      "objective": "Objective",
+      "objectiveDesc": "Collect more stones in your store than your opponent.",
+      "setup": "Setup",
+      "setupDesc": "Each player has 6 pits with 4 stones each, and 1 store on their right.",
+      "gameplay": "Gameplay",
+      "gameplayDesc": "Pick up all stones from one of your pits and drop them one by one counterclockwise.",
+      "extraTurn": "Extra Turn",
+      "extraTurnDesc": "If your last stone lands in your store, you get another turn.",
+      "capture": "Capture",
+      "captureDesc": "If your last stone lands in an empty pit on your side, capture that stone and all stones in the opposite pit.",
+      "end": "End",
+      "endDesc": "Game ends when one side is empty. Remaining stones go to their owner's store."
+    },
+    "win": "You Win!",
+    "loss": "You Lose!",
+    "captured": "captured",
+    "stones": "stones"
   },
   "battleship": {
     "title": "Battleship",
@@ -2570,7 +2610,9 @@
       "gameplayDesc": "Take turns firing at enemy coordinates. Hit all parts of a ship to sink it.",
       "end": "Victory",
       "endDesc": "The player who sinks all 5 enemy ships first wins the game."
-    }
+    },
+    "win": "You Win!",
+    "loss": "You Lose!"
   },
   "dotsandboxes": {
     "title": "Dots and Boxes",
@@ -2615,8 +2657,19 @@
       "rule1": "Take turns drawing lines between dots.",
       "rule2": "Complete the fourth side of a box to claim it.",
       "rule3": "When you complete a box, you get another turn.",
-      "rule4": "The player with the most boxes wins!"
-    }
+      "rule4": "The player with the most boxes wins!",
+      "objective": "Objective",
+      "objectiveDesc": "Complete more boxes than your opponent.",
+      "gameplay": "Gameplay",
+      "gameplayDesc": "Take turns drawing lines between adjacent dots.",
+      "scoring": "Scoring",
+      "scoringDesc": "Complete a box by drawing its 4th side to claim it and get an extra turn.",
+      "end": "End",
+      "endDesc": "Game ends when all boxes are claimed. Player with more boxes wins."
+    },
+    "win": "You Win!",
+    "loss": "You Lose!",
+    "completedBox": "completed a box! Extra turn!"
   },
   "lotto": {
     "title": "Lotto Number Generator",
@@ -4212,6 +4265,42 @@
       "pcElectricity": {
         "title": "PC Electricity Calculator",
         "description": "Calculate monthly electricity cost from PC component power consumption"
+      },
+      "parentalLeave": {
+        "title": "Parental Leave Benefit Calculator",
+        "description": "2025 6+6 Parental Leave system with monthly benefits and couple simulation"
+      },
+      "healthInsurance": {
+        "title": "Health Insurance Premium Calculator",
+        "description": "Calculate premiums for workplace/regional subscribers, dependent eligibility check"
+      },
+      "weddingCalculator": {
+        "title": "Wedding Cost Planner",
+        "description": "From venue, photo/dress/makeup to congratulatory money estimation and family cost split"
+      },
+      "curlBuilder": {
+        "title": "cURL Builder",
+        "description": "Build cURL commands and convert to fetch/axios/Python/Go/PHP code"
+      },
+      "comprehensivePropertyTax": {
+        "title": "Comprehensive Property Tax Calculator",
+        "description": "Multi-property assessment, 2025 tax rates, elderly/long-term credits, tax burden ceiling"
+      },
+      "cagrCalculator": {
+        "title": "CAGR Calculator",
+        "description": "Compound Annual Growth Rate calculation, future value projection, investment comparison"
+      },
+      "chess": {
+        "title": "Chess",
+        "description": "Chess game with AI opponent, multiple difficulty levels"
+      },
+      "biorhythm": {
+        "title": "Biorhythm Calculator",
+        "description": "Physical, emotional, and intellectual rhythm charts based on birth date"
+      },
+      "pomodoro": {
+        "title": "Pomodoro Timer",
+        "description": "25-min focus + 5-min break, task management, notifications, stats"
       }
     }
   },
@@ -5383,9 +5472,56 @@
       "babyBoomer": "Baby Boomer (1946~1964)",
       "silent": "Silent Generation (~1945)"
     },
+    "placeholder": "Enter your birthdate to see results",
     "earlySchool": {
       "yes": "Early school year (born Jan-Feb)",
       "no": "N/A"
+    },
+    "birthday": {
+      "title": "Next Birthday D-Day",
+      "daysLeft": "Days remaining",
+      "nextAge": "Next birthday age",
+      "turningAge": "You turned {age} years old!",
+      "willTurn": "Age {age}"
+    },
+    "school": {
+      "title": "School Grade Info",
+      "entryYear": "Elementary entry year",
+      "yearSuffix": "",
+      "monthBorn": " born",
+      "currentStatus": "Current academic status",
+      "sameGrade": "Same grade peers",
+      "earlyBirthday": "Early birthday",
+      "earlyBirthdayNote": "Born in Jan-Feb (early birthday), in the same grade as those born Mar-Dec of the previous year.",
+      "status": {
+        "preschool": "Preschool",
+        "elementaryGrade": "Elementary grade {grade}",
+        "middleGrade": "Middle school grade {grade}",
+        "highGrade": "High school grade {grade}",
+        "universityGrade": "University year {grade}",
+        "graduated": "Graduated"
+      }
+    },
+    "milestone": {
+      "title": "Life Timeline",
+      "showTimeline": "Show timeline",
+      "hideTimeline": "Hide timeline",
+      "copyAll": "Copy timeline",
+      "clickToShow": "Click the button above to view the timeline",
+      "intAgeLabel": "Age {age}",
+      "current": "Current",
+      "elementary": "Elementary school entry",
+      "middle": "Middle school entry",
+      "high": "High school entry",
+      "driving": "Eligible for driver's license (age 18)",
+      "voting": "Voting rights (age 18)",
+      "adult": "Legal adult (age 19)",
+      "drinking": "Legal drinking age (age 19)",
+      "universityGrad": "University graduation (typical, 4-year program)",
+      "avgMarriageMale": "Average marriage age - Male (33.7, 2024 stats)",
+      "avgMarriageFemale": "Average marriage age - Female (31.3, 2024 stats)",
+      "seniorDiscount": "Senior discount eligibility (age 65)",
+      "pension": "National pension benefits start (age 65)"
     },
     "ageExplanation": {
       "title": "Age Calculation Methods",
@@ -5417,7 +5553,9 @@
         "items": [
           "International / Korean / Year age",
           "Total days, weeks, and months lived",
-          "Days until next birthday",
+          "Next birthday D-Day with upcoming age",
+          "School grade info (entry year, current grade, same-grade peers)",
+          "Life timeline (major milestones by year)",
           "Chinese zodiac, zodiac sign, day of birth",
           "Generation classification, early school year status"
         ]
@@ -6951,6 +7089,311 @@
           "Regular prenatal checkups are essential"
         ]
       }
+    },
+    "weeklyProgress": {
+      "title": "Pregnancy Week Progress",
+      "weekLabel": "Week {week}",
+      "dayLabel": "Day {day}",
+      "outOf40": "/ 40 weeks",
+      "trimester1Label": "1st Trimester (Wks 1-12)",
+      "trimester2Label": "2nd Trimester (Wks 13-27)",
+      "trimester3Label": "3rd Trimester (Wks 28-40)",
+      "currentWeekBadge": "Week {week} now",
+      "babyThisWeek": "This week baby is"
+    },
+    "babySize": {
+      "title": "Baby Size by Week",
+      "description": "How big is your baby this week?",
+      "lengthLabel": "Length",
+      "weightLabel": "Weight",
+      "week4": {
+        "fruit": "Poppy seed",
+        "emoji": "🌱",
+        "length": "~1mm",
+        "weight": "<1g"
+      },
+      "week5": {
+        "fruit": "Sesame seed",
+        "emoji": "🌾",
+        "length": "~2mm",
+        "weight": "<1g"
+      },
+      "week6": {
+        "fruit": "Lentil",
+        "emoji": "🫘",
+        "length": "~6mm",
+        "weight": "<1g"
+      },
+      "week7": {
+        "fruit": "Blueberry",
+        "emoji": "🫐",
+        "length": "~1cm",
+        "weight": "<1g"
+      },
+      "week8": {
+        "fruit": "Raspberry",
+        "emoji": "🍇",
+        "length": "~1.6cm",
+        "weight": "1g"
+      },
+      "week9": {
+        "fruit": "Grape",
+        "emoji": "🍇",
+        "length": "~2.3cm",
+        "weight": "2g"
+      },
+      "week10": {
+        "fruit": "Strawberry",
+        "emoji": "🍓",
+        "length": "~3.1cm",
+        "weight": "4g"
+      },
+      "week11": {
+        "fruit": "Fig",
+        "emoji": "🫐",
+        "length": "~4.1cm",
+        "weight": "7g"
+      },
+      "week12": {
+        "fruit": "Lime",
+        "emoji": "🍋",
+        "length": "~5.4cm",
+        "weight": "14g"
+      },
+      "week13": {
+        "fruit": "Pea pod",
+        "emoji": "🫛",
+        "length": "~7.4cm",
+        "weight": "23g"
+      },
+      "week14": {
+        "fruit": "Lemon",
+        "emoji": "🍋",
+        "length": "~8.7cm",
+        "weight": "43g"
+      },
+      "week15": {
+        "fruit": "Apple",
+        "emoji": "🍎",
+        "length": "~10.1cm",
+        "weight": "70g"
+      },
+      "week16": {
+        "fruit": "Avocado",
+        "emoji": "🥑",
+        "length": "~11.6cm",
+        "weight": "100g"
+      },
+      "week17": {
+        "fruit": "Pear",
+        "emoji": "🍐",
+        "length": "~13cm",
+        "weight": "140g"
+      },
+      "week18": {
+        "fruit": "Bell pepper",
+        "emoji": "🫑",
+        "length": "~14.2cm",
+        "weight": "190g"
+      },
+      "week19": {
+        "fruit": "Tomato",
+        "emoji": "🍅",
+        "length": "~15.3cm",
+        "weight": "240g"
+      },
+      "week20": {
+        "fruit": "Banana",
+        "emoji": "🍌",
+        "length": "~16.4cm",
+        "weight": "300g"
+      },
+      "week21": {
+        "fruit": "Carrot",
+        "emoji": "🥕",
+        "length": "~26.7cm",
+        "weight": "360g"
+      },
+      "week22": {
+        "fruit": "Papaya",
+        "emoji": "🍑",
+        "length": "~27.8cm",
+        "weight": "430g"
+      },
+      "week23": {
+        "fruit": "Mango",
+        "emoji": "🥭",
+        "length": "~28.9cm",
+        "weight": "501g"
+      },
+      "week24": {
+        "fruit": "Corn",
+        "emoji": "🌽",
+        "length": "~30cm",
+        "weight": "600g"
+      },
+      "week25": {
+        "fruit": "Cauliflower",
+        "emoji": "🥦",
+        "length": "~34.6cm",
+        "weight": "660g"
+      },
+      "week26": {
+        "fruit": "Lettuce",
+        "emoji": "🥬",
+        "length": "~35.6cm",
+        "weight": "760g"
+      },
+      "week27": {
+        "fruit": "Cabbage",
+        "emoji": "🥬",
+        "length": "~36.6cm",
+        "weight": "875g"
+      },
+      "week28": {
+        "fruit": "Eggplant",
+        "emoji": "🍆",
+        "length": "~37.6cm",
+        "weight": "1kg"
+      },
+      "week29": {
+        "fruit": "Pumpkin",
+        "emoji": "🎃",
+        "length": "~38.6cm",
+        "weight": "1.15kg"
+      },
+      "week30": {
+        "fruit": "Cucumber",
+        "emoji": "🥒",
+        "length": "~39.9cm",
+        "weight": "1.3kg"
+      },
+      "week31": {
+        "fruit": "Coconut",
+        "emoji": "🥥",
+        "length": "~41.1cm",
+        "weight": "1.5kg"
+      },
+      "week32": {
+        "fruit": "Coconut",
+        "emoji": "🥥",
+        "length": "~42.4cm",
+        "weight": "1.7kg"
+      },
+      "week33": {
+        "fruit": "Pineapple",
+        "emoji": "🍍",
+        "length": "~43.7cm",
+        "weight": "1.9kg"
+      },
+      "week34": {
+        "fruit": "Cantaloupe",
+        "emoji": "🍈",
+        "length": "~45cm",
+        "weight": "2.15kg"
+      },
+      "week35": {
+        "fruit": "Honeydew melon",
+        "emoji": "🍈",
+        "length": "~46.2cm",
+        "weight": "2.38kg"
+      },
+      "week36": {
+        "fruit": "Papaya",
+        "emoji": "🍑",
+        "length": "~47.4cm",
+        "weight": "2.62kg"
+      },
+      "week37": {
+        "fruit": "Romaine lettuce",
+        "emoji": "🥬",
+        "length": "~48.6cm",
+        "weight": "2.86kg"
+      },
+      "week38": {
+        "fruit": "Leek",
+        "emoji": "🧅",
+        "length": "~49.8cm",
+        "weight": "3.08kg"
+      },
+      "week39": {
+        "fruit": "Mini watermelon",
+        "emoji": "🍉",
+        "length": "~50.7cm",
+        "weight": "3.29kg"
+      },
+      "week40": {
+        "fruit": "Watermelon",
+        "emoji": "🍉",
+        "length": "~51.2cm",
+        "weight": "3.5kg"
+      }
+    },
+    "prenatalSchedule": {
+      "title": "Prenatal Checkup Schedule",
+      "subtitle": "Recommended prenatal checkup schedule by pregnancy week",
+      "completedLabel": "Done",
+      "upcomingLabel": "Upcoming",
+      "currentLabel": "Now",
+      "week8": {
+        "title": "Week 8",
+        "desc": "First prenatal visit, ultrasound (heartbeat check)"
+      },
+      "week12": {
+        "title": "Week 12",
+        "desc": "1st trimester screening (NT scan, blood test)"
+      },
+      "week16": {
+        "title": "Week 16",
+        "desc": "2nd trimester screening, amniocentesis (if needed)"
+      },
+      "week20": {
+        "title": "Week 20",
+        "desc": "Anatomy scan (detailed fetal structure check)"
+      },
+      "week24": {
+        "title": "Weeks 24-28",
+        "desc": "Gestational diabetes screening (OGTT)"
+      },
+      "week28": {
+        "title": "Weeks 28-32",
+        "desc": "Fetal movement test (NST), anemia screening"
+      },
+      "week36": {
+        "title": "Week 36+",
+        "desc": "Weekly prenatal visits, NST, birth preparation"
+      }
+    },
+    "weightGain": {
+      "title": "Pregnancy Weight Gain Guide",
+      "subtitle": "Recommended weight gain based on pre-pregnancy BMI (optional)",
+      "heightLabel": "Pre-pregnancy Height (cm)",
+      "weightLabel": "Pre-pregnancy Weight (kg)",
+      "heightPlaceholder": "e.g. 165",
+      "weightPlaceholder": "e.g. 58",
+      "bmiLabel": "Pre-pregnancy BMI",
+      "categoryLabel": "Weight Category",
+      "recommendedGainLabel": "Recommended Weight Gain",
+      "trimester1GainLabel": "1st Trimester Gain",
+      "trimester23GainLabel": "2nd & 3rd Tri. Weekly",
+      "underweight": "Underweight (BMI <18.5)",
+      "normal": "Normal (BMI 18.5-24.9)",
+      "overweight": "Overweight (BMI 25-29.9)",
+      "obese": "Obese (BMI 30+)",
+      "underweightRange": "12.5-18kg",
+      "normalRange": "11.5-16kg",
+      "overweightRange": "7-11.5kg",
+      "obeseRange": "5-9kg",
+      "underweightTrimester1": "1.5-3kg",
+      "normalTrimester1": "1-3kg",
+      "overweightTrimester1": "0.5-2kg",
+      "obeseTrimester1": "0.5-1kg",
+      "underweightWeekly": "~0.5kg/week",
+      "normalWeekly": "~0.4kg/week",
+      "overweightWeekly": "~0.3kg/week",
+      "obeseWeekly": "~0.2kg/week",
+      "enterHeightWeight": "Enter your pre-pregnancy height and weight to see BMI-based weight gain guidance.",
+      "disclaimer": "This information is for reference only. Consult your OB/GYN for personalized recommendations."
     }
   },
   "hourlyWage": {
@@ -8707,6 +9150,41 @@
           "Level increases every 10 lines, speed increases with level"
         ]
       }
+    },
+    "multi": {
+      "title": "Multiplayer",
+      "description": "Real-time 2-player Tetris battle! Clear lines to send garbage lines to your opponent.",
+      "soloMode": "Solo Mode",
+      "multiMode": "Multiplayer",
+      "you": "You",
+      "opponent": "Opponent",
+      "guest": "Guest",
+      "enterName": "Enter your nickname",
+      "waitingForOpponent": "Waiting for opponent...",
+      "sharePeerId": "Share this Peer ID with your opponent:",
+      "connectionFailed": "Failed to connect.",
+      "roomFull": "Room is already full.",
+      "opponentDisconnected": "Opponent has disconnected.",
+      "cancelAndBack": "Cancel and go back",
+      "connecting": "Connecting...",
+      "connectingDesc": "Establishing connection with the host...",
+      "backToLobby": "Back to Lobby",
+      "surrender": "Surrender",
+      "confirmSurrender": "Are you sure you want to surrender?",
+      "youWin": "You Win!",
+      "youLose": "You Lose...",
+      "draw": "Draw",
+      "playAgain": "Play Again",
+      "attackLog": "Attack Log",
+      "garbageLines": "garbage lines",
+      "incomingGarbage": "Incoming",
+      "directConnect": "Direct Connect",
+      "directConnectDesc": "Enter the Peer ID shared by the host to join directly.",
+      "enterPeerIdButton": "Join with Peer ID",
+      "enterPeerId": "Enter host Peer ID:",
+      "chat": "Chat",
+      "noChatMessages": "No messages yet",
+      "typeMessage": "Type a message..."
     }
   },
   "numberBaseball": {
@@ -10973,22 +11451,52 @@
     "roundLabel": "Round {current}/{total}",
     "start": "Start",
     "pause": "Pause",
+    "skip": "Skip",
     "resetPhase": "Reset Phase",
     "resetAll": "Reset All",
     "autoStart": "Auto-start next phase",
     "soundOn": "Enable sound",
     "soundOff": "Disable sound",
+    "notifOn": "Enable notifications",
+    "notifOff": "Disable notifications",
     "settings": "Settings",
-    "statsTitle": "Session Statistics",
-    "statsTotalWork": "Focus Time (min)",
-    "statsCompletedRounds": "Completed Rounds",
-    "statsLongBreaks": "Long Breaks",
+    "currentTask": "Current task",
+    "notificationTitle": "Pomodoro Timer",
+    "notificationWorkDone": "Focus session complete! Next: {next}",
+    "notificationBreakDone": "Break over! Time to focus again.",
+    "taskTitle": "Task List",
+    "taskPlaceholder": "Add a task...",
+    "taskEmpty": "No tasks yet. Add one above.",
+    "taskEstimate": "Estimated pomodoros",
+    "statsTitle": "Statistics",
+    "statsTodayPomodoros": "Today's Pomodoros",
+    "statsTodayMinutes": "Today's Focus (min)",
+    "statsSessionRounds": "Session Done",
+    "statsStreak": "Day Streak",
+    "statsWeeklyTitle": "This Week",
+    "weekDays": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ],
     "settingsTitle": "Timer Settings",
-    "settingsWork": "Work Duration",
+    "settingsTimeSection": "Time",
+    "settingsWork": "Focus Duration",
     "settingsShortBreak": "Short Break",
     "settingsLongBreak": "Long Break",
     "settingsLongBreakInterval": "Long break every (rounds)",
-    "settingsMinutes": "min",
+    "settingsMin": "min",
+    "settingsNotifSection": "Notifications",
+    "settingsBrowserNotif": "Browser Notifications",
+    "settingsNotifDenied": "Blocked",
+    "settingsNotifAllow": "Allow",
+    "settingsSound": "Alarm Sound",
+    "settingsVolume": "Volume",
+    "settingsPreview": "Preview",
     "save": "Save",
     "cancel": "Cancel",
     "guideTitle": "Pomodoro Technique Guide",
@@ -13055,8 +13563,29 @@
     "weekdays": "Weekdays at 9 AM",
     "expression": "Cron Expression",
     "koreanDescription": "Description",
-    "monthNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    "dayNames": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "monthNames": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "dayNames": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
     "guide": {
       "title": "Crontab Guide",
       "format": {
@@ -13080,63 +13609,33 @@
   },
   "regexBuilder": {
     "title": "Regex Builder",
-    "description": "Build and test regular expressions visually in real-time.",
+    "description": "Build and test regular expressions visually. Pattern library, real-time match highlighting, and string replacement support.",
     "pattern": "Regex Pattern",
     "flags": "Flags",
     "testText": "Test Text",
     "matches": "Matches",
-    "matchCount": "Match Count",
-    "noMatch": "No Match",
+    "matchCount": " match(es)",
+    "noMatch": "No matches",
     "replace": "Replace",
     "replaceWith": "Replace With",
-    "result": "Result",
+    "result": "Replace Result",
     "commonPatterns": "Common Patterns",
-    "groups": "Groups",
+    "groups": "Capture Groups",
     "index": "Index",
     "value": "Value",
     "copy": "Copy",
-    "copied": "Copied",
+    "copied": "Copied!",
     "matchMode": "Match Mode",
     "replaceMode": "Replace Mode",
-    "explanation": "Pattern Explanation",
-    "invalidPattern": "Invalid Pattern",
-    "patternPlaceholder": "Enter regex (e.g., \\d{3}-\\d{4})",
-    "testPlaceholder": "Enter text to test",
-    "replacePlaceholder": "Enter replacement string",
-    "global": "Global (g)",
-    "caseInsensitive": "Case Insensitive (i)",
-    "multiline": "Multiline (m)",
-    "dotAll": "Dot All (s)",
-    "unicode": "Unicode (u)",
-    "email": "Email",
-    "phoneKr": "Korean Phone",
-    "url": "URL",
-    "ipAddress": "IP Address",
-    "koreanOnly": "Korean Only",
-    "htmlTag": "HTML Tag",
-    "date": "Date (YYYY-MM-DD)",
-    "residentId": "Resident ID",
-    "guide": {
-      "title": "Regex Guide",
-      "basics": {
-        "title": "Basic Syntax",
-        "items": [
-          "\\d = digit, \\w = word char, \\s = whitespace",
-          ". = any char, ^ = start, $ = end",
-          "* = 0+, + = 1+, ? = 0 or 1",
-          "[abc] = char class, (group) = capture group"
-        ]
-      },
-      "flags": {
-        "title": "Flag Descriptions",
-        "items": [
-          "g: Global search (find all matches)",
-          "i: Case insensitive matching",
-          "m: ^/$ match line start/end",
-          "s: . matches newlines too"
-        ]
-      }
-    }
+    "explanation": "Pattern explanation",
+    "patternEmail": "Email",
+    "patternPhone": "Korean Phone",
+    "patternUrl": "URL",
+    "patternIp": "IP Address",
+    "patternKorean": "Korean only",
+    "patternHtml": "HTML Tag",
+    "patternDate": "Date (YYYY-MM-DD)",
+    "patternRrn": "Korean SSN"
   },
   "envEditor": {
     "title": "Env Editor",
@@ -13255,36 +13754,6 @@
         ]
       }
     }
-  },
-  "regexBuilder": {
-    "title": "Regex Builder",
-    "description": "Build and test regular expressions visually. Pattern library, real-time match highlighting, and string replacement support.",
-    "pattern": "Regex Pattern",
-    "flags": "Flags",
-    "testText": "Test Text",
-    "matches": "Matches",
-    "matchCount": " match(es)",
-    "noMatch": "No matches",
-    "replace": "Replace",
-    "replaceWith": "Replace With",
-    "result": "Replace Result",
-    "commonPatterns": "Common Patterns",
-    "groups": "Capture Groups",
-    "index": "Index",
-    "value": "Value",
-    "copy": "Copy",
-    "copied": "Copied!",
-    "matchMode": "Match Mode",
-    "replaceMode": "Replace Mode",
-    "explanation": "Pattern explanation",
-    "patternEmail": "Email",
-    "patternPhone": "Korean Phone",
-    "patternUrl": "URL",
-    "patternIp": "IP Address",
-    "patternKorean": "Korean only",
-    "patternHtml": "HTML Tag",
-    "patternDate": "Date (YYYY-MM-DD)",
-    "patternRrn": "Korean SSN"
   },
   "gifMaker": {
     "title": "GIF Maker",
@@ -13985,472 +14454,919 @@
     "statStdDev": "Std Deviation",
     "statMedian": "Median",
     "resultLabel": "Result",
-    "guide.title": "Average Guide",
-    "guide.arithmetic.title": "Arithmetic Mean",
-    "guide.arithmetic.items": ["Most common average", "Sum all values and divide by count", "Sensitive to outliers"],
-    "guide.weighted.title": "Weighted Mean",
-    "guide.weighted.items": ["When values have different importance", "Used for GPA calculation", "Weighted survey analysis"],
-    "guide.geometric.title": "Geometric Mean",
-    "guide.geometric.items": ["Best for growth rates, returns", "Only positive numbers", "Essential for compound returns"],
-    "guide.harmonic.title": "Harmonic Mean",
-    "guide.harmonic.items": ["Best for rates and ratios", "Average speed over same distance", "Cannot include zero"]
+    "guide": {
+      "title": "Average Guide",
+      "arithmetic": {
+        "title": "Arithmetic Mean",
+        "items": [
+          "Most common average",
+          "Sum all values and divide by count",
+          "Sensitive to outliers"
+        ]
+      },
+      "weighted": {
+        "title": "Weighted Mean",
+        "items": [
+          "When values have different importance",
+          "Used for GPA calculation",
+          "Weighted survey analysis"
+        ]
+      },
+      "geometric": {
+        "title": "Geometric Mean",
+        "items": [
+          "Best for growth rates, returns",
+          "Only positive numbers",
+          "Essential for compound returns"
+        ]
+      },
+      "harmonic": {
+        "title": "Harmonic Mean",
+        "items": [
+          "Best for rates and ratios",
+          "Average speed over same distance",
+          "Cannot include zero"
+        ]
+      }
+    }
   },
   "gradeCalc": {
     "title": "Grade/Rank Calculator",
     "description": "Calculate grade (9-tier), percentile from rank and total students",
-    "input.score": "Score (Optional)",
-    "input.scorePlaceholder": "Enter score (reference)",
-    "input.rank": "Rank",
-    "input.rankPlaceholder": "Enter your rank",
-    "input.rankHelp": "Your position among all students",
-    "input.totalStudents": "Total Students",
-    "input.totalStudentsPlaceholder": "Enter total number of students",
-    "input.calculate": "Calculate",
-    "input.reset": "Reset",
-    "result.title": "Results",
-    "result.grade": "Grade",
-    "result.percentile": "Percentile",
-    "result.rank": "Rank",
-    "result.topPercent": "Top",
-    "result.gradeUnit": "Grade",
-    "table.title": "9-Grade Reference Table",
-    "table.grade": "Grade",
-    "table.cutoff": "Cutoff Rank",
-    "table.cumulative": "Cumulative %",
-    "table.ratio": "Ratio",
-    "position.title": "Your Position",
-    "position.topLabel": "Top",
-    "grades": ["Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9"],
-    "guide.title": "Grade Calculation Guide",
-    "guide.gradeSystem.title": "9-Grade System",
-    "guide.gradeSystem.items": ["Grade 1: Top 4% (highest)", "Grade 2: Top 4~11%", "Grade 3: Top 11~23%", "Grade 4: Top 23~40%", "Grade 5: Top 40~60% (middle)", "Grades 6-9: Bottom 40%"],
-    "guide.usage.title": "Usage",
-    "guide.usage.items": ["College admission: Calculate transcript grades", "Mock exams: Raw score → rank → grade", "Rank percentile = rank/total × 100"],
-    "error.invalidRank": "Invalid rank",
-    "error.rankExceedsTotal": "Rank exceeds total students",
-    "error.required": "Please enter rank and total students"
+    "input": {
+      "score": "Score (Optional)",
+      "scorePlaceholder": "Enter score (reference)",
+      "rank": "Rank",
+      "rankPlaceholder": "Enter your rank",
+      "rankHelp": "Your position among all students",
+      "totalStudents": "Total Students",
+      "totalStudentsPlaceholder": "Enter total number of students",
+      "calculate": "Calculate",
+      "reset": "Reset",
+      "title": "Rank/Grade Input"
+    },
+    "result": {
+      "title": "Results",
+      "grade": "Grade",
+      "percentile": "Percentile",
+      "rank": "Rank",
+      "topPercent": "Top",
+      "gradeUnit": "Grade"
+    },
+    "table": {
+      "title": "9-Grade Reference Table",
+      "grade": "Grade",
+      "cutoff": "Cutoff Rank",
+      "cumulative": "Cumulative %",
+      "ratio": "Ratio",
+      "person": "th"
+    },
+    "position": {
+      "title": "Your Position",
+      "topLabel": "Top"
+    },
+    "grades": [
+      "Grade 1",
+      "Grade 2",
+      "Grade 3",
+      "Grade 4",
+      "Grade 5",
+      "Grade 6",
+      "Grade 7",
+      "Grade 8",
+      "Grade 9"
+    ],
+    "guide": {
+      "title": "Grade Calculation Guide",
+      "gradeSystem": {
+        "title": "9-Grade System",
+        "items": [
+          "Grade 1: Top 4% (highest)",
+          "Grade 2: Top 4~11%",
+          "Grade 3: Top 11~23%",
+          "Grade 4: Top 23~40%",
+          "Grade 5: Top 40~60% (middle)",
+          "Grades 6-9: Bottom 40%"
+        ]
+      },
+      "usage": {
+        "title": "Usage",
+        "items": [
+          "College admission: Calculate transcript grades",
+          "Mock exams: Raw score → rank → grade",
+          "Rank percentile = rank/total × 100"
+        ]
+      }
+    },
+    "error": {
+      "invalidRank": "Invalid rank",
+      "rankExceedsTotal": "Rank exceeds total students",
+      "required": "Please enter rank and total students"
+    }
   },
   "gpaConverterCalc": {
     "title": "GPA Converter",
     "description": "Convert between 4.3 and 4.5 scale GPA with percentile",
-    "mode.label": "Conversion Mode",
-    "mode.45to43": "4.5 → 4.3",
-    "mode.43to45": "4.3 → 4.5",
-    "mode.percentToGpa": "Percent → GPA",
-    "mode.gpaToPercent": "GPA → Percent",
-    "input.label": "Input Value",
-    "input.placeholder": "Enter value",
-    "input.maxLabel": "Max",
-    "result.title": "Conversion Result",
-    "result.converted": "Converted GPA",
-    "result.grade": "Grade",
-    "result.percentRange": "Percentile Range",
-    "result.outOf": "out of",
-    "result.empty": "Enter a value to see the result",
-    "result.invalidRange": "Value out of valid range",
-    "table.title": "GPA-Grade Reference Table",
-    "table.grade": "Grade",
-    "table.gpa45": "4.5 Scale",
-    "table.gpa43": "4.3 Scale",
-    "table.percent": "Percentile",
+    "mode": {
+      "label": "Conversion Mode",
+      "45to43": "4.5 → 4.3",
+      "43to45": "4.3 → 4.5",
+      "percentToGpa": "Percent → GPA",
+      "gpaToPercent": "GPA → Percent"
+    },
+    "input": {
+      "label": "Input Value",
+      "placeholder": "Enter value",
+      "maxLabel": "Max"
+    },
+    "result": {
+      "title": "Conversion Result",
+      "converted": "Converted GPA",
+      "grade": "Grade",
+      "percentRange": "Percentile Range",
+      "outOf": "out of",
+      "empty": "Enter a value to see the result",
+      "invalidRange": "Value out of valid range"
+    },
+    "table": {
+      "title": "GPA-Grade Reference Table",
+      "grade": "Grade",
+      "gpa45": "4.5 Scale",
+      "gpa43": "4.3 Scale",
+      "percent": "Percentile"
+    },
     "grades": [
-      {"grade": "A+", "gpa45": "4.5", "gpa43": "4.3", "percent": "95~100"},
-      {"grade": "A0", "gpa45": "4.0", "gpa43": "4.0", "percent": "90~94"},
-      {"grade": "B+", "gpa45": "3.5", "gpa43": "3.5", "percent": "85~89"},
-      {"grade": "B0", "gpa45": "3.0", "gpa43": "3.0", "percent": "80~84"},
-      {"grade": "C+", "gpa45": "2.5", "gpa43": "2.5", "percent": "75~79"},
-      {"grade": "C0", "gpa45": "2.0", "gpa43": "2.0", "percent": "70~74"},
-      {"grade": "D+", "gpa45": "1.5", "gpa43": "1.5", "percent": "65~69"},
-      {"grade": "D0", "gpa45": "1.0", "gpa43": "1.0", "percent": "60~64"},
-      {"grade": "F", "gpa45": "0.0", "gpa43": "0.0", "percent": "Below 60"}
+      {
+        "grade": "A+",
+        "gpa45": "4.5",
+        "gpa43": "4.3",
+        "percent": "95~100"
+      },
+      {
+        "grade": "A0",
+        "gpa45": "4.0",
+        "gpa43": "4.0",
+        "percent": "90~94"
+      },
+      {
+        "grade": "B+",
+        "gpa45": "3.5",
+        "gpa43": "3.5",
+        "percent": "85~89"
+      },
+      {
+        "grade": "B0",
+        "gpa45": "3.0",
+        "gpa43": "3.0",
+        "percent": "80~84"
+      },
+      {
+        "grade": "C+",
+        "gpa45": "2.5",
+        "gpa43": "2.5",
+        "percent": "75~79"
+      },
+      {
+        "grade": "C0",
+        "gpa45": "2.0",
+        "gpa43": "2.0",
+        "percent": "70~74"
+      },
+      {
+        "grade": "D+",
+        "gpa45": "1.5",
+        "gpa43": "1.5",
+        "percent": "65~69"
+      },
+      {
+        "grade": "D0",
+        "gpa45": "1.0",
+        "gpa43": "1.0",
+        "percent": "60~64"
+      },
+      {
+        "grade": "F",
+        "gpa45": "0.0",
+        "gpa43": "0.0",
+        "percent": "Below 60"
+      }
     ],
-    "guide.title": "GPA Conversion Guide",
-    "guide.sections": [
-      {"title": "4.5 ↔ 4.3 Conversion", "items": ["4.5→4.3: GPA × (4.3/4.5) ≈ ×0.9556", "4.3→4.5: GPA × (4.5/4.3) ≈ ×1.0465", "Commonly used for job and grad school applications"]},
-      {"title": "Percentile Conversion", "items": ["Percentile standards may vary by institution", "Above table shows general reference", "Using transcript percentile is most accurate"]}
-    ],
+    "guide": {
+      "title": "GPA Conversion Guide",
+      "sections": [
+        {
+          "title": "4.5 ↔ 4.3 Conversion",
+          "items": [
+            "4.5→4.3: GPA × (4.3/4.5) ≈ ×0.9556",
+            "4.3→4.5: GPA × (4.5/4.3) ≈ ×1.0465",
+            "Commonly used for job and grad school applications"
+          ]
+        },
+        {
+          "title": "Percentile Conversion",
+          "items": [
+            "Percentile standards may vary by institution",
+            "Above table shows general reference",
+            "Using transcript percentile is most accurate"
+          ]
+        }
+      ]
+    },
     "copyResult": "Copy Result",
     "copied": "Copied"
   },
   "pcElectricity": {
     "title": "PC Electricity Calculator",
     "description": "Calculate monthly/yearly electricity cost from PC component power consumption",
-    "components.cpu": "CPU",
-    "components.gpu": "GPU",
-    "components.ram": "RAM",
-    "components.storage": "Storage",
-    "components.monitor": "Monitor",
-    "components.etc": "Other (Keyboard/Mouse/Fans)",
-    "components.cpuLabel": "CPU Power",
-    "components.gpuLabel": "GPU Power",
-    "components.ramLabel": "RAM",
-    "components.storageLabel": "Storage",
-    "components.monitorLabel": "Monitor",
-    "components.etcLabel": "Other",
-    "cpu.presets": "CPU Presets",
-    "gpu.presets": "GPU Presets",
-    "ram.slots": "Slots",
-    "ram.perSlot": "10W per slot",
-    "storage.ssd": "SSD",
-    "storage.hdd": "HDD",
-    "storage.count": "units",
-    "monitor.presets": "Monitor Presets",
-    "monitor.dual": "Dual Monitor",
-    "monitor.inch": "inch",
+    "components": {
+      "cpu": "CPU",
+      "gpu": "GPU",
+      "ram": "RAM",
+      "storage": "Storage",
+      "monitor": "Monitor",
+      "etc": "Other (Keyboard/Mouse/Fans)",
+      "cpuLabel": "CPU Power",
+      "gpuLabel": "GPU Power",
+      "ramLabel": "RAM",
+      "storageLabel": "Storage",
+      "monitorLabel": "Monitor",
+      "etcLabel": "Other"
+    },
+    "cpu": {
+      "presets": "CPU Presets"
+    },
+    "gpu": {
+      "presets": "GPU Presets"
+    },
+    "ram": {
+      "slots": "Slots",
+      "perSlot": "10W per slot"
+    },
+    "storage": {
+      "ssd": "SSD",
+      "hdd": "HDD",
+      "count": "units"
+    },
+    "monitor": {
+      "presets": "Monitor Presets",
+      "dual": "Dual Monitor",
+      "inch": "inch"
+    },
     "custom": "Custom",
     "watt": "W",
-    "usage.title": "Usage Pattern",
-    "usage.hoursPerDay": "Hours per Day",
-    "usage.daysPerMonth": "Days per Month",
-    "usage.hours": "hours",
-    "usage.days": "days",
-    "load.title": "Load Level",
-    "load.gaming": "Gaming (85%)",
-    "load.normal": "Normal (50%)",
-    "load.idle": "Idle (20%)",
-    "load.custom": "Custom",
-    "load.percent": "%",
-    "tariff.title": "Electricity Rate",
-    "tariff.progressive": "2025 KEPCO Progressive",
-    "tariff.custom": "Custom Rate",
-    "tariff.wonPerKwh": "KRW/kWh",
-    "tariff.tier1": "~200kWh: 120 KRW",
-    "tariff.tier2": "200~400kWh: 214.6 KRW",
-    "tariff.tier3": "400kWh~: 307.3 KRW",
-    "result.title": "Results",
-    "result.totalWatt": "Total Power",
-    "result.actualWatt": "Actual Power",
-    "result.monthlyKwh": "Monthly Usage",
-    "result.yearlyKwh": "Yearly Usage",
-    "result.monthlyCost": "Monthly Cost",
-    "result.yearlyCost": "Yearly Cost",
-    "result.won": "KRW",
-    "result.kwh": "kWh",
-    "ratio.title": "Component Power Ratio",
-    "guide.title": "PC Electricity Guide",
-    "guide.section1.title": "Power Consumption Basis",
-    "guide.section1.items": ["TDP approximates maximum power consumption", "Actual consumption varies by load level", "Gaming: ~85%, Normal: ~50%, Idle: ~20% of max"],
-    "guide.section2.title": "Power Saving Tips",
-    "guide.section2.items": ["Turn off when not in use — standby power adds up", "Use high-efficiency PSU (80 Plus Gold or above)", "Lower monitor brightness — saves 10~20% power", "Undervolting GPU reduces power consumption"]
+    "usage": {
+      "title": "Usage Pattern",
+      "hoursPerDay": "Hours per Day",
+      "daysPerMonth": "Days per Month",
+      "hours": "hours",
+      "days": "days"
+    },
+    "load": {
+      "title": "Load Level",
+      "gaming": "Gaming (85%)",
+      "normal": "Normal (50%)",
+      "idle": "Idle (20%)",
+      "custom": "Custom",
+      "percent": "%"
+    },
+    "tariff": {
+      "title": "Electricity Rate",
+      "progressive": "2025 KEPCO Progressive",
+      "custom": "Custom Rate",
+      "wonPerKwh": "KRW/kWh",
+      "tier1": "~200kWh: 120 KRW",
+      "tier2": "200~400kWh: 214.6 KRW",
+      "tier3": "400kWh~: 307.3 KRW"
+    },
+    "result": {
+      "title": "Results",
+      "totalWatt": "Total Power",
+      "actualWatt": "Actual Power",
+      "monthlyKwh": "Monthly Usage",
+      "yearlyKwh": "Yearly Usage",
+      "monthlyCost": "Monthly Cost",
+      "yearlyCost": "Yearly Cost",
+      "won": "KRW",
+      "kwh": "kWh"
+    },
+    "ratio": {
+      "title": "Component Power Ratio"
+    },
+    "guide": {
+      "title": "PC Electricity Guide",
+      "section1": {
+        "title": "Power Consumption Basis",
+        "items": [
+          "TDP approximates maximum power consumption",
+          "Actual consumption varies by load level",
+          "Gaming: ~85%, Normal: ~50%, Idle: ~20% of max"
+        ]
+      },
+      "section2": {
+        "title": "Power Saving Tips",
+        "items": [
+          "Turn off when not in use — standby power adds up",
+          "Use high-efficiency PSU (80 Plus Gold or above)",
+          "Lower monitor brightness — saves 10~20% power",
+          "Undervolting GPU reduces power consumption"
+        ]
+      }
+    }
   },
   "salesCommissionCalc": {
     "title": "Sales Commission Calculator",
     "description": "Compare Coupang, SmartStore, and 11st commission rates by category",
-    "input.sellingPrice": "Selling Price",
-    "input.sellingPricePlaceholder": "Enter selling price",
-    "input.shippingCost": "Shipping Cost (Seller-set)",
-    "input.shippingCostPlaceholder": "Enter shipping cost",
-    "input.category": "Category",
-    "input.unit": "KRW",
-    "category.fashion": "Fashion Clothing",
-    "category.fashionAcc": "Fashion Accessories",
-    "category.beauty": "Beauty",
-    "category.food": "Food",
-    "category.living": "Living/Home",
-    "category.electronics": "Electronics",
-    "category.sports": "Sports",
-    "category.books": "Books",
-    "category.baby": "Baby/Kids",
-    "category.furniture": "Furniture/Interior",
-    "platform.coupang": "Coupang",
-    "platform.smartstore": "SmartStore",
-    "platform.elevenst": "11st",
-    "result.commissionRate": "Commission Rate",
-    "result.commissionAmount": "Commission Amount",
-    "result.settlementAmount": "Settlement Amount",
-    "result.bestLabel": "Lowest Fee",
-    "result.noInput": "Enter selling price to compare fees across 3 platforms",
-    "compare.title": "Full Category Comparison",
-    "compare.categoryHeader": "Category",
-    "compare.lowestLabel": "Lowest",
-    "notes.title": "Notes",
-    "notes.items": ["Coupang: Commission on total payment (incl. shipping), monthly fee 55K (if sales >1M)", "SmartStore: No sales commission on shipping, only NaverPay fee", "11st: Rates vary by sub-category and seller grade, shown rates are averages", "Actual rates may differ based on sub-category, seller grade, and promotions"],
-    "guide.title": "Commission Guide",
-    "guide.commission.title": "Fee Structure",
-    "guide.commission.items": ["Coupang: 4~10.9% sales fee + 55K monthly", "SmartStore: NaverPay (1.98~3.63%) + Sales (2.73%)", "11st: 5~12% by category, tiered by seller grade"],
-    "guide.settlement.title": "Settlement Calculation",
-    "guide.settlement.items": ["Settlement = Price + Shipping - Commission", "Coupang applies commission on shipping-inclusive amount", "SmartStore/11st apply commission on selling price only"],
-    "guide.tips.title": "Fee Reduction Tips",
-    "guide.tips.items": ["Electronics: Coupang lowest at 5%", "Books: SmartStore lowest at 3%", "List on multiple platforms and optimize by category"]
+    "input": {
+      "sellingPrice": "Selling Price",
+      "sellingPricePlaceholder": "Enter selling price",
+      "shippingCost": "Shipping Cost (Seller-set)",
+      "shippingCostPlaceholder": "Enter shipping cost",
+      "category": "Category",
+      "unit": "KRW"
+    },
+    "category": {
+      "fashion": "Fashion Clothing",
+      "fashionAcc": "Fashion Accessories",
+      "beauty": "Beauty",
+      "food": "Food",
+      "living": "Living/Home",
+      "electronics": "Electronics",
+      "sports": "Sports",
+      "books": "Books",
+      "baby": "Baby/Kids",
+      "furniture": "Furniture/Interior"
+    },
+    "platform": {
+      "coupang": "Coupang",
+      "smartstore": "SmartStore",
+      "elevenst": "11st"
+    },
+    "result": {
+      "commissionRate": "Commission Rate",
+      "commissionAmount": "Commission Amount",
+      "settlementAmount": "Settlement Amount",
+      "bestLabel": "Lowest Fee",
+      "noInput": "Enter selling price to compare fees across 3 platforms"
+    },
+    "compare": {
+      "title": "Full Category Comparison",
+      "categoryHeader": "Category",
+      "lowestLabel": "Lowest"
+    },
+    "notes": {
+      "title": "Notes",
+      "items": [
+        "Coupang: Commission on total payment (incl. shipping), monthly fee 55K (if sales >1M)",
+        "SmartStore: No sales commission on shipping, only NaverPay fee",
+        "11st: Rates vary by sub-category and seller grade, shown rates are averages",
+        "Actual rates may differ based on sub-category, seller grade, and promotions"
+      ]
+    },
+    "guide": {
+      "title": "Commission Guide",
+      "commission": {
+        "title": "Fee Structure",
+        "items": [
+          "Coupang: 4~10.9% sales fee + 55K monthly",
+          "SmartStore: NaverPay (1.98~3.63%) + Sales (2.73%)",
+          "11st: 5~12% by category, tiered by seller grade"
+        ]
+      },
+      "settlement": {
+        "title": "Settlement Calculation",
+        "items": [
+          "Settlement = Price + Shipping - Commission",
+          "Coupang applies commission on shipping-inclusive amount",
+          "SmartStore/11st apply commission on selling price only"
+        ]
+      },
+      "tips": {
+        "title": "Fee Reduction Tips",
+        "items": [
+          "Electronics: Coupang lowest at 5%",
+          "Books: SmartStore lowest at 3%",
+          "List on multiple platforms and optimize by category"
+        ]
+      }
+    }
   },
   "acquisitionTaxCalc": {
     "title": "Acquisition Tax Calculator",
     "description": "Auto-calculate real estate acquisition tax, special tax, and education tax (2025)",
-    "propertyType.label": "Property Type",
-    "propertyType.house": "House",
-    "propertyType.land": "Land",
-    "propertyType.commercial": "Commercial",
-    "price.label": "Acquisition Price",
-    "price.placeholder": "Enter acquisition price",
-    "area.label": "Exclusive Area (㎡)",
-    "area.placeholder": "Exclusive area",
-    "houseCount.label": "Number of Houses",
-    "houseCount.one": "1 House",
-    "houseCount.two": "2 Houses",
-    "houseCount.threePlus": "3+ Houses",
-    "houseCount.corp": "Corporation",
-    "adjustedArea.label": "Speculative Overheated Zone",
-    "adjustedArea.yes": "Yes",
-    "adjustedArea.no": "No",
-    "areaOver85.label": "Exclusive Area Over 85㎡",
-    "areaOver85.yes": "Yes",
-    "areaOver85.no": "No",
-    "result.title": "Results",
-    "result.totalTax": "Total Tax",
-    "result.effectiveRate": "Effective Rate",
-    "result.acquisitionTax": "Acquisition Tax",
-    "result.specialTax": "Rural Development Tax",
-    "result.educationTax": "Local Education Tax",
-    "result.acquisitionTaxRate": "Acq. Tax Rate",
-    "result.specialTaxRate": "Rural Tax Rate",
-    "result.educationTaxRate": "Edu. Tax Rate",
-    "result.exemptLabel": "Exempt",
-    "breakdown.title": "Step-by-step Calculation",
-    "breakdown.step1": "Step 1: Acquisition Tax",
-    "breakdown.step2": "Step 2: Rural Development Tax",
-    "breakdown.step3": "Step 3: Local Education Tax",
-    "breakdown.price": "Acquisition Price",
-    "breakdown.rate": "Rate",
-    "breakdown.amount": "Tax Amount",
-    "rateTable.title": "Reference Rate Table",
-    "rateTable.type": "Type",
-    "rateTable.condition": "Condition",
-    "rateTable.rate": "Rate",
+    "propertyType": {
+      "label": "Property Type",
+      "house": "House",
+      "land": "Land",
+      "commercial": "Commercial"
+    },
+    "price": {
+      "label": "Acquisition Price",
+      "placeholder": "Enter acquisition price"
+    },
+    "area": {
+      "label": "Exclusive Area (㎡)",
+      "placeholder": "Exclusive area"
+    },
+    "houseCount": {
+      "label": "Number of Houses",
+      "one": "1 House",
+      "two": "2 Houses",
+      "threePlus": "3+ Houses",
+      "corp": "Corporation"
+    },
+    "adjustedArea": {
+      "label": "Speculative Overheated Zone",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "areaOver85": {
+      "label": "Exclusive Area Over 85㎡",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "result": {
+      "title": "Results",
+      "totalTax": "Total Tax",
+      "effectiveRate": "Effective Rate",
+      "acquisitionTax": "Acquisition Tax",
+      "specialTax": "Rural Development Tax",
+      "educationTax": "Local Education Tax",
+      "acquisitionTaxRate": "Acq. Tax Rate",
+      "specialTaxRate": "Rural Tax Rate",
+      "educationTaxRate": "Edu. Tax Rate",
+      "exemptLabel": "Exempt",
+      "heavyWarning": "Heavy tax rate applied. Multi-home owners in speculative areas may face significantly higher acquisition tax."
+    },
+    "breakdown": {
+      "title": "Step-by-step Calculation",
+      "step1": "Step 1: Acquisition Tax",
+      "step2": "Step 2: Rural Development Tax",
+      "step3": "Step 3: Local Education Tax",
+      "price": "Acquisition Price",
+      "rate": "Rate",
+      "amount": "Tax Amount"
+    },
+    "rateTable": {
+      "title": "Reference Rate Table",
+      "type": "Type",
+      "condition": "Condition",
+      "rate": "Rate",
+      "rows": [
+        {
+          "type": "1 House (≤600M)",
+          "condition": "General area",
+          "rate": "1%"
+        },
+        {
+          "type": "1 House (600-900M)",
+          "condition": "General area",
+          "rate": "1-3% (linear)"
+        },
+        {
+          "type": "1 House (>900M)",
+          "condition": "General area",
+          "rate": "3%"
+        },
+        {
+          "type": "2 Houses",
+          "condition": "Speculative area",
+          "rate": "8%"
+        },
+        {
+          "type": "3+ Houses",
+          "condition": "Speculative area",
+          "rate": "12%"
+        },
+        {
+          "type": "2 Houses",
+          "condition": "Non-speculative",
+          "rate": "1-3%"
+        },
+        {
+          "type": "3+ Houses",
+          "condition": "Non-speculative",
+          "rate": "8%"
+        },
+        {
+          "type": "Corporate",
+          "condition": "All areas",
+          "rate": "12%"
+        },
+        {
+          "type": "Land",
+          "condition": "Farmland",
+          "rate": "3%"
+        },
+        {
+          "type": "Land",
+          "condition": "Non-farmland",
+          "rate": "4%"
+        },
+        {
+          "type": "Commercial",
+          "condition": "-",
+          "rate": "4%"
+        }
+      ]
+    },
     "disclaimer": "This calculator is for reference only. Verify actual amounts with your local government.",
-    "units.won": "KRW",
-    "units.percent": "%",
-    "units.sqm": "㎡",
-    "guide.title": "Acquisition Tax Guide",
-    "guide.acquisitionTax.title": "Housing Acquisition Tax Rates",
-    "guide.acquisitionTax.items": ["1 house: ≤600M 1%, 600~900M 1~3% (linear), >900M 3%", "Speculative zone 2 houses: 8%", "Speculative zone 3+ houses: 12%", "Non-speculative 2 houses: 1~3%, 3+ houses: 8%", "Corporation: 12% (regardless of zone)"],
-    "guide.specialTax.title": "Rural Development Tax",
-    "guide.specialTax.items": ["Exclusive ≤85㎡: Exempt", "Exclusive >85㎡: 10% of acquisition tax", "Land/Commercial: 10% of acquisition tax"],
-    "guide.educationTax.title": "Local Education Tax",
-    "guide.educationTax.items": ["Standard: 10% of acquisition tax", "Same ratio applies for surcharge cases"],
-    "guide.tips.title": "Tax Saving Tips",
-    "guide.tips.items": ["Check first-time homebuyer reduction benefits", "Zone deregulation removes surcharge — check zone status", "1 house under 600M has lowest tax burden"]
+    "units": {
+      "won": "KRW",
+      "percent": "%",
+      "sqm": "㎡"
+    },
+    "guide": {
+      "title": "Acquisition Tax Guide",
+      "acquisitionTax": {
+        "title": "Housing Acquisition Tax Rates",
+        "items": [
+          "1 house: ≤600M 1%, 600~900M 1~3% (linear), >900M 3%",
+          "Speculative zone 2 houses: 8%",
+          "Speculative zone 3+ houses: 12%",
+          "Non-speculative 2 houses: 1~3%, 3+ houses: 8%",
+          "Corporation: 12% (regardless of zone)"
+        ]
+      },
+      "specialTax": {
+        "title": "Rural Development Tax",
+        "items": [
+          "Exclusive ≤85㎡: Exempt",
+          "Exclusive >85㎡: 10% of acquisition tax",
+          "Land/Commercial: 10% of acquisition tax"
+        ]
+      },
+      "educationTax": {
+        "title": "Local Education Tax",
+        "items": [
+          "Standard: 10% of acquisition tax",
+          "Same ratio applies for surcharge cases"
+        ]
+      },
+      "tips": {
+        "title": "Tax Saving Tips",
+        "items": [
+          "Check first-time homebuyer reduction benefits",
+          "Zone deregulation removes surcharge — check zone status",
+          "1 house under 600M has lowest tax burden"
+        ]
+      }
+    },
+    "noResult": "Enter the acquisition price on the left to see the tax calculation results."
   },
   "dsrCalc": {
     "title": "DSR Calculator",
     "description": "Auto-calculate Debt Service Ratio (DSR) based on 2025 regulations",
-    "income.title": "Income",
-    "income.annual": "Annual Income",
-    "income.placeholder": "Enter pre-tax annual income",
-    "income.unit": "KRW",
-    "newLoan.title": "New Loan",
-    "newLoan.type": "Loan Type",
-    "newLoan.types.mortgage": "Mortgage",
-    "newLoan.types.credit": "Personal Loan",
-    "newLoan.types.carInstallment": "Auto Loan",
-    "newLoan.amount": "Loan Amount",
-    "newLoan.amountPlaceholder": "Enter loan amount",
-    "newLoan.rate": "Interest Rate (Annual %)",
-    "newLoan.ratePlaceholder": "Annual rate",
-    "newLoan.term": "Loan Term",
-    "newLoan.termUnit": "years",
-    "newLoan.repayment": "Repayment Method",
-    "newLoan.repayment.equalPayment": "Equal P&I",
-    "newLoan.repayment.equalPrincipal": "Equal Principal",
-    "newLoan.repayment.bullet": "Bullet",
-    "newLoan.rateType": "Rate Type",
-    "newLoan.rateTypes.variable": "Variable",
-    "newLoan.rateTypes.mixed": "Mixed",
-    "newLoan.rateTypes.periodic": "Periodic",
-    "newLoan.rateTypes.fixed": "Fixed",
-    "newLoan.location": "Location",
-    "newLoan.locations.capital": "Capital Area",
-    "newLoan.locations.nonCapital": "Non-Capital",
-    "existing.title": "Existing Loans",
-    "existing.add": "Add Loan",
-    "existing.remove": "Remove",
-    "existing.loanLabel": "Loan",
-    "existing.types.mortgage": "Mortgage",
-    "existing.types.credit": "Personal Loan",
-    "existing.types.revolving": "Credit Line",
-    "existing.types.cardLoan": "Card Loan",
-    "existing.types.carInstallment": "Auto Loan",
-    "existing.balance": "Balance",
-    "existing.balancePlaceholder": "Loan balance",
-    "existing.rate": "Rate (Annual %)",
-    "existing.ratePlaceholder": "Annual rate",
-    "existing.remainingTerm": "Remaining Term",
-    "existing.termUnit": "years",
-    "existing.repayment": "Repayment",
-    "existing.forcedTerm": "DSR Basis",
-    "result.title": "Results",
-    "result.currentDsr": "Current DSR",
-    "result.safe": "Safe",
-    "result.caution": "Caution",
-    "result.danger": "Danger",
-    "result.safeDesc": "DSR ≤40% — Bank loan eligible",
-    "result.cautionDesc": "DSR 40~50% — Bank loan difficult, non-bank possible",
-    "result.dangerDesc": "DSR >50% — Additional loan very difficult",
-    "result.annualRepayment": "Annual Repayment",
-    "result.annualRepaymentTitle": "Annual Repayment Breakdown",
-    "result.newLoanLabel": "New Loan",
-    "result.existingLoanLabel": "Existing Loan",
-    "result.totalAnnual": "Total Annual Repayment",
-    "result.annualIncome": "Annual Income",
-    "limit.title": "Loan Limit Calculation",
-    "limit.maxAdditional": "Max Additional Loan",
-    "limit.basedOn": "Based on DSR 40%",
-    "limit.availableAnnual": "Available Annual Repayment",
-    "limit.noRoom": "No room for additional loans",
-    "stress.title": "Stress DSR",
-    "stress.description": "2025 Phase 3: Reflecting rate increase risk",
-    "stress.appliedRate": "Applied Rate",
-    "stress.additionalRate": "Additional Rate",
-    "stress.resultDsr": "Stress DSR",
-    "stress.resultLimit": "Stress-adjusted Loan Limit",
-    "stress.nonCapitalNote": "Non-capital temporary discount applied (0.75%p)",
+    "income": {
+      "title": "Income",
+      "annual": "Annual Income",
+      "placeholder": "Enter pre-tax annual income",
+      "unit": "KRW"
+    },
+    "newLoan": {
+      "title": "New Loan",
+      "type": "Loan Type",
+      "types": {
+        "mortgage": "Mortgage",
+        "credit": "Personal Loan",
+        "carInstallment": "Auto Loan"
+      },
+      "amount": "Loan Amount",
+      "amountPlaceholder": "Enter loan amount",
+      "rate": "Interest Rate (Annual %)",
+      "ratePlaceholder": "Annual rate",
+      "term": "Loan Term",
+      "termUnit": "years",
+      "repayment": {
+        "equalPayment": "Equal P&I",
+        "equalPrincipal": "Equal Principal",
+        "bullet": "Bullet"
+      },
+      "rateType": "Rate Type",
+      "rateTypes": {
+        "variable": "Variable",
+        "mixed": "Mixed",
+        "periodic": "Periodic",
+        "fixed": "Fixed"
+      },
+      "location": "Location",
+      "locations": {
+        "capital": "Capital Area",
+        "nonCapital": "Non-Capital"
+      }
+    },
+    "existing": {
+      "title": "Existing Loans",
+      "add": "Add Loan",
+      "remove": "Remove",
+      "loanLabel": "Loan",
+      "types": {
+        "mortgage": "Mortgage",
+        "credit": "Personal Loan",
+        "revolving": "Credit Line",
+        "cardLoan": "Card Loan",
+        "carInstallment": "Auto Loan"
+      },
+      "balance": "Balance",
+      "balancePlaceholder": "Loan balance",
+      "rate": "Rate (Annual %)",
+      "ratePlaceholder": "Annual rate",
+      "remainingTerm": "Remaining Term",
+      "termUnit": "years",
+      "repayment": "Repayment",
+      "forcedTerm": "DSR Basis"
+    },
+    "result": {
+      "title": "Results",
+      "currentDsr": "Current DSR",
+      "safe": "Safe",
+      "caution": "Caution",
+      "danger": "Danger",
+      "safeDesc": "DSR ≤40% — Bank loan eligible",
+      "cautionDesc": "DSR 40~50% — Bank loan difficult, non-bank possible",
+      "dangerDesc": "DSR >50% — Additional loan very difficult",
+      "annualRepayment": "Annual Repayment",
+      "annualRepaymentTitle": "Annual Repayment Breakdown",
+      "newLoanLabel": "New Loan",
+      "existingLoanLabel": "Existing Loan",
+      "totalAnnual": "Total Annual Repayment",
+      "annualIncome": "Annual Income"
+    },
+    "limit": {
+      "title": "Loan Limit Calculation",
+      "maxAdditional": "Max Additional Loan",
+      "basedOn": "Based on DSR 40%",
+      "availableAnnual": "Available Annual Repayment",
+      "noRoom": "No room for additional loans"
+    },
+    "stress": {
+      "title": "Stress DSR",
+      "description": "2025 Phase 3: Reflecting rate increase risk",
+      "appliedRate": "Applied Rate",
+      "additionalRate": "Additional Rate",
+      "resultDsr": "Stress DSR",
+      "resultLimit": "Stress-adjusted Loan Limit",
+      "nonCapitalNote": "Non-capital temporary discount applied (0.75%p)"
+    },
     "calculate": "Calculate",
     "reset": "Reset",
-    "disclaimer.title": "Disclaimer",
-    "disclaimer.text": "This calculator is for reference only. Actual loan approval depends on financial institution criteria.",
-    "guide.title": "DSR Guide",
-    "guide.whatIsDsr.title": "What is DSR?",
-    "guide.whatIsDsr.items": ["DSR = Annual total loan repayment / Annual income × 100", "Banks: DSR ≤40%, Non-banks: ≤50%", "Applies when total loans exceed 200M KRW", "Excludes: jeonse loans, loans under 3M, insurance loans"],
-    "guide.stressDsr.title": "Stress DSR (2025 Phase 3)",
-    "guide.stressDsr.items": ["Variable rate: +1.50%p surcharge", "Mixed: +1.20%p (1.50% × 80%)", "Periodic: +0.60%p (1.50% × 40%)", "Fixed rate: No surcharge", "Non-capital mortgages: 0.75%p temporary rate"],
-    "guide.tips.title": "Tips to Increase Loan Limit",
-    "guide.tips.items": ["Fixed rate = no stress surcharge", "Longer term = lower monthly payment = lower DSR", "Personal loans count as 5yr, card loans as 3yr — reducing balance helps", "Credit lines count at full limit — consider reducing"]
+    "disclaimer": {
+      "title": "Disclaimer",
+      "text": "This calculator is for reference only. Actual loan approval depends on financial institution criteria."
+    },
+    "guide": {
+      "title": "DSR Guide",
+      "whatIsDsr": {
+        "title": "What is DSR?",
+        "items": [
+          "DSR = Annual total loan repayment / Annual income × 100",
+          "Banks: DSR ≤40%, Non-banks: ≤50%",
+          "Applies when total loans exceed 200M KRW",
+          "Excludes: jeonse loans, loans under 3M, insurance loans"
+        ]
+      },
+      "stressDsr": {
+        "title": "Stress DSR (2025 Phase 3)",
+        "items": [
+          "Variable rate: +1.50%p surcharge",
+          "Mixed: +1.20%p (1.50% × 80%)",
+          "Periodic: +0.60%p (1.50% × 40%)",
+          "Fixed rate: No surcharge",
+          "Non-capital mortgages: 0.75%p temporary rate"
+        ]
+      },
+      "tips": {
+        "title": "Tips to Increase Loan Limit",
+        "items": [
+          "Fixed rate = no stress surcharge",
+          "Longer term = lower monthly payment = lower DSR",
+          "Personal loans count as 5yr, card loans as 3yr — reducing balance helps",
+          "Credit lines count at full limit — consider reducing"
+        ]
+      }
+    }
   },
   "marginCalc": {
     "title": "Margin Calculator",
     "description": "Auto-calculate profit margin for online sellers",
-    "mode.calculate": "Calculate Margin",
-    "mode.reverse": "Reverse (Find Price)",
-    "input.sellingPrice": "Selling Price",
-    "input.costPrice": "Cost Price",
-    "input.platform": "Platform",
-    "input.platformCustom": "Custom Input",
-    "input.commissionRate": "Commission Rate (%)",
-    "input.shippingCost": "Shipping (Seller-paid)",
-    "input.packagingCost": "Packaging (Per unit)",
-    "input.adCost": "Ad Cost (Per unit)",
-    "input.taxType": "Tax Type",
-    "input.targetMargin": "Target Margin (%)",
-    "input.monthlySales": "Monthly Sales Volume",
-    "input.unit": "KRW",
-    "input.percent": "%",
-    "input.count": "units",
-    "platform.coupang": "Coupang (10.9%)",
-    "platform.smartstore": "SmartStore (5.5%)",
-    "platform.elevenst": "11st (10%)",
-    "platform.custom": "Custom",
-    "taxType.general": "General Taxpayer",
-    "taxType.simplified": "Simplified Taxpayer",
-    "taxType.exempt": "Tax Exempt",
-    "result.netProfit": "Net Profit",
-    "result.marginRate": "Margin Rate",
-    "result.markupRate": "Markup Rate",
-    "result.breakEvenQty": "Break-even Qty",
-    "result.breakEvenUnit": "units",
-    "result.perItem": "per item",
-    "result.calculatedPrice": "Calculated Price",
-    "result.deficit": "Deficit",
-    "costBreakdown.title": "Cost Breakdown",
-    "costBreakdown.cost": "Cost",
-    "costBreakdown.commission": "Commission",
-    "costBreakdown.shipping": "Shipping",
-    "costBreakdown.packaging": "Packaging",
-    "costBreakdown.ad": "Advertising",
-    "costBreakdown.tax": "VAT",
-    "costBreakdown.profit": "Profit",
-    "detail.title": "Detail Breakdown",
-    "detail.item": "Item",
-    "detail.amount": "Amount",
-    "detail.ratio": "Ratio",
-    "detail.sellingPrice": "Selling Price",
-    "detail.totalCost": "Total Cost",
-    "monthly.title": "Monthly Simulation",
-    "monthly.revenue": "Monthly Revenue",
-    "monthly.totalCost": "Monthly Total Cost",
-    "monthly.netProfit": "Monthly Net Profit",
-    "guide.title": "Margin Guide",
-    "guide.margin.title": "Margin vs Markup",
-    "guide.margin.items": ["Margin = (Price - Total Cost) / Price × 100", "Markup = (Price - Cost) / Cost × 100", "30% margin ≈ 43% markup", "Margin rate reflects actual profitability more accurately"],
-    "guide.reverse.title": "Reverse Calculation",
-    "guide.reverse.items": ["Enter target margin to auto-calculate minimum selling price", "Accounts for commission, shipping, and VAT", "Find the minimum price to avoid losses"],
-    "guide.platform.title": "Platform Fees",
-    "guide.platform.items": ["Coupang: 4~10.9% by category, monthly fee 55K (if sales >1M)", "SmartStore: NaverPay + sales commission ≈5.5%", "11st: 5~12% by category, avg 10%", "Fees based on final payment amount (incl. shipping)"],
-    "guide.tax.title": "VAT Handling",
-    "guide.tax.items": ["General: ~10% of margin (sales price - cost)", "Simplified: Price × sector value-added rate × 10%", "Exempt: No VAT (agricultural products, basic necessities)", "Simplified status available if annual sales <104M"]
+    "mode": {
+      "calculate": "Calculate Margin",
+      "reverse": "Reverse (Find Price)"
+    },
+    "input": {
+      "sellingPrice": "Selling Price",
+      "costPrice": "Cost Price",
+      "platform": "Platform",
+      "platformCustom": "Custom Input",
+      "commissionRate": "Commission Rate (%)",
+      "shippingCost": "Shipping (Seller-paid)",
+      "packagingCost": "Packaging (Per unit)",
+      "adCost": "Ad Cost (Per unit)",
+      "taxType": "Tax Type",
+      "targetMargin": "Target Margin (%)",
+      "monthlySales": "Monthly Sales Volume",
+      "unit": "KRW",
+      "percent": "%",
+      "count": "units"
+    },
+    "platform": {
+      "coupang": "Coupang (10.9%)",
+      "smartstore": "SmartStore (5.5%)",
+      "elevenst": "11st (10%)",
+      "custom": "Custom"
+    },
+    "taxType": {
+      "general": "General Taxpayer",
+      "simplified": "Simplified Taxpayer",
+      "exempt": "Tax Exempt"
+    },
+    "result": {
+      "netProfit": "Net Profit",
+      "marginRate": "Margin Rate",
+      "markupRate": "Markup Rate",
+      "breakEvenQty": "Break-even Qty",
+      "breakEvenUnit": "units",
+      "perItem": "per item",
+      "calculatedPrice": "Calculated Price",
+      "deficit": "Deficit"
+    },
+    "costBreakdown": {
+      "title": "Cost Breakdown",
+      "cost": "Cost",
+      "commission": "Commission",
+      "shipping": "Shipping",
+      "packaging": "Packaging",
+      "ad": "Advertising",
+      "tax": "VAT",
+      "profit": "Profit"
+    },
+    "detail": {
+      "title": "Detail Breakdown",
+      "item": "Item",
+      "amount": "Amount",
+      "ratio": "Ratio",
+      "sellingPrice": "Selling Price",
+      "totalCost": "Total Cost"
+    },
+    "monthly": {
+      "title": "Monthly Simulation",
+      "revenue": "Monthly Revenue",
+      "totalCost": "Monthly Total Cost",
+      "netProfit": "Monthly Net Profit"
+    },
+    "guide": {
+      "title": "Margin Guide",
+      "margin": {
+        "title": "Margin vs Markup",
+        "items": [
+          "Margin = (Price - Total Cost) / Price × 100",
+          "Markup = (Price - Cost) / Cost × 100",
+          "30% margin ≈ 43% markup",
+          "Margin rate reflects actual profitability more accurately"
+        ]
+      },
+      "reverse": {
+        "title": "Reverse Calculation",
+        "items": [
+          "Enter target margin to auto-calculate minimum selling price",
+          "Accounts for commission, shipping, and VAT",
+          "Find the minimum price to avoid losses"
+        ]
+      },
+      "platform": {
+        "title": "Platform Fees",
+        "items": [
+          "Coupang: 4~10.9% by category, monthly fee 55K (if sales >1M)",
+          "SmartStore: NaverPay + sales commission ≈5.5%",
+          "11st: 5~12% by category, avg 10%",
+          "Fees based on final payment amount (incl. shipping)"
+        ]
+      },
+      "tax": {
+        "title": "VAT Handling",
+        "items": [
+          "General: ~10% of margin (sales price - cost)",
+          "Simplified: Price × sector value-added rate × 10%",
+          "Exempt: No VAT (agricultural products, basic necessities)",
+          "Simplified status available if annual sales <104M"
+        ]
+      }
+    }
   },
   "jeonseLoanCalc": {
     "title": "Jeonse Loan Calculator",
     "description": "Auto-calculate jeonse loan rates, limits, and monthly payments (2025)",
-    "loanType.title": "Loan Type",
-    "loanType.general.label": "General Beotimok",
-    "loanType.general.sub": "Houseless householder",
-    "loanType.general.rate": "2.5~3.5%/yr",
-    "loanType.youth.label": "Youth Beotimok",
-    "loanType.youth.sub": "Age 19~34",
-    "loanType.youth.rate": "1.3~4.3%/yr",
-    "loanType.newlywed.label": "Newlywed Beotimok",
-    "loanType.newlywed.sub": "Within 7 years of marriage",
-    "loanType.newlywed.rate": "1.0~4.3%/yr",
-    "loanType.bank.label": "Commercial Bank",
-    "loanType.bank.sub": "General jeonse loan",
-    "loanType.bank.rate": "3.5~5.0%/yr",
-    "input.deposit": "Jeonse Deposit",
-    "input.depositPlaceholder": "Enter jeonse deposit amount",
-    "input.loanAmount": "Desired Loan Amount",
-    "input.loanAmountPlaceholder": "Enter desired loan amount",
-    "input.location": "Location",
-    "input.locationCapital": "Capital Area (Seoul/Incheon/Gyeonggi)",
-    "input.locationLocal": "Other Regions",
-    "input.income": "Annual Income (Combined)",
-    "input.incomePlaceholder": "Combined household income",
-    "input.smeWorker": "SME Employee (Discount -0.3%p)",
-    "input.children": "Number of Children",
-    "input.children0": "None",
-    "input.children1": "1 (-0.3%p)",
-    "input.children2": "2 (-0.5%p)",
-    "input.children3plus": "3+ (-0.7%p)",
-    "input.bankRate": "Interest Rate (Annual %)",
-    "input.bankRatePlaceholder": "Enter bank interest rate",
-    "repayment.title": "Repayment Method",
-    "repayment.bullet": "Bullet Repayment",
-    "repayment.equalPrincipalInterest": "Equal Principal & Interest",
-    "repayment.period": "Loan Period",
-    "repayment.years": "years",
-    "result.title": "Calculation Results",
-    "result.appliedRate": "Applied Rate",
-    "result.baseRate": "Base Rate",
-    "result.discount": "Discount",
-    "result.monthlyPayment": "Monthly Payment",
-    "result.monthlyInterest": "Monthly Interest",
-    "result.loanLimit": "Loan Limit",
-    "result.maxLoanByLTV": "Max by LTV",
-    "result.maxLoanByType": "Product Limit",
-    "result.ltvRatio": "LTV Ratio",
-    "result.totalInterest": "Total Interest Cost",
-    "result.guaranteeFee": "Estimated Guarantee Fee",
-    "result.guaranteeFeeDesc": "Estimated at loan × 0.15% × period (years)",
-    "result.eligibility": "Eligibility Check",
-    "result.eligible": "Eligible",
-    "result.notEligible": "Not Eligible",
-    "result.incomeCheck": "Income Requirement",
-    "result.depositCheck": "Deposit Limit",
-    "result.loanLimitCheck": "Loan Limit",
-    "result.ltvWarning": "Desired loan amount exceeds LTV limit",
-    "result.noResult": "Enter information on the left to see results",
-    "result.calculate": "Calculate",
-    "unit.won": "KRW",
-    "unit.percent": "%",
-    "unit.year": "years",
-    "unit.month": "months",
-    "unit.manwon": "×10K KRW",
-    "unit.eok": "×100M KRW",
+    "loanType": {
+      "title": "Loan Type",
+      "general": {
+        "label": "General Beotimok",
+        "sub": "Houseless householder",
+        "rate": "2.5~3.5%/yr"
+      },
+      "youth": {
+        "label": "Youth Beotimok",
+        "sub": "Age 19~34",
+        "rate": "1.3~4.3%/yr"
+      },
+      "newlywed": {
+        "label": "Newlywed Beotimok",
+        "sub": "Within 7 years of marriage",
+        "rate": "1.0~4.3%/yr"
+      },
+      "bank": {
+        "label": "Commercial Bank",
+        "sub": "General jeonse loan",
+        "rate": "3.5~5.0%/yr"
+      }
+    },
+    "input": {
+      "deposit": "Jeonse Deposit",
+      "depositPlaceholder": "Enter jeonse deposit amount",
+      "loanAmount": "Desired Loan Amount",
+      "loanAmountPlaceholder": "Enter desired loan amount",
+      "location": "Location",
+      "locationCapital": "Capital Area (Seoul/Incheon/Gyeonggi)",
+      "locationLocal": "Other Regions",
+      "income": "Annual Income (Combined)",
+      "incomePlaceholder": "Combined household income",
+      "smeWorker": "SME Employee (Discount -0.3%p)",
+      "children": "Number of Children",
+      "children0": "None",
+      "children1": "1 (-0.3%p)",
+      "children2": "2 (-0.5%p)",
+      "children3plus": "3+ (-0.7%p)",
+      "bankRate": "Interest Rate (Annual %)",
+      "bankRatePlaceholder": "Enter bank interest rate"
+    },
+    "repayment": {
+      "title": "Repayment Method",
+      "bullet": "Bullet Repayment",
+      "equalPrincipalInterest": "Equal Principal & Interest",
+      "period": "Loan Period",
+      "years": "years"
+    },
+    "result": {
+      "title": "Calculation Results",
+      "appliedRate": "Applied Rate",
+      "baseRate": "Base Rate",
+      "discount": "Discount",
+      "monthlyPayment": "Monthly Payment",
+      "monthlyInterest": "Monthly Interest",
+      "loanLimit": "Loan Limit",
+      "maxLoanByLTV": "Max by LTV",
+      "maxLoanByType": "Product Limit",
+      "ltvRatio": "LTV Ratio",
+      "totalInterest": "Total Interest Cost",
+      "guaranteeFee": "Estimated Guarantee Fee",
+      "guaranteeFeeDesc": "Estimated at loan × 0.15% × period (years)",
+      "eligibility": "Eligibility Check",
+      "eligible": "Eligible",
+      "notEligible": "Not Eligible",
+      "incomeCheck": "Income Requirement",
+      "depositCheck": "Deposit Limit",
+      "loanLimitCheck": "Loan Limit",
+      "ltvWarning": "Desired loan amount exceeds LTV limit",
+      "noResult": "Enter information on the left to see results",
+      "calculate": "Calculate"
+    },
+    "unit": {
+      "won": "KRW",
+      "percent": "%",
+      "year": "years",
+      "month": "months",
+      "manwon": "×10K KRW",
+      "eok": "×100M KRW"
+    },
     "disclaimer": "This calculator is for reference only. Please verify actual terms with your financial institution.",
-    "guide.title": "Jeonse Loan Guide",
-    "guide.overview.title": "Loan Type Comparison",
-    "guide.overview.items": ["General Beotimok: Income ≤50M, Capital max 120M, LTV 70%", "Youth Beotimok: Age 19~34, max 150M, LTV 80%, SME discount", "Newlywed Beotimok: Within 7yr marriage, Capital max 250M, LTV 80%, child discount", "Commercial Bank: No income limit, max 500M, LTV 80%, higher rates"],
-    "guide.rates.title": "Rate Factors",
-    "guide.rates.items": ["Income bracket: Lower income = lower rate", "Deposit size: Smaller deposit = lower rate", "Location: Non-capital regions get 0.2%p discount", "Preferences: SME employee (-0.3%p), number of children, etc."],
-    "guide.tips.title": "Tips",
-    "guide.tips.items": ["Beotimok loans are exempt from DSR regulation", "Youth should check SME discount (-0.3%p extra)", "Newlywed with 3+ children: up to -0.7%p discount", "Bullet repayment has lower monthly cost but higher total interest"]
+    "guide": {
+      "title": "Jeonse Loan Guide",
+      "overview": {
+        "title": "Loan Type Comparison",
+        "items": [
+          "General Beotimok: Income ≤50M, Capital max 120M, LTV 70%",
+          "Youth Beotimok: Age 19~34, max 150M, LTV 80%, SME discount",
+          "Newlywed Beotimok: Within 7yr marriage, Capital max 250M, LTV 80%, child discount",
+          "Commercial Bank: No income limit, max 500M, LTV 80%, higher rates"
+        ]
+      },
+      "rates": {
+        "title": "Rate Factors",
+        "items": [
+          "Income bracket: Lower income = lower rate",
+          "Deposit size: Smaller deposit = lower rate",
+          "Location: Non-capital regions get 0.2%p discount",
+          "Preferences: SME employee (-0.3%p), number of children, etc."
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Beotimok loans are exempt from DSR regulation",
+          "Youth should check SME discount (-0.3%p extra)",
+          "Newlywed with 3+ children: up to -0.7%p discount",
+          "Bullet repayment has lower monthly cost but higher total interest"
+        ]
+      }
+    }
   },
   "incomeTaxCalc": {
     "title": "Income Tax Calculator",
@@ -14562,13 +15478,32 @@
     "comparisonBetter": "Better Method",
     "guideTitle": "Income Tax Guide",
     "guideWhoTitle": "Who Must File",
-    "guideWhoItems": ["Freelancers (3.3% withholding)", "Sole proprietors (business income)", "Side income earners", "Other income exceeding 3M/year", "Interest/dividend income exceeding 20M/year"],
+    "guideWhoItems": [
+      "Freelancers (3.3% withholding)",
+      "Sole proprietors (business income)",
+      "Side income earners",
+      "Other income exceeding 3M/year",
+      "Interest/dividend income exceeding 20M/year"
+    ],
     "guideExpenseTitle": "Expense Methods",
-    "guideExpenseItems": ["Simple Rate: Prior year revenue <24M (personal services), auto-calculated from revenue × rate", "Standard Rate: Above simple threshold, verified major expenses + revenue × standard rate", "Books: Record actual income/expenses, double-entry gets 20% bookkeeping credit (max 1M)"],
+    "guideExpenseItems": [
+      "Simple Rate: Prior year revenue <24M (personal services), auto-calculated from revenue × rate",
+      "Standard Rate: Above simple threshold, verified major expenses + revenue × standard rate",
+      "Books: Record actual income/expenses, double-entry gets 20% bookkeeping credit (max 1M)"
+    ],
     "guideDeadlineTitle": "Filing Period",
-    "guideDeadlineItems": ["Filing period: May 1 - May 31 every year", "Payment deadline: May 31 (installments available if >10M)", "Honest filing targets: Extended to June 30"],
+    "guideDeadlineItems": [
+      "Filing period: May 1 - May 31 every year",
+      "Payment deadline: May 31 (installments available if >10M)",
+      "Honest filing targets: Extended to June 30"
+    ],
     "guideTipTitle": "Tax Saving Tips",
-    "guideTipItems": ["Pension + IRP up to 9M for tax credit (save up to 1.485M)", "Choose favorable rate between simple and standard (without books)", "National pension and health insurance are fully deductible — always input", "Other income ≤3M can be separately taxed (no aggregation)"]
+    "guideTipItems": [
+      "Pension + IRP up to 9M for tax credit (save up to 1.485M)",
+      "Choose favorable rate between simple and standard (without books)",
+      "National pension and health insurance are fully deductible — always input",
+      "Other income ≤3M can be separately taxed (no aggregation)"
+    ]
   },
   "yearEndTaxCalc": {
     "title": "Year-End Tax Settlement Calculator",
@@ -14580,10 +15515,12 @@
     "copied": "Link copied",
     "won": "KRW",
     "percent": "%",
-    "tab.basic": "Basic Info",
-    "tab.incomeDeduction": "Income Deductions",
-    "tab.taxCredit": "Tax Credits",
-    "tab.result": "Results",
+    "tab": {
+      "basic": "Basic Info",
+      "incomeDeduction": "Income Deductions",
+      "taxCredit": "Tax Credits",
+      "result": "Results"
+    },
     "grossSalary": "Annual Gross Salary",
     "grossSalaryPlaceholder": "Enter pre-tax annual salary (incl. non-taxable)",
     "nonTaxableIncome": "Non-Taxable Income",
@@ -14642,53 +15579,383 @@
     "monthlyRentDesc": "Salary ≤80M, houseless, limit 10,000,000",
     "marriageTaxCredit": "Marriage Tax Credit",
     "marriageTaxCreditDesc": "500,000 for marriage registration 2024-2026 (once in lifetime)",
-    "step1.title": "Step 1: Total Salary",
-    "step1.grossSalary": "Annual Gross Salary",
-    "step1.nonTaxable": "Non-Taxable Income",
-    "step1.totalSalary": "Total Salary",
-    "step2.title": "Step 2: Earned Income",
-    "step2.earnedIncomeDeduction": "Earned Income Deduction",
-    "step2.earnedIncome": "Earned Income Amount",
-    "step3.title": "Step 3: Tax Base",
-    "step3.personalDeduction": "Personal Deduction",
-    "step3.nationalPension": "National Pension",
-    "step3.healthEmployment": "Health/Employment Insurance",
-    "step3.housingSubscription": "Housing Subscription",
-    "step3.cardDeduction": "Card Spending Deduction",
-    "step3.totalDeduction": "Total Deductions",
-    "step3.taxBase": "Tax Base",
-    "step4.title": "Step 4: Calculated Tax",
-    "step4.taxRate": "Applied Tax Rate",
-    "step4.calculatedTax": "Calculated Tax",
-    "step5.title": "Step 5: Tax Credits",
-    "step5.earnedIncomeCredit": "Earned Income Credit",
-    "step5.childCredit": "Child Tax Credit",
-    "step5.pensionCredit": "Pension Savings/IRP Credit",
-    "step5.insuranceCredit": "Insurance Premium Credit",
-    "step5.medicalCredit": "Medical Expense Credit",
-    "step5.educationCredit": "Education Expense Credit",
-    "step5.donationCredit": "Donation Credit",
-    "step5.rentCredit": "Rent Tax Credit",
-    "step5.marriageCredit": "Marriage Tax Credit",
-    "step5.totalCredit": "Total Tax Credits",
-    "step6.title": "Step 6: Final Result",
-    "step6.determinedTax": "Determined Tax",
-    "step6.localIncomeTax": "Local Income Tax (10%)",
-    "step6.totalTax": "Total Tax Payable",
-    "step6.prepaidTax": "Prepaid Tax",
-    "step6.refundAmount": "Estimated Refund",
-    "step6.additionalPayment": "Additional Payment",
-    "result.refund": "Refund Expected",
-    "result.additionalPayment": "Additional Payment",
-    "result.breakeven": "Tax Balanced",
+    "step1": {
+      "title": "Step 1: Total Salary",
+      "grossSalary": "Annual Gross Salary",
+      "nonTaxable": "Non-Taxable Income",
+      "totalSalary": "Total Salary"
+    },
+    "step2": {
+      "title": "Step 2: Earned Income",
+      "earnedIncomeDeduction": "Earned Income Deduction",
+      "earnedIncome": "Earned Income Amount"
+    },
+    "step3": {
+      "title": "Step 3: Tax Base",
+      "personalDeduction": "Personal Deduction",
+      "nationalPension": "National Pension",
+      "healthEmployment": "Health/Employment Insurance",
+      "housingSubscription": "Housing Subscription",
+      "cardDeduction": "Card Spending Deduction",
+      "totalDeduction": "Total Deductions",
+      "taxBase": "Tax Base"
+    },
+    "step4": {
+      "title": "Step 4: Calculated Tax",
+      "taxRate": "Applied Tax Rate",
+      "calculatedTax": "Calculated Tax"
+    },
+    "step5": {
+      "title": "Step 5: Tax Credits",
+      "earnedIncomeCredit": "Earned Income Credit",
+      "childCredit": "Child Tax Credit",
+      "pensionCredit": "Pension Savings/IRP Credit",
+      "insuranceCredit": "Insurance Premium Credit",
+      "medicalCredit": "Medical Expense Credit",
+      "educationCredit": "Education Expense Credit",
+      "donationCredit": "Donation Credit",
+      "rentCredit": "Rent Tax Credit",
+      "marriageCredit": "Marriage Tax Credit",
+      "totalCredit": "Total Tax Credits"
+    },
+    "step6": {
+      "title": "Step 6: Final Result",
+      "determinedTax": "Determined Tax",
+      "localIncomeTax": "Local Income Tax (10%)",
+      "totalTax": "Total Tax Payable",
+      "prepaidTax": "Prepaid Tax",
+      "refundAmount": "Estimated Refund",
+      "additionalPayment": "Additional Payment"
+    },
+    "result": {
+      "refund": "Refund Expected",
+      "additionalPayment": "Additional Payment",
+      "breakeven": "Tax Balanced"
+    },
     "detailToggle": "View Details",
-    "guide.title": "Year-End Tax Guide",
-    "guide.flow.title": "Calculation Flow",
-    "guide.flow.items": ["Subtract non-taxable income from gross salary to get total salary", "Apply earned income deduction to get earned income amount", "Subtract income deductions to get tax base", "Apply tax rates to tax base to get calculated tax", "Subtract tax credits to get determined tax", "Compare with prepaid tax to determine refund/additional payment"],
-    "guide.changes.title": "2025 Tax Year Key Changes",
-    "guide.changes.items": ["Child tax credit increased: 1 child 250K, 2 children 550K", "Rent credit limit raised to 10M, salary threshold to 80M", "Marriage tax credit 500K newly introduced (2024-2026 registration)", "Housing subscription limit raised to 3M, spouse now eligible", "Medical expense limit removed for children under 6", "Childcare allowance non-taxable limit raised to 200K/month", "Gym/swimming pool expenses now eligible for 30% card deduction"],
-    "guide.tips.title": "Tax Saving Tips",
-    "guide.tips.items": ["Spending over 25% of salary: debit cards/cash receipts get 2x rate (30%)", "Pension savings + IRP: up to 9M eligible for tax credit", "Medical expenses: only amount exceeding 3% of salary is deductible—concentrate in one year", "Traditional markets and public transport each have separate additional 1M limit"]
+    "guide": {
+      "title": "Year-End Tax Guide",
+      "flow": {
+        "title": "Calculation Flow",
+        "items": [
+          "Subtract non-taxable income from gross salary to get total salary",
+          "Apply earned income deduction to get earned income amount",
+          "Subtract income deductions to get tax base",
+          "Apply tax rates to tax base to get calculated tax",
+          "Subtract tax credits to get determined tax",
+          "Compare with prepaid tax to determine refund/additional payment"
+        ]
+      },
+      "changes": {
+        "title": "2025 Tax Year Key Changes",
+        "items": [
+          "Child tax credit increased: 1 child 250K, 2 children 550K",
+          "Rent credit limit raised to 10M, salary threshold to 80M",
+          "Marriage tax credit 500K newly introduced (2024-2026 registration)",
+          "Housing subscription limit raised to 3M, spouse now eligible",
+          "Medical expense limit removed for children under 6",
+          "Childcare allowance non-taxable limit raised to 200K/month",
+          "Gym/swimming pool expenses now eligible for 30% card deduction"
+        ]
+      },
+      "tips": {
+        "title": "Tax Saving Tips",
+        "items": [
+          "Spending over 25% of salary: debit cards/cash receipts get 2x rate (30%)",
+          "Pension savings + IRP: up to 9M eligible for tax credit",
+          "Medical expenses: only amount exceeding 3% of salary is deductible—concentrate in one year",
+          "Traditional markets and public transport each have separate additional 1M limit"
+        ]
+      }
+    }
+  },
+  "healthInsurance": {
+    "title": "Health Insurance Premium Calculator",
+    "description": "Calculate 2025 workplace/regional subscriber premiums, dependent eligibility, and compare plans",
+    "tabs": {
+      "workplace": "Workplace Subscriber",
+      "regional": "Regional Subscriber",
+      "dependent": "Dependent Eligibility",
+      "comparison": "Workplace vs Regional"
+    },
+    "workplace": {
+      "monthlySalary": "Monthly Remuneration",
+      "annualSalary": "Annual Salary",
+      "inputAsAnnual": "Enter as annual salary",
+      "nonTaxable": "Non-taxable Income (monthly)",
+      "employee": "Employee",
+      "employer": "Employer",
+      "employerShare": "Employer Total",
+      "remuneration": "Remuneration",
+      "rateInfo": "2025 Health Insurance Rate: 7.09% (Employee 3.545% + Employer 3.545%), Long-term Care 12.95%",
+      "netSalary": "Net Salary (after 4 insurances)",
+      "annualProjection": "Annual Premium Projection"
+    },
+    "regional": {
+      "incomeSection": "Income Information (Annual)",
+      "businessIncome": "Business Income (Annual)",
+      "employmentIncome": "Employment Income (Annual)",
+      "financialIncome": "Interest/Dividend Income (Annual)",
+      "otherIncome": "Other Income (Annual)",
+      "pensionIncome": "Pension Income (Annual)",
+      "propertySection": "Property Information",
+      "propertyTaxBase": "Property Tax Base",
+      "deposit": "Rental Deposit",
+      "result": "Regional Subscriber Premium",
+      "totalAnnualIncome": "Total Annual Income",
+      "monthlyIncome": "Monthly Income",
+      "incomePremium": "Income Premium",
+      "propertyPoints": "Property Score",
+      "points": "pts",
+      "propertyPremium": "Property Premium",
+      "monthlyTotal": "Monthly Total Premium",
+      "minimumApplied": "Income below threshold; minimum premium (19,780 KRW) applied."
+    },
+    "dependent": {
+      "relationship": "Relationship",
+      "relationships": {
+        "spouse": "Spouse",
+        "parent": "Parent",
+        "child": "Child",
+        "sibling": "Sibling",
+        "grandparent": "Grandparent",
+        "grandchild": "Grandchild"
+      },
+      "annualIncome": "Total Annual Income",
+      "hasBusinessIncome": "Has Business Income (registered business)",
+      "businessIncomeAmount": "Business Income (Annual)",
+      "propertyTaxBase": "Total Property Tax Base",
+      "cohabitation": "Living Together",
+      "eligible": "Eligible as Dependent",
+      "notEligible": "Not Eligible as Dependent",
+      "noPremium": "No health insurance premium obligation",
+      "mustPayRegional": "Must pay premiums as regional subscriber",
+      "switchToRegional": "Estimated premium as regional subscriber",
+      "conditions": "Condition Check",
+      "incomeCondition": "Income (under 20M KRW/year)",
+      "businessCondition": "Business Income",
+      "propertyCondition": "Property (tax base under 540M KRW)",
+      "relationCondition": "Relationship",
+      "noBusinessIncome": "No business income (condition met)",
+      "hasBusinessIncomeDetail": "Has business income; not eligible as dependent",
+      "cohabitationMet": "Cohabitation condition met",
+      "cohabitationRequired": "Siblings must live together to be eligible"
+    },
+    "comparison": {
+      "freelancer": "Regional (Freelancer)",
+      "incorporated": "Workplace (Incorporated)",
+      "ceoSalary": "CEO Monthly Salary (incorporated)",
+      "ceoNote": "As a corporate CEO, you effectively bear both employee and employer portions of health insurance and national pension.",
+      "result": "Premium Comparison",
+      "item": "Item",
+      "difference": "Monthly Difference",
+      "annualDifference": "Annual Difference",
+      "freelancerMore": "Regional subscriber pays",
+      "workplaceMore": "Workplace subscriber pays",
+      "chartTitle": "Premium Comparison by Item",
+      "importantNote": "Important Note",
+      "corporateNote": "Incorporating may reduce health insurance premiums, but you must consider total costs including incorporation fees, tax accountant fees, corporate tax, and employer-side insurance contributions.",
+      "ceoEmployerNote": "CEO effectively pays both employee + employer portions",
+      "regionalPensionNote": "Regional subscriber pays full 9% national pension"
+    },
+    "insurance": {
+      "healthInsurance": "Health Insurance",
+      "longTermCare": "Long-term Care",
+      "nationalPension": "National Pension",
+      "employmentInsurance": "Employment Insurance",
+      "total": "Total Premium",
+      "total4": "Total 4 Insurances (My Share)",
+      "myShare": "My Share Total",
+      "rate2025": "2025 Rates",
+      "showAll4": "Show All 4 Insurances"
+    },
+    "unit": {
+      "won": " KRW",
+      "man": "0K",
+      "eok": "00M",
+      "month": "mo",
+      "monthly": "Monthly",
+      "perYear": "Annual"
+    },
+    "copy": "Copy",
+    "copied": "Copied",
+    "placeholder": {
+      "enterSalary": "Enter monthly remuneration on the left to calculate premiums.",
+      "enterIncome": "Enter income or property information on the left.",
+      "enterDependentInfo": "Enter dependent information on the left to check eligibility.",
+      "enterComparison": "Enter income information and CEO salary on both sides to compare."
+    },
+    "guide": {
+      "title": "Health Insurance Guide",
+      "rates": {
+        "title": "2025 Premium Rates",
+        "items": [
+          "Health Insurance: 7.09% (Employee 3.545% + Employer 3.545%)",
+          "Long-term Care: 12.95% of health insurance premium",
+          "Regional subscriber point value: 208.4 KRW",
+          "National Pension: 9% (Employee 4.5% + Employer 4.5%), cap 6.17M KRW/month",
+          "Employment Insurance: 0.9% (employee portion)"
+        ]
+      },
+      "dependentRules": {
+        "title": "Dependent Eligibility Criteria",
+        "items": [
+          "Annual income under 20 million KRW",
+          "No registered business (business income must be 0)",
+          "Property tax base 540 million KRW or less",
+          "Between 540M~900M: additional requirement of income under 10M KRW",
+          "Siblings: must live together, under 30 or over 65 or disabled"
+        ]
+      },
+      "regionalCalc": {
+        "title": "Regional Subscriber Calculation",
+        "items": [
+          "Income premium = Monthly income x 7.09% (minimum 19,780 KRW)",
+          "Property premium = Property score x 208.4 KRW",
+          "Property amount = Tax base + Deposit x 30% - Basic deduction 100M KRW",
+          "Monthly premium = Income premium + Property premium + Long-term care"
+        ]
+      },
+      "tips": {
+        "title": "Useful Tips",
+        "items": [
+          "Workplace subscribers can voluntarily continue for 2 months after leaving (same premium)",
+          "If regional premiums are burdensome, consider registering as spouse's workplace dependent",
+          "Incorporating should be compared comprehensively including taxes and operating costs",
+          "Annual remuneration report in April settles previous year's premiums"
+        ]
+      }
+    }
+  },
+  "weddingCalculator": {
+    "title": "Wedding Cost Planner",
+    "description": "From budget planning to congratulatory money estimates and family cost splitting",
+    "tabs": {
+      "costs": "Cost Entry",
+      "congratulatory": "Gift Money",
+      "split": "Family Split",
+      "dashboard": "Dashboard"
+    },
+    "region": {
+      "label": "Region",
+      "seoul": "Seoul/Metro",
+      "regional": "Regional"
+    },
+    "categories": {
+      "venue": "Venue",
+      "sdm": "Photo/Dress/Makeup",
+      "gifts": "Wedding Gifts",
+      "yedan": "Yedan (Gift Exchange)",
+      "ham": "Ham (Gift Box)",
+      "honeymoon": "Honeymoon",
+      "housing": "New Home",
+      "others": "Others"
+    },
+    "items": {
+      "venueRental": "Venue Rental",
+      "mealPerPerson": "Meal (per person)",
+      "guestCount": "Expected Guest Count",
+      "officiant": "Officiant/MC Fee",
+      "pyebaek": "Pyebaek Room",
+      "studioPhoto": "Studio Photography",
+      "dressRental": "Dress Rental",
+      "makeup": "Makeup",
+      "weddingVideo": "Wedding DVD/Snap",
+      "brideGifts": "Bride Gifts (rings, necklace, etc.)",
+      "groomGifts": "Groom Gifts (watch, ring, etc.)",
+      "yedanToGroom": "Yedan (to Groom's Family)",
+      "yedanToBride": "Yedan (to Bride's Family)",
+      "hamCost": "Ham Cost",
+      "hamMoney": "Ham Money (Envelope)",
+      "flights": "Flights",
+      "accommodation": "Accommodation",
+      "localExpenses": "Local Expenses",
+      "deposit": "Deposit (Jeonse/Wolse)",
+      "appliances": "Home Appliances",
+      "furniture": "Furniture",
+      "interior": "Interior",
+      "invitations": "Invitations",
+      "returnGifts": "Return Gifts",
+      "ibaji": "Ibaji (Food Exchange)",
+      "contingency": "Contingency"
+    },
+    "fields": {
+      "include": "Include",
+      "budget": "Budget",
+      "actual": "Actual",
+      "difference": "Diff",
+      "memo": "Memo",
+      "unit": "man won"
+    },
+    "guestUnit": "guests",
+    "congratulatory": {
+      "guestGroup": "Guest Groups",
+      "addGroup": "Add Group",
+      "groupName": "Group Name",
+      "personCount": "Count",
+      "perPerson": "Per Person",
+      "subtotal": "Subtotal",
+      "groups": {
+        "colleague": "Colleagues",
+        "friend": "Friends",
+        "family": "Family",
+        "relative": "Relatives",
+        "parentFriend": "Parents' Friends"
+      },
+      "total": "Total Gift Money",
+      "coverageRate": "Coverage Rate",
+      "netBurden": "Net Burden",
+      "excludingHousing": "Excl. Housing Coverage"
+    },
+    "split": {
+      "method": "Split Method",
+      "byItem": "By Item",
+      "byRatio": "By Ratio",
+      "byAmount": "By Amount",
+      "groomSide": "Groom Side",
+      "brideSide": "Bride Side",
+      "shared": "Shared",
+      "traditional": "Traditional Split",
+      "modern": "Modern Split",
+      "summary": "Split Summary"
+    },
+    "dashboard": {
+      "totalCost": "Total Cost",
+      "congratulatoryMoney": "Gift Money",
+      "netBurden": "Net Burden",
+      "budgetVsActual": "Budget vs Actual",
+      "underBudget": "Under Budget",
+      "overBudget": "Over Budget",
+      "categoryBreakdown": "Category Breakdown",
+      "category": "Category",
+      "noData": "No data available"
+    },
+    "actions": {
+      "reset": "Reset",
+      "resetConfirm": "Reset all data?",
+      "copyResults": "Copy Results",
+      "savePdf": "Save PDF"
+    },
+    "guide": {
+      "title": "Wedding Cost Guide",
+      "averageCosts": {
+        "title": "2025 Average Wedding Costs",
+        "items": [
+          "Seoul/Metro average: 35M~50M won (excl. housing)",
+          "Regional average: 20M~30M won (excl. housing)",
+          "Including housing: 100M~300M+ won"
+        ]
+      },
+      "savingTips": {
+        "title": "Saving Tips",
+        "items": [
+          "Small wedding: under 50 guests, save up to 50%",
+          "Off-season (Jan-Feb, Jul-Aug) venue discounts",
+          "Compare package vs individual vendor quotes",
+          "DIY invitations/return gifts save 300K~500K won"
+        ]
+      }
+    }
   },
   "subcategory": {
     "salaryWork": "Salary/Work",
@@ -14703,5 +15970,626 @@
     "convertEncode": "Convert/Encode",
     "generators": "Generators",
     "otherTools": "Other Tools"
+  },
+  "parentalLeave": {
+    "title": "Parental Leave Benefit Calculator",
+    "description": "Reflects 2025 6+6 Parental Leave system, monthly benefit details & couple simulation",
+    "tabs": {
+      "individual": "Individual",
+      "couple": "Couple Simulation"
+    },
+    "inputs": {
+      "settings": "Settings",
+      "ordinaryWage": "Ordinary Wage (Monthly)",
+      "ordinaryWagePlaceholder": "Enter monthly wage",
+      "inputAsAnnual": "Enter as annual salary",
+      "monthlyConverted": "Monthly equivalent",
+      "won": " KRW",
+      "leaveStartMonth": "Leave Start Month",
+      "leaveDuration": "Leave Duration",
+      "monthsLabel": " months",
+      "sixPlusSix": "6+6 Parental Leave System",
+      "apply": "Apply",
+      "notApply": "Not Applied",
+      "childBirthMonth": "Child's Birth Month",
+      "spouseLeaveStart": "Spouse's Leave Start Month",
+      "spouseLeaveDuration": "Spouse's Leave Duration",
+      "fatherWage": "Father's Wage (Monthly)",
+      "motherWage": "Mother's Wage (Monthly)",
+      "fatherLeaveStart": "Father's Leave Start",
+      "fatherLeaveDuration": "Father's Leave Duration",
+      "motherLeaveStart": "Mother's Leave Start",
+      "motherLeaveDuration": "Mother's Leave Duration"
+    },
+    "results": {
+      "monthlyTable": "Monthly Benefit Details",
+      "monthCol": "Month",
+      "monthUnit": "M",
+      "payRate": "Pay Rate",
+      "cap": "Cap",
+      "actualBenefit": "Benefit",
+      "vsWage": "vs Wage",
+      "note": "Note",
+      "totalBenefit": "Total Benefit",
+      "monthlyAverage": "Monthly Average",
+      "incomeReplacement": "Income Replacement",
+      "incomeLoss": "Total Income Loss",
+      "enhanced": "6+6 Enhanced",
+      "standard": "Standard",
+      "lowerLimit": "Min Applied",
+      "upperLimit": "Cap Applied",
+      "manwon": "0K KRW",
+      "manwonUnit": "0K",
+      "chartTitle": "Monthly Benefit Comparison",
+      "wageLabel": "Ordinary Wage",
+      "benefitLabel": "Parental Leave Benefit",
+      "placeholder": "Enter your wage on the left to calculate monthly benefits."
+    },
+    "couple": {
+      "father": "Father",
+      "mother": "Mother",
+      "fatherShort": "F",
+      "motherShort": "M",
+      "fatherSection": "Father's Information",
+      "motherSection": "Mother's Information",
+      "total": "Total",
+      "item": "Item",
+      "period": "Leave Period",
+      "timeline": "Leave Timeline",
+      "householdIncome": "Household Monthly Income",
+      "summary": "Combined Summary",
+      "childBirthHint": "Enter child's birth month for 6+6 eligibility check.",
+      "placeholder": "Enter both parents' wage and leave start month to see simulation results.",
+      "fatherEnhanced": "Father 6+6",
+      "fatherStandard": "Father Std",
+      "motherEnhanced": "Mother 6+6",
+      "motherStandard": "Mother Std"
+    },
+    "reducedHours": {
+      "title": "Reduced Work Hours Benefit",
+      "description": "Calculate government benefits and company pay when using reduced work hours for childcare. Minimum 15 hours per week required.",
+      "beforeHours": "Hours Before Reduction",
+      "afterHours": "Hours After Reduction",
+      "hoursPerWeek": " hrs",
+      "reducedTime": "Reduced Hours",
+      "first10h": "First 10h reduction (100%, cap 550K)",
+      "remaining": "Remaining reduction (80%, cap 1.5M)",
+      "govBenefit": "Government Benefit Subtotal",
+      "companyPay": "Company Pay (for hours worked)",
+      "totalIncome": "Total Income"
+    },
+    "warnings": {
+      "childOver18Months": "Child is over 18 months old. The 6+6 Parental Leave system does not apply.",
+      "maxLeave": "Maximum 18 months allowed.",
+      "abolishedPostPay": "Post-payment system abolished (from 2025)"
+    },
+    "share": "Copy URL to Share",
+    "shared": "URL Copied!",
+    "copyResult": "Copy Results",
+    "copied": "Copied!",
+    "guide": {
+      "title": "2025 Parental Leave Benefit Guide",
+      "changes2025": {
+        "title": "Key Changes in 2025",
+        "items": [
+          "Parental leave benefit cap significantly raised (up to 2.5M KRW/month)",
+          "Post-payment (25%) system abolished — full payment during leave",
+          "6+6 system months 1-2 cap raised to 2.5M KRW",
+          "Month 7+ cap raised from 1.5M to 1.6M KRW",
+          "Reduced work hours benefit cap raised to 550K KRW"
+        ]
+      },
+      "comparison": {
+        "title": "Standard vs 6+6 Comparison",
+        "monthCol": "Period",
+        "general": "Standard",
+        "sixPlusSix": "6+6 Enhanced",
+        "note": "* Cap amounts in 10K KRW, minimum benefit 700K KRW for all"
+      },
+      "eligibility": {
+        "title": "6+6 Eligibility Requirements",
+        "items": [
+          "Child under 18 months old",
+          "Both parents take parental leave",
+          "Employment insurance coverage for 180+ days",
+          "Leave starts in 2025 or later"
+        ]
+      }
+    }
+  },
+  "curlBuilder": {
+    "title": "cURL Command Builder",
+    "description": "Generate cURL commands and convert to code",
+    "tabs": {
+      "build": "Build Mode",
+      "parse": "Parse Mode"
+    },
+    "request": {
+      "method": "HTTP Method",
+      "url": "URL",
+      "urlPlaceholder": "https://api.example.com/endpoint",
+      "queryParams": "Query Parameters",
+      "headers": "Headers",
+      "headerPresets": "Header Presets",
+      "auth": "Authentication",
+      "body": "Request Body",
+      "options": "Options"
+    },
+    "params": {
+      "key": "Key",
+      "value": "Value",
+      "enabled": "Enabled",
+      "add": "Add",
+      "remove": "Remove"
+    },
+    "auth": {
+      "none": "None",
+      "bearer": "Bearer Token",
+      "basic": "Basic Auth",
+      "apiKey": "API Key",
+      "token": "Token",
+      "username": "Username",
+      "password": "Password",
+      "headerName": "Header Name",
+      "apiKeyValue": "API Key Value"
+    },
+    "body": {
+      "none": "None",
+      "raw": "Raw (JSON/XML/Text)",
+      "formData": "Form Data",
+      "urlencoded": "x-www-form-urlencoded",
+      "contentType": "Content Type",
+      "isFile": "File"
+    },
+    "options": {
+      "followRedirects": "Follow Redirects (-L)",
+      "insecure": "Skip SSL Verification (-k)",
+      "verbose": "Verbose Output (-v)",
+      "compressed": "Compressed (--compressed)",
+      "includeHeaders": "Include Response Headers (-i)",
+      "maxTime": "Max Timeout (seconds)"
+    },
+    "parse": {
+      "title": "Paste cURL Command",
+      "placeholder": "curl -X POST https://api.example.com ...",
+      "parseButton": "Parse",
+      "parseSuccess": "Parsed successfully! Check build mode.",
+      "parseError": "Parse failed",
+      "examples": "Example Commands"
+    },
+    "export": {
+      "format": "Export Format",
+      "curl": "cURL",
+      "fetch": "fetch (JS)",
+      "axios": "axios (JS)",
+      "python": "Python",
+      "go": "Go",
+      "php": "PHP",
+      "copy": "Copy",
+      "copied": "Copied"
+    },
+    "history": {
+      "title": "Recent Commands",
+      "empty": "No saved commands",
+      "clearAll": "Clear All"
+    },
+    "errors": {
+      "invalidUrl": "Please enter a valid URL",
+      "bodyWithGet": "GET requests typically do not include a body",
+      "missingContentType": "Consider adding a Content-Type header",
+      "parseFailedAt": "Parse failed: {detail}"
+    },
+    "guide": {
+      "title": "User Guide",
+      "devtools": {
+        "title": "Copy cURL from Browser",
+        "items": [
+          "Open Chrome DevTools > Network tab (F12)",
+          "Right-click the desired request",
+          "Select Copy > Copy as cURL",
+          "Paste in Parse Mode"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Query parameters can be entered directly in the URL or added as separate fields",
+          "Bearer tokens set in the auth section are automatically added to headers",
+          "When entering JSON body, adding Content-Type: application/json header is recommended",
+          "Use Ctrl+Enter to quickly parse or save to history"
+        ]
+      }
+    }
+  },
+  "comprehensivePropertyTax": {
+    "title": "Comprehensive Real Estate Tax Calculator 2025",
+    "description": "Automatically calculate Korea's Comprehensive Real Estate Tax (종부세) for 2025. Check tax rates by taxpayer type, credits, burden ceiling, and farmland surtax step by step.",
+    "taxpayerType": {
+      "label": "Taxpayer Type",
+      "single": "Single-home Owner",
+      "general": "General (2 or fewer)",
+      "threeplus": "3+ Properties",
+      "corp": "Corporation"
+    },
+    "elderly": {
+      "label": "Elderly Status",
+      "none": "Not applicable",
+      "60to65": "Age 60-65 (10%)",
+      "65to70": "Age 65-70 (20%)",
+      "over70": "Age 70+ (30%)"
+    },
+    "holdingPeriod": {
+      "label": "Holding Period",
+      "none": "Not applicable",
+      "5to10": "5-10 years (20%)",
+      "10to15": "10-15 years (40%)",
+      "over15": "15+ years (50%)"
+    },
+    "property": {
+      "label": "Property Assessed Values",
+      "add": "Add Property",
+      "remove": "Remove",
+      "price": "Assessed Value",
+      "pricePlaceholder": "Enter assessed value",
+      "total": "Total Assessed Value"
+    },
+    "prevYearTax": {
+      "label": "Previous Year Tax (Optional)",
+      "placeholder": "Previous year base tax",
+      "helpText": "Used for tax burden ceiling calculation. Skip to ignore ceiling."
+    },
+    "reset": "Reset",
+    "units": {
+      "won": "KRW",
+      "percent": "%"
+    },
+    "result": {
+      "title": "Calculation Summary",
+      "baseTax": "Base Tax",
+      "farmlandTax": "Farmland Surtax",
+      "totalTax": "Total Tax Payable",
+      "effectiveRate": "Effective Rate (Tax/Assessed)",
+      "notSubject": "Not Subject to Comprehensive Real Estate Tax",
+      "notSubjectDetail": "Fair market value {fairMarket} KRW of total assessed {total} KRW is below the deduction of {deduction} KRW, resulting in 0 tax base.",
+      "placeholder": "Enter property assessed values on the left to calculate the tax automatically."
+    },
+    "steps": {
+      "title": "Step-by-Step Breakdown",
+      "step1": {
+        "label": "Sum of Assessed Values",
+        "desc": "Total of {count} properties"
+      },
+      "step2": {
+        "label": "Fair Market Ratio (60%)",
+        "desc": "Total assessed x 60% (2025 standard)"
+      },
+      "step3": {
+        "label": "Basic Deduction -> Tax Base",
+        "desc": "Fair market value - deduction of {deduction} KRW"
+      },
+      "step4": {
+        "label": "Tax Rate -> Gross Tax",
+        "desc": "{type} progressive rate applied",
+        "corpDesc": "Corporation flat rate 5.0% applied"
+      },
+      "step5": {
+        "label": "Tax Credits (Single-home)",
+        "desc": "Elderly {elderly} + Long-term {holding} = Combined {combined} (cap 80%)",
+        "badge": "Credits"
+      },
+      "step6": {
+        "label": "Tax Burden Ceiling",
+        "notApplied": "Not applied",
+        "appliedDesc": "Capped at {rate} of previous year tax",
+        "notAppliedDesc": "Tax is within the ceiling limit.",
+        "appliedBadge": "Ceiling Applied"
+      },
+      "step7": {
+        "label": "Farmland Surtax (20%)",
+        "desc": "Base tax x 20%"
+      },
+      "step8": {
+        "label": "Total Tax Payable",
+        "desc": "Base tax + Farmland surtax"
+      }
+    },
+    "rateTable": {
+      "title": "Tax Rate Table",
+      "taxBase": "Tax Base",
+      "rate": "Rate",
+      "current": "Current",
+      "corpFlat": "Corporations are subject to a flat 5.0% rate on the entire tax base."
+    },
+    "guide": {
+      "title": "Comprehensive Real Estate Tax Guide",
+      "overview": {
+        "title": "Overview",
+        "items": [
+          "Comprehensive Real Estate Tax is levied on owners holding properties above a certain value as of June 1 each year.",
+          "Taxable: When the sum of housing assessed values exceeds the basic deduction threshold.",
+          "Deduction: Single-home 1.2B KRW, General 900M KRW, Corporation 0 KRW (since 2023).",
+          "Fair market value ratio: 60% applies for 2025.",
+          "Payment period: December 1-15 each year."
+        ]
+      },
+      "rates": {
+        "title": "Tax Rates",
+        "items": [
+          "General (2 or fewer): 0.5% to 2.7% progressive rates in 7 brackets.",
+          "3+ properties: 1.2% to 6.0% surtax rates apply.",
+          "Corporation: Flat 5.0% on the entire tax base.",
+          "Farmland surtax: Additional 20% of the base tax is levied."
+        ]
+      },
+      "credits": {
+        "title": "Tax Credits (Single-home Only)",
+        "items": [
+          "Elderly credit: 10% (60-65), 20% (65-70), 30% (70+).",
+          "Long-term holding credit: 20% (5-10yr), 40% (10-15yr), 50% (15+yr).",
+          "Combined cap for elderly + long-term: Maximum 80%.",
+          "Burden ceiling: 150% of prior year tax (general), 300% (3+/corp)."
+        ]
+      },
+      "tips": {
+        "title": "Tax-saving Tips",
+        "items": [
+          "Check assessed values on the MOLIT Real Estate Price Portal.",
+          "File an objection to lower the assessed value if it seems too high.",
+          "Single-home owners get a 1.2B KRW deduction plus elderly/holding credits.",
+          "Installment payment available if tax exceeds 2.5M KRW.",
+          "Registered rental housing may qualify for assessment exclusion."
+        ]
+      }
+    }
+  },
+  "cagrCalculator": {
+    "title": "CAGR Calculator",
+    "description": "Calculate Compound Annual Growth Rate, project future values, and compare investments",
+    "mode": {
+      "cagr": "CAGR Calc",
+      "cagrShort": "CAGR",
+      "future": "Future Value",
+      "futureShort": "Future",
+      "period": "Required Period",
+      "periodShort": "Period"
+    },
+    "input": {
+      "title": "Inputs",
+      "startValue": "Starting Amount",
+      "endValue": "Ending Amount",
+      "period": "Investment Period",
+      "periodYears": "Years",
+      "periodMonths": "Months",
+      "cagrRate": "Annual Growth Rate (CAGR)",
+      "targetValue": "Target Amount",
+      "compoundFreq": "Compounding Frequency",
+      "yearly": "Annually",
+      "monthly": "Monthly",
+      "daily": "Daily"
+    },
+    "compare": {
+      "toggle": "Compare Mode",
+      "investmentA": "Investment A",
+      "investmentB": "Investment B",
+      "title": "Comparison Results",
+      "item": "Item",
+      "finalValue": "Final Value",
+      "difference": "Difference",
+      "same": "Same",
+      "advantage": "better",
+      "faster": "faster"
+    },
+    "preset": {
+      "label": "Korean Asset Presets",
+      "kospi": "KOSPI 10yr (~3.5%)",
+      "seoulApt": "Seoul Apt 10yr (~5.2%)",
+      "sp500": "S&P500 10yr (~10.5%)",
+      "usBond": "US Bond 10yr (~2.8%)",
+      "deposit": "KR Deposit (~2.0%)"
+    },
+    "reset": "Reset",
+    "copy": "Copy",
+    "result": {
+      "cagrLabel": "Compound Annual Growth Rate (CAGR)",
+      "totalReturn": "Total Return",
+      "totalGain": "Total Gain",
+      "futureValue": "Future Value",
+      "futureValueLabel": "Projected Future Value",
+      "requiredPeriod": "Required Period",
+      "requiredPeriodLabel": "Time to Goal",
+      "basis": "basis",
+      "placeholder": "Enter values to see results"
+    },
+    "chart": {
+      "title": "Growth Chart by Year",
+      "year": "Year",
+      "value": "Asset Value",
+      "growth": "Growth"
+    },
+    "table": {
+      "title": "Yearly Breakdown",
+      "year": "Year",
+      "value": "Asset Value",
+      "growth": "Growth",
+      "growthRate": "Growth Rate",
+      "valueB": "Value (B)",
+      "growthB": "Growth (B)"
+    },
+    "units": {
+      "won": "KRW",
+      "percent": "%",
+      "year": "yr",
+      "month": "mo",
+      "eok": "eok",
+      "man": "man"
+    },
+    "guide": {
+      "title": "CAGR Guide",
+      "whatIsCagr": {
+        "title": "What is CAGR?",
+        "items": [
+          "CAGR (Compound Annual Growth Rate) is the annualized compound growth rate of an investment",
+          "Unlike simple average returns, CAGR reflects compounding effects for accurate performance measurement",
+          "It smooths out period-to-period volatility, showing the average annual growth from start to end",
+          "Enables apples-to-apples comparison of different investment products"
+        ]
+      },
+      "formula": {
+        "title": "Formulas",
+        "items": [
+          "CAGR = (End Value / Start Value) ^ (1 / Years) - 1",
+          "Future Value = Start Value x (1 + CAGR) ^ Years",
+          "Required Period = ln(Target / Start) / ln(1 + CAGR)",
+          "Monthly compounding: annual rate divided by 12 and compounded monthly"
+        ]
+      },
+      "usage": {
+        "title": "How to Use",
+        "items": [
+          "Measure actual returns on stocks, real estate, funds, and other investments",
+          "Compare performance of different investment alternatives on equal footing",
+          "Project future investment value and calculate time to reach goals",
+          "Analyze real returns on long-term financial products like pensions and savings"
+        ]
+      },
+      "tips": {
+        "title": "Investment Tips",
+        "items": [
+          "CAGR reflects past performance and does not guarantee future returns",
+          "Real CAGR adjusted for inflation = Nominal CAGR - Inflation Rate",
+          "Aim for stable CAGR through diversified investments to reduce risk",
+          "Rule of 72: Time to double your money ≈ 72 / CAGR(%)"
+        ]
+      }
+    }
+  },
+  "chess": {
+    "title": "Chess",
+    "description": "Classic chess game with AI opponent",
+    "white": "White",
+    "black": "Black",
+    "yourTurn": "Your turn",
+    "opponentTurn": "AI is thinking...",
+    "yourTurnCheck": "Check! Protect your king",
+    "aiTurnCheck": "Check! AI is thinking...",
+    "check": "Check!",
+    "checkmate": "Checkmate",
+    "stalemate": "Stalemate (Draw)",
+    "draw": "Draw!",
+    "youWin": "You Win!",
+    "youLose": "You Lose!",
+    "fiftyMoveRule": "50-move rule (Draw)",
+    "insufficientMaterial": "Insufficient material (Draw)",
+    "repetition": "Threefold repetition (Draw)",
+    "moves": "moves",
+    "playAgain": "Play Again",
+    "flipBoard": "Flip Board",
+    "capturedPieces": "Captured",
+    "moveHistory": "Move History",
+    "howToPlay": "How to Play",
+    "rules": {
+      "rule1": "White moves first. Each piece has its own movement rules.",
+      "rule2": "Pawn: forward 1 (2 from start), diagonal capture. Knight: L-shape.",
+      "rule3": "Bishop: diagonal, Rook: straight, Queen: diagonal + straight.",
+      "rule4": "King: 1 square any direction. Castling moves king and rook together.",
+      "rule5": "Attack the opponent's king (check). If they can't escape, it's checkmate!",
+      "rule6": "When a pawn reaches the opposite end, it promotes to queen/rook/bishop/knight."
+    },
+    "guide": {
+      "title": "Chess Guide",
+      "pieces": {
+        "title": "Piece Types and Values",
+        "items": [
+          "King: Most important piece, moves 1 square any direction",
+          "Queen: 9 points, unlimited diagonal + straight movement",
+          "Rook: 5 points, unlimited straight (horizontal/vertical) movement",
+          "Bishop: 3 points, unlimited diagonal movement",
+          "Knight: 3 points, L-shaped movement (can jump over pieces)",
+          "Pawn: 1 point, forward 1 (2 from start), diagonal capture"
+        ]
+      }
+    },
+    "win": "You Win!",
+    "loss": "You Lose!"
+  },
+  "biorhythm": {
+    "title": "Biorhythm Calculator",
+    "description": "Physical, emotional, and intellectual rhythm charts with compatibility analysis",
+    "inputTitle": "Basic Info",
+    "birthDate": "Date of Birth",
+    "targetDate": "Target Date",
+    "periodLabel": "Display Period",
+    "periodDays": "{days} days",
+    "daysLived": "{days} days since birth",
+    "emptyState": "Enter your date of birth to see your biorhythm.",
+    "todayTitle": "Today's Biorhythm",
+    "overallCondition": "Overall Condition",
+    "physical": "Physical",
+    "emotional": "Emotional",
+    "intellectual": "Intellectual",
+    "today": "Today",
+    "criticalDay": "Critical",
+    "chartTitle": "Biorhythm Chart",
+    "calendarTitle": "Calendar View",
+    "status": {
+      "high": "Great condition. You're full of energy!",
+      "medium": "Normal condition. A stable period.",
+      "low": "Low condition. Take it easy.",
+      "critical": "Critical day. Extra caution advised."
+    },
+    "calendar": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "compatibility": {
+      "title": "Compatibility Analysis",
+      "birthDate2": "Partner's Date of Birth",
+      "resultTitle": "Compatibility Results",
+      "overall": "Overall"
+    },
+    "guide": {
+      "title": "Biorhythm Guide",
+      "what": {
+        "title": "What is Biorhythm?",
+        "items": [
+          "Biorhythm theory suggests that a person's physical, emotional, and intellectual states fluctuate in fixed cycles from their date of birth.",
+          "Proposed by Dr. Wilhelm Fliess in the late 19th century, each rhythm follows a sine wave pattern.",
+          "Positive (+) phases represent active periods, negative (-) phases are low periods, and zero-crossing days are considered unstable 'critical days'."
+        ]
+      },
+      "rhythms": {
+        "title": "Three Rhythms",
+        "items": [
+          "Physical (23-day cycle): Affects stamina, endurance, immunity, and athletic ability. Positive phases favor physical activity and exercise.",
+          "Emotional (28-day cycle): Affects mood, feelings, creativity, and relationships. Positive phases favor social and artistic activities.",
+          "Intellectual (33-day cycle): Affects thinking, concentration, judgment, and memory. Positive phases favor learning and important decisions."
+        ]
+      },
+      "critical": {
+        "title": "What are Critical Days?",
+        "items": [
+          "Critical days are when the biorhythm curve crosses zero, transitioning from positive to negative or vice versa.",
+          "During these times, physical, emotional, or intellectual stability may decrease, potentially increasing the chance of accidents or mistakes.",
+          "Days marked with (!) in the calendar are critical days."
+        ]
+      },
+      "disclaimer": {
+        "title": "Scientific Evidence",
+        "items": [
+          "Biorhythm theory has not been scientifically validated. Multiple studies have found no significant correlation between biorhythms and actual health or performance.",
+          "This calculator is for entertainment and reference only. Do not base important decisions on biorhythm readings.",
+          "If you have health or condition concerns, please consult a medical professional."
+        ]
+      }
+    }
+  },
+  "rentSubsidy": {
+    "title": "LH Monthly Rent Subsidy Calculator",
+    "description": "Calculate monthly rent subsidies for youth, newlyweds, and general households."
   }
 }

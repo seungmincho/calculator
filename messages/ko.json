@@ -1452,7 +1452,16 @@
       "averageCalculator": "평균 계산기",
       "gradeCalculator": "석차/등급 계산기",
       "gpaConverter": "학점 변환기",
-      "pcElectricity": "컴퓨터 전기세 계산기"
+      "pcElectricity": "컴퓨터 전기세 계산기",
+      "parentalLeave": "육아휴직급여 계산기",
+      "healthInsurance": "건강보험료 계산기",
+      "weddingCalculator": "결혼비용 계산기",
+      "curlBuilder": "cURL 빌더",
+      "comprehensivePropertyTax": "종합부동산세 계산기",
+      "cagrCalculator": "CAGR 계산기",
+      "chess": "체스",
+      "biorhythm": "바이오리듬 계산기",
+      "pomodoro": "뽀모도로 타이머"
     },
     "copyright": "© 2025-2026 툴허브. All rights reserved."
   },
@@ -1720,7 +1729,11 @@
       "empty": "저장된 계산 이력이 없습니다",
       "format": "키 {height}cm, 몸무게 {weight}kg, BMI {bmi}"
     },
-    "placeholder": "키와 몸무게를 입력하시면 BMI 계산 결과가 나타납니다"
+    "placeholder": "키와 몸무게를 입력하시면 BMI 계산 결과가 나타납니다",
+    "common": {
+      "copied": "복사됨",
+      "save": "저장"
+    }
   },
   "calorie": {
     "title": "칼로리 계산기",
@@ -2052,8 +2065,8 @@
       }
     },
     "minimumWage": {
-      "title": "2026년 최저임금 정보",
       "2026": "2026년 최저시급",
+      "title": "2026년 최저임금 정보",
       "monthly": "월 최저임금 (주휴 포함)",
       "monthlyHours": "월 소정근로시간",
       "note": "* 주 40시간 근무 기준, 월 소정근로시간 209시간 적용 (주휴수당 포함)"
@@ -2318,7 +2331,11 @@
       "rule3": "한번 놓은 돌은 움직일 수 없습니다.",
       "rule4": "먼저 5개를 연속으로 놓는 사람이 승리합니다!",
       "rule5": "흑돌에는 금수가 있습니다: 쌍삼(3-3), 쌍사(4-4), 장목(6개 이상)."
-    }
+    },
+    "doubleFourForbidden": "쌍사(4-4)는 금수입니다!",
+    "overlineForbidden": "장목(6목 이상)은 금수입니다!",
+    "forbiddenMove": "금수입니다!",
+    "draw": "무승부!"
   },
   "othello": {
     "title": "온라인 오셀로",
@@ -2369,7 +2386,9 @@
       "rule2": "둘 수 있는 곳에 돌을 놓으면 상대 돌을 뒤집습니다.",
       "rule3": "자신의 돌 사이에 있는 상대 돌을 가로, 세로, 대각선으로 뒤집습니다.",
       "rule4": "게임이 끝나면 더 많은 돌을 가진 플레이어가 승리합니다!"
-    }
+    },
+    "win": "승리!",
+    "loss": "패배!"
   },
   "connect4": {
     "title": "커넥트4",
@@ -2409,7 +2428,9 @@
       "rule2": "디스크는 해당 열의 가장 아래 빈 칸에 떨어집니다.",
       "rule3": "가로, 세로, 대각선으로 4개를 먼저 연결하면 승리!",
       "rule4": "보드가 가득 차도 승자가 없으면 무승부입니다."
-    }
+    },
+    "win": "승리!",
+    "loss": "패배!"
   },
   "checkers": {
     "title": "체커",
@@ -2452,7 +2473,10 @@
       "rule3": "잡을 수 있으면 반드시 잡아야 합니다.",
       "rule4": "반대편 끝에 도달하면 킹이 됩니다 (뒤로도 이동 가능).",
       "rule5": "상대 말을 모두 잡거나 움직이지 못하게 하면 승리!"
-    }
+    },
+    "win": "승리!",
+    "loss": "패배!",
+    "draw": "무승부!"
   },
   "mancala": {
     "title": "만칼라",
@@ -2500,8 +2524,24 @@
       "rule2": "마지막 돌이 자신의 스토어에 들어가면 추가 턴을 얻습니다.",
       "rule3": "마지막 돌이 자기 쪽 빈 피트에 들어가면 반대편 돌과 함께 획득합니다.",
       "rule4": "한쪽 피트가 모두 비면 게임 종료. 남은 돌은 해당 플레이어의 스토어로 들어갑니다.",
-      "rule5": "스토어에 더 많은 돌을 모은 플레이어가 승리합니다!"
-    }
+      "rule5": "스토어에 더 많은 돌을 모은 플레이어가 승리합니다!",
+      "objective": "목표",
+      "objectiveDesc": "스토어에 상대보다 더 많은 돌을 모으세요.",
+      "setup": "준비",
+      "setupDesc": "각 플레이어에게 6개의 피트에 4개씩 돌이 있고, 오른쪽에 1개의 스토어가 있습니다.",
+      "gameplay": "진행방식",
+      "gameplayDesc": "자신의 피트 중 하나를 선택해 돌을 집어 반시계 방향으로 하나씩 뿌립니다.",
+      "extraTurn": "추가 턴",
+      "extraTurnDesc": "마지막 돌이 자신의 스토어에 들어가면 추가 턴을 얻습니다.",
+      "capture": "획득",
+      "captureDesc": "마지막 돌이 자기 쪽 빈 피트에 들어가면 반대편 돌과 함께 획득합니다.",
+      "end": "종료",
+      "endDesc": "한쪽 피트가 모두 비면 게임 종료. 남은 돌은 해당 플레이어의 스토어로 들어갑니다."
+    },
+    "win": "승리!",
+    "loss": "패배!",
+    "captured": "획득",
+    "stones": "개의 돌"
   },
   "battleship": {
     "title": "배틀십",
@@ -2570,7 +2610,9 @@
       "gameplayDesc": "번갈아가며 상대방의 격자판을 공격합니다. 함선의 모든 칸을 명중시키면 격침됩니다.",
       "end": "승리 조건",
       "endDesc": "상대방의 함선 5척을 먼저 모두 격침시킨 플레이어가 승리합니다."
-    }
+    },
+    "win": "승리!",
+    "loss": "패배!"
   },
   "dotsandboxes": {
     "title": "도트앤박스",
@@ -2615,8 +2657,19 @@
       "rule1": "번갈아 가며 점 사이에 선을 그립니다.",
       "rule2": "박스의 4번째 변을 완성하면 해당 박스를 획득합니다.",
       "rule3": "박스를 완성하면 추가 턴을 얻습니다.",
-      "rule4": "더 많은 박스를 획득한 플레이어가 승리합니다!"
-    }
+      "rule4": "더 많은 박스를 획득한 플레이어가 승리합니다!",
+      "objective": "목표",
+      "objectiveDesc": "상대보다 더 많은 박스를 완성하세요.",
+      "gameplay": "진행방식",
+      "gameplayDesc": "번갈아 가며 인접한 점 사이에 선을 그립니다.",
+      "scoring": "점수",
+      "scoringDesc": "박스의 4번째 변을 완성하면 해당 박스를 획득하고 추가 턴을 얻습니다.",
+      "end": "종료",
+      "endDesc": "모든 박스가 완성되면 게임 종료. 더 많은 박스를 가진 플레이어가 승리합니다."
+    },
+    "win": "승리!",
+    "loss": "패배!",
+    "completedBox": "박스 완성! 추가 턴!"
   },
   "lotto": {
     "title": "로또번호 생성기",
@@ -4212,6 +4265,42 @@
       "pcElectricity": {
         "title": "컴퓨터 전기세 계산기",
         "description": "PC 부품별 소비전력으로 월간 전기요금 자동 계산"
+      },
+      "parentalLeave": {
+        "title": "육아휴직급여 계산기",
+        "description": "2025년 6+6 부모육아휴직제 반영, 월별 급여 및 부부 시뮬레이션"
+      },
+      "healthInsurance": {
+        "title": "건강보험료 계산기",
+        "description": "직장/지역가입자 보험료 계산, 피부양자 판정, 직장vs지역 비교"
+      },
+      "weddingCalculator": {
+        "title": "결혼비용 계산기",
+        "description": "예식장, 스드메, 예물부터 축의금 예상, 양가 분담까지"
+      },
+      "curlBuilder": {
+        "title": "cURL 빌더",
+        "description": "cURL 명령어 생성 및 fetch/axios/Python/Go/PHP 코드 변환"
+      },
+      "comprehensivePropertyTax": {
+        "title": "종합부동산세 계산기",
+        "description": "다주택 공시가격 합산, 2025년 세율, 고령자·장기보유 공제, 세부담상한"
+      },
+      "cagrCalculator": {
+        "title": "CAGR 계산기",
+        "description": "연평균성장률(CAGR) 계산, 미래가치 예측, 투자 비교 분석"
+      },
+      "chess": {
+        "title": "체스",
+        "description": "AI 대전 체스 게임, 난이도별 대국"
+      },
+      "biorhythm": {
+        "title": "바이오리듬 계산기",
+        "description": "생년월일 기반 신체·감성·지성 리듬 차트와 호환성 분석"
+      },
+      "pomodoro": {
+        "title": "뽀모도로 타이머",
+        "description": "25분 집중 + 5분 휴식, 태스크 관리, 알림음, 통계"
       }
     }
   },
@@ -5383,9 +5472,56 @@
       "babyBoomer": "베이비붐 세대 (1946~1964)",
       "silent": "침묵 세대 (~1945)"
     },
+    "placeholder": "생년월일을 입력하면 결과가 표시됩니다",
     "earlySchool": {
       "yes": "빠른년생 (1~2월생)",
       "no": "해당 없음"
+    },
+    "birthday": {
+      "title": "다음 생일 D-Day",
+      "daysLeft": "남은 일수",
+      "nextAge": "다음 생일 나이",
+      "turningAge": "만 {age}세가 되었습니다!",
+      "willTurn": "만 {age}세"
+    },
+    "school": {
+      "title": "학년 정보",
+      "entryYear": "초등학교 입학 연도",
+      "yearSuffix": "년",
+      "monthBorn": "월생",
+      "currentStatus": "현재 학업 상태",
+      "sameGrade": "같은 학년 또래",
+      "earlyBirthday": "빠른생일",
+      "earlyBirthdayNote": "1~2월에 태어난 빠른생일로, 전년도 3~12월생과 같은 학년입니다.",
+      "status": {
+        "preschool": "미취학",
+        "elementaryGrade": "초등학교 {grade}학년",
+        "middleGrade": "중학교 {grade}학년",
+        "highGrade": "고등학교 {grade}학년",
+        "universityGrade": "대학교 {grade}학년",
+        "graduated": "졸업"
+      }
+    },
+    "milestone": {
+      "title": "인생 타임라인",
+      "showTimeline": "타임라인 보기",
+      "hideTimeline": "타임라인 접기",
+      "copyAll": "타임라인 복사",
+      "clickToShow": "위 버튼을 눌러 타임라인을 확인하세요",
+      "intAgeLabel": "만 {age}세",
+      "current": "현재",
+      "elementary": "초등학교 입학",
+      "middle": "중학교 입학",
+      "high": "고등학교 입학",
+      "driving": "운전면허 취득 가능 (만 18세)",
+      "voting": "선거권 부여 (만 18세)",
+      "adult": "성인 (만 19세)",
+      "drinking": "주류 구매 가능 (만 19세)",
+      "universityGrad": "대학교 졸업 (일반, 4년제 기준)",
+      "avgMarriageMale": "평균 결혼 연령 - 남성 (33.7세, 2024 통계)",
+      "avgMarriageFemale": "평균 결혼 연령 - 여성 (31.3세, 2024 통계)",
+      "seniorDiscount": "경로 우대 (만 65세)",
+      "pension": "국민연금 수급 개시 (만 65세)"
     },
     "ageExplanation": {
       "title": "나이 계산 방식 안내",
@@ -5417,7 +5553,9 @@
         "items": [
           "만 나이 / 한국 나이 / 연 나이",
           "살아온 일수, 주수, 개월수",
-          "다음 생일까지 남은 일수",
+          "다음 생일 D-Day 및 만 나이 예고",
+          "학년 정보 (초등학교 입학 연도, 현재 학년, 같은 학년 또래)",
+          "인생 타임라인 (주요 생애 이벤트 연도별 표시)",
           "띠 (12간지), 별자리, 태어난 요일",
           "세대 구분, 빠른년생 여부"
         ]
@@ -6951,6 +7089,311 @@
           "정기 산전검진을 반드시 받으세요"
         ]
       }
+    },
+    "weeklyProgress": {
+      "title": "임신 주수 진행률",
+      "weekLabel": "{week}주",
+      "dayLabel": "{day}일",
+      "outOf40": "/ 40주",
+      "trimester1Label": "1분기 (1~12주)",
+      "trimester2Label": "2분기 (13~27주)",
+      "trimester3Label": "3분기 (28~40주)",
+      "currentWeekBadge": "현재 {week}주",
+      "babyThisWeek": "이번 주 아기는"
+    },
+    "babySize": {
+      "title": "주차별 아기 크기",
+      "description": "이번 주 아기는 어떤 크기일까요?",
+      "lengthLabel": "길이",
+      "weightLabel": "몸무게",
+      "week4": {
+        "fruit": "양귀비씨",
+        "emoji": "🌱",
+        "length": "약 1mm",
+        "weight": "1g 미만"
+      },
+      "week5": {
+        "fruit": "참깨",
+        "emoji": "🌾",
+        "length": "약 2mm",
+        "weight": "1g 미만"
+      },
+      "week6": {
+        "fruit": "렌틸콩",
+        "emoji": "🫘",
+        "length": "약 6mm",
+        "weight": "1g 미만"
+      },
+      "week7": {
+        "fruit": "블루베리",
+        "emoji": "🫐",
+        "length": "약 1cm",
+        "weight": "1g 미만"
+      },
+      "week8": {
+        "fruit": "라즈베리",
+        "emoji": "🍇",
+        "length": "약 1.6cm",
+        "weight": "1g"
+      },
+      "week9": {
+        "fruit": "포도",
+        "emoji": "🍇",
+        "length": "약 2.3cm",
+        "weight": "2g"
+      },
+      "week10": {
+        "fruit": "딸기",
+        "emoji": "🍓",
+        "length": "약 3.1cm",
+        "weight": "4g"
+      },
+      "week11": {
+        "fruit": "무화과",
+        "emoji": "🫐",
+        "length": "약 4.1cm",
+        "weight": "7g"
+      },
+      "week12": {
+        "fruit": "라임",
+        "emoji": "🍋",
+        "length": "약 5.4cm",
+        "weight": "14g"
+      },
+      "week13": {
+        "fruit": "완두콩 꼬투리",
+        "emoji": "🫛",
+        "length": "약 7.4cm",
+        "weight": "23g"
+      },
+      "week14": {
+        "fruit": "레몬",
+        "emoji": "🍋",
+        "length": "약 8.7cm",
+        "weight": "43g"
+      },
+      "week15": {
+        "fruit": "사과",
+        "emoji": "🍎",
+        "length": "약 10.1cm",
+        "weight": "70g"
+      },
+      "week16": {
+        "fruit": "아보카도",
+        "emoji": "🥑",
+        "length": "약 11.6cm",
+        "weight": "100g"
+      },
+      "week17": {
+        "fruit": "배",
+        "emoji": "🍐",
+        "length": "약 13cm",
+        "weight": "140g"
+      },
+      "week18": {
+        "fruit": "피망",
+        "emoji": "🫑",
+        "length": "약 14.2cm",
+        "weight": "190g"
+      },
+      "week19": {
+        "fruit": "토마토",
+        "emoji": "🍅",
+        "length": "약 15.3cm",
+        "weight": "240g"
+      },
+      "week20": {
+        "fruit": "바나나",
+        "emoji": "🍌",
+        "length": "약 16.4cm",
+        "weight": "300g"
+      },
+      "week21": {
+        "fruit": "당근",
+        "emoji": "🥕",
+        "length": "약 26.7cm",
+        "weight": "360g"
+      },
+      "week22": {
+        "fruit": "파파야",
+        "emoji": "🍑",
+        "length": "약 27.8cm",
+        "weight": "430g"
+      },
+      "week23": {
+        "fruit": "망고",
+        "emoji": "🥭",
+        "length": "약 28.9cm",
+        "weight": "501g"
+      },
+      "week24": {
+        "fruit": "옥수수",
+        "emoji": "🌽",
+        "length": "약 30cm",
+        "weight": "600g"
+      },
+      "week25": {
+        "fruit": "콜리플라워",
+        "emoji": "🥦",
+        "length": "약 34.6cm",
+        "weight": "660g"
+      },
+      "week26": {
+        "fruit": "상추",
+        "emoji": "🥬",
+        "length": "약 35.6cm",
+        "weight": "760g"
+      },
+      "week27": {
+        "fruit": "양배추",
+        "emoji": "🥬",
+        "length": "약 36.6cm",
+        "weight": "875g"
+      },
+      "week28": {
+        "fruit": "가지",
+        "emoji": "🍆",
+        "length": "약 37.6cm",
+        "weight": "1kg"
+      },
+      "week29": {
+        "fruit": "호박",
+        "emoji": "🎃",
+        "length": "약 38.6cm",
+        "weight": "1.15kg"
+      },
+      "week30": {
+        "fruit": "오이",
+        "emoji": "🥒",
+        "length": "약 39.9cm",
+        "weight": "1.3kg"
+      },
+      "week31": {
+        "fruit": "코코넛",
+        "emoji": "🥥",
+        "length": "약 41.1cm",
+        "weight": "1.5kg"
+      },
+      "week32": {
+        "fruit": "코코넛",
+        "emoji": "🥥",
+        "length": "약 42.4cm",
+        "weight": "1.7kg"
+      },
+      "week33": {
+        "fruit": "파인애플",
+        "emoji": "🍍",
+        "length": "약 43.7cm",
+        "weight": "1.9kg"
+      },
+      "week34": {
+        "fruit": "칸탈루프",
+        "emoji": "🍈",
+        "length": "약 45cm",
+        "weight": "2.15kg"
+      },
+      "week35": {
+        "fruit": "허니듀 멜론",
+        "emoji": "🍈",
+        "length": "약 46.2cm",
+        "weight": "2.38kg"
+      },
+      "week36": {
+        "fruit": "파파야",
+        "emoji": "🍑",
+        "length": "약 47.4cm",
+        "weight": "2.62kg"
+      },
+      "week37": {
+        "fruit": "상추 한 포기",
+        "emoji": "🥬",
+        "length": "약 48.6cm",
+        "weight": "2.86kg"
+      },
+      "week38": {
+        "fruit": "대파",
+        "emoji": "🧅",
+        "length": "약 49.8cm",
+        "weight": "3.08kg"
+      },
+      "week39": {
+        "fruit": "미니 수박",
+        "emoji": "🍉",
+        "length": "약 50.7cm",
+        "weight": "3.29kg"
+      },
+      "week40": {
+        "fruit": "수박",
+        "emoji": "🍉",
+        "length": "약 51.2cm",
+        "weight": "3.5kg"
+      }
+    },
+    "prenatalSchedule": {
+      "title": "산전검사 일정",
+      "subtitle": "임신 주수별 권장 산전검사 일정입니다",
+      "completedLabel": "완료",
+      "upcomingLabel": "예정",
+      "currentLabel": "현재",
+      "week8": {
+        "title": "8주",
+        "desc": "첫 산전검사, 초음파 (태아 심박 확인)"
+      },
+      "week12": {
+        "title": "12주",
+        "desc": "기형아 선별검사 1차 (NT 측정, 혈액검사)"
+      },
+      "week16": {
+        "title": "16주",
+        "desc": "기형아 선별검사 2차, 양수검사 (필요 시)"
+      },
+      "week20": {
+        "title": "20주",
+        "desc": "정밀초음파 (태아 구조 이상 선별)"
+      },
+      "week24": {
+        "title": "24~28주",
+        "desc": "임신성 당뇨 선별검사 (OGTT)"
+      },
+      "week28": {
+        "title": "28~32주",
+        "desc": "태동검사 (NST), 빈혈검사"
+      },
+      "week36": {
+        "title": "36주~",
+        "desc": "매주 산전검진, NST, 출산 준비"
+      }
+    },
+    "weightGain": {
+      "title": "임신 중 체중 증가 가이드",
+      "subtitle": "임신 전 BMI 기준 권장 체중 증가량입니다 (선택 사항)",
+      "heightLabel": "임신 전 키 (cm)",
+      "weightLabel": "임신 전 체중 (kg)",
+      "heightPlaceholder": "예: 165",
+      "weightPlaceholder": "예: 58",
+      "bmiLabel": "임신 전 BMI",
+      "categoryLabel": "체중 분류",
+      "recommendedGainLabel": "권장 체중 증가량",
+      "trimester1GainLabel": "1분기 권장 증가량",
+      "trimester23GainLabel": "2·3분기 주당 권장",
+      "underweight": "저체중 (BMI 18.5 미만)",
+      "normal": "정상 (BMI 18.5~24.9)",
+      "overweight": "과체중 (BMI 25~29.9)",
+      "obese": "비만 (BMI 30 이상)",
+      "underweightRange": "12.5~18kg",
+      "normalRange": "11.5~16kg",
+      "overweightRange": "7~11.5kg",
+      "obeseRange": "5~9kg",
+      "underweightTrimester1": "1.5~3kg",
+      "normalTrimester1": "1~3kg",
+      "overweightTrimester1": "0.5~2kg",
+      "obeseTrimester1": "0.5~1kg",
+      "underweightWeekly": "주당 약 0.5kg",
+      "normalWeekly": "주당 약 0.4kg",
+      "overweightWeekly": "주당 약 0.3kg",
+      "obeseWeekly": "주당 약 0.2kg",
+      "enterHeightWeight": "키와 체중을 입력하면 BMI 기반 체중 증가 가이드를 확인할 수 있습니다.",
+      "disclaimer": "이 정보는 참고용이며, 실제 권장 체중 증가량은 산부인과 전문의와 상담하세요."
     }
   },
   "hourlyWage": {
@@ -8707,6 +9150,41 @@
           "10줄 클리어마다 레벨이 올라가며 속도가 빨라집니다"
         ]
       }
+    },
+    "multi": {
+      "title": "멀티플레이",
+      "description": "실시간 2인 테트리스 대전! 줄을 클리어하면 상대에게 공격 라인을 보냅니다.",
+      "soloMode": "솔로 모드",
+      "multiMode": "멀티플레이",
+      "you": "나",
+      "opponent": "상대",
+      "guest": "게스트",
+      "enterName": "닉네임을 입력하세요",
+      "waitingForOpponent": "상대를 기다리는 중...",
+      "sharePeerId": "이 Peer ID를 상대에게 공유하세요:",
+      "connectionFailed": "연결에 실패했습니다.",
+      "roomFull": "이미 다른 플레이어가 입장했습니다.",
+      "opponentDisconnected": "상대방이 연결을 끊었습니다.",
+      "cancelAndBack": "취소하고 돌아가기",
+      "connecting": "연결 중...",
+      "connectingDesc": "호스트에 연결하는 중입니다...",
+      "backToLobby": "로비로 돌아가기",
+      "surrender": "기권",
+      "confirmSurrender": "정말 기권하시겠습니까?",
+      "youWin": "승리!",
+      "youLose": "패배...",
+      "draw": "무승부",
+      "playAgain": "다시 하기",
+      "attackLog": "공격 로그",
+      "garbageLines": "줄 공격",
+      "incomingGarbage": "공격 수신",
+      "directConnect": "직접 연결",
+      "directConnectDesc": "호스트가 공유한 Peer ID를 입력하여 직접 연결합니다.",
+      "enterPeerIdButton": "Peer ID로 입장",
+      "enterPeerId": "호스트의 Peer ID를 입력하세요:",
+      "chat": "채팅",
+      "noChatMessages": "메시지가 없습니다",
+      "typeMessage": "메시지를 입력하세요..."
     }
   },
   "numberBaseball": {
@@ -10973,22 +11451,52 @@
     "roundLabel": "라운드 {current}/{total}",
     "start": "시작",
     "pause": "일시정지",
+    "skip": "건너뛰기",
     "resetPhase": "현재 단계 초기화",
     "resetAll": "전체 초기화",
     "autoStart": "다음 단계 자동 시작",
     "soundOn": "알림음 켜기",
     "soundOff": "알림음 끄기",
+    "notifOn": "브라우저 알림 켜기",
+    "notifOff": "브라우저 알림 끄기",
     "settings": "설정",
-    "statsTitle": "세션 통계",
-    "statsTotalWork": "집중 시간 (분)",
-    "statsCompletedRounds": "완료 라운드",
-    "statsLongBreaks": "긴 휴식 횟수",
+    "currentTask": "현재 작업",
+    "notificationTitle": "포모도로 타이머",
+    "notificationWorkDone": "집중 세션 완료! 다음: {next}",
+    "notificationBreakDone": "휴식 끝! 다시 집중할 시간입니다.",
+    "taskTitle": "작업 목록",
+    "taskPlaceholder": "작업을 입력하세요...",
+    "taskEmpty": "작업이 없습니다. 위에서 추가해보세요.",
+    "taskEstimate": "예상 뽀모도로 수",
+    "statsTitle": "통계",
+    "statsTodayPomodoros": "오늘 뽀모도로",
+    "statsTodayMinutes": "오늘 집중 (분)",
+    "statsSessionRounds": "세션 완료",
+    "statsStreak": "연속 달성일",
+    "statsWeeklyTitle": "이번 주 통계",
+    "weekDays": [
+      "월",
+      "화",
+      "수",
+      "목",
+      "금",
+      "토",
+      "일"
+    ],
     "settingsTitle": "타이머 설정",
+    "settingsTimeSection": "시간 설정",
     "settingsWork": "집중 시간",
     "settingsShortBreak": "짧은 휴식",
     "settingsLongBreak": "긴 휴식",
-    "settingsLongBreakInterval": "긴 휴식 주기 (몇 라운드마다)",
-    "settingsMinutes": "분",
+    "settingsLongBreakInterval": "긴 휴식 주기 (라운드)",
+    "settingsMin": "분",
+    "settingsNotifSection": "알림 설정",
+    "settingsBrowserNotif": "브라우저 알림",
+    "settingsNotifDenied": "차단됨",
+    "settingsNotifAllow": "허용하기",
+    "settingsSound": "알림음",
+    "settingsVolume": "볼륨",
+    "settingsPreview": "미리 듣기",
     "save": "저장",
     "cancel": "취소",
     "guideTitle": "포모도로 기법 가이드",
@@ -13055,8 +13563,29 @@
     "weekdays": "평일 오전 9시",
     "expression": "크론 표현식",
     "koreanDescription": "설명",
-    "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-    "dayNames": ["일", "월", "화", "수", "목", "금", "토"],
+    "monthNames": [
+      "1월",
+      "2월",
+      "3월",
+      "4월",
+      "5월",
+      "6월",
+      "7월",
+      "8월",
+      "9월",
+      "10월",
+      "11월",
+      "12월"
+    ],
+    "dayNames": [
+      "일",
+      "월",
+      "화",
+      "수",
+      "목",
+      "금",
+      "토"
+    ],
     "guide": {
       "title": "Crontab 사용 가이드",
       "format": {
@@ -13080,63 +13609,33 @@
   },
   "regexBuilder": {
     "title": "정규식 빌더",
-    "description": "시각적으로 정규표현식을 빌드하고 실시간으로 테스트하세요.",
+    "description": "비주얼로 정규표현식을 만들고 실시간으로 테스트하세요. 자주 쓰는 패턴 라이브러리, 매칭 하이라이팅, 문자열 치환 지원.",
     "pattern": "정규식 패턴",
     "flags": "플래그",
     "testText": "테스트 텍스트",
     "matches": "매칭 결과",
-    "matchCount": "매칭 수",
+    "matchCount": "개 매칭",
     "noMatch": "매칭 없음",
     "replace": "치환",
     "replaceWith": "치환 문자열",
-    "result": "결과",
+    "result": "치환 결과",
     "commonPatterns": "자주 쓰는 패턴",
-    "groups": "그룹",
-    "index": "인덱스",
+    "groups": "캡처 그룹",
+    "index": "위치",
     "value": "값",
     "copy": "복사",
-    "copied": "복사됨",
+    "copied": "복사됨!",
     "matchMode": "매칭 모드",
     "replaceMode": "치환 모드",
     "explanation": "패턴 설명",
-    "invalidPattern": "잘못된 패턴",
-    "patternPlaceholder": "정규식을 입력하세요 (예: \\d{3}-\\d{4})",
-    "testPlaceholder": "테스트할 텍스트를 입력하세요",
-    "replacePlaceholder": "치환할 문자열을 입력하세요",
-    "global": "전체 검색 (g)",
-    "caseInsensitive": "대소문자 무시 (i)",
-    "multiline": "여러 줄 (m)",
-    "dotAll": "줄바꿈 포함 (s)",
-    "unicode": "유니코드 (u)",
-    "email": "이메일",
-    "phoneKr": "한국 전화번호",
-    "url": "URL",
-    "ipAddress": "IP 주소",
-    "koreanOnly": "한글만",
-    "htmlTag": "HTML 태그",
-    "date": "날짜 (YYYY-MM-DD)",
-    "residentId": "주민등록번호",
-    "guide": {
-      "title": "정규식 사용 가이드",
-      "basics": {
-        "title": "기본 문법",
-        "items": [
-          "\\d = 숫자, \\w = 문자/숫자, \\s = 공백",
-          ". = 아무 문자, ^ = 시작, $ = 끝",
-          "* = 0회 이상, + = 1회 이상, ? = 0~1회",
-          "[abc] = 문자 클래스, (group) = 그룹 캡처"
-        ]
-      },
-      "flags": {
-        "title": "플래그 설명",
-        "items": [
-          "g: 전체 검색 (첫 매칭 후 멈추지 않음)",
-          "i: 대소문자 구분 안 함",
-          "m: ^/$가 각 줄의 시작/끝에 매칭",
-          "s: .이 줄바꿈도 매칭"
-        ]
-      }
-    }
+    "patternEmail": "이메일",
+    "patternPhone": "한국 전화번호",
+    "patternUrl": "URL",
+    "patternIp": "IP 주소",
+    "patternKorean": "한글만",
+    "patternHtml": "HTML 태그",
+    "patternDate": "날짜(YYYY-MM-DD)",
+    "patternRrn": "주민등록번호"
   },
   "envEditor": {
     "title": "환경변수(.env) 편집기",
@@ -13255,36 +13754,6 @@
         ]
       }
     }
-  },
-  "regexBuilder": {
-    "title": "정규식 빌더",
-    "description": "비주얼로 정규표현식을 만들고 실시간으로 테스트하세요. 자주 쓰는 패턴 라이브러리, 매칭 하이라이팅, 문자열 치환 지원.",
-    "pattern": "정규식 패턴",
-    "flags": "플래그",
-    "testText": "테스트 텍스트",
-    "matches": "매칭 결과",
-    "matchCount": "개 매칭",
-    "noMatch": "매칭 없음",
-    "replace": "치환",
-    "replaceWith": "치환 문자열",
-    "result": "치환 결과",
-    "commonPatterns": "자주 쓰는 패턴",
-    "groups": "캡처 그룹",
-    "index": "위치",
-    "value": "값",
-    "copy": "복사",
-    "copied": "복사됨!",
-    "matchMode": "매칭 모드",
-    "replaceMode": "치환 모드",
-    "explanation": "패턴 설명",
-    "patternEmail": "이메일",
-    "patternPhone": "한국 전화번호",
-    "patternUrl": "URL",
-    "patternIp": "IP 주소",
-    "patternKorean": "한글만",
-    "patternHtml": "HTML 태그",
-    "patternDate": "날짜(YYYY-MM-DD)",
-    "patternRrn": "주민등록번호"
   },
   "gifMaker": {
     "title": "GIF 메이커",
@@ -13985,472 +14454,919 @@
     "statStdDev": "표준편차",
     "statMedian": "중앙값",
     "resultLabel": "결과",
-    "guide.title": "평균 계산 가이드",
-    "guide.arithmetic.title": "산술평균",
-    "guide.arithmetic.items": ["가장 일반적인 평균", "모든 값을 더하고 개수로 나눔", "이상치(극단값)에 민감"],
-    "guide.weighted.title": "가중평균",
-    "guide.weighted.items": ["값마다 중요도(가중치)가 다를 때 사용", "학점 평균 계산에 활용 (학점×학점수)", "설문 가중 응답 분석"],
-    "guide.geometric.title": "기하평균",
-    "guide.geometric.items": ["성장률, 수익률의 평균에 적합", "양수만 사용 가능", "복리 수익률 계산에 필수"],
-    "guide.harmonic.title": "조화평균",
-    "guide.harmonic.items": ["속도, 비율의 평균에 적합", "같은 거리를 다른 속도로 이동한 평균 속도", "0은 사용 불가"]
+    "guide": {
+      "title": "평균 계산 가이드",
+      "arithmetic": {
+        "title": "산술평균",
+        "items": [
+          "가장 일반적인 평균",
+          "모든 값을 더하고 개수로 나눔",
+          "이상치(극단값)에 민감"
+        ]
+      },
+      "weighted": {
+        "title": "가중평균",
+        "items": [
+          "값마다 중요도(가중치)가 다를 때 사용",
+          "학점 평균 계산에 활용 (학점×학점수)",
+          "설문 가중 응답 분석"
+        ]
+      },
+      "geometric": {
+        "title": "기하평균",
+        "items": [
+          "성장률, 수익률의 평균에 적합",
+          "양수만 사용 가능",
+          "복리 수익률 계산에 필수"
+        ]
+      },
+      "harmonic": {
+        "title": "조화평균",
+        "items": [
+          "속도, 비율의 평균에 적합",
+          "같은 거리를 다른 속도로 이동한 평균 속도",
+          "0은 사용 불가"
+        ]
+      }
+    }
   },
   "gradeCalc": {
     "title": "석차/등급 계산기",
     "description": "석차와 응시자 수로 내신 등급·백분위를 계산합니다",
-    "input.score": "점수 (선택)",
-    "input.scorePlaceholder": "점수 입력 (참고용)",
-    "input.rank": "석차",
-    "input.rankPlaceholder": "석차를 입력하세요",
-    "input.rankHelp": "전체 중 몇 등인지 입력",
-    "input.totalStudents": "전체 응시자 수",
-    "input.totalStudentsPlaceholder": "응시자 수를 입력하세요",
-    "input.calculate": "계산하기",
-    "input.reset": "초기화",
-    "result.title": "계산 결과",
-    "result.grade": "등급",
-    "result.percentile": "백분위",
-    "result.rank": "석차",
-    "result.topPercent": "상위",
-    "result.gradeUnit": "등급",
-    "table.title": "9등급 기준표",
-    "table.grade": "등급",
-    "table.cutoff": "등급컷 석차",
-    "table.cumulative": "누적 비율",
-    "table.ratio": "비율",
-    "position.title": "나의 위치",
-    "position.topLabel": "상위",
-    "grades": ["1등급", "2등급", "3등급", "4등급", "5등급", "6등급", "7등급", "8등급", "9등급"],
-    "guide.title": "등급 계산 가이드",
-    "guide.gradeSystem.title": "9등급제",
-    "guide.gradeSystem.items": ["1등급: 상위 4% (최상위)", "2등급: 상위 4~11%", "3등급: 상위 11~23%", "4등급: 상위 23~40%", "5등급: 상위 40~60% (중간)", "6~9등급: 하위 40%"],
-    "guide.usage.title": "활용",
-    "guide.usage.items": ["대입 수시: 교과·학생부 등급 산출", "모의고사: 원점수→석차→등급 변환", "석차 백분율 = 석차/응시자×100"],
-    "error.invalidRank": "유효하지 않은 석차입니다",
-    "error.rankExceedsTotal": "석차가 응시자 수를 초과합니다",
-    "error.required": "석차와 응시자 수를 입력하세요"
+    "input": {
+      "score": "점수 (선택)",
+      "scorePlaceholder": "점수 입력 (참고용)",
+      "rank": "석차",
+      "rankPlaceholder": "석차를 입력하세요",
+      "rankHelp": "전체 중 몇 등인지 입력",
+      "totalStudents": "전체 응시자 수",
+      "totalStudentsPlaceholder": "응시자 수를 입력하세요",
+      "calculate": "계산하기",
+      "reset": "초기화",
+      "title": "석차/등급 입력"
+    },
+    "result": {
+      "title": "계산 결과",
+      "grade": "등급",
+      "percentile": "백분위",
+      "rank": "석차",
+      "topPercent": "상위",
+      "gradeUnit": "등급"
+    },
+    "table": {
+      "title": "9등급 기준표",
+      "grade": "등급",
+      "cutoff": "등급컷 석차",
+      "cumulative": "누적 비율",
+      "ratio": "비율",
+      "person": "등"
+    },
+    "position": {
+      "title": "나의 위치",
+      "topLabel": "상위"
+    },
+    "grades": [
+      "1등급",
+      "2등급",
+      "3등급",
+      "4등급",
+      "5등급",
+      "6등급",
+      "7등급",
+      "8등급",
+      "9등급"
+    ],
+    "guide": {
+      "title": "등급 계산 가이드",
+      "gradeSystem": {
+        "title": "9등급제",
+        "items": [
+          "1등급: 상위 4% (최상위)",
+          "2등급: 상위 4~11%",
+          "3등급: 상위 11~23%",
+          "4등급: 상위 23~40%",
+          "5등급: 상위 40~60% (중간)",
+          "6~9등급: 하위 40%"
+        ]
+      },
+      "usage": {
+        "title": "활용",
+        "items": [
+          "대입 수시: 교과·학생부 등급 산출",
+          "모의고사: 원점수→석차→등급 변환",
+          "석차 백분율 = 석차/응시자×100"
+        ]
+      }
+    },
+    "error": {
+      "invalidRank": "유효하지 않은 석차입니다",
+      "rankExceedsTotal": "석차가 응시자 수를 초과합니다",
+      "required": "석차와 응시자 수를 입력하세요"
+    }
   },
   "gpaConverterCalc": {
     "title": "학점 변환기",
     "description": "4.3/4.5 만점 학점을 상호 변환하고 백분위로 환산합니다",
-    "mode.label": "변환 모드",
-    "mode.45to43": "4.5 → 4.3",
-    "mode.43to45": "4.3 → 4.5",
-    "mode.percentToGpa": "백분위 → 학점",
-    "mode.gpaToPercent": "학점 → 백분위",
-    "input.label": "입력값",
-    "input.placeholder": "값을 입력하세요",
-    "input.maxLabel": "만점",
-    "result.title": "변환 결과",
-    "result.converted": "변환 학점",
-    "result.grade": "등급",
-    "result.percentRange": "백분위 범위",
-    "result.outOf": "만점",
-    "result.empty": "값을 입력하면 결과가 표시됩니다",
-    "result.invalidRange": "유효 범위를 벗어났습니다",
-    "table.title": "학점-등급 참고표",
-    "table.grade": "등급",
-    "table.gpa45": "4.5 만점",
-    "table.gpa43": "4.3 만점",
-    "table.percent": "백분위",
+    "mode": {
+      "label": "변환 모드",
+      "45to43": "4.5 → 4.3",
+      "43to45": "4.3 → 4.5",
+      "percentToGpa": "백분위 → 학점",
+      "gpaToPercent": "학점 → 백분위"
+    },
+    "input": {
+      "label": "입력값",
+      "placeholder": "값을 입력하세요",
+      "maxLabel": "만점"
+    },
+    "result": {
+      "title": "변환 결과",
+      "converted": "변환 학점",
+      "grade": "등급",
+      "percentRange": "백분위 범위",
+      "outOf": "만점",
+      "empty": "값을 입력하면 결과가 표시됩니다",
+      "invalidRange": "유효 범위를 벗어났습니다"
+    },
+    "table": {
+      "title": "학점-등급 참고표",
+      "grade": "등급",
+      "gpa45": "4.5 만점",
+      "gpa43": "4.3 만점",
+      "percent": "백분위"
+    },
     "grades": [
-      {"grade": "A+", "gpa45": "4.5", "gpa43": "4.3", "percent": "95~100"},
-      {"grade": "A0", "gpa45": "4.0", "gpa43": "4.0", "percent": "90~94"},
-      {"grade": "B+", "gpa45": "3.5", "gpa43": "3.5", "percent": "85~89"},
-      {"grade": "B0", "gpa45": "3.0", "gpa43": "3.0", "percent": "80~84"},
-      {"grade": "C+", "gpa45": "2.5", "gpa43": "2.5", "percent": "75~79"},
-      {"grade": "C0", "gpa45": "2.0", "gpa43": "2.0", "percent": "70~74"},
-      {"grade": "D+", "gpa45": "1.5", "gpa43": "1.5", "percent": "65~69"},
-      {"grade": "D0", "gpa45": "1.0", "gpa43": "1.0", "percent": "60~64"},
-      {"grade": "F", "gpa45": "0.0", "gpa43": "0.0", "percent": "60 미만"}
+      {
+        "grade": "A+",
+        "gpa45": "4.5",
+        "gpa43": "4.3",
+        "percent": "95~100"
+      },
+      {
+        "grade": "A0",
+        "gpa45": "4.0",
+        "gpa43": "4.0",
+        "percent": "90~94"
+      },
+      {
+        "grade": "B+",
+        "gpa45": "3.5",
+        "gpa43": "3.5",
+        "percent": "85~89"
+      },
+      {
+        "grade": "B0",
+        "gpa45": "3.0",
+        "gpa43": "3.0",
+        "percent": "80~84"
+      },
+      {
+        "grade": "C+",
+        "gpa45": "2.5",
+        "gpa43": "2.5",
+        "percent": "75~79"
+      },
+      {
+        "grade": "C0",
+        "gpa45": "2.0",
+        "gpa43": "2.0",
+        "percent": "70~74"
+      },
+      {
+        "grade": "D+",
+        "gpa45": "1.5",
+        "gpa43": "1.5",
+        "percent": "65~69"
+      },
+      {
+        "grade": "D0",
+        "gpa45": "1.0",
+        "gpa43": "1.0",
+        "percent": "60~64"
+      },
+      {
+        "grade": "F",
+        "gpa45": "0.0",
+        "gpa43": "0.0",
+        "percent": "60 미만"
+      }
     ],
-    "guide.title": "학점 변환 가이드",
-    "guide.sections": [
-      {"title": "4.5 ↔ 4.3 변환", "items": ["4.5→4.3: 학점 × (4.3/4.5) ≈ ×0.9556", "4.3→4.5: 학점 × (4.5/4.3) ≈ ×1.0465", "대부분의 취업·대학원 지원 시 통용"]},
-      {"title": "백분위 환산", "items": ["백분위는 학교·교수에 따라 기준이 다를 수 있음", "위 표는 일반적인 참고 기준", "성적증명서의 백분위를 활용하는 것이 가장 정확"]}
-    ],
+    "guide": {
+      "title": "학점 변환 가이드",
+      "sections": [
+        {
+          "title": "4.5 ↔ 4.3 변환",
+          "items": [
+            "4.5→4.3: 학점 × (4.3/4.5) ≈ ×0.9556",
+            "4.3→4.5: 학점 × (4.5/4.3) ≈ ×1.0465",
+            "대부분의 취업·대학원 지원 시 통용"
+          ]
+        },
+        {
+          "title": "백분위 환산",
+          "items": [
+            "백분위는 학교·교수에 따라 기준이 다를 수 있음",
+            "위 표는 일반적인 참고 기준",
+            "성적증명서의 백분위를 활용하는 것이 가장 정확"
+          ]
+        }
+      ]
+    },
     "copyResult": "결과 복사",
     "copied": "복사됨"
   },
   "pcElectricity": {
     "title": "컴퓨터 전기세 계산기",
     "description": "PC 부품별 소비전력으로 월간·연간 전기요금을 계산합니다",
-    "components.cpu": "CPU",
-    "components.gpu": "GPU",
-    "components.ram": "RAM",
-    "components.storage": "저장장치",
-    "components.monitor": "모니터",
-    "components.etc": "기타 (키보드/마우스/팬)",
-    "components.cpuLabel": "CPU 소비전력",
-    "components.gpuLabel": "GPU 소비전력",
-    "components.ramLabel": "RAM",
-    "components.storageLabel": "저장장치",
-    "components.monitorLabel": "모니터",
-    "components.etcLabel": "기타",
-    "cpu.presets": "CPU 프리셋",
-    "gpu.presets": "GPU 프리셋",
-    "ram.slots": "슬롯 수",
-    "ram.perSlot": "슬롯당 10W",
-    "storage.ssd": "SSD",
-    "storage.hdd": "HDD",
-    "storage.count": "개",
-    "monitor.presets": "모니터 프리셋",
-    "monitor.dual": "듀얼 모니터",
-    "monitor.inch": "인치",
+    "components": {
+      "cpu": "CPU",
+      "gpu": "GPU",
+      "ram": "RAM",
+      "storage": "저장장치",
+      "monitor": "모니터",
+      "etc": "기타 (키보드/마우스/팬)",
+      "cpuLabel": "CPU 소비전력",
+      "gpuLabel": "GPU 소비전력",
+      "ramLabel": "RAM",
+      "storageLabel": "저장장치",
+      "monitorLabel": "모니터",
+      "etcLabel": "기타"
+    },
+    "cpu": {
+      "presets": "CPU 프리셋"
+    },
+    "gpu": {
+      "presets": "GPU 프리셋"
+    },
+    "ram": {
+      "slots": "슬롯 수",
+      "perSlot": "슬롯당 10W"
+    },
+    "storage": {
+      "ssd": "SSD",
+      "hdd": "HDD",
+      "count": "개"
+    },
+    "monitor": {
+      "presets": "모니터 프리셋",
+      "dual": "듀얼 모니터",
+      "inch": "인치"
+    },
     "custom": "직접 입력",
     "watt": "W",
-    "usage.title": "사용 패턴",
-    "usage.hoursPerDay": "일일 사용시간",
-    "usage.daysPerMonth": "월 사용일수",
-    "usage.hours": "시간",
-    "usage.days": "일",
-    "load.title": "부하율",
-    "load.gaming": "게이밍 (85%)",
-    "load.normal": "일반작업 (50%)",
-    "load.idle": "대기 (20%)",
-    "load.custom": "직접 입력",
-    "load.percent": "%",
-    "tariff.title": "전기요금 단가",
-    "tariff.progressive": "2025 한전 누진제",
-    "tariff.custom": "직접 입력",
-    "tariff.wonPerKwh": "원/kWh",
-    "tariff.tier1": "~200kWh: 120원",
-    "tariff.tier2": "200~400kWh: 214.6원",
-    "tariff.tier3": "400kWh~: 307.3원",
-    "result.title": "계산 결과",
-    "result.totalWatt": "총 소비전력",
-    "result.actualWatt": "실사용 전력",
-    "result.monthlyKwh": "월간 전력소비",
-    "result.yearlyKwh": "연간 전력소비",
-    "result.monthlyCost": "월간 전기요금",
-    "result.yearlyCost": "연간 전기요금",
-    "result.won": "원",
-    "result.kwh": "kWh",
-    "ratio.title": "부품별 소비전력 비율",
-    "guide.title": "PC 전기세 가이드",
-    "guide.section1.title": "소비전력 기준",
-    "guide.section1.items": ["TDP(열설계전력)는 최대 소비전력의 근사치", "실제 사용 시 부하율에 따라 소비전력이 달라짐", "게이밍: 최대의 약 85%, 일반작업: 약 50%, 대기: 약 20%"],
-    "guide.section2.title": "전기요금 절약 팁",
-    "guide.section2.items": ["미사용 시 전원 끄기 — 대기전력도 누적됨", "고효율 파워서플라이(80 Plus Gold 이상) 사용", "모니터 밝기 낮추기 — 전력 소비 10~20% 절감", "언더볼팅으로 GPU 소비전력 줄이기"]
+    "usage": {
+      "title": "사용 패턴",
+      "hoursPerDay": "일일 사용시간",
+      "daysPerMonth": "월 사용일수",
+      "hours": "시간",
+      "days": "일"
+    },
+    "load": {
+      "title": "부하율",
+      "gaming": "게이밍 (85%)",
+      "normal": "일반작업 (50%)",
+      "idle": "대기 (20%)",
+      "custom": "직접 입력",
+      "percent": "%"
+    },
+    "tariff": {
+      "title": "전기요금 단가",
+      "progressive": "2025 한전 누진제",
+      "custom": "직접 입력",
+      "wonPerKwh": "원/kWh",
+      "tier1": "~200kWh: 120원",
+      "tier2": "200~400kWh: 214.6원",
+      "tier3": "400kWh~: 307.3원"
+    },
+    "result": {
+      "title": "계산 결과",
+      "totalWatt": "총 소비전력",
+      "actualWatt": "실사용 전력",
+      "monthlyKwh": "월간 전력소비",
+      "yearlyKwh": "연간 전력소비",
+      "monthlyCost": "월간 전기요금",
+      "yearlyCost": "연간 전기요금",
+      "won": "원",
+      "kwh": "kWh"
+    },
+    "ratio": {
+      "title": "부품별 소비전력 비율"
+    },
+    "guide": {
+      "title": "PC 전기세 가이드",
+      "section1": {
+        "title": "소비전력 기준",
+        "items": [
+          "TDP(열설계전력)는 최대 소비전력의 근사치",
+          "실제 사용 시 부하율에 따라 소비전력이 달라짐",
+          "게이밍: 최대의 약 85%, 일반작업: 약 50%, 대기: 약 20%"
+        ]
+      },
+      "section2": {
+        "title": "전기요금 절약 팁",
+        "items": [
+          "미사용 시 전원 끄기 — 대기전력도 누적됨",
+          "고효율 파워서플라이(80 Plus Gold 이상) 사용",
+          "모니터 밝기 낮추기 — 전력 소비 10~20% 절감",
+          "언더볼팅으로 GPU 소비전력 줄이기"
+        ]
+      }
+    }
   },
   "salesCommissionCalc": {
     "title": "판매수수료 계산기",
     "description": "쿠팡·스마트스토어·11번가 카테고리별 판매수수료를 비교합니다",
-    "input.sellingPrice": "판매가",
-    "input.sellingPricePlaceholder": "판매가를 입력하세요",
-    "input.shippingCost": "배송비 (판매자 설정)",
-    "input.shippingCostPlaceholder": "배송비를 입력하세요",
-    "input.category": "카테고리",
-    "input.unit": "원",
-    "category.fashion": "패션의류",
-    "category.fashionAcc": "패션잡화",
-    "category.beauty": "뷰티",
-    "category.food": "식품",
-    "category.living": "생활용품",
-    "category.electronics": "가전디지털",
-    "category.sports": "스포츠",
-    "category.books": "도서",
-    "category.baby": "유아동",
-    "category.furniture": "가구인테리어",
-    "platform.coupang": "쿠팡",
-    "platform.smartstore": "스마트스토어",
-    "platform.elevenst": "11번가",
-    "result.commissionRate": "수수료율",
-    "result.commissionAmount": "수수료 금액",
-    "result.settlementAmount": "정산 예상액",
-    "result.bestLabel": "최저 수수료",
-    "result.noInput": "판매가를 입력하면 3사 수수료를 비교합니다",
-    "compare.title": "전체 카테고리 수수료 비교",
-    "compare.categoryHeader": "카테고리",
-    "compare.lowestLabel": "최저",
-    "notes.title": "참고사항",
-    "notes.items": ["쿠팡: 배송비 포함 최종 결제금액 기준 수수료 부과, 월 이용료 55,000원 별도 (매출 100만원 초과 시)", "스마트스토어: 배송비에는 판매수수료 미부과, 네이버페이 수수료만 적용", "11번가: 카테고리·등급에 따라 차이 있음, 위 수치는 평균 기준", "실제 수수료는 카테고리 세분류·판매등급·프로모션에 따라 달라질 수 있습니다"],
-    "guide.title": "판매수수료 가이드",
-    "guide.commission.title": "수수료 구조",
-    "guide.commission.items": ["쿠팡: 판매수수료 4~10.9% + 월 이용료 55,000원", "스마트스토어: 네이버페이 수수료(1.98~3.63%) + 판매수수료(2.73%)", "11번가: 카테고리별 5~12%, 판매등급에 따라 차등"],
-    "guide.settlement.title": "정산 계산",
-    "guide.settlement.items": ["정산액 = 판매가 + 배송비 - 수수료", "쿠팡은 배송비 포함 금액에 수수료 적용", "스마트스토어·11번가는 판매가에만 수수료 적용"],
-    "guide.tips.title": "수수료 절감 팁",
-    "guide.tips.items": ["가전·디지털은 쿠팡 수수료가 5%로 가장 낮음", "도서는 스마트스토어가 3%로 최저", "여러 플랫폼에 동시 입점하여 카테고리별 최적화"]
+    "input": {
+      "sellingPrice": "판매가",
+      "sellingPricePlaceholder": "판매가를 입력하세요",
+      "shippingCost": "배송비 (판매자 설정)",
+      "shippingCostPlaceholder": "배송비를 입력하세요",
+      "category": "카테고리",
+      "unit": "원"
+    },
+    "category": {
+      "fashion": "패션의류",
+      "fashionAcc": "패션잡화",
+      "beauty": "뷰티",
+      "food": "식품",
+      "living": "생활용품",
+      "electronics": "가전디지털",
+      "sports": "스포츠",
+      "books": "도서",
+      "baby": "유아동",
+      "furniture": "가구인테리어"
+    },
+    "platform": {
+      "coupang": "쿠팡",
+      "smartstore": "스마트스토어",
+      "elevenst": "11번가"
+    },
+    "result": {
+      "commissionRate": "수수료율",
+      "commissionAmount": "수수료 금액",
+      "settlementAmount": "정산 예상액",
+      "bestLabel": "최저 수수료",
+      "noInput": "판매가를 입력하면 3사 수수료를 비교합니다"
+    },
+    "compare": {
+      "title": "전체 카테고리 수수료 비교",
+      "categoryHeader": "카테고리",
+      "lowestLabel": "최저"
+    },
+    "notes": {
+      "title": "참고사항",
+      "items": [
+        "쿠팡: 배송비 포함 최종 결제금액 기준 수수료 부과, 월 이용료 55,000원 별도 (매출 100만원 초과 시)",
+        "스마트스토어: 배송비에는 판매수수료 미부과, 네이버페이 수수료만 적용",
+        "11번가: 카테고리·등급에 따라 차이 있음, 위 수치는 평균 기준",
+        "실제 수수료는 카테고리 세분류·판매등급·프로모션에 따라 달라질 수 있습니다"
+      ]
+    },
+    "guide": {
+      "title": "판매수수료 가이드",
+      "commission": {
+        "title": "수수료 구조",
+        "items": [
+          "쿠팡: 판매수수료 4~10.9% + 월 이용료 55,000원",
+          "스마트스토어: 네이버페이 수수료(1.98~3.63%) + 판매수수료(2.73%)",
+          "11번가: 카테고리별 5~12%, 판매등급에 따라 차등"
+        ]
+      },
+      "settlement": {
+        "title": "정산 계산",
+        "items": [
+          "정산액 = 판매가 + 배송비 - 수수료",
+          "쿠팡은 배송비 포함 금액에 수수료 적용",
+          "스마트스토어·11번가는 판매가에만 수수료 적용"
+        ]
+      },
+      "tips": {
+        "title": "수수료 절감 팁",
+        "items": [
+          "가전·디지털은 쿠팡 수수료가 5%로 가장 낮음",
+          "도서는 스마트스토어가 3%로 최저",
+          "여러 플랫폼에 동시 입점하여 카테고리별 최적화"
+        ]
+      }
+    }
   },
   "acquisitionTaxCalc": {
     "title": "취득세 계산기",
     "description": "2025년 기준 부동산 취득세·농특세·지방교육세를 자동 계산합니다",
-    "propertyType.label": "취득 유형",
-    "propertyType.house": "주택",
-    "propertyType.land": "토지",
-    "propertyType.commercial": "상가/건물",
-    "price.label": "취득가액",
-    "price.placeholder": "취득가액을 입력하세요",
-    "area.label": "전용면적 (㎡)",
-    "area.placeholder": "전용면적",
-    "houseCount.label": "주택 수",
-    "houseCount.one": "1주택",
-    "houseCount.two": "2주택",
-    "houseCount.threePlus": "3주택 이상",
-    "houseCount.corp": "법인",
-    "adjustedArea.label": "조정대상지역",
-    "adjustedArea.yes": "예",
-    "adjustedArea.no": "아니오",
-    "areaOver85.label": "전용면적 85㎡ 초과",
-    "areaOver85.yes": "예",
-    "areaOver85.no": "아니오",
-    "result.title": "계산 결과",
-    "result.totalTax": "총 세금",
-    "result.effectiveRate": "실효세율",
-    "result.acquisitionTax": "취득세",
-    "result.specialTax": "농어촌특별세",
-    "result.educationTax": "지방교육세",
-    "result.acquisitionTaxRate": "취득세율",
-    "result.specialTaxRate": "농특세율",
-    "result.educationTaxRate": "교육세율",
-    "result.exemptLabel": "면제",
-    "breakdown.title": "단계별 계산",
-    "breakdown.step1": "1단계: 취득세",
-    "breakdown.step2": "2단계: 농어촌특별세",
-    "breakdown.step3": "3단계: 지방교육세",
-    "breakdown.price": "취득가액",
-    "breakdown.rate": "세율",
-    "breakdown.amount": "세액",
-    "rateTable.title": "취득세율 참고표",
-    "rateTable.type": "구분",
-    "rateTable.condition": "조건",
-    "rateTable.rate": "세율",
+    "propertyType": {
+      "label": "취득 유형",
+      "house": "주택",
+      "land": "토지",
+      "commercial": "상가/건물"
+    },
+    "price": {
+      "label": "취득가액",
+      "placeholder": "취득가액을 입력하세요"
+    },
+    "area": {
+      "label": "전용면적 (㎡)",
+      "placeholder": "전용면적"
+    },
+    "houseCount": {
+      "label": "주택 수",
+      "one": "1주택",
+      "two": "2주택",
+      "threePlus": "3주택 이상",
+      "corp": "법인"
+    },
+    "adjustedArea": {
+      "label": "조정대상지역",
+      "yes": "예",
+      "no": "아니오"
+    },
+    "areaOver85": {
+      "label": "전용면적 85㎡ 초과",
+      "yes": "예",
+      "no": "아니오"
+    },
+    "result": {
+      "title": "계산 결과",
+      "totalTax": "총 세금",
+      "effectiveRate": "실효세율",
+      "acquisitionTax": "취득세",
+      "specialTax": "농어촌특별세",
+      "educationTax": "지방교육세",
+      "acquisitionTaxRate": "취득세율",
+      "specialTaxRate": "농특세율",
+      "educationTaxRate": "교육세율",
+      "exemptLabel": "면제",
+      "heavyWarning": "중과세율이 적용됩니다. 조정대상지역 다주택자는 취득세가 대폭 인상될 수 있습니다."
+    },
+    "breakdown": {
+      "title": "단계별 계산",
+      "step1": "1단계: 취득세",
+      "step2": "2단계: 농어촌특별세",
+      "step3": "3단계: 지방교육세",
+      "price": "취득가액",
+      "rate": "세율",
+      "amount": "세액"
+    },
+    "rateTable": {
+      "title": "취득세율 참고표",
+      "type": "구분",
+      "condition": "조건",
+      "rate": "세율",
+      "rows": [
+        {
+          "type": "1주택 (6억 이하)",
+          "condition": "일반 지역",
+          "rate": "1%"
+        },
+        {
+          "type": "1주택 (6~9억)",
+          "condition": "일반 지역",
+          "rate": "1~3% (선형 보간)"
+        },
+        {
+          "type": "1주택 (9억 초과)",
+          "condition": "일반 지역",
+          "rate": "3%"
+        },
+        {
+          "type": "2주택",
+          "condition": "조정대상지역",
+          "rate": "8%"
+        },
+        {
+          "type": "3주택 이상",
+          "condition": "조정대상지역",
+          "rate": "12%"
+        },
+        {
+          "type": "2주택",
+          "condition": "비조정지역",
+          "rate": "1~3%"
+        },
+        {
+          "type": "3주택 이상",
+          "condition": "비조정지역",
+          "rate": "8%"
+        },
+        {
+          "type": "법인",
+          "condition": "지역 무관",
+          "rate": "12%"
+        },
+        {
+          "type": "토지",
+          "condition": "농지",
+          "rate": "3%"
+        },
+        {
+          "type": "토지",
+          "condition": "농지 외",
+          "rate": "4%"
+        },
+        {
+          "type": "상가/건물",
+          "condition": "-",
+          "rate": "4%"
+        }
+      ]
+    },
     "disclaimer": "본 계산기는 참고용이며, 실제 세액은 관할 지자체에 확인하세요.",
-    "units.won": "원",
-    "units.percent": "%",
-    "units.sqm": "㎡",
-    "guide.title": "취득세 가이드",
-    "guide.acquisitionTax.title": "주택 취득세율",
-    "guide.acquisitionTax.items": ["1주택: 6억 이하 1%, 6~9억 1~3%(선형 보간), 9억 초과 3%", "조정대상지역 2주택: 8%", "조정대상지역 3주택 이상: 12%", "비조정지역 2주택: 1~3%, 3주택 이상: 8%", "법인: 12% (지역 무관)"],
-    "guide.specialTax.title": "농어촌특별세",
-    "guide.specialTax.items": ["전용 85㎡ 이하: 면제", "전용 85㎡ 초과: 취득세의 10%", "토지·상가: 취득세의 10%"],
-    "guide.educationTax.title": "지방교육세",
-    "guide.educationTax.items": ["일반: 취득세의 10%", "중과 시에도 동일 비율 적용"],
-    "guide.tips.title": "절세 팁",
-    "guide.tips.items": ["생애최초 주택 구입 시 취득세 감면 혜택 확인", "조정대상지역 해제 시 중과 해제 — 지역 변동 확인", "6억 이하 1주택이 취득세 부담 가장 적음"]
+    "units": {
+      "won": "원",
+      "percent": "%",
+      "sqm": "㎡"
+    },
+    "guide": {
+      "title": "취득세 가이드",
+      "acquisitionTax": {
+        "title": "주택 취득세율",
+        "items": [
+          "1주택: 6억 이하 1%, 6~9억 1~3%(선형 보간), 9억 초과 3%",
+          "조정대상지역 2주택: 8%",
+          "조정대상지역 3주택 이상: 12%",
+          "비조정지역 2주택: 1~3%, 3주택 이상: 8%",
+          "법인: 12% (지역 무관)"
+        ]
+      },
+      "specialTax": {
+        "title": "농어촌특별세",
+        "items": [
+          "전용 85㎡ 이하: 면제",
+          "전용 85㎡ 초과: 취득세의 10%",
+          "토지·상가: 취득세의 10%"
+        ]
+      },
+      "educationTax": {
+        "title": "지방교육세",
+        "items": [
+          "일반: 취득세의 10%",
+          "중과 시에도 동일 비율 적용"
+        ]
+      },
+      "tips": {
+        "title": "절세 팁",
+        "items": [
+          "생애최초 주택 구입 시 취득세 감면 혜택 확인",
+          "조정대상지역 해제 시 중과 해제 — 지역 변동 확인",
+          "6억 이하 1주택이 취득세 부담 가장 적음"
+        ]
+      }
+    },
+    "noResult": "좌측에 취득가액을 입력하면 세금 계산 결과가 표시됩니다."
   },
   "dsrCalc": {
     "title": "DSR 계산기",
     "description": "2025년 기준 DSR(총부채원리금상환비율)을 자동 계산합니다",
-    "income.title": "소득 정보",
-    "income.annual": "연간 소득",
-    "income.placeholder": "세전 연소득을 입력하세요",
-    "income.unit": "원",
-    "newLoan.title": "신규 대출",
-    "newLoan.type": "대출 유형",
-    "newLoan.types.mortgage": "주택담보대출",
-    "newLoan.types.credit": "신용대출",
-    "newLoan.types.carInstallment": "자동차 할부",
-    "newLoan.amount": "대출 금액",
-    "newLoan.amountPlaceholder": "대출 금액을 입력하세요",
-    "newLoan.rate": "금리 (연 %)",
-    "newLoan.ratePlaceholder": "연 금리",
-    "newLoan.term": "대출 기간",
-    "newLoan.termUnit": "년",
-    "newLoan.repayment": "상환 방식",
-    "newLoan.repayment.equalPayment": "원리금균등",
-    "newLoan.repayment.equalPrincipal": "원금균등",
-    "newLoan.repayment.bullet": "만기일시",
-    "newLoan.rateType": "금리 유형",
-    "newLoan.rateTypes.variable": "변동",
-    "newLoan.rateTypes.mixed": "혼합",
-    "newLoan.rateTypes.periodic": "주기형",
-    "newLoan.rateTypes.fixed": "고정",
-    "newLoan.location": "소재지",
-    "newLoan.locations.capital": "수도권",
-    "newLoan.locations.nonCapital": "비수도권",
-    "existing.title": "기존 대출",
-    "existing.add": "대출 추가",
-    "existing.remove": "삭제",
-    "existing.loanLabel": "대출",
-    "existing.types.mortgage": "주택담보대출",
-    "existing.types.credit": "신용대출",
-    "existing.types.revolving": "마이너스통장",
-    "existing.types.cardLoan": "카드론",
-    "existing.types.carInstallment": "자동차 할부",
-    "existing.balance": "잔액",
-    "existing.balancePlaceholder": "대출 잔액",
-    "existing.rate": "금리 (연 %)",
-    "existing.ratePlaceholder": "연 금리",
-    "existing.remainingTerm": "잔여 기간",
-    "existing.termUnit": "년",
-    "existing.repayment": "상환 방식",
-    "existing.forcedTerm": "DSR 산정 기준",
-    "result.title": "계산 결과",
-    "result.currentDsr": "현재 DSR",
-    "result.safe": "안전",
-    "result.caution": "주의",
-    "result.danger": "위험",
-    "result.safeDesc": "DSR 40% 이하 — 은행 대출 가능",
-    "result.cautionDesc": "DSR 40~50% — 은행 대출 어려움, 2금융권 가능",
-    "result.dangerDesc": "DSR 50% 초과 — 추가 대출 매우 어려움",
-    "result.annualRepayment": "연간 원리금",
-    "result.annualRepaymentTitle": "연간 원리금 내역",
-    "result.newLoanLabel": "신규 대출",
-    "result.existingLoanLabel": "기존 대출",
-    "result.totalAnnual": "연간 총 원리금",
-    "result.annualIncome": "연소득",
-    "limit.title": "대출한도 역산",
-    "limit.maxAdditional": "최대 추가 대출 가능액",
-    "limit.basedOn": "DSR 40% 기준",
-    "limit.availableAnnual": "가용 연간 원리금",
-    "limit.noRoom": "추가 대출 여력 없음",
-    "stress.title": "스트레스 DSR",
-    "stress.description": "2025년 3단계: 금리 상승 위험 반영",
-    "stress.appliedRate": "적용 금리",
-    "stress.additionalRate": "가산 금리",
-    "stress.resultDsr": "스트레스 DSR",
-    "stress.resultLimit": "스트레스 적용 대출한도",
-    "stress.nonCapitalNote": "비수도권 한시 우대 적용 (0.75%p)",
+    "income": {
+      "title": "소득 정보",
+      "annual": "연간 소득",
+      "placeholder": "세전 연소득을 입력하세요",
+      "unit": "원"
+    },
+    "newLoan": {
+      "title": "신규 대출",
+      "type": "대출 유형",
+      "types": {
+        "mortgage": "주택담보대출",
+        "credit": "신용대출",
+        "carInstallment": "자동차 할부"
+      },
+      "amount": "대출 금액",
+      "amountPlaceholder": "대출 금액을 입력하세요",
+      "rate": "금리 (연 %)",
+      "ratePlaceholder": "연 금리",
+      "term": "대출 기간",
+      "termUnit": "년",
+      "repayment": {
+        "equalPayment": "원리금균등",
+        "equalPrincipal": "원금균등",
+        "bullet": "만기일시"
+      },
+      "rateType": "금리 유형",
+      "rateTypes": {
+        "variable": "변동",
+        "mixed": "혼합",
+        "periodic": "주기형",
+        "fixed": "고정"
+      },
+      "location": "소재지",
+      "locations": {
+        "capital": "수도권",
+        "nonCapital": "비수도권"
+      }
+    },
+    "existing": {
+      "title": "기존 대출",
+      "add": "대출 추가",
+      "remove": "삭제",
+      "loanLabel": "대출",
+      "types": {
+        "mortgage": "주택담보대출",
+        "credit": "신용대출",
+        "revolving": "마이너스통장",
+        "cardLoan": "카드론",
+        "carInstallment": "자동차 할부"
+      },
+      "balance": "잔액",
+      "balancePlaceholder": "대출 잔액",
+      "rate": "금리 (연 %)",
+      "ratePlaceholder": "연 금리",
+      "remainingTerm": "잔여 기간",
+      "termUnit": "년",
+      "repayment": "상환 방식",
+      "forcedTerm": "DSR 산정 기준"
+    },
+    "result": {
+      "title": "계산 결과",
+      "currentDsr": "현재 DSR",
+      "safe": "안전",
+      "caution": "주의",
+      "danger": "위험",
+      "safeDesc": "DSR 40% 이하 — 은행 대출 가능",
+      "cautionDesc": "DSR 40~50% — 은행 대출 어려움, 2금융권 가능",
+      "dangerDesc": "DSR 50% 초과 — 추가 대출 매우 어려움",
+      "annualRepayment": "연간 원리금",
+      "annualRepaymentTitle": "연간 원리금 내역",
+      "newLoanLabel": "신규 대출",
+      "existingLoanLabel": "기존 대출",
+      "totalAnnual": "연간 총 원리금",
+      "annualIncome": "연소득"
+    },
+    "limit": {
+      "title": "대출한도 역산",
+      "maxAdditional": "최대 추가 대출 가능액",
+      "basedOn": "DSR 40% 기준",
+      "availableAnnual": "가용 연간 원리금",
+      "noRoom": "추가 대출 여력 없음"
+    },
+    "stress": {
+      "title": "스트레스 DSR",
+      "description": "2025년 3단계: 금리 상승 위험 반영",
+      "appliedRate": "적용 금리",
+      "additionalRate": "가산 금리",
+      "resultDsr": "스트레스 DSR",
+      "resultLimit": "스트레스 적용 대출한도",
+      "nonCapitalNote": "비수도권 한시 우대 적용 (0.75%p)"
+    },
     "calculate": "계산하기",
     "reset": "초기화",
-    "disclaimer.title": "참고사항",
-    "disclaimer.text": "본 계산기는 참고용이며, 실제 대출 심사는 금융기관의 기준에 따릅니다.",
-    "guide.title": "DSR 가이드",
-    "guide.whatIsDsr.title": "DSR이란?",
-    "guide.whatIsDsr.items": ["DSR = 연간 모든 대출 원리금 / 연소득 × 100", "은행권 DSR 40% 이하, 비은행권 50% 이하", "총 대출 2억원 초과 시 적용", "전세대출, 300만원 이하 소액, 보험계약대출은 제외"],
-    "guide.stressDsr.title": "스트레스 DSR (2025 3단계)",
-    "guide.stressDsr.items": ["변동금리: +1.50%p 가산", "혼합형: +1.20%p (1.50% × 80%)", "주기형: +0.60%p (1.50% × 40%)", "고정금리: 가산 없음", "비수도권 주담대: 0.75%p 한시 적용"],
-    "guide.tips.title": "대출한도 늘리는 팁",
-    "guide.tips.items": ["고정금리 선택 시 스트레스 가산 없음", "대출 기간을 늘리면 월 상환액 감소 → DSR 낮아짐", "신용대출은 5년, 카드론은 3년으로 환산 — 잔액 줄이면 효과 큼", "마이너스통장은 약정한도 전액 산입 — 한도 축소 고려"]
+    "disclaimer": {
+      "title": "참고사항",
+      "text": "본 계산기는 참고용이며, 실제 대출 심사는 금융기관의 기준에 따릅니다."
+    },
+    "guide": {
+      "title": "DSR 가이드",
+      "whatIsDsr": {
+        "title": "DSR이란?",
+        "items": [
+          "DSR = 연간 모든 대출 원리금 / 연소득 × 100",
+          "은행권 DSR 40% 이하, 비은행권 50% 이하",
+          "총 대출 2억원 초과 시 적용",
+          "전세대출, 300만원 이하 소액, 보험계약대출은 제외"
+        ]
+      },
+      "stressDsr": {
+        "title": "스트레스 DSR (2025 3단계)",
+        "items": [
+          "변동금리: +1.50%p 가산",
+          "혼합형: +1.20%p (1.50% × 80%)",
+          "주기형: +0.60%p (1.50% × 40%)",
+          "고정금리: 가산 없음",
+          "비수도권 주담대: 0.75%p 한시 적용"
+        ]
+      },
+      "tips": {
+        "title": "대출한도 늘리는 팁",
+        "items": [
+          "고정금리 선택 시 스트레스 가산 없음",
+          "대출 기간을 늘리면 월 상환액 감소 → DSR 낮아짐",
+          "신용대출은 5년, 카드론은 3년으로 환산 — 잔액 줄이면 효과 큼",
+          "마이너스통장은 약정한도 전액 산입 — 한도 축소 고려"
+        ]
+      }
+    }
   },
   "marginCalc": {
     "title": "마진 계산기",
     "description": "온라인 셀러를 위한 순이익·마진율 자동 계산",
-    "mode.calculate": "마진 계산",
-    "mode.reverse": "역산 (판매가 산출)",
-    "input.sellingPrice": "판매가",
-    "input.costPrice": "상품 원가",
-    "input.platform": "플랫폼",
-    "input.platformCustom": "직접 입력",
-    "input.commissionRate": "수수료율 (%)",
-    "input.shippingCost": "배송비 (판매자부담)",
-    "input.packagingCost": "포장비 (건당)",
-    "input.adCost": "광고비 (건당 배분)",
-    "input.taxType": "과세 유형",
-    "input.targetMargin": "목표 마진율 (%)",
-    "input.monthlySales": "월 판매량",
-    "input.unit": "원",
-    "input.percent": "%",
-    "input.count": "개",
-    "platform.coupang": "쿠팡 (10.9%)",
-    "platform.smartstore": "스마트스토어 (5.5%)",
-    "platform.elevenst": "11번가 (10%)",
-    "platform.custom": "직접입력",
-    "taxType.general": "일반과세자",
-    "taxType.simplified": "간이과세자",
-    "taxType.exempt": "면세사업자",
-    "result.netProfit": "순이익",
-    "result.marginRate": "마진율",
-    "result.markupRate": "마크업률",
-    "result.breakEvenQty": "손익분기 수량",
-    "result.breakEvenUnit": "개",
-    "result.perItem": "건당",
-    "result.calculatedPrice": "산출 판매가",
-    "result.deficit": "적자",
-    "costBreakdown.title": "비용 구성 분석",
-    "costBreakdown.cost": "원가",
-    "costBreakdown.commission": "수수료",
-    "costBreakdown.shipping": "배송비",
-    "costBreakdown.packaging": "포장비",
-    "costBreakdown.ad": "광고비",
-    "costBreakdown.tax": "부가세",
-    "costBreakdown.profit": "순이익",
-    "detail.title": "상세 내역",
-    "detail.item": "항목",
-    "detail.amount": "금액",
-    "detail.ratio": "비율",
-    "detail.sellingPrice": "판매가",
-    "detail.totalCost": "총비용",
-    "monthly.title": "월간 시뮬레이션",
-    "monthly.revenue": "월 매출",
-    "monthly.totalCost": "월 총비용",
-    "monthly.netProfit": "월 순이익",
-    "guide.title": "마진 계산 가이드",
-    "guide.margin.title": "마진율 vs 마크업률",
-    "guide.margin.items": ["마진율 = (판매가 - 총비용) / 판매가 × 100", "마크업률 = (판매가 - 원가) / 원가 × 100", "마진율 30% = 마크업률 약 43%", "마진율이 실제 수익성을 더 정확히 반영"],
-    "guide.reverse.title": "역산 기능",
-    "guide.reverse.items": ["목표 마진율을 입력하면 최소 판매가를 자동 산출", "수수료·배송비·부가세를 모두 반영한 정확한 판매가", "적자 나지 않는 최소 가격을 확인할 수 있음"],
-    "guide.platform.title": "플랫폼 수수료",
-    "guide.platform.items": ["쿠팡: 카테고리별 4~10.9%, 월 이용료 55,000원 (매출 100만 초과 시)", "스마트스토어: 네이버페이 수수료 + 판매수수료 합산 약 5.5%", "11번가: 카테고리별 5~12%, 평균 10%", "수수료는 최종 결제금액(배송비 포함) 기준"],
-    "guide.tax.title": "부가세 처리",
-    "guide.tax.items": ["일반과세자: (판매가-원가)의 약 10% 납부", "간이과세자: 판매가×업종별 부가가치율×10% (소매 15%)", "면세사업자: 부가세 없음 (농축수산물, 기초생활필수품 등)", "연매출 1억 400만원 미만 시 간이과세자 가능"]
+    "mode": {
+      "calculate": "마진 계산",
+      "reverse": "역산 (판매가 산출)"
+    },
+    "input": {
+      "sellingPrice": "판매가",
+      "costPrice": "상품 원가",
+      "platform": "플랫폼",
+      "platformCustom": "직접 입력",
+      "commissionRate": "수수료율 (%)",
+      "shippingCost": "배송비 (판매자부담)",
+      "packagingCost": "포장비 (건당)",
+      "adCost": "광고비 (건당 배분)",
+      "taxType": "과세 유형",
+      "targetMargin": "목표 마진율 (%)",
+      "monthlySales": "월 판매량",
+      "unit": "원",
+      "percent": "%",
+      "count": "개"
+    },
+    "platform": {
+      "coupang": "쿠팡 (10.9%)",
+      "smartstore": "스마트스토어 (5.5%)",
+      "elevenst": "11번가 (10%)",
+      "custom": "직접입력"
+    },
+    "taxType": {
+      "general": "일반과세자",
+      "simplified": "간이과세자",
+      "exempt": "면세사업자"
+    },
+    "result": {
+      "netProfit": "순이익",
+      "marginRate": "마진율",
+      "markupRate": "마크업률",
+      "breakEvenQty": "손익분기 수량",
+      "breakEvenUnit": "개",
+      "perItem": "건당",
+      "calculatedPrice": "산출 판매가",
+      "deficit": "적자"
+    },
+    "costBreakdown": {
+      "title": "비용 구성 분석",
+      "cost": "원가",
+      "commission": "수수료",
+      "shipping": "배송비",
+      "packaging": "포장비",
+      "ad": "광고비",
+      "tax": "부가세",
+      "profit": "순이익"
+    },
+    "detail": {
+      "title": "상세 내역",
+      "item": "항목",
+      "amount": "금액",
+      "ratio": "비율",
+      "sellingPrice": "판매가",
+      "totalCost": "총비용"
+    },
+    "monthly": {
+      "title": "월간 시뮬레이션",
+      "revenue": "월 매출",
+      "totalCost": "월 총비용",
+      "netProfit": "월 순이익"
+    },
+    "guide": {
+      "title": "마진 계산 가이드",
+      "margin": {
+        "title": "마진율 vs 마크업률",
+        "items": [
+          "마진율 = (판매가 - 총비용) / 판매가 × 100",
+          "마크업률 = (판매가 - 원가) / 원가 × 100",
+          "마진율 30% = 마크업률 약 43%",
+          "마진율이 실제 수익성을 더 정확히 반영"
+        ]
+      },
+      "reverse": {
+        "title": "역산 기능",
+        "items": [
+          "목표 마진율을 입력하면 최소 판매가를 자동 산출",
+          "수수료·배송비·부가세를 모두 반영한 정확한 판매가",
+          "적자 나지 않는 최소 가격을 확인할 수 있음"
+        ]
+      },
+      "platform": {
+        "title": "플랫폼 수수료",
+        "items": [
+          "쿠팡: 카테고리별 4~10.9%, 월 이용료 55,000원 (매출 100만 초과 시)",
+          "스마트스토어: 네이버페이 수수료 + 판매수수료 합산 약 5.5%",
+          "11번가: 카테고리별 5~12%, 평균 10%",
+          "수수료는 최종 결제금액(배송비 포함) 기준"
+        ]
+      },
+      "tax": {
+        "title": "부가세 처리",
+        "items": [
+          "일반과세자: (판매가-원가)의 약 10% 납부",
+          "간이과세자: 판매가×업종별 부가가치율×10% (소매 15%)",
+          "면세사업자: 부가세 없음 (농축수산물, 기초생활필수품 등)",
+          "연매출 1억 400만원 미만 시 간이과세자 가능"
+        ]
+      }
+    }
   },
   "jeonseLoanCalc": {
     "title": "전세대출 계산기",
     "description": "2025년 기준 전세자금대출 금리·한도·월이자를 자동 계산합니다",
-    "loanType.title": "대출 유형",
-    "loanType.general.label": "일반 버팀목",
-    "loanType.general.sub": "무주택 세대주",
-    "loanType.general.rate": "연 2.5~3.5%",
-    "loanType.youth.label": "청년 버팀목",
-    "loanType.youth.sub": "만 19~34세",
-    "loanType.youth.rate": "연 1.3~4.3%",
-    "loanType.newlywed.label": "신혼 버팀목",
-    "loanType.newlywed.sub": "혼인 7년 이내",
-    "loanType.newlywed.rate": "연 1.0~4.3%",
-    "loanType.bank.label": "시중은행",
-    "loanType.bank.sub": "일반 전세대출",
-    "loanType.bank.rate": "연 3.5~5.0%",
-    "input.deposit": "전세보증금",
-    "input.depositPlaceholder": "전세보증금을 입력하세요",
-    "input.loanAmount": "희망 대출금액",
-    "input.loanAmountPlaceholder": "희망 대출금액을 입력하세요",
-    "input.location": "소재지",
-    "input.locationCapital": "수도권 (서울·인천·경기)",
-    "input.locationLocal": "지방",
-    "input.income": "연소득 (부부합산)",
-    "input.incomePlaceholder": "부부합산 연소득",
-    "input.smeWorker": "중소기업 재직자 (우대금리 -0.3%p)",
-    "input.children": "자녀 수",
-    "input.children0": "없음",
-    "input.children1": "1명 (-0.3%p)",
-    "input.children2": "2명 (-0.5%p)",
-    "input.children3plus": "3명 이상 (-0.7%p)",
-    "input.bankRate": "금리 (연 %)",
-    "input.bankRatePlaceholder": "시중은행 금리 입력",
-    "repayment.title": "상환 방식",
-    "repayment.bullet": "만기일시상환",
-    "repayment.equalPrincipalInterest": "원리금균등상환",
-    "repayment.period": "대출 기간",
-    "repayment.years": "년",
-    "result.title": "계산 결과",
-    "result.appliedRate": "적용 금리",
-    "result.baseRate": "기본 금리",
-    "result.discount": "우대 할인",
-    "result.monthlyPayment": "월 상환액",
-    "result.monthlyInterest": "월 이자",
-    "result.loanLimit": "대출 한도",
-    "result.maxLoanByLTV": "LTV 기준 최대",
-    "result.maxLoanByType": "상품 한도",
-    "result.ltvRatio": "LTV 비율",
-    "result.totalInterest": "총 이자 비용",
-    "result.guaranteeFee": "보증료 예상",
-    "result.guaranteeFeeDesc": "대출금 × 0.15% × 기간(년) 기준 추정",
-    "result.eligibility": "자격 요건 체크",
-    "result.eligible": "충족",
-    "result.notEligible": "미충족",
-    "result.incomeCheck": "소득 기준",
-    "result.depositCheck": "보증금 한도",
-    "result.loanLimitCheck": "대출 한도",
-    "result.ltvWarning": "희망 대출금액이 LTV 한도를 초과합니다",
-    "result.noResult": "좌측 정보를 입력하면 결과가 표시됩니다",
-    "result.calculate": "계산하기",
-    "unit.won": "원",
-    "unit.percent": "%",
-    "unit.year": "년",
-    "unit.month": "개월",
-    "unit.manwon": "만원",
-    "unit.eok": "억원",
+    "loanType": {
+      "title": "대출 유형",
+      "general": {
+        "label": "일반 버팀목",
+        "sub": "무주택 세대주",
+        "rate": "연 2.5~3.5%"
+      },
+      "youth": {
+        "label": "청년 버팀목",
+        "sub": "만 19~34세",
+        "rate": "연 1.3~4.3%"
+      },
+      "newlywed": {
+        "label": "신혼 버팀목",
+        "sub": "혼인 7년 이내",
+        "rate": "연 1.0~4.3%"
+      },
+      "bank": {
+        "label": "시중은행",
+        "sub": "일반 전세대출",
+        "rate": "연 3.5~5.0%"
+      }
+    },
+    "input": {
+      "deposit": "전세보증금",
+      "depositPlaceholder": "전세보증금을 입력하세요",
+      "loanAmount": "희망 대출금액",
+      "loanAmountPlaceholder": "희망 대출금액을 입력하세요",
+      "location": "소재지",
+      "locationCapital": "수도권 (서울·인천·경기)",
+      "locationLocal": "지방",
+      "income": "연소득 (부부합산)",
+      "incomePlaceholder": "부부합산 연소득",
+      "smeWorker": "중소기업 재직자 (우대금리 -0.3%p)",
+      "children": "자녀 수",
+      "children0": "없음",
+      "children1": "1명 (-0.3%p)",
+      "children2": "2명 (-0.5%p)",
+      "children3plus": "3명 이상 (-0.7%p)",
+      "bankRate": "금리 (연 %)",
+      "bankRatePlaceholder": "시중은행 금리 입력"
+    },
+    "repayment": {
+      "title": "상환 방식",
+      "bullet": "만기일시상환",
+      "equalPrincipalInterest": "원리금균등상환",
+      "period": "대출 기간",
+      "years": "년"
+    },
+    "result": {
+      "title": "계산 결과",
+      "appliedRate": "적용 금리",
+      "baseRate": "기본 금리",
+      "discount": "우대 할인",
+      "monthlyPayment": "월 상환액",
+      "monthlyInterest": "월 이자",
+      "loanLimit": "대출 한도",
+      "maxLoanByLTV": "LTV 기준 최대",
+      "maxLoanByType": "상품 한도",
+      "ltvRatio": "LTV 비율",
+      "totalInterest": "총 이자 비용",
+      "guaranteeFee": "보증료 예상",
+      "guaranteeFeeDesc": "대출금 × 0.15% × 기간(년) 기준 추정",
+      "eligibility": "자격 요건 체크",
+      "eligible": "충족",
+      "notEligible": "미충족",
+      "incomeCheck": "소득 기준",
+      "depositCheck": "보증금 한도",
+      "loanLimitCheck": "대출 한도",
+      "ltvWarning": "희망 대출금액이 LTV 한도를 초과합니다",
+      "noResult": "좌측 정보를 입력하면 결과가 표시됩니다",
+      "calculate": "계산하기"
+    },
+    "unit": {
+      "won": "원",
+      "percent": "%",
+      "year": "년",
+      "month": "개월",
+      "manwon": "만원",
+      "eok": "억원"
+    },
     "disclaimer": "본 계산기는 참고용이며, 실제 대출 조건은 금융기관에 확인하세요.",
-    "guide.title": "전세대출 가이드",
-    "guide.overview.title": "전세대출 유형 비교",
-    "guide.overview.items": ["일반 버팀목: 소득 5천만원 이하, 수도권 최대 1.2억원, LTV 70%", "청년 버팀목: 만 19~34세, 최대 1.5억원, LTV 80%, 중소기업 우대", "신혼 버팀목: 혼인 7년 이내, 수도권 최대 2.5억원, LTV 80%, 자녀 우대", "시중은행: 소득 제한 없음, 최대 5억원, LTV 80%, 금리 다소 높음"],
-    "guide.rates.title": "금리 결정 요소",
-    "guide.rates.items": ["소득 구간: 소득이 낮을수록 낮은 금리 적용", "보증금 규모: 보증금이 작을수록 낮은 금리", "소재지: 지방 소재 시 0.2%p 우대", "우대 조건: 중소기업 재직(-0.3%p), 자녀 수 등"],
-    "guide.tips.title": "전세대출 팁",
-    "guide.tips.items": ["버팀목 계열은 DSR 규제 적용 제외 — 소득 대비 유리", "청년은 중소기업 우대금리를 꼭 확인 (-0.3%p 추가 인하)", "신혼 3자녀 이상이면 최대 -0.7%p 우대 가능", "만기일시상환이 월 부담은 적지만, 총 이자는 원리금균등보다 많음"]
+    "guide": {
+      "title": "전세대출 가이드",
+      "overview": {
+        "title": "전세대출 유형 비교",
+        "items": [
+          "일반 버팀목: 소득 5천만원 이하, 수도권 최대 1.2억원, LTV 70%",
+          "청년 버팀목: 만 19~34세, 최대 1.5억원, LTV 80%, 중소기업 우대",
+          "신혼 버팀목: 혼인 7년 이내, 수도권 최대 2.5억원, LTV 80%, 자녀 우대",
+          "시중은행: 소득 제한 없음, 최대 5억원, LTV 80%, 금리 다소 높음"
+        ]
+      },
+      "rates": {
+        "title": "금리 결정 요소",
+        "items": [
+          "소득 구간: 소득이 낮을수록 낮은 금리 적용",
+          "보증금 규모: 보증금이 작을수록 낮은 금리",
+          "소재지: 지방 소재 시 0.2%p 우대",
+          "우대 조건: 중소기업 재직(-0.3%p), 자녀 수 등"
+        ]
+      },
+      "tips": {
+        "title": "전세대출 팁",
+        "items": [
+          "버팀목 계열은 DSR 규제 적용 제외 — 소득 대비 유리",
+          "청년은 중소기업 우대금리를 꼭 확인 (-0.3%p 추가 인하)",
+          "신혼 3자녀 이상이면 최대 -0.7%p 우대 가능",
+          "만기일시상환이 월 부담은 적지만, 총 이자는 원리금균등보다 많음"
+        ]
+      }
+    }
   },
   "incomeTaxCalc": {
     "title": "종합소득세 계산기",
@@ -14562,13 +15478,32 @@
     "comparisonBetter": "유리한 방식",
     "guideTitle": "종합소득세 가이드",
     "guideWhoTitle": "신고 대상",
-    "guideWhoItems": ["프리랜서 (3.3% 원천징수 소득자)", "개인사업자 (사업소득)", "부업·투잡 소득자", "기타소득 연 300만원 초과자", "이자·배당소득 연 2,000만원 초과자"],
+    "guideWhoItems": [
+      "프리랜서 (3.3% 원천징수 소득자)",
+      "개인사업자 (사업소득)",
+      "부업·투잡 소득자",
+      "기타소득 연 300만원 초과자",
+      "이자·배당소득 연 2,000만원 초과자"
+    ],
     "guideExpenseTitle": "경비 처리 방식",
-    "guideExpenseItems": ["단순경비율: 직전년 수입 2,400만원 미만 (인적용역 기준), 수입에 경비율을 곱해 자동 인정", "기준경비율: 단순경비율 기준 초과, 증빙 가능한 주요경비 + 수입×기준경비율로 경비 인정", "간편장부/복식부기: 실제 수입·경비를 장부로 기록, 복식부기 시 기장세액공제 20%(한도 100만원)"],
+    "guideExpenseItems": [
+      "단순경비율: 직전년 수입 2,400만원 미만 (인적용역 기준), 수입에 경비율을 곱해 자동 인정",
+      "기준경비율: 단순경비율 기준 초과, 증빙 가능한 주요경비 + 수입×기준경비율로 경비 인정",
+      "간편장부/복식부기: 실제 수입·경비를 장부로 기록, 복식부기 시 기장세액공제 20%(한도 100만원)"
+    ],
     "guideDeadlineTitle": "신고 기간",
-    "guideDeadlineItems": ["신고 기간: 매년 5월 1일 ~ 5월 31일", "납부 기한: 5월 31일 (분납 가능: 1천만원 초과 시 2개월 이내)", "성실신고확인 대상자: 6월 30일까지 연장"],
+    "guideDeadlineItems": [
+      "신고 기간: 매년 5월 1일 ~ 5월 31일",
+      "납부 기한: 5월 31일 (분납 가능: 1천만원 초과 시 2개월 이내)",
+      "성실신고확인 대상자: 6월 30일까지 연장"
+    ],
     "guideTipTitle": "절세 팁",
-    "guideTipItems": ["연금저축+IRP 최대 900만원까지 세액공제 (최대 148.5만원 절세)", "단순경비율 vs 기준경비율 유리한 쪽 선택 (장부 없을 때)", "국민연금·건강보험료는 전액 소득공제 — 반드시 입력", "기타소득 300만원 이하면 분리과세 가능 (종합합산 X)"]
+    "guideTipItems": [
+      "연금저축+IRP 최대 900만원까지 세액공제 (최대 148.5만원 절세)",
+      "단순경비율 vs 기준경비율 유리한 쪽 선택 (장부 없을 때)",
+      "국민연금·건강보험료는 전액 소득공제 — 반드시 입력",
+      "기타소득 300만원 이하면 분리과세 가능 (종합합산 X)"
+    ]
   },
   "yearEndTaxCalc": {
     "title": "연말정산 계산기",
@@ -14580,10 +15515,12 @@
     "copied": "링크가 복사되었습니다",
     "won": "원",
     "percent": "%",
-    "tab.basic": "기본정보",
-    "tab.incomeDeduction": "소득공제",
-    "tab.taxCredit": "세액공제",
-    "tab.result": "결과",
+    "tab": {
+      "basic": "기본정보",
+      "incomeDeduction": "소득공제",
+      "taxCredit": "세액공제",
+      "result": "결과"
+    },
     "grossSalary": "연간 총급여",
     "grossSalaryPlaceholder": "세전 연봉(비과세 포함)을 입력하세요",
     "nonTaxableIncome": "비과세 소득",
@@ -14642,53 +15579,383 @@
     "monthlyRentDesc": "총급여 8천만 이하, 무주택자, 한도 1,000만원",
     "marriageTaxCredit": "결혼 세액공제",
     "marriageTaxCreditDesc": "2024~2026 혼인신고 시 50만원 (생애 1회)",
-    "step1.title": "1단계: 총급여액",
-    "step1.grossSalary": "연간 총급여 (세전)",
-    "step1.nonTaxable": "비과세소득",
-    "step1.totalSalary": "총급여액",
-    "step2.title": "2단계: 근로소득금액",
-    "step2.earnedIncomeDeduction": "근로소득공제",
-    "step2.earnedIncome": "근로소득금액",
-    "step3.title": "3단계: 과세표준",
-    "step3.personalDeduction": "인적공제",
-    "step3.nationalPension": "국민연금",
-    "step3.healthEmployment": "건강·고용보험",
-    "step3.housingSubscription": "주택청약저축",
-    "step3.cardDeduction": "신용카드 등 공제",
-    "step3.totalDeduction": "소득공제 합계",
-    "step3.taxBase": "과세표준",
-    "step4.title": "4단계: 산출세액",
-    "step4.taxRate": "적용 세율",
-    "step4.calculatedTax": "산출세액",
-    "step5.title": "5단계: 세액공제",
-    "step5.earnedIncomeCredit": "근로소득 세액공제",
-    "step5.childCredit": "자녀 세액공제",
-    "step5.pensionCredit": "연금저축·IRP 세액공제",
-    "step5.insuranceCredit": "보험료 세액공제",
-    "step5.medicalCredit": "의료비 세액공제",
-    "step5.educationCredit": "교육비 세액공제",
-    "step5.donationCredit": "기부금 세액공제",
-    "step5.rentCredit": "월세 세액공제",
-    "step5.marriageCredit": "결혼 세액공제",
-    "step5.totalCredit": "세액공제 합계",
-    "step6.title": "6단계: 최종 결과",
-    "step6.determinedTax": "결정세액",
-    "step6.localIncomeTax": "지방소득세 (10%)",
-    "step6.totalTax": "총 납부세액",
-    "step6.prepaidTax": "기납부세액",
-    "step6.refundAmount": "환급 예상액",
-    "step6.additionalPayment": "추가 납부액",
-    "result.refund": "환급 예상",
-    "result.additionalPayment": "추가 납부",
-    "result.breakeven": "납부세액 일치",
+    "step1": {
+      "title": "1단계: 총급여액",
+      "grossSalary": "연간 총급여 (세전)",
+      "nonTaxable": "비과세소득",
+      "totalSalary": "총급여액"
+    },
+    "step2": {
+      "title": "2단계: 근로소득금액",
+      "earnedIncomeDeduction": "근로소득공제",
+      "earnedIncome": "근로소득금액"
+    },
+    "step3": {
+      "title": "3단계: 과세표준",
+      "personalDeduction": "인적공제",
+      "nationalPension": "국민연금",
+      "healthEmployment": "건강·고용보험",
+      "housingSubscription": "주택청약저축",
+      "cardDeduction": "신용카드 등 공제",
+      "totalDeduction": "소득공제 합계",
+      "taxBase": "과세표준"
+    },
+    "step4": {
+      "title": "4단계: 산출세액",
+      "taxRate": "적용 세율",
+      "calculatedTax": "산출세액"
+    },
+    "step5": {
+      "title": "5단계: 세액공제",
+      "earnedIncomeCredit": "근로소득 세액공제",
+      "childCredit": "자녀 세액공제",
+      "pensionCredit": "연금저축·IRP 세액공제",
+      "insuranceCredit": "보험료 세액공제",
+      "medicalCredit": "의료비 세액공제",
+      "educationCredit": "교육비 세액공제",
+      "donationCredit": "기부금 세액공제",
+      "rentCredit": "월세 세액공제",
+      "marriageCredit": "결혼 세액공제",
+      "totalCredit": "세액공제 합계"
+    },
+    "step6": {
+      "title": "6단계: 최종 결과",
+      "determinedTax": "결정세액",
+      "localIncomeTax": "지방소득세 (10%)",
+      "totalTax": "총 납부세액",
+      "prepaidTax": "기납부세액",
+      "refundAmount": "환급 예상액",
+      "additionalPayment": "추가 납부액"
+    },
+    "result": {
+      "refund": "환급 예상",
+      "additionalPayment": "추가 납부",
+      "breakeven": "납부세액 일치"
+    },
     "detailToggle": "상세 내역 보기",
-    "guide.title": "연말정산 가이드",
-    "guide.flow.title": "계산 흐름",
-    "guide.flow.items": ["총급여에서 비과세소득을 빼 총급여액을 구합니다", "근로소득공제를 적용하여 근로소득금액을 산출합니다", "각종 소득공제를 차감하여 과세표준을 구합니다", "과세표준에 세율을 적용하여 산출세액을 계산합니다", "세액공제를 차감하여 결정세액을 확인합니다", "기납부세액과 비교하여 환급/추가납부를 결정합니다"],
-    "guide.changes.title": "2025년 귀속 주요 변경사항",
-    "guide.changes.items": ["자녀 세액공제 확대: 1명 25만원, 2명 55만원", "월세 세액공제 한도 1,000만원, 대상 총급여 8,000만원 이하로 확대", "결혼 세액공제 50만원 신설 (2024~2026 혼인신고)", "주택청약저축 납입한도 300만원, 배우자도 공제 가능", "6세 이하 의료비 공제 한도 폐지", "보육수당 비과세 한도 월 20만원으로 상향", "수영장·체력단련장 이용료 신용카드 공제 30% 적용"],
-    "guide.tips.title": "절세 팁",
-    "guide.tips.items": ["총급여 25% 초과분은 체크카드·현금영수증이 공제율 2배(30%)", "연금저축+IRP 최대 900만원까지 세액공제 가능", "의료비는 총급여 3% 초과분만 공제되므로 한 해에 집중", "전통시장·대중교통은 추가한도 100만원씩 별도 적용"]
+    "guide": {
+      "title": "연말정산 가이드",
+      "flow": {
+        "title": "계산 흐름",
+        "items": [
+          "총급여에서 비과세소득을 빼 총급여액을 구합니다",
+          "근로소득공제를 적용하여 근로소득금액을 산출합니다",
+          "각종 소득공제를 차감하여 과세표준을 구합니다",
+          "과세표준에 세율을 적용하여 산출세액을 계산합니다",
+          "세액공제를 차감하여 결정세액을 확인합니다",
+          "기납부세액과 비교하여 환급/추가납부를 결정합니다"
+        ]
+      },
+      "changes": {
+        "title": "2025년 귀속 주요 변경사항",
+        "items": [
+          "자녀 세액공제 확대: 1명 25만원, 2명 55만원",
+          "월세 세액공제 한도 1,000만원, 대상 총급여 8,000만원 이하로 확대",
+          "결혼 세액공제 50만원 신설 (2024~2026 혼인신고)",
+          "주택청약저축 납입한도 300만원, 배우자도 공제 가능",
+          "6세 이하 의료비 공제 한도 폐지",
+          "보육수당 비과세 한도 월 20만원으로 상향",
+          "수영장·체력단련장 이용료 신용카드 공제 30% 적용"
+        ]
+      },
+      "tips": {
+        "title": "절세 팁",
+        "items": [
+          "총급여 25% 초과분은 체크카드·현금영수증이 공제율 2배(30%)",
+          "연금저축+IRP 최대 900만원까지 세액공제 가능",
+          "의료비는 총급여 3% 초과분만 공제되므로 한 해에 집중",
+          "전통시장·대중교통은 추가한도 100만원씩 별도 적용"
+        ]
+      }
+    }
+  },
+  "healthInsurance": {
+    "title": "건강보험료 계산기",
+    "description": "2025년 직장/지역가입자 보험료 계산, 피부양자 판정, 직장 vs 지역 비교",
+    "tabs": {
+      "workplace": "직장가입자",
+      "regional": "지역가입자",
+      "dependent": "피부양자 판정",
+      "comparison": "직장 vs 지역 비교"
+    },
+    "workplace": {
+      "monthlySalary": "월 보수월액",
+      "annualSalary": "연봉",
+      "inputAsAnnual": "연봉으로 입력",
+      "nonTaxable": "비과세소득 (월)",
+      "employee": "근로자 부담",
+      "employer": "사업주 부담",
+      "employerShare": "회사 부담 합계",
+      "remuneration": "보수월액",
+      "rateInfo": "2025년 건강보험료율 7.09% (근로자 3.545% + 사업주 3.545%), 장기요양 12.95%",
+      "netSalary": "실수령액 (4대보험 공제 후)",
+      "annualProjection": "연간 보험료 전망"
+    },
+    "regional": {
+      "incomeSection": "소득 정보 (연간)",
+      "businessIncome": "사업소득 (연)",
+      "employmentIncome": "근로소득 (연)",
+      "financialIncome": "이자/배당소득 (연)",
+      "otherIncome": "기타소득 (연)",
+      "pensionIncome": "연금소득 (연)",
+      "propertySection": "재산 정보",
+      "propertyTaxBase": "재산세 과세표준액",
+      "deposit": "전월세 보증금",
+      "result": "지역가입자 보험료 산출",
+      "totalAnnualIncome": "연간 총 소득",
+      "monthlyIncome": "소득월액",
+      "incomePremium": "소득 보험료",
+      "propertyPoints": "재산 부과점수",
+      "points": "점",
+      "propertyPremium": "재산 보험료",
+      "monthlyTotal": "월 총 보험료",
+      "minimumApplied": "소득이 기준 이하로 하한액(19,780원)이 적용되었습니다."
+    },
+    "dependent": {
+      "relationship": "관계",
+      "relationships": {
+        "spouse": "배우자",
+        "parent": "부모",
+        "child": "자녀",
+        "sibling": "형제자매",
+        "grandparent": "조부모",
+        "grandchild": "손자녀"
+      },
+      "annualIncome": "연 소득 합계",
+      "hasBusinessIncome": "사업소득 있음 (사업자 등록)",
+      "businessIncomeAmount": "사업소득 (연)",
+      "propertyTaxBase": "재산세 과세표준 합계",
+      "cohabitation": "동거 여부",
+      "eligible": "피부양자 자격 있음",
+      "notEligible": "피부양자 자격 없음",
+      "noPremium": "건강보험료 납부 의무 없음",
+      "mustPayRegional": "지역가입자로 보험료를 납부해야 합니다",
+      "switchToRegional": "지역가입자 전환 시 예상 보험료",
+      "conditions": "충족 조건 확인",
+      "incomeCondition": "소득 조건 (연소득 2,000만원 미만)",
+      "businessCondition": "사업소득 조건",
+      "propertyCondition": "재산 조건 (과세표준 5.4억 이하)",
+      "relationCondition": "관계 조건",
+      "noBusinessIncome": "사업소득 없음 (조건 충족)",
+      "hasBusinessIncomeDetail": "사업소득이 있어 피부양자 자격 불가",
+      "cohabitationMet": "동거 조건 충족",
+      "cohabitationRequired": "형제자매는 동거해야 피부양자 가능"
+    },
+    "comparison": {
+      "freelancer": "지역가입자 (프리랜서)",
+      "incorporated": "직장가입자 (법인 설립)",
+      "ceoSalary": "법인 대표 급여 (월)",
+      "ceoNote": "법인 대표는 사업주이자 근로자이므로, 실질적으로 건강보험/국민연금 전액(사업주+근로자분)을 본인이 부담합니다.",
+      "result": "보험료 비교",
+      "item": "항목",
+      "difference": "월 차이",
+      "annualDifference": "연간 차이",
+      "freelancerMore": "지역가입자가",
+      "workplaceMore": "직장가입자가",
+      "chartTitle": "항목별 보험료 비교",
+      "importantNote": "참고사항",
+      "corporateNote": "법인 설립 시 건강보험료는 줄 수 있지만, 법인 설립/운영 비용(세무사 수수료, 4대보험 사업주 분담, 법인세, 부가세 신고 등)을 종합적으로 고려해야 합니다.",
+      "ceoEmployerNote": "법인 대표는 사업주분도 실질적으로 본인 부담 (근로자분 + 사업주분 합산)",
+      "regionalPensionNote": "지역가입자 국민연금은 소득월액 기준 9% 전액 본인 부담"
+    },
+    "insurance": {
+      "healthInsurance": "건강보험",
+      "longTermCare": "장기요양보험",
+      "nationalPension": "국민연금",
+      "employmentInsurance": "고용보험",
+      "total": "총 보험료",
+      "total4": "4대보험 내 부담 합계",
+      "myShare": "내 부담 합계",
+      "rate2025": "2025년 기준",
+      "showAll4": "4대보험 전체 보기"
+    },
+    "unit": {
+      "won": "원",
+      "man": "만",
+      "eok": "억",
+      "month": "월",
+      "monthly": "월",
+      "perYear": "연간"
+    },
+    "copy": "복사",
+    "copied": "복사됨",
+    "placeholder": {
+      "enterSalary": "좌측에 월 보수월액을 입력하면 보험료가 계산됩니다.",
+      "enterIncome": "좌측에 소득 또는 재산 정보를 입력해주세요.",
+      "enterDependentInfo": "좌측에 피부양자 정보를 입력하면 자격 판정 결과가 표시됩니다.",
+      "enterComparison": "양쪽에 소득 정보와 법인 대표 급여를 입력하면 비교 결과가 표시됩니다."
+    },
+    "guide": {
+      "title": "건강보험료 가이드",
+      "rates": {
+        "title": "2025년 보험료율",
+        "items": [
+          "건강보험료율: 7.09% (근로자 3.545% + 사업주 3.545%)",
+          "장기요양보험료: 건강보험료의 12.95%",
+          "지역가입자 점수당 금액: 208.4원",
+          "국민연금: 9% (근로자 4.5% + 사업주 4.5%), 상한 월 617만원",
+          "고용보험: 0.9% (근로자 부담분)"
+        ]
+      },
+      "dependentRules": {
+        "title": "피부양자 자격 조건",
+        "items": [
+          "연소득 2,000만원 미만",
+          "사업자등록이 없어야 함 (사업소득 0원)",
+          "재산세 과세표준 5.4억원 이하",
+          "5.4억~9억 사이: 연소득 1,000만원 이하 추가 조건",
+          "형제자매: 동거 필수, 30세 미만/65세 이상/장애인"
+        ]
+      },
+      "regionalCalc": {
+        "title": "지역가입자 보험료 계산법",
+        "items": [
+          "소득 보험료 = 소득월액 x 7.09% (하한 19,780원)",
+          "재산 보험료 = 재산 부과점수 x 208.4원",
+          "재산금액 = 재산세과세표준 + 전월세보증금x30% - 기본공제 1억",
+          "월 보험료 = 소득보험료 + 재산보험료 + 장기요양보험료"
+        ]
+      },
+      "tips": {
+        "title": "알아두면 좋은 팁",
+        "items": [
+          "직장가입자는 퇴직 후 2개월간 임의계속가입 가능 (보험료 동일)",
+          "지역가입자 보험료가 부담되면 배우자 직장가입자의 피부양자 등록 검토",
+          "법인 설립은 보험료뿐 아니라 세금, 운영비 등 종합적으로 비교 필요",
+          "매년 4월 보수총액 신고로 전년도 보험료가 정산됨"
+        ]
+      }
+    }
+  },
+  "weddingCalculator": {
+    "title": "결혼비용 계산기",
+    "description": "예산 계획부터 축의금 예상, 양가 분담까지",
+    "tabs": {
+      "costs": "비용 입력",
+      "congratulatory": "축의금 예상",
+      "split": "양가 분담",
+      "dashboard": "종합 대시보드"
+    },
+    "region": {
+      "label": "지역 기준",
+      "seoul": "서울/수도권",
+      "regional": "지방"
+    },
+    "categories": {
+      "venue": "예식장",
+      "sdm": "스드메 (스튜디오/드레스/메이크업)",
+      "gifts": "예물",
+      "yedan": "예단",
+      "ham": "함",
+      "honeymoon": "신혼여행",
+      "housing": "신혼집",
+      "others": "기타"
+    },
+    "items": {
+      "venueRental": "홀 대관료",
+      "mealPerPerson": "식대 (1인당)",
+      "guestCount": "예상 하객 수",
+      "officiant": "주례비/사회자비",
+      "pyebaek": "폐백실",
+      "studioPhoto": "스튜디오 촬영",
+      "dressRental": "드레스 대여",
+      "makeup": "메이크업",
+      "weddingVideo": "본식 DVD/스냅",
+      "brideGifts": "신부 예물 (반지, 목걸이 등)",
+      "groomGifts": "신랑 예물 (시계, 반지 등)",
+      "yedanToGroom": "예단 (시댁→신부측)",
+      "yedanToBride": "예단 (처가→신랑측)",
+      "hamCost": "함 비용",
+      "hamMoney": "함값 (봉투)",
+      "flights": "항공권",
+      "accommodation": "숙소",
+      "localExpenses": "현지 비용",
+      "deposit": "전세/월세 보증금",
+      "appliances": "가전제품",
+      "furniture": "가구",
+      "interior": "인테리어",
+      "invitations": "청첩장",
+      "returnGifts": "답례품",
+      "ibaji": "이바지",
+      "contingency": "예비비"
+    },
+    "fields": {
+      "include": "포함",
+      "budget": "예산",
+      "actual": "실제",
+      "difference": "차이",
+      "memo": "메모",
+      "unit": "만원"
+    },
+    "guestUnit": "명",
+    "congratulatory": {
+      "guestGroup": "하객 그룹",
+      "addGroup": "그룹 추가",
+      "groupName": "그룹명",
+      "personCount": "인원수",
+      "perPerson": "1인당 축의금",
+      "subtotal": "소계",
+      "groups": {
+        "colleague": "직장동료",
+        "friend": "친구",
+        "family": "가족",
+        "relative": "친척",
+        "parentFriend": "부모지인"
+      },
+      "total": "예상 총 축의금",
+      "coverageRate": "비용 대비 커버율",
+      "netBurden": "실질 부담금",
+      "excludingHousing": "신혼집 제외 시 커버율"
+    },
+    "split": {
+      "method": "분담 방식",
+      "byItem": "항목별",
+      "byRatio": "비율",
+      "byAmount": "금액",
+      "groomSide": "신랑측",
+      "brideSide": "신부측",
+      "shared": "공동",
+      "traditional": "전통적 분담",
+      "modern": "현대적 분담",
+      "summary": "양가 분담 요약"
+    },
+    "dashboard": {
+      "totalCost": "총 비용",
+      "congratulatoryMoney": "축의금",
+      "netBurden": "실질 부담",
+      "budgetVsActual": "예산 vs 실제 비교",
+      "underBudget": "절약",
+      "overBudget": "초과",
+      "categoryBreakdown": "카테고리별 비용 비중",
+      "category": "카테고리",
+      "noData": "데이터가 없습니다"
+    },
+    "actions": {
+      "reset": "초기화",
+      "resetConfirm": "모든 데이터를 초기화하시겠습니까?",
+      "copyResults": "결과 복사",
+      "savePdf": "PDF 저장"
+    },
+    "guide": {
+      "title": "결혼비용 가이드",
+      "averageCosts": {
+        "title": "2025년 평균 결혼 비용",
+        "items": [
+          "서울/수도권 평균: 3,500~5,000만원 (신혼집 제외)",
+          "지방 평균: 2,000~3,000만원 (신혼집 제외)",
+          "신혼집 포함 시 1억~3억원 이상"
+        ]
+      },
+      "savingTips": {
+        "title": "절약 팁",
+        "items": [
+          "스몰웨딩: 하객 50명 이하, 비용 50% 절감 가능",
+          "비수기(1~2월, 7~8월) 예식장 할인",
+          "스드메 패키지 vs 개별 견적 비교",
+          "셀프 청첩장/답례품으로 30~50만원 절약"
+        ]
+      }
+    }
   },
   "subcategory": {
     "salaryWork": "급여/근로",
@@ -14703,5 +15970,626 @@
     "convertEncode": "변환/인코딩",
     "generators": "생성기",
     "otherTools": "기타 도구"
+  },
+  "parentalLeave": {
+    "title": "육아휴직급여 계산기",
+    "description": "2025년 6+6 부모육아휴직제 완벽 반영, 월별 급여 상세 및 부부 시뮬레이션",
+    "tabs": {
+      "individual": "개인 계산",
+      "couple": "부부 시뮬레이션"
+    },
+    "inputs": {
+      "settings": "계산 설정",
+      "ordinaryWage": "통상임금 (월)",
+      "ordinaryWagePlaceholder": "월 통상임금 입력",
+      "inputAsAnnual": "연봉으로 입력",
+      "monthlyConverted": "월 환산",
+      "won": "원",
+      "leaveStartMonth": "휴직 시작월",
+      "leaveDuration": "휴직 기간",
+      "monthsLabel": "개월",
+      "sixPlusSix": "6+6 부모육아휴직제 적용",
+      "apply": "적용",
+      "notApply": "미적용",
+      "childBirthMonth": "자녀 생년월",
+      "spouseLeaveStart": "배우자 휴직 시작월",
+      "spouseLeaveDuration": "배우자 휴직 기간",
+      "fatherWage": "부 통상임금 (월)",
+      "motherWage": "모 통상임금 (월)",
+      "fatherLeaveStart": "부 휴직 시작월",
+      "fatherLeaveDuration": "부 휴직 기간",
+      "motherLeaveStart": "모 휴직 시작월",
+      "motherLeaveDuration": "모 휴직 기간"
+    },
+    "results": {
+      "monthlyTable": "월별 급여 상세",
+      "monthCol": "월차",
+      "monthUnit": "개월차",
+      "payRate": "지급률",
+      "cap": "상한액",
+      "actualBenefit": "실수령액",
+      "vsWage": "통상임금 대비",
+      "note": "비고",
+      "totalBenefit": "총 수령액",
+      "monthlyAverage": "월평균 수령액",
+      "incomeReplacement": "소득대체율",
+      "incomeLoss": "총 소득 감소액",
+      "enhanced": "6+6 특례",
+      "standard": "일반 적용",
+      "lowerLimit": "하한액 적용",
+      "upperLimit": "상한액 적용",
+      "manwon": "만원",
+      "manwonUnit": "만원",
+      "chartTitle": "월별 급여 비교 차트",
+      "wageLabel": "통상임금",
+      "benefitLabel": "육아휴직급여",
+      "placeholder": "좌측에 통상임금을 입력하면 월별 급여가 계산됩니다."
+    },
+    "couple": {
+      "father": "부",
+      "mother": "모",
+      "fatherShort": "부",
+      "motherShort": "모",
+      "fatherSection": "아버지 정보",
+      "motherSection": "어머니 정보",
+      "total": "합계",
+      "item": "항목",
+      "period": "휴직 기간",
+      "timeline": "휴직 타임라인",
+      "householdIncome": "가구 월 수입",
+      "summary": "부부 합산 요약",
+      "childBirthHint": "6+6 부모육아휴직제 적용을 위해 자녀 생년월을 입력하세요.",
+      "placeholder": "양쪽 부모의 통상임금과 휴직 시작월을 입력하면 시뮬레이션 결과를 확인할 수 있습니다.",
+      "fatherEnhanced": "부 6+6 특례",
+      "fatherStandard": "부 일반",
+      "motherEnhanced": "모 6+6 특례",
+      "motherStandard": "모 일반"
+    },
+    "reducedHours": {
+      "title": "육아기 근로시간 단축 급여",
+      "description": "육아기 근로시간 단축 시 정부 지원금과 회사 급여를 함께 계산합니다. 주당 최소 15시간 이상 근무해야 합니다.",
+      "beforeHours": "단축 전 주당 근로시간",
+      "afterHours": "단축 후 주당 근로시간",
+      "hoursPerWeek": "시간",
+      "reducedTime": "단축 시간",
+      "first10h": "첫 10시간 단축분 (100%, 상한 55만)",
+      "remaining": "나머지 단축분 (80%, 상한 150만)",
+      "govBenefit": "정부 지원금 소계",
+      "companyPay": "회사 급여 (단축 후 근무분)",
+      "totalIncome": "합계 수입"
+    },
+    "warnings": {
+      "childOver18Months": "자녀가 생후 18개월을 초과하여 6+6 부모육아휴직제가 적용되지 않습니다.",
+      "maxLeave": "최대 18개월까지 가능합니다.",
+      "abolishedPostPay": "사후지급금 제도 폐지 (2025년~)"
+    },
+    "share": "URL 복사하여 공유",
+    "shared": "URL이 복사되었습니다!",
+    "copyResult": "결과 복사",
+    "copied": "복사됨!",
+    "guide": {
+      "title": "2025년 육아휴직급여 가이드",
+      "changes2025": {
+        "title": "2025년 주요 변경사항",
+        "items": [
+          "육아휴직 급여 상한액 대폭 인상 (최대 월 250만원)",
+          "사후지급금(25%) 제도 폐지 — 육아휴직 중 전액 수령",
+          "6+6 부모육아휴직제 1~2개월차 상한액 250만원으로 인상",
+          "7개월차 이후 상한액 150만 → 160만원 인상",
+          "육아기 근로시간 단축 급여 상한 55만원으로 인상"
+        ]
+      },
+      "comparison": {
+        "title": "일반 vs 6+6 비교",
+        "monthCol": "기간",
+        "general": "일반",
+        "sixPlusSix": "6+6 특례",
+        "note": "* 상한액 단위: 만원, 하한액 공통 70만원"
+      },
+      "eligibility": {
+        "title": "6+6 부모육아휴직제 적용 조건",
+        "items": [
+          "생후 18개월 이내 자녀",
+          "부모 모두 육아휴직 사용",
+          "고용보험 가입기간 180일 이상",
+          "2025년 이후 육아휴직 개시"
+        ]
+      }
+    }
+  },
+  "curlBuilder": {
+    "title": "cURL Command Builder",
+    "description": "cURL 명령어 생성 및 코드 변환 도구",
+    "tabs": {
+      "build": "빌드 모드",
+      "parse": "파싱 모드"
+    },
+    "request": {
+      "method": "HTTP 메서드",
+      "url": "URL",
+      "urlPlaceholder": "https://api.example.com/endpoint",
+      "queryParams": "쿼리 파라미터",
+      "headers": "헤더",
+      "headerPresets": "헤더 프리셋",
+      "auth": "인증",
+      "body": "요청 본문",
+      "options": "옵션"
+    },
+    "params": {
+      "key": "키",
+      "value": "값",
+      "enabled": "활성",
+      "add": "추가",
+      "remove": "삭제"
+    },
+    "auth": {
+      "none": "없음",
+      "bearer": "Bearer Token",
+      "basic": "Basic Auth",
+      "apiKey": "API Key",
+      "token": "토큰",
+      "username": "사용자명",
+      "password": "비밀번호",
+      "headerName": "헤더 이름",
+      "apiKeyValue": "API 키"
+    },
+    "body": {
+      "none": "없음",
+      "raw": "Raw (JSON/XML/Text)",
+      "formData": "Form Data",
+      "urlencoded": "x-www-form-urlencoded",
+      "contentType": "Content Type",
+      "isFile": "파일"
+    },
+    "options": {
+      "followRedirects": "리다이렉트 따라가기 (-L)",
+      "insecure": "SSL 검증 건너뛰기 (-k)",
+      "verbose": "상세 출력 (-v)",
+      "compressed": "압축 (--compressed)",
+      "includeHeaders": "응답 헤더 포함 (-i)",
+      "maxTime": "최대 대기시간 (초)"
+    },
+    "parse": {
+      "title": "cURL 명령어 붙여넣기",
+      "placeholder": "curl -X POST https://api.example.com ...",
+      "parseButton": "파싱",
+      "parseSuccess": "파싱 완료! 빌드 모드에서 확인하세요.",
+      "parseError": "파싱 실패",
+      "examples": "예시 명령어"
+    },
+    "export": {
+      "format": "내보내기 형식",
+      "curl": "cURL",
+      "fetch": "fetch (JS)",
+      "axios": "axios (JS)",
+      "python": "Python",
+      "go": "Go",
+      "php": "PHP",
+      "copy": "복사",
+      "copied": "복사됨"
+    },
+    "history": {
+      "title": "최근 명령어",
+      "empty": "저장된 명령어가 없습니다",
+      "clearAll": "전체 삭제"
+    },
+    "errors": {
+      "invalidUrl": "올바른 URL을 입력해주세요",
+      "bodyWithGet": "GET 요청에는 보통 body를 포함하지 않습니다",
+      "missingContentType": "Content-Type 헤더를 추가하는 것을 권장합니다",
+      "parseFailedAt": "파싱 실패: {detail}"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "devtools": {
+        "title": "브라우저에서 cURL 복사하기",
+        "items": [
+          "Chrome DevTools > Network 탭 열기 (F12)",
+          "원하는 요청을 우클릭",
+          "Copy > Copy as cURL 선택",
+          "파싱 모드에 붙여넣기"
+        ]
+      },
+      "tips": {
+        "title": "팁",
+        "items": [
+          "쿼리 파라미터는 URL에 직접 입력하거나 별도 필드로 추가 가능",
+          "Bearer 토큰은 인증 섹션에서 설정하면 자동으로 헤더에 추가",
+          "JSON body 입력 시 Content-Type: application/json 헤더를 자동 추가 권장",
+          "Ctrl+Enter로 빠르게 파싱 또는 히스토리에 저장"
+        ]
+      }
+    }
+  },
+  "comprehensivePropertyTax": {
+    "title": "종합부동산세 계산기 2025",
+    "description": "2025년 종합부동산세(종부세)를 자동으로 계산합니다. 납세자 유형별 세율, 세액공제, 세부담상한까지 단계별로 확인하세요.",
+    "taxpayerType": {
+      "label": "납세자 유형",
+      "single": "1세대 1주택",
+      "general": "일반 (2주택 이하)",
+      "threeplus": "3주택 이상",
+      "corp": "법인"
+    },
+    "elderly": {
+      "label": "고령자 여부",
+      "none": "해당없음",
+      "60to65": "60세~65세 미만 (10%)",
+      "65to70": "65세~70세 미만 (20%)",
+      "over70": "70세 이상 (30%)"
+    },
+    "holdingPeriod": {
+      "label": "보유기간",
+      "none": "해당없음",
+      "5to10": "5년~10년 미만 (20%)",
+      "10to15": "10년~15년 미만 (40%)",
+      "over15": "15년 이상 (50%)"
+    },
+    "property": {
+      "label": "주택 공시가격 목록",
+      "add": "주택 추가",
+      "remove": "삭제",
+      "price": "공시가격",
+      "pricePlaceholder": "공시가격 입력",
+      "total": "합산 공시가격"
+    },
+    "prevYearTax": {
+      "label": "전년도 종부세액 (선택)",
+      "placeholder": "전년도 종부세 본세",
+      "helpText": "세부담상한 계산에 사용됩니다. 입력하지 않으면 상한 적용을 건너뜁니다."
+    },
+    "reset": "초기화",
+    "units": {
+      "won": "원",
+      "percent": "%"
+    },
+    "result": {
+      "title": "계산 결과 요약",
+      "baseTax": "종부세 본세",
+      "farmlandTax": "농어촌특별세",
+      "totalTax": "합계 납부세액",
+      "effectiveRate": "실효세율 (납부세액/공시가격)",
+      "notSubject": "종합부동산세 대상이 아닙니다",
+      "notSubjectDetail": "합산 공시가격 {total}원의 공정시장가액 {fairMarket}원이 기본공제 {deduction}원 이하이므로 과세표준이 0원입니다.",
+      "placeholder": "왼쪽에서 주택 공시가격을 입력하면 종부세가 자동으로 계산됩니다."
+    },
+    "steps": {
+      "title": "단계별 계산 과정",
+      "step1": {
+        "label": "공시가격 합산",
+        "desc": "보유 주택 {count}건의 공시가격 합계"
+      },
+      "step2": {
+        "label": "공정시장가액비율 적용 (60%)",
+        "desc": "공시가격 합산액 × 60% (2025년 기준)"
+      },
+      "step3": {
+        "label": "기본공제 차감 → 과세표준",
+        "desc": "공정시장가액 - 기본공제 {deduction}원"
+      },
+      "step4": {
+        "label": "세율 적용 → 산출세액",
+        "desc": "{type} 누진세율 적용",
+        "corpDesc": "법인 단일세율 5.0% 적용"
+      },
+      "step5": {
+        "label": "세액공제 (1세대1주택)",
+        "desc": "고령자 {elderly} + 장기보유 {holding} = 합산 {combined} (상한 80%)",
+        "badge": "세액공제"
+      },
+      "step6": {
+        "label": "세부담상한 적용",
+        "notApplied": "상한 미적용",
+        "appliedDesc": "전년도 세액 × {rate} 상한 적용",
+        "notAppliedDesc": "산출세액이 상한 이내이므로 적용되지 않습니다.",
+        "appliedBadge": "상한 적용"
+      },
+      "step7": {
+        "label": "농어촌특별세 (20%)",
+        "desc": "종부세 본세 × 20%"
+      },
+      "step8": {
+        "label": "최종 납부세액",
+        "desc": "종부세 본세 + 농어촌특별세"
+      }
+    },
+    "rateTable": {
+      "title": "종부세 세율표",
+      "taxBase": "과세표준",
+      "rate": "세율",
+      "current": "적용 구간",
+      "corpFlat": "법인은 과세표준 전액에 단일세율 5.0%가 적용됩니다."
+    },
+    "guide": {
+      "title": "종합부동산세 가이드",
+      "overview": {
+        "title": "종합부동산세 개요",
+        "items": [
+          "종합부동산세는 매년 6월 1일 기준 일정 금액 이상의 부동산을 보유한 자에게 부과됩니다.",
+          "과세 대상: 주택(아파트, 다세대, 단독주택 등)의 공시가격 합산액이 기본공제를 초과하는 경우",
+          "기본공제: 1세대1주택 12억원, 일반(2주택 이하) 9억원, 법인 0원 (2023년부터)",
+          "공정시장가액비율: 2025년 60%가 적용됩니다.",
+          "납부기간: 매년 12월 1일 ~ 12월 15일"
+        ]
+      },
+      "rates": {
+        "title": "세율 안내",
+        "items": [
+          "일반(2주택 이하): 0.5% ~ 2.7%의 6단계 누진세율이 적용됩니다.",
+          "3주택 이상: 1.2% ~ 6.0%의 중과세율이 적용됩니다.",
+          "법인: 과세표준 전액에 5.0% 단일세율이 적용됩니다.",
+          "농어촌특별세: 종부세 본세의 20%가 추가로 부과됩니다."
+        ]
+      },
+      "credits": {
+        "title": "세액공제 (1세대1주택 한정)",
+        "items": [
+          "고령자 세액공제: 60~65세 10%, 65~70세 20%, 70세 이상 30%",
+          "장기보유 세액공제: 5~10년 20%, 10~15년 40%, 15년 이상 50%",
+          "고령자+장기보유 합산 공제 한도: 최대 80%",
+          "세부담상한: 일반은 전년도 세액의 150%, 3주택+/법인은 300%까지"
+        ]
+      },
+      "tips": {
+        "title": "절세 팁",
+        "items": [
+          "공시가격은 국토교통부 부동산공시가격 알리미에서 확인할 수 있습니다.",
+          "공시가격 이의신청으로 공시가격을 낮출 수 있습니다.",
+          "1세대1주택 요건을 충족하면 공제 12억+세액공제 혜택을 받을 수 있습니다.",
+          "종부세 분납: 납부할 세액이 250만원 초과 시 분납 가능합니다.",
+          "임대주택 등록 시 합산배제 혜택이 있을 수 있습니다."
+        ]
+      }
+    }
+  },
+  "cagrCalculator": {
+    "title": "CAGR 계산기",
+    "description": "연평균성장률(CAGR) 계산, 미래가치 예측, 투자 비교 분석을 한 곳에서",
+    "mode": {
+      "cagr": "CAGR 계산",
+      "cagrShort": "CAGR",
+      "future": "미래가치",
+      "futureShort": "미래가치",
+      "period": "필요기간",
+      "periodShort": "기간"
+    },
+    "input": {
+      "title": "입력값",
+      "startValue": "시작 금액",
+      "endValue": "종료 금액",
+      "period": "투자 기간",
+      "periodYears": "년",
+      "periodMonths": "개월",
+      "cagrRate": "연평균 성장률 (CAGR)",
+      "targetValue": "목표 금액",
+      "compoundFreq": "복리 주기",
+      "yearly": "연복리",
+      "monthly": "월복리",
+      "daily": "일복리"
+    },
+    "compare": {
+      "toggle": "비교 모드",
+      "investmentA": "투자 A",
+      "investmentB": "투자 B",
+      "title": "비교 결과",
+      "item": "항목",
+      "finalValue": "최종 가치",
+      "difference": "차이",
+      "same": "동일",
+      "advantage": "유리",
+      "faster": "빠름"
+    },
+    "preset": {
+      "label": "한국 자산 프리셋",
+      "kospi": "코스피 10년 (~3.5%)",
+      "seoulApt": "서울아파트 10년 (~5.2%)",
+      "sp500": "S&P500 10년 (~10.5%)",
+      "usBond": "미국국채 10년 (~2.8%)",
+      "deposit": "정기예금 (~2.0%)"
+    },
+    "reset": "초기화",
+    "copy": "복사",
+    "result": {
+      "cagrLabel": "연평균 성장률 (CAGR)",
+      "totalReturn": "총 수익률",
+      "totalGain": "총 수익금액",
+      "futureValue": "미래 가치",
+      "futureValueLabel": "예상 미래 가치",
+      "requiredPeriod": "필요 기간",
+      "requiredPeriodLabel": "목표 달성까지",
+      "basis": "기준",
+      "placeholder": "입력값을 입력하면 결과가 표시됩니다"
+    },
+    "chart": {
+      "title": "연도별 성장 차트",
+      "year": "연도",
+      "value": "자산 가치",
+      "growth": "성장액"
+    },
+    "table": {
+      "title": "연도별 상세 내역",
+      "year": "연도",
+      "value": "자산 가치",
+      "growth": "성장액",
+      "growthRate": "성장률",
+      "valueB": "자산 가치 (B)",
+      "growthB": "성장액 (B)"
+    },
+    "units": {
+      "won": "원",
+      "percent": "%",
+      "year": "년",
+      "month": "개월",
+      "eok": "억",
+      "man": "만"
+    },
+    "guide": {
+      "title": "CAGR 가이드",
+      "whatIsCagr": {
+        "title": "CAGR이란?",
+        "items": [
+          "CAGR(Compound Annual Growth Rate)은 투자의 연평균 복리 성장률입니다",
+          "단순 평균 수익률과 달리 복리 효과를 반영하여 실제 투자 성과를 정확히 측정합니다",
+          "기간 중 변동을 무시하고 시작과 끝만으로 평균적인 연간 성장률을 산출합니다",
+          "서로 다른 투자 상품의 성과를 동일한 기준으로 비교할 수 있습니다"
+        ]
+      },
+      "formula": {
+        "title": "계산 공식",
+        "items": [
+          "CAGR = (종료금액 / 시작금액) ^ (1 / 투자기간) - 1",
+          "미래가치 = 시작금액 x (1 + CAGR) ^ 투자기간",
+          "필요기간 = ln(목표금액 / 시작금액) / ln(1 + CAGR)",
+          "월복리 적용 시: 연간 수익률을 12등분하여 매월 복리 계산"
+        ]
+      },
+      "usage": {
+        "title": "활용 방법",
+        "items": [
+          "주식, 부동산, 펀드 등 투자 상품의 실제 수익률 측정",
+          "여러 투자 대안의 성과를 동일 기준으로 비교",
+          "미래 투자 가치 예측 및 목표 달성 기간 산출",
+          "연금, 적금 등 장기 금융 상품의 실질 수익률 분석"
+        ]
+      },
+      "tips": {
+        "title": "투자 팁",
+        "items": [
+          "CAGR은 과거 실적이며 미래 수익률을 보장하지 않습니다",
+          "인플레이션을 고려한 실질 CAGR = 명목 CAGR - 물가상승률",
+          "분산 투자로 리스크를 줄이면서 안정적인 CAGR을 목표로 하세요",
+          "72의 법칙: 원금이 2배가 되는 기간 ≈ 72 / CAGR(%)"
+        ]
+      }
+    }
+  },
+  "chess": {
+    "title": "체스",
+    "description": "AI와 대전하는 클래식 체스 게임",
+    "white": "백",
+    "black": "흑",
+    "yourTurn": "당신의 차례입니다",
+    "opponentTurn": "AI가 생각 중...",
+    "yourTurnCheck": "체크! 킹을 보호하세요",
+    "aiTurnCheck": "체크! AI가 생각 중...",
+    "check": "체크!",
+    "checkmate": "체크메이트",
+    "stalemate": "스테일메이트 (무승부)",
+    "draw": "무승부!",
+    "youWin": "승리!",
+    "youLose": "패배!",
+    "fiftyMoveRule": "50수 규칙 (무승부)",
+    "insufficientMaterial": "기물 부족 (무승부)",
+    "repetition": "3회 반복 (무승부)",
+    "moves": "수",
+    "playAgain": "다시 하기",
+    "flipBoard": "보드 뒤집기",
+    "capturedPieces": "잡은 말",
+    "moveHistory": "기보",
+    "howToPlay": "체스 규칙",
+    "rules": {
+      "rule1": "백이 먼저 시작합니다. 각 말은 고유한 이동 규칙이 있습니다.",
+      "rule2": "폰: 전진 1칸(첫 수는 2칸), 대각선으로 적 잡기. 나이트: L자 이동.",
+      "rule3": "비숍: 대각선, 룩: 직선, 퀸: 대각선+직선 이동.",
+      "rule4": "킹: 인접 1칸 이동. 캐슬링으로 킹과 룩 동시 이동 가능.",
+      "rule5": "상대 킹을 공격(체크)하고, 피할 수 없으면 체크메이트로 승리!",
+      "rule6": "폰이 상대편 끝줄에 도달하면 퀸/룩/비숍/나이트로 승격합니다."
+    },
+    "guide": {
+      "title": "체스 가이드",
+      "pieces": {
+        "title": "말의 종류와 가치",
+        "items": [
+          "킹: 가장 중요한 말, 모든 방향 1칸 이동",
+          "퀸: 9점, 직선+대각선 무제한 이동",
+          "룩: 5점, 직선(가로/세로) 무제한 이동",
+          "비숍: 3점, 대각선 무제한 이동",
+          "나이트: 3점, L자 이동 (다른 말 뛰어넘기 가능)",
+          "폰: 1점, 전진 1칸, 첫 수 2칸, 대각선 잡기"
+        ]
+      }
+    },
+    "win": "승리!",
+    "loss": "패배!"
+  },
+  "biorhythm": {
+    "title": "바이오리듬 계산기",
+    "description": "생년월일 기반 신체·감성·지성 리듬 차트와 호환성 분석",
+    "inputTitle": "기본 정보",
+    "birthDate": "생년월일",
+    "targetDate": "기준일",
+    "periodLabel": "표시 기간",
+    "periodDays": "{days}일",
+    "daysLived": "태어난 지 {days}일째",
+    "emptyState": "생년월일을 입력하면 바이오리듬을 확인할 수 있습니다.",
+    "todayTitle": "오늘의 바이오리듬",
+    "overallCondition": "종합 컨디션",
+    "physical": "신체",
+    "emotional": "감성",
+    "intellectual": "지성",
+    "today": "오늘",
+    "criticalDay": "위험일",
+    "chartTitle": "바이오리듬 차트",
+    "calendarTitle": "캘린더 뷰",
+    "status": {
+      "high": "좋은 상태입니다. 활력이 넘치는 시기예요.",
+      "medium": "보통 상태입니다. 안정적인 시기예요.",
+      "low": "저조한 상태입니다. 무리하지 마세요.",
+      "critical": "위험일입니다. 주의가 필요한 시기예요."
+    },
+    "calendar": {
+      "sun": "일",
+      "mon": "월",
+      "tue": "화",
+      "wed": "수",
+      "thu": "목",
+      "fri": "금",
+      "sat": "토"
+    },
+    "compatibility": {
+      "title": "호환성 분석",
+      "birthDate2": "상대방 생년월일",
+      "resultTitle": "호환성 분석 결과",
+      "overall": "종합 호환율"
+    },
+    "guide": {
+      "title": "바이오리듬 가이드",
+      "what": {
+        "title": "바이오리듬이란?",
+        "items": [
+          "바이오리듬은 사람의 신체적·감성적·지적 상태가 태어난 날부터 일정한 주기로 변화한다는 이론입니다.",
+          "19세기 말 빌헬름 플리스 박사가 제안했으며, 각 리듬은 사인파(sine wave)로 표현됩니다.",
+          "양수(+) 구간은 활발한 시기, 음수(-) 구간은 저조한 시기, 0을 지나는 날은 불안정한 '위험일'로 봅니다."
+        ]
+      },
+      "rhythms": {
+        "title": "세 가지 리듬",
+        "items": [
+          "신체 리듬 (23일 주기): 체력, 지구력, 면역력, 운동 능력에 영향. 양수일 때 운동이나 육체 활동에 유리합니다.",
+          "감성 리듬 (28일 주기): 감정, 기분, 창의성, 대인관계에 영향. 양수일 때 사교 활동이나 예술 활동에 유리합니다.",
+          "지성 리듬 (33일 주기): 사고력, 집중력, 판단력, 기억력에 영향. 양수일 때 학습이나 중요한 의사결정에 유리합니다."
+        ]
+      },
+      "critical": {
+        "title": "위험일이란?",
+        "items": [
+          "위험일은 바이오리듬 곡선이 0을 지나는 날로, 리듬이 양에서 음으로(또는 반대로) 전환되는 시점입니다.",
+          "이 시기에는 신체적·감성적·지적 안정성이 떨어져 사고나 실수가 발생할 가능성이 높다고 합니다.",
+          "캘린더에서 느낌표(!)로 표시된 날이 위험일입니다."
+        ]
+      },
+      "disclaimer": {
+        "title": "과학적 근거 안내",
+        "items": [
+          "바이오리듬 이론은 과학적으로 검증되지 않았습니다. 여러 연구에서 바이오리듬과 실제 건강·능력 사이의 유의미한 상관관계가 발견되지 않았습니다.",
+          "이 계산기는 재미와 참고 용도로만 사용해 주세요. 중요한 의사결정에 바이오리듬을 근거로 삼지 마세요.",
+          "건강이나 컨디션에 문제가 있다면 전문 의료인과 상담하시기 바랍니다."
+        ]
+      }
+    }
+  },
+  "rentSubsidy": {
+    "title": "LH 월세지원금 계산기",
+    "description": "청년, 신혼부부, 일반 가구의 월세지원금을 정확하게 계산해보세요."
   }
 }

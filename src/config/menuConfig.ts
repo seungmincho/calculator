@@ -102,6 +102,11 @@ export const menuConfig: MenuConfig = {
       { href: '/grade-calculator', labelKey: 'footer.links.gradeCalculator', descriptionKey: 'toolsShowcase.tools.gradeCalculator.description', icon: '🎓', addedDate: '2026-03-20', subcategory: 'subcategory.others' },
       { href: '/gpa-converter', labelKey: 'footer.links.gpaConverter', descriptionKey: 'toolsShowcase.tools.gpaConverter.description', icon: '📋', addedDate: '2026-03-20', subcategory: 'subcategory.others' },
       { href: '/pc-electricity', labelKey: 'footer.links.pcElectricity', descriptionKey: 'toolsShowcase.tools.pcElectricity.description', icon: '🖥️', addedDate: '2026-03-20', subcategory: 'subcategory.others' },
+      { href: '/parental-leave', labelKey: 'footer.links.parentalLeave', descriptionKey: 'toolsShowcase.tools.parentalLeave.description', icon: '👶', addedDate: '2026-03-21', subcategory: 'subcategory.salaryWork' },
+      { href: '/health-insurance', labelKey: 'footer.links.healthInsurance', descriptionKey: 'toolsShowcase.tools.healthInsurance.description', icon: '🏥', addedDate: '2026-03-21', subcategory: 'subcategory.tax' },
+      { href: '/wedding-calculator', labelKey: 'footer.links.weddingCalculator', descriptionKey: 'toolsShowcase.tools.weddingCalculator.description', icon: '💒', addedDate: '2026-03-21', subcategory: 'subcategory.livingCost' },
+      { href: '/comprehensive-property-tax', labelKey: 'footer.links.comprehensivePropertyTax', descriptionKey: 'toolsShowcase.tools.comprehensivePropertyTax.description', icon: '🏘️', addedDate: '2026-03-21', subcategory: 'subcategory.tax' },
+      { href: '/cagr-calculator', labelKey: 'footer.links.cagrCalculator', descriptionKey: 'toolsShowcase.tools.cagrCalculator.description', icon: '📈', addedDate: '2026-03-21', subcategory: 'subcategory.investSavings' },
     ],
   },
   tools: {
@@ -183,6 +188,8 @@ export const menuConfig: MenuConfig = {
       { href: '/env-editor', labelKey: 'footer.links.envEditor', descriptionKey: 'toolsShowcase.tools.envEditor.description', icon: '📋', subcategory: 'subcategory.devTools' },
       { href: '/llm-token-calculator', labelKey: 'footer.links.llmTokenCalculator', descriptionKey: 'toolsShowcase.tools.llmTokenCalculator.description', icon: '🤖', subcategory: 'subcategory.devTools' },
       { href: '/webserver-config', labelKey: 'footer.links.webserverConfig', descriptionKey: 'toolsShowcase.tools.webserverConfig.description', icon: '⚙️', subcategory: 'subcategory.devTools' },
+      { href: '/curl-builder', labelKey: 'footer.links.curlBuilder', descriptionKey: 'toolsShowcase.tools.curlBuilder.description', icon: '🔗', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
+      { href: '/pomodoro', labelKey: 'footer.links.pomodoro', descriptionKey: 'toolsShowcase.tools.pomodoro.description', icon: '🍅', addedDate: '2026-03-21', subcategory: 'subcategory.otherTools' },
     ],
   },
   media: {
@@ -225,6 +232,7 @@ export const menuConfig: MenuConfig = {
       { href: '/sleep-calculator', labelKey: 'footer.links.sleepCalculator', descriptionKey: 'toolsShowcase.tools.sleepCalculator.description', icon: '😴' },
       { href: '/nutrition-calculator', labelKey: 'footer.links.nutritionCalculator', descriptionKey: 'toolsShowcase.tools.nutritionCalculator.description', icon: '🥗' },
       { href: '/menu-picker', labelKey: 'footer.links.menuPicker', descriptionKey: 'toolsShowcase.tools.menuPicker.description', icon: '🍽️' },
+      { href: '/biorhythm', labelKey: 'footer.links.biorhythm', descriptionKey: 'toolsShowcase.tools.biorhythm.description', icon: '🌊', addedDate: '2026-03-21' },
     ],
   },
   games: {
@@ -238,6 +246,7 @@ export const menuConfig: MenuConfig = {
       { href: '/mancala', labelKey: 'footer.links.mancala', descriptionKey: 'toolsShowcase.tools.mancala.description', icon: '🥜', modes: ['ai', 'online'] },
       { href: '/battleship', labelKey: 'footer.links.battleship', descriptionKey: 'toolsShowcase.tools.battleship.description', icon: '🚢', modes: ['ai', 'online'] },
       { href: '/dots-and-boxes', labelKey: 'footer.links.dotsAndBoxes', descriptionKey: 'toolsShowcase.tools.dotsAndBoxes.description', icon: '📦', modes: ['ai', 'online'] },
+      { href: '/chess', labelKey: 'footer.links.chess', descriptionKey: 'toolsShowcase.tools.chess.description', icon: '♟️', addedDate: '2026-03-21', modes: ['ai'] },
       { href: '/snake-game', labelKey: 'footer.links.snakeGame', descriptionKey: 'toolsShowcase.tools.snakeGame.description', icon: '🐍', modes: ['solo'] },
       { href: '/2048', labelKey: 'footer.links.game2048', descriptionKey: 'toolsShowcase.tools.game2048.description', icon: '🔢', modes: ['solo'] },
       { href: '/memory-game', labelKey: 'footer.links.memoryGame', descriptionKey: 'toolsShowcase.tools.memoryGame.description', icon: '🃏', modes: ['solo'] },

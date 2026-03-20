@@ -23,12 +23,13 @@ const CheckersAI = dynamic(() => import('@/components/games/CheckersAI'), { ssr:
 const MancalaAI = dynamic(() => import('@/components/games/MancalaAI'), { ssr: false })
 const BattleshipAI = dynamic(() => import('@/components/games/BattleshipAI'), { ssr: false })
 const DotsAndBoxesAI = dynamic(() => import('@/components/games/DotsAndBoxesAI'), { ssr: false })
+const ChessAI = dynamic(() => import('@/components/games/ChessAI'), { ssr: false })
 
 import { useState, useEffect } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { GameRoom } from '@/utils/webrtc'
 
-type GameType = 'omok' | 'othello' | 'connect4' | 'checkers' | 'mancala' | 'battleship' | 'dotsandboxes'
+type GameType = 'omok' | 'othello' | 'connect4' | 'checkers' | 'mancala' | 'battleship' | 'dotsandboxes' | 'chess'
 type PlayMode = 'computer' | 'online'
 type Difficulty = 'easy' | 'normal' | 'hard'
 
@@ -88,7 +89,7 @@ function GamesContent() {
 
   // 온라인 모드 - 기존 게임 컴포넌트 사용
   if (gameState.mode === 'online') {
-    const GameComponents = {
+    const GameComponents: Record<string, typeof Omok> = {
       omok: Omok,
       othello: Othello,
       connect4: Connect4,
@@ -131,7 +132,8 @@ function GamesContent() {
     checkers: CheckersAI,
     mancala: MancalaAI,
     battleship: BattleshipAI,
-    dotsandboxes: DotsAndBoxesAI
+    dotsandboxes: DotsAndBoxesAI,
+    chess: ChessAI
   }
 
   const AIGameComponent = AIGameComponents[gameState.game]

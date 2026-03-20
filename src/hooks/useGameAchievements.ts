@@ -46,6 +46,7 @@ export type GameType =
   | 'mancala'
   | 'battleship'
   | 'dotsandboxes'
+  | 'chess'
 
 const ALL_GAME_TYPES: GameType[] = [
   'omok',
@@ -55,6 +56,7 @@ const ALL_GAME_TYPES: GameType[] = [
   'mancala',
   'battleship',
   'dotsandboxes',
+  'chess',
 ]
 
 const STORAGE_KEY = 'game_achievements'

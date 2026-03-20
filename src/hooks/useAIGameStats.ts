@@ -26,7 +26,7 @@ interface UseAIGameStatsReturn {
 }
 
 const GAME_TYPES: GameType[] = [
-  'omok', 'othello', 'connect4', 'checkers', 'mancala', 'battleship', 'dotsandboxes'
+  'omok', 'othello', 'connect4', 'checkers', 'mancala', 'battleship', 'dotsandboxes', 'chess'
 ]
 
 export const useAIGameStats = (

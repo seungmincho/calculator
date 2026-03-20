@@ -1187,5 +1187,59 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    {
+      url: 'https://toolhub.ai.kr/parental-leave/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://toolhub.ai.kr/health-insurance/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://toolhub.ai.kr/wedding-calculator/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/curl-builder/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/comprehensive-property-tax/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/cagr-calculator/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/chess/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/biorhythm/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: 'https://toolhub.ai.kr/pomodoro/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
   ]
 }

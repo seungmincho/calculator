@@ -1,6 +1,6 @@
 import Peer, { DataConnection } from 'peerjs'
 
-export type MessageType = 'move' | 'chat' | 'ready' | 'restart' | 'surrender' | 'leave' | 'pass'
+export type MessageType = 'move' | 'chat' | 'ready' | 'restart' | 'surrender' | 'leave' | 'pass' | 'board_update' | 'garbage' | 'gameover'
 
 export interface PeerMessage {
   type: MessageType

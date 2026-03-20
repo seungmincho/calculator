@@ -4,16 +4,16 @@ import DueDateCalculator from '@/components/DueDateCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
-  title: '출산 예정일 계산기 - 임신 주수, 예정일 계산 | 툴허브',
-  description: '출산 예정일 계산기 - 마지막 생리일(LMP) 또는 배란일 기준으로 출산 예정일과 현재 임신 주수를 계산합니다. 삼분기별 주요 일정도 확인하세요.',
-  keywords: '출산 예정일 계산, 임신 주수 계산, 출산일 계산기, due date calculator, 임신 계산기',
-  openGraph: { title: '출산 예정일 계산기 | 툴허브', description: '출산 예정일 및 임신 주수 계산', url: 'https://toolhub.ai.kr/due-date', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '출산 예정일 계산기 | 툴허브', description: '출산 예정일 및 임신 주수 계산' },
+  title: '출산 예정일 계산기 - 임신 주수, 아기 크기, 산전검사 일정 | 툴허브',
+  description: '출산 예정일 계산기 - 마지막 생리일(LMP) 또는 배란일 기준으로 출산 예정일과 현재 임신 주수를 계산합니다. 주차별 아기 크기 비교(과일/채소), 산전검사 일정, 체중 증가 가이드까지 한 번에 확인하세요.',
+  keywords: '출산 예정일 계산, 임신 주수 계산, 출산일 계산기, due date calculator, 임신 계산기, 아기 크기, 산전검사 일정, 임신 체중 증가',
+  openGraph: { title: '출산 예정일 계산기 | 툴허브', description: '출산 예정일·임신 주수·아기 크기·산전검사 일정·체중 증가 가이드', url: 'https://toolhub.ai.kr/due-date', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
+  twitter: { card: 'summary_large_image', title: '출산 예정일 계산기 | 툴허브', description: '출산 예정일·임신 주수·아기 크기·산전검사 일정·체중 증가 가이드' },
   alternates: { canonical: 'https://toolhub.ai.kr/due-date/' },
 }
 
 export default function DueDatePage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '출산 예정일 계산기', description: '출산 예정일 및 임신 주수 계산', url: 'https://toolhub.ai.kr/due-date', applicationCategory: 'HealthApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['출산 예정일', '임신 주수', '삼분기 정보', '주요 일정'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '출산 예정일 계산기', description: '출산 예정일 및 임신 주수 계산', url: 'https://toolhub.ai.kr/due-date', applicationCategory: 'HealthApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['출산 예정일', '임신 주수', '삼분기 정보', '주요 일정', '주차별 아기 크기', '산전검사 일정', 'BMI 체중 증가 가이드'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

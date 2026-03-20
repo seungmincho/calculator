@@ -11,5 +11,6 @@ export {
   placeBattleshipAIShips
 } from './battleshipAI'
 export { getDotsAndBoxesAIMove } from './dotsAndBoxesAI'
+export { getChessAIMove } from './chessAI'
 
 export type { Difficulty } from './connect4AI'
