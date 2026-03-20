@@ -6,6 +6,7 @@ import {
   ArrowLeft, Trophy, RefreshCw, Users, Copy, Check, Send,
   MessageCircle, AlertCircle, X, Flag, Zap
 } from 'lucide-react'
+import GameInviteLink from './GameInviteLink'
 import { useGameRoom } from '@/hooks/useGameRoom'
 import { usePeerConnection } from '@/hooks/usePeerConnection'
 import { GameRoom, sendRoomHeartbeat, incrementGamesPlayed, getRoom } from '@/utils/webrtc'
@@ -247,10 +248,11 @@ interface TetrisMultiplayerProps {
   initialRoom?: GameRoom
   isHost?: boolean
   onBack?: () => void
+  joinPeerId?: string | null
 }
 
 // ── Component ──────────────────────────────────────────────────────────────
-export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onBack }: TetrisMultiplayerProps) {
+export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onBack, joinPeerId }: TetrisMultiplayerProps) {
   const t = useTranslations('tetris')
 
   // ── Game phase ──
@@ -441,6 +443,34 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
     joinInitialRoom()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialRoom, isHostProp, t])
+
+  // ── Auto-join via URL ?join=PEER_ID ──
+  const joinPeerIdHandledRef = useRef(false)
+  useEffect(() => {
+    if (!joinPeerId || joinPeerIdHandledRef.current) return
+    if (initialRoom) return // initialRoom이 있으면 그쪽 로직 우선
+    joinPeerIdHandledRef.current = true
+
+    const autoJoin = async () => {
+      const gameNickname = localStorage.getItem('gameNickname')
+      const savedName = localStorage.getItem('tetris_mp_player_name')
+      const name = gameNickname || savedName || t('multi.guest')
+      setPlayerName(name)
+      if (!savedName) localStorage.setItem('tetris_mp_player_name', name)
+      isHostRef.current = false
+      setChatMessages([])
+      setWinCount({ me: 0, opponent: 0 })
+      setGamePhase('waiting')
+
+      const success = await joinPeerRoomRef.current(joinPeerId)
+      if (!success) {
+        setGamePhase('lobby')
+        showToastRef.current(t('multi.connectionFailed'), 'error')
+      }
+    }
+    autoJoin()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [joinPeerId, initialRoom, t])
 
   // ── Chat scroll ──
   useEffect(() => {
@@ -1265,18 +1295,25 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             {t('multi.waitingForOpponent')}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">{t('multi.sharePeerId')}</p>
-          <div className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-6">
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Peer ID</p>
-            <div className="flex items-center justify-center gap-2">
-              <p className="font-mono text-lg text-gray-900 dark:text-white break-all">
+          <p className="text-gray-600 dark:text-gray-400 mb-6">{t('multi.shareLinkDesc')}</p>
+
+          <GameInviteLink peerId={peerId} gameTitle={`${t('title')} - ${t('multi.title')}`} />
+
+          {/* Peer ID (보조) */}
+          <details className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-6">
+            <summary className="text-sm text-gray-500 dark:text-gray-400 cursor-pointer select-none">
+              Peer ID ({t('multi.directConnect')})
+            </summary>
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <p className="font-mono text-sm text-gray-900 dark:text-white break-all">
                 {peerId || 'Loading...'}
               </p>
               <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-all" disabled={!peerId}>
                 {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-500" />}
               </button>
             </div>
-          </div>
+          </details>
+
           <button onClick={handleBackToLobby} className="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-all">
             {t('multi.cancelAndBack')}
           </button>

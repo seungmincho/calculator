@@ -2120,6 +2120,16 @@
     "totalGames": "Total Games",
     "totalRooms": "Total Rooms"
   },
+  "gameInvite": {
+    "inviteLink": "Invite Link",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied! Share it with your opponent.",
+    "shareButton": "Share",
+    "shareText": "Let's play! Click this link to join.",
+    "defaultTitle": "Game Invite",
+    "directConnect": "Direct Connect",
+    "peerIdLabel": "Peer ID"
+  },
   "gameHub": {
     "title": "Game Center",
     "description": "Enjoy various 1v1 games! Play online multiplayer or against the computer.",
@@ -9162,6 +9172,12 @@
       "enterName": "Enter your nickname",
       "waitingForOpponent": "Waiting for opponent...",
       "sharePeerId": "Share this Peer ID with your opponent:",
+      "shareLinkDesc": "Send the invite link below to your opponent to start a match instantly!",
+      "inviteLink": "Invite Link",
+      "copyLink": "Copy Link",
+      "linkCopied": "Link copied! Share it with your opponent.",
+      "shareButton": "Share",
+      "shareText": "Let's play Tetris! Click this link to join.",
       "connectionFailed": "Failed to connect.",
       "roomFull": "Room is already full.",
       "opponentDisconnected": "Opponent has disconnected.",

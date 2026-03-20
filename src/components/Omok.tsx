@@ -8,6 +8,7 @@ import { usePeerConnection } from '@/hooks/usePeerConnection'
 import { GameRoom, OmokGameState, OmokMove, sendRoomHeartbeat, incrementGamesPlayed, getRoom } from '@/utils/webrtc'
 import { PeerMessage } from '@/utils/webrtc/peerManager'
 import GameLobby from './GameLobby'
+import GameInviteLink from './GameInviteLink'
 import OmokBoard from './OmokBoard'
 import { createInitialGameState, checkWinner, checkForbiddenMove } from '@/utils/gameRules/omokRules'
 
@@ -32,9 +33,10 @@ interface OmokProps {
   isHost?: boolean
   hostPeerId?: string
   onBack?: () => void
+  joinPeerId?: string
 }
 
-export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokProps) {
+export default function Omok({ initialRoom, isHost: isHostProp, onBack, joinPeerId }: OmokProps) {
   const t = useTranslations('omok')
 
   const [gamePhase, setGamePhase] = useState<GamePhase>('lobby')
@@ -217,6 +219,33 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
     joinInitialRoom()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialRoom, isHostProp, t])
+
+  // ── Auto-join via URL ?join=PEER_ID ──
+  const joinPeerIdHandledRef = useRef(false)
+  useEffect(() => {
+    if (!joinPeerId || joinPeerIdHandledRef.current) return
+    if (initialRoom) return
+    joinPeerIdHandledRef.current = true
+
+    const autoJoin = async () => {
+      const gameNickname = localStorage.getItem('gameNickname')
+      const savedName = localStorage.getItem('omok_player_name')
+      const name = gameNickname || savedName || t('guest')
+      setPlayerName(name)
+      if (!savedName) localStorage.setItem('omok_player_name', name)
+      isHostRef.current = false
+      setChatMessages([])
+      setGamePhase('waiting')
+
+      const success = await joinPeerRoomRef.current(joinPeerId)
+      if (!success) {
+        setGamePhase('lobby')
+        showToastRef.current(t('connectionFailed') || 'Failed to connect', 'error')
+      }
+    }
+    autoJoin()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [joinPeerId, initialRoom, t])
 
   // 채팅 스크롤 - 채팅창 내부에서만 스크롤
   useEffect(() => {
@@ -639,13 +668,17 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
             {t('waitingForOpponent')}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            {t('sharePeerId') || 'Share this Peer ID with your opponent:'}
+            {t('shareLinkDesc') || '초대 링크를 상대에게 공유하세요!'}
           </p>
 
-          {/* Peer ID 표시 및 복사 */}
-          <div className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-6">
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Peer ID</p>
-            <div className="flex items-center justify-center gap-2">
+          <GameInviteLink peerId={peerId} gameSlug="omok" gameTitle={t('title')} />
+
+          {/* Peer ID (보조) */}
+          <details className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-6">
+            <summary className="text-sm text-gray-500 dark:text-gray-400 cursor-pointer select-none">
+              Peer ID ({t('directConnect') || 'Direct Connect'})
+            </summary>
+            <div className="flex items-center justify-center gap-2 mt-2">
               {isCreatingPeer ? (
                 <div className="flex items-center gap-2">
                   <RefreshCw className="w-5 h-5 animate-spin text-indigo-500" />
@@ -655,7 +688,7 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
                 </div>
               ) : (
                 <>
-                  <p className="font-mono text-lg text-gray-900 dark:text-white break-all">
+                  <p className="font-mono text-sm text-gray-900 dark:text-white break-all">
                     {peerId || 'Loading...'}
                   </p>
                   <button
@@ -673,7 +706,7 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack }: OmokPr
                 </>
               )}
             </div>
-          </div>
+          </details>
 
           <button
             onClick={handleBackToLobby}

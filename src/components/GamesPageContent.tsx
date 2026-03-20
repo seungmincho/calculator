@@ -41,11 +41,29 @@ interface GameState {
   isHost?: boolean
   hostPeerId?: string
   createdRoom?: GameRoom
+  joinPeerId?: string
 }
+
+const VALID_GAME_TYPES: GameType[] = ['omok', 'othello', 'connect4', 'checkers', 'mancala', 'battleship', 'dotsandboxes']
 
 function GamesContent() {
   const t = useTranslations('gameHub')
   const [gameState, setGameState] = useState<GameState | null>(null)
+
+  // URL ?join=PEER_ID&game=TYPE 파라미터 감지 → 자동 온라인모드 진입
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const joinId = params.get('join')
+    const game = params.get('game') as GameType | null
+    if (joinId && game && VALID_GAME_TYPES.includes(game)) {
+      setGameState({ game, mode: 'online', joinPeerId: joinId })
+      // URL에서 파라미터 제거 (뒤로가기 시 재접속 방지)
+      const url = new URL(window.location.href)
+      url.searchParams.delete('join')
+      url.searchParams.delete('game')
+      window.history.replaceState({}, '', url.toString())
+    }
+  }, [])
 
   // 게임 시작 시 화면 최상단으로 스크롤
   useEffect(() => {
@@ -117,6 +135,7 @@ function GamesContent() {
           isHost={gameState.isHost}
           hostPeerId={gameState.hostPeerId}
           onBack={handleBackToHub}
+          joinPeerId={gameState.joinPeerId}
         />
       </div>
     )

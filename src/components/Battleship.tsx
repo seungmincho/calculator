@@ -8,6 +8,7 @@ import { usePeerConnection } from '@/hooks/usePeerConnection'
 import { GameRoom, sendRoomHeartbeat, incrementGamesPlayed } from '@/utils/webrtc'
 import { PeerMessage } from '@/utils/webrtc/peerManager'
 import GameLobby from './GameLobby'
+import GameInviteLink from './GameInviteLink'
 import BattleshipBoardComponent, {
   BattleshipGameState,
   BattleshipPlayer,
@@ -43,9 +44,10 @@ interface BattleshipProps {
   isHost?: boolean
   hostPeerId?: string
   onBack?: () => void
+  joinPeerId?: string
 }
 
-export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId, onBack }: BattleshipProps) {
+export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId, onBack, joinPeerId }: BattleshipProps) {
   const t = useTranslations('battleship')
   const tCommon = useTranslations('common')
 
@@ -197,6 +199,30 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
     joinInitialRoom()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialRoom, isHostProp, t])
+
+  const joinPeerIdHandledRef = useRef(false)
+  useEffect(() => {
+    if (!joinPeerId || joinPeerIdHandledRef.current) return
+    if (initialRoom) return
+    joinPeerIdHandledRef.current = true
+    const autoJoin = async () => {
+      const gameNickname = localStorage.getItem('gameNickname')
+      const savedName = localStorage.getItem('battleship_player_name')
+      const name = gameNickname || savedName || t('guest')
+      setPlayerName(name)
+      if (!savedName) localStorage.setItem('battleship_player_name', name)
+      isHostRef.current = false
+      setChatMessages([])
+      setGamePhase('waiting')
+      const success = await joinPeerRoomRef.current(joinPeerId)
+      if (!success) {
+        setGamePhase('lobby')
+        showToastRef.current(t('connectionFailed') || 'Failed to connect', 'error')
+      }
+    }
+    autoJoin()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [joinPeerId, initialRoom, t])
 
   // 채팅 스크롤
   useEffect(() => {
@@ -688,17 +714,20 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
           </h2>
 
           {isHostRef.current && (
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-6 mt-6">
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Peer ID</p>
-              <div className="flex items-center justify-center gap-2">
-                <p className="font-mono text-lg text-gray-900 dark:text-white break-all">
-                  {peerId || 'Loading...'}
-                </p>
-                <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg">
-                  {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-500" />}
-                </button>
-              </div>
-            </div>
+            <>
+              <GameInviteLink peerId={peerId} gameSlug="battleship" gameTitle={t('title')} />
+              <details className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-6">
+                <summary className="text-sm text-gray-500 dark:text-gray-400 cursor-pointer select-none">
+                  Peer ID ({t('directConnect') || 'Direct Connect'})
+                </summary>
+                <div className="flex items-center justify-center gap-2 mt-2">
+                  <p className="font-mono text-sm text-gray-900 dark:text-white break-all">{peerId || 'Loading...'}</p>
+                  <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg">
+                    {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-500" />}
+                  </button>
+                </div>
+              </details>
+            </>
           )}
 
           <button

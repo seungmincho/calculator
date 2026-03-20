@@ -2120,6 +2120,16 @@
     "totalGames": "총 게임 수",
     "totalRooms": "총 방 수"
   },
+  "gameInvite": {
+    "inviteLink": "초대 링크",
+    "copyLink": "링크 복사",
+    "linkCopied": "링크가 복사되었습니다! 상대에게 공유하세요.",
+    "shareButton": "공유하기",
+    "shareText": "대전하자! 이 링크를 클릭하면 바로 접속할 수 있어.",
+    "defaultTitle": "게임 대전 초대",
+    "directConnect": "직접 연결",
+    "peerIdLabel": "Peer ID"
+  },
   "gameHub": {
     "title": "게임 센터",
     "description": "다양한 1:1 대전 게임을 즐겨보세요! 온라인 멀티플레이어 또는 컴퓨터와 대전할 수 있습니다.",
@@ -9162,6 +9172,12 @@
       "enterName": "닉네임을 입력하세요",
       "waitingForOpponent": "상대를 기다리는 중...",
       "sharePeerId": "이 Peer ID를 상대에게 공유하세요:",
+      "shareLinkDesc": "아래 초대 링크를 상대에게 보내면 바로 대전을 시작할 수 있습니다!",
+      "inviteLink": "초대 링크",
+      "copyLink": "링크 복사",
+      "linkCopied": "링크가 복사되었습니다! 상대에게 공유하세요.",
+      "shareButton": "공유하기",
+      "shareText": "테트리스 대전하자! 이 링크를 클릭하면 바로 접속할 수 있어.",
       "connectionFailed": "연결에 실패했습니다.",
       "roomFull": "이미 다른 플레이어가 입장했습니다.",
       "opponentDisconnected": "상대방이 연결을 끊었습니다.",
