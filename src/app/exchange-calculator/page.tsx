@@ -4,7 +4,7 @@ import ExchangeRateCalculator from '@/components/ExchangeRateCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '환율 계산기 - 실시간 환전 계산',
+  title: '환율 계산기 - 실시간 환전 계산 | 툴허브',
   description: '실시간 환율로 원화·달러·유로·엔화·위안 등 주요 통화를 즉시 환산합니다. 해외여행, 직구, 해외송금 전 환전 금액을 미리 계산하세요.',
   keywords: '환율계산기, 환전계산기, 실시간환율, 달러환율, 엔화환율, 유로환율, 원화환전, 환율변환, 통화계산기',
   openGraph: {
@@ -86,6 +86,18 @@ export default function ExchangeCalculatorPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '환율 계산하는 방법',
+    description: '통화를 선택하고 금액을 입력하면 실시간 환율로 환전 금액을 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '통화 선택', text: '변환할 출발 통화(예: KRW)와 도착 통화(예: USD)를 선택합니다.' },
+      { '@type': 'HowToStep', name: '금액 입력', text: '환전하려는 금액을 입력합니다. 실시간 환율이 자동으로 적용됩니다.' },
+      { '@type': 'HowToStep', name: '환전 결과 확인', text: '환전 금액과 적용 환율, 환전 수수료 정보를 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script
@@ -95,6 +107,10 @@ export default function ExchangeCalculatorPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <ExchangeRateCalculator />

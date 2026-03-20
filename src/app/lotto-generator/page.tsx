@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import LottoGenerator from '@/components/LottoGenerator'
 
 export const metadata: Metadata = {
-  title: '로또번호 생성기 | 당첨번호 조회, 통계 기반 번호추천 | 툴허브',
+  title: '로또번호 생성기 - 통계 기반 추천 | 툴허브',
   description: '로또 6/45 당첨번호 조회, 통계 기반 번호 추천으로 똑똑한 로또번호를 생성하세요. 과거 당첨번호 분석, 핫/콜드 번호, 빈도 분석 기능 제공.',
   keywords: [
     '로또번호 생성기',

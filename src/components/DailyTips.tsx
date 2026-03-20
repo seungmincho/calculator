@@ -79,7 +79,7 @@ const DailyTips = () => {
 
   if (!isVisible) {
     return (
-      <div className="fixed bottom-4 right-4 z-50">
+      <div className="fixed bottom-20 md:bottom-4 right-4 z-40">
         <button
           onClick={showTips}
           className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-colors"
@@ -95,7 +95,7 @@ const DailyTips = () => {
   const currentTip = tips[currentTipIndex];
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 max-w-sm">
+    <div className="fixed bottom-20 md:bottom-4 right-4 z-40 max-w-sm">
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         {/* 헤더 */}
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-3">

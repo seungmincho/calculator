@@ -88,10 +88,24 @@ export default function IncomeTaxPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '종합소득세 계산하는 방법',
+    description: '사업소득과 경비를 입력하면 종합소득세와 환급액을 자동 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '소득 정보 입력', text: '연간 총 수입금액과 업종을 선택합니다. 기납부 원천징수세액(3.3%)도 입력합니다.' },
+      { '@type': 'HowToStep', name: '경비율 선택', text: '단순경비율 또는 기준경비율을 선택합니다. 업종별 경비율이 자동 적용됩니다.' },
+      { '@type': 'HowToStep', name: '공제 항목 설정', text: '인적공제, 연금저축, IRP 등 해당되는 세액공제 항목을 입력합니다.' },
+      { '@type': 'HowToStep', name: '세액 확인', text: '종합소득세, 지방소득세, 환급 예상액을 단계별 계산 내역과 함께 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>

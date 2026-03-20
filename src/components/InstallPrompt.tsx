@@ -97,7 +97,7 @@ export default function InstallPrompt() {
   return (
     <>
       {/* Floating Install Button */}
-      <div className="fixed bottom-4 right-4 z-50">
+      <div className="fixed bottom-20 md:bottom-4 right-4 z-40">
         <button
           id="install-button"
           onClick={handleInstallClick}

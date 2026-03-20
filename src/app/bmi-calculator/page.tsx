@@ -86,6 +86,18 @@ export default function BMICalculatorPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'BMI 체질량지수 계산하는 방법',
+    description: '키와 체중을 입력하면 BMI 지수와 비만도를 자동으로 판정합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '키 입력', text: '본인의 키(cm)를 입력합니다.' },
+      { '@type': 'HowToStep', name: '체중 입력', text: '현재 체중(kg)을 입력합니다.' },
+      { '@type': 'HowToStep', name: '결과 분석', text: 'BMI 수치, 비만도 판정(저체중/정상/과체중/비만), 표준 체중과의 차이를 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script
@@ -95,6 +107,10 @@ export default function BMICalculatorPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <div className="container mx-auto px-4 py-8">

@@ -1189,6 +1189,10 @@
       "healthInsurance": "Health Insurance Premium Calculator",
       "weddingCalculator": "Wedding Cost Planner",
       "curlBuilder": "cURL Builder",
+      "chmodCalculator": "chmod Permission Calculator",
+      "httpStatus": "HTTP Status Codes",
+      "portReference": "Port Number Reference",
+      "linuxCommand": "Linux Command Builder",
       "comprehensivePropertyTax": "Comprehensive Property Tax Calculator",
       "cagrCalculator": "CAGR Calculator",
       "chess": "Chess",
@@ -4299,6 +4303,22 @@
       "curlBuilder": {
         "title": "cURL Builder",
         "description": "Build cURL commands and convert to fetch/axios/Python/Go/PHP code"
+      },
+      "chmodCalculator": {
+        "title": "chmod Permission Calculator",
+        "description": "Visually set Unix/Linux file permissions and generate chmod commands"
+      },
+      "httpStatus": {
+        "title": "HTTP Status Codes",
+        "description": "Search and explore 1xx-5xx HTTP status codes with detailed explanations"
+      },
+      "portReference": {
+        "title": "Port Number Reference",
+        "description": "TCP/UDP port number lookup — SSH, HTTP, MySQL and more service ports"
+      },
+      "linuxCommand": {
+        "title": "Linux Command Builder",
+        "description": "Build Linux commands like ls, grep, find, chmod with visual option selector"
       },
       "comprehensivePropertyTax": {
         "title": "Comprehensive Property Tax Calculator",
@@ -16695,6 +16715,21 @@
       }
     }
   },
+  "linuxCommand": {
+    "title": "Linux Command Builder",
+    "description": "Select options with checkboxes to auto-generate the complete command. Reference for 15 essential Linux commands.",
+    "selectCommand": "Select Command",
+    "synopsis": "Synopsis",
+    "options": "Select Options",
+    "clearAll": "Clear All",
+    "arguments": "Arguments",
+    "generatedCommand": "Generated Command",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "selectOptionsHint": "Select options above or enter arguments.",
+    "examples": "Real-world Examples",
+    "allOptions": "Full Option Reference"
+  },
   "mbtiCompatibility": {
     "title": "MBTI Compatibility",
     "description": "Detailed compatibility analysis between two MBTI types",
@@ -16746,5 +16781,141 @@
         ]
       }
     }
+  },
+  "chmodCalculator": {
+    "title": "chmod Permission Calculator",
+    "description": "Set Unix/Linux file permissions visually with checkboxes — chmod commands are generated automatically",
+    "owner": "Owner",
+    "group": "Group",
+    "others": "Others",
+    "read": "Read",
+    "write": "Write",
+    "execute": "Execute",
+    "noPermission": "None",
+    "on": "allowed",
+    "off": "denied",
+    "octal": "Octal Permission",
+    "octalDigit": "Value",
+    "octalInput": "Octal input",
+    "octalHint": "You can type a 3-digit octal number (0–7) directly",
+    "octalError": "Enter a valid 3-digit octal number (0–7)",
+    "symbolic": "Symbolic Notation",
+    "permGrid": "Permission Settings",
+    "permDescTitle": "Current Permission Summary",
+    "commands": "chmod Commands",
+    "octalCommand": "Numeric (Octal) Mode",
+    "symbolicCommand": "Symbolic Mode",
+    "copyCommand": "Copy",
+    "copied": "Copied!",
+    "filenameLabel": "Filename (used in commands)",
+    "presets": "Common Permission Presets",
+    "preset_755": "Directory default",
+    "preset_644": "File default",
+    "preset_777": "All allowed",
+    "preset_600": "Owner only",
+    "preset_400": "Read-only",
+    "preset_750": "Group read/exec",
+    "guide": {
+      "title": "chmod Permission Guide",
+      "basics": {
+        "title": "How to Calculate Permission Bits",
+        "items": [
+          "Read (r) = 4, Write (w) = 2, Execute (x) = 1",
+          "Each digit represents Owner · Group · Others in order",
+          "rwx = 4+2+1 = 7, r-x = 4+0+1 = 5, r-- = 4+0+0 = 4",
+          "Example: 755 → Owner rwx(7), Group r-x(5), Others r-x(5)"
+        ]
+      },
+      "common": {
+        "title": "Commonly Used Permissions",
+        "items": [
+          "755: Suitable for executables and web directories",
+          "644: General files, HTML/CSS/config files",
+          "600: Private keys and secret config files",
+          "400: Read-only files (write-protected)",
+          "750: Group read/execute, others blocked",
+          "777: All permissions (security risk — avoid in production)"
+        ]
+      },
+      "security": {
+        "title": "Security Guidelines",
+        "items": [
+          "777 grants write access to all users — a serious security risk",
+          "Minimize write permissions on web server files (644 recommended)",
+          "SSH private keys (.pem, id_rsa) must always be set to 600",
+          "Do not grant execute (x) permission to non-executable files",
+          "Principle of Least Privilege: grant only the minimum permissions needed"
+        ]
+      },
+      "tips": {
+        "title": "Pro Tips",
+        "items": [
+          "Use chmod -R 755 /dir to apply permissions recursively to a directory",
+          "find . -type f -exec chmod 644 {} \\; changes all files at once",
+          "find . -type d -exec chmod 755 {} \\; changes all directories at once",
+          "Use ls -la to check the current permissions of a file"
+        ]
+      }
+    }
+  },
+  "portReference": {
+    "title": "Port Number Reference",
+    "description": "Quickly look up well-known TCP/UDP port numbers. Search by port number, service name, or description.",
+    "searchPlaceholder": "Search by port number, service name, or description (e.g. 3306, mysql, database)",
+    "categoryLabel": "Category",
+    "protocolLabel": "Protocol",
+    "filterAll": "All",
+    "catWellKnown": "Well-Known",
+    "catRegistered": "Registered",
+    "catDynamic": "Dynamic",
+    "resultCount": "Showing {count} of {total} ports",
+    "noResults": "No results found. Try a different search term.",
+    "copyPort": "Copy port number",
+    "guide": {
+      "title": "Port Number Guide",
+      "ranges": {
+        "title": "Port Ranges",
+        "wellKnownDesc": "IANA standard assignments. System services only. Requires root/admin to bind.",
+        "registeredDesc": "IANA-registered applications. Databases, middleware, and major services.",
+        "dynamicDesc": "Assigned by OS as ephemeral/client ports. Can also be used for custom services."
+      },
+      "security": {
+        "title": "Port Security Tips",
+        "items": [
+          "Principle of least privilege: only open ports you need, and close unused ones immediately.",
+          "Never expose database ports (MySQL 3306, PostgreSQL 5432, MongoDB 27017, Redis 6379) directly to the internet — use VPN or SSH tunnels.",
+          "Replace unencrypted protocols like Telnet (23) and FTP (21) with SSH (22) and SFTP.",
+          "RDP (3389) is a frequent brute-force target — place it behind a VPN and consider changing the default port.",
+          "Redis (6379), Memcached (11211), and Elasticsearch (9200) have no authentication by default — always configure auth.",
+          "Restrict firewall rules to specific IP ranges and audit them regularly.",
+          "Exposing the Docker daemon API (2375) to the internet gives full server control — always use TLS (2376)."
+        ]
+      },
+      "tcpUdp": {
+        "title": "TCP vs UDP",
+        "tcpDesc": "Connection-oriented, reliable delivery, ordered packets, retransmission support. Slower but stable. Used by HTTP, SSH, databases, etc.",
+        "udpDesc": "Connectionless, fast, no reliability guarantee. Used by DNS, DHCP, streaming, gaming, and VoIP where speed matters most."
+      }
+    }
+  },
+  "httpStatus": {
+    "title": "HTTP Status Code Reference",
+    "description": "Search meanings, causes, and fixes for 60+ HTTP status codes",
+    "searchPlaceholder": "Search by code number or description (e.g. 404, not found, redirect)",
+    "catAll": "All",
+    "cat1xx": "1xx Informational",
+    "cat2xx": "2xx Success",
+    "cat3xx": "3xx Redirection",
+    "cat4xx": "4xx Client Error",
+    "cat5xx": "5xx Server Error",
+    "resultCount": "{count} codes",
+    "noResults": "No results found",
+    "copyBtn": "Copy to clipboard",
+    "expandBtn": "Show details",
+    "collapseBtn": "Collapse",
+    "useCasesLabel": "Use Cases",
+    "causesLabel": "Causes",
+    "fixesLabel": "Fixes",
+    "guideTitle": "HTTP Status Code Guide"
   }
 }

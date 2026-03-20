@@ -4,7 +4,7 @@ import SavingsCalculator from '@/components/SavingsCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '적금 계산기 | 툴허브 - 정기적금, 자유적금, 복리적금 비교',
+  title: '적금 계산기 - 적금·복리 비교 | 툴허브',
   description: '정기적금, 자유적금, 목표적금, 복리적금 등 다양한 적금 상품을 비교하고 목표 금액 달성을 위한 최적의 저축 계획을 세워보세요.',
   keywords: '적금계산기, 정기적금, 자유적금, 복리적금, 목표적금, 저축계획, 적금이자계산, 만기수령액계산',
   openGraph: {

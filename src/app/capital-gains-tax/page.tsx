@@ -87,10 +87,24 @@ export default function CapitalGainsTaxPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '양도소득세 계산하는 방법',
+    description: '취득가액과 양도가액을 입력하면 양도소득세와 지방소득세를 자동 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '매매 정보 입력', text: '취득가액(매입가), 양도가액(매도가), 필요경비를 입력합니다.' },
+      { '@type': 'HowToStep', name: '보유 조건 설정', text: '보유기간, 거주기간, 주택 수, 조정대상지역 여부를 설정합니다.' },
+      { '@type': 'HowToStep', name: '공제 적용', text: '장기보유특별공제율과 기본공제(250만원)가 자동 적용됩니다.' },
+      { '@type': 'HowToStep', name: '세액 확인', text: '양도소득세, 지방소득세, 실효세율을 단계별 계산 내역과 함께 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>

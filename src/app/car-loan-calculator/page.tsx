@@ -4,7 +4,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '자동차 할부 계산기 - 월 납입금 및 총 이자 계산',
+  title: '자동차 할부 계산기 - 월 납입금 계산 | 툴허브',
   description: '자동차 할부금, 월 납입금, 총 이자를 쉽게 계산하세요. 차량 가격, 할부 기간, 금리를 입력하면 자동으로 계산됩니다.',
   keywords: '자동차 할부, 차량 할부, 할부 계산기, 자동차 대출, 차량 대출, 월 납입금, 자동차 금융',
   openGraph: {

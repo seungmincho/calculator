@@ -5,7 +5,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: 'Cron 표현식 테스터 | 툴허브 - 크론 스케줄 검증 및 분석 도구',
+  title: 'Cron 표현식 테스터 - 스케줄 검증 | 툴허브',
   description: 'Cron 표현식을 실시간으로 테스트하고 분석하세요. 다음 실행 시간 예측, 한국어 설명, 일반적인 패턴 제공으로 스케줄 관리를 쉽게 할 수 있습니다.',
   keywords: 'Cron, 크론, 표현식, 스케줄러, 작업스케줄, 정기실행, Linux, Unix, 개발도구, 시간관리, 자동화',
   openGraph: {

@@ -46,10 +46,23 @@ export default function DsrCalculatorPage() {
       { '@type': 'Question', name: '전세대출도 DSR에 포함되나요?', acceptedAnswer: { '@type': 'Answer', text: '전세자금대출은 주거안정 목적으로 DSR 산정에서 제외됩니다. 다만 시중은행 전세대출의 경우 이자 상환분만 산입될 수 있습니다.' } },
     ],
   }
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'DSR 계산하는 방법',
+    description: '연소득과 대출 정보를 입력하면 DSR 비율과 대출 가능 한도를 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '연소득 입력', text: '연간 총소득(세전)을 입력합니다.' },
+      { '@type': 'HowToStep', name: '대출 정보 입력', text: '신규 대출 금액·금리·기간과 기존 보유 대출의 원리금 상환액을 입력합니다.' },
+      { '@type': 'HowToStep', name: 'DSR 결과 확인', text: 'DSR 비율(%), 규제 한도(40%) 대비 여유분, 대출 가능 한도 역산 결과를 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>

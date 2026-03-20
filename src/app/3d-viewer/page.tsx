@@ -5,7 +5,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '3D 변환기 | 툴허브 - 3D 파일 변환, 최적화, 프린팅 분석',
+  title: '3D 뷰어 - 파일 변환·최적화 | 툴허브',
   description: 'GLB, OBJ, STL 3D 파일 변환 및 뷰어. 포맷 변환, 모델 최적화, 3D 프린팅 분석까지 한 번에. 무료 온라인 3D 도구',
   keywords: '3D변환기, 3D파일변환, GLB변환, OBJ변환, STL변환, 3D프린팅, 3D뷰어, 3D최적화, WebGPU, 3D모델, 개발도구',
   openGraph: {

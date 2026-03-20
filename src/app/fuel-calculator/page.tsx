@@ -5,7 +5,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '유류비 계산기 | 툴허브 - 회사 업무용 차량 연료비 정산 도구',
+  title: '유류비 계산기 - 업무용 차량 정산 | 툴허브',
   description: '회사 업무용 차량 유류비를 정확하게 계산하세요. 차종별 연비, 실시간 유가, 주행거리 기반으로 연료비와 감가상각비를 자동 계산합니다.',
   keywords: '유류비계산기, 차량연료비, 업무용차량, 연비계산, 감가상각비, 회사경비, 출장비, 교통비정산, 차량유지비, 기름값계산',
   openGraph: {

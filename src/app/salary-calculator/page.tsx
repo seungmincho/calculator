@@ -128,6 +128,18 @@ export default function SalaryCalculatorPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '연봉 실수령액 계산하는 방법',
+    description: '연봉 또는 월급을 입력하면 4대보험과 소득세를 제외한 실수령액을 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '연봉 입력', text: '연봉 또는 월급 금액을 입력합니다. 비과세 소득이 있다면 함께 입력하세요.' },
+      { '@type': 'HowToStep', name: '부양가족 설정', text: '본인 포함 부양가족 수와 20세 이하 자녀 수를 설정합니다.' },
+      { '@type': 'HowToStep', name: '결과 확인', text: '4대보험료, 소득세, 지방소득세가 자동 계산되어 월 실수령액과 연 실수령액을 확인할 수 있습니다.' },
+    ],
+  }
+
   return (
     <>
       <script
@@ -137,6 +149,10 @@ export default function SalaryCalculatorPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <SalaryCalculator />

@@ -5,7 +5,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '비밀번호 생성기 - 안전한 패스워드 및 패스프레이즈 생성 | 툴허브',
+  title: '비밀번호 생성기 - 안전한 패스워드 | 툴허브',
   description: '강력하고 안전한 비밀번호와 패스프레이즈를 쉽고 빠르게 생성하세요. 비밀번호 강도 분석, 엔트로피 계산, 일괄 생성 및 복사 기능을 제공합니다.',
   keywords: '비밀번호 생성기, 패스워드 생성, 패스프레이즈, 랜덤 비밀번호, 보안, password generator, 강력한 비밀번호, 비밀번호 강도',
   openGraph: {

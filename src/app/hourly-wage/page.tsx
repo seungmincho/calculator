@@ -45,10 +45,23 @@ export default function HourlyWagePage() {
       },
     ],
   }
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '시급 계산하는 방법',
+    description: '월급 또는 연봉을 입력하면 근무시간 기준으로 시급을 환산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '급여 유형 선택', text: '시급, 일급, 월급, 연봉 중 알고 있는 급여 유형을 선택합니다.' },
+      { '@type': 'HowToStep', name: '금액과 근무시간 입력', text: '급여 금액과 주간 근무시간, 근무일수를 입력합니다.' },
+      { '@type': 'HowToStep', name: '환산 결과 확인', text: '시급·일급·월급·연봉 상호 변환 결과와 최저시급 대비 비교를 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><HourlyWage />  <div className="mt-8">

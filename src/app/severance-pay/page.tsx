@@ -45,10 +45,23 @@ export default function SeverancePayPage() {
       },
     ],
   }
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '퇴직금 계산하는 방법',
+    description: '근무기간과 평균임금을 입력하면 법정 퇴직금과 세금 공제 후 수령액을 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '근무기간 입력', text: '입사일과 퇴사일을 입력하여 총 재직일수를 산정합니다.' },
+      { '@type': 'HowToStep', name: '임금 정보 입력', text: '월 기본급을 입력합니다. 상여금, 연차수당이 있다면 함께 입력하세요.' },
+      { '@type': 'HowToStep', name: '퇴직금 확인', text: '평균임금 기반 법정 퇴직금과 퇴직소득세 공제 후 실수령액을 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><SeverancePay />  <div className="mt-8">

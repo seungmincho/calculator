@@ -88,10 +88,23 @@ export default function ParentalLeavePage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '육아휴직급여 계산하는 방법',
+    description: '통상임금과 휴직기간을 입력하면 월별 육아휴직급여를 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '통상임금 입력', text: '월 통상임금(세전)을 입력합니다. 급여명세서에서 확인할 수 있습니다.' },
+      { '@type': 'HowToStep', name: '휴직 조건 설정', text: '육아휴직 시작일, 기간, 자녀 생년월일, 6+6 부모육아휴직제 해당 여부를 설정합니다.' },
+      { '@type': 'HowToStep', name: '급여 확인', text: '월별 급여 상세(상한액 적용), 총 수령액, 소득대체율을 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>

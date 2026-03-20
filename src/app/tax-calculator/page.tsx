@@ -4,7 +4,7 @@ import TaxCalculator from '@/components/TaxCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '세금 계산기 - 소득세, 부가세, 양도소득세',
+  title: '세금 계산기 - 소득세·부가세·양도세 | 툴허브',
   description: '한국 기준 소득세, 부가가치세, 양도소득세를 정확하게 계산하세요. 2026년 세법 기준으로 세후 금액을 알 수 있습니다.',
   keywords: '세금계산기, 소득세계산기, 부가세계산기, 양도소득세계산기, 세금계산, 소득세, 부가가치세, 양도소득세, 세법',
   openGraph: {
@@ -84,6 +84,18 @@ export default function TaxCalculatorPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '소득세 계산하는 방법',
+    description: '소득 유형을 선택하고 금액을 입력하면 소득세, 부가세, 양도소득세를 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '세금 유형 선택', text: '소득세, 부가가치세, 양도소득세 중 계산할 세금 유형을 선택합니다.' },
+      { '@type': 'HowToStep', name: '소득 금액 입력', text: '과세표준이 되는 소득 금액을 입력하고, 해당되는 공제 항목을 설정합니다.' },
+      { '@type': 'HowToStep', name: '세액 확인', text: '누진세율이 자동 적용되어 산출세액, 공제액, 최종 납부세액을 확인할 수 있습니다.' },
+    ],
+  }
+
   return (
     <>
       <script
@@ -93,6 +105,10 @@ export default function TaxCalculatorPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <TaxCalculator />

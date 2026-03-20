@@ -1463,6 +1463,10 @@
       "healthInsurance": "건강보험료 계산기",
       "weddingCalculator": "결혼비용 계산기",
       "curlBuilder": "cURL 빌더",
+      "chmodCalculator": "chmod 권한 계산기",
+      "httpStatus": "HTTP 상태코드",
+      "portReference": "포트 번호 레퍼런스",
+      "linuxCommand": "Linux 명령어 빌더",
       "comprehensivePropertyTax": "종합부동산세 계산기",
       "cagrCalculator": "CAGR 계산기",
       "chess": "체스",
@@ -4299,6 +4303,22 @@
       "curlBuilder": {
         "title": "cURL 빌더",
         "description": "cURL 명령어 생성 및 fetch/axios/Python/Go/PHP 코드 변환"
+      },
+      "chmodCalculator": {
+        "title": "chmod 권한 계산기",
+        "description": "Unix/Linux 파일 권한을 시각적으로 설정하고 chmod 명령어 생성"
+      },
+      "httpStatus": {
+        "title": "HTTP 상태코드",
+        "description": "1xx~5xx HTTP 상태코드 검색 및 상세 설명 레퍼런스"
+      },
+      "portReference": {
+        "title": "포트 번호 레퍼런스",
+        "description": "TCP/UDP 포트 번호 검색 — SSH, HTTP, MySQL 등 주요 서비스 포트"
+      },
+      "linuxCommand": {
+        "title": "Linux 명령어 빌더",
+        "description": "ls, grep, find, chmod 등 Linux 명령어를 옵션별로 조합하는 빌더"
       },
       "comprehensivePropertyTax": {
         "title": "종합부동산세 계산기",
@@ -16695,6 +16715,21 @@
       }
     }
   },
+  "linuxCommand": {
+    "title": "Linux 명령어 빌더",
+    "description": "체크박스로 옵션을 선택하면 완성된 명령어가 자동 생성됩니다. 15가지 필수 Linux 명령어 레퍼런스.",
+    "selectCommand": "명령어 선택",
+    "synopsis": "개요 (Synopsis)",
+    "options": "옵션 선택",
+    "clearAll": "전체 해제",
+    "arguments": "인수 입력",
+    "generatedCommand": "생성된 명령어",
+    "copy": "복사",
+    "copied": "복사됨!",
+    "selectOptionsHint": "위에서 옵션을 선택하거나 인수를 입력하세요.",
+    "examples": "실전 예제",
+    "allOptions": "전체 옵션 레퍼런스"
+  },
   "mbtiCompatibility": {
     "title": "MBTI 궁합 분석",
     "description": "두 MBTI 유형의 궁합을 상세히 분석합니다",
@@ -16746,5 +16781,141 @@
         ]
       }
     }
+  },
+  "chmodCalculator": {
+    "title": "chmod 권한 계산기",
+    "description": "체크박스로 Unix/Linux 파일 권한을 설정하면 chmod 명령어가 자동 생성됩니다",
+    "owner": "소유자",
+    "group": "그룹",
+    "others": "기타",
+    "read": "읽기",
+    "write": "쓰기",
+    "execute": "실행",
+    "noPermission": "없음",
+    "on": "허용",
+    "off": "거부",
+    "octal": "8진수 권한",
+    "octalDigit": "값",
+    "octalInput": "8진수 입력",
+    "octalHint": "0~7 사이 숫자 3자리를 직접 입력할 수 있습니다",
+    "octalError": "올바른 8진수 3자리(0-7)를 입력하세요",
+    "symbolic": "심볼릭 표기",
+    "permGrid": "권한 설정",
+    "permDescTitle": "현재 권한 설명",
+    "commands": "chmod 명령어",
+    "octalCommand": "숫자(8진수) 모드",
+    "symbolicCommand": "심볼릭 모드",
+    "copyCommand": "복사",
+    "copied": "복사됨!",
+    "filenameLabel": "파일명 (명령어에 반영)",
+    "presets": "자주 쓰는 권한 프리셋",
+    "preset_755": "디렉토리 기본",
+    "preset_644": "파일 기본",
+    "preset_777": "전체 허용",
+    "preset_600": "소유자만",
+    "preset_400": "읽기전용",
+    "preset_750": "그룹 읽기/실행",
+    "guide": {
+      "title": "chmod 권한 가이드",
+      "basics": {
+        "title": "권한 비트 계산법",
+        "items": [
+          "읽기(r) = 4, 쓰기(w) = 2, 실행(x) = 1",
+          "각 자리는 소유자·그룹·기타 순서로 표시됩니다",
+          "rwx = 4+2+1 = 7, r-x = 4+0+1 = 5, r-- = 4+0+0 = 4",
+          "예: 755 → 소유자 rwx(7), 그룹 r-x(5), 기타 r-x(5)"
+        ]
+      },
+      "common": {
+        "title": "자주 쓰는 권한",
+        "items": [
+          "755: 실행 파일, 웹 디렉토리에 적합",
+          "644: 일반 파일, HTML/CSS/설정 파일",
+          "600: 개인 키, 비밀 설정 파일",
+          "400: 읽기 전용 파일 (쓰기 방지)",
+          "750: 그룹에 읽기/실행 허용, 기타 차단",
+          "777: 모두 허용 (보안상 위험, 사용 자제)"
+        ]
+      },
+      "security": {
+        "title": "보안 주의사항",
+        "items": [
+          "777은 모든 사용자에게 쓰기 권한을 주어 보안 위협이 됩니다",
+          "웹 서버 파일은 쓰기 권한을 최소화하세요 (644 권장)",
+          "SSH 개인 키(.pem, id_rsa)는 반드시 600으로 설정하세요",
+          "실행 파일이 아닌 경우 실행(x) 권한을 부여하지 마세요",
+          "최소 권한 원칙: 필요한 최소한의 권한만 부여하세요"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "chmod -R 755 /dir 으로 디렉토리 전체에 적용할 수 있습니다",
+          "find . -type f -exec chmod 644 {} \\; 로 파일만 일괄 변경",
+          "find . -type d -exec chmod 755 {} \\; 로 디렉토리만 일괄 변경",
+          "ls -la 명령어로 현재 파일의 권한을 확인할 수 있습니다"
+        ]
+      }
+    }
+  },
+  "portReference": {
+    "title": "포트 번호 레퍼런스",
+    "description": "잘 알려진 TCP/UDP 포트 번호를 빠르게 검색하세요. 서비스명, 번호, 설명으로 검색 가능합니다.",
+    "searchPlaceholder": "포트 번호, 서비스명 또는 설명 검색 (예: 3306, mysql, 데이터베이스)",
+    "categoryLabel": "범주",
+    "protocolLabel": "프로토콜",
+    "filterAll": "전체",
+    "catWellKnown": "잘 알려진 포트",
+    "catRegistered": "등록 포트",
+    "catDynamic": "동적 포트",
+    "resultCount": "{count}개 표시 중 (전체 {total}개)",
+    "noResults": "검색 결과가 없습니다. 다른 키워드로 검색해보세요.",
+    "copyPort": "포트 번호 복사",
+    "guide": {
+      "title": "포트 번호 가이드",
+      "ranges": {
+        "title": "포트 범주",
+        "wellKnownDesc": "IANA 표준 할당. 시스템 서비스 전용. 바인딩 시 root 권한 필요.",
+        "registeredDesc": "IANA 등록 애플리케이션. 데이터베이스, 미들웨어 등 주요 서비스.",
+        "dynamicDesc": "OS가 클라이언트 임시 포트로 자동 할당. 특정 서비스 고정 사용 가능."
+      },
+      "security": {
+        "title": "포트 보안 주의사항",
+        "items": [
+          "최소 권한 원칙: 필요한 포트만 열고 불필요한 포트는 즉시 닫으세요.",
+          "데이터베이스 포트(MySQL 3306, PostgreSQL 5432, MongoDB 27017, Redis 6379)는 절대 외부에 직접 노출하지 마세요. VPN 또는 SSH 터널을 사용하세요.",
+          "Telnet(23), FTP(21) 같은 비암호화 프로토콜은 SSH(22), SFTP로 반드시 대체하세요.",
+          "RDP(3389)는 무차별 대입 공격 대상 — VPN 뒤에 배치하고 기본 포트 변경을 고려하세요.",
+          "Redis(6379), Memcached(11211), Elasticsearch(9200)는 기본값이 인증 없음 — 반드시 인증을 설정하세요.",
+          "방화벽 규칙은 특정 IP 대역으로 제한하고 정기적으로 감사하세요.",
+          "Docker 데몬 API(2375)를 외부에 노출하면 서버 전체가 탈취됩니다 — TLS(2376)를 사용하세요."
+        ]
+      },
+      "tcpUdp": {
+        "title": "TCP vs UDP",
+        "tcpDesc": "연결 지향, 신뢰성 보장, 순서 보장, 재전송 지원. 느리지만 안정적. HTTP, SSH, 데이터베이스 등에 사용.",
+        "udpDesc": "비연결, 빠름, 신뢰성 미보장. DNS, DHCP, 스트리밍, 게임, VoIP 등 속도 우선 서비스에 사용."
+      }
+    }
+  },
+  "httpStatus": {
+    "title": "HTTP 상태코드 레퍼런스",
+    "description": "60개 이상의 HTTP 상태코드 의미, 원인, 해결 방법을 검색하세요",
+    "searchPlaceholder": "코드 번호 또는 설명으로 검색 (예: 404, not found, 리다이렉트)",
+    "catAll": "전체",
+    "cat1xx": "1xx 정보",
+    "cat2xx": "2xx 성공",
+    "cat3xx": "3xx 리다이렉트",
+    "cat4xx": "4xx 클라이언트 오류",
+    "cat5xx": "5xx 서버 오류",
+    "resultCount": "{count}개 코드",
+    "noResults": "검색 결과가 없습니다",
+    "copyBtn": "클립보드에 복사",
+    "expandBtn": "상세 보기",
+    "collapseBtn": "접기",
+    "useCasesLabel": "사용 사례",
+    "causesLabel": "발생 원인",
+    "fixesLabel": "해결 방법",
+    "guideTitle": "HTTP 상태코드 가이드"
   }
 }

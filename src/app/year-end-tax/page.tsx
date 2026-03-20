@@ -98,10 +98,23 @@ export default function YearEndTaxPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '연말정산 환급액 계산하는 방법',
+    description: '총급여와 공제 항목을 입력하면 연말정산 환급액 또는 추가납부액을 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '총급여 입력', text: '연간 총급여(세전)와 기납부 소득세(원천징수 세액)를 입력합니다.' },
+      { '@type': 'HowToStep', name: '공제 항목 입력', text: '인적공제, 신용카드·체크카드 사용액, 의료비, 교육비, 연금저축, 월세 등 공제 항목을 입력합니다.' },
+      { '@type': 'HowToStep', name: '환급액 확인', text: '소득공제·세액공제 내역과 결정세액을 확인하고, 환급액 또는 추가납부액을 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>

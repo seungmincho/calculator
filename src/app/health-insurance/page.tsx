@@ -79,10 +79,23 @@ export default function HealthInsurancePage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '건강보험료 계산하는 방법',
+    description: '가입자 유형과 소득을 입력하면 건강보험료와 장기요양보험료를 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '가입자 유형 선택', text: '직장가입자 또는 지역가입자를 선택합니다.' },
+      { '@type': 'HowToStep', name: '소득·재산 입력', text: '직장가입자는 월 보수액을, 지역가입자는 연소득과 재산 과세표준을 입력합니다.' },
+      { '@type': 'HowToStep', name: '보험료 확인', text: '건강보험료, 장기요양보험료, 4대보험 합계와 피부양자 자격 판정 결과를 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>

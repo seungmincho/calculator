@@ -5,7 +5,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: 'UUID 생성기 | 툴허브 - 개발자용 고유 식별자 생성 도구',
+  title: 'UUID 생성기 - 고유 식별자 생성 | 툴허브',
   description: '다양한 버전의 UUID를 안전하게 생성하는 개발자 도구입니다. v1, v4, v7, Nil UUID를 지원하며 대량 생성과 다양한 형식 출력이 가능합니다.',
   keywords: 'UUID, GUID, 고유식별자, 랜덤생성, 개발도구, UUID v1, UUID v4, UUID v7, Nil UUID, 대량생성, 개발자도구',
   openGraph: {

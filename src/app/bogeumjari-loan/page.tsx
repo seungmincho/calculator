@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import BogeumjariLoanCalculator from '@/components/BogeumjariLoanCalculator';
 
 export const metadata: Metadata = {
-  title: '보금자리론 계산기 2026 | 금리·한도·자격조건 완벽 계산',
+  title: '보금자리론 계산기 - 금리·한도 계산 | 툴허브',
   description: '2026년 최신 보금자리론 계산기. 생애최초(LTV 80%·4.2억), 신혼부부(소득 8.5천만), 다자녀(한도 4억) 등 유형별 대출한도·금리·월상환액 즉시 계산. 2026년 2월 기준 금리 반영.',
   keywords: '보금자리론계산기, 2026보금자리론, LH보금자리론, 생애최초대출, 신혼부부보금자리론, 다자녀보금자리론, 보금자리론금리, 보금자리론한도, 주택담보대출계산기',
   openGraph: {

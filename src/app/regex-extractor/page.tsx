@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import RegexExtractor from '@/components/RegexExtractor'
 
 export const metadata: Metadata = {
-  title: '정규식 추출기 | grep, 패턴 매칭, 문자열 치환 도구 | 툴허브',
+  title: '정규식 추출기 - 패턴 매칭·치환 | 툴허브',
   description: '강력한 정규식으로 텍스트를 검색, 추출, 변환하세요. grep 필터링, 패턴 매칭, 문자열 치환을 한 곳에서! 개발자 필수 도구.',
   keywords: [
     '정규식 추출기',

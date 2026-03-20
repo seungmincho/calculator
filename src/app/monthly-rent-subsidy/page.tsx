@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import MonthlyRentSubsidyCalculator from '@/components/MonthlyRentSubsidyCalculator';
 
 export const metadata: Metadata = {
-  title: 'LH 월세지원금 계산기 | 청년·신혼부부·일반 가구 월세지원 한눈에',
+  title: '월세지원금 계산기 - 청년·신혼부부 | 툴허브',
   description: '2024년 LH 월세지원금을 정확하게 계산하세요. 청년월세지원, 신혼부부월세지원, 일반가구 지원금까지 소득기준과 지역별 상한액을 실시간으로 확인할 수 있습니다.',
   keywords: 'LH월세지원금, 청년월세지원, 신혼부부월세지원, 월세지원금계산기, LH지원금, 월세보조, 주거지원, 청년주거지원',
   openGraph: {

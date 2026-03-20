@@ -45,10 +45,23 @@ export default function ElectricityCalculatorPage() {
       },
     ],
   }
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '전기요금 계산하는 방법',
+    description: '월 전기 사용량을 입력하면 누진제 기준으로 전기요금을 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '사용량 입력', text: '월 전기 사용량(kWh)을 입력합니다. 전기 고지서에서 확인할 수 있습니다.' },
+      { '@type': 'HowToStep', name: '계절 선택', text: '여름(7~8월), 겨울(12~2월), 기타 계절을 선택합니다.' },
+      { '@type': 'HowToStep', name: '요금 확인', text: '누진 구간별 요금, 기본료, 부가세(10%), 전력기반기금(3.7%)이 포함된 최종 청구 금액을 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><ElectricityCalculator />  <div className="mt-8">

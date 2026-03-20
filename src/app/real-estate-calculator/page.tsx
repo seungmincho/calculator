@@ -4,7 +4,7 @@ import RealEstateCalculator from '@/components/RealEstateCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '부동산 계산기 - 전세자금대출, 주택담보대출, 취득세',
+  title: '부동산 계산기 - 대출·취득세 계산 | 툴허브',
   description: '전세자금대출, 주택담보대출 월 상환금액과 취득세를 정확하게 계산해보세요. LTV 계산 및 한국 부동산 세법 기준 적용.',
   keywords: '부동산계산기, 전세자금대출, 주택담보대출, 취득세계산, LTV계산, 부동산세금, 대출계산기',
   openGraph: {
@@ -91,6 +91,18 @@ export default function RealEstateCalculatorPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '부동산 중개수수료 계산하는 방법',
+    description: '거래 유형과 금액을 입력하면 중개수수료, 취득세, 대출 상환액을 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '거래 유형 선택', text: '전세자금대출, 주택담보대출, 취득세 중 계산할 항목을 선택합니다.' },
+      { '@type': 'HowToStep', name: '부동산 정보 입력', text: '거래 금액, 주택 면적, 보유 주택 수 등 부동산 관련 정보를 입력합니다.' },
+      { '@type': 'HowToStep', name: '비용 내역 확인', text: '중개수수료, 취득세, 대출 월 상환금 등 거래에 필요한 총 비용을 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script
@@ -100,6 +112,10 @@ export default function RealEstateCalculatorPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <RealEstateCalculator />

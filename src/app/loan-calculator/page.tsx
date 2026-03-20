@@ -91,6 +91,18 @@ export default function LoanCalculatorPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '대출 이자 계산하는 방법',
+    description: '대출 금액, 이자율, 상환 방식을 입력하면 월 상환금과 총 이자를 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '대출 조건 입력', text: '대출 금액, 연 이자율, 대출 기간을 입력합니다.' },
+      { '@type': 'HowToStep', name: '상환 방식 선택', text: '원리금균등상환, 원금균등상환, 만기일시상환, 거치식 중 상환 방식을 선택합니다.' },
+      { '@type': 'HowToStep', name: '상환 스케줄 확인', text: '월별 상환금액, 원금·이자 비율, 총 이자 부담액을 상세하게 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script
@@ -100,6 +112,10 @@ export default function LoanCalculatorPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <LoanCalculator />

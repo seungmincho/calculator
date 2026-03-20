@@ -4,7 +4,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: 'JSON ↔ CSV 변환기 | 툴허브 - 고성능 데이터 변환',
+  title: 'JSON ↔ CSV 변환기 - 데이터 변환 | 툴허브',
   description: '대용량 JSON과 CSV 파일을 빠르게 변환하세요. Web Workers를 활용한 고성능 처리, 드래그 앤 드롭 지원, 다양한 포맷 프리셋으로 개발자들이 편리하게 사용할 수 있습니다.',
   keywords: 'JSON변환기, CSV변환기, 데이터변환, JSON to CSV, CSV to JSON, 고성능변환, Web Workers, 대용량파일, 개발도구, 데이터처리',
   openGraph: {

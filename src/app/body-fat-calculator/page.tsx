@@ -105,10 +105,23 @@ export default function BodyFatCalculatorPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '체지방률 계산하는 방법',
+    description: '신체 둘레를 측정하여 입력하면 Navy·YMCA 공식으로 체지방률을 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '기본 정보 입력', text: '성별, 키(cm), 체중(kg)을 입력합니다.' },
+      { '@type': 'HowToStep', name: '신체 둘레 측정', text: '허리둘레, 목둘레를 줄자로 측정하여 입력합니다. 여성은 엉덩이둘레도 입력합니다.' },
+      { '@type': 'HowToStep', name: '체성분 결과 확인', text: 'Navy·YMCA 공식 체지방률, 체지방량, 제지방량, 비만도 판정과 이상적인 목표 체지방률을 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <I18nWrapper>
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
           <div className="container mx-auto px-4">

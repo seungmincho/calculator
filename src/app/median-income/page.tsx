@@ -4,7 +4,7 @@ import MedianIncomeTable from '@/components/MedianIncomeTable'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '기준 중위소득 조회 - 2025년, 2026년 가구별 중위소득',
+  title: '기준 중위소득 조회 - 가구별 기준 | 툴허브',
   description: '2025년, 2026년 기준 중위소득을 가구원수별, 비율별로 조회하세요. 기초생활수급자 선정기준, 복지급여 기준, 정부 지원사업 자격요건을 한눈에 확인할 수 있습니다.',
   keywords: '기준중위소득, 2025년 중위소득, 2026년 중위소득, 기초생활수급자, 복지급여, 생계급여, 의료급여, 주거급여, 교육급여, 차상위계층',
   openGraph: {

@@ -78,6 +78,18 @@ export default function PercentCalculatorPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '퍼센트 계산하는 방법',
+    description: '계산 모드를 선택하고 값을 입력하면 퍼센트, 비율, 증감률을 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '계산 모드 선택', text: '기본 퍼센트(X의 Y%), 비율 계산, 증감률, 퍼센트 추가/차감 중 원하는 모드를 선택합니다.' },
+      { '@type': 'HowToStep', name: '값 입력', text: '기준값과 퍼센트 또는 비교할 두 값을 입력합니다.' },
+      { '@type': 'HowToStep', name: '결과 확인', text: '계산 결과와 함께 계산 과정을 단계별로 확인할 수 있습니다.' },
+    ],
+  }
+
   return (
     <>
       <script
@@ -87,6 +99,10 @@ export default function PercentCalculatorPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

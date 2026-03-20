@@ -4,7 +4,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '근무시간 계산기 | 알바비, 야근수당, 주휴수당 자동 계산 | 툴허브',
+  title: '근무시간 계산기 - 알바비·수당 계산 | 툴허브',
   description: '근로기준법에 따른 정확한 알바비 계산! 기본급, 야근수당, 주휴수당, 연장근로수당을 자동으로 계산하여 실제 받을 급여를 확인하세요.',
   keywords: [
     '근무시간 계산기',

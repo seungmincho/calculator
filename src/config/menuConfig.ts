@@ -189,6 +189,10 @@ export const menuConfig: MenuConfig = {
       { href: '/llm-token-calculator', labelKey: 'footer.links.llmTokenCalculator', descriptionKey: 'toolsShowcase.tools.llmTokenCalculator.description', icon: '🤖', subcategory: 'subcategory.devTools' },
       { href: '/webserver-config', labelKey: 'footer.links.webserverConfig', descriptionKey: 'toolsShowcase.tools.webserverConfig.description', icon: '⚙️', subcategory: 'subcategory.devTools' },
       { href: '/curl-builder', labelKey: 'footer.links.curlBuilder', descriptionKey: 'toolsShowcase.tools.curlBuilder.description', icon: '🔗', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
+      { href: '/chmod-calculator', labelKey: 'footer.links.chmodCalculator', descriptionKey: 'toolsShowcase.tools.chmodCalculator.description', icon: '🔐', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
+      { href: '/http-status', labelKey: 'footer.links.httpStatus', descriptionKey: 'toolsShowcase.tools.httpStatus.description', icon: '🌐', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
+      { href: '/port-reference', labelKey: 'footer.links.portReference', descriptionKey: 'toolsShowcase.tools.portReference.description', icon: '🔌', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
+      { href: '/linux-command', labelKey: 'footer.links.linuxCommand', descriptionKey: 'toolsShowcase.tools.linuxCommand.description', icon: '🐧', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
     ],
   },
   media: {

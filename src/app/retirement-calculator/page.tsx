@@ -4,7 +4,7 @@ import RetirementCalculator from '@/components/RetirementCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '퇴직금 계산기',
+  title: '퇴직금 계산기 - 세후 수령액 | 툴허브',
   description: '퇴직금과 퇴직소득세를 정확하게 계산하세요. 평균임금·근무기간 입력만으로 실수령 퇴직금과 세금 공제 내역을 한눈에 확인할 수 있습니다.',
   keywords: '퇴직금계산기, 퇴직금, 퇴직소득세, 근로기준법, 평균임금, 근무기간, 퇴직금계산, 세후퇴직금',
   openGraph: {
@@ -93,6 +93,18 @@ export default function RetirementCalculatorPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '퇴직금 계산하는 방법',
+    description: '입사일, 퇴사일, 평균임금을 입력하면 법정 퇴직금과 퇴직소득세를 계산합니다.',
+    step: [
+      { '@type': 'HowToStep', name: '근무기간 입력', text: '입사일과 퇴사일을 입력하여 총 근속기간을 산정합니다.' },
+      { '@type': 'HowToStep', name: '평균임금 입력', text: '퇴직 전 3개월 평균임금(기본급, 상여금, 연차수당 포함)을 입력합니다.' },
+      { '@type': 'HowToStep', name: '퇴직금 확인', text: '법정 퇴직금, 퇴직소득세, 실수령 퇴직금을 단계별로 확인합니다.' },
+    ],
+  }
+
   return (
     <>
       <script
@@ -102,6 +114,10 @@ export default function RetirementCalculatorPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <RetirementCalculator />

@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import TimeConverter from '@/components/TimeConverter';
 
 export const metadata: Metadata = {
-  title: '시간 변환기 - 타임존, Unix 타임스탬프, 상대시간 변환',
+  title: '시간 변환기 - 타임존·Unix 변환 | 툴허브',
   description: '전 세계 타임존 변환, Unix 타임스탬프 변환, 상대시간 계산을 한 번에. 티켓팅, 국제회의, 해외 이벤트 시간 확인에 최적화된 도구입니다.',
   keywords: '시간변환기, 타임존변환, 시차계산, UTC변환, KST변환, Unix타임스탬프, 상대시간, 티켓팅시간, 세계시계, 시간대변환',
   openGraph: {
