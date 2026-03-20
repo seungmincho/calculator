@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import SnakeGame from '@/components/SnakeGame'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '스네이크 게임 - 클래식 뱀 게임 | 툴허브',
@@ -77,6 +78,12 @@ export default function SnakeGamePage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>
             <I18nWrapper>
               <SnakeGame />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

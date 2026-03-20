@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import CarLoanCalculator from '@/components/CarLoanCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '자동차 할부 계산기 - 월 납입금 및 총 이자 계산',
@@ -80,6 +81,12 @@ export default function CarLoanCalculatorPage() {
         <div className="container mx-auto px-4 py-8">
           <CarLoanCalculator />
         </div>
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

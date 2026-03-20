@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import BudgetCalculator from '@/components/BudgetCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '생활비 계산기 - 월간 예산 관리 | 툴허브',
@@ -73,6 +74,12 @@ export default function BudgetCalculatorPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>
             <I18nWrapper>
               <BudgetCalculator />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

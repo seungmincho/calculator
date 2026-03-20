@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import MeetingMinutes from '@/components/MeetingMinutes'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '회의록 작성기 - 회의록 템플릿 & 내보내기 | 툴허브',
@@ -47,6 +48,12 @@ export default function MeetingMinutesPage() {
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
               <MeetingMinutes />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

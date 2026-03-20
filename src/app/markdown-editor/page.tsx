@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '마크다운 에디터 - 실시간 미리보기 마크다운 편집기 | 툴허브',
@@ -83,6 +84,12 @@ export default function MarkdownEditorPage() {
           <Suspense fallback={<div className="text-center py-16 text-gray-500 dark:text-gray-400">Loading...</div>}>
             <I18nWrapper>
               <MarkdownEditor />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

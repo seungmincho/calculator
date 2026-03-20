@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import YearEndTaxCalculator from '@/components/YearEndTaxCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '연말정산 계산기 2026 (2025년 귀속) - 환급액 자동계산 | 툴허브',
@@ -106,6 +107,12 @@ export default function YearEndTaxPage() {
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
             <I18nWrapper>
               <YearEndTaxCalculator />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

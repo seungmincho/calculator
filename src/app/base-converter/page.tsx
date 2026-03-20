@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import BaseConverter from '@/components/BaseConverter'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '진법 변환기 - 2진수, 8진수, 10진수, 16진수 변환 | 툴허브',
@@ -50,7 +51,10 @@ export default function BaseConverterPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>
-            <I18nWrapper><BaseConverter /></I18nWrapper>
+            <I18nWrapper><BaseConverter />  <div className="mt-8">
+    <RelatedTools />
+  </div>
+</I18nWrapper>
           </Suspense>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import FuelCalculator from '@/components/FuelCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '유류비 계산기 | 툴허브 - 회사 업무용 차량 연료비 정산 도구',
@@ -96,6 +97,12 @@ export default function FuelCalculatorPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>
             <I18nWrapper>
               <FuelCalculator />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

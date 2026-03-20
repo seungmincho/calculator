@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import TaxCalculator from '@/components/TaxCalculator'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '세금 계산기 - 소득세, 부가세, 양도소득세',
@@ -95,6 +96,12 @@ export default function TaxCalculatorPage() {
       />
       <I18nWrapper>
         <TaxCalculator />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

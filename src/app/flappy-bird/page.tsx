@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import FlappyBird from '@/components/FlappyBird'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '플래피버드 - 파이프 사이를 날아가는 캐주얼 게임 | 툴허브',
@@ -83,6 +84,12 @@ export default function FlappyBirdPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>
             <I18nWrapper>
               <FlappyBird />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

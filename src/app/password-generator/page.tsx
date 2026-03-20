@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import PasswordGenerator from '@/components/PasswordGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '비밀번호 생성기 - 안전한 패스워드 및 패스프레이즈 생성 | 툴허브',
@@ -97,6 +98,12 @@ export default function PasswordGeneratorPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>
             <I18nWrapper>
               <PasswordGenerator />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

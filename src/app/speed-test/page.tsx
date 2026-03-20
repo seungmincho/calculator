@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import SpeedTest from '@/components/SpeedTest'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '인터넷 속도 측정 - 다운로드 속도, 핑 테스트 | 툴허브',
@@ -89,6 +90,12 @@ export default function SpeedTestPage() {
           <Suspense fallback={<div className="text-center py-12 text-gray-500 dark:text-gray-400">Loading...</div>}>
             <I18nWrapper>
               <SpeedTest />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import MedianIncomeTable from '@/components/MedianIncomeTable'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '기준 중위소득 조회 - 2025년, 2026년 가구별 중위소득',
@@ -97,6 +98,12 @@ export default function MedianIncomePage() {
       />
       <I18nWrapper>
         <MedianIncomeTable />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
         {/* SEO 콘텐츠 */}
         <section className="max-w-4xl mx-auto px-4 pb-12">

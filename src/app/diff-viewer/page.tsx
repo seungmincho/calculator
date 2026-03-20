@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import DiffViewer from '@/components/DiffViewer'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Diff 비교 도구 - 텍스트/코드 비교 | 툴허브',
@@ -67,6 +68,12 @@ export default function DiffViewerPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <DiffViewer />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

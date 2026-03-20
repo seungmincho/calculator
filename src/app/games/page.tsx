@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import GamesPageContent from '@/components/GamesPageContent'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '게임센터 - 오목·체커·2048 등 20+ 게임 | 툴허브',
@@ -62,6 +63,12 @@ export default function GamesPage() {
       />
       <I18nWrapper>
         <GamesPageContent />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
     </>
   )

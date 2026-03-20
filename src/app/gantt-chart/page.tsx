@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import GanttChart from '@/components/GanttChart'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '간트 차트 생성기 - 프로젝트 일정 시각화 | 툴허브',
@@ -47,6 +48,12 @@ export default function GanttChartPage() {
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
               <GanttChart />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

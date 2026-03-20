@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import PensionCalculator from '@/components/PensionCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '국민연금 수령액 계산기 - 예상 연금액, 납부액 | 툴허브',
@@ -92,6 +93,12 @@ export default function PensionCalculatorPage() {
           <Suspense fallback={<div className="text-center text-gray-500">Loading...</div>}>
             <I18nWrapper>
               <PensionCalculator />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import InstallmentCalc from '@/components/InstallmentCalc'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '카드 할부 계산기 - 할부 수수료, 월 납부금 계산 | 툴허브',
@@ -29,7 +30,10 @@ export default function InstallmentCalcPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><InstallmentCalc /></I18nWrapper></Suspense>
+          <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><InstallmentCalc />  <div className="mt-8">
+    <RelatedTools />
+  </div>
+</I18nWrapper></Suspense>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

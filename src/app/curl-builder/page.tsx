@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import CurlBuilder from '@/components/CurlBuilder'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'cURL Command Builder - cURL 명령어 생성 & 코드 변환 | 툴허브',
@@ -90,6 +91,12 @@ export default function CurlBuilderPage() {
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
             <I18nWrapper>
               <CurlBuilder />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

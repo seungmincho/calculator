@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import RegexBuilder from '@/components/RegexBuilder'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '정규식 빌더 - 비주얼 정규표현식 생성기 | 툴허브',
@@ -115,6 +116,12 @@ export default function RegexBuilderPage() {
           <Suspense fallback={<div className="text-center py-20 text-gray-500 dark:text-gray-400">Loading...</div>}>
             <I18nWrapper>
               <RegexBuilder />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

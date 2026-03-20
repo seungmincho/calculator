@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import PomodoroTimer from '@/components/PomodoroTimer'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '포모도로 타이머 - 25분 집중, 생산성 향상 | 툴허브',
@@ -93,6 +94,12 @@ export default function PomodoroPage() {
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
             <I18nWrapper>
               <PomodoroTimer />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

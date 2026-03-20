@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import MenuPicker from '@/components/MenuPicker'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '오늘 뭐 먹지? 메뉴 추천 룰렛 - 랜덤 음식 추천 | 툴허브',
@@ -86,6 +87,12 @@ export default function MenuPickerPage() {
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
               <MenuPicker />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

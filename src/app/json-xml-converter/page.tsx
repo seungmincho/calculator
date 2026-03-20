@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import JsonXmlConverter from '@/components/JsonXmlConverter'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'JSON/XML 변환기 | 툴허브',
@@ -73,6 +74,12 @@ export default function JsonXmlConverterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <JsonXmlConverter />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

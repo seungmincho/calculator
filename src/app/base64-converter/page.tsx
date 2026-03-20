@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import Base64Converter from '@/components/Base64Converter'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Base64 인코더/디코더 - 텍스트, 이미지 변환 | 툴허브',
@@ -67,6 +68,12 @@ export default function Base64ConverterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <Base64Converter />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

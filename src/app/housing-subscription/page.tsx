@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import HousingSubscription from '@/components/HousingSubscription'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '청약가점 계산기 - 청약 점수 자동 계산 | 툴허브',
@@ -56,6 +57,12 @@ export default function HousingSubscriptionPage() {
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
               <HousingSubscription />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

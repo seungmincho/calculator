@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import UnitConverter from '@/components/UnitConverter'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '단위 변환기 - 길이, 무게, 온도, CSS 단위 변환 | 툴허브',
@@ -75,6 +76,12 @@ export default function UnitConverterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <UnitConverter />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
 
       {/* SEO 콘텐츠 */}

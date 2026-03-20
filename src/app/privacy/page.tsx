@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import PrivacyPolicy from '@/components/PrivacyPolicy'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '개인정보처리방침 - 툴허브',
@@ -23,6 +24,12 @@ export default function PrivacyPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <I18nWrapper>
           <PrivacyPolicy />
+          <div className="mt-8">
+
+            <RelatedTools />
+
+          </div>
+
         </I18nWrapper>
       </div>
     </div>

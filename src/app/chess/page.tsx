@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import I18nWrapper from '@/components/I18nWrapper'
 import ChessPageContent from '@/components/ChessPageContent'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '체스 (Chess) | AI 대전 | 툴허브',
@@ -95,6 +96,12 @@ export default function ChessPage() {
         }>
           <I18nWrapper>
             <ChessPageContent />
+            <div className="mt-8">
+
+              <RelatedTools />
+
+            </div>
+
           </I18nWrapper>
         </Suspense>
       </div>

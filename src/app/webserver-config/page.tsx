@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import WebserverConfig from '@/components/WebserverConfig'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '웹서버 설정 생성기 - Nginx·Caddy | 툴허브',
@@ -52,6 +53,12 @@ export default function WebserverConfigPage() {
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
               <WebserverConfig />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

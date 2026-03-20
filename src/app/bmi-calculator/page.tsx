@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import BMICalculator from '@/components/BMICalculator'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'BMI 계산기 | 체질량지수 계산 | 툴허브',
@@ -99,6 +100,12 @@ export default function BMICalculatorPage() {
         <div className="container mx-auto px-4 py-8">
           <BMICalculator />
         </div>
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

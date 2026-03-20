@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import AspectRatio from '@/components/AspectRatio'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '화면 비율 계산기 - 종횡비, 해상도 계산 | 툴허브',
@@ -34,7 +35,10 @@ export default function AspectRatioPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><AspectRatio /></I18nWrapper></Suspense>
+          <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><AspectRatio />  <div className="mt-8">
+    <RelatedTools />
+  </div>
+</I18nWrapper></Suspense>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import SalesCommissionCalculator from '@/components/SalesCommissionCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '판매수수료 계산기 - 쿠팡·스마트스토어·11번가 수수료 비교 | 툴허브',
@@ -41,7 +42,10 @@ export default function SalesCommissionPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
-            <I18nWrapper><SalesCommissionCalculator /></I18nWrapper>
+            <I18nWrapper><SalesCommissionCalculator />  <div className="mt-8">
+    <RelatedTools />
+  </div>
+</I18nWrapper>
           </Suspense>
         </div>
       </div>

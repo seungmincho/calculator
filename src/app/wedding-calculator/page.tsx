@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import WeddingCalculator from '@/components/WeddingCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '결혼비용 계산기 2025 - 예식비용, 축의금, 양가분담 계산 | 툴허브',
@@ -88,6 +89,12 @@ export default function WeddingCalculatorPage() {
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
             <I18nWrapper>
               <WeddingCalculator />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

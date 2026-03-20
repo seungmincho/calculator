@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import HealthInsuranceCalculator from '@/components/HealthInsuranceCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '건강보험료 계산기 2025 - 직장/지역가입자 보험료 계산 | 툴허브',
@@ -87,6 +88,12 @@ export default function HealthInsurancePage() {
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
             <I18nWrapper>
               <HealthInsuranceCalculator />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

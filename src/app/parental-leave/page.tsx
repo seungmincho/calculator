@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import ParentalLeaveCalculator from '@/components/ParentalLeaveCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '육아휴직급여 계산기 2025 - 6+6 부모육아휴직제 반영 | 툴허브',
@@ -96,6 +97,12 @@ export default function ParentalLeavePage() {
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
             <I18nWrapper>
               <ParentalLeaveCalculator />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

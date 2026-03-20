@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import JsonCsvConverter from '@/components/JsonCsvConverter'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'JSON ↔ CSV 변환기 | 툴허브 - 고성능 데이터 변환',
@@ -71,6 +72,12 @@ export default function JsonCsvConverterPage() {
       />
       <I18nWrapper>
         <JsonCsvConverter />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

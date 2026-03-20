@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { Metadata } from 'next'
 import JwtDecoder from '@/components/JwtDecoder'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'JWT 디코더 | 툴허브 - JWT 토큰 분석 및 검증',
@@ -95,6 +96,12 @@ export default function JwtDecoderPage() {
       <Suspense fallback={<div>Loading...</div>}>
         <I18nWrapper>
           <JwtDecoder />
+          <div className="mt-8">
+
+            <RelatedTools />
+
+          </div>
+
         </I18nWrapper>
       </Suspense>
       {/* SEO 콘텐츠 */}

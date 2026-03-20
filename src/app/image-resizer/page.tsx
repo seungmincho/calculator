@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper';
 import ImageResizerComponent from '@/components/ImageResizer';
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '이미지 리사이저 | 툴허브 - 브라우저에서 이미지 크기 조정',
@@ -75,6 +76,12 @@ export default function ImageResizerPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <ImageResizerComponent />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

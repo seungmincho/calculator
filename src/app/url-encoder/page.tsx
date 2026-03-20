@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import UrlEncoder from '@/components/UrlEncoder'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'URL 인코더/디코더 - URL 인코딩/디코딩 변환기 | 툴허브',
@@ -67,6 +68,12 @@ export default function UrlEncoderPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <UrlEncoder />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
 
       {/* SEO 콘텐츠 */}

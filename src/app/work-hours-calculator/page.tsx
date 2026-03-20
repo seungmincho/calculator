@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import WorkHoursCalculator from '@/components/WorkHoursCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '근무시간 계산기 | 알바비, 야근수당, 주휴수당 자동 계산 | 툴허브',
@@ -114,6 +115,12 @@ export default function WorkHoursCalculatorPage() {
             <WorkHoursCalculator />
           </div>
         </div>
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
 
       {/* SEO 콘텐츠 */}

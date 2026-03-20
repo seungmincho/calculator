@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import InvoiceGenerator from '@/components/InvoiceGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '견적서·세금계산서 생성기 - 인보이스 PDF 출력 | 툴허브',
@@ -47,6 +48,12 @@ export default function InvoiceGeneratorPage() {
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
               <InvoiceGenerator />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

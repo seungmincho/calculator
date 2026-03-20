@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import CarTaxCalculator from '@/components/CarTaxCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '자동차 취등록세 계산기 - 취득세, 등록세, 공채매수 계산',
@@ -80,6 +81,12 @@ export default function CarTaxCalculatorPage() {
         <div className="container mx-auto px-4 py-8">
           <CarTaxCalculator />
         </div>
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

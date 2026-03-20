@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import HashGenerator from '@/components/HashGenerator'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '해시 생성기 - MD5, SHA-256, SHA-512 해시 변환 | 툴허브',
@@ -75,6 +76,12 @@ export default function HashGeneratorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <HashGenerator />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

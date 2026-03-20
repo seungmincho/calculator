@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import UnemploymentBenefit from '@/components/UnemploymentBenefit'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '실업급여 계산기 - 구직급여 수급액 자동계산 | 툴허브',
@@ -47,6 +48,12 @@ export default function UnemploymentBenefitPage() {
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
               <UnemploymentBenefit />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

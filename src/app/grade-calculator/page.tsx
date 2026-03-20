@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import GradeCalculator from '@/components/GradeCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '석차/등급 계산기 - 내신 등급·백분위 계산 | 툴허브',
@@ -25,7 +26,10 @@ export default function GradeCalculatorPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
-            <I18nWrapper><GradeCalculator /></I18nWrapper>
+            <I18nWrapper><GradeCalculator />  <div className="mt-8">
+    <RelatedTools />
+  </div>
+</I18nWrapper>
           </Suspense>
         </div>
       </div>

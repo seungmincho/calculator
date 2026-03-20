@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import RealEstateCalculator from '@/components/RealEstateCalculator'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '부동산 계산기 - 전세자금대출, 주택담보대출, 취득세',
@@ -102,6 +103,12 @@ export default function RealEstateCalculatorPage() {
       />
       <I18nWrapper>
         <RealEstateCalculator />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

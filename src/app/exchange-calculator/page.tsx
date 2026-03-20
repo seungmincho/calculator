@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import ExchangeRateCalculator from '@/components/ExchangeRateCalculator'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '환율 계산기 - 실시간 환전 계산',
@@ -97,6 +98,12 @@ export default function ExchangeCalculatorPage() {
       />
       <I18nWrapper>
         <ExchangeRateCalculator />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

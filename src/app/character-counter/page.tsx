@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import CharacterCounter from '@/components/CharacterCounter'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '글자수 세기 - 글자수, 단어수, 문장수 카운터 | 툴허브',
@@ -59,6 +60,12 @@ export default function CharacterCounterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <CharacterCounter />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

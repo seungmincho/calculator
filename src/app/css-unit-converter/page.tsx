@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import CssUnitConverter from '@/components/CssUnitConverter'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'CSS 단위 변환기 - px, rem, em, vw, vh 변환 | 툴허브',
@@ -84,6 +85,12 @@ export default function CssUnitConverterPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
             <CssUnitConverter />
+            <div className="mt-8">
+
+              <RelatedTools />
+
+            </div>
+
           </I18nWrapper>
         </div>
       </div>

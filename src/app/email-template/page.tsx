@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import EmailTemplate from '@/components/EmailTemplate'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '비즈니스 이메일 템플릿 생성기 - 거래 제안, 감사, 사과, 회의 요청 | 툴허브',
@@ -96,6 +97,12 @@ export default function EmailTemplatePage() {
           <Suspense fallback={<div className="text-center text-gray-500 py-20">Loading...</div>}>
             <I18nWrapper>
               <EmailTemplate />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

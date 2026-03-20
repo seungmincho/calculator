@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import ColorConverter from '@/components/ColorConverter'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '색상 변환기 - HEX, RGB, HSL, CMYK 변환 | 툴허브',
@@ -75,6 +76,12 @@ export default function ColorConverterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <ColorConverter />
+        <div className="mt-8">
+
+          <RelatedTools />
+
+        </div>
+
       </I18nWrapper>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">

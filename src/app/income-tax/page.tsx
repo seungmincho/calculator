@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import IncomeTaxCalculator from '@/components/IncomeTaxCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '종합소득세 계산기 2026 (2025년 귀속) - 프리랜서 세금 자동계산 | 툴허브',
@@ -96,6 +97,12 @@ export default function IncomeTaxPage() {
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
             <I18nWrapper>
               <IncomeTaxCalculator />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

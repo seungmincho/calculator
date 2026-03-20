@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import TimerStopwatch from '@/components/TimerStopwatch'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '타이머/스톱워치 - 카운트다운, 뽀모도로 타이머 | 툴허브',
@@ -57,7 +58,10 @@ export default function TimerPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>
-            <I18nWrapper><TimerStopwatch /></I18nWrapper>
+            <I18nWrapper><TimerStopwatch />  <div className="mt-8">
+    <RelatedTools />
+  </div>
+</I18nWrapper>
           </Suspense>
         </div>
       </div>

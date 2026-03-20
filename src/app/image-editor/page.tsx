@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import I18nWrapper from '@/components/I18nWrapper'
 import ImageEditorComponent from '@/components/ImageEditor'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '이미지 편집기 | 툴허브 - 브라우저에서 이미지 편집',
@@ -79,6 +80,12 @@ export default function ImageEditorPage() {
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>
             <I18nWrapper>
               <ImageEditorComponent />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>

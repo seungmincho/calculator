@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import MbtiCompatibility from '@/components/MbtiCompatibility'
 import I18nWrapper from '@/components/I18nWrapper'
+import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'MBTI 궁합 분석 - 16×16 궁합표 남녀 상세 분석 | 툴허브',
@@ -56,6 +57,12 @@ export default function MbtiCompatibilityPage() {
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
             <I18nWrapper>
               <MbtiCompatibility />
+              <div className="mt-8">
+
+                <RelatedTools />
+
+              </div>
+
             </I18nWrapper>
           </Suspense>
         </div>
