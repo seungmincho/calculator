@@ -107,6 +107,7 @@ export const menuConfig: MenuConfig = {
       { href: '/wedding-calculator', labelKey: 'footer.links.weddingCalculator', descriptionKey: 'toolsShowcase.tools.weddingCalculator.description', icon: '💒', addedDate: '2026-03-21', subcategory: 'subcategory.livingCost' },
       { href: '/comprehensive-property-tax', labelKey: 'footer.links.comprehensivePropertyTax', descriptionKey: 'toolsShowcase.tools.comprehensivePropertyTax.description', icon: '🏘️', addedDate: '2026-03-21', subcategory: 'subcategory.tax' },
       { href: '/cagr-calculator', labelKey: 'footer.links.cagrCalculator', descriptionKey: 'toolsShowcase.tools.cagrCalculator.description', icon: '📈', addedDate: '2026-03-21', subcategory: 'subcategory.investSavings' },
+      { href: '/tax-season', labelKey: 'footer.links.taxSeason', descriptionKey: 'toolsShowcase.tools.taxSeason.description', icon: '📋', addedDate: '2026-03-21', subcategory: 'subcategory.tax' },
     ],
   },
   tools: {
@@ -193,6 +194,7 @@ export const menuConfig: MenuConfig = {
       { href: '/http-status', labelKey: 'footer.links.httpStatus', descriptionKey: 'toolsShowcase.tools.httpStatus.description', icon: '🌐', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
       { href: '/port-reference', labelKey: 'footer.links.portReference', descriptionKey: 'toolsShowcase.tools.portReference.description', icon: '🔌', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
       { href: '/linux-command', labelKey: 'footer.links.linuxCommand', descriptionKey: 'toolsShowcase.tools.linuxCommand.description', icon: '🐧', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
+      { href: '/calculation-history', labelKey: 'footer.links.calculationHistory', descriptionKey: 'toolsShowcase.tools.calculationHistory.description', icon: '📜', addedDate: '2026-03-21', subcategory: 'subcategory.otherTools' },
     ],
   },
   media: {
@@ -270,6 +272,7 @@ export const menuConfig: MenuConfig = {
       { href: '/flappy-bird', labelKey: 'footer.links.flappyBird', descriptionKey: 'toolsShowcase.tools.flappyBird.description', icon: '🐤', modes: ['solo'] },
       { href: '/hangman', labelKey: 'footer.links.hangman', descriptionKey: 'toolsShowcase.tools.hangman.description', icon: '🔤', modes: ['solo'] },
       { href: '/pac-man', labelKey: 'footer.links.pacMan', descriptionKey: 'toolsShowcase.tools.pacMan.description', icon: '👾', modes: ['solo'] },
+      { href: '/picross', labelKey: 'footer.links.picross', descriptionKey: 'toolsShowcase.tools.picross.description', icon: '🟦', addedDate: '2026-03-21', modes: ['solo'] },
     ],
   },
 };

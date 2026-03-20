@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import BoardGamePage from '@/components/BoardGamePage'
 
 export const metadata: Metadata = {
-  title: '오목 | AI 대전 · 온라인 대전 | 툴허브',
+  title: '오목 - AI·온라인 대전 | 툴허브',
   description: '19x19 바둑판에서 5개를 먼저 연결하면 승리! AI와 1인 대전 또는 친구와 실시간 온라인 대전을 즐기세요. 쉬움·보통·어려움 난이도 선택 가능.',
   keywords: [
     '오목',

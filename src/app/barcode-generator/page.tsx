@@ -4,7 +4,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '바코드 생성기 | 툴허브',
+  title: '바코드 생성기 - EAN·CODE128 | 툴허브',
   description: '다양한 형식의 바코드를 생성하고 다운로드하세요. EAN-13, CODE128, UPC 등 8가지 바코드 형식 지원. 제품 관리, 재고 관리, 이벤트 티켓 제작에 최적화',
   keywords: [
     '바코드 생성기',

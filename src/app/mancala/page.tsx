@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import BoardGamePage from '@/components/BoardGamePage'
 
 export const metadata: Metadata = {
-  title: '만칼라 | AI 대전 · 온라인 대전 | 툴허브',
+  title: '만칼라 - AI·온라인 대전 | 툴허브',
   description: '6개의 구덩이에서 돌을 뿌려 더 많은 돌을 모으면 승리! AI와 1인 대전 또는 친구와 실시간 온라인 대전. 쉬움·보통·어려움 난이도 선택 가능.',
   keywords: [
     '만칼라',

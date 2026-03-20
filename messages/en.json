@@ -1171,6 +1171,7 @@
       "flappyBird": "Flappy Bird",
       "hangman": "Hangman",
       "pacMan": "Pac-Man",
+      "picross": "Picross",
       "housingSubscription": "Housing Subscription Score",
       "capitalGainsTax": "Capital Gains Tax",
       "militaryDischarge": "Military Discharge Calculator",
@@ -1193,6 +1194,8 @@
       "httpStatus": "HTTP Status Codes",
       "portReference": "Port Number Reference",
       "linuxCommand": "Linux Command Builder",
+      "calculationHistory": "Calculation History",
+      "taxSeason": "Income Tax Filing Guide",
       "comprehensivePropertyTax": "Comprehensive Property Tax Calculator",
       "cagrCalculator": "CAGR Calculator",
       "chess": "Chess",
@@ -4232,6 +4235,10 @@
         "title": "Pac-Man",
         "description": "Classic arcade maze game eating dots and avoiding ghosts"
       },
+      "picross": {
+        "title": "Picross",
+        "description": "Logic puzzle game - reveal pictures using number clues"
+      },
       "housingSubscription": {
         "title": "Housing Subscription Score",
         "description": "Calculate housing subscription points (max 84) based on homeownership, dependents, and account period"
@@ -4319,6 +4326,14 @@
       "linuxCommand": {
         "title": "Linux Command Builder",
         "description": "Build Linux commands like ls, grep, find, chmod with visual option selector"
+      },
+      "calculationHistory": {
+        "title": "Calculation History",
+        "description": "View all saved calculation records from every calculator in one place"
+      },
+      "taxSeason": {
+        "title": "Income Tax Filing Guide",
+        "description": "Complete guide for May income tax filing — who, rates, deductions, and tax-saving tips"
       },
       "comprehensivePropertyTax": {
         "title": "Comprehensive Property Tax Calculator",
@@ -16917,5 +16932,236 @@
     "causesLabel": "Causes",
     "fixesLabel": "Fixes",
     "guideTitle": "HTTP Status Code Guide"
+  },
+  "calculationHistory": {
+    "title": "Calculation History",
+    "description": "View and manage all saved calculations from every calculator in one place",
+    "searchPlaceholder": "Search by title or tool name...",
+    "filterAll": "All Tools",
+    "sortNewest": "Newest First",
+    "sortOldest": "Oldest First",
+    "sortByTool": "By Tool",
+    "resultCount": "Showing {count} of {total}",
+    "recalculate": "Recalculate",
+    "deleteEntry": "Delete this entry",
+    "confirmDelete": "Confirm Delete",
+    "cancel": "Cancel",
+    "clearAll": "Clear All",
+    "clearAllTitle": "Clear All History",
+    "clearAllDescription": "This will permanently delete all {count} saved calculations. This action cannot be undone.",
+    "deleteAll": "Delete All",
+    "emptyTitle": "No saved calculations yet",
+    "emptyDescription": "Calculations are saved automatically when you use any calculator. Pick one below to get started.",
+    "goToCalculators": "Go to Calculators",
+    "noResults": "No history matches your search",
+    "resetFilters": "Reset Filters"
+  },
+  "picross": {
+    "title": "Picross",
+    "description": "Logic puzzle game - fill cells using number clues to reveal a picture",
+    "dailyBadge": "Daily Puzzle",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "dailyPuzzle": "Daily Puzzle",
+    "newPuzzle": "New Puzzle",
+    "reset": "Reset",
+    "mistakes": "Mistakes",
+    "helpClick": "Click: Fill/clear cell",
+    "helpRightClick": "Right-click (mobile: long press): Mark X",
+    "cell": "Cell",
+    "winTitle": "Congratulations!",
+    "winMessage": "Completed {size} puzzle in {time}!",
+    "share": "Share Result",
+    "copied": "Copied!",
+    "playAgain": "Play Again",
+    "shareTitle": "Picross",
+    "statsTitle": "Statistics",
+    "statsPlayed": "Games Played",
+    "statsBest": "{size} Best Time",
+    "guideTitle": "Picross Guide",
+    "guideRulesTitle": "Basic Rules",
+    "guideRulesItems": [
+      "Number clues on rows and columns indicate consecutive filled cells.",
+      "There must be at least one empty cell between groups of filled cells.",
+      "Fill cells to satisfy all clues and reveal the hidden picture.",
+      "0 means no cells are filled in that row/column."
+    ],
+    "guideTipsTitle": "Solving Tips",
+    "guideTipsItems": [
+      "Start with rows/columns that have large number clues.",
+      "When the clue sum is close to the grid size, use overlap technique to find definite cells.",
+      "Mark empty cells with X to help with reasoning.",
+      "Completed row/column clues turn green."
+    ],
+    "guideControlsTitle": "Controls",
+    "guideControlsItems": [
+      "PC: Left-click to fill a cell, right-click to mark X.",
+      "Mobile: Tap to fill a cell, long press to mark X.",
+      "Click a filled cell again to clear it."
+    ]
+  },
+  "taxSeason": {
+    "hero": {
+      "badge": "May 2025 Global Income Tax Season",
+      "title": "May Global Income Tax Filing Guide",
+      "subtitle": "From who must file to tax rates and saving strategies — prepare for your May tax filing with this complete guide.",
+      "deadlineLabel": "Until May 31 filing deadline",
+      "deadlinePast": "This year's filing period has ended. Check back in May next year.",
+      "deadlineNote": "Diligent filing confirmation subjects: until June 30",
+      "days": "Days",
+      "hours": "Hrs",
+      "minutes": "Min",
+      "seconds": "Sec",
+      "ctaPrimary": "Calculate Income Tax",
+      "ctaSecondary": "Freelancer Tax Calculator"
+    },
+    "targets": {
+      "title": "Who Must File",
+      "subtitle": "If any of the following applies to you, you are required to file a global income tax return in May.",
+      "freelancer": {
+        "title": "Freelancers & Self-Employed",
+        "desc": "Sole proprietors, freelancers, and personal service providers with business income. Filing is required regardless of income level."
+      },
+      "employee": {
+        "title": "Employees with Extra Income",
+        "desc": "Employees whose other income (side jobs, lecture fees, royalties) exceeds 3 million KRW, or those who worked at two or more places."
+      },
+      "rental": {
+        "title": "Real Estate Rental Income",
+        "desc": "Those with rental income from housing (monthly rent), commercial properties, or land. Even housing rental income under 20M KRW may require filing."
+      },
+      "financial": {
+        "title": "Financial Income Over 20M KRW",
+        "desc": "If combined interest and dividend income exceeds 20 million KRW, it is subject to global taxation and must be reported."
+      },
+      "exempt": {
+        "label": "Exempt from filing:",
+        "desc": "Employees with only wage income who completed year-end tax adjustment, those with only retirement or capital gains income, and those with financial income under 20M KRW are not required to file."
+      }
+    },
+    "toolBundle": {
+      "title": "Tax Calculator Bundle",
+      "subtitle": "Access all the calculators you need for your May tax filing in one place.",
+      "cta": "Calculate →"
+    },
+    "tools": {
+      "incomeTax": {
+        "title": "Income Tax Calculator",
+        "desc": "Calculate global income tax based on business or employment income"
+      },
+      "yearEndTax": {
+        "title": "Year-End Tax Calculator",
+        "desc": "Estimate tax refund with itemized deductions for wage earners"
+      },
+      "freelancerTax": {
+        "title": "Freelancer Tax Calculator",
+        "desc": "Calculate net income after 3.3% withholding and final tax payable"
+      },
+      "acquisitionTax": {
+        "title": "Acquisition Tax Calculator",
+        "desc": "Calculate acquisition tax and related costs for real estate"
+      },
+      "capitalGainsTax": {
+        "title": "Capital Gains Tax Calculator",
+        "desc": "Calculate capital gains tax on real estate or stock profits"
+      },
+      "taxCalculator": {
+        "title": "Tax Calculator",
+        "desc": "Comprehensive calculator for income, VAT, and capital gains taxes"
+      }
+    },
+    "taxRates": {
+      "title": "2025 Global Income Tax Rate Table",
+      "subtitle": "Progressive 8-bracket rates apply to your taxable income (gross income minus all deductions).",
+      "colRange": "Taxable Income Bracket",
+      "colRate": "Rate",
+      "colDeduction": "Progressive Deduction",
+      "note": "Taxable income is gross income minus all applicable deductions. Rates apply only to the portion of income within each bracket, not the full amount.",
+      "exampleLabel": "Example:",
+      "exampleText": "Taxable income of 60M KRW → 15% on first 50M + 24% on excess 10M, minus progressive deduction 1.26M → Total tax ≈ 8.64M KRW"
+    },
+    "tips": {
+      "title": "6 Tax-Saving Strategies",
+      "subtitle": "Review these items before filing — they can legally reduce your tax bill.",
+      "t1": {
+        "title": "Maximize Pension Savings & IRP Deductions",
+        "desc": "Combine pension savings fund (up to 6M KRW/yr) and IRP (up to 3M more) for a maximum 9M KRW tax credit at 16.5% rate."
+      },
+      "t2": {
+        "title": "Document All Business Expenses",
+        "desc": "Equipment, transportation, communications, books, and business meals can all be claimed as expenses. Keep tax invoices and card receipts."
+      },
+      "t3": {
+        "title": "Compare Simple vs Standard Expense Rates",
+        "desc": "If your income is below the threshold, the simple expense rate (60–90% by industry) lets you reduce income without receipts. Actual expenses may be higher."
+      },
+      "t4": {
+        "title": "Yellow Umbrella Deduction for SMEs",
+        "desc": "Small business owners can deduct Yellow Umbrella (노란우산) contributions (up to 5M KRW) from income — a powerful tax reducer."
+      },
+      "t5": {
+        "title": "Keep Financial Income Under 20M KRW",
+        "desc": "Once combined interest and dividends exceed 20M KRW, they enter global taxation at higher rates. An ISA account helps manage this threshold."
+      },
+      "t6": {
+        "title": "Check All Available Tax Credits",
+        "desc": "Youth employment at SMEs (90% reduction), startup SME credits, e-filing credit (20K KRW), and medical/education/donation credits are easy to miss."
+      }
+    },
+    "timeline": {
+      "title": "2025 Tax Filing Schedule",
+      "subtitle": "Know the key deadlines and file on time to avoid penalties.",
+      "e1": {
+        "date": "May 1",
+        "title": "Filing Season Opens",
+        "desc": "Electronic filing available on Hometax (hometax.go.kr) or via the mobile Son-Tax app."
+      },
+      "e2": {
+        "date": "May 31",
+        "title": "General Filing & Payment Deadline",
+        "desc": "Final deadline for most taxpayers. Late filing incurs a 20% non-filing penalty plus daily interest."
+      },
+      "e3": {
+        "date": "May 31",
+        "title": "Installment Payment 1st Due",
+        "desc": "If tax owed exceeds 10M KRW, pay 50% by this date. The remaining 50% can be paid by June 30."
+      },
+      "e4": {
+        "date": "June 30",
+        "title": "Diligent Filing Confirmation Deadline",
+        "desc": "High-revenue business owners must file with a CPA verification letter by June 30."
+      },
+      "e5": {
+        "date": "June 30",
+        "title": "Installment Payment 2nd Due",
+        "desc": "Remaining 50% installment payment deadline. No interest is charged on approved installments."
+      },
+      "penaltyLabel": "Warning:",
+      "penaltyDesc": "Missing the deadline incurs a 20% non-filing penalty (40% for fraudulent non-filing) plus a daily late payment surcharge of 0.022%. Always file on time."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": {
+        "q": "When is the global income tax filing period?",
+        "a": "Every year from May 1 to May 31. Diligent filing confirmation subjects have until June 30. File electronically via Hometax (hometax.go.kr) or the mobile Son-Tax app."
+      },
+      "q2": {
+        "q": "I'm an employee — do I need to file?",
+        "a": "If you only have wage income and completed year-end tax adjustment, you do not need to file. However, if side income exceeds 3M KRW, you worked at multiple jobs, or your financial income exceeds 20M KRW, you must file."
+      },
+      "q3": {
+        "q": "I already had 3.3% withheld — do I still need to file?",
+        "a": "Yes. The 3.3% withholding is a provisional payment, not the final tax. You settle the actual amount through the May global income tax filing. You may receive a refund or owe additional tax."
+      },
+      "q4": {
+        "q": "When will I receive my tax refund?",
+        "a": "Refunds are issued within 30 days of filing. Register your bank account on Hometax for automatic deposit. Check refund status via the 'Refund Inquiry' feature on Hometax."
+      },
+      "q5": {
+        "q": "Can I file without a tax accountant?",
+        "a": "Freelancers and business owners with simple income structures can use Hometax's pre-filled (모두채움) or simple filing feature. Complex situations (multiple income types, rental income, etc.) warrant professional advice."
+      }
+    }
   }
 }

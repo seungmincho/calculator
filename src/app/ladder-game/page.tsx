@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import LadderGame from '@/components/LadderGame'
 
 export const metadata: Metadata = {
-  title: '사다리 타기 게임 | 온라인 사다리 게임, 순서 정하기 | 툴허브',
+  title: '사다리 타기 - 순서·결정 게임 | 툴허브',
   description: '친구들과 함께 즐기는 온라인 사다리 타기 게임! 순서 정하기, 벌칙 정하기, 팀 나누기 등 다양한 상황에서 공정하게 결정하세요.',
   keywords: [
     '사다리 타기',
