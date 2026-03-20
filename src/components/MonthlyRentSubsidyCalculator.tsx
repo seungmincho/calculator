@@ -229,24 +229,25 @@ const MonthlyRentSubsidyCalculatorContent = () => {
   };
 
   // 이력에서 불러오기
-  const handleLoadFromHistory = (historyItem: any) => {
-    if (historyItem.inputs) {
-      const inputs = historyItem.inputs;
-      setHouseholdIncome(inputs.householdIncome || '');
-      setHouseholdMembers(inputs.householdMembers || '1');
-      setRent(inputs.rent || '');
-      setDeposit(inputs.deposit || '');
-      setRegion(inputs.region || 'seoul');
-      setApplicantType(inputs.applicantType || 'youth');
-      
+  const handleLoadFromHistory = (historyId: string) => {
+    const inputs = loadFromHistory(historyId);
+    if (inputs) {
+      const i = inputs as Record<string, string>;
+      setHouseholdIncome(i.householdIncome || '');
+      setHouseholdMembers(i.householdMembers || '1');
+      setRent(i.rent || '');
+      setDeposit(i.deposit || '');
+      setRegion(i.region || 'seoul');
+      setApplicantType((i.applicantType as 'youth' | 'newlywed' | 'general') || 'youth');
+
       // URL도 업데이트
       updateURL({
-        income: inputs.householdIncome?.replace(/,/g, '') || '',
-        members: inputs.householdMembers || '1',
-        rent: inputs.rent?.replace(/,/g, '') || '',
-        deposit: inputs.deposit?.replace(/,/g, '') || '',
-        region: inputs.region || 'seoul',
-        type: inputs.applicantType || 'youth'
+        income: i.householdIncome?.replace(/,/g, '') || '',
+        members: i.householdMembers || '1',
+        rent: i.rent?.replace(/,/g, '') || '',
+        deposit: i.deposit?.replace(/,/g, '') || '',
+        region: i.region || 'seoul',
+        type: i.applicantType || 'youth'
       });
     }
   };
@@ -580,7 +581,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
         onLoadHistory={handleLoadFromHistory}
         onRemoveHistory={removeHistory}
         onClearHistories={clearHistories}
-        formatResult={(result) => `${result.applicantType} ${result.householdMembers}인 월세${Math.floor(result.rent/10000)}만원`}
+        formatResult={(result: Record<string, unknown>) => `${String(result.applicantType || '')} ${String(result.householdMembers || '')}인 월세${Math.floor(Number(result.rent) / 10000)}만원`}
       />
 
       {/* 안내사항 */}

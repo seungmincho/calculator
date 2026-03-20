@@ -8,7 +8,9 @@ export interface CalculationHistory {
   | 'bodyFat' | 'workHours' | 'lotto' | 'ladder' 
   | 'rentSubsidy' | 'bogeumjariLoan' | 'shipping';
   timestamp: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inputs: Record<string, any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   result: Record<string, any>;
   title: string;
 }
@@ -118,77 +120,88 @@ export const historyStorage = {
   }
 };
 
+// 헬퍼: unknown 값을 문자열로 안전하게 변환 후 콤마 제거하여 parseInt
+const parseNumericInput = (value: unknown): number => {
+  if (value == null) return 0;
+  return parseInt(String(value).replace(/,/g, ''), 10) || 0;
+};
+
+// 헬퍼: unknown 값을 문자열로 안전하게 변환
+const str = (value: unknown, fallback = ''): string => {
+  if (value == null) return fallback;
+  return String(value);
+};
+
 // 계산 이력 제목 생성 헬퍼 함수들
 export const generateHistoryTitle = {
-  salary: (inputs: any): string => {
-    const salary = parseInt(inputs.salary?.replace(/,/g, '') || '0');
-    const type = inputs.salaryType || 'annual';
+  salary: (inputs: Record<string, unknown>): string => {
+    const salary = parseNumericInput(inputs.salary);
+    const type = str(inputs.salaryType, 'annual');
     const amount = Math.floor(salary / (type === 'monthly' ? 1000000 : 10000000));
     const unit = type === 'monthly' ? '월급' : '연봉';
     return `${unit} ${amount}${type === 'monthly' ? '백만원' : '천만원'}`;
   },
-  
-  loan: (inputs: any): string => {
-    const amount = parseInt(inputs.loanAmount?.replace(/,/g, '') || '0');
-    const years = inputs.loanTerm || '';
+
+  loan: (inputs: Record<string, unknown>): string => {
+    const amount = parseNumericInput(inputs.loanAmount);
+    const years = str(inputs.loanTerm);
     return `대출 ${Math.floor(amount / 10000000)}천만원 ${years}년`;
   },
-  
-  savings: (inputs: any): string => {
-    const monthly = parseInt(inputs.monthlyAmount?.replace(/,/g, '') || '0');
-    const months = inputs.period || '';
+
+  savings: (inputs: Record<string, unknown>): string => {
+    const monthly = parseNumericInput(inputs.monthlyAmount);
+    const months = str(inputs.period);
     return `적금 월 ${Math.floor(monthly / 10000)}만원 ${months}개월`;
   },
-  
-  retirement: (inputs: any): string => {
-    const years = inputs.workYears || '';
-    const months = inputs.workMonths || '';
+
+  retirement: (inputs: Record<string, unknown>): string => {
+    const years = str(inputs.workYears);
+    const months = str(inputs.workMonths);
     return `퇴직금 ${years}년 ${months}개월`;
   },
-  
-  tax: (inputs: any): string => {
-    const type = inputs.taxType || 'income';
+
+  tax: (inputs: Record<string, unknown>): string => {
+    const type = str(inputs.taxType, 'income');
     const typeNames = { income: '소득세', vat: '부가세', capital: '양도소득세' };
     return `${typeNames[type as keyof typeof typeNames] || '세금'} 계산`;
   },
-  
-  exchange: (inputs: any): string => {
-    const from = inputs.fromCurrency || 'USD';
-    const to = inputs.toCurrency || 'KRW';
+
+  exchange: (inputs: Record<string, unknown>): string => {
+    const from = str(inputs.fromCurrency, 'USD');
+    const to = str(inputs.toCurrency, 'KRW');
     return `환율 ${from} → ${to}`;
   },
-  
-  'real-estate': (inputs: any): string => {
-    const type = inputs.calculatorType || 'jeonse';
-    const typeNames = { 
-      'jeonse-loan': '전세대출', 
-      'mortgage-loan': '주택담보대출', 
-      'acquisition-tax': '취득세' 
+
+  'real-estate': (inputs: Record<string, unknown>): string => {
+    const type = str(inputs.calculatorType, 'jeonse');
+    const typeNames = {
+      'jeonse-loan': '전세대출',
+      'mortgage-loan': '주택담보대출',
+      'acquisition-tax': '취득세'
     };
     return typeNames[type as keyof typeof typeNames] || '부동산';
   },
 
-  stock: (inputs: any): string => {
-    const purchasePrice = parseInt(inputs.purchasePrice?.replace(/,/g, '') || '0');
-    const currentPrice = parseInt(inputs.currentPrice?.replace(/,/g, '') || '0');
-    const shares = parseInt(inputs.shares?.replace(/,/g, '') || '1');
+  stock: (inputs: Record<string, unknown>): string => {
+    const purchasePrice = parseNumericInput(inputs.purchasePrice);
+    const shares = parseNumericInput(inputs.shares) || 1;
     const priceRange = Math.floor(purchasePrice / 1000);
     return `주식 ${priceRange}천원 ${shares}주`;
   },
 
-  'car-loan': (inputs: any): string => {
-    const carPrice = parseInt(inputs.carPrice?.toString().replace(/,/g, '') || '0');
-    const loanTerm = inputs.loanTerm || '60';
+  'car-loan': (inputs: Record<string, unknown>): string => {
+    const carPrice = parseNumericInput(inputs.carPrice);
+    const loanTerm = str(inputs.loanTerm, '60');
     const priceRange = Math.floor(carPrice / 10000000);
     return `자동차할부 ${priceRange}천만원 ${loanTerm}개월`;
   },
 
-  'car-tax': (inputs: any): string => {
-    const carPrice = parseInt(inputs.carPrice?.toString().replace(/,/g, '') || '0');
-    const carType = inputs.carType || 'passenger';
-    const fuelType = inputs.fuelType || 'gasoline';
+  'car-tax': (inputs: Record<string, unknown>): string => {
+    const carPrice = parseNumericInput(inputs.carPrice);
+    const carType = str(inputs.carType, 'passenger');
+    const fuelType = str(inputs.fuelType, 'gasoline');
     const priceRange = Math.floor(carPrice / 10000000);
-    
+
     const typeLabels = {
       compact: '경차',
       passenger: '승용차',
@@ -196,7 +209,7 @@ export const generateHistoryTitle = {
       truck: '화물차',
       motorcycle: '이륜차'
     };
-    
+
     const fuelLabels = {
       gasoline: '휘발유',
       diesel: '경유',
@@ -204,18 +217,18 @@ export const generateHistoryTitle = {
       electric: '전기',
       hybrid: '하이브리드'
     };
-    
+
     const typeLabel = typeLabels[carType as keyof typeof typeLabels] || '승용차';
     const fuelLabel = fuelLabels[fuelType as keyof typeof fuelLabels] || '휘발유';
-    
+
     return `${typeLabel}(${fuelLabel}) ${priceRange}천만원`;
   },
-  fuel: (inputs: any): string => {
-    const distance = inputs.distance || 0;
-    const vehicleType = inputs.vehicleType || 'compact';
-    const fuelType = inputs.fuelType || 'gasoline';
-    const totalCost = inputs.totalCost || 0;
-    
+  fuel: (inputs: Record<string, unknown>): string => {
+    const distance = Number(inputs.distance) || 0;
+    const vehicleType = str(inputs.vehicleType, 'compact');
+    const fuelType = str(inputs.fuelType, 'gasoline');
+    const totalCost = Number(inputs.totalCost) || 0;
+
     const vehicleLabels = {
       light: '경차',
       compact: '소형차',
@@ -225,41 +238,41 @@ export const generateHistoryTitle = {
       van: '승합차',
       truck: '화물차'
     };
-    
+
     const fuelLabels = {
       gasoline: '휘발유',
       diesel: '경유',
       lpg: 'LPG'
     };
-    
+
     const vehicleLabel = vehicleLabels[vehicleType as keyof typeof vehicleLabels] || '소형차';
     const fuelLabel = fuelLabels[fuelType as keyof typeof fuelLabels] || '휘발유';
     const costText = Math.floor(totalCost / 1000);
-    
+
     return `${vehicleLabel}(${fuelLabel}) ${distance}km ${costText}천원`;
   },
-  
+
   // TODO: 이후에 추가할것
-  regex: (inputs: any): string => {
+  regex: (_inputs: Record<string, unknown>): string => {
     return ''
   },
-  bmi: (inputs: any): string => {
-    const height = inputs.height || 0;
-    const weight = inputs.weight || 0;
-    const gender = inputs.gender || 'male';
-    const age = inputs.age || 0;
-    
+  bmi: (inputs: Record<string, unknown>): string => {
+    const height = Number(inputs.height) || 0;
+    const weight = Number(inputs.weight) || 0;
+    const gender = str(inputs.gender, 'male');
+    const age = Number(inputs.age) || 0;
+
     const genderLabel = gender === 'male' ? '남성' : '여성';
     const ageText = age > 0 ? `${age}세 ` : '';
-    
+
     return `${ageText}${genderLabel} ${height}cm ${weight}kg`;
   },
 
-  calorie: (inputs: any): string => {
-    const weight = inputs.weight || 0;
-    const goal = inputs.goal || 'maintain';
-    const activityLevel = inputs.activityLevel || 'moderate';
-    
+  calorie: (inputs: Record<string, unknown>): string => {
+    const weight = Number(inputs.weight) || 0;
+    const goal = str(inputs.goal, 'maintain');
+    const activityLevel = str(inputs.activityLevel, 'moderate');
+
     const goalLabels = {
       loseFast: '빠른감량',
       loseModerate: '감량',
@@ -269,7 +282,7 @@ export const generateHistoryTitle = {
       gainModerate: '증량',
       gainFast: '빠른증량'
     };
-    
+
     const activityLabels = {
       sedentary: '저활동',
       light: '가벼운활동',
@@ -277,94 +290,94 @@ export const generateHistoryTitle = {
       active: '활발한활동',
       veryActive: '매우활발'
     };
-    
+
     const goalLabel = goalLabels[goal as keyof typeof goalLabels] || '유지';
     const activityLabel = activityLabels[activityLevel as keyof typeof activityLabels] || '보통활동';
-    
+
     return `${weight}kg ${goalLabel} ${activityLabel}`;
   },
 
-  bodyFat: (inputs: any): string => {
-    const weight = inputs.weight || 0;
-    const gender = inputs.gender || 'male';
-    const formula = inputs.formula || 'navy';
-    
+  bodyFat: (inputs: Record<string, unknown>): string => {
+    const weight = Number(inputs.weight) || 0;
+    const gender = str(inputs.gender, 'male');
+    const formula = str(inputs.formula, 'navy');
+
     const genderLabel = gender === 'male' ? '남성' : '여성';
     const formulaLabels = {
       navy: 'Navy공식',
       ymca: 'YMCA공식',
       'covert-bailey': 'Bailey공식'
     };
-    
+
     const formulaLabel = formulaLabels[formula as keyof typeof formulaLabels] || 'Navy공식';
-    
+
     return `${genderLabel} ${weight}kg ${formulaLabel}`;
   },
 
-  workHours: (inputs: any): string => {
-    const hourlyWage = inputs.hourlyWage || 0;
-    const totalHours = inputs.totalHours || 0;
-    const workDays = inputs.workDays || 0;
-    
+  workHours: (inputs: Record<string, unknown>): string => {
+    const hourlyWage = Number(inputs.hourlyWage) || 0;
+    const totalHours = Number(inputs.totalHours) || 0;
+    const workDays = Number(inputs.workDays) || 0;
+
     const wageText = Math.floor(hourlyWage / 1000);
     const hoursText = totalHours.toFixed(1);
-    
+
     return `시급 ${wageText}천원 ${hoursText}시간 ${workDays}일`;
   },
 
-  lotto: (inputs: any): string => {
-    const generateMethod = inputs.generateMethod || 'random';
-    const numberOfSets = inputs.numberOfSets || 1;
-    const excludedCount = inputs.excludedNumbers?.length || 0;
-    
+  lotto: (inputs: Record<string, unknown>): string => {
+    const generateMethod = str(inputs.generateMethod, 'random');
+    const numberOfSets = Number(inputs.numberOfSets) || 1;
+    const excludedNumbers = Array.isArray(inputs.excludedNumbers) ? inputs.excludedNumbers : [];
+    const excludedCount = excludedNumbers.length;
+
     const methodLabels = {
       random: '랜덤',
       statistics: '통계기반',
       mixed: '혼합방식'
     };
-    
+
     const methodLabel = methodLabels[generateMethod as keyof typeof methodLabels] || '랜덤';
     const excludeText = excludedCount > 0 ? ` 제외${excludedCount}개` : '';
-    
+
     return `${methodLabel} ${numberOfSets}게임${excludeText}`;
   },
 
-  ladder: (inputs: any): string => {
-    const participantCount = inputs.participants?.length || 0;
-    const ladderLinesCount = inputs.ladderLinesCount || 0;
-    const participants = inputs.participants || [];
-    
+  ladder: (inputs: Record<string, unknown>): string => {
+    const participants = Array.isArray(inputs.participants) ? inputs.participants as string[] : [];
+    const participantCount = participants.length;
+
     const participantNames = participants.slice(0, 3).join(', ');
     const moreText = participantCount > 3 ? ` 외 ${participantCount - 3}명` : '';
-    
+
     return `${participantNames}${moreText} (${participantCount}명)`;
   },
 
-  rentSubsidy: (inputs: any): string => {
-    const income = parseInt(inputs.householdIncome?.toString().replace(/,/g, '') || '0');
-    const members = inputs.householdMembers || '1';
-    const rent = parseInt(inputs.rent?.toString().replace(/,/g, '') || '0');
-    const applicantType = inputs.applicantType || 'youth';
-    
+  rentSubsidy: (inputs: Record<string, unknown>): string => {
+    const income = parseNumericInput(inputs.householdIncome);
+    const members = str(inputs.householdMembers, '1');
+    const rent = parseNumericInput(inputs.rent);
+    const applicantType = str(inputs.applicantType, 'youth');
+
     const typeLabels = {
       youth: '청년',
       newlywed: '신혼부부',
       general: '일반'
     };
-    
+
     const typeLabel = typeLabels[applicantType as keyof typeof typeLabels] || '청년';
     const incomeAmount = Math.floor(income / 1000000);
     const rentAmount = Math.floor(rent / 10000);
-    
+
     return `${typeLabel} ${members}인 월소득${incomeAmount}백만원 월세${rentAmount}만원`;
   },
 
-  shipping: (inputs: any): string => {
-    const weight = inputs.weight || '0';
-    const width = inputs.width || '0';
-    const height = inputs.height || '0';
-    const depth = inputs.depth || '0';
-    const destination = inputs.destination || 'domestic';
+  shipping: (inputs: Record<string, unknown>): string => {
+    const weight = str(inputs.weight, '0');
+    const width = str(inputs.width, '0');
+    const height = str(inputs.height, '0');
+    const depth = str(inputs.depth, '0');
+    const destination = str(inputs.destination, 'domestic');
 
     const destLabels: Record<string, string> = {
       domestic: '국내',
@@ -376,21 +389,21 @@ export const generateHistoryTitle = {
     return `${destLabel} ${weight}kg ${width}×${height}×${depth}cm`;
   },
 
-  bogeumjariLoan: (inputs: any): string => {
-    const income = parseInt(inputs.householdIncome?.toString().replace(/,/g, '') || '0');
-    const members = inputs.householdMembers || '4';
-    const housePrice = parseInt(inputs.housePrice?.toString().replace(/,/g, '') || '0');
-    const loanType = inputs.loanType || 'first';
-    
+  bogeumjariLoan: (inputs: Record<string, unknown>): string => {
+    const income = parseNumericInput(inputs.householdIncome);
+    const members = str(inputs.householdMembers, '4');
+    const housePrice = parseNumericInput(inputs.housePrice);
+    const loanType = str(inputs.loanType, 'first');
+
     const typeLabels = {
       first: '생애최초',
       general: '일반'
     };
-    
+
     const typeLabel = typeLabels[loanType as keyof typeof typeLabels] || '생애최초';
     const incomeAmount = Math.floor(income / 10000000);
     const priceAmount = Math.floor(housePrice / 100000000);
-    
+
     return `${typeLabel} ${members}인 연소득${incomeAmount}천만원 ${priceAmount}억원`;
   }
 };

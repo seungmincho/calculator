@@ -316,12 +316,10 @@ export default function BMICalculator() {
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(history: any) => {
-            if (!history.inputs || !history.result) return t('history.empty')
-            const height = history.inputs.height || 0
-            const weight = history.inputs.weight || 0
-            const bmi = history.result.bmi || 0
-            return t('history.format', { height, weight, bmi: formatNumber(bmi, 1) })
+          formatResult={(result: Record<string, unknown>) => {
+            const bmi = Number(result.bmi) || 0
+            const category = String(result.categoryKorean || '')
+            return category ? `BMI ${formatNumber(bmi, 1)} (${category})` : t('history.empty')
           }}
         />
       </div>

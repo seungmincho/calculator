@@ -162,9 +162,9 @@ const ExchangeRateCalculatorContent = () => {
   };
 
   // 이력 결과 포맷팅
-  const formatHistoryResult = (result: any) => {
+  const formatHistoryResult = (result: Record<string, unknown>) => {
     if (!result) return '';
-    return `${formatNumber(result.convertedAmount)} (환율: ${formatNumber(result.exchangeRate, 4)})`;
+    return `${formatNumber(Number(result.convertedAmount) || 0)} (환율: ${formatNumber(Number(result.exchangeRate) || 0, 4)})`;
   };
 
   const handleShare = async () => {

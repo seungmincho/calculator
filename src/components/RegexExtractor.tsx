@@ -499,11 +499,9 @@ export default function RegexExtractor() {
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(history: any) => {
-            if (!history.inputs || !history.result) return t('history.empty')
-            const op = history.inputs.operation || 'grep'
-            const matchCount = history.inputs.matchCount || 0
-            return t('history.format', { operation: op, matches: matchCount })
+          formatResult={(result: Record<string, unknown>) => {
+            const matchCount = Number(result.matchCount) || 0
+            return `${matchCount}개 매치`
           }}
         />
       </div>
@@ -713,7 +711,7 @@ export default function RegexExtractor() {
                 <button
                   key={key}
                   onClick={() => {
-                    setOperation(key as any)
+                    setOperation(key as 'grep' | 'replace' | 'extract')
                     updateURL({ operation: key })
                   }}
                   className={`p-4 rounded-lg border-2 text-left transition-all ${

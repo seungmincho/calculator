@@ -315,10 +315,11 @@ const LoanCalculatorContent = () => {
   };
 
   // 이력 결과 포맷팅
-  const formatHistoryResult = (result: any) => {
-    if (!result?.results || result.results.length === 0) return '';
-    const firstResult = result.results[0];
-    return `월 ${formatNumber(Math.round(firstResult.monthlyPayment))}원 (총 ${formatNumber(Math.round(firstResult.totalPayment))}원)`;
+  const formatHistoryResult = (result: Record<string, unknown>) => {
+    const results = Array.isArray(result.results) ? result.results : [];
+    if (results.length === 0) return '';
+    const firstResult = results[0] as Record<string, unknown>;
+    return `월 ${formatNumber(Math.round(Number(firstResult.monthlyPayment) || 0))}원 (총 ${formatNumber(Math.round(Number(firstResult.totalPayment) || 0))}원)`;
   };
 
   const updateURL = (newParams: Record<string, string>) => {

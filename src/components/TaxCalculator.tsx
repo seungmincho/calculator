@@ -308,18 +308,19 @@ const TaxCalculatorContent = () => {
   };
 
   // 이력 결과 포맷팅
-  const formatHistoryResult = (result: any) => {
+  const formatHistoryResult = (result: Record<string, unknown>) => {
     if (!result) return '';
-    
-    if (result.type === 'income') {
-      return `실수령액 ${formatNumber(result.netAmount)}원 (세금 ${formatNumber(result.totalTax)}원)`;
-    } else if (result.type === 'vat') {
-      return `부가세 포함 ${formatNumber(result.netAmount + result.totalTax)}원 (부가세 ${formatNumber(result.totalTax)}원)`;
-    } else if (result.type === 'capital-gains') {
-      return `실수령액 ${formatNumber(result.netAmount)}원 (세금 ${formatNumber(result.totalTax)}원)`;
+    const r = result as unknown as TaxResult;
+
+    if (r.type === 'income') {
+      return `실수령액 ${formatNumber(r.netAmount)}원 (세금 ${formatNumber(r.totalTax)}원)`;
+    } else if (r.type === 'vat') {
+      return `부가세 포함 ${formatNumber(r.netAmount + r.totalTax)}원 (부가세 ${formatNumber(r.totalTax)}원)`;
+    } else if (r.type === 'capital-gains') {
+      return `실수령액 ${formatNumber(r.netAmount)}원 (세금 ${formatNumber(r.totalTax)}원)`;
     }
-    
-    return `세금 ${formatNumber(result.totalTax)}원`;
+
+    return `세금 ${formatNumber(r.totalTax)}원`;
   };
 
   const handleShare = async () => {

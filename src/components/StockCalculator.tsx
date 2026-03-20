@@ -141,10 +141,10 @@ const StockCalculatorContent = () => {
   };
 
   // 이력 결과 포맷팅
-  const formatHistoryResult = (result: any) => {
+  const formatHistoryResult = (result: Record<string, unknown>) => {
     if (!result) return '';
     const sign = result.isProfit ? '+' : '';
-    return `${sign}${formatPrice(result.returnPercentage)}% (${sign}${formatNumber(result.totalProfit)}원)`;
+    return `${sign}${formatPrice(result.returnPercentage as number)}% (${sign}${formatNumber(result.totalProfit as number)}원)`;
   };
 
   // URL에서 초기값 로드

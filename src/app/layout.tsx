@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
@@ -13,6 +14,7 @@ import SkipToContent from '@/components/SkipToContent'
 import ToolTracker from '@/components/ToolTracker'
 import ToolShareButton from '@/components/ToolShareButton'
 import BackToTop from '@/components/BackToTop'
+import MobileBottomNav from '@/components/MobileBottomNav'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import I18nWrapper from '@/components/I18nWrapper'
@@ -142,7 +144,7 @@ export default function RootLayout({
         )}
       </head>
       <body className={`${inter.className} min-h-screen bg-white dark:bg-gray-900`}>
-        {/* Axeptio Cookie Consent Script with Google Consent Mode 
+        {/* Axeptio Cookie Consent Script with Google Consent Mode */}
         <Script
           id="axeptio-settings"
           strategy="beforeInteractive"
@@ -171,15 +173,13 @@ export default function RootLayout({
             __html: `
               (function(d, s) {
                 var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
-                e.async = true; 
+                e.async = true;
                 e.src = "//static.axept.io/sdk.js";
                 t.parentNode.insertBefore(e, t);
               })(document, "script");
             `
           }}
         />
-        
-        */}
         <LanguageProvider>
           <I18nWrapper>
             <SkipToContent />
@@ -191,7 +191,7 @@ export default function RootLayout({
             {/* Per-tool JSON-LD structured data */}
             <ToolJsonLd />
             {/* Main Content */}
-            <main id="main-content">
+            <main id="main-content" className="pb-16 md:pb-0">
               <ErrorBoundary>
                 {children}
               </ErrorBoundary>
@@ -209,7 +209,10 @@ export default function RootLayout({
 
             {/* Footer */}
             <Footer />
-            
+
+            {/* Mobile Bottom Navigation */}
+            <MobileBottomNav />
+
             {/* Daily Tips Component */}
             <DailyTips />
           </I18nWrapper>

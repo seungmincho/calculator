@@ -480,7 +480,7 @@ const SqlFormatter = () => {
               ].map(({ key, label, icon: Icon }) => (
                 <button
                   key={key}
-                  onClick={() => setMode(key as any)}
+                  onClick={() => setMode(key as 'format' | 'minify' | 'analyze')}
                   className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     mode === key
                       ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
@@ -582,7 +582,7 @@ const SqlFormatter = () => {
                 </label>
                 <select
                   value={sqlDialect}
-                  onChange={(e) => setSqlDialect(e.target.value as any)}
+                  onChange={(e) => setSqlDialect(e.target.value as 'standard' | 'mysql' | 'postgresql' | 'mssql' | 'oracle')}
                   className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="standard">표준 SQL</option>

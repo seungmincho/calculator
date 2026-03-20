@@ -11,7 +11,7 @@ interface CalculationHistoryProps {
   onLoadHistory: (historyId: string) => void;
   onRemoveHistory: (historyId: string) => void;
   onClearHistories: () => void;
-  formatResult: (result: any) => string;
+  formatResult: (result: Record<string, unknown>) => string;
 }
 
 const CalculationHistory: React.FC<CalculationHistoryProps> = ({

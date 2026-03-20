@@ -314,7 +314,7 @@ const RealEstateCalculatorContent = () => {
   const handleSaveCalculation = () => {
     if (!result) return;
 
-    let inputs: any = { activeTab };
+    let inputs: Record<string, unknown> = { activeTab };
     
     switch (activeTab) {
       case 'jeonse-loan':
@@ -386,20 +386,21 @@ const RealEstateCalculatorContent = () => {
   };
 
   // 이력 결과 포맷팅
-  const formatHistoryResult = (result: any) => {
+  const formatHistoryResult = (result: Record<string, unknown>) => {
     if (!result) return '';
-    
+
     if ('totalTax' in result) {
+      const totalTax = Number(result.totalTax) || 0;
       if ('acquisitionTax' in result) {
-        return `취득세: ${formatNumber(result.totalTax)}원`;
+        return `취득세: ${formatNumber(totalTax)}원`;
       } else if ('propertyTax' in result) {
-        return `종부세: ${formatNumber(result.totalTax)}원`;
+        return `종부세: ${formatNumber(totalTax)}원`;
       } else if ('capitalGainsTax' in result) {
-        return `양도세: ${formatNumber(result.totalTax)}원`;
+        return `양도세: ${formatNumber(totalTax)}원`;
       }
-      return `총 세금: ${formatNumber(result.totalTax)}원`;
+      return `총 세금: ${formatNumber(totalTax)}원`;
     } else if ('monthlyPayment' in result) {
-      return `월 상환: ${formatNumber(result.monthlyPayment)}원`;
+      return `월 상환: ${formatNumber(Number(result.monthlyPayment) || 0)}원`;
     }
     return '';
   };

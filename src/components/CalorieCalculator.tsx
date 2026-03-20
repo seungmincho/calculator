@@ -336,11 +336,10 @@ export default function CalorieCalculator() {
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(history: any) => {
-            if (!history.inputs || !history.result) return t('history.empty')
-            const goalCalories = history.result.goalCalories || 0
-            const goal = history.inputs.goal || 'maintain'
-            return t('history.format', { goalCalories: formatNumber(goalCalories, 0), goal: t(`input.goals.${goal}`) })
+          formatResult={(result: Record<string, unknown>) => {
+            const goalCalories = Number(result.goalCalories) || 0
+            if (!goalCalories) return t('history.empty')
+            return `${formatNumber(goalCalories, 0)} kcal`
           }}
         />
       </div>

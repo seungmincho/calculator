@@ -187,9 +187,9 @@ const RetirementCalculatorContent = () => {
   };
 
   // 이력 결과 포맷팅
-  const formatHistoryResult = (result: any) => {
+  const formatHistoryResult = (result: Record<string, unknown>) => {
     if (!result) return '';
-    return `퇴직금 ${formatNumber(result.netRetirementPay)}원 (${result.totalYears}년 근무)`;
+    return `퇴직금 ${formatNumber(result.netRetirementPay as number)}원 (${result.totalYears as number}년 근무)`;
   };
 
   const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {

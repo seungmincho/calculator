@@ -324,9 +324,9 @@ const SalaryCalculatorContent = () => {
   };
 
   // 이력 결과 포맷팅
-  const formatHistoryResult = (result: any) => {
+  const formatHistoryResult = (result: Record<string, unknown>) => {
     if (!result) return '';
-    return t('history.format', { monthly: formatNumber(result.netMonthly), annual: formatNumber(result.netAnnual) });
+    return t('history.format', { monthly: formatNumber(result.netMonthly as number), annual: formatNumber(result.netAnnual as number) });
   };
 
   // URL에서 초기값 로드

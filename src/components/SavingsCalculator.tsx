@@ -357,9 +357,10 @@ const SavingsCalculatorContent = () => {
   };
 
   // 이력 결과 포맷팅
-  const formatHistoryResult = (result: any) => {
-    if (!result?.results || result.results.length === 0) return '';
-    const firstResult = result.results[0];
+  const formatHistoryResult = (result: Record<string, unknown>) => {
+    const r = result as { results?: SavingsResult[] };
+    if (!r?.results || r.results.length === 0) return '';
+    const firstResult = r.results[0];
     return `월 ${formatNumber(Math.round(firstResult.totalSaved / (firstResult.schedule?.length || 12)))}원 → ${formatNumber(Math.round(firstResult.finalAmount))}원`;
   };
 

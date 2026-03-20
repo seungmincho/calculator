@@ -405,11 +405,10 @@ export default function CarTaxCalculator() {
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(history: any) => {
-            if (!history.inputs || !history.result) return '계산 정보 없음'
-            const carPrice = history.inputs.carPrice || 0
-            const totalTax = history.result.totalTax || 0
-            return `차량가격: ${formatCurrency(carPrice)}원, 총 세금: ${formatCurrency(totalTax)}원`
+          formatResult={(result: Record<string, unknown>) => {
+            const totalTax = Number(result.totalTax) || 0
+            if (!totalTax) return '계산 정보 없음'
+            return `총 세금: ${formatCurrency(totalTax)}원`
           }}
         />
       </div>

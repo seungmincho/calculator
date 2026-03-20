@@ -87,8 +87,8 @@ export default function ScreenInfo() {
     setDeviceData({
       platform: navigator.platform,
       cpuCores: navigator.hardwareConcurrency,
-      memory: (navigator as any).deviceMemory,
-      networkType: (navigator as any).connection?.effectiveType,
+      memory: (navigator as unknown as { deviceMemory?: number }).deviceMemory,
+      networkType: (navigator as unknown as { connection?: { effectiveType?: string } }).connection?.effectiveType,
       maxTouchPoints,
       deviceType,
     })

@@ -20,8 +20,8 @@ import {
 } from 'lucide-react'
 
 interface JwtParts {
-  header: any
-  payload: any
+  header: Record<string, unknown>
+  payload: Record<string, unknown>
   signature: string
   headerRaw: string
   payloadRaw: string
@@ -343,10 +343,10 @@ const JwtDecoder = () => {
               {/* Header Info */}
               <div className="mt-4 space-y-2">
                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">{t('result.algorithm')}:</span> {decodedParts.header.alg || 'N/A'}
+                  <span className="font-medium">{t('result.algorithm')}:</span> {String(decodedParts.header.alg ?? 'N/A')}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">{t('result.type')}:</span> {decodedParts.header.typ || 'N/A'}
+                  <span className="font-medium">{t('result.type')}:</span> {String(decodedParts.header.typ ?? 'N/A')}
                 </div>
               </div>
             </div>
@@ -372,32 +372,32 @@ const JwtDecoder = () => {
 
               {/* Payload Info */}
               <div className="mt-4 space-y-2">
-                {decodedParts.payload.sub && (
+                {!!decodedParts.payload.sub && (
                   <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
                     <User className="w-4 h-4 mr-2" />
-                    <span className="font-medium">{t('result.subject')}:</span> {decodedParts.payload.sub}
+                    <span className="font-medium">{t('result.subject')}:</span> {String(decodedParts.payload.sub)}
                   </div>
                 )}
-                {decodedParts.payload.iat && (
+                {!!decodedParts.payload.iat && (
                   <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
                     <Calendar className="w-4 h-4 mr-2" />
-                    <span className="font-medium">{t('result.issuedAt')}:</span> {formatTimestamp(decodedParts.payload.iat)}
+                    <span className="font-medium">{t('result.issuedAt')}:</span> {formatTimestamp(decodedParts.payload.iat as number)}
                   </div>
                 )}
-                {decodedParts.payload.exp && (
+                {!!decodedParts.payload.exp && (
                   <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
                     <Clock className="w-4 h-4 mr-2" />
-                    <span className="font-medium">{t('result.expiresAt')}:</span> {formatTimestamp(decodedParts.payload.exp)}
+                    <span className="font-medium">{t('result.expiresAt')}:</span> {formatTimestamp(decodedParts.payload.exp as number)}
                   </div>
                 )}
-                {decodedParts.payload.iss && (
+                {!!decodedParts.payload.iss && (
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                    <span className="font-medium">{t('result.issuer')}:</span> {decodedParts.payload.iss}
+                    <span className="font-medium">{t('result.issuer')}:</span> {String(decodedParts.payload.iss)}
                   </div>
                 )}
-                {decodedParts.payload.aud && (
+                {!!decodedParts.payload.aud && (
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                    <span className="font-medium">{t('result.audience')}:</span> {Array.isArray(decodedParts.payload.aud) ? decodedParts.payload.aud.join(', ') : decodedParts.payload.aud}
+                    <span className="font-medium">{t('result.audience')}:</span> {Array.isArray(decodedParts.payload.aud) ? (decodedParts.payload.aud as string[]).join(', ') : String(decodedParts.payload.aud)}
                   </div>
                 )}
               </div>

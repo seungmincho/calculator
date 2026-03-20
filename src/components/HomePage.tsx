@@ -6,7 +6,7 @@ import Link from 'next/link'
 import {
   Search, Star, TrendingUp, Zap, Smartphone, Moon, WifiOff, ArrowRight, Clock, BarChart3
 } from 'lucide-react'
-import { menuConfig, categoryKeys, type CategoryKey, type MenuItem } from '@/config/menuConfig'
+import { menuConfig, categoryKeys, isNewTool, type CategoryKey, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'
 import { usePopularTools } from '@/hooks/useToolAnalytics'
@@ -61,7 +61,7 @@ export default function HomePage() {
   }, [])
 
   const newToolsCount = useMemo(() => {
-    return categoryKeys.reduce((sum, key) => sum + menuConfig[key].items.filter(i => i.isNew).length, 0)
+    return categoryKeys.reduce((sum, key) => sum + menuConfig[key].items.filter(i => isNewTool(i)).length, 0)
   }, [])
 
   const filteredTools = useMemo(() => {
@@ -459,7 +459,7 @@ export default function HomePage() {
                     <div className="min-w-0 flex-1">
                       <h3 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-1.5">
                         {t(item.labelKey)}
-                        {item.isNew && (
+                        {isNewTool(item) && (
                           <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full leading-none">
                             NEW
                           </span>

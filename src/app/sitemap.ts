@@ -1121,5 +1121,71 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    {
+      url: 'https://toolhub.ai.kr/year-end-tax/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://toolhub.ai.kr/income-tax/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://toolhub.ai.kr/jeonse-loan/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://toolhub.ai.kr/dsr-calculator/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://toolhub.ai.kr/margin-calculator/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/sales-commission/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/acquisition-tax/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://toolhub.ai.kr/average-calculator/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/grade-calculator/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/gpa-converter/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://toolhub.ai.kr/pc-electricity/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
   ]
 }

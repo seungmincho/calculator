@@ -434,7 +434,7 @@ export default function PromptGenerator() {
                 : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
-            {t(`${labelPrefix}.${opt}` as any)}
+            {t(`${labelPrefix}.${opt}` as Parameters<typeof t>[0])}
           </button>
         ))}
       </div>

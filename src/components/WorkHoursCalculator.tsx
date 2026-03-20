@@ -386,7 +386,11 @@ export default function WorkHoursCalculator() {
             if (inp) { setHourlyWage(inp.hourlyWage?.toString() || String(MIN_WAGE_2026)); setWeeklyHours(inp.weeklyHours?.toString() || '40') }
           }}
           onRemoveHistory={removeHistory} onClearHistories={clearHistories}
-          formatResult={(h: any) => !h.inputs || !h.result ? t('history.empty') : t('history.format', { totalPay: fmt(h.result.totalPay || 0), totalHours: fmtH(h.inputs.totalHours || 0) })}
+          formatResult={(result: Record<string, unknown>) => {
+            const totalPay = Number(result.totalPay) || 0
+            if (!totalPay) return t('history.empty')
+            return `${fmt(totalPay)}원`
+          }}
         />
       </div>
 

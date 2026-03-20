@@ -21,13 +21,13 @@ interface CarLoanResult {
 }
 
 export default function CarLoanCalculator() {
-  let t: any;
+  let t: ReturnType<typeof useTranslations>;
   try {
     t = useTranslations('carLoan')
   } catch (error) {
     console.error('Translation error:', error)
     // Fallback function
-    t = (key: string) => key
+    t = ((key: string) => key) as ReturnType<typeof useTranslations>
   }
   const [carPrice, setCarPrice] = useState<string>('')
   const [downPayment, setDownPayment] = useState<string>('')
@@ -226,11 +226,11 @@ export default function CarLoanCalculator() {
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(history: any) => {
-            if (!history.inputs || !history.result) return '계산 정보 없음'
-            const carPrice = history.inputs.carPrice || 0
-            const monthlyPayment = history.result.monthlyPayment || 0
-            return `차량가격: ${formatCurrency(carPrice)}원, 월납입금: ${formatCurrency(monthlyPayment)}원`
+          formatResult={(result: Record<string, unknown>) => {
+            const monthlyPayment = Number(result.monthlyPayment) || 0
+            const totalPayment = Number(result.totalPayment) || 0
+            if (!monthlyPayment) return '계산 정보 없음'
+            return `월납입금: ${formatCurrency(monthlyPayment)}원, 총납입금: ${formatCurrency(totalPayment)}원`
           }}
         />
       </div>

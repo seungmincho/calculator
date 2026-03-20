@@ -244,7 +244,7 @@ const MarkdownViewer = () => {
               ].map(({ key, label, icon: Icon }) => (
                 <button
                   key={key}
-                  onClick={() => setMode(key as any)}
+                  onClick={() => setMode(key as 'edit' | 'preview' | 'split')}
                   className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     mode === key
                       ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'

@@ -511,7 +511,7 @@ export default function LottoGenerator() {
       const { lottoData } = await import('../../public/lottoData')
       
       // 모든 당첨번호를 WinningNumber 형태로 변환
-      const winningData: WinningNumber[] = Object.values(lottoData).map((data: any) => ({
+      const winningData: WinningNumber[] = Object.values(lottoData).map((data) => ({
         round: data.drwNo,
         drawDate: data.drwNoDate,
         numbers: [
@@ -708,11 +708,9 @@ export default function LottoGenerator() {
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(history: any) => {
-            if (!history.inputs || !history.result) return t('history.empty')
-            const method = getMethodName(history.inputs.generateMethod || 'random')
-            const sets = history.result.totalSets || 1
-            return t('history.format', { method, sets })
+          formatResult={(result: Record<string, unknown>) => {
+            const sets = Number(result.totalSets) || 1
+            return `${sets}게임`
           }}
         />
       </div>

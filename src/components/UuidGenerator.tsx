@@ -316,7 +316,7 @@ const UuidGenerator = () => {
               </label>
               <select
                 value={options.format}
-                onChange={(e) => setOptions(prev => ({ ...prev, format: e.target.value as any }))}
+                onChange={(e) => setOptions(prev => ({ ...prev, format: e.target.value as 'standard' | 'uppercase' | 'lowercase' | 'compact' | 'braces' | 'urn' }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               >
                 <option value="standard">{t('formats.standard')}</option>

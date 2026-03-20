@@ -29,10 +29,11 @@ export const useCalculationHistory = (calculatorType: CalculationHistory['type']
   }, [loadHistories]);
 
   // 새로운 계산 결과 저장
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const saveCalculation = useCallback((inputs: Record<string, any>, result: Record<string, any>) => {
     try {
       const title = generateHistoryTitle[calculatorType](inputs);
-      
+
       const success = historyStorage.add({
         type: calculatorType,
         inputs,

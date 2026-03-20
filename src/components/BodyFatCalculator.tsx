@@ -372,10 +372,9 @@ export default function BodyFatCalculator() {
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(history: any) => {
-            if (!history.inputs || !history.result) return t('history.empty')
-            const bodyFatPercentage = history.result.bodyFatPercentage || 0
-            const category = history.result.category || 'average'
+          formatResult={(result: Record<string, unknown>) => {
+            const bodyFatPercentage = Number(result.bodyFatPercentage) || 0
+            const category = String(result.category || 'average')
             return t('history.format', {
               bodyFatPercentage: formatNumber(bodyFatPercentage, 1),
               category: t(`categories.${category}`)

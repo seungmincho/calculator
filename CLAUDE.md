@@ -146,7 +146,7 @@ src/
 #### Games (25+ tools)
 - `GameHub`: Game listing/hub page with game stats + achievements panel
 - `LottoGenerator`: Korean lottery number generation with statistics
-- `LadderGame`: Online ladder game for decision making
+- `LadderGame`: 사다리 타기 게임 — 위치 직접 선택 모드(기본), colAssignments(열↔참가자 매핑), 시드 기반 URL 공유, 블라인드/한명씩공개/다중라운드/이미지저장 기능 포함
 - `Omok`: 오목 (Gomoku) with AI opponent and online P2P multiplayer
 - `Othello`: 오셀로 (Reversi) with AI opponent
 - `Connect4`: 사목 (Connect Four) with AI opponent

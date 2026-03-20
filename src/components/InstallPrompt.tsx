@@ -4,9 +4,14 @@ import { useState, useEffect } from 'react'
 import { Download, X, Smartphone } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
 export default function InstallPrompt() {
   const t = useTranslations()
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
   const [isInstalled, setIsInstalled] = useState(false)
   const [isIOS, setIsIOS] = useState(false)
@@ -28,7 +33,7 @@ export default function InstallPrompt() {
     // Listen for the beforeinstallprompt event
     const handleBeforeInstallPrompt = (event: Event) => {
       event.preventDefault()
-      setDeferredPrompt(event)
+      setDeferredPrompt(event as BeforeInstallPromptEvent)
       
       // Don't show immediately, wait for user interaction or after some time
       setTimeout(() => {

@@ -53,7 +53,7 @@ export default function AlcoholCalculator() {
     setDrinks(prev => prev.filter(d => d.id !== id))
   }, [])
 
-  const updateDrink = useCallback((id: string, field: keyof Drink, value: any) => {
+  const updateDrink = useCallback((id: string, field: keyof Drink, value: string | number) => {
     setDrinks(prev => prev.map(d => {
       if (d.id !== id) return d
       const updated = { ...d, [field]: value }

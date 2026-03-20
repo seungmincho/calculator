@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Wrench, Star, ChevronDown } from 'lucide-react'
-import { menuConfig, categoryKeys, type MenuItem } from '@/config/menuConfig'
+import { menuConfig, categoryKeys, isNewTool, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
 
 export default function ToolsShowcase() {
@@ -66,6 +66,83 @@ export default function ToolsShowcase() {
         <Star className={`w-4 h-4 ${isFav ? 'fill-current' : ''}`} />
       </button>
     )
+  }
+
+  const renderToolCard = (item: MenuItem, isCurrentPage: boolean) => {
+    if (isCurrentPage) {
+      return (
+        <div
+          key={item.href}
+          className="group relative bg-blue-50 dark:bg-blue-950 rounded-lg border-2 border-blue-300 dark:border-blue-600 p-4"
+        >
+          <div className="absolute top-2 right-2">
+            <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">
+              {t('toolsShowcase.currentPage')}
+            </span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="flex-shrink-0">
+              <div className="w-10 h-10 bg-blue-200 dark:bg-blue-800 rounded-lg flex items-center justify-center text-xl">
+                {item.icon}
+              </div>
+            </div>
+            <div className="min-w-0 flex-1">
+              <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                {t(item.labelKey)}
+              </h4>
+              <p className="text-xs text-blue-600 dark:text-blue-400 mt-1 truncate">
+                {t(item.descriptionKey)}
+              </p>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        className="group relative bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200 hover:-translate-y-1"
+      >
+        {renderFavoriteButton(item.href)}
+        <div className="flex items-center space-x-3">
+          <div className="flex-shrink-0">
+            <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800 transition-colors text-xl">
+              {item.icon}
+            </div>
+          </div>
+          <div className="min-w-0 flex-1">
+            <h4 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-1.5">
+              {t(item.labelKey)}
+              {isNewTool(item) && (
+                <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full leading-none">
+                  NEW
+                </span>
+              )}
+            </h4>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">
+              {t(item.descriptionKey)}
+            </p>
+          </div>
+        </div>
+      </Link>
+    )
+  }
+
+  // Group items by subcategory for a given category
+  const getSubcategoryGroups = (items: MenuItem[]) => {
+    const groups: Map<string, MenuItem[]> = new Map()
+
+    for (const item of items) {
+      const key = item.subcategory || ''
+      if (!groups.has(key)) {
+        groups.set(key, [])
+      }
+      groups.get(key)!.push(item)
+    }
+
+    return groups
   }
 
   return (
@@ -143,77 +220,38 @@ export default function ToolsShowcase() {
           const category = menuConfig[categoryKey]
           if (!category?.items?.length) return null
 
+          const subcategoryGroups = getSubcategoryGroups(category.items)
+          const hasSubcategories = Array.from(subcategoryGroups.keys()).some(k => k !== '')
+
           return (
             <div key={categoryKey} className="space-y-4">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2">
                 {t(categoryTitleKeys[categoryKey])}
               </h3>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {category.items.map((item) => {
-                  const isCurrentPage = pathname === item.href
-
-                  if (isCurrentPage) {
-                    return (
-                      <div
-                        key={item.href}
-                        className="group relative bg-blue-50 dark:bg-blue-950 rounded-lg border-2 border-blue-300 dark:border-blue-600 p-4"
-                      >
-                        <div className="absolute top-2 right-2">
-                          <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">
-                            {t('toolsShowcase.currentPage')}
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <div className="flex-shrink-0">
-                            <div className="w-10 h-10 bg-blue-200 dark:bg-blue-800 rounded-lg flex items-center justify-center text-xl">
-                              {item.icon}
-                            </div>
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                              {t(item.labelKey)}
-                            </h4>
-                            <p className="text-xs text-blue-600 dark:text-blue-400 mt-1 truncate">
-                              {t(item.descriptionKey)}
-                            </p>
-                          </div>
-                        </div>
+              {hasSubcategories ? (
+                // Render with subcategory grouping
+                <div className="space-y-6">
+                  {Array.from(subcategoryGroups.entries()).map(([subcatKey, items]) => (
+                    <div key={subcatKey || '_ungrouped'}>
+                      {subcatKey && (
+                        <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                          {t(subcatKey)}
+                        </h4>
+                      )}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {items.map((item) => renderToolCard(item, pathname === item.href))}
                       </div>
-                    )
-                  }
-
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="group relative bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200 hover:-translate-y-1"
-                    >
-                      {renderFavoriteButton(item.href)}
-                      <div className="flex items-center space-x-3">
-                        <div className="flex-shrink-0">
-                          <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800 transition-colors text-xl">
-                            {item.icon}
-                          </div>
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <h4 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-1.5">
-                            {t(item.labelKey)}
-                            {item.isNew && (
-                              <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full leading-none">
-                                NEW
-                              </span>
-                            )}
-                          </h4>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">
-                            {t(item.descriptionKey)}
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  )
-                })}
-              </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                // Render flat grid (no subcategories, e.g. media, health, games)
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {category.items.map((item) => renderToolCard(item, pathname === item.href))}
+                </div>
+              )}
             </div>
           )
         })}

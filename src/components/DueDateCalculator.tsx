@@ -223,7 +223,7 @@ export default function DueDateCalculator() {
                   <div className="bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30 rounded-lg p-4">
                     <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('result.trimester')}</div>
                     <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
-                      {t(`result.trimester${results.trimester}` as any)}
+                      {t(`result.trimester${results.trimester}` as Parameters<typeof t>[0])}
                     </div>
                   </div>
 
@@ -313,7 +313,7 @@ export default function DueDateCalculator() {
                         ? 'text-blue-600 dark:text-blue-400'
                         : 'text-gray-900 dark:text-white'
                     }`}>
-                      {t(`milestones.${milestone.labelKey}` as any)}
+                      {t(`milestones.${milestone.labelKey}` as Parameters<typeof t>[0])}
                     </div>
                     {milestoneDate && (
                       <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
