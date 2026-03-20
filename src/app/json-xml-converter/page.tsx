@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     description: 'JSON을 XML로, XML을 JSON으로 상호 변환하는 개발자 도구. 실시간 구문 검증, 포맷팅, 다양한 프리셋 지원',
     type: 'website',
     locale: 'ko_KR',
-    siteName: '툴허브'
+    siteName: '툴허브',
     url: 'https://toolhub.ai.kr/json-xml-converter',
   },
   twitter: {

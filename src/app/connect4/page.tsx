@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: '온라인 커넥트4 - 실시간 대전 게임 | 툴허브',
     description: '친구와 실시간으로 커넥트4 대전! 4개를 연결하세요!',
     url: 'https://toolhub.ai.kr/connect4',
-    type: 'website'
+    type: 'website',
     siteName: '툴허브',
   },
   alternates: {

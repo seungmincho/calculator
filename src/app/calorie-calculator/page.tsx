@@ -3,7 +3,7 @@ import CalorieCalculator from '@/components/CalorieCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
-  title: '칼로리 계산기 | 기초대사율, 활동대사율, 다이어트 칼로리 계산 | 툴허브',
+  title: '칼로리 계산기 - BMR, TDEE 다이어트 | 툴허브',
   description: '기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트, 체중 증량, 유지를 위한 일일 칼로리 목표를 설정하세요. 음식 칼로리와 운동 소모 칼로리도 함께 확인할 수 있습니다.',
   keywords: [
     '칼로리 계산기',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: '툴허브' }],
   openGraph: {
-    title: '칼로리 계산기 | 기초대사율, 활동대사율, 다이어트 칼로리 계산',
+    title: '칼로리 계산기 - BMR, TDEE 다이어트 | 툴허브',
     description: '기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트, 체중 증량, 유지를 위한 일일 칼로리 목표를 설정하세요.',
     type: 'website',
     url: 'https://toolhub.ai.kr/calorie-calculator',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '칼로리 계산기 | 기초대사율, 활동대사율, 다이어트 칼로리 계산',
+    title: '칼로리 계산기 - BMR, TDEE 다이어트 | 툴허브',
     description: '기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트, 체중 증량, 유지를 위한 일일 칼로리 목표를 설정하세요.',
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },

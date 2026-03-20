@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
-import { BarChart3, HelpCircle, Share2, Check, X } from 'lucide-react'
+import { BarChart3, HelpCircle, Share2, Check, X, Copy, Twitter } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
@@ -528,6 +528,8 @@ export default function KoreanWordle() {
   const [shakeRow, setShakeRow] = useState(-1)
   const [revealingRow, setRevealingRow] = useState(-1)
   const [bounceRow, setBounceRow] = useState(-1)
+  // Streak at the moment the game ended (before reset on loss)
+  const [endStreak, setEndStreak] = useState<{ value: number; wasLost: boolean } | null>(null)
 
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const boardRef = useRef<HTMLDivElement>(null)
@@ -551,18 +553,24 @@ export default function KoreanWordle() {
   // ── Load saved game state on mount ──
   useEffect(() => {
     const saved = loadGameState()
+    const s = loadStats()
     if (saved) {
       setGuesses(saved.guesses)
       setGameStatus(saved.gameStatus)
       setHardMode(saved.hardMode)
+      if (saved.gameStatus === 'won') {
+        setEndStreak({ value: s.currentStreak, wasLost: false })
+      } else if (saved.gameStatus === 'lost') {
+        // streak was already reset on loss — show 0 broken (no banner if was already 0)
+        setEndStreak({ value: 0, wasLost: false })
+      }
     } else {
       // First time today - check if user has never played (show help)
-      const s = loadStats()
       if (s.gamesPlayed === 0) {
         setShowHelp(true)
       }
     }
-    setStats(loadStats())
+    setStats(s)
   }, [])
 
   // ── Save game state on changes ──
@@ -730,6 +738,7 @@ export default function KoreanWordle() {
         newStats.lastPlayedDate = getTodayKey()
         setStats(newStats)
         saveStats(newStats)
+        setEndStreak({ value: newStats.currentStreak, wasLost: false })
 
         setTimeout(() => {
           showToast(t('winMessages.' + Math.min(rowIdx, 5)), 3000)
@@ -737,12 +746,14 @@ export default function KoreanWordle() {
         }, 300)
       } else if (newGuesses.length >= MAX_GUESSES) {
         setGameStatus('lost')
+        const prevStreak = stats.currentStreak
         const newStats = { ...stats }
         newStats.gamesPlayed++
         newStats.currentStreak = 0
         newStats.lastPlayedDate = getTodayKey()
         setStats(newStats)
         saveStats(newStats)
+        setEndStreak({ value: prevStreak, wasLost: true })
 
         setTimeout(() => {
           showToast(answer, 4000)
@@ -815,35 +826,48 @@ export default function KoreanWordle() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [gameStatus, showHelp, showStats, submitGuess, handleKeyPress])
 
-  // ── Share results ──
-  const shareResults = useCallback(async () => {
-    if (gameStatus === 'playing') return
-
+  // ── Build share text ──
+  const buildShareText = useCallback((): string => {
     const dayNumber = Math.floor((new Date().getTime() - new Date(2024, 0, 1).getTime()) / (1000 * 60 * 60 * 24))
     const guessCount = gameStatus === 'won' ? guesses.length : 'X'
-
-    let shareText = `${t('shareTitle')} #${dayNumber} ${guessCount}/${MAX_GUESSES}\n\n`
-
+    let text = `${t('shareTitle')} #${dayNumber} ${guessCount}/${MAX_GUESSES}\n\n`
     guesses.forEach(guess => {
       const evaluation = evaluateGuess(guess, answer)
-      const line = evaluation.map(syllJamos => {
-        return syllJamos.map(({ status }) => {
+      const line = evaluation.map(syllJamos =>
+        syllJamos.map(({ status }) => {
           if (status === 'correct') return '🟩'
           if (status === 'present') return '🟨'
           return '⬛'
         }).join('')
-      }).join(' ')
-      shareText += line + '\n'
+      ).join(' ')
+      text += line + '\n'
     })
+    text += `\ntoolhub.ai.kr/korean-wordle`
+    return text
+  }, [gameStatus, guesses, answer, t])
 
-    shareText += `\ntoolhub.ai.kr/korean-wordle`
+  // ── Build emoji grid only (for display) ──
+  const buildEmojiGrid = useCallback((): string => {
+    return guesses.map(guess => {
+      const evaluation = evaluateGuess(guess, answer)
+      return evaluation.map(syllJamos =>
+        syllJamos.map(({ status }) => {
+          if (status === 'correct') return '🟩'
+          if (status === 'present') return '🟨'
+          return '⬛'
+        }).join('')
+      ).join(' ')
+    }).join('\n')
+  }, [guesses, answer])
 
+  // ── Copy to clipboard ──
+  const copyToClipboard = useCallback(async (text: string) => {
     try {
       if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(shareText)
+        await navigator.clipboard.writeText(text)
       } else {
         const textarea = document.createElement('textarea')
-        textarea.value = shareText
+        textarea.value = text
         textarea.style.position = 'fixed'
         textarea.style.left = '-999999px'
         document.body.appendChild(textarea)
@@ -851,13 +875,55 @@ export default function KoreanWordle() {
         document.execCommand('copy')
         document.body.removeChild(textarea)
       }
-      setCopiedShare(true)
-      setTimeout(() => setCopiedShare(false), 2000)
-      showToast(t('shared'))
+      return true
     } catch {
-      showToast(t('copyFailed'))
+      return false
     }
-  }, [gameStatus, guesses, answer, t, showToast])
+  }, [])
+
+  // ── Share results ──
+  const shareResults = useCallback(async () => {
+    if (gameStatus === 'playing') return
+    const shareText = buildShareText()
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ text: shareText })
+        return
+      } catch {
+        // user cancelled or share failed — fall through to clipboard
+      }
+    }
+
+    const ok = await copyToClipboard(shareText)
+    setCopiedShare(true)
+    setTimeout(() => setCopiedShare(false), 2000)
+    showToast(ok ? t('shared') : t('copyFailed'))
+  }, [gameStatus, buildShareText, copyToClipboard, showToast, t])
+
+  // ── Copy only (explicit clipboard button) ──
+  const copyShare = useCallback(async () => {
+    if (gameStatus === 'playing') return
+    const shareText = buildShareText()
+    const ok = await copyToClipboard(shareText)
+    setCopiedShare(true)
+    setTimeout(() => setCopiedShare(false), 2000)
+    showToast(ok ? t('shared') : t('copyFailed'))
+  }, [gameStatus, buildShareText, copyToClipboard, showToast, t])
+
+  // ── Share on X/Twitter ──
+  const shareOnTwitter = useCallback(() => {
+    if (gameStatus === 'playing') return
+    const shareText = buildShareText()
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }, [gameStatus, buildShareText])
+
+  // ── Share on KakaoTalk ──
+  const shareOnKakao = useCallback(() => {
+    const url = `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent('https://toolhub.ai.kr/korean-wordle')}`
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }, [])
 
   // ── Build display rows ──
   const displayRows = useMemo(() => {
@@ -1089,6 +1155,86 @@ export default function KoreanWordle() {
           </p>
         )}
       </div>
+
+      {/* Result Card — shown when game ends */}
+      {gameStatus !== 'playing' && (
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 sm:p-6 space-y-4">
+          {/* Header row: result label + guess count */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+              {gameStatus === 'won' ? t('resultWon') : t('resultLost')}
+            </h2>
+            <span className="text-2xl font-bold text-gray-500 dark:text-gray-400">
+              {gameStatus === 'won' ? guesses.length : 'X'}/{MAX_GUESSES}
+            </span>
+          </div>
+
+          {/* Emoji grid */}
+          <div className="font-mono text-base leading-relaxed whitespace-pre bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 text-center">
+            {buildEmojiGrid()}
+          </div>
+
+          {/* Answer reveal on loss */}
+          {gameStatus === 'lost' && (
+            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+              {t('answerWas')} <span className="font-bold text-gray-900 dark:text-white text-base">{answer}</span>
+            </p>
+          )}
+
+          {/* Streak emphasis */}
+          {endStreak && endStreak.wasLost && endStreak.value >= 2 && (
+            <div className="bg-orange-50 dark:bg-orange-950/50 border border-orange-200 dark:border-orange-800 rounded-lg px-4 py-3 text-center text-sm font-medium text-orange-700 dark:text-orange-300">
+              {t('streakLost', { count: endStreak.value })}
+            </div>
+          )}
+          {endStreak && !endStreak.wasLost && endStreak.value >= 2 && (
+            <div className="bg-green-50 dark:bg-green-950/50 border border-green-200 dark:border-green-800 rounded-lg px-4 py-3 text-center text-sm font-medium text-green-700 dark:text-green-300">
+              {t('streakContinued', { count: endStreak.value })}
+            </div>
+          )}
+
+          {/* Share buttons row */}
+          <div className="flex flex-wrap gap-2 justify-center">
+            {/* Copy to clipboard */}
+            <button
+              onClick={copyShare}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium transition-colors"
+            >
+              {copiedShare ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+              {copiedShare ? t('shared') : t('copyResult')}
+            </button>
+
+            {/* Web Share API (mobile native) */}
+            {typeof navigator !== 'undefined' && !!navigator.share && (
+              <button
+                onClick={shareResults}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue-100 dark:bg-blue-900/50 hover:bg-blue-200 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-medium transition-colors"
+              >
+                <Share2 className="w-4 h-4" />
+                {t('shareNative')}
+              </button>
+            )}
+
+            {/* X/Twitter */}
+            <button
+              onClick={shareOnTwitter}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-black dark:bg-gray-900 hover:bg-gray-800 dark:hover:bg-black text-white text-sm font-medium transition-colors"
+            >
+              <Twitter className="w-4 h-4" />
+              {t('shareTwitter')}
+            </button>
+
+            {/* KakaoTalk */}
+            <button
+              onClick={shareOnKakao}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-sm font-medium transition-colors"
+            >
+              <span className="text-base leading-none font-bold">K</span>
+              {t('shareKakao')}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Virtual Keyboard */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 sm:p-4">

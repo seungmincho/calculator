@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '결혼비용 계산기 - 예산 계획부터 양가 분담까지 | 툴허브',
     description: '결혼 총 비용 항목별 계획, 축의금 예상, 양가 분담 비율 계산. 서울/지방 평균 비용 자동 추정.',
-    url: 'https://toolhub.ai.kr/wedding-calculator',
+    url: 'https://toolhub.ai.kr/wedding-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

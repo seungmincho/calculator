@@ -3,11 +3,11 @@ import StockCalculator from '@/components/StockCalculator'
 
 export const metadata: Metadata = {
   title: '주식 수익률 계산기 | 툴허브 - 매수가 대비 수익률 및 손익 계산',
-  description: '주식 매수가격과 현재가격을 입력하여 수익률, 총 수익금, 손익률을 정확히 계산해보세요.',
+  description: '주식 매수가격과 현재가격을 입력하여 수익률, 총 수익금, 세금·수수료 포함 실수익을 계산하세요. 목표가 역산도 지원합니다.',
   keywords: '주식수익률계산기, 주식손익계산, 매수가계산, 주식투자수익률, 주가수익률, 투자손익계산기',
   openGraph: {
     title: '주식 수익률 계산기 | 툴허브',
-    description: '주식 투자 수익률과 손익을 정확히 계산하여 투자 성과를 분석해보세요',
+    description: '주식 매수가·현재가 입력으로 수익률, 실수익, 목표가 역산까지 계산하세요',
     url: 'https://toolhub.ai.kr/stock-calculator',
     siteName: '툴허브',
     locale: 'ko_KR',

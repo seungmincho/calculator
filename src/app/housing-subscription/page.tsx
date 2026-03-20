@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '청약가점 계산기 | 툴허브',
     description: '무주택기간·부양가족·청약통장 가입기간으로 청약가점 84점 만점을 자동 계산하세요.',
-    url: 'https://toolhub.ai.kr/housing-subscription',
+    url: 'https://toolhub.ai.kr/housing-subscription/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '무주택기간·부양가족·청약통장 가입기간으로 청약가점 84점 만점 계산',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/housing-subscription',
+    canonical: 'https://toolhub.ai.kr/housing-subscription/',
   },
 }
 

@@ -3,7 +3,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import JsonFormatter from '@/components/JsonFormatter'
 
 export const metadata: Metadata = {
-  title: 'JSON 포맷터 Pro - JSON 검증, 포맷팅, 압축, JSONPath 쿼리, JSON5 지원',
+  title: 'JSON 포맷터 Pro - 검증·포맷·압축 | 툴허브',
   description: 'JSON 데이터를 검증하고 포맷팅하세요. 구문 강조 에디터, 인터랙티브 트리뷰, JSONPath 쿼리, JSON5/JSONC 지원, 통계 분석, 드래그앤드롭, 키보드 단축키를 제공합니다.',
   keywords: 'JSON포맷터, JSON검증, JSON예쁘게, JSON압축, JSONPath, JSON5, JSONC, JSON뷰어, JSON트리뷰, JSON통계, 온라인JSON도구, JSON포맷팅, JSON구문강조',
   openGraph: {
@@ -12,6 +12,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/json-formatter',
+    locale: 'ko_KR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'JSON 포맷터 Pro - 검증·포맷·압축',
+    description: 'JSON 데이터를 검증하고 포맷팅하세요. 구문 강조 에디터, 인터랙티브 트리뷰, JSONPath 쿼리, JSON5/JSONC 지원, 통계 분석을 제공합니다.',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/json-formatter/',

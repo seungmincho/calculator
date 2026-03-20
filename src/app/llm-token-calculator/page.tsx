@@ -4,13 +4,13 @@ import LlmTokenCalculator from '@/components/LlmTokenCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
-  title: 'LLM 토큰 계산기 - GPT, Claude, Gemini 토큰 수 & 비용 계산 | 툴허브',
+  title: 'LLM 토큰 계산기 - AI 비용 계산 | 툴허브',
   description: 'GPT-4o, Claude, Gemini, Llama 등 주요 LLM 모델의 토큰 수를 추정하고 API 호출 비용을 계산하세요. 한국어 토큰 특성 반영, 모델별 비교 테이블 제공.',
   keywords: 'LLM 토큰 계산기, 토큰 카운터, GPT 토큰, Claude 토큰, Gemini 토큰, API 비용 계산, 토큰 수 추정, 한국어 토큰, token counter, token calculator',
   openGraph: {
     title: 'LLM 토큰 계산기 | 툴허브',
     description: 'GPT, Claude, Gemini 등 LLM 모델별 토큰 수 추정 및 API 비용 계산',
-    url: 'https://toolhub.ai.kr/llm-token-calculator',
+    url: 'https://toolhub.ai.kr/llm-token-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: 'GPT, Claude, Gemini 등 LLM 모델별 토큰 수 추정 및 API 비용 계산',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/llm-token-calculator',
+    canonical: 'https://toolhub.ai.kr/llm-token-calculator/',
   },
 }
 

@@ -4,11 +4,11 @@ import ExchangeRateCalculator from '@/components/ExchangeRateCalculator'
 
 export const metadata: Metadata = {
   title: '환율 계산기 - 실시간 환전 계산',
-  description: '실시간 환율을 기반으로 정확한 환전 금액을 계산하세요. 원화, 달러, 유로, 엔화 등 주요 통화의 환율 계산기입니다.',
+  description: '실시간 환율로 원화·달러·유로·엔화·위안 등 주요 통화를 즉시 환산합니다. 해외여행, 직구, 해외송금 전 환전 금액을 미리 계산하세요.',
   keywords: '환율계산기, 환전계산기, 실시간환율, 달러환율, 엔화환율, 유로환율, 원화환전, 환율변환, 통화계산기',
   openGraph: {
     title: '환율 계산기 - 실시간 환전 계산 | 툴허브',
-    description: '실시간 환율을 기반으로 정확한 환전 금액을 계산하세요',
+    description: '원화·달러·유로·엔화 등 주요 통화를 실시간 환율로 즉시 환산',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/exchange-calculator',
     images: [
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '환율 계산기 - 실시간 환전 계산 | 툴허브',
-    description: '실시간 환율을 기반으로 정확한 환전 금액을 계산하세요',
+    description: '원화·달러·유로·엔화 등 주요 통화를 실시간 환율로 즉시 환산',
     images: ['/og-image-1200x630.png'],
   },
   alternates: {

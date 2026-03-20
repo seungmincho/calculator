@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CAGR 계산기 - 연평균성장률 계산 | 툴허브',
     description: 'CAGR(연평균성장률) 계산, 미래가치 예측, 투자 비교 분석. 코스피·S&P500·부동산 프리셋 제공.',
-    url: 'https://toolhub.ai.kr/cagr-calculator',
+    url: 'https://toolhub.ai.kr/cagr-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

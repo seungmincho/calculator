@@ -4,7 +4,7 @@ import ColorConverter from '@/components/ColorConverter'
 
 export const metadata: Metadata = {
   title: '색상 변환기 - HEX, RGB, HSL, CMYK 변환 | 툴허브',
-  description: '색상 코드를 HEX, RGB, HSL, HSV, CMYK 형식으로 변환합니다. 컬러 피커와 색상 팔레트 기능을 제공합니다.',
+  description: '색상 코드를 HEX, RGB, HSL, HSV, CMYK 형식으로 즉시 변환합니다. 컬러 피커로 색상을 고르면 모든 형식을 한번에 확인하고 복사할 수 있습니다.',
   keywords: '색상변환기, hex변환, rgb변환, hsl변환, cmyk변환, 컬러피커, color converter',
   openGraph: {
     title: '색상 변환기 - HEX/RGB/HSL/CMYK 변환',
@@ -12,6 +12,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/color-converter',
+    locale: 'ko_KR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '색상 변환기 - HEX, RGB, HSL, CMYK 변환',
+    description: '색상 코드를 HEX, RGB, HSL, HSV, CMYK 형식으로 즉시 변환합니다. 컬러 피커로 색상을 고르면 모든 형식을 한번에 확인하고 복사할 수 있습니다.',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/color-converter/',
@@ -23,7 +29,7 @@ export default function ColorConverterPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '색상 변환기',
-    description: '색상 코드를 HEX, RGB, HSL, HSV, CMYK 형식으로 변환합니다. 컬러 피커와 색상 팔레트 기능을 제공합니다.',
+    description: '색상 코드를 HEX, RGB, HSL, HSV, CMYK 형식으로 즉시 변환합니다. 컬러 피커로 색상을 고르면 모든 형식을 한번에 확인하고 복사할 수 있습니다.',
     url: 'https://toolhub.ai.kr/color-converter',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',

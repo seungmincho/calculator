@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '육아휴직급여 계산기 2025 - 6+6 부모육아휴직제 | 툴허브',
     description: '2025년 육아휴직급여 자동 계산. 6+6 부모육아휴직제, 월별 급여, 부부 시뮬레이션 지원.',
-    url: 'https://toolhub.ai.kr/parental-leave',
+    url: 'https://toolhub.ai.kr/parental-leave/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

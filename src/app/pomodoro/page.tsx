@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '포모도로 타이머 - 25분 집중, 생산성 향상 | 툴허브',
     description: '포모도로 기법으로 25분 집중 후 5분 휴식. 집중력과 생산성을 높이는 온라인 타이머.',
-    url: 'https://toolhub.ai.kr/pomodoro',
+    url: 'https://toolhub.ai.kr/pomodoro/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

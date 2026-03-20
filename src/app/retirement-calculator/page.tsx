@@ -4,11 +4,11 @@ import RetirementCalculator from '@/components/RetirementCalculator'
 
 export const metadata: Metadata = {
   title: '퇴직금 계산기',
-  description: '퇴직금과 퇴직소득세를 정확하게 계산하세요. 평균임금과 근무기간을 입력하면 실수령 퇴직금을 알 수 있습니다.',
+  description: '퇴직금과 퇴직소득세를 정확하게 계산하세요. 평균임금·근무기간 입력만으로 실수령 퇴직금과 세금 공제 내역을 한눈에 확인할 수 있습니다.',
   keywords: '퇴직금계산기, 퇴직금, 퇴직소득세, 근로기준법, 평균임금, 근무기간, 퇴직금계산, 세후퇴직금',
   openGraph: {
     title: '퇴직금 계산기 | 툴허브',
-    description: '퇴직금과 퇴직소득세를 정확하게 계산하세요',
+    description: '평균임금·근무기간 입력으로 실수령 퇴직금과 세금 내역을 한눈에 확인',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/retirement-calculator',
     images: [
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '퇴직금 계산기 | 툴허브',
-    description: '퇴직금과 퇴직소득세를 정확하게 계산하세요',
+    description: '평균임금·근무기간 입력으로 실수령 퇴직금과 세금 내역을 한눈에 확인',
     images: ['/og-image-1200x630.png'],
   },
   alternates: {

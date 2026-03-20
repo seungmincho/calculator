@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: '온라인 도트앤박스 - 실시간 대전 게임 | 툴허브',
     description: '친구와 실시간으로 도트앤박스 대전! 더 많은 상자를 차지하세요!',
     url: 'https://toolhub.ai.kr/dots-and-boxes',
-    type: 'website'
+    type: 'website',
     siteName: '툴허브',
   },
   alternates: {

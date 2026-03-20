@@ -6,7 +6,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: 'IP 서브넷 계산기 - CIDR, 서브넷마스크, 호스트 범위 계산 | 툴허브',
+  title: 'IP 서브넷 계산기 - CIDR·서브넷마스크 | 툴허브',
   description: 'IPv4 서브넷을 간편하게 계산하세요. CIDR 표기법, 서브넷마스크, 네트워크 주소, 브로드캐스트 주소, 사용 가능한 호스트 범위, 바이너리 표현까지 한번에 확인할 수 있습니다.',
   keywords: 'IP 서브넷 계산기, CIDR 계산기, 서브넷마스크, 네트워크 주소, 브로드캐스트 주소, IP 주소 계산, 와일드카드 마스크, 서브넷팅',
   openGraph: {

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MBTI 궁합 분석 16×16 | 툴허브',
     description: 'MBTI 유형별 연애 궁합 분석. 남녀 관점별 첫인상, 연애 장점, 갈등 포인트, 극복 방법까지 상세 분석',
-    url: 'https://toolhub.ai.kr/mbti-compatibility',
+    url: 'https://toolhub.ai.kr/mbti-compatibility/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: 'MBTI 유형별 연애 궁합을 상세히 분석합니다',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/mbti-compatibility',
+    canonical: 'https://toolhub.ai.kr/mbti-compatibility/',
   },
 }
 

@@ -4,7 +4,7 @@ import SqlFormatter from '@/components/SqlFormatter'
 
 export const metadata: Metadata = {
   title: 'SQL 포맷터 - SQL 쿼리 포맷팅, 검증, 최적화 도구',
-  description: 'SQL 쿼리를 예쁘게 포맷팅하고 압축하세요. 문법 검증과 쿼리 최적화 제안을 제공합니다.',
+  description: 'SQL 쿼리를 읽기 좋게 포맷팅하거나 한 줄로 압축하세요. MySQL, PostgreSQL, SQLite 방언을 지원하며 문법 검증까지 제공합니다.',
   keywords: 'SQL포맷터, SQL검증, SQL예쁘게, SQL압축, SQL문법검사, 쿼리포맷터, 온라인SQL도구, 데이터베이스',
   openGraph: {
     title: 'SQL 포맷터 - SQL 쿼리 포맷팅, 검증',
@@ -12,6 +12,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/sql-formatter',
+    locale: 'ko_KR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SQL 포맷터 - SQL 쿼리 포맷팅, 검증, 최적화 도구',
+    description: 'SQL 쿼리를 읽기 좋게 포맷팅하거나 한 줄로 압축하세요. MySQL, PostgreSQL, SQLite 방언을 지원하며 문법 검증까지 제공합니다.',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/sql-formatter/',
@@ -23,7 +29,7 @@ export default function SqlFormatterPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'SQL 포맷터',
-    description: 'SQL 쿼리를 예쁘게 포맷팅하고 압축하세요. 문법 검증과 쿼리 최적화 제안을 제공합니다.',
+    description: 'SQL 쿼리를 읽기 좋게 포맷팅하거나 한 줄로 압축하세요. MySQL, PostgreSQL, SQLite 방언을 지원하며 문법 검증까지 제공합니다.',
     url: 'https://toolhub.ai.kr/sql-formatter',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',

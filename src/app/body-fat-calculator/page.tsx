@@ -3,7 +3,7 @@ import BodyFatCalculator from '@/components/BodyFatCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
-  title: '체지방률 계산기 | Navy, YMCA 공식으로 정확한 체지방 측정 | 툴허브',
+  title: '체지방률 계산기 - Navy·YMCA 공식 | 툴허브',
   description: 'Navy 공식, YMCA 공식을 사용해 허리, 목, 엉덩이 둘레로 체지방률을 계산하세요. 체성분 분석, 근육량 계산, 이상적인 체지방률 목표 설정까지 한번에!',
   keywords: [
     '체지방률 계산기',

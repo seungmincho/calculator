@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: '온라인 체커 - 실시간 대전 게임 | 툴허브',
     description: '친구와 실시간으로 체커 대전! 상대 말을 모두 잡으세요!',
     url: 'https://toolhub.ai.kr/checkers',
-    type: 'website'
+    type: 'website',
     siteName: '툴허브',
   },
   alternates: {

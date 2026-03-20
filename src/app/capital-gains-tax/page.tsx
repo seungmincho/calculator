@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '양도소득세 계산기 | 툴허브',
     description: '부동산 양도소득세를 자동 계산합니다. 장기보유특별공제, 1세대1주택 비과세, 다주택 중과세율 반영.',
-    url: 'https://toolhub.ai.kr/capital-gains-tax',
+    url: 'https://toolhub.ai.kr/capital-gains-tax/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '부동산 양도소득세를 자동 계산합니다. 장기보유특별공제, 1세대1주택 비과세, 다주택 중과세율 반영.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/capital-gains-tax',
+    canonical: 'https://toolhub.ai.kr/capital-gains-tax/',
   },
 }
 

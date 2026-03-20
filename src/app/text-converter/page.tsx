@@ -4,7 +4,7 @@ import TextConverter from '@/components/TextConverter'
 
 export const metadata: Metadata = {
   title: '텍스트 변환기 - 대소문자, 케이스 변환 | 툴허브',
-  description: '텍스트 대소문자 변환, camelCase, snake_case, kebab-case 등 다양한 케이스 변환을 지원합니다.',
+  description: '텍스트 대소문자 변환, camelCase, snake_case, kebab-case, PascalCase 등 다양한 케이스를 즉시 변환합니다. 개발자 필수 도구.',
   keywords: '텍스트변환, 대소문자변환, camelcase, snakecase, kebabcase, 케이스변환, text converter',
   openGraph: {
     title: '텍스트 변환기 - 케이스 변환 도구',
@@ -12,6 +12,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/text-converter',
+    locale: 'ko_KR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '텍스트 변환기 - 대소문자, 케이스 변환',
+    description: '텍스트 대소문자 변환, camelCase, snake_case, kebab-case, PascalCase 등 다양한 케이스를 즉시 변환합니다. 개발자 필수 도구.',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/text-converter/',
@@ -23,7 +29,7 @@ export default function TextConverterPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '텍스트 변환기',
-    description: '텍스트 대소문자 변환, camelCase, snake_case, kebab-case 등 다양한 케이스 변환을 지원합니다.',
+    description: '텍스트 대소문자 변환, camelCase, snake_case, kebab-case, PascalCase 등 다양한 케이스를 즉시 변환합니다. 개발자 필수 도구.',
     url: 'https://toolhub.ai.kr/text-converter',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',

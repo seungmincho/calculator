@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MBTI 성격유형 검사 48문항 | 툴허브',
     description: '48문항으로 알아보는 나의 MBTI 유형. 성격 특성, 연애 스타일, 추천 직업, 결과 카드 공유까지',
-    url: 'https://toolhub.ai.kr/mbti-test',
+    url: 'https://toolhub.ai.kr/mbti-test/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '48문항 상세 MBTI 검사로 나의 성격유형을 알아보세요',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/mbti-test',
+    canonical: 'https://toolhub.ai.kr/mbti-test/',
   },
 }
 

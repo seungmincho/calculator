@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '건강보험료 계산기 2025 - 직장/지역가입자 | 툴허브',
     description: '2025년 직장·지역가입자 건강보험료 계산, 피부양자 판정, 직장 vs 지역 비교',
-    url: 'https://toolhub.ai.kr/health-insurance',
+    url: 'https://toolhub.ai.kr/health-insurance/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

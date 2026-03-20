@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'cURL Command Builder - cURL 명령어 생성 & 코드 변환 | 툴허브',
     description: 'cURL 명령어를 GUI로 생성하고 6가지 프로그래밍 언어 코드로 변환. fetch, axios, Python, Go, PHP 지원.',
-    url: 'https://toolhub.ai.kr/curl-builder',
+    url: 'https://toolhub.ai.kr/curl-builder/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

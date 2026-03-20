@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '바이오리듬 계산기 - 신체·감성·지성 리듬 | 툴허브',
     description: '생년월일 기반 바이오리듬 차트, 위험일, 종합 컨디션, 호환성 분석',
-    url: 'https://toolhub.ai.kr/biorhythm',
+    url: 'https://toolhub.ai.kr/biorhythm/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

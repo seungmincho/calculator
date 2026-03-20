@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '전역일 계산기 - 군 복무 전역일·D-Day 계산 | 툴허브',
     description: '입대일과 군별을 선택하면 전역일, D-Day, 복무 진행률, 진급 일정을 계산합니다.',
-    url: 'https://toolhub.ai.kr/military-discharge',
+    url: 'https://toolhub.ai.kr/military-discharge/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '군 복무 전역일, D-Day, 진급 일정을 한 번에 계산하세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/military-discharge',
+    canonical: 'https://toolhub.ai.kr/military-discharge/',
   },
 }
 

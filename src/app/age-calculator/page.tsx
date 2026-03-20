@@ -4,7 +4,7 @@ import AgeCalculator from '@/components/AgeCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
-  title: '나이 계산기 - 만 나이, 한국 나이, 학년 계산, 생일 D-Day | 툴허브',
+  title: '나이 계산기 - 만 나이·한국 나이·학년 | 툴허브',
   description: '나이 계산기 - 생년월일을 입력하면 만 나이, 한국 나이(세는 나이), 연 나이, 학년 정보, 같은 학년 또래, 다음 생일 D-Day, 인생 타임라인, 띠, 별자리를 한눈에 확인하세요.',
   keywords: '나이 계산기, 만 나이 계산, 한국 나이, 세는 나이, 학년 계산, 빠른생일, 생일 D-Day, 인생 타임라인, 띠 계산, 별자리 계산, 연 나이, age calculator',
   openGraph: {

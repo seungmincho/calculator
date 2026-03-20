@@ -4,13 +4,13 @@ import WebserverConfig from '@/components/WebserverConfig'
 import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
-  title: '웹서버 설정 생성기 - Nginx, Caddy 설정 파일 자동 생성 | 툴허브',
+  title: '웹서버 설정 생성기 - Nginx·Caddy | 툴허브',
   description: 'Nginx, Caddy 웹서버 설정 파일을 상황별 베스트 프리셋으로 자동 생성합니다. 리버스 프록시, SSL, SPA, 로드 밸런서, API 게이트웨이 설정을 간편하게 만드세요.',
   keywords: '웹서버 설정, Nginx 설정 생성기, Caddy 설정, 리버스 프록시, SSL 설정, Nginx config generator, Caddy config, reverse proxy, load balancer',
   openGraph: {
     title: '웹서버 설정 생성기 | 툴허브',
     description: 'Nginx, Caddy 설정 파일을 상황별 베스트 프리셋으로 자동 생성',
-    url: 'https://toolhub.ai.kr/webserver-config',
+    url: 'https://toolhub.ai.kr/webserver-config/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: 'Nginx, Caddy 설정 파일을 상황별 베스트 프리셋으로 자동 생성',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/webserver-config',
+    canonical: 'https://toolhub.ai.kr/webserver-config/',
   },
 }
 

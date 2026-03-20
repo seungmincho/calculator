@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: '온라인 만칼라 - 실시간 대전 게임 | 툴허브',
     description: '친구와 실시간으로 만칼라 대전! 더 많은 돌을 모으세요!',
     url: 'https://toolhub.ai.kr/mancala',
-    type: 'website'
+    type: 'website',
     siteName: '툴허브',
   },
   alternates: {

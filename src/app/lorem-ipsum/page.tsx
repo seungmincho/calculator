@@ -4,7 +4,7 @@ import LoremIpsumGenerator from '@/components/LoremIpsumGenerator'
 
 export const metadata: Metadata = {
   title: 'Lorem Ipsum 생성기 - 더미 텍스트 생성 | 툴허브',
-  description: '웹 디자인과 개발에 사용할 Lorem Ipsum 더미 텍스트를 생성합니다. 한글 Lorem Ipsum도 지원합니다.',
+  description: '웹 디자인·개발 작업에 필요한 Lorem Ipsum 더미 텍스트를 생성합니다. 문단·문장·단어 단위 설정 가능, 한글 더미 텍스트도 지원합니다.',
   keywords: 'lorem ipsum, 더미텍스트, 채움글, 한글lorem, 테스트텍스트, placeholder text',
   openGraph: {
     title: 'Lorem Ipsum 생성기 - 더미 텍스트',
@@ -12,6 +12,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/lorem-ipsum',
+    locale: 'ko_KR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Lorem Ipsum 생성기 - 더미 텍스트 생성',
+    description: '웹 디자인·개발 작업에 필요한 Lorem Ipsum 더미 텍스트를 생성합니다. 문단·문장·단어 단위 설정 가능, 한글 더미 텍스트도 지원합니다.',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/lorem-ipsum/',
@@ -23,7 +29,7 @@ export default function LoremIpsumPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'Lorem Ipsum 생성기',
-    description: '웹 디자인과 개발에 사용할 Lorem Ipsum 더미 텍스트를 생성합니다. 한글 Lorem Ipsum도 지원합니다.',
+    description: '웹 디자인·개발 작업에 필요한 Lorem Ipsum 더미 텍스트를 생성합니다. 문단·문장·단어 단위 설정 가능, 한글 더미 텍스트도 지원합니다.',
     url: 'https://toolhub.ai.kr/lorem-ipsum',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',

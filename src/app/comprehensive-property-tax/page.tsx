@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '종합부동산세 계산기 2025 | 툴허브',
     description: '2025년 종부세 자동계산. 납세자 유형별 세율, 세액공제, 세부담상한까지 단계별 분석.',
-    url: 'https://toolhub.ai.kr/comprehensive-property-tax',
+    url: 'https://toolhub.ai.kr/comprehensive-property-tax/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

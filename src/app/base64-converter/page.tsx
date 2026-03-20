@@ -12,6 +12,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/base64-converter',
+    locale: 'ko_KR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Base64 인코더/디코더 - 텍스트, 이미지 변환',
+    description: 'Base64 인코딩/디코딩 도구. 텍스트를 Base64로 변환하거나 Base64를 원본으로 복원합니다. 이미지 파일도 지원합니다.',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/base64-converter/',

@@ -4,7 +4,7 @@ import DiffViewer from '@/components/DiffViewer'
 
 export const metadata: Metadata = {
   title: 'Diff 비교 도구 - 텍스트/코드 비교 | 툴허브',
-  description: '두 텍스트나 코드를 비교하여 차이점을 시각적으로 확인합니다. 추가, 삭제, 변경된 부분을 하이라이트로 표시합니다.',
+  description: '두 텍스트나 코드를 붙여넣기만 하면 차이점을 즉시 시각화합니다. 추가·삭제·변경 부분을 색상으로 구분하고 줄·단어 단위 비교를 지원합니다.',
   keywords: 'diff, 텍스트비교, 코드비교, 차이점비교, 문서비교, diff viewer, compare',
   openGraph: {
     title: 'Diff 비교 도구 - 온라인 텍스트 비교',
@@ -12,6 +12,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/diff-viewer',
+    locale: 'ko_KR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Diff 비교 도구 - 텍스트/코드 비교',
+    description: '두 텍스트나 코드를 붙여넣기만 하면 차이점을 즉시 시각화합니다. 추가·삭제·변경 부분을 색상으로 구분하고 줄·단어 단위 비교를 지원합니다.',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/diff-viewer/',
@@ -23,7 +29,7 @@ export default function DiffViewerPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '텍스트 비교 도구 (Diff)',
-    description: '두 텍스트나 코드를 비교하여 차이점을 시각적으로 확인합니다. 추가, 삭제, 변경된 부분을 하이라이트로 표시합니다.',
+    description: '두 텍스트나 코드를 붙여넣기만 하면 차이점을 즉시 시각화합니다. 추가·삭제·변경 부분을 색상으로 구분하고 줄·단어 단위 비교를 지원합니다.',
     url: 'https://toolhub.ai.kr/diff-viewer',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
