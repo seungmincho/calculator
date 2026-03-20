@@ -15,6 +15,7 @@ import ToolTracker from '@/components/ToolTracker'
 import ToolShareButton from '@/components/ToolShareButton'
 import BackToTop from '@/components/BackToTop'
 import MobileBottomNav from '@/components/MobileBottomNav'
+import PushNotificationManager from '@/components/PushNotificationManager'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import I18nWrapper from '@/components/I18nWrapper'
@@ -215,6 +216,9 @@ export default function RootLayout({
 
             {/* Daily Tips Component */}
             <DailyTips />
+
+            {/* Push Notification Opt-in */}
+            <PushNotificationManager />
           </I18nWrapper>
 
         </LanguageProvider>

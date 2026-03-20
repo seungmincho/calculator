@@ -1241,5 +1241,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    {
+      url: 'https://toolhub.ai.kr/mbti-test/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://toolhub.ai.kr/mbti-compatibility/',
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
   ]
 }

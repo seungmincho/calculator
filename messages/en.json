@@ -40,6 +40,12 @@
   "accessibility": {
     "skipToContent": "Skip to main content"
   },
+  "pushNotification": {
+    "title": "Get notified about new tools",
+    "description": "We'll notify you when new tools are added",
+    "allow": "Allow notifications",
+    "later": "Later"
+  },
   "feedback": {
     "button": "Feedback",
     "title": "Was this calculator helpful?",
@@ -1187,7 +1193,9 @@
       "cagrCalculator": "CAGR Calculator",
       "chess": "Chess",
       "biorhythm": "Biorhythm Calculator",
-      "pomodoro": "Pomodoro Timer"
+      "pomodoro": "Pomodoro Timer",
+      "mbtiTest": "MBTI Personality Test",
+      "mbtiCompatibility": "MBTI Compatibility"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -4311,6 +4319,14 @@
       "pomodoro": {
         "title": "Pomodoro Timer",
         "description": "25-min focus + 5-min break, task management, notifications, stats"
+      },
+      "mbtiTest": {
+        "title": "MBTI Personality Test",
+        "description": "48-question detailed test to discover your MBTI type, with shareable result cards"
+      },
+      "mbtiCompatibility": {
+        "title": "MBTI Compatibility",
+        "description": "16×16 compatibility matrix with detailed analysis by gender perspective"
       }
     }
   },
@@ -16607,5 +16623,119 @@
   "rentSubsidy": {
     "title": "LH Monthly Rent Subsidy Calculator",
     "description": "Calculate monthly rent subsidies for youth, newlyweds, and general households."
+  },
+  "mbtiTest": {
+    "title": "MBTI Personality Test",
+    "description": "Discover your MBTI type with our detailed 48-question test",
+    "startTest": "Start Test",
+    "question": "Question",
+    "of": "/",
+    "progress": "Progress",
+    "prev": "Previous",
+    "next": "Next",
+    "seeResult": "See Result",
+    "result": "Test Result",
+    "yourType": "Your Type",
+    "typeDistribution": "Type Distribution",
+    "personality": "Personality Traits",
+    "strengths": "Strengths",
+    "weaknesses": "Weaknesses",
+    "communicationStyle": "Communication Style",
+    "loveStyle": "Relationship Style",
+    "careers": "Recommended Careers",
+    "famousPeople": "Famous People",
+    "koreanPopulation": "Korean Population %",
+    "retake": "Retake Test",
+    "shareResult": "Share Result",
+    "shareTitle": "My MBTI Test Result",
+    "shareText": "My MBTI is {type} ({nickname})! Take the test →",
+    "copied": "Link copied!",
+    "copyLink": "Copy Link",
+    "shareKakao": "KakaoTalk",
+    "shareX": "X (Twitter)",
+    "downloadCard": "Save Result Card",
+    "checkCompatibility": "Check Compatibility",
+    "disclaimer": "This test is for entertainment purposes only. It is not an official MBTI assessment.",
+    "guide": {
+      "title": "MBTI Test Guide",
+      "what": {
+        "title": "What is MBTI?",
+        "items": [
+          "MBTI (Myers-Briggs Type Indicator) is a personality type classification tool",
+          "It classifies personalities into 16 types based on 4 preference dimensions",
+          "Energy Direction (E/I), Perception (S/N), Judgment (T/F), Lifestyle (J/P)"
+        ]
+      },
+      "howTo": {
+        "title": "How to Take the Test",
+        "items": [
+          "48 questions total, 12 questions per dimension",
+          "Choose the answer that feels more natural to you",
+          "Don't overthink — answer based on your usual behavior",
+          "The test takes approximately 5-10 minutes"
+        ]
+      },
+      "axes": {
+        "title": "4 Preference Dimensions",
+        "items": [
+          "E(Extraversion) vs I(Introversion): Where you get energy from",
+          "S(Sensing) vs N(Intuition): How you perceive information",
+          "T(Thinking) vs F(Feeling): How you make decisions",
+          "J(Judging) vs P(Perceiving): How you approach life"
+        ]
+      }
+    }
+  },
+  "mbtiCompatibility": {
+    "title": "MBTI Compatibility",
+    "description": "Detailed compatibility analysis between two MBTI types",
+    "myType": "My Type",
+    "partnerType": "Partner Type",
+    "selectType": "Select Type",
+    "analyze": "Analyze Compatibility",
+    "matrix": "Compatibility Matrix",
+    "matrixDesc": "Click a cell to see detailed analysis",
+    "rating": "Compatibility",
+    "ratingLevels": {
+      "soulmate": "Soulmate",
+      "veryGood": "Very Good",
+      "good": "Good",
+      "average": "Average",
+      "caution": "Caution"
+    },
+    "perspective": "Perspective",
+    "perspectiveMale": "Male → Female",
+    "perspectiveFemale": "Female → Male",
+    "firstImpression": "First Impression",
+    "datingStrengths": "Dating Strengths",
+    "conflictPoints": "Conflict Points",
+    "advice": "Advice",
+    "summary": "Summary",
+    "typeProfile": "Type Profile",
+    "backToMatrix": "Back to Matrix",
+    "legend": "Legend",
+    "disclaimer": "MBTI compatibility is for entertainment only. Real relationships depend on individual effort and communication.",
+    "guide": {
+      "title": "Compatibility Guide",
+      "rating": {
+        "title": "Rating Levels",
+        "items": [
+          "Soulmate (★★★★★): Naturally perfect match",
+          "Very Good (★★★★): Complementary and growth-oriented",
+          "Good (★★★): Works well with some effort",
+          "Average (★★): Differences exist but manageable",
+          "Caution (★): Frequent conflicts possible, requires significant effort"
+        ]
+      },
+      "tips": {
+        "title": "Usage Tips",
+        "items": [
+          "MBTI shows personality tendencies, not absolute standards",
+          "Individual differences exist even within the same type",
+          "Check both male and female perspectives for a complete view",
+          "Low compatibility doesn't mean a bad relationship — effort matters most"
+        ]
+      }
+    }
   }
 }

@@ -175,6 +175,56 @@ function updateCache(request) {
   }).catch(() => {})
 }
 
+// ─── Push Notification Handlers ───
+
+// Handle incoming push notifications
+self.addEventListener('push', function(event) {
+  if (event.data) {
+    let data
+    try {
+      data = event.data.json()
+    } catch (e) {
+      data = { title: '툴허브', body: event.data.text() }
+    }
+    const options = {
+      body: data.body || '',
+      icon: data.icon || '/android-chrome-192x192.png',
+      badge: '/favicon-96x96.png',
+      vibrate: [100, 50, 100],
+      data: {
+        url: data.url || '/',
+        dateOfArrival: Date.now(),
+      },
+      actions: data.actions || [],
+    }
+    event.waitUntil(
+      self.registration.showNotification(data.title || '툴허브', options)
+    )
+  }
+})
+
+// Handle notification click - open the target URL
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close()
+  const targetUrl = event.notification.data?.url || '/'
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+      .then(function(clientList) {
+        // Focus existing tab if open
+        for (var i = 0; i < clientList.length; i++) {
+          var client = clientList[i]
+          if (client.url.includes(targetUrl) && 'focus' in client) {
+            return client.focus()
+          }
+        }
+        // Otherwise open new tab
+        if (self.clients.openWindow) {
+          return self.clients.openWindow(targetUrl)
+        }
+      })
+  )
+})
+
 // Generate offline page HTML
 function generateOfflinePage() {
   return `

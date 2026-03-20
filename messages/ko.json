@@ -40,6 +40,12 @@
   "accessibility": {
     "skipToContent": "본문으로 건너뛰기"
   },
+  "pushNotification": {
+    "title": "새 도구 알림 받기",
+    "description": "새로운 도구가 추가되면 알림으로 알려드려요",
+    "allow": "알림 허용",
+    "later": "나중에"
+  },
   "feedback": {
     "button": "피드백",
     "title": "이 계산기가 도움이 되셨나요?",
@@ -1461,7 +1467,9 @@
       "cagrCalculator": "CAGR 계산기",
       "chess": "체스",
       "biorhythm": "바이오리듬 계산기",
-      "pomodoro": "뽀모도로 타이머"
+      "pomodoro": "뽀모도로 타이머",
+      "mbtiTest": "MBTI 성격유형 검사",
+      "mbtiCompatibility": "MBTI 궁합 분석"
     },
     "copyright": "© 2025-2026 툴허브. All rights reserved."
   },
@@ -4311,6 +4319,14 @@
       "pomodoro": {
         "title": "뽀모도로 타이머",
         "description": "25분 집중 + 5분 휴식, 태스크 관리, 알림음, 통계"
+      },
+      "mbtiTest": {
+        "title": "MBTI 성격유형 검사",
+        "description": "48문항 상세 검사로 나의 MBTI 유형 알아보기, 결과 공유 카드 생성"
+      },
+      "mbtiCompatibility": {
+        "title": "MBTI 궁합 분석",
+        "description": "16×16 궁합 매트릭스, 남녀 관점별 상세 궁합 분석"
       }
     }
   },
@@ -16607,5 +16623,119 @@
   "rentSubsidy": {
     "title": "LH 월세지원금 계산기",
     "description": "청년, 신혼부부, 일반 가구의 월세지원금을 정확하게 계산해보세요."
+  },
+  "mbtiTest": {
+    "title": "MBTI 성격유형 검사",
+    "description": "48문항 상세 검사로 나의 MBTI 유형을 알아보세요",
+    "startTest": "검사 시작하기",
+    "question": "질문",
+    "of": "/",
+    "progress": "진행률",
+    "prev": "이전",
+    "next": "다음",
+    "seeResult": "결과 보기",
+    "result": "검사 결과",
+    "yourType": "당신의 유형",
+    "typeDistribution": "지표별 분포",
+    "personality": "성격 특성",
+    "strengths": "강점",
+    "weaknesses": "약점",
+    "communicationStyle": "소통 스타일",
+    "loveStyle": "연애 스타일",
+    "careers": "추천 직업",
+    "famousPeople": "같은 유형 유명인",
+    "koreanPopulation": "한국 인구 비율",
+    "retake": "다시 검사하기",
+    "shareResult": "결과 공유하기",
+    "shareTitle": "나의 MBTI 검사 결과",
+    "shareText": "나의 MBTI는 {type} ({nickname})! 나도 검사해보기 →",
+    "copied": "링크가 복사되었습니다",
+    "copyLink": "링크 복사",
+    "shareKakao": "카카오톡",
+    "shareX": "X (트위터)",
+    "downloadCard": "결과 카드 저장",
+    "checkCompatibility": "궁합 보러가기",
+    "disclaimer": "이 검사는 재미와 참고 용도로만 사용해 주세요. 공식 MBTI 검사가 아닙니다.",
+    "guide": {
+      "title": "MBTI 검사 가이드",
+      "what": {
+        "title": "MBTI란?",
+        "items": [
+          "MBTI(Myers-Briggs Type Indicator)는 성격 유형 분류 도구입니다",
+          "4가지 선호 지표를 조합하여 16개 성격 유형으로 분류합니다",
+          "에너지 방향(E/I), 인식 기능(S/N), 판단 기능(T/F), 생활 양식(J/P)"
+        ]
+      },
+      "howTo": {
+        "title": "검사 방법",
+        "items": [
+          "총 48문항, 각 축당 12문항으로 구성됩니다",
+          "직감적으로 더 끌리는 답변을 선택하세요",
+          "너무 오래 고민하지 말고 평소 모습대로 답해주세요",
+          "검사 시간은 약 5~10분 정도 소요됩니다"
+        ]
+      },
+      "axes": {
+        "title": "4가지 선호 지표",
+        "items": [
+          "E(외향) vs I(내향): 에너지를 어디서 얻는가",
+          "S(감각) vs N(직관): 정보를 어떻게 인식하는가",
+          "T(사고) vs F(감정): 어떻게 판단하는가",
+          "J(판단) vs P(인식): 생활을 어떻게 영위하는가"
+        ]
+      }
+    }
+  },
+  "mbtiCompatibility": {
+    "title": "MBTI 궁합 분석",
+    "description": "두 MBTI 유형의 궁합을 상세히 분석합니다",
+    "myType": "내 유형",
+    "partnerType": "상대 유형",
+    "selectType": "유형 선택",
+    "analyze": "궁합 분석하기",
+    "matrix": "궁합 매트릭스",
+    "matrixDesc": "유형을 클릭하면 상세 분석을 볼 수 있습니다",
+    "rating": "궁합도",
+    "ratingLevels": {
+      "soulmate": "천생연분",
+      "veryGood": "매우좋음",
+      "good": "좋음",
+      "average": "보통",
+      "caution": "주의"
+    },
+    "perspective": "관점",
+    "perspectiveMale": "남성 → 여성",
+    "perspectiveFemale": "여성 → 남성",
+    "firstImpression": "첫인상 / 만남 초기",
+    "datingStrengths": "연애 중 장점",
+    "conflictPoints": "갈등 포인트",
+    "advice": "극복 방법 / 조언",
+    "summary": "한 줄 요약",
+    "typeProfile": "유형 프로필",
+    "backToMatrix": "매트릭스로 돌아가기",
+    "legend": "범례",
+    "disclaimer": "MBTI 궁합은 재미와 참고 용도입니다. 실제 관계는 개인의 노력과 소통이 더 중요합니다.",
+    "guide": {
+      "title": "MBTI 궁합 가이드",
+      "rating": {
+        "title": "궁합 등급 설명",
+        "items": [
+          "천생연분(★★★★★): 자연스럽게 잘 맞는 최고의 조합",
+          "매우좋음(★★★★): 서로 보완하며 성장하는 좋은 관계",
+          "좋음(★★★): 노력하면 충분히 좋은 관계 유지 가능",
+          "보통(★★): 차이가 있지만 이해하면 발전 가능",
+          "주의(★): 갈등이 잦을 수 있어 많은 노력 필요"
+        ]
+      },
+      "tips": {
+        "title": "궁합 활용 팁",
+        "items": [
+          "MBTI는 성격의 경향성을 보여줄 뿐, 절대적인 기준이 아닙니다",
+          "같은 유형이라도 개인차가 크므로 참고용으로만 활용하세요",
+          "남녀 관점이 다를 수 있어 양쪽 시점을 모두 확인해보세요",
+          "궁합이 낮아도 서로 이해하고 노력하면 좋은 관계를 만들 수 있습니다"
+        ]
+      }
+    }
   }
 }

@@ -233,6 +233,8 @@ export const menuConfig: MenuConfig = {
       { href: '/nutrition-calculator', labelKey: 'footer.links.nutritionCalculator', descriptionKey: 'toolsShowcase.tools.nutritionCalculator.description', icon: '🥗' },
       { href: '/menu-picker', labelKey: 'footer.links.menuPicker', descriptionKey: 'toolsShowcase.tools.menuPicker.description', icon: '🍽️' },
       { href: '/biorhythm', labelKey: 'footer.links.biorhythm', descriptionKey: 'toolsShowcase.tools.biorhythm.description', icon: '🌊', addedDate: '2026-03-21' },
+      { href: '/mbti-test', labelKey: 'footer.links.mbtiTest', descriptionKey: 'toolsShowcase.tools.mbtiTest.description', icon: '🧠', addedDate: '2026-03-20' },
+      { href: '/mbti-compatibility', labelKey: 'footer.links.mbtiCompatibility', descriptionKey: 'toolsShowcase.tools.mbtiCompatibility.description', icon: '💕', addedDate: '2026-03-20' },
     ],
   },
   games: {
