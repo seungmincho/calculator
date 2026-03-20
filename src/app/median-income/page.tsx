@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '기준 중위소득 조회 - 2025년, 2026년 | 툴허브',
     description: '가구원수별, 비율별 기준 중위소득과 정부 복지사업 자격요건을 한눈에 확인하세요',
+    siteName: '툴허브',
     url: 'https://toolhub.ai.kr/median-income',
     images: [
       {

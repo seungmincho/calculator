@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     description: 'AI와 체스 대전! 캐슬링, 앙파상, 프로모션 등 정식 규칙 완벽 지원',
     url: 'https://toolhub.ai.kr/chess',
     type: 'website',
+    siteName: '툴허브',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/chess/',

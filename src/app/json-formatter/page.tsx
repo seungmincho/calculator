@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: 'JSON 포맷터 Pro - 개발자를 위한 최고의 JSON 도구',
     description: '구문 강조, JSONPath 쿼리, JSON5 지원, 트리뷰, 통계 분석까지 - 프로급 JSON 포맷터',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/json-formatter',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/json-formatter/',

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     title: '자동차 취등록세 계산기 - 취득세, 등록세, 공채매수 계산',
     description: '자동차 구매 시 필요한 취등록세를 정확하게 계산하세요.',
     type: 'website',
+    siteName: '툴허브',
     url: 'https://toolhub.ai.kr/car-tax-calculator/',
   },
   alternates: {

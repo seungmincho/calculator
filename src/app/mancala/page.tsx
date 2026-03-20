@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     description: '친구와 실시간으로 만칼라 대전! 더 많은 돌을 모으세요!',
     url: 'https://toolhub.ai.kr/mancala',
     type: 'website'
+    siteName: '툴허브',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/mancala/'

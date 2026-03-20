@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: '부동산 계산기 - 전세자금대출, 주택담보대출, 취득세',
     description: '부동산 관련 모든 계산을 한 곳에서 쉽게 해결하세요',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/real-estate-calculator',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/real-estate-calculator/',

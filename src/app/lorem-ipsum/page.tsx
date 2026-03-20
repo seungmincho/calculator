@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: 'Lorem Ipsum 생성기 - 더미 텍스트',
     description: '디자인용 더미 텍스트를 생성하세요',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/lorem-ipsum',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/lorem-ipsum/',

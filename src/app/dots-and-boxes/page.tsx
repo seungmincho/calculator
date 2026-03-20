@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     description: '친구와 실시간으로 도트앤박스 대전! 더 많은 상자를 차지하세요!',
     url: 'https://toolhub.ai.kr/dots-and-boxes',
     type: 'website'
+    siteName: '툴허브',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/dots-and-boxes/'

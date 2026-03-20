@@ -11,6 +11,8 @@ export const metadata: Metadata = {
     title: 'JWT 디코더 - JWT 토큰 분석 및 검증 도구',
     description: 'JWT 토큰을 안전하게 디코드하고 분석하세요. Header, Payload, Signature를 명확히 분리하여 표시합니다.',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/jwt-decoder',
     locale: 'ko_KR',
   },
   twitter: {

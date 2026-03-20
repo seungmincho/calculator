@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: '글자수 세기 - 실시간 텍스트 분석',
     description: '글자수, 단어수, 문장수를 실시간으로 분석하세요',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/character-counter',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/character-counter/',

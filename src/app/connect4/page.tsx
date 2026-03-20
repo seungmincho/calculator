@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     description: '친구와 실시간으로 커넥트4 대전! 4개를 연결하세요!',
     url: 'https://toolhub.ai.kr/connect4',
     type: 'website'
+    siteName: '툴허브',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/connect4/'

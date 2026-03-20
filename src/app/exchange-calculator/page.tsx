@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '환율 계산기 - 실시간 환전 계산 | 툴허브',
     description: '실시간 환율을 기반으로 정확한 환전 금액을 계산하세요',
+    siteName: '툴허브',
     url: 'https://toolhub.ai.kr/exchange-calculator',
     images: [
       {

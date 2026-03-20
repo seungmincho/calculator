@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: 'Diff 비교 도구 - 온라인 텍스트 비교',
     description: '두 텍스트의 차이점을 시각적으로 비교하세요',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/diff-viewer',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/diff-viewer/',

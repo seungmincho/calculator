@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: '색상 변환기 - HEX/RGB/HSL/CMYK 변환',
     description: '다양한 색상 형식을 손쉽게 변환하세요',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/color-converter',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/color-converter/',

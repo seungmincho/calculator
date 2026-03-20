@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '퇴직금 계산기 | 툴허브',
     description: '퇴직금과 퇴직소득세를 정확하게 계산하세요',
+    siteName: '툴허브',
     url: 'https://toolhub.ai.kr/retirement-calculator',
     images: [
       {

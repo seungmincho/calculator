@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     title: '자동차 할부 계산기 - 월 납입금 및 총 이자 계산',
     description: '자동차 할부금, 월 납입금, 총 이자를 쉽게 계산하세요.',
     type: 'website',
+    siteName: '툴허브',
     url: 'https://toolhub.ai.kr/car-loan-calculator/',
   },
   alternates: {

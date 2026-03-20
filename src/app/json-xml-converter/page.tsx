@@ -26,6 +26,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     siteName: '툴허브'
+    url: 'https://toolhub.ai.kr/json-xml-converter',
   },
   twitter: {
     card: 'summary_large_image',

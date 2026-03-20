@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     description: '친구와 실시간으로 오셀로(리버시) 대전을 즐기세요. 8x8 보드에서 온라인 오셀로 게임!',
     url: 'https://toolhub.ai.kr/othello',
     type: 'website',
+    siteName: '툴허브',
     images: [
       {
         url: 'https://toolhub.ai.kr/og-image-1200x630.png',

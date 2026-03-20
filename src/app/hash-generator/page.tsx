@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: '해시 생성기 - 온라인 해시 변환 도구',
     description: '텍스트와 파일의 해시값을 생성하세요',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/hash-generator',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/hash-generator/',

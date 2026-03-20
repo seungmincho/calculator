@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '개인정보처리방침 | 툴허브',
     description: '툴허브의 개인정보처리방침',
+    siteName: '툴허브',
     url: 'https://toolhub.ai.kr/privacy',
   },
   alternates: {

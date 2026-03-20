@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: 'Base64 인코더/디코더 - 온라인 변환 도구',
     description: '텍스트와 파일을 Base64로 인코딩/디코딩하세요',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/base64-converter',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/base64-converter/',

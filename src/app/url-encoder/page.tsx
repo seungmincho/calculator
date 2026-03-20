@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: 'URL 인코더/디코더 - 온라인 URL 변환 도구',
     description: 'URL을 안전하게 인코딩/디코딩하세요',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/url-encoder',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/url-encoder/',

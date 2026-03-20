@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: 'SQL 포맷터 - SQL 쿼리 포맷팅, 검증',
     description: 'SQL 쿼리를 쉽게 포맷팅하고 검증하세요',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/sql-formatter',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/sql-formatter/',

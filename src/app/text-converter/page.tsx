@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     title: '텍스트 변환기 - 케이스 변환 도구',
     description: '다양한 텍스트 케이스를 손쉽게 변환하세요',
     type: 'website',
+    siteName: '툴허브',
+    url: 'https://toolhub.ai.kr/text-converter',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/text-converter/',

@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     description: '친구와 실시간으로 배틀십 대전! 상대 함선을 침몰시키세요!',
     url: 'https://toolhub.ai.kr/battleship',
     type: 'website'
+    siteName: '툴허브',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/battleship/'

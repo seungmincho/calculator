@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     description: '친구와 실시간으로 체커 대전! 상대 말을 모두 잡으세요!',
     url: 'https://toolhub.ai.kr/checkers',
     type: 'website'
+    siteName: '툴허브',
   },
   alternates: {
     canonical: 'https://toolhub.ai.kr/checkers/'
