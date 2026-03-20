@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Korean all-in-one web tool platform ("툴허브") built with Next.js 16, providing 140+ tools across financial calculators, developer utilities, media tools, health tools, and browser games. Deployed on Cloudflare Pages as a static PWA with offline support, SEO optimization, and AdSense integration.
+Korean all-in-one web tool platform ("툴허브") built with Next.js 16, providing 160+ tools across financial calculators, developer utilities, media tools, health tools, and browser games. Deployed on Cloudflare Pages as a static PWA with offline support, SEO optimization, and AdSense integration.
 
 ## Development Commands
 
@@ -210,13 +210,22 @@ src/
 
 ### Menu System
 Central configuration in `/src/config/menuConfig.ts` with 5 categories:
-- **calculators**: 44 financial/life calculators
-- **tools**: 72 development & utility tools
-- **media**: 16 image/media tools
-- **health**: 13 health & fitness tools
-- **games**: 25+ games (including GameHub, 7 AI board games, 17+ solo games)
+- **calculators**: 59 financial/life calculators (7 subcategories: 급여/근로, 세금, 대출/금융, 부동산, 투자/저축, 생활비, 기타)
+- **tools**: 79 development & utility tools (5 subcategories: 개발도구, 텍스트, 변환/인코딩, 생성기, 기타)
+- **media**: 10 image/media tools
+- **health**: 14 health & fitness tools
+- **games**: 26 games (including GameHub, 7 AI board games, 17+ solo games)
 
 Header and ToolsShowcase auto-read from menuConfig. Footer is minimal (no menu links).
+
+#### MenuItem Fields
+- `href`, `labelKey`, `descriptionKey`, `icon`: Required
+- `addedDate?: string`: 'YYYY-MM-DD', 30일 이내면 NEW 배지 표시 (`isNewTool()` 헬퍼)
+- `subcategory?: string`: 번역 키 (e.g., `subcategory.tax`), ToolsShowcase에서 그룹핑
+- `modes?: GameMode[]`: 게임 전용 (ai/online/solo)
+
+#### Mobile Bottom Navigation
+`MobileBottomNav` component (md:hidden): 홈/즐겨찾기/최근/검색 4버튼, 바텀시트 UI.
 
 ### PWA Architecture
 - `public/manifest.json`: Full PWA manifest with shortcuts, screenshots, categories
@@ -350,7 +359,7 @@ Header shows recently used tools per category (max 4) using `recentTools.ts` uti
 // /src/config/menuConfig.ts — 카테고리: calculators | tools | health | games
 
 // 일반 도구/계산기
-{ href: '/new-tool', labelKey: 'footer.links.newTool', descriptionKey: 'toolsShowcase.tools.newTool.description', icon: '🔧' }
+{ href: '/new-tool', labelKey: 'footer.links.newTool', descriptionKey: 'toolsShowcase.tools.newTool.description', icon: '🔧', addedDate: '2026-03-20', subcategory: 'subcategory.others' }
 
 // 게임 (games 카테고리) — modes 필드 필수!
 // modes: ['ai', 'online'] → AI 대전 + 온라인 대전 지원 보드게임 (GameHub에서 모드 선택 후 인라인 플레이)
