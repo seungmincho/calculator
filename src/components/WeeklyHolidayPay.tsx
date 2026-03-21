@@ -66,7 +66,7 @@ function WeeklyHolidayPayInner() {
   const [copiedLink, setCopiedLink] = useState(false)
 
   // Chrome AI (Gemini Nano) — progressive enhancement
-  const { isAvailable: aiAvailable, summary: aiSummary, loading: aiLoading, downloadProgress, summarize: aiSummarize, clearSummary: aiClear } = useChromeAI()
+  const { isAvailable: aiAvailable, status: aiStatus, summary: aiSummary, loading: aiLoading, downloadProgress, summarize: aiSummarize, clearSummary: aiClear } = useChromeAI()
 
   // Sync state to URL whenever inputs change
   useEffect(() => {
@@ -507,6 +507,14 @@ function WeeklyHolidayPayInner() {
                   {aiSummary}
                 </p>
               )}
+            </div>
+          )}
+
+          {/* Chrome AI 미지원 안내 */}
+          {aiStatus === 'not-supported' && result.monthlyTotal > 0 && (
+            <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 px-1">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Chrome 브라우저에서는 AI가 계산 결과를 요약해드립니다</span>
             </div>
           )}
 

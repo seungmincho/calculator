@@ -12916,7 +12916,8 @@
       "annualTotal": "Annual Total",
       "chartTitle": "Base Pay vs Holiday Pay Ratio",
       "baseRatio": "Base ratio",
-      "holidayRatio": "Holiday ratio"
+      "holidayRatio": "Holiday ratio",
+      "monthlyBarTitle": "Monthly Pay Breakdown"
     },
     "warning": {
       "title": "Not Eligible for Holiday Pay",

@@ -12916,7 +12916,8 @@
       "annualTotal": "연봉 환산",
       "chartTitle": "기본급 vs 주휴수당 비율",
       "baseRatio": "기본급 비율",
-      "holidayRatio": "주휴수당 비율"
+      "holidayRatio": "주휴수당 비율",
+      "monthlyBarTitle": "월 급여 구성"
     },
     "warning": {
       "title": "주휴수당 미발생",
