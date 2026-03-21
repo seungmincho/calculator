@@ -904,7 +904,7 @@ export const metadata: Metadata = {
                     {copiedId === 'html' ? t('code.copied') : t('code.copy')}
                   </button>
                 </div>
-                <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 text-xs overflow-x-auto leading-relaxed"><code>{getHtmlCode()}</code></pre>
+                <pre className="bg-gray-900 dark:bg-gray-950 text-gray-100 rounded-lg p-4 text-xs overflow-x-auto leading-relaxed"><code>{getHtmlCode()}</code></pre>
               </div>
 
               {/* Next.js Code */}
@@ -922,7 +922,7 @@ export const metadata: Metadata = {
                     {copiedId === 'nextjs' ? t('code.copied') : t('code.copy')}
                   </button>
                 </div>
-                <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 text-xs overflow-x-auto leading-relaxed"><code>{getNextJsCode()}</code></pre>
+                <pre className="bg-gray-900 dark:bg-gray-950 text-gray-100 rounded-lg p-4 text-xs overflow-x-auto leading-relaxed"><code>{getNextJsCode()}</code></pre>
               </div>
             </>
           ) : (
