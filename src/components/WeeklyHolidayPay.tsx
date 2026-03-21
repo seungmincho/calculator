@@ -3,7 +3,8 @@
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { useTranslations } from 'next-intl'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-import { Copy, Check, BookOpen, AlertTriangle, Info, Link } from 'lucide-react'
+import { Copy, Check, BookOpen, AlertTriangle, Info, Link, Sparkles, Loader2, X } from 'lucide-react'
+import { useChromeAI } from '@/hooks/useChromeAI'
 import dynamic from 'next/dynamic'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
@@ -63,6 +64,9 @@ function WeeklyHolidayPayInner() {
 
   const [copied, setCopied] = useState(false)
   const [copiedLink, setCopiedLink] = useState(false)
+
+  // Chrome AI (Gemini Nano) — progressive enhancement
+  const { isAvailable: aiAvailable, summary: aiSummary, loading: aiLoading, downloadProgress, summarize: aiSummarize, clearSummary: aiClear } = useChromeAI()
 
   // Sync state to URL whenever inputs change
   useEffect(() => {
@@ -451,6 +455,60 @@ function WeeklyHolidayPayInner() {
               )}
             </div>
           </div>
+
+          {/* AI 요약 (Chrome Built-in AI — progressive enhancement) */}
+          {aiAvailable && result.monthlyTotal > 0 && (
+            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/30 dark:to-indigo-950/30 border border-purple-200 dark:border-purple-800 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span className="text-sm font-semibold text-purple-800 dark:text-purple-200">AI 요약</span>
+                  <span className="text-[10px] px-1.5 py-0.5 bg-purple-200 dark:bg-purple-800 text-purple-700 dark:text-purple-300 rounded-full">Chrome AI</span>
+                </div>
+                {aiSummary && (
+                  <button onClick={aiClear} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+
+              {!aiSummary && !aiLoading && (
+                <button
+                  onClick={() => {
+                    const text = [
+                      `주휴수당 계산 결과:`,
+                      `시급: ${formatWon(hourlyWage)}`,
+                      `주 ${workDays}일, 하루 ${dailyHours}시간 근무 (주 ${result.weeklyHours}시간)`,
+                      `주휴수당 대상: ${result.eligible ? '해당 (주 15시간 이상)' : '미해당 (주 15시간 미만)'}`,
+                      result.eligible ? `주휴수당: ${formatWon(result.holidayPay)} (주휴시간 ${result.holidayHours.toFixed(1)}시간)` : '',
+                      `월 기본급: ${formatWon(result.monthlyBase)}`,
+                      `월 총액 (주휴수당 포함): ${formatWon(result.monthlyTotal)}`,
+                      `연간 총액: ${formatWon(result.annualTotal)}`,
+                      `급여 구성: 기본급 ${result.baseRatio.toFixed(0)}% + 주휴수당 ${result.holidayRatio.toFixed(0)}%`,
+                    ].filter(Boolean).join('\n')
+                    aiSummarize(text, '한국 근로기준법 기반 주휴수당 계산 결과입니다. 핵심 수치와 근로자에게 중요한 정보를 한국어로 간단히 요약해주세요.')
+                  }}
+                  className="w-full text-sm text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-100 bg-white/60 dark:bg-gray-800/60 hover:bg-white dark:hover:bg-gray-800 rounded-lg px-4 py-2.5 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  계산 결과 AI로 요약하기
+                </button>
+              )}
+
+              {aiLoading && (
+                <div className="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400 py-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  {downloadProgress !== null ? `AI 모델 다운로드 중... ${downloadProgress}%` : 'AI가 분석 중...'}
+                </div>
+              )}
+
+              {aiSummary && (
+                <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
+                  {aiSummary}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* 도넛 차트 */}
           {result.eligible && result.weeklyTotal > 0 && (
