@@ -585,7 +585,10 @@ export default function Crossword() {
   const composingRef = useRef(false)
 
   const focusInput = useCallback(() => {
-    hiddenInputRef.current?.focus()
+    if (hiddenInputRef.current) {
+      hiddenInputRef.current.value = ''
+      hiddenInputRef.current.focus({ preventScroll: true })
+    }
   }, [])
 
   useEffect(() => {
@@ -689,25 +692,30 @@ export default function Crossword() {
               </div>
             )}
 
-            {/* Hidden input for Korean IME */}
+            {/* Hidden input for Korean IME — positioned off-screen but with real size so mobile keyboards appear */}
             <input
               ref={hiddenInputRef}
               type="text"
-              className="absolute opacity-0 w-0 h-0 pointer-events-none"
+              className="absolute -left-[9999px] top-0 w-[1px] h-[1px] opacity-[0.01]"
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
               spellCheck={false}
+              inputMode="text"
               onCompositionStart={() => { composingRef.current = true }}
               onCompositionEnd={(e) => {
                 composingRef.current = false
                 const val = e.currentTarget.value
                 if (val) {
-                  // Take the last composed character
                   const lastChar = val[val.length - 1]
-                  handleInput(lastChar)
-                  e.currentTarget.value = ''
+                  if (/[가-힣]/.test(lastChar)) {
+                    handleInput(lastChar)
+                  }
                 }
+                // Delay clearing to avoid race with onInput
+                setTimeout(() => {
+                  if (hiddenInputRef.current) hiddenInputRef.current.value = ''
+                }, 10)
               }}
               onInput={(e) => {
                 if (composingRef.current) return
@@ -716,11 +724,21 @@ export default function Crossword() {
                   const lastChar = val[val.length - 1]
                   if (/[가-힣]/.test(lastChar)) {
                     handleInput(lastChar)
+                    ;(e.target as HTMLInputElement).value = ''
                   }
-                  (e.target as HTMLInputElement).value = ''
+                  // For non-Korean single chars (English fallback), also handle
+                  else if (/[a-zA-Z]/.test(lastChar)) {
+                    ;(e.target as HTMLInputElement).value = ''
+                  }
                 }
               }}
               onKeyDown={handleKeyDown}
+              onBlur={() => {
+                // Re-focus when input loses focus while a cell is selected (mobile keyboard dismiss prevention)
+                if (selectedCell && !completed) {
+                  setTimeout(() => hiddenInputRef.current?.focus(), 100)
+                }
+              }}
             />
 
             {/* Grid */}
