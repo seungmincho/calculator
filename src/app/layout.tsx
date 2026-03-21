@@ -39,6 +39,11 @@ export const metadata: Metadata = {
     telephone: false,
   },
   manifest: '/manifest.json',
+  alternates: {
+    types: {
+      'application/rss+xml': 'https://toolhub.ai.kr/rss.xml',
+    },
+  },
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
