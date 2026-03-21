@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>계산기, 개발도구, 미디어 도구, 건강 도구, 게임 등 220+ 무료 온라인 도구를 제공합니다.</description>
     <language>ko</language>
-    <lastBuildDate>Sat, 21 Mar 2026 01:33:15 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 21 Mar 2026 02:25:53 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://toolhub.ai.kr/android-chrome-192x192.png</url>
@@ -895,6 +895,18 @@
       <guid>https://toolhub.ai.kr/calculation-history/</guid>
     </item>
     <item>
+      <title><![CDATA[색맹 시뮬레이터]]></title>
+      <link>https://toolhub.ai.kr/color-blindness-simulator/</link>
+      <description><![CDATA[이미지에 색각이상 필터를 적용하여 색맹/색약 시야를 체험]]></description>
+      <guid>https://toolhub.ai.kr/color-blindness-simulator/</guid>
+    </item>
+    <item>
+      <title><![CDATA[화면 크기 비교]]></title>
+      <link>https://toolhub.ai.kr/screen-compare/</link>
+      <description><![CDATA[스마트폰·태블릿·모니터 화면 크기를 실제 비율로 비교]]></description>
+      <guid>https://toolhub.ai.kr/screen-compare/</guid>
+    </item>
+    <item>
       <title><![CDATA[이미지 리사이저]]></title>
       <link>https://toolhub.ai.kr/image-resizer/</link>
       <description><![CDATA[이미지 크기 조절과 압축]]></description>
@@ -1271,6 +1283,18 @@
       <link>https://toolhub.ai.kr/picross/</link>
       <description><![CDATA[숫자 힌트로 그림을 완성하는 논리 퍼즐 게임]]></description>
       <guid>https://toolhub.ai.kr/picross/</guid>
+    </item>
+    <item>
+      <title><![CDATA[마작 솔리테어]]></title>
+      <link>https://toolhub.ai.kr/mahjong-solitaire/</link>
+      <description><![CDATA[같은 패를 찾아 짝을 맞추는 타일 매칭 퍼즐 게임]]></description>
+      <guid>https://toolhub.ai.kr/mahjong-solitaire/</guid>
+    </item>
+    <item>
+      <title><![CDATA[십자말풀이]]></title>
+      <link>https://toolhub.ai.kr/crossword/</link>
+      <description><![CDATA[가로세로 힌트로 단어를 채우는 한국어 십자말풀이]]></description>
+      <guid>https://toolhub.ai.kr/crossword/</guid>
     </item>
   </channel>
 </rss>

@@ -39,6 +39,7 @@
 /code-screenshot /code-screenshot/ 301
 /collage-maker /collage-maker/ 301
 /color-blind-test /color-blind-test/ 301
+/color-blindness-simulator /color-blindness-simulator/ 301
 /color-converter /color-converter/ 301
 /color-extractor /color-extractor/ 301
 /color-palette /color-palette/ 301
@@ -48,6 +49,7 @@
 /contrast-checker /contrast-checker/ 301
 /cron-tester /cron-tester/ 301
 /crontab-generator /crontab-generator/ 301
+/crossword /crossword/ 301
 /css-gradient /css-gradient/ 301
 /css-unit-converter /css-unit-converter/ 301
 /curl-builder /curl-builder/ 301
@@ -116,6 +118,7 @@
 /lorem-ipsum /lorem-ipsum/ 301
 /lotto-generator /lotto-generator/ 301
 /lunar-converter /lunar-converter/ 301
+/mahjong-solitaire /mahjong-solitaire/ 301
 /mancala /mancala/ 301
 /margin-calculator /margin-calculator/ 301
 /markdown-editor /markdown-editor/ 301
@@ -170,6 +173,7 @@
 /salary-comparison /salary-comparison/ 301
 /sales-commission /sales-commission/ 301
 /savings-calculator /savings-calculator/ 301
+/screen-compare /screen-compare/ 301
 /screen-info /screen-info/ 301
 /screen-recorder /screen-recorder/ 301
 /severance-pay /severance-pay/ 301
