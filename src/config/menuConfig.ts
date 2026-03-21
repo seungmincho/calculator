@@ -195,6 +195,8 @@ export const menuConfig: MenuConfig = {
       { href: '/port-reference', labelKey: 'footer.links.portReference', descriptionKey: 'toolsShowcase.tools.portReference.description', icon: '🔌', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
       { href: '/linux-command', labelKey: 'footer.links.linuxCommand', descriptionKey: 'toolsShowcase.tools.linuxCommand.description', icon: '🐧', addedDate: '2026-03-21', subcategory: 'subcategory.devTools' },
       { href: '/calculation-history', labelKey: 'footer.links.calculationHistory', descriptionKey: 'toolsShowcase.tools.calculationHistory.description', icon: '📜', addedDate: '2026-03-21', subcategory: 'subcategory.otherTools' },
+      { href: '/color-blindness-simulator', labelKey: 'footer.links.colorBlindnessSimulator', descriptionKey: 'toolsShowcase.tools.colorBlindnessSimulator.description', icon: '👁️', addedDate: '2026-03-21', subcategory: 'subcategory.otherTools' },
+      { href: '/screen-compare', labelKey: 'footer.links.screenCompare', descriptionKey: 'toolsShowcase.tools.screenCompare.description', icon: '📱', addedDate: '2026-03-21', subcategory: 'subcategory.otherTools' },
     ],
   },
   media: {
@@ -273,6 +275,8 @@ export const menuConfig: MenuConfig = {
       { href: '/hangman', labelKey: 'footer.links.hangman', descriptionKey: 'toolsShowcase.tools.hangman.description', icon: '🔤', modes: ['solo'] },
       { href: '/pac-man', labelKey: 'footer.links.pacMan', descriptionKey: 'toolsShowcase.tools.pacMan.description', icon: '👾', modes: ['solo'] },
       { href: '/picross', labelKey: 'footer.links.picross', descriptionKey: 'toolsShowcase.tools.picross.description', icon: '🟦', addedDate: '2026-03-21', modes: ['solo'] },
+      { href: '/mahjong-solitaire', labelKey: 'footer.links.mahjongSolitaire', descriptionKey: 'toolsShowcase.tools.mahjongSolitaire.description', icon: '🀄', addedDate: '2026-03-21', modes: ['solo'] },
+      { href: '/crossword', labelKey: 'footer.links.crossword', descriptionKey: 'toolsShowcase.tools.crossword.description', icon: '📝', addedDate: '2026-03-21', modes: ['solo'] },
     ],
   },
 };

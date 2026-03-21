@@ -1446,6 +1446,10 @@
       "hangman": "단어 맞추기",
       "pacMan": "팩맨",
       "picross": "네모로직",
+      "mahjongSolitaire": "마작 솔리테어",
+      "crossword": "십자말풀이",
+      "colorBlindnessSimulator": "색맹 시뮬레이터",
+      "screenCompare": "화면 크기 비교",
       "housingSubscription": "청약가점 계산기",
       "capitalGainsTax": "양도소득세 계산기",
       "militaryDischarge": "전역일 계산기",
@@ -4238,6 +4242,22 @@
       "picross": {
         "title": "네모로직",
         "description": "숫자 힌트로 그림을 완성하는 논리 퍼즐 게임"
+      },
+      "mahjongSolitaire": {
+        "title": "마작 솔리테어",
+        "description": "같은 패를 찾아 짝을 맞추는 타일 매칭 퍼즐 게임"
+      },
+      "crossword": {
+        "title": "십자말풀이",
+        "description": "가로세로 힌트로 단어를 채우는 한국어 십자말풀이"
+      },
+      "colorBlindnessSimulator": {
+        "title": "색맹 시뮬레이터",
+        "description": "이미지에 색각이상 필터를 적용하여 색맹/색약 시야를 체험"
+      },
+      "screenCompare": {
+        "title": "화면 크기 비교",
+        "description": "스마트폰·태블릿·모니터 화면 크기를 실제 비율로 비교"
       },
       "housingSubscription": {
         "title": "청약가점 계산기",
@@ -17162,6 +17182,207 @@
         "q": "세무사 없이 혼자 신고할 수 있나요?",
         "a": "소득 구조가 단순한 프리랜서나 사업자라면 홈택스 모두채움신고 또는 간편신고 기능을 활용해 직접 신고할 수 있습니다. 복잡한 경우(여러 소득 합산, 부동산 임대 등)는 세무사 상담을 권장합니다."
       }
+    }
+  },
+  "colorBlindnessSimulator": {
+    "title": "색맹 시뮬레이터",
+    "description": "이미지에 색각이상(CVD) 필터를 적용해 색맹·색약의 시야를 체험하세요.",
+    "uploadPrompt": "이미지를 드래그하거나 클릭하여 업로드",
+    "uploadSubPrompt": "JPG, PNG, WebP, GIF 지원 · 최대 10MB",
+    "cameraButton": "카메라로 촬영",
+    "sampleImages": "샘플 이미지",
+    "sampleColorWheel": "색상환",
+    "sampleIshihara": "이시하라 패턴",
+    "sampleTrafficLight": "신호등/자연",
+    "typeSelector": "색각이상 유형",
+    "original": "원본",
+    "simulated": "시뮬레이션",
+    "sliderHint": "슬라이더를 드래그하여 원본·시뮬레이션을 비교하세요",
+    "download": "필터 이미지 다운로드",
+    "processing": "처리 중...",
+    "noImage": "이미지를 업로드하거나 샘플을 선택하세요",
+    "prevalence": "유병률",
+    "types": {
+      "normal": {
+        "name": "정상 시력",
+        "description": "색각 이상 없음"
+      },
+      "protanopia": {
+        "name": "적색맹 (Protanopia)",
+        "description": "L-원뿔세포 부재 — 빨간색을 인식하지 못함",
+        "prevalence": "남성 1%"
+      },
+      "deuteranopia": {
+        "name": "녹색맹 (Deuteranopia)",
+        "description": "M-원뿔세포 부재 — 초록색을 인식하지 못함",
+        "prevalence": "남성 1%"
+      },
+      "tritanopia": {
+        "name": "청황색맹 (Tritanopia)",
+        "description": "S-원뿔세포 부재 — 파란색을 인식하지 못함",
+        "prevalence": "0.002%"
+      },
+      "protanomaly": {
+        "name": "적색약 (Protanomaly)",
+        "description": "L-원뿔세포 기능 저하 — 빨간색 감도 약함",
+        "prevalence": "남성 1%"
+      },
+      "deuteranomaly": {
+        "name": "녹색약 (Deuteranomaly)",
+        "description": "M-원뿔세포 기능 저하 — 가장 흔한 유형",
+        "prevalence": "남성 5~6%"
+      },
+      "tritanomaly": {
+        "name": "청황색약 (Tritanomaly)",
+        "description": "S-원뿔세포 기능 저하 — 파란색 감도 약함",
+        "prevalence": "0.01%"
+      },
+      "achromatopsia": {
+        "name": "전색맹 (Achromatopsia)",
+        "description": "원뿔세포 기능 없음 — 세상이 흑백으로 보임",
+        "prevalence": "0.003%"
+      }
+    },
+    "infoPanel": {
+      "title": "색각이상 이해하기",
+      "whatIs": "색각이상이란?",
+      "whatIsText": "색각이상(色覺異常)은 눈의 원뿔세포(광수용체)가 선천적으로 없거나 기능이 저하되어 특정 색을 정상적으로 구분하지 못하는 상태입니다. X염색체 연관 유전이 많아 남성에게 더 흔하며(~8%), 여성은 약 0.5%에서 나타납니다.",
+      "designTip": "디자인 접근성 팁",
+      "designTipItems": [
+        "색상만으로 정보를 전달하지 말고 아이콘·패턴·텍스트를 함께 사용하세요",
+        "명도 대비를 충분히 확보하면 색각이상자도 정보를 인식하기 쉽습니다",
+        "적록색약을 고려해 빨강·초록 대신 파랑·주황을 주요 대비 색으로 사용하세요",
+        "데이터 시각화 시 다색맹 친화 팔레트(예: Okabe-Ito)를 사용하세요"
+      ]
+    },
+    "faq": {
+      "q1": {
+        "q": "색맹과 색약의 차이는 무엇인가요?",
+        "a": "색맹(Dichromacy)은 특정 원뿔세포가 완전히 없어 해당 색을 전혀 구분하지 못하는 상태이고, 색약(Anomalous Trichromacy)은 원뿔세포가 있지만 기능이 저하되어 색 구분이 어려운 상태입니다. 색약이 색맹보다 훨씬 흔합니다."
+      },
+      "q2": {
+        "q": "이 시뮬레이터는 얼마나 정확한가요?",
+        "a": "Brettel/Viénot 알고리즘을 기반으로 한 색상 변환 행렬을 사용하며, 실제 색각이상자의 시야를 근사합니다. 개인차가 있어 완벽하게 재현하기는 어렵지만 디자인 접근성 검토에 충분히 활용할 수 있습니다."
+      },
+      "q3": {
+        "q": "업로드한 이미지는 서버에 저장되나요?",
+        "a": "아니요. 모든 이미지 처리는 브라우저 내 Canvas API로 이루어지며, 서버로 전송되지 않습니다. 개인 정보 걱정 없이 사용하세요."
+      },
+      "q4": {
+        "q": "색각이상은 치료할 수 있나요?",
+        "a": "선천성 색각이상은 현재 완치법이 없습니다. 특수 렌즈나 안경(예: EnChroma)으로 색 구분 능력을 일부 개선할 수 있으나, 효과는 개인마다 다릅니다. 색각이상이 의심되면 안과 전문의 검진을 받으세요."
+      }
+    }
+  },
+  "screenCompare": {
+    "title": "화면 크기 비교",
+    "description": "스마트폰, 태블릿, 노트북, 모니터의 화면 크기를 비율에 맞게 시각적으로 비교하세요",
+    "category": {
+      "all": "전체",
+      "phone": "스마트폰",
+      "tablet": "태블릿",
+      "monitor": "모니터",
+      "laptop": "노트북"
+    },
+    "deviceN": "기기 {n}",
+    "selectDevice": "기기 선택",
+    "customSize": "+ 직접 입력",
+    "customTitle": "직접 입력",
+    "customName": "기기 이름",
+    "customDiagonal": "화면 크기 (인치)",
+    "customWidth": "가로 픽셀",
+    "customHeight": "세로 픽셀",
+    "add": "추가",
+    "cancel": "취소",
+    "remove": "제거",
+    "addDevice": "기기 추가",
+    "visualTitle": "시각적 크기 비교",
+    "scaleNote": "※ 화면 크기 비율을 유지해 표시합니다 (실제 크기와 다를 수 있음)",
+    "specsTitle": "스펙 비교",
+    "spec": "항목",
+    "specCategory": "카테고리",
+    "specDiagonal": "화면 크기",
+    "specResolution": "해상도",
+    "specAspect": "화면 비율",
+    "specArea": "화면 넓이",
+    "specTotalPixels": "총 픽셀 수",
+    "empty": "없음",
+    "ppiGuide": {
+      "title": "PPI 가이드",
+      "retina": "레티나 급 초고해상도",
+      "sharp": "선명한 고해상도",
+      "normal": "일반 해상도",
+      "low": "저해상도 (거칠게 보임)"
+    }
+  },
+  "mahjongSolitaire": {
+    "title": "마작 솔리테어",
+    "description": "같은 패를 찾아 짝을 맞추는 타일 매칭 퍼즐 게임",
+    "remaining": "남은 타일",
+    "matched": "매칭",
+    "hint": "힌트",
+    "shuffle": "셔플",
+    "undo": "되돌리기",
+    "newGame": "새 게임",
+    "winTitle": "축하합니다! 🎉",
+    "winTime": "완료 시간",
+    "shufflesUsed": "셔플 사용",
+    "playAgain": "다시 플레이",
+    "stuckTitle": "더 이상 매칭할 수 없습니다",
+    "stuckMessage": "가능한 매칭 쌍이 없습니다. 셔플하거나 되돌리기를 사용하세요.",
+    "guideTitle": "게임 가이드",
+    "rulesTitle": "기본 규칙",
+    "rulesItems": [
+      "같은 무늬의 자유 타일 2개를 클릭하면 제거됩니다.",
+      "자유 타일: 위에 다른 타일이 없고, 좌 또는 우 한쪽이 열린 타일입니다.",
+      "꽃패(🌸🌺🌻🌷)끼리, 계절패(🌸☀️🍂❄️)끼리는 종류가 달라도 매칭됩니다.",
+      "모든 타일을 제거하면 승리합니다."
+    ],
+    "tipsTitle": "공략 팁",
+    "tipsItems": [
+      "높은 층의 타일을 먼저 제거하면 아래층이 빨리 열립니다.",
+      "같은 패 4장 중 위치를 확인하고 전략적으로 매칭하세요.",
+      "양쪽이 막힌 타일을 열려면 한쪽 옆 타일을 먼저 제거하세요.",
+      "막혔을 때는 힌트나 셔플을 활용하세요."
+    ],
+    "tilesTitle": "타일 종류",
+    "tileMan": "만수(萬)",
+    "tilePin": "통수(筒)",
+    "tileSou": "삭수(索)",
+    "tileWind": "바람패",
+    "tileWindList": "東·南·西·北",
+    "tileDragon": "삼원패",
+    "tileDragonList": "中·發·白",
+    "tileBonus": "보너스패",
+    "tileBonusDesc": "꽃·계절 (와일드카드 매칭)",
+    "tileTypes": "종"
+  },
+  "crossword": {
+    "title": "십자말풀이",
+    "description": "가로세로 힌트를 보고 한글 단어를 채워 넣는 퍼즐 게임입니다.",
+    "across": "가로 힌트",
+    "down": "세로 힌트",
+    "acrossShort": "가로",
+    "downShort": "세로",
+    "check": "검사",
+    "revealWord": "단어 공개",
+    "reset": "다시 시작",
+    "daily": "오늘의 퍼즐",
+    "puzzle": "퍼즐",
+    "congratulations": "축하합니다! 퍼즐을 완성했습니다!",
+    "completedIn": "{time}에 완성했습니다",
+    "hint": "셀을 클릭하고 한글을 입력하세요. Tab으로 가로/세로 전환, 화살표 키로 이동합니다.",
+    "guide": {
+      "title": "풀이 가이드",
+      "items": [
+        "셀을 클릭하면 해당 단어의 힌트가 표시됩니다",
+        "한글을 입력하면 자동으로 다음 칸으로 이동합니다",
+        "같은 셀을 다시 클릭하면 가로/세로 방향이 전환됩니다",
+        "Tab 키로 가로↔세로 방향을 빠르게 전환할 수 있습니다",
+        "검사 버튼으로 틀린 글자를 빨간색으로 확인할 수 있습니다",
+        "단어 공개 버튼으로 현재 선택된 단어의 정답을 볼 수 있습니다",
+        "매일 자정에 새로운 오늘의 퍼즐이 제공됩니다"
+      ]
     }
   }
 }

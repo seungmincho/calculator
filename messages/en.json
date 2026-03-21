@@ -1172,6 +1172,10 @@
       "hangman": "Hangman",
       "pacMan": "Pac-Man",
       "picross": "Picross",
+      "mahjongSolitaire": "Mahjong Solitaire",
+      "crossword": "Crossword Puzzle",
+      "colorBlindnessSimulator": "Color Blindness Simulator",
+      "screenCompare": "Screen Size Compare",
       "housingSubscription": "Housing Subscription Score",
       "capitalGainsTax": "Capital Gains Tax",
       "militaryDischarge": "Military Discharge Calculator",
@@ -4238,6 +4242,22 @@
       "picross": {
         "title": "Picross",
         "description": "Logic puzzle game - reveal pictures using number clues"
+      },
+      "mahjongSolitaire": {
+        "title": "Mahjong Solitaire",
+        "description": "Match pairs of tiles in this classic tile-matching puzzle game"
+      },
+      "crossword": {
+        "title": "Crossword Puzzle",
+        "description": "Fill in words from across and down clues in Korean crossword"
+      },
+      "colorBlindnessSimulator": {
+        "title": "Color Blindness Simulator",
+        "description": "Apply color vision deficiency filters to images to experience color blindness"
+      },
+      "screenCompare": {
+        "title": "Screen Size Compare",
+        "description": "Compare phone, tablet, and monitor screen sizes at actual ratios"
       },
       "housingSubscription": {
         "title": "Housing Subscription Score",
@@ -17162,6 +17182,207 @@
         "q": "Can I file without a tax accountant?",
         "a": "Freelancers and business owners with simple income structures can use Hometax's pre-filled (모두채움) or simple filing feature. Complex situations (multiple income types, rental income, etc.) warrant professional advice."
       }
+    }
+  },
+  "colorBlindnessSimulator": {
+    "title": "Color Blindness Simulator",
+    "description": "Apply color vision deficiency (CVD) filters to images to experience how color-blind people see the world.",
+    "uploadPrompt": "Drag & drop an image or click to upload",
+    "uploadSubPrompt": "Supports JPG, PNG, WebP, GIF · Max 10MB",
+    "cameraButton": "Take a Photo",
+    "sampleImages": "Sample Images",
+    "sampleColorWheel": "Color Wheel",
+    "sampleIshihara": "Ishihara Pattern",
+    "sampleTrafficLight": "Traffic Light / Nature",
+    "typeSelector": "Color Vision Deficiency Type",
+    "original": "Original",
+    "simulated": "Simulated",
+    "sliderHint": "Drag the slider to compare original vs simulated view",
+    "download": "Download Filtered Image",
+    "processing": "Processing...",
+    "noImage": "Upload an image or select a sample",
+    "prevalence": "Prevalence",
+    "types": {
+      "normal": {
+        "name": "Normal Vision",
+        "description": "No color vision deficiency"
+      },
+      "protanopia": {
+        "name": "Protanopia (Red-blind)",
+        "description": "No L-cones — cannot perceive red",
+        "prevalence": "1% of males"
+      },
+      "deuteranopia": {
+        "name": "Deuteranopia (Green-blind)",
+        "description": "No M-cones — cannot perceive green",
+        "prevalence": "1% of males"
+      },
+      "tritanopia": {
+        "name": "Tritanopia (Blue-blind)",
+        "description": "No S-cones — cannot perceive blue",
+        "prevalence": "0.002%"
+      },
+      "protanomaly": {
+        "name": "Protanomaly (Red-weak)",
+        "description": "Reduced L-cone sensitivity — weak red perception",
+        "prevalence": "1% of males"
+      },
+      "deuteranomaly": {
+        "name": "Deuteranomaly (Green-weak)",
+        "description": "Reduced M-cone sensitivity — most common type",
+        "prevalence": "5–6% of males"
+      },
+      "tritanomaly": {
+        "name": "Tritanomaly (Blue-weak)",
+        "description": "Reduced S-cone sensitivity — weak blue perception",
+        "prevalence": "0.01%"
+      },
+      "achromatopsia": {
+        "name": "Achromatopsia (Total color blind)",
+        "description": "No cone function — sees the world in grayscale",
+        "prevalence": "0.003%"
+      }
+    },
+    "infoPanel": {
+      "title": "Understanding Color Vision Deficiency",
+      "whatIs": "What is Color Vision Deficiency?",
+      "whatIsText": "Color vision deficiency (CVD) occurs when one or more types of cone cells in the eye are absent or have reduced function, making it difficult to distinguish certain colors. It is often X-linked and therefore more common in males (~8%) than females (~0.5%).",
+      "designTip": "Accessibility Design Tips",
+      "designTipItems": [
+        "Don't rely on color alone — use icons, patterns, and text labels to convey information",
+        "Ensure sufficient luminance contrast so color-blind users can still perceive content",
+        "For red-green CVD, prefer blue and orange as your primary contrast pair",
+        "Use CVD-friendly palettes (e.g., Okabe-Ito) for data visualizations"
+      ]
+    },
+    "faq": {
+      "q1": {
+        "q": "What is the difference between color blindness and color weakness?",
+        "a": "Color blindness (dichromacy) means a specific cone type is completely absent, so the person cannot distinguish that color at all. Color weakness (anomalous trichromacy) means the cone is present but has reduced sensitivity. Color weakness is far more common than color blindness."
+      },
+      "q2": {
+        "q": "How accurate is this simulator?",
+        "a": "The simulator uses color transformation matrices based on the Brettel/Viénot algorithm to approximate color-blind vision. While individual variation means it cannot be perfectly accurate, it is widely used for design accessibility reviews."
+      },
+      "q3": {
+        "q": "Is my uploaded image sent to a server?",
+        "a": "No. All image processing is done entirely in your browser using the Canvas API. Your images are never uploaded to any server."
+      },
+      "q4": {
+        "q": "Can color blindness be treated?",
+        "a": "Congenital color blindness has no known cure. Specialty lenses (e.g., EnChroma glasses) can improve color discrimination for some people, but effectiveness varies. Consult an ophthalmologist if you suspect a color vision deficiency."
+      }
+    }
+  },
+  "screenCompare": {
+    "title": "Screen Size Comparison",
+    "description": "Visually compare screen sizes of smartphones, tablets, laptops, and monitors at accurate proportions",
+    "category": {
+      "all": "All",
+      "phone": "Phone",
+      "tablet": "Tablet",
+      "monitor": "Monitor",
+      "laptop": "Laptop"
+    },
+    "deviceN": "Device {n}",
+    "selectDevice": "Select a device",
+    "customSize": "+ Custom size",
+    "customTitle": "Custom device",
+    "customName": "Device name",
+    "customDiagonal": "Screen size (inches)",
+    "customWidth": "Width (px)",
+    "customHeight": "Height (px)",
+    "add": "Add",
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "addDevice": "Add device",
+    "visualTitle": "Visual Size Comparison",
+    "scaleNote": "* Displayed at proportional scale — not actual size",
+    "specsTitle": "Specs Comparison",
+    "spec": "Spec",
+    "specCategory": "Category",
+    "specDiagonal": "Screen size",
+    "specResolution": "Resolution",
+    "specAspect": "Aspect ratio",
+    "specArea": "Screen area",
+    "specTotalPixels": "Total pixels",
+    "empty": "None",
+    "ppiGuide": {
+      "title": "PPI Guide",
+      "retina": "Retina-class ultra-high resolution",
+      "sharp": "Sharp high resolution",
+      "normal": "Standard resolution",
+      "low": "Low resolution (visible pixels)"
+    }
+  },
+  "mahjongSolitaire": {
+    "title": "Mahjong Solitaire",
+    "description": "Match pairs of identical tiles in this classic tile-matching puzzle",
+    "remaining": "Remaining",
+    "matched": "Matched",
+    "hint": "Hint",
+    "shuffle": "Shuffle",
+    "undo": "Undo",
+    "newGame": "New Game",
+    "winTitle": "Congratulations! 🎉",
+    "winTime": "Completion Time",
+    "shufflesUsed": "Shuffles Used",
+    "playAgain": "Play Again",
+    "stuckTitle": "No More Matches",
+    "stuckMessage": "No matching pairs available. Try shuffle or undo.",
+    "guideTitle": "Game Guide",
+    "rulesTitle": "Basic Rules",
+    "rulesItems": [
+      "Click two matching free tiles to remove them.",
+      "Free tile: not covered by another tile, and has at least one open side (left or right).",
+      "Flower tiles (🌸🌺🌻🌷) match any other flower. Season tiles (🌸☀️🍂❄️) match any other season.",
+      "Remove all tiles to win."
+    ],
+    "tipsTitle": "Strategy Tips",
+    "tipsItems": [
+      "Remove tiles from higher layers first to open up tiles below.",
+      "Check the positions of all 4 copies of a tile before matching.",
+      "To free a blocked tile, remove tiles on one of its sides first.",
+      "Use hints or shuffle when you're stuck."
+    ],
+    "tilesTitle": "Tile Types",
+    "tileMan": "Characters (萬)",
+    "tilePin": "Circles (筒)",
+    "tileSou": "Bamboo (索)",
+    "tileWind": "Winds",
+    "tileWindList": "East · South · West · North",
+    "tileDragon": "Dragons",
+    "tileDragonList": "Red · Green · White",
+    "tileBonus": "Bonus",
+    "tileBonusDesc": "Flowers & Seasons (wildcard match)",
+    "tileTypes": " types"
+  },
+  "crossword": {
+    "title": "Crossword Puzzle",
+    "description": "Fill in Korean words using across and down clues in this crossword puzzle game.",
+    "across": "Across",
+    "down": "Down",
+    "acrossShort": "A",
+    "downShort": "D",
+    "check": "Check",
+    "revealWord": "Reveal Word",
+    "reset": "Reset",
+    "daily": "Daily Puzzle",
+    "puzzle": "Puzzle",
+    "congratulations": "Congratulations! You completed the puzzle!",
+    "completedIn": "Completed in {time}",
+    "hint": "Click a cell and type Korean characters. Press Tab to switch direction, arrow keys to navigate.",
+    "guide": {
+      "title": "How to Play",
+      "items": [
+        "Click a cell to see the clue for that word",
+        "Type Korean characters — the cursor moves to the next cell automatically",
+        "Click the same cell again to toggle between across and down",
+        "Press Tab to quickly switch between across and down direction",
+        "Use the Check button to highlight incorrect letters in red",
+        "Use the Reveal Word button to show the answer for the current word",
+        "A new daily puzzle is available every day at midnight"
+      ]
     }
   }
 }
