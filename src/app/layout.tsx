@@ -8,7 +8,6 @@ import DailyTips from '@/components/DailyTips'
 import ProgressBar from '@/components/ProgressBar'
 import ToolsShowcase from '@/components/ToolsShowcase'
 import Breadcrumb from '@/components/Breadcrumb'
-import RelatedTools from '@/components/RelatedTools'
 import ToolJsonLd from '@/components/ToolJsonLd'
 import SkipToContent from '@/components/SkipToContent'
 import ToolTracker from '@/components/ToolTracker'
@@ -206,9 +205,6 @@ export default function RootLayout({
             {/* Social Share FAB + Back to Top */}
             <ToolShareButton />
             <BackToTop />
-
-            {/* Related Tools */}
-            <RelatedTools />
 
             {/* Tools Showcase - Common across all pages */}
             <ToolsShowcase />

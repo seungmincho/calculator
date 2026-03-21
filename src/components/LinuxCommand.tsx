@@ -491,15 +491,15 @@ export default function LinuxCommand() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-1">
-          <Terminal className="w-7 h-7 text-green-400" />
-          <h1 className="text-2xl font-bold text-white">{t('title')}</h1>
+          <Terminal className="w-7 h-7 text-green-600 dark:text-green-400" />
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
         </div>
-        <p className="text-gray-400 text-sm">{t('description')}</p>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">{t('description')}</p>
       </div>
 
       {/* Command Selector */}
-      <div className="bg-gray-800 rounded-xl shadow-lg p-5 border border-gray-700">
-        <h2 className="text-sm font-semibold text-gray-300 mb-3">{t('selectCommand')}</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 border border-gray-200 dark:border-gray-700">
+        <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('selectCommand')}</h2>
         <div className="flex flex-wrap gap-2">
           {(['file', 'text', 'system'] as const).map(cat => (
             <div key={cat} className="w-full">
@@ -514,7 +514,7 @@ export default function LinuxCommand() {
                     className={`px-3 py-1.5 rounded-lg text-sm font-mono font-semibold transition-all ${
                       selectedCmd === c.name
                         ? 'bg-green-600 text-white shadow-lg shadow-green-900/30'
-                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {c.name}
@@ -531,22 +531,22 @@ export default function LinuxCommand() {
         {/* Left: flags + args */}
         <div className="lg:col-span-2 space-y-5">
           {/* Quick Reference */}
-          <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-            <h2 className="text-sm font-semibold text-gray-300 mb-2">{t('synopsis')}</h2>
-            <code className="block text-green-400 font-mono text-sm bg-gray-900 rounded-lg px-3 py-2 break-all">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('synopsis')}</h2>
+            <code className="block text-green-600 dark:text-green-400 font-mono text-sm bg-gray-800 dark:bg-gray-900 rounded-lg px-3 py-2 break-all">
               {cmd.synopsisKo}
             </code>
-            <p className="text-gray-400 text-xs mt-2">{cmd.descKo}</p>
+            <p className="text-gray-500 dark:text-gray-400 text-xs mt-2">{cmd.descKo}</p>
           </div>
 
           {/* Flags */}
-          <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-gray-300">{t('options')}</h2>
+              <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('options')}</h2>
               {selectedFlags.size > 0 && (
                 <button
                   onClick={() => setSelectedFlags(new Set())}
-                  className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+                  className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                 >
                   {t('clearAll')}
                 </button>
@@ -565,10 +565,10 @@ export default function LinuxCommand() {
                     className="mt-0.5 w-4 h-4 rounded accent-green-500 flex-shrink-0"
                   />
                   <div>
-                    <span className="font-mono text-sm text-green-400 group-hover:text-green-300 transition-colors">
+                    <span className="font-mono text-sm text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors">
                       {f.flag}
                     </span>
-                    <span className="text-gray-400 text-xs ml-2">{f.descKo}</span>
+                    <span className="text-gray-500 dark:text-gray-400 text-xs ml-2">{f.descKo}</span>
                   </div>
                 </label>
               ))}
@@ -577,18 +577,18 @@ export default function LinuxCommand() {
 
           {/* Arguments */}
           {cmd.args.length > 0 && (
-            <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-              <h2 className="text-sm font-semibold text-gray-300 mb-3">{t('arguments')}</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+              <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('arguments')}</h2>
               <div className="space-y-3">
                 {cmd.args.map(a => (
                   <div key={a.id}>
-                    <label className="block text-xs text-gray-400 mb-1">{a.labelKo}</label>
+                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">{a.labelKo}</label>
                     <input
                       type="text"
                       value={args[a.id] ?? ''}
                       onChange={e => setArgs(prev => ({ ...prev, [a.id]: e.target.value }))}
                       placeholder={a.placeholder}
-                      className="w-full px-3 py-2 bg-gray-900 border border-gray-600 rounded-lg text-sm text-gray-200 font-mono placeholder-gray-600 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 bg-gray-800 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-gray-200 font-mono placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
                     />
                   </div>
                 ))}
@@ -600,10 +600,10 @@ export default function LinuxCommand() {
         {/* Right: generated command + examples */}
         <div className="lg:col-span-3 space-y-5">
           {/* Generated command */}
-          <div className="bg-gray-800 rounded-xl border border-green-800 p-5">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-green-300 dark:border-green-800 p-5">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-green-400" />
+              <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <Zap className="w-4 h-4 text-green-600 dark:text-green-400" />
                 {t('generatedCommand')}
               </h2>
               <button
@@ -614,7 +614,7 @@ export default function LinuxCommand() {
                 {copiedId === 'main' ? t('copied') : t('copy')}
               </button>
             </div>
-            <div className="bg-gray-950 rounded-lg px-4 py-3 border border-gray-700">
+            <div className="bg-gray-800 dark:bg-gray-950 rounded-lg px-4 py-3 border border-gray-700">
               <code className="text-green-300 font-mono text-sm break-all">
                 <span className="text-gray-500 mr-2 select-none">$</span>
                 {builtCommand}
@@ -626,41 +626,41 @@ export default function LinuxCommand() {
           </div>
 
           {/* Examples */}
-          <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-            <h2 className="text-sm font-semibold text-gray-300 flex items-center gap-2 mb-4">
-              <BookOpen className="w-4 h-4 text-blue-400" />
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-4">
+              <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               {t('examples')}
             </h2>
             <div className="space-y-3">
               {cmd.examples.map((ex, i) => (
-                <div key={i} className="bg-gray-900 rounded-lg p-3 border border-gray-700">
+                <div key={i} className="bg-gray-800 dark:bg-gray-900 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
                   <div className="flex items-start justify-between gap-2">
                     <code className="text-green-300 font-mono text-xs break-all flex-1">
-                      <span className="text-gray-600 mr-1.5 select-none">$</span>
+                      <span className="text-gray-500 dark:text-gray-600 mr-1.5 select-none">$</span>
                       {ex.cmd}
                     </code>
                     <button
                       onClick={() => copyToClipboard(ex.cmd, `ex-${i}`)}
-                      className="flex-shrink-0 text-gray-500 hover:text-gray-300 transition-colors p-1"
+                      className="flex-shrink-0 text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors p-1"
                       title={t('copy')}
                     >
-                      {copiedId === `ex-${i}` ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      {copiedId === `ex-${i}` ? <Check className="w-3.5 h-3.5 text-green-600 dark:text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
                     </button>
                   </div>
-                  <p className="text-gray-400 text-xs mt-1.5">{ex.descKo}</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs mt-1.5">{ex.descKo}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Man page style reference */}
-          <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-            <h2 className="text-sm font-semibold text-gray-300 mb-3">{t('allOptions')}</h2>
-            <div className="divide-y divide-gray-700">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('allOptions')}</h2>
+            <div className="divide-y divide-gray-200 dark:divide-gray-700">
               {cmd.flags.map(f => (
                 <div key={f.flag} className="py-2 flex items-start gap-3">
-                  <code className="font-mono text-xs text-yellow-400 w-32 flex-shrink-0 pt-0.5">{f.flag}</code>
-                  <span className="text-gray-400 text-xs">{f.descKo}</span>
+                  <code className="font-mono text-xs text-yellow-600 dark:text-yellow-400 w-32 flex-shrink-0 pt-0.5">{f.flag}</code>
+                  <span className="text-gray-500 dark:text-gray-400 text-xs">{f.descKo}</span>
                 </div>
               ))}
             </div>
