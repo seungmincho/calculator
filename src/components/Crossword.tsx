@@ -409,6 +409,31 @@ export default function Crossword() {
     return r >= 0 && r < puzzle.size && c >= 0 && c < puzzle.size && puzzle.grid[r][c] !== ''
   }, [puzzle])
 
+  // ── Handle character input ──
+  const handleInput = useCallback((char: string) => {
+    if (!selectedCell || completed) return
+    if (!isRunning) setIsRunning(true)
+    const [sr, sc] = selectedCell
+
+    setUserGrid(prev => {
+      const ng = prev.map(row => [...row])
+      ng[sr][sc] = char
+      return ng
+    })
+    setWrongCells(new Set())
+
+    // Move to next cell in current direction
+    if (direction === 'across') {
+      for (let c = sc + 1; c < puzzle.size; c++) {
+        if (isValidCell(sr, c)) { setSelectedCell([sr, c]); return }
+      }
+    } else {
+      for (let r = sr + 1; r < puzzle.size; r++) {
+        if (isValidCell(r, sc)) { setSelectedCell([r, sc]); return }
+      }
+    }
+  }, [selectedCell, completed, isRunning, direction, puzzle.size, isValidCell])
+
   // ── Cell click ──
   const handleCellClick = useCallback((r: number, c: number) => {
     if (!isValidCell(r, c)) return
@@ -486,37 +511,19 @@ export default function Crossword() {
       return
     }
 
-    // Korean character input
-    if (e.key.length === 1 && /[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z]/.test(e.key)) {
-      // We handle this via onInput/composition for Korean IME
+    // Korean complete syllable — handle directly as fallback
+    // (primary path is via hidden input's onCompositionEnd/onInput)
+    if (e.key.length === 1 && /[가-힣]/.test(e.key)) {
+      e.preventDefault()
+      handleInput(e.key)
       return
     }
-  }, [selectedCell, completed, isValidCell, userGrid, direction, puzzle.size])
 
-  // ── Handle input (for Korean IME) ──
-  const handleInput = useCallback((char: string) => {
-    if (!selectedCell || completed) return
-    if (!isRunning) setIsRunning(true)
-    const [sr, sc] = selectedCell
-
-    setUserGrid(prev => {
-      const ng = prev.map(row => [...row])
-      ng[sr][sc] = char
-      return ng
-    })
-    setWrongCells(new Set())
-
-    // Move to next cell in current direction
-    if (direction === 'across') {
-      for (let c = sc + 1; c < puzzle.size; c++) {
-        if (isValidCell(sr, c)) { setSelectedCell([sr, c]); return }
-      }
-    } else {
-      for (let r = sr + 1; r < puzzle.size; r++) {
-        if (isValidCell(r, sc)) { setSelectedCell([r, sc]); return }
-      }
+    // Korean jamo or English — let IME handle via hidden input
+    if (e.key.length === 1 && /[ㄱ-ㅎㅏ-ㅣa-zA-Z]/.test(e.key)) {
+      return
     }
-  }, [selectedCell, completed, isRunning, direction, puzzle.size, isValidCell])
+  }, [selectedCell, completed, isValidCell, userGrid, direction, puzzle.size, handleInput])
 
   // ── Check completion ──
   useEffect(() => {
@@ -753,7 +760,12 @@ export default function Crossword() {
                 if (e.key === 'Tab') {
                   e.preventDefault()
                   setDirection(d => d === 'across' ? 'down' : 'across')
+                  return
                 }
+                // Fallback: if hidden input lost focus, handle arrow/backspace/etc directly on grid
+                handleKeyDown(e)
+                // Also try to re-focus hidden input for future IME input
+                focusInput()
               }}
             >
               {Array.from({ length: puzzle.size }, (_, r) =>
