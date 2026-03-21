@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Maze layout: 0=dot, 1=wall, 2=power pellet, 3=empty path
 const MAZE_TEMPLATE = [
@@ -148,6 +150,9 @@ export default function PacMan() {
   const [displayLives, setDisplayLives] = useState(3)
   const [displayLevel, setDisplayLevel] = useState(1)
 
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
+
   const getBest = useCallback(() => {
     try { return parseInt(localStorage.getItem('pacman-best') || '0', 10) } catch { return 0 }
   }, [])
@@ -177,6 +182,7 @@ export default function PacMan() {
     setDisplayLevel(1)
     setDisplayBest(getBest())
     setDisplayState('ready')
+    resultRecordedRef.current = false
   }, [resetLevel, getBest])
 
   const drawMaze = useCallback((ctx: CanvasRenderingContext2D) => {
@@ -526,6 +532,15 @@ export default function PacMan() {
             setDisplayState('gameover')
             setDisplayScore(scoreRef.current)
             setDisplayBest(getBest())
+            if (!resultRecordedRef.current) {
+              resultRecordedRef.current = true
+              recordGameResult({
+                gameType: 'pacman',
+                result: 'loss',
+                difficulty: 'normal',
+                moves: scoreRef.current,
+              })
+            }
           } else {
             // Reset positions
             pacRef.current = { x: 10, y: 16, dir: NONE, nextDir: NONE, mouthAngle: 0, mouthOpen: true }
@@ -580,6 +595,15 @@ export default function PacMan() {
           setDisplayState('levelclear')
           setDisplayScore(scoreRef.current)
           setDisplayBest(getBest())
+          if (!resultRecordedRef.current) {
+            resultRecordedRef.current = true
+            recordGameResult({
+              gameType: 'pacman',
+              result: 'win',
+              difficulty: 'normal',
+              moves: scoreRef.current,
+            })
+          }
           setTimeout(() => {
             levelRef.current++
             setDisplayLevel(levelRef.current)
@@ -723,6 +747,13 @@ export default function PacMan() {
         </button>
       </div>
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('guide.title')}</h2>
@@ -748,6 +779,10 @@ export default function PacMan() {
           </div>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

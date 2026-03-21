@@ -6,6 +6,8 @@ import { Target, RotateCcw, Trophy, Lightbulb, BookOpen } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Types ──
 
@@ -111,6 +113,9 @@ export default function NumberBaseball() {
   const [showNameModal, setShowNameModal] = useState(false)
   const gameStartTimeRef = useRef<number>(Date.now())
 
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
+
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   // Start new game
@@ -126,6 +131,7 @@ export default function NumberBaseball() {
       setHintUsed(false)
       setHintText('')
       setError('')
+      resultRecordedRef.current = false
       gameStartTimeRef.current = Date.now()
       setTimeout(() => inputRefs.current[0]?.focus(), 50)
     },
@@ -215,6 +221,15 @@ export default function NumberBaseball() {
     if (strikes === digitCount) {
       // Won!
       setIsWon(true)
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        recordGameResult({
+          gameType: 'numberbaseball',
+          result: 'win',
+          difficulty,
+          moves: attemptNum,
+        })
+      }
       const newStats = { ...stats }
       newStats.gamesPlayed++
       newStats.totalAttempts += attemptNum
@@ -529,6 +544,13 @@ export default function NumberBaseball() {
         </div>
       </div>
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Leaderboard */}
       <LeaderboardPanel leaderboard={leaderboard} />
       <NameInputModal
@@ -594,6 +616,10 @@ export default function NumberBaseball() {
           </div>
         )}
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

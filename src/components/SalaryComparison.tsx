@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo, useRef } from 'react'
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { ArrowLeftRight, Plus, Trash2, Copy, Check, TrendingUp, TrendingDown, Minus, RotateCcw, BookOpen } from 'lucide-react'
+import { ArrowLeftRight, Plus, Trash2, Copy, Check, TrendingUp, TrendingDown, Minus, RotateCcw, BookOpen, Link } from 'lucide-react'
 
 // ── 2025년 한국 급여 계산 로직 (SalaryCalculator와 동일 기준) ──
 
@@ -146,6 +147,7 @@ const COLORS = [
 
 export default function SalaryComparison() {
   const t = useTranslations('salaryComparison')
+  const searchParams = useSearchParams()
   const nextIdRef = useRef(3)
 
   const [scenarios, setScenarios] = useState<ScenarioInput[]>([
@@ -155,6 +157,32 @@ export default function SalaryComparison() {
 
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showGuide, setShowGuide] = useState(false)
+
+  // URL param sync - read on mount
+  useEffect(() => {
+    const salA = searchParams.get('salaryA')
+    const salB = searchParams.get('salaryB')
+    if (salA) setScenarios(prev => prev.map((s, i) => i === 0 ? { ...s, salary: salA } : s))
+    if (salB) setScenarios(prev => prev.map((s, i) => i === 1 ? { ...s, salary: salB } : s))
+  }, [])
+
+  // URL param sync - write on change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams()
+    scenarios.forEach((s, i) => {
+      if (s.salary) params.set(`salary${s.label}`, s.salary)
+    })
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+  }, [scenarios])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch { /* */ }
+    setCopiedId('link')
+    setTimeout(() => setCopiedId(null), 2000)
+  }, [])
 
   const updateScenario = useCallback((id: string, field: keyof ScenarioInput, value: string) => {
     setScenarios(prev => prev.map(s => {
@@ -274,6 +302,14 @@ export default function SalaryComparison() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
         </div>
         <div className="flex gap-2">
+          <button
+            onClick={copyLink}
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            title="링크 복사"
+          >
+            {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+            <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+          </button>
           <button
             onClick={resetAll}
             className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"

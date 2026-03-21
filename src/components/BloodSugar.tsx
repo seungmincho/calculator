@@ -2,7 +2,8 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
-import { Trash2, Download, RotateCcw, AlertTriangle, TrendingUp } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Trash2, Download, RotateCcw, AlertTriangle, TrendingUp, Link, Check } from 'lucide-react'
 
 interface BloodSugarRecord {
   id: string
@@ -121,18 +122,41 @@ function nowTimeStr(): string {
 
 export default function BloodSugar() {
   const t = useTranslations('bloodSugar')
+  const searchParams = useSearchParams()
 
   const [records, setRecords] = useState<BloodSugarRecord[]>([])
-  const [valueInput, setValueInput] = useState('')
-  const [timing, setTiming] = useState<TimingType>('fasting')
+  const [valueInput, setValueInput] = useState(() => searchParams.get('value') ?? '')
+  const [timing, setTiming] = useState<TimingType>(() => {
+    const t_ = searchParams.get('timing')
+    return (TIMINGS.includes(t_ as TimingType) ? t_ : 'fasting') as TimingType
+  })
   const [date, setDate] = useState(todayStr())
   const [time, setTime] = useState(nowTimeStr())
   const [note, setNote] = useState('')
   const [error, setError] = useState('')
   const [statsPeriod, setStatsPeriod] = useState<StatsPeriod>(7)
+  const [linkCopied, setLinkCopied] = useState(false)
 
   useEffect(() => {
     setRecords(loadRecords())
+  }, [])
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    if (valueInput) url.searchParams.set('value', valueInput)
+    else url.searchParams.delete('value')
+    url.searchParams.set('timing', timing)
+    window.history.replaceState({}, '', url)
+  }, [valueInput, timing])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch {
+      // ignore
+    }
+    setLinkCopied(true)
+    setTimeout(() => setLinkCopied(false), 2000)
   }, [])
 
   const handleSubmit = useCallback(() => {
@@ -245,11 +269,20 @@ export default function BloodSugar() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <span>🩸</span> {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <span>🩸</span> {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+        >
+          {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          {linkCopied ? '복사됨' : '링크 복사'}
+        </button>
       </div>
 
       {/* Disclaimer */}

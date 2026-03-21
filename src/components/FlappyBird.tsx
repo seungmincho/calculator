@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Trophy, RotateCcw } from 'lucide-react'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type GameState = 'ready' | 'playing' | 'gameover'
@@ -272,6 +274,9 @@ export default function FlappyBird() {
   const [score, setScore] = useState(0)
   const [bestScore, setBestScore] = useState(0)
 
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
+
   // Load best score from localStorage
   useEffect(() => {
     try {
@@ -320,6 +325,7 @@ export default function FlappyBird() {
     stateRef.current = 'ready'
     setGameState('ready')
     setScore(0)
+    resultRecordedRef.current = false
   }, [resetGame])
 
   // ── Game Loop ────────────────────────────────────────────────────────────
@@ -385,6 +391,17 @@ export default function FlappyBird() {
         if (hitGround) bird.y = groundY - bird.radius
         stateRef.current = 'gameover'
         setGameState('gameover')
+
+        if (!resultRecordedRef.current) {
+          resultRecordedRef.current = true
+          const final = scoreRef.current
+          recordGameResult({
+            gameType: 'flappybird',
+            result: final >= 10 ? 'win' : 'loss',
+            difficulty: 'normal',
+            moves: final,
+          })
+        }
 
         const final = scoreRef.current
         setBestScore(prev => {
@@ -606,6 +623,13 @@ export default function FlappyBird() {
         )}
       </div>
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -625,6 +649,10 @@ export default function FlappyBird() {
           </ul>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

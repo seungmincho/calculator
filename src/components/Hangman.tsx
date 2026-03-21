@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Korean jamo decomposition ──────────────────────────────────────────────
 const CHOSUNG = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
@@ -105,6 +107,9 @@ export default function Hangman() {
   const [wrongCount, setWrongCount] = useState<number>(0)
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing')
 
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
+
   // Compute which jamos are in the word
   const wordJamos = useCallback((w: string): Set<string> => {
     const jamos = new Set<string>()
@@ -129,6 +134,7 @@ export default function Hangman() {
     setGuessed(new Set())
     setWrongCount(0)
     setGameStatus('playing')
+    resultRecordedRef.current = false
   }, [])
 
   // Start initial game on mount
@@ -160,10 +166,28 @@ export default function Hangman() {
     const allRevealed = [...word].every(ch => isCharRevealed(ch, newGuessed))
     if (allRevealed) {
       setGameStatus('won')
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        recordGameResult({
+          gameType: 'hangman',
+          result: 'win',
+          difficulty: 'normal',
+          moves: newGuessed.size,
+        })
+      }
     } else if (newWrongCount >= MAX_WRONG) {
       setGameStatus('lost')
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        recordGameResult({
+          gameType: 'hangman',
+          result: 'loss',
+          difficulty: 'normal',
+          moves: newGuessed.size,
+        })
+      }
     }
-  }, [gameStatus, guessed, word, wrongCount, wordJamos, isCharRevealed])
+  }, [gameStatus, guessed, word, wrongCount, wordJamos, isCharRevealed, recordGameResult])
 
   const categoryIcon: Record<Category, string> = {
     animals: '🐾',
@@ -356,6 +380,13 @@ export default function Hangman() {
         </div>
       )}
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('guide.title')}</h2>
@@ -371,6 +402,10 @@ export default function Hangman() {
           </ul>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Copy, Check, BookOpen, Building2, Home, Users, BarChart3, ChevronDown, ChevronUp, AlertTriangle, CheckCircle2, XCircle, Info } from 'lucide-react'
+import { Copy, Check, BookOpen, Building2, Home, Users, BarChart3, ChevronDown, ChevronUp, AlertTriangle, CheckCircle2, XCircle, Info, Link } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 // ── Constants: 2025 rates ──
@@ -268,13 +269,18 @@ type TabId = 'workplace' | 'regional' | 'dependent' | 'comparison'
 
 export default function HealthInsuranceCalculator() {
   const t = useTranslations('healthInsurance')
-  const [activeTab, setActiveTab] = useState<TabId>('workplace')
+  const searchParams = useSearchParams()
+  const [activeTab, setActiveTab] = useState<TabId>(() => {
+    const p = searchParams.get('tab')
+    return (p && ['workplace', 'regional', 'dependent', 'comparison'].includes(p)) ? p as TabId : 'workplace'
+  })
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [linkCopied, setLinkCopied] = useState(false)
 
   // Tab 1: Workplace
-  const [wpSalary, setWpSalary] = useState('')
-  const [wpIsAnnual, setWpIsAnnual] = useState(false)
-  const [wpNonTaxable, setWpNonTaxable] = useState('')
+  const [wpSalary, setWpSalary] = useState(() => searchParams.get('salary') || '')
+  const [wpIsAnnual, setWpIsAnnual] = useState(() => searchParams.get('annual') === '1')
+  const [wpNonTaxable, setWpNonTaxable] = useState(() => searchParams.get('nonTaxable') || '')
   const [showAllInsurance, setShowAllInsurance] = useState(false)
 
   // Tab 2: Regional
@@ -308,6 +314,23 @@ export default function HealthInsuranceCalculator() {
 
   // ── Guide expand ──
   const [showGuide, setShowGuide] = useState(false)
+
+  // ── URL sync ──
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('tab', activeTab)
+    if (wpSalary) url.searchParams.set('salary', wpSalary); else url.searchParams.delete('salary')
+    if (wpIsAnnual) url.searchParams.set('annual', '1'); else url.searchParams.delete('annual')
+    if (wpNonTaxable) url.searchParams.set('nonTaxable', wpNonTaxable); else url.searchParams.delete('nonTaxable')
+    window.history.replaceState({}, '', url)
+  }, [activeTab, wpSalary, wpIsAnnual, wpNonTaxable])
+
+  const copyLink = useCallback(() => {
+    navigator.clipboard?.writeText(window.location.href).then(() => {
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    })
+  }, [])
 
   // ── Copy ──
   const copyToClipboard = useCallback(async (text: string, id: string) => {
@@ -450,9 +473,14 @@ export default function HealthInsuranceCalculator() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+          {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
+        </button>
       </div>
 
       {/* Tabs */}

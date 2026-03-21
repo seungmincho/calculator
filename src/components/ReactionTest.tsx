@@ -6,6 +6,8 @@ import { Zap, RotateCcw, Trash2, BookOpen, Timer, TrendingUp, Trophy, Users, Tar
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 type GameState = 'idle' | 'waiting' | 'ready' | 'result' | 'tooEarly' | 'sessionComplete'
 
@@ -55,6 +57,9 @@ export default function ReactionTest() {
   const leaderboard = useLeaderboard('reactionTest', undefined)
   const [showNameModal, setShowNameModal] = useState(false)
   const gameStartTimeRef = useRef<number>(Date.now())
+
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
 
   useEffect(() => {
     return () => {
@@ -120,6 +125,7 @@ export default function ReactionTest() {
     setCurrentTime(null)
     setGameState('idle')
     gameStartTimeRef.current = Date.now()
+    resultRecordedRef.current = false
   }, [])
 
   const handleClearHistory = useCallback(() => {
@@ -133,9 +139,18 @@ export default function ReactionTest() {
     ? Math.round(sessionAttempts.reduce((sum, a) => sum + a.time, 0) / sessionAttempts.length)
     : null
 
-  // Leaderboard: detect session complete
+  // Leaderboard + achievements: detect session complete
   useEffect(() => {
     if (gameState === 'sessionComplete' && sessionAverage !== null) {
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        recordGameResult({
+          gameType: 'reactiontest',
+          result: 'win',
+          difficulty: 'normal',
+          moves: sessionAverage,
+        })
+      }
       if (leaderboard.checkQualifies(sessionAverage)) {
         setShowNameModal(true)
       }
@@ -458,6 +473,13 @@ export default function ReactionTest() {
         </div>
       )}
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Leaderboard */}
       <LeaderboardPanel leaderboard={leaderboard} />
       <NameInputModal
@@ -506,6 +528,10 @@ export default function ReactionTest() {
           </div>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

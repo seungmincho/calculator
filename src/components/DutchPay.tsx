@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Copy, Check, Users, DollarSign, Plus, Minus, BookOpen } from 'lucide-react'
+import { Copy, Check, Users, DollarSign, Plus, Minus, BookOpen, Link } from 'lucide-react'
 
 type Participant = {
   id: string
@@ -19,12 +20,17 @@ type Transfer = {
 
 export default function DutchPay() {
   const t = useTranslations('dutchPay')
-  const [mode, setMode] = useState<'equal' | 'custom'>('equal')
+  const searchParams = useSearchParams()
+  const [mode, setMode] = useState<'equal' | 'custom'>(() => {
+    const p = searchParams.get('mode')
+    return (p === 'equal' || p === 'custom') ? p : 'equal'
+  })
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [linkCopied, setLinkCopied] = useState(false)
 
   // Equal split state
-  const [totalAmount, setTotalAmount] = useState('')
-  const [numberOfPeople, setNumberOfPeople] = useState('')
+  const [totalAmount, setTotalAmount] = useState(() => searchParams.get('total') || '')
+  const [numberOfPeople, setNumberOfPeople] = useState(() => searchParams.get('people') || '')
 
   // Custom split state
   const [participants, setParticipants] = useState<Participant[]>([
@@ -52,6 +58,22 @@ export default function DutchPay() {
       setCopiedId(id)
       setTimeout(() => setCopiedId(null), 2000)
     }
+  }, [])
+
+  // ── URL sync ──
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('mode', mode)
+    if (totalAmount) url.searchParams.set('total', totalAmount); else url.searchParams.delete('total')
+    if (numberOfPeople) url.searchParams.set('people', numberOfPeople); else url.searchParams.delete('people')
+    window.history.replaceState({}, '', url)
+  }, [mode, totalAmount, numberOfPeople])
+
+  const copyLink = useCallback(() => {
+    navigator.clipboard?.writeText(window.location.href).then(() => {
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    })
   }, [])
 
   const formatNumber = (num: number): string => {
@@ -152,9 +174,14 @@ export default function DutchPay() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+          {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
+        </button>
       </div>
 
       {/* Mode Toggle */}

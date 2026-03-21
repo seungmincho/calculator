@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Flame, Copy, Check, BookOpen, Plus, Trash2 } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Flame, Copy, Check, BookOpen, Plus, Trash2, Link } from 'lucide-react'
 
 // MET (Metabolic Equivalent of Task) values for common activities
 // Source: Compendium of Physical Activities (2024)
@@ -72,12 +73,37 @@ let nextId = 1
 
 export default function ExerciseCalorie() {
   const t = useTranslations('exerciseCalorie')
+  const searchParams = useSearchParams()
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [linkCopied, setLinkCopied] = useState(false)
   const [showGuide, setShowGuide] = useState(false)
-  const [weight, setWeight] = useState('70')
-  const [entries, setEntries] = useState<ExerciseEntry[]>([
-    { id: nextId++, activityId: 'walkNormal', duration: 30 },
-  ])
+  const [weight, setWeight] = useState(() => searchParams.get('weight') ?? '70')
+  const [entries, setEntries] = useState<ExerciseEntry[]>(() => {
+    const activityId = searchParams.get('activity') ?? 'walkNormal'
+    const duration = parseInt(searchParams.get('duration') ?? '30', 10)
+    const validActivity = ACTIVITIES.find(a => a.id === activityId) ? activityId : 'walkNormal'
+    return [{ id: nextId++, activityId: validActivity, duration: isNaN(duration) || duration < 1 ? 30 : duration }]
+  })
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('weight', weight)
+    if (entries.length > 0) {
+      url.searchParams.set('activity', entries[0].activityId)
+      url.searchParams.set('duration', String(entries[0].duration))
+    }
+    window.history.replaceState({}, '', url)
+  }, [weight, entries])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch {
+      // ignore
+    }
+    setLinkCopied(true)
+    setTimeout(() => setLinkCopied(false), 2000)
+  }, [])
 
   const addEntry = useCallback(() => {
     setEntries(prev => [...prev, { id: nextId++, activityId: 'walkNormal', duration: 30 }])
@@ -160,12 +186,21 @@ export default function ExerciseCalorie() {
   return (
     <div className="space-y-6">
       {/* 헤더 */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <Flame className="w-6 h-6 text-orange-500" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Flame className="w-6 h-6 text-orange-500" />
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+        >
+          {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          {linkCopied ? '복사됨' : '링크 복사'}
+        </button>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">

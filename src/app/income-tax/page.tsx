@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import IncomeTaxCalculator from '@/components/IncomeTaxCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -110,6 +111,7 @@ export default function IncomeTaxPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
             <I18nWrapper>
+        <Breadcrumb />
               <IncomeTaxCalculator />
               <div className="mt-8">
 

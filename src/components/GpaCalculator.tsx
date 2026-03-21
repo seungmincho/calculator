@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { GraduationCap, Plus, Trash2, BookOpen, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { GraduationCap, Plus, Trash2, BookOpen, RotateCcw, ChevronDown, ChevronUp, Link, Check, Target } from 'lucide-react'
 
 interface Course {
   id: string
@@ -49,8 +50,13 @@ const GRADE_VALUES_43: Record<string, number> = {
 
 export default function GpaCalculator() {
   const t = useTranslations('gpaCalculator')
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
-  const [scale, setScale] = useState<GpaScale>('4.5')
+  const initialScale = (searchParams.get('scale') as GpaScale) ?? '4.5'
+  const initialTarget = searchParams.get('target') ?? ''
+
+  const [scale, setScale] = useState<GpaScale>(initialScale)
   const [semesters, setSemesters] = useState<Semester[]>([
     {
       id: '1',
@@ -59,8 +65,22 @@ export default function GpaCalculator() {
     },
   ])
 
+  // Target GPA reverse calculator state
+  const [targetGpa, setTargetGpa] = useState(initialTarget)
+  const [remainingCredits, setRemainingCredits] = useState('')
+  const [copiedLink, setCopiedLink] = useState(false)
+
   const gradeValues = scale === '4.5' ? GRADE_VALUES_45 : GRADE_VALUES_43
   const gradeOptions = Object.keys(gradeValues)
+  const maxScale = scale === '4.5' ? 4.5 : 4.3
+
+  // Sync scale + targetGpa to URL params
+  useEffect(() => {
+    const params = new URLSearchParams()
+    params.set('scale', scale)
+    if (targetGpa) params.set('target', targetGpa)
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }, [scale, targetGpa, router])
 
   const calculateSemesterGPA = useCallback((courses: Course[]) => {
     const validCourses = courses.filter(c => c.grade && c.credits > 0)
@@ -98,6 +118,28 @@ export default function GpaCalculator() {
       courses: totalCourses,
     }
   }, [semesters, gradeValues])
+
+  // Reverse calculator: required GPA for remaining credits
+  const reverseResult = useMemo(() => {
+    const target = parseFloat(targetGpa)
+    const remaining = parseFloat(remainingCredits)
+    const current = cumulativeStats.gpa
+    const earned = cumulativeStats.credits
+
+    if (!targetGpa || !remainingCredits || isNaN(target) || isNaN(remaining) || remaining <= 0) {
+      return null
+    }
+
+    // (earned * current + remaining * required) / (earned + remaining) = target
+    // => required = (target * (earned + remaining) - earned * current) / remaining
+    const required = (target * (earned + remaining) - earned * current) / remaining
+
+    return {
+      required,
+      feasible: required <= maxScale,
+      impossible: required < 0,
+    }
+  }, [targetGpa, remainingCredits, cumulativeStats, maxScale])
 
   const addSemester = useCallback(() => {
     const newId = String(Date.now())
@@ -180,17 +222,52 @@ export default function GpaCalculator() {
         isExpanded: true,
       },
     ])
+    setTargetGpa('')
+    setRemainingCredits('')
+  }, [])
+
+  const copyLink = useCallback(async () => {
+    try {
+      const url = window.location.href
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url)
+      } else {
+        const textarea = document.createElement('textarea')
+        textarea.value = url
+        textarea.style.position = 'fixed'
+        textarea.style.left = '-999999px'
+        document.body.appendChild(textarea)
+        textarea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+      }
+      setCopiedLink(true)
+      setTimeout(() => setCopiedLink(false), 2000)
+    } catch {
+      setCopiedLink(true)
+      setTimeout(() => setCopiedLink(false), 2000)
+    }
   }, [])
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <GraduationCap className="w-7 h-7" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <GraduationCap className="w-7 h-7" />
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="shrink-0 flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+          title={t('copyLink')}
+        >
+          {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span className="hidden sm:inline">{copiedLink ? t('copied') : t('copyLink')}</span>
+        </button>
       </div>
 
       {/* Main Grid */}
@@ -231,6 +308,79 @@ export default function GpaCalculator() {
               <RotateCcw className="w-4 h-4" />
               {t('reset')}
             </button>
+          </div>
+
+          {/* Target GPA Reverse Calculator */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+              <Target className="w-5 h-5 text-indigo-500" />
+              {t('reverse.title')}
+            </h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">{t('reverse.description')}</p>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {t('reverse.currentGpa')}
+                </label>
+                <div className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm">
+                  {cumulativeStats.gpa.toFixed(2)} ({cumulativeStats.credits} {t('credits')})
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {t('reverse.targetGpa')}
+                </label>
+                <input
+                  type="number"
+                  value={targetGpa}
+                  onChange={e => setTargetGpa(e.target.value)}
+                  placeholder={`0.00 ~ ${maxScale}`}
+                  min={0}
+                  max={maxScale}
+                  step={0.01}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {t('reverse.remainingCredits')}
+                </label>
+                <input
+                  type="number"
+                  value={remainingCredits}
+                  onChange={e => setRemainingCredits(e.target.value)}
+                  placeholder="예: 30"
+                  min={1}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              {reverseResult && (
+                <div className={`rounded-lg p-4 text-sm ${
+                  reverseResult.impossible
+                    ? 'bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                    : reverseResult.feasible
+                    ? 'bg-green-50 dark:bg-green-950 text-green-800 dark:text-green-200'
+                    : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200'
+                }`}>
+                  {reverseResult.impossible ? (
+                    <p>{t('reverse.alreadyAchieved')}</p>
+                  ) : reverseResult.feasible ? (
+                    <>
+                      <p className="font-semibold mb-1">{t('reverse.requiredGpa')}</p>
+                      <p className="text-2xl font-bold">{reverseResult.required.toFixed(2)}</p>
+                      <p className="mt-1 text-xs opacity-80">{t('reverse.feasible')}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="font-semibold mb-1">{t('reverse.requiredGpa')}</p>
+                      <p className="text-2xl font-bold">{reverseResult.required.toFixed(2)}</p>
+                      <p className="mt-1 text-xs opacity-80">{t('reverse.impossible', { max: maxScale })}</p>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Quick Guide */}

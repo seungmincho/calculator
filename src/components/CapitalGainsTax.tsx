@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Calculator, AlertTriangle, CheckCircle, Info } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Calculator, AlertTriangle, CheckCircle, Info, Link, Check } from 'lucide-react'
 
 interface CalcResult {
   transferProfit: number        // 양도차익
@@ -97,18 +98,67 @@ function calcProgressiveTax(taxBase: number): { rate: number; deduction: number;
 
 export default function CapitalGainsTax() {
   const t = useTranslations('capitalGainsTax')
+  const searchParams = useSearchParams()
 
-  // inputs
-  const [salePrice, setSalePrice] = useState('')
-  const [acqPrice, setAcqPrice] = useState('')
-  const [expenses, setExpenses] = useState('')
-  const [acqDate, setAcqDate] = useState('')
-  const [saleDate, setSaleDate] = useState('')
-  const [propertyType, setPropertyType] = useState<'general' | 'house'>('house')
-  const [houseCount, setHouseCount] = useState<'1' | '2' | '3plus'>('1')
-  const [isAdjusted, setIsAdjusted] = useState(false)
-  const [residenceYears, setResidenceYears] = useState('')
-  const [applySurcharge, setApplySurcharge] = useState(false)
+  // inputs — initialise from URL params if present
+  const [salePrice, setSalePrice] = useState(() => {
+    const v = searchParams.get('sp')
+    return v ? Number(v).toLocaleString('ko-KR') : ''
+  })
+  const [acqPrice, setAcqPrice] = useState(() => {
+    const v = searchParams.get('ap')
+    return v ? Number(v).toLocaleString('ko-KR') : ''
+  })
+  const [expenses, setExpenses] = useState(() => {
+    const v = searchParams.get('ex')
+    return v ? Number(v).toLocaleString('ko-KR') : ''
+  })
+  const [acqDate, setAcqDate] = useState(() => searchParams.get('ad') ?? '')
+  const [saleDate, setSaleDate] = useState(() => searchParams.get('sd') ?? '')
+  const [propertyType, setPropertyType] = useState<'general' | 'house'>(() => {
+    const v = searchParams.get('pt')
+    return v === 'general' ? 'general' : 'house'
+  })
+  const [houseCount, setHouseCount] = useState<'1' | '2' | '3plus'>(() => {
+    const v = searchParams.get('hc')
+    return (v === '2' || v === '3plus') ? v : '1'
+  })
+  const [isAdjusted, setIsAdjusted] = useState(() => searchParams.get('ia') === '1')
+  const [residenceYears, setResidenceYears] = useState(() => searchParams.get('ry') ?? '')
+  const [applySurcharge, setApplySurcharge] = useState(() => searchParams.get('as') === '1')
+
+  // URL sync
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (salePrice)        params.set('sp', String(parseNumber(salePrice)))
+    if (acqPrice)         params.set('ap', String(parseNumber(acqPrice)))
+    if (expenses)         params.set('ex', String(parseNumber(expenses)))
+    if (acqDate)          params.set('ad', acqDate)
+    if (saleDate)         params.set('sd', saleDate)
+    if (propertyType !== 'house') params.set('pt', propertyType)
+    if (houseCount !== '1') params.set('hc', houseCount)
+    if (isAdjusted)       params.set('ia', '1')
+    if (residenceYears)   params.set('ry', residenceYears)
+    if (applySurcharge)   params.set('as', '1')
+    const qs = params.toString()
+    window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname)
+  }, [salePrice, acqPrice, expenses, acqDate, saleDate, propertyType, houseCount, isAdjusted, residenceYears, applySurcharge])
+
+  // Copy link state
+  const [linkCopied, setLinkCopied] = useState(false)
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch {
+      const ta = document.createElement('textarea')
+      ta.value = window.location.href
+      ta.style.position = 'fixed'; ta.style.left = '-999999px'
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy')
+      document.body.removeChild(ta)
+    }
+    setLinkCopied(true)
+    setTimeout(() => setLinkCopied(false), 2000)
+  }, [])
 
   const salePriceNum = parseNumber(salePrice)
   const acqPriceNum = parseNumber(acqPrice)
@@ -244,12 +294,24 @@ export default function CapitalGainsTax() {
   return (
     <div className="space-y-8">
       {/* 헤더 */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <Calculator className="w-7 h-7 text-blue-600" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Calculator className="w-7 h-7 text-blue-600" />
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="shrink-0 flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          title="링크 복사"
+        >
+          {linkCopied
+            ? <><Check className="w-4 h-4 text-green-500" /><span className="text-green-600 dark:text-green-400">복사됨</span></>
+            : <><Link className="w-4 h-4" /><span>링크 복사</span></>
+          }
+        </button>
       </div>
 
       {/* 메인 그리드 */}

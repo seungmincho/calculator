@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Zap, Lightbulb, Copy, Check, BookOpen, RotateCcw } from 'lucide-react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { Zap, Lightbulb, Copy, Check, BookOpen, RotateCcw, Link, ChevronDown, ChevronUp, Plus, Minus } from 'lucide-react'
 
 type Season = 'normal' | 'summer' | 'winter'
 type ContractType = 'low' | 'high'
@@ -35,6 +36,13 @@ interface Breakdown {
   fund: number
   total: number
   costPerKwh: number
+}
+
+interface Appliance {
+  id: string
+  nameKey: string
+  watt: number
+  hours: number
 }
 
 const LOW_VOLTAGE_BASE_FEE: BaseFee = {
@@ -79,13 +87,51 @@ const HOUSEHOLD_USAGE = {
   four: 400,
 }
 
+// Default appliances with typical wattage
+const DEFAULT_APPLIANCES: Appliance[] = [
+  { id: 'ac',         nameKey: 'appliances.ac',         watt: 1500, hours: 0 },
+  { id: 'fridge',     nameKey: 'appliances.fridge',     watt: 150,  hours: 0 },
+  { id: 'tv',         nameKey: 'appliances.tv',         watt: 120,  hours: 0 },
+  { id: 'washer',     nameKey: 'appliances.washer',     watt: 500,  hours: 0 },
+  { id: 'microwave',  nameKey: 'appliances.microwave',  watt: 1000, hours: 0 },
+  { id: 'computer',   nameKey: 'appliances.computer',   watt: 200,  hours: 0 },
+]
+
 export default function ElectricityCalculator() {
   const t = useTranslations('electricityCalculator')
-  const [usage, setUsage] = useState<number>(300)
-  const [season, setSeason] = useState<Season>('normal')
-  const [contractType, setContractType] = useState<ContractType>('low')
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
 
+  // ── State initialised from URL params ──
+  const [usage, setUsage] = useState<number>(() => {
+    const v = searchParams.get('usage')
+    const n = v ? parseInt(v, 10) : 300
+    return isNaN(n) ? 300 : Math.max(0, Math.min(1000, n))
+  })
+  const [season, setSeason] = useState<Season>(() => {
+    const v = searchParams.get('season') as Season | null
+    return v && ['normal', 'summer', 'winter'].includes(v) ? v : 'normal'
+  })
+  const [contractType, setContractType] = useState<ContractType>(() => {
+    const v = searchParams.get('type') as ContractType | null
+    return v && ['low', 'high'].includes(v) ? v : 'low'
+  })
+
+  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [applianceOpen, setApplianceOpen] = useState(false)
+  const [appliances, setAppliances] = useState<Appliance[]>(DEFAULT_APPLIANCES)
+
+  // ── Sync state → URL ──
+  useEffect(() => {
+    const params = new URLSearchParams()
+    params.set('usage', String(usage))
+    params.set('season', season)
+    params.set('type', contractType)
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }, [usage, season, contractType, pathname, router])
+
+  // ── Clipboard helper ──
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
       if (navigator.clipboard?.writeText) {
@@ -108,6 +154,11 @@ export default function ElectricityCalculator() {
     }
   }, [])
 
+  const copyLink = useCallback(() => {
+    copyToClipboard(window.location.href, 'link')
+  }, [copyToClipboard])
+
+  // ── Electricity calculation ──
   const breakdown = useMemo((): Breakdown => {
     const rates = season === 'summer' ? SUMMER_RATES : season === 'winter' ? WINTER_RATES : NORMAL_SEASON_RATES
     const baseFees = contractType === 'low' ? LOW_VOLTAGE_BASE_FEE : HIGH_VOLTAGE_BASE_FEE
@@ -186,6 +237,32 @@ export default function ElectricityCalculator() {
   const getTierPercentage = (tierUsage: number): number => {
     return usage > 0 ? (tierUsage / usage) * 100 : 0
   }
+
+  // ── Appliance simulator ──
+  const applianceMonthlyKwh = useMemo(() => {
+    return appliances.reduce((sum, a) => sum + (a.watt * a.hours * 30) / 1000, 0)
+  }, [appliances])
+
+  const updateApplianceHours = useCallback((id: string, delta: number) => {
+    setAppliances(prev =>
+      prev.map(a =>
+        a.id === id ? { ...a, hours: Math.max(0, Math.min(24, a.hours + delta)) } : a
+      )
+    )
+  }, [])
+
+  const setApplianceHoursDirectly = useCallback((id: string, val: number) => {
+    setAppliances(prev =>
+      prev.map(a =>
+        a.id === id ? { ...a, hours: Math.max(0, Math.min(24, val)) } : a
+      )
+    )
+  }, [])
+
+  const applyApplianceUsage = useCallback(() => {
+    const kwh = Math.round(applianceMonthlyKwh)
+    setUsage(Math.min(1000, kwh))
+  }, [applianceMonthlyKwh])
 
   return (
     <div className="space-y-8">
@@ -356,13 +433,25 @@ export default function ElectricityCalculator() {
                   {t('result.perKwh')}: {breakdown.costPerKwh.toFixed(2)}원/kWh
                 </p>
               </div>
-              <button
-                onClick={() => copyToClipboard(`${breakdown.total.toLocaleString()}원`, 'total')}
-                className="p-3 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition-colors"
-                aria-label="복사"
-              >
-                {copiedId === 'total' ? <Check className="w-6 h-6" /> : <Copy className="w-6 h-6" />}
-              </button>
+              <div className="flex flex-col gap-2">
+                {/* Copy result */}
+                <button
+                  onClick={() => copyToClipboard(`${breakdown.total.toLocaleString()}원`, 'total')}
+                  className="p-3 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition-colors"
+                  aria-label="결과 복사"
+                >
+                  {copiedId === 'total' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                </button>
+                {/* Copy link */}
+                <button
+                  onClick={copyLink}
+                  className="p-3 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition-colors"
+                  aria-label={t('copyLink')}
+                  title={t('copyLink')}
+                >
+                  {copiedId === 'link' ? <Check className="w-5 h-5" /> : <Link className="w-5 h-5" />}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -530,6 +619,119 @@ export default function ElectricityCalculator() {
             </ul>
           </div>
         </div>
+      </div>
+
+      {/* Appliance Simulator */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <button
+          onClick={() => setApplianceOpen(prev => !prev)}
+          className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+        >
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <Zap className="w-5 h-5 text-yellow-500" />
+            {t('simulator.title')}
+          </h2>
+          <div className="flex items-center gap-3">
+            {applianceMonthlyKwh > 0 && (
+              <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                {t('simulator.estimated')}: {Math.round(applianceMonthlyKwh)} kWh
+              </span>
+            )}
+            {applianceOpen ? (
+              <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+            )}
+          </div>
+        </button>
+
+        {applianceOpen && (
+          <div className="px-6 pb-6 space-y-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {t('simulator.description')}
+            </p>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 dark:border-gray-700">
+                    <th className="text-left py-2 pr-4 text-gray-600 dark:text-gray-400 font-medium">{t('simulator.appliance')}</th>
+                    <th className="text-right py-2 px-4 text-gray-600 dark:text-gray-400 font-medium">{t('simulator.watt')}</th>
+                    <th className="text-center py-2 px-4 text-gray-600 dark:text-gray-400 font-medium">{t('simulator.hoursPerDay')}</th>
+                    <th className="text-right py-2 pl-4 text-gray-600 dark:text-gray-400 font-medium">{t('simulator.monthlyKwh')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {appliances.map(a => {
+                    const kwh = (a.watt * a.hours * 30) / 1000
+                    return (
+                      <tr key={a.id} className="border-b border-gray-100 dark:border-gray-700">
+                        <td className="py-3 pr-4 font-medium text-gray-900 dark:text-white">
+                          {t(a.nameKey)}
+                        </td>
+                        <td className="py-3 px-4 text-right text-gray-500 dark:text-gray-400">
+                          {a.watt}W
+                        </td>
+                        <td className="py-3 px-4">
+                          <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() => updateApplianceHours(a.id, -1)}
+                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+                              aria-label="감소"
+                            >
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <input
+                              type="number"
+                              value={a.hours}
+                              onChange={e => setApplianceHoursDirectly(a.id, Number(e.target.value))}
+                              className="w-14 text-center px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                              min="0"
+                              max="24"
+                            />
+                            <button
+                              onClick={() => updateApplianceHours(a.id, 1)}
+                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+                              aria-label="증가"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </td>
+                        <td className="py-3 pl-4 text-right font-medium text-gray-900 dark:text-white">
+                          {kwh.toFixed(1)} kWh
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+                <tfoot>
+                  <tr className="bg-blue-50 dark:bg-blue-950">
+                    <td colSpan={3} className="py-3 px-4 font-semibold text-gray-900 dark:text-white">
+                      {t('simulator.total')}
+                    </td>
+                    <td className="py-3 pl-4 text-right font-bold text-blue-600 dark:text-blue-400">
+                      {Math.round(applianceMonthlyKwh)} kWh
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {t('simulator.note')}
+              </p>
+              <button
+                onClick={applyApplianceUsage}
+                disabled={applianceMonthlyKwh === 0}
+                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium text-sm hover:from-blue-700 hover:to-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              >
+                {t('simulator.apply')} ({Math.round(applianceMonthlyKwh)} kWh)
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Guide Section */}

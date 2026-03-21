@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import BarcodeGenerator from '@/components/BarcodeGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -90,6 +91,7 @@ export default function BarcodeGeneratorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
+        <Breadcrumb />
         <BarcodeGenerator />
         <div className="mt-8">
 

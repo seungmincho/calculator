@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import MedianIncomeTable from '@/components/MedianIncomeTable'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -97,6 +98,7 @@ export default function MedianIncomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <I18nWrapper>
+        <Breadcrumb />
         <MedianIncomeTable />
         <div className="mt-8">
 

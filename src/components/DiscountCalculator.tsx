@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Tag, Copy, Check, RotateCcw, Plus, BookOpen, Percent, X } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Tag, Copy, Check, RotateCcw, Plus, BookOpen, Percent, X, Link } from 'lucide-react'
 
 type CalculationMode = 'discountRate' | 'finalPrice' | 'discountAmount'
 
@@ -13,16 +14,37 @@ interface MultiDiscount {
 
 export default function DiscountCalculator() {
   const t = useTranslations('discountCalculator')
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
-  // Calculation mode
-  const [mode, setMode] = useState<CalculationMode>('discountRate')
+  // ── Initialise from URL params (first render) ──────────────────────────────
+  const initMode = (): CalculationMode => {
+    const m = searchParams.get('mode')
+    if (m === 'finalPrice' || m === 'discountAmount') return m
+    return 'discountRate'
+  }
 
-  // Input states
-  const [originalPrice, setOriginalPrice] = useState<number>(100000)
-  const [discountRate, setDiscountRate] = useState<number>(20)
-  const [discountAmount, setDiscountAmount] = useState<number>(20000)
-  const [finalPrice, setFinalPrice] = useState<number>(80000)
+  // Calculation mode
+  const [mode, setMode] = useState<CalculationMode>(initMode)
+
+  // Input states — seeded from URL if present
+  const [originalPrice, setOriginalPrice] = useState<number>(() => {
+    const v = searchParams.get('original')
+    return v !== null && !isNaN(Number(v)) ? Math.max(0, Number(v)) : 100000
+  })
+  const [discountRate, setDiscountRate] = useState<number>(() => {
+    const v = searchParams.get('rate')
+    return v !== null && !isNaN(Number(v)) ? Math.min(100, Math.max(0, Number(v))) : 20
+  })
+  const [discountAmount, setDiscountAmount] = useState<number>(() => {
+    const v = searchParams.get('amount')
+    return v !== null && !isNaN(Number(v)) ? Math.max(0, Number(v)) : 20000
+  })
+  const [finalPrice, setFinalPrice] = useState<number>(() => {
+    const v = searchParams.get('final')
+    return v !== null && !isNaN(Number(v)) ? Math.max(0, Number(v)) : 80000
+  })
 
   // Multi discount states
   const [multiDiscounts, setMultiDiscounts] = useState<MultiDiscount[]>([
@@ -30,7 +52,18 @@ export default function DiscountCalculator() {
     { id: '2', rate: 10 }
   ])
 
-  // Copy to clipboard
+  // ── Sync main params to URL whenever they change ───────────────────────────
+  useEffect(() => {
+    const params = new URLSearchParams()
+    params.set('mode', mode)
+    params.set('original', String(originalPrice))
+    params.set('rate', String(discountRate))
+    params.set('amount', String(discountAmount))
+    params.set('final', String(finalPrice))
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }, [mode, originalPrice, discountRate, discountAmount, finalPrice, router])
+
+  // ── Copy helpers ───────────────────────────────────────────────────────────
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
       if (navigator.clipboard?.writeText) {
@@ -53,10 +86,14 @@ export default function DiscountCalculator() {
     }
   }, [])
 
+  const copyLink = useCallback(() => {
+    copyToClipboard(window.location.href, 'link')
+  }, [copyToClipboard])
+
   // Quick rate buttons
   const quickRates = [10, 20, 30, 40, 50, 60, 70, 80, 90]
 
-  // Main calculation logic
+  // ── Main calculation logic ─────────────────────────────────────────────────
   const result = useMemo(() => {
     let calculatedOriginal = originalPrice
     let calculatedDiscount = discountRate
@@ -96,7 +133,7 @@ export default function DiscountCalculator() {
     }
   }, [mode, originalPrice, discountRate, discountAmount, finalPrice])
 
-  // Multi discount calculation
+  // ── Multi discount calculation ─────────────────────────────────────────────
   const multiResult = useMemo(() => {
     let current = originalPrice
     const steps: Array<{ rate: number; price: number; savings: number }> = []
@@ -119,46 +156,39 @@ export default function DiscountCalculator() {
     }
   }, [originalPrice, multiDiscounts])
 
-  // Format currency
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('ko-KR', {
-      style: 'decimal',
-      maximumFractionDigits: 0
-    }).format(Math.round(value))
-  }
+  // ── Formatters ─────────────────────────────────────────────────────────────
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat('ko-KR', { style: 'decimal', maximumFractionDigits: 0 }).format(Math.round(value))
 
-  // Format percentage
-  const formatPercent = (value: number) => {
-    return new Intl.NumberFormat('ko-KR', {
+  const formatPercent = (value: number) =>
+    new Intl.NumberFormat('ko-KR', {
       style: 'decimal',
       minimumFractionDigits: 1,
       maximumFractionDigits: 2
     }).format(value)
-  }
 
-  // Add multi discount
+  // ── Multi discount helpers ─────────────────────────────────────────────────
   const addMultiDiscount = () => {
     if (multiDiscounts.length < 3) {
       setMultiDiscounts([...multiDiscounts, { id: Date.now().toString(), rate: 10 }])
     }
   }
 
-  // Remove multi discount
   const removeMultiDiscount = (id: string) => {
     if (multiDiscounts.length > 1) {
       setMultiDiscounts(multiDiscounts.filter(d => d.id !== id))
     }
   }
 
-  // Update multi discount rate
   const updateMultiDiscountRate = (id: string, rate: number) => {
     setMultiDiscounts(multiDiscounts.map(d =>
       d.id === id ? { ...d, rate: Math.min(100, Math.max(0, rate)) } : d
     ))
   }
 
-  // Reset
+  // ── Reset ──────────────────────────────────────────────────────────────────
   const reset = () => {
+    setMode('discountRate')
     setOriginalPrice(100000)
     setDiscountRate(20)
     setDiscountAmount(20000)
@@ -168,6 +198,14 @@ export default function DiscountCalculator() {
       { id: '2', rate: 10 }
     ])
   }
+
+  // ── Derived bar widths ─────────────────────────────────────────────────────
+  const finalPct = result.original > 0
+    ? Math.max(0, Math.min(100, (result.final / result.original) * 100))
+    : 0
+  const savingsPct = result.original > 0
+    ? Math.max(0, Math.min(100, (result.savings / result.original) * 100))
+    : 0
 
   return (
     <div className="space-y-8">
@@ -321,14 +359,33 @@ export default function DiscountCalculator() {
               </div>
             )}
 
-            {/* Reset Button */}
-            <button
-              onClick={reset}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
-            >
-              <RotateCcw className="w-4 h-4" />
-              {t('reset')}
-            </button>
+            {/* Action Buttons */}
+            <div className="flex gap-2">
+              <button
+                onClick={reset}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+                {t('reset')}
+              </button>
+              <button
+                onClick={copyLink}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg transition-colors"
+                title={t('copyLink')}
+              >
+                {copiedId === 'link' ? (
+                  <>
+                    <Check className="w-4 h-4" />
+                    <span className="text-sm font-medium">{t('copied')}</span>
+                  </>
+                ) : (
+                  <>
+                    <Link className="w-4 h-4" />
+                    <span className="text-sm font-medium">{t('copyLink')}</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Multi Discount Section */}
@@ -491,55 +548,92 @@ export default function DiscountCalculator() {
               </div>
             </div>
 
-            {/* Visual Comparison Bar */}
+            {/* ── Savings Summary Bar ────────────────────────────────────────── */}
             <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
-                시각적 비교
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-5">
+                {t('savingsSummary')}
               </h3>
-              <div className="space-y-4">
-                {/* Original Price Bar */}
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600 dark:text-gray-400">{t('originalPrice')}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">100%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-8">
-                    <div
-                      className="bg-gradient-to-r from-blue-500 to-blue-600 h-8 rounded-full flex items-center justify-end px-3"
-                      style={{ width: '100%' }}
-                    >
-                      <span className="text-white text-sm font-medium">₩{formatCurrency(result.original)}</span>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Final Price Bar */}
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600 dark:text-gray-400">{t('finalPrice')}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">
-                      {formatPercent(100 - result.discountRate)}%
-                    </span>
+              {/* Stacked bar */}
+              <div className="w-full h-10 rounded-lg overflow-hidden flex mb-4" role="img" aria-label="절약 요약 바 차트">
+                {/* Final price segment (purple) */}
+                {finalPct > 0 && (
+                  <div
+                    className="bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center transition-all duration-500"
+                    style={{ width: `${finalPct}%` }}
+                  >
+                    {finalPct >= 12 && (
+                      <span className="text-white text-xs font-semibold px-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                        {formatPercent(finalPct)}%
+                      </span>
+                    )}
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-8">
-                    <div
-                      className="bg-gradient-to-r from-purple-500 to-purple-600 h-8 rounded-full flex items-center justify-end px-3"
-                      style={{ width: `${Math.max(5, 100 - result.discountRate)}%` }}
-                    >
-                      <span className="text-white text-sm font-medium whitespace-nowrap">₩{formatCurrency(result.final)}</span>
-                    </div>
+                )}
+                {/* Savings segment (orange) */}
+                {savingsPct > 0 && (
+                  <div
+                    className="bg-gradient-to-r from-orange-400 to-orange-500 flex items-center justify-center transition-all duration-500"
+                    style={{ width: `${savingsPct}%` }}
+                  >
+                    {savingsPct >= 12 && (
+                      <span className="text-white text-xs font-semibold px-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                        {formatPercent(savingsPct)}%
+                      </span>
+                    )}
                   </div>
-                </div>
+                )}
+                {/* 100% case — no savings */}
+                {savingsPct === 0 && finalPct === 0 && (
+                  <div className="flex-1 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                    <span className="text-gray-500 text-xs">0%</span>
+                  </div>
+                )}
+              </div>
 
-                {/* Savings Indicator */}
-                <div className="flex items-center gap-2 text-sm">
-                  <div className="flex-1 border-t border-dashed border-gray-300 dark:border-gray-600"></div>
-                  <span className="text-orange-600 dark:text-orange-400 font-semibold">
-                    절약: ₩{formatCurrency(result.savings)} ({formatPercent(result.discountRate)}%)
-                  </span>
-                  <div className="flex-1 border-t border-dashed border-gray-300 dark:border-gray-600"></div>
+              {/* Legend + values */}
+              <div className="grid grid-cols-3 gap-3 text-center">
+                {/* Original */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-center gap-1.5">
+                    <span className="inline-block w-3 h-3 rounded-sm bg-gradient-to-r from-blue-500 to-blue-600 flex-shrink-0" />
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('originalPrice')}</span>
+                  </div>
+                  <p className="text-sm font-bold text-gray-900 dark:text-white">₩{formatCurrency(result.original)}</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500">100%</p>
+                </div>
+                {/* Final */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-center gap-1.5">
+                    <span className="inline-block w-3 h-3 rounded-sm bg-gradient-to-r from-purple-500 to-purple-600 flex-shrink-0" />
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('finalPrice')}</span>
+                  </div>
+                  <p className="text-sm font-bold text-purple-600 dark:text-purple-400">₩{formatCurrency(result.final)}</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500">{formatPercent(finalPct)}%</p>
+                </div>
+                {/* Savings */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-center gap-1.5">
+                    <span className="inline-block w-3 h-3 rounded-sm bg-gradient-to-r from-orange-400 to-orange-500 flex-shrink-0" />
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('savings')}</span>
+                  </div>
+                  <p className="text-sm font-bold text-orange-600 dark:text-orange-400">₩{formatCurrency(result.savings)}</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500">{formatPercent(savingsPct)}%</p>
                 </div>
               </div>
+
+              {/* Summary sentence */}
+              {result.savings > 0 && (
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    {t('summaryText', {
+                      original: `₩${formatCurrency(result.original)}`,
+                      rate: formatPercent(result.discountRate),
+                      savings: `₩${formatCurrency(result.savings)}`,
+                      final: `₩${formatCurrency(result.final)}`
+                    })}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>

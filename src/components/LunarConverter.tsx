@@ -2,7 +2,8 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Moon, Sun, Calendar, ArrowRightLeft, Copy, Check, BookOpen, RotateCcw } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Moon, Sun, Calendar, ArrowRightLeft, Copy, Check, BookOpen, RotateCcw, Link } from 'lucide-react'
 
 // Lunar calendar data for years 1900-2100
 // Each entry encodes: leap month info + month lengths for that lunar year
@@ -184,19 +185,24 @@ type ConversionMode = 'solarToLunar' | 'lunarToSolar'
 
 export default function LunarConverter() {
   const t = useTranslations('lunarConverter')
-  const [mode, setMode] = useState<ConversionMode>('solarToLunar')
+  const searchParams = useSearchParams()
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
+  // Read initial values from URL params (fall back to today/defaults)
+  const today = new Date()
+  const initMode = (searchParams.get('mode') as ConversionMode) || 'solarToLunar'
+  const [mode, setMode] = useState<ConversionMode>(initMode)
+
   // Solar input
-  const [solarYear, setSolarYear] = useState(new Date().getFullYear())
-  const [solarMonth, setSolarMonth] = useState(new Date().getMonth() + 1)
-  const [solarDay, setSolarDay] = useState(new Date().getDate())
+  const [solarYear, setSolarYear] = useState(() => Number(searchParams.get('sy')) || today.getFullYear())
+  const [solarMonth, setSolarMonth] = useState(() => Number(searchParams.get('sm')) || today.getMonth() + 1)
+  const [solarDay, setSolarDay] = useState(() => Number(searchParams.get('sd')) || today.getDate())
 
   // Lunar input
-  const [lunarYear, setLunarYear] = useState(new Date().getFullYear())
-  const [lunarMonth, setLunarMonth] = useState(1)
-  const [lunarDay, setLunarDay] = useState(1)
-  const [isLeap, setIsLeap] = useState(false)
+  const [lunarYear, setLunarYear] = useState(() => Number(searchParams.get('ly')) || today.getFullYear())
+  const [lunarMonth, setLunarMonth] = useState(() => Number(searchParams.get('lm')) || 1)
+  const [lunarDay, setLunarDay] = useState(() => Number(searchParams.get('ld')) || 1)
+  const [isLeap, setIsLeap] = useState(() => searchParams.get('leap') === '1')
 
   // Result
   const [result, setResult] = useState<{
@@ -245,6 +251,23 @@ export default function LunarConverter() {
     }
   }, [mode, solarYear, solarMonth, solarDay, lunarYear, lunarMonth, lunarDay, isLeap])
 
+  // Sync state to URL params
+  useEffect(() => {
+    const params = new URLSearchParams()
+    params.set('mode', mode)
+    if (mode === 'solarToLunar') {
+      params.set('sy', String(solarYear))
+      params.set('sm', String(solarMonth))
+      params.set('sd', String(solarDay))
+    } else {
+      params.set('ly', String(lunarYear))
+      params.set('lm', String(lunarMonth))
+      params.set('ld', String(lunarDay))
+      if (isLeap) params.set('leap', '1')
+    }
+    window.history.replaceState({}, '', `?${params.toString()}`)
+  }, [mode, solarYear, solarMonth, solarDay, lunarYear, lunarMonth, lunarDay, isLeap])
+
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
       if (navigator.clipboard?.writeText) {
@@ -266,6 +289,10 @@ export default function LunarConverter() {
       setTimeout(() => setCopiedId(null), 2000)
     }
   }, [])
+
+  const copyLink = useCallback(() => {
+    copyToClipboard(window.location.href, 'link')
+  }, [copyToClipboard])
 
   const handleReset = useCallback(() => {
     const today = new Date()
@@ -499,7 +526,19 @@ export default function LunarConverter() {
                 모드 전환
               </button>
               <button
+                onClick={copyLink}
+                title="링크 복사"
+                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-colors"
+              >
+                {copiedId === 'link' ? (
+                  <Check className="w-4 h-4 text-green-600" />
+                ) : (
+                  <Link className="w-4 h-4" />
+                )}
+              </button>
+              <button
                 onClick={handleReset}
+                title="초기화"
                 className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 font-medium transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />

@@ -242,6 +242,11 @@ export const menuConfig: MenuConfig = {
       { href: '/biorhythm', labelKey: 'footer.links.biorhythm', descriptionKey: 'toolsShowcase.tools.biorhythm.description', icon: '🌊', addedDate: '2026-03-21' },
       { href: '/mbti-test', labelKey: 'footer.links.mbtiTest', descriptionKey: 'toolsShowcase.tools.mbtiTest.description', icon: '🧠', addedDate: '2026-03-20' },
       { href: '/mbti-compatibility', labelKey: 'footer.links.mbtiCompatibility', descriptionKey: 'toolsShowcase.tools.mbtiCompatibility.description', icon: '💕', addedDate: '2026-03-20' },
+      { href: '/name-compatibility', labelKey: 'footer.links.nameCompatibility', descriptionKey: 'toolsShowcase.tools.nameCompatibility.description', icon: '💑', addedDate: '2026-03-21' },
+      { href: '/personal-color', labelKey: 'footer.links.personalColor', descriptionKey: 'toolsShowcase.tools.personalColor.description', icon: '🎨', addedDate: '2026-03-21' },
+      { href: '/ovulation-calculator', labelKey: 'footer.links.ovulationCalculator', descriptionKey: 'toolsShowcase.tools.ovulationCalculator.description', icon: '🌸', addedDate: '2026-03-21' },
+      { href: '/csat-grade', labelKey: 'footer.links.csatGrade', descriptionKey: 'toolsShowcase.tools.csatGrade.description', icon: '📚', addedDate: '2026-03-21' },
+      { href: '/enneagram', labelKey: 'footer.links.enneagram', descriptionKey: 'toolsShowcase.tools.enneagram.description', icon: '🔯', addedDate: '2026-03-21' },
     ],
   },
   games: {

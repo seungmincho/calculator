@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import CarTaxCalculator from '@/components/CarTaxCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -34,6 +35,35 @@ export default function CarTaxCalculatorPage() {
       price: '0',
       priceCurrency: 'KRW'
     }
+  }
+
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '자동차 취등록세 계산기 사용 방법',
+    description: '차량 종류와 가격을 입력해 자동차 취득세·등록세·공채매입 비용을 계산하는 방법입니다.',
+    step: [
+      {
+        '@type': 'HowToStep',
+        name: '차량 종류 선택',
+        text: '승용차, 화물차, 승합차, 경차, 전기차·하이브리드 중 해당 차량 종류를 선택합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '배기량 또는 차량 정보 입력',
+        text: '차량 배기량(cc) 또는 차량 가격을 입력합니다. 중고차는 실거래가를 입력하세요.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '차령에 따른 감면율 확인',
+        text: '중고차의 경우 연식에 따른 시가표준액 감가율과 취득세 감면 여부를 확인합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '연간 자동차세 확인',
+        text: '취득세, 등록세, 공채매입 비용의 합산 금액과 각 항목별 세부 내역을 확인합니다.',
+      },
+    ],
   }
 
   const faqJsonLd = {
@@ -77,7 +107,12 @@ export default function CarTaxCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+      />
       <I18nWrapper>
+        <Breadcrumb />
         <div className="container mx-auto px-4 py-8">
           <CarTaxCalculator />
         </div>

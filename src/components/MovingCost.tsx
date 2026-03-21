@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Truck, Home, MapPin, Building2, Wrench, Calendar, Calculator, BookOpen, CheckSquare, Square, RotateCcw, Copy, Check } from 'lucide-react'
+import { Truck, Home, MapPin, Building2, Wrench, Calendar, Calculator, BookOpen, CheckSquare, Square, RotateCcw, Copy, Check, Link } from 'lucide-react'
 
 // ── Types ──
 type MovingType = 'regular' | 'full' | 'semi'
@@ -95,13 +96,24 @@ function formatWon(amount: number): string {
 
 export default function MovingCost() {
   const t = useTranslations('movingCost')
+  const searchParams = useSearchParams()
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [linkCopied, setLinkCopied] = useState(false)
 
   // ── State ──
-  const [sizeUnit, setSizeUnit] = useState<SizeUnit>('pyeong')
-  const [sizeValue, setSizeValue] = useState<string>('20')
-  const [movingType, setMovingType] = useState<MovingType>('full')
-  const [distanceType, setDistanceType] = useState<DistanceType>('inCity')
+  const [sizeUnit, setSizeUnit] = useState<SizeUnit>(() => {
+    const p = searchParams.get('unit')
+    return (p === 'pyeong' || p === 'sqm') ? p : 'pyeong'
+  })
+  const [sizeValue, setSizeValue] = useState<string>(() => searchParams.get('size') || '20')
+  const [movingType, setMovingType] = useState<MovingType>(() => {
+    const p = searchParams.get('type')
+    return (p === 'regular' || p === 'full' || p === 'semi') ? p : 'full'
+  })
+  const [distanceType, setDistanceType] = useState<DistanceType>(() => {
+    const p = searchParams.get('dist')
+    return (p === 'inCity' || p === 'nearBy' || p === 'longRange' || p === 'veryLong' || p === 'custom') ? p : 'inCity'
+  })
   const [customKm, setCustomKm] = useState<string>('50')
   const [currentFloor, setCurrentFloor] = useState<FloorInfo>({ floor: 3, hasElevator: true })
   const [newFloor, setNewFloor] = useState<FloorInfo>({ floor: 5, hasElevator: true })
@@ -132,6 +144,23 @@ export default function MovingCost() {
     if (km < 300) return 'longRange'
     return 'veryLong'
   }, [distanceType, customKm])
+
+  // ── URL sync ──
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('unit', sizeUnit)
+    url.searchParams.set('size', sizeValue)
+    url.searchParams.set('type', movingType)
+    url.searchParams.set('dist', distanceType)
+    window.history.replaceState({}, '', url)
+  }, [sizeUnit, sizeValue, movingType, distanceType])
+
+  const copyLink = useCallback(() => {
+    navigator.clipboard?.writeText(window.location.href).then(() => {
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    })
+  }, [])
 
   const dateInfo = useMemo(() => {
     if (!movingDate) return null
@@ -356,12 +385,17 @@ export default function MovingCost() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <Truck className="w-7 h-7" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Truck className="w-7 h-7" />
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+          {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
+        </button>
       </div>
 
       {/* Main Grid */}

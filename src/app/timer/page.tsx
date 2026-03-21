@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import TimerStopwatch from '@/components/TimerStopwatch'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {

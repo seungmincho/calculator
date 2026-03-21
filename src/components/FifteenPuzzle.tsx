@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Trophy, RotateCcw } from 'lucide-react'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -216,6 +218,8 @@ export default function FifteenPuzzle() {
   const [bestRecords, setBestRecords] = useState<Record<BoardSize, BestRecord | null>>({ 3: null, 4: null, 5: null })
   const [showConfetti, setShowConfetti] = useState(false)
 
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // Load best records on mount
@@ -247,6 +251,7 @@ export default function FifteenPuzzle() {
     setRunning(false)
     setSolved(false)
     setShowConfetti(false)
+    resultRecordedRef.current = false
   }, [size])
 
   const handleTileClick = useCallback((index: number) => {
@@ -286,6 +291,18 @@ export default function FifteenPuzzle() {
       setRunning(false)
       setSolved(true)
       setShowConfetti(true)
+
+      // Record achievement
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        const diffMap: Record<BoardSize, string> = { 3: 'easy', 4: 'normal', 5: 'hard' }
+        recordGameResult({
+          gameType: '15puzzle',
+          result: 'win',
+          difficulty: diffMap[size],
+          moves,
+        })
+      }
 
       // Update best record
       const currentBest = bestRecords[size]
@@ -499,6 +516,13 @@ export default function FifteenPuzzle() {
         </button>
       </div>
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('guide.title')}</h2>
@@ -517,6 +541,10 @@ export default function FifteenPuzzle() {
           </div>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

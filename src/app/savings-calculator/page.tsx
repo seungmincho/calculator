@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import SavingsCalculator from '@/components/SavingsCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -52,6 +53,40 @@ export default function SavingsCalculatorPage() {
     ]
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '적금 계산기 사용 방법',
+    description: '정기적금, 자유적금, 복리적금 등 다양한 적금 상품의 만기 수령액과 이자를 계산하는 방법입니다.',
+    step: [
+      {
+        '@type': 'HowToStep',
+        name: '예금/적금 유형 선택',
+        text: '정기적금, 자유적금, 목표적금, 복리적금 중 원하는 상품 유형을 선택합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '원금과 기간 입력',
+        text: '월 납입액(또는 거치 원금)과 적금 기간(개월 수)을 입력합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '금리 입력',
+        text: '연 이율과 이자 방식(단리/복리)을 입력합니다. 은행 공시 금리를 참고하세요.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '이자와 만기 수령액 확인',
+        text: '계산 결과에서 총 이자, 세전 만기 수령액, 이자소득세(15.4%)를 확인합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '세후 수익 비교',
+        text: '비과세·세금우대 적금과 일반 적금의 세후 실수령액을 비교하여 최적의 상품을 선택합니다.',
+      },
+    ],
+  }
+
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -101,7 +136,12 @@ export default function SavingsCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+      />
       <I18nWrapper>
+        <Breadcrumb />
         <SavingsCalculator />
         <div className="mt-8">
 

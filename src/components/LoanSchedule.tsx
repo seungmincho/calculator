@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Copy, Check, BookOpen, Download, ArrowRightLeft, Plus, Trash2, Calendar, TrendingDown, BarChart3 } from 'lucide-react'
+import { Copy, Check, BookOpen, Download, ArrowRightLeft, Plus, Trash2, Calendar, TrendingDown, BarChart3, Link } from 'lucide-react'
 
 // ── Types ──
 type RepaymentType = 'equalPayment' | 'equalPrincipal' | 'bullet'
@@ -477,6 +477,14 @@ export default function LoanSchedule() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
         </div>
         <div className="flex gap-2">
+          <button
+            onClick={() => copyToClipboard(window.location.href, 'link')}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+            title="링크 복사"
+          >
+            {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+            {copiedId === 'link' ? t('copied') : '링크 복사'}
+          </button>
           <button
             onClick={() => setCompareMode(!compareMode)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${

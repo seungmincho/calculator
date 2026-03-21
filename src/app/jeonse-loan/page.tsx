@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import JeonseLoanCalculator from '@/components/JeonseLoanCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -49,6 +50,35 @@ export default function JeonseLoanPage() {
     ],
   }
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '전세대출 계산기 사용 방법',
+    description: '전세 보증금과 조건을 입력해 버팀목·청년·신혼 전세대출 한도·금리·월 이자를 계산하는 방법입니다.',
+    step: [
+      {
+        '@type': 'HowToStep',
+        name: '전세 보증금 입력',
+        text: '계약 예정인 전세 보증금 금액을 입력합니다. 수도권과 지방에 따라 대출 한도 기준이 다릅니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '대출 한도 확인',
+        text: '소득, 나이, 혼인 여부를 입력하여 버팀목(LTV 70%), 청년 버팀목(LTV 80%), 신혼 버팀목, 시중은행 중 해당 상품의 대출 가능 한도를 확인합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '금리와 기간 설정',
+        text: '자격 조건에 따라 자동 매칭된 금리를 확인하고, 대출 기간(2년 또는 최대 10년)을 설정합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '월 이자와 총 비용 확인',
+        text: '만기일시상환 또는 원리금균등상환 기준의 월 이자, 총 이자 비용, 보증료 예상액을 확인하고 상품을 비교합니다.',
+      },
+    ],
+  }
+
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -92,10 +122,12 @@ export default function JeonseLoanPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
             <I18nWrapper>
+        <Breadcrumb />
               <JeonseLoanCalculator />
               <div className="mt-8">
 

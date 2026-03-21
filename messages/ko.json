@@ -1480,7 +1480,12 @@
       "biorhythm": "바이오리듬 계산기",
       "pomodoro": "뽀모도로 타이머",
       "mbtiTest": "MBTI 성격유형 검사",
-      "mbtiCompatibility": "MBTI 궁합 분석"
+      "mbtiCompatibility": "MBTI 궁합 분석",
+      "nameCompatibility": "이름 궁합 테스트",
+      "personalColor": "퍼스널컬러 자가진단",
+      "ovulationCalculator": "배란일 계산기",
+      "csatGrade": "수능 등급컷 계산기",
+      "enneagram": "에니어그램 테스트"
     },
     "copyright": "© 2025-2026 툴허브. All rights reserved."
   },
@@ -4382,6 +4387,26 @@
       "mbtiCompatibility": {
         "title": "MBTI 궁합 분석",
         "description": "16×16 궁합 매트릭스, 남녀 관점별 상세 궁합 분석"
+      },
+      "nameCompatibility": {
+        "title": "이름 궁합 테스트",
+        "description": "ㅇ/ㅎ 획수 궁합 테스트, 애니메이션 결과, 카카오톡 공유"
+      },
+      "personalColor": {
+        "title": "퍼스널컬러 자가진단",
+        "description": "12문항으로 봄웜/여름쿨/가을웜/겨울쿨 진단, 컬러 팔레트 제공"
+      },
+      "ovulationCalculator": {
+        "title": "배란일 계산기",
+        "description": "생리주기 기반 배란일·가임기 예측, 3개월 달력, 출산예정일 연계"
+      },
+      "csatGrade": {
+        "title": "수능 등급컷 계산기",
+        "description": "2026 수능 과목별 원점수→등급 변환, 백분위·표준점수 분석"
+      },
+      "enneagram": {
+        "title": "에니어그램 테스트",
+        "description": "36문항으로 9가지 성격 유형 분석, 레이더 차트, MBTI 연계"
       }
     }
   },
@@ -5711,6 +5736,19 @@
           "P/F 과목은 평점 계산에서 제외하세요"
         ]
       }
+    },
+    "copyLink": "링크 복사",
+    "copied": "복사됨",
+    "reverse": {
+      "title": "목표 학점 역산",
+      "description": "현재 학점 기준으로 목표 GPA 달성에 필요한 성적을 계산합니다",
+      "currentGpa": "현재 누적 평점",
+      "targetGpa": "목표 GPA",
+      "remainingCredits": "남은 이수학점",
+      "requiredGpa": "필요 평점",
+      "feasible": "달성 가능합니다.",
+      "impossible": "달성 불가능합니다 (만점 {max} 초과).",
+      "alreadyAchieved": "이미 목표 GPA를 달성했습니다!"
     }
   },
   "randomPicker": {
@@ -6080,6 +6118,27 @@
           "부가세(10%)와 전력산업기반기금(3.7%)이 추가됩니다"
         ]
       }
+    },
+    "copyLink": "링크 복사",
+    "simulator": {
+      "title": "가전제품 시뮬레이터",
+      "description": "사용 중인 가전제품의 하루 사용 시간을 입력하면 월 예상 전기 사용량을 계산합니다.",
+      "appliance": "가전제품",
+      "watt": "소비전력",
+      "hoursPerDay": "하루 사용 시간",
+      "monthlyKwh": "월 사용량",
+      "total": "합계",
+      "estimated": "예상 사용량",
+      "note": "* 실제 사용량은 제품 효율 및 사용 환경에 따라 다를 수 있습니다.",
+      "apply": "계산기에 적용"
+    },
+    "appliances": {
+      "ac": "에어컨",
+      "fridge": "냉장고",
+      "tv": "TV",
+      "washer": "세탁기",
+      "microwave": "전자레인지",
+      "computer": "컴퓨터"
     }
   },
   "screenInfo": {
@@ -6597,7 +6656,20 @@
           "간이과세자는 업종별로 부가세율이 다릅니다 (1.5%~4%)"
         ]
       }
-    }
+    },
+    "copyLink": "링크 복사",
+    "linkCopied": "복사됨!",
+    "singleMode": "단일 계산",
+    "batchMode": "일괄 계산",
+    "calcMode": "계산 모드",
+    "amountLabel": "금액 입력",
+    "pieChartTitle": "비율 분석",
+    "batchAdd": "항목 추가",
+    "batchItemName": "항목명",
+    "batchSupply": "공급가액",
+    "batchVat": "부가세",
+    "batchTotal": "합계",
+    "batchTotalLabel": "합계"
   },
   "alcoholCalculator": {
     "title": "혈중알코올 계산기",
@@ -6792,6 +6864,24 @@
           "런던(GMT)은 한국보다 9시간 느립니다 (서머타임 시 8시간)"
         ]
       }
+    },
+    "selectCity": "도시를 선택하세요",
+    "add": "추가",
+    "copyLink": "링크 복사",
+    "copied": "복사됨",
+    "dst": "서머타임 적용",
+    "standardTime": "표준시",
+    "meetingPlanner": {
+      "title": "미팅 플래너",
+      "description": "각 도시의 업무 시간대를 비교하여 모든 팀원이 겹치는 미팅 가능 시간을 찾아보세요.",
+      "workStart": "근무 시작",
+      "workEnd": "근무 종료",
+      "overlap": "전체 겹침 (최적 미팅 시간)",
+      "workingHours": "업무 시간",
+      "offHours": "업무 외",
+      "overlapFound": "{hours}시간 겹치는 시간대가 있습니다",
+      "noOverlap": "선택한 도시 간 업무 시간이 겹치지 않습니다",
+      "noCities": "도시를 추가하면 미팅 플래너가 활성화됩니다"
     }
   },
   "rentConverter": {
@@ -6838,6 +6928,15 @@
           "전환율이 높을수록 같은 전세금에서 월세가 비싸집니다"
         ]
       }
+    },
+    "copyLink": "링크 복사",
+    "rateComparisonTable": {
+      "title": "전환율별 비교",
+      "rate": "전환율",
+      "monthlyRent": "예상 월세",
+      "jeonseDeposit": "예상 전세금",
+      "yearlyTotal": "연간 합계",
+      "current": "현재"
     }
   },
   "waterBill": {
@@ -7714,6 +7813,11 @@
     "annualLeaveAllowancePlaceholder": "0",
     "calculate": "계산하기",
     "reset": "초기화",
+    "inputInfo": "입력 정보",
+    "emptyState": "입사일, 퇴사일, 월 기본급을 입력하세요",
+    "copyLink": "링크 복사",
+    "linkCopied": "복사됨",
+    "share": "공유",
     "result": {
       "title": "퇴직금 계산 결과",
       "workPeriod": "재직 기간",
@@ -7726,6 +7830,42 @@
       "won": "원",
       "taxExempt": "퇴직소득 비과세 한도 참고",
       "formula": "계산식: 1일 평균임금 × 30일 × (재직일수 ÷ 365)"
+    },
+    "breakdown": {
+      "title": "퇴직금 구성",
+      "base": "기본급",
+      "bonus": "상여금",
+      "leave": "연차수당"
+    },
+    "simulation": {
+      "title": "근속기간별 시뮬레이션",
+      "description": "현재 급여 기준으로 근속기간에 따른 예상 퇴직금입니다",
+      "maxYears": "최대 근속"
+    },
+    "irpGuide": {
+      "title": "퇴직연금 비교 (IRP / DC / DB)",
+      "description": "퇴직금을 수령하는 3가지 방식을 비교합니다. 퇴직 시 IRP 계좌로 이체하면 세금 혜택을 받을 수 있습니다.",
+      "table": {
+        "category": "구분",
+        "db": "DB (확정급여형)",
+        "dc": "DC (확정기여형)",
+        "irp": "IRP (개인형)",
+        "rows": {
+          "manager": { "label": "운용 주체", "db": "회사", "dc": "근로자", "irp": "근로자" },
+          "contribution": { "label": "부담금", "db": "회사 부담", "dc": "연봉의 1/12 이상", "irp": "자유 납입 (연 1,800만원 한도)" },
+          "returns": { "label": "수익률", "db": "회사 운용 수익", "dc": "근로자 운용 수익", "irp": "근로자 운용 수익" },
+          "risk": { "label": "리스크", "db": "회사 부담 (확정급여)", "dc": "근로자 부담", "irp": "근로자 부담" },
+          "taxBenefit": { "label": "세액공제", "db": "없음", "dc": "없음", "irp": "연 900만원 한도 세액공제" },
+          "recommended": { "label": "추천 대상", "db": "임금 상승이 예상되는 근로자", "dc": "투자에 관심 있는 근로자", "irp": "추가 절세가 필요한 근로자" }
+        }
+      },
+      "taxBenefitTitle": "IRP 세액공제 혜택",
+      "taxBenefitItems": [
+        "연간 최대 900만원까지 세액공제 가능 (IRP + 연금저축 합산)",
+        "총급여 5,500만원 이하: 16.5% 공제율",
+        "총급여 5,500만원 초과: 13.2% 공제율",
+        "퇴직금을 IRP로 이체 시 퇴직소득세 30% 감면"
+      ]
     },
     "guide": {
       "title": "퇴직금 가이드",
@@ -7755,8 +7895,40 @@
     "joinDate": "입사일",
     "usedLeaves": "사용한 연차 (일)",
     "usedLeavesPlaceholder": "0",
+    "calculationBasis": "산정 기준",
+    "joinDateBasis": "입사일 기준",
+    "fiscalYearBasis": "회계연도 기준",
+    "joinDateBasisDesc": "입사일 기준으로 연차를 계산합니다 (근로기준법 원칙)",
+    "fiscalYearBasisDesc": "회계연도(1월~12월) 기준으로 연차를 비례 배분합니다",
+    "dailyWage": "통상 일급 (원)",
+    "dailyWagePlaceholder": "미입력 시 수당 미계산",
+    "dailyWageDesc": "연차수당 계산에 사용됩니다. 통상임금 ÷ 소정근로일수",
+    "won": "원",
+    "copyLink": "링크 복사",
+    "copied": "복사됨",
+    "share": "공유",
     "calculate": "계산하기",
     "reset": "초기화",
+    "leavePay": {
+      "title": "미사용 연차수당 (예상)",
+      "formula": "잔여 {remaining}일 × 일급 {wage}원 = {total}원"
+    },
+    "timeline": {
+      "title": "연차 발생 타임라인",
+      "current": "현재",
+      "desc": "근속연수에 따른 연차 발생 마일스톤입니다. 3년차부터 2년마다 1일 가산 (최대 25일)"
+    },
+    "promotion": {
+      "title": "연차 촉진 안내",
+      "description": "사용자(회사)는 근로기준법 제61조에 따라 연차 촉진 절차를 이행할 수 있습니다. 촉진 절차를 완료하면 미사용 연차에 대한 보상 의무가 면제됩니다.",
+      "steps": [
+        "연차 소멸 6개월 전: 미사용 연차 일수를 서면으로 통보",
+        "근로자의 사용 시기 미지정 시: 소멸 2개월 전까지 사용 시기를 서면으로 촉구",
+        "그래도 미사용 시: 사용자가 사용 시기를 지정하여 서면 통보",
+        "위 절차를 모두 이행하면 미사용 연차수당 지급 의무 면제"
+      ],
+      "warning": "촉진 절차를 이행하지 않으면 미사용 연차에 대한 수당을 반드시 지급해야 합니다. 서면 통보 요건을 갖추지 않으면 촉진이 무효됩니다."
+    },
     "result": {
       "title": "연차 계산 결과",
       "workPeriod": "재직 기간",
@@ -7827,11 +7999,16 @@
     },
     "season": "계절",
     "seasons": {
+      "spring": "봄 (3~5월)",
       "summer": "하절기 (4~9월)",
+      "autumn": "가을 (9~11월)",
       "winter": "동절기 (10~3월)"
     },
     "calculate": "계산하기",
     "reset": "초기화",
+    "shareLink": "링크 공유",
+    "copied": "복사됨",
+    "copyResult": "결과 복사",
     "result": {
       "title": "가스 요금 계산 결과",
       "basicCharge": "기본 요금",
@@ -7844,9 +8021,48 @@
     },
     "averageUsage": {
       "title": "월평균 사용량 참고",
+      "spring": "봄: 약 100~180 MJ",
       "summer": "하절기: 약 15~30 MJ",
+      "autumn": "가을: 약 90~250 MJ",
       "winter": "동절기: 약 80~150 MJ",
       "description": "난방, 온수, 취사 포함 기준"
+    },
+    "boilerSim": {
+      "title": "보일러 사용 시뮬레이션",
+      "houseSize": "주거 면적",
+      "pyeong": "평",
+      "insulation": "단열 등급",
+      "insulationGood": "우수 (신축, 고단열)",
+      "insulationAverage": "보통 (일반 아파트)",
+      "insulationPoor": "미흡 (노후 주택)",
+      "heatingHours": "하루 난방 시간",
+      "hoursPerDay": "시간/일",
+      "estimatedUsage": "예상 월 사용량",
+      "apply": "이 사용량으로 계산하기"
+    },
+    "tierBreakdown": {
+      "title": "구간별 요금 내역",
+      "tier1": "1구간",
+      "tier2": "2구간",
+      "tier3": "3구간",
+      "tier4": "4구간"
+    },
+    "monthlyChart": {
+      "title": "월별 예상 가스 요금",
+      "description": "평균 가정 사용 패턴 기준 예상 요금입니다.",
+      "monthSuffix": "월",
+      "monthLabel": "월"
+    },
+    "utility": {
+      "title": "공과금 합산",
+      "description": "가스 요금과 함께 다른 공과금을 입력하여 월 총 공과금을 확인하세요.",
+      "gas": "가스",
+      "gasAuto": "위 계산 결과 자동 반영",
+      "electricity": "전기",
+      "water": "수도",
+      "internet": "인터넷",
+      "enterAmount": "금액 입력",
+      "totalLabel": "월 총 공과금"
     },
     "guide": {
       "title": "가스 요금 가이드",
@@ -8030,6 +8246,14 @@
           "고속도로 톨비는 승객 부담"
         ]
       }
+    },
+    "copyLink": "링크 복사",
+    "copyLinkDone": "복사됨!",
+    "comparison": {
+      "title": "택시 종류별 요금 비교",
+      "subtitle": "현재 거리·시간 기준 일반/모범/대형 예상 요금",
+      "selected": "선택됨",
+      "note": "* 같은 거리·시간·시간대 기준. 심야 할증 포함."
     }
   },
   "installmentCalc": {
@@ -10951,7 +11175,20 @@
           "부동산은 시가가 아닌 공시가격으로 평가되므로 실질 부담이 다를 수 있습니다."
         ]
       }
-    }
+    },
+    "compareTab": "비교",
+    "compareNote": "같은 금액에 대해 상속세와 증여세를 비교합니다 (적용 공제는 일반적인 가정 기준)",
+    "compareAssumption": {
+      "inheritance": "배우자 있음, 일괄공제 5억, 배우자공제 5억 기준",
+      "gift": "직계존속→성인자녀 (공제 5천만원) 기준"
+    },
+    "comparePrompt": "상속세 또는 증여세 탭에서 금액을 입력하면 비교됩니다",
+    "lower": "절세",
+    "compareSummary": {
+      "inheritanceLower": "상속이 증여보다 {diff} 절세됩니다",
+      "giftLower": "증여가 상속보다 {diff} 절세됩니다"
+    },
+    "copyLink": "링크 복사"
   },
   "freelancerTax": {
     "title": "프리랜서 세금 계산기",
@@ -12717,6 +12954,19 @@
           "수습기간에도 주휴수당은 정상 지급됩니다"
         ]
       }
+    },
+    "copyLink": "링크 복사",
+    "linkCopied": "링크 복사됨",
+    "scenario": {
+      "title": "주간 근무시간별 비교",
+      "description": "같은 시급 기준으로 주간 근무시간에 따른 예상 급여를 비교합니다.",
+      "colHours": "주간 근무",
+      "colEligible": "주휴수당",
+      "colWeeklyBase": "주간 기본급",
+      "colHolidayPay": "주휴수당",
+      "colMonthlyTotal": "월 예상 총액",
+      "current": "현재",
+      "footnote": "* 월 환산 기준: 입력한 월 근무 주수(4.345주) 적용"
     }
   },
   "chartStudio": {
@@ -17383,6 +17633,308 @@
         "단어 공개 버튼으로 현재 선택된 단어의 정답을 볼 수 있습니다",
         "매일 자정에 새로운 오늘의 퍼즐이 제공됩니다"
       ]
+    }
+  },
+  "nameCompatibility": {
+    "title": "이름 궁합 테스트",
+    "description": "두 사람의 이름으로 궁합을 확인해보세요",
+    "name1": "첫 번째 이름",
+    "name2": "두 번째 이름",
+    "name1Placeholder": "이름을 입력하세요",
+    "name2Placeholder": "이름을 입력하세요",
+    "startButton": "궁합 보기",
+    "retryButton": "다시 하기",
+    "shareButton": "결과 공유",
+    "saveImageButton": "이미지 저장",
+    "copyLinkButton": "링크 복사",
+    "linkCopied": "링크가 복사되었습니다!",
+    "calculating": "궁합 계산 중...",
+    "resultTitle": "궁합 결과",
+    "score": "점",
+    "compatibility": "궁합 점수",
+    "inputError": "두 사람의 이름을 모두 입력해주세요",
+    "nameError": "한글 이름만 입력 가능합니다",
+    "and": "♥",
+    "resultMessages": {
+      "perfect": "운명적인 만남! 천생연분이에요 💕",
+      "great": "아주 좋은 궁합이에요! 서로 잘 맞아요 😍",
+      "good": "좋은 궁합이에요! 함께하면 행복해요 😊",
+      "average": "보통 궁합이에요. 노력하면 잘 될 수 있어요 🙂",
+      "belowAverage": "조금 아쉬운 궁합이에요. 하지만 사랑은 노력! 💪",
+      "low": "궁합이 조금 낮아요. 그래도 사랑에는 장애물이 없죠! ❤️"
+    },
+    "process": "계산 과정",
+    "step1": "ㅇ/ㅎ 변환",
+    "step2": "획수 계산",
+    "step3": "인접 합산",
+    "guide": {
+      "title": "이름 궁합 테스트 가이드",
+      "howItWorks": {
+        "title": "이름 궁합 원리",
+        "items": [
+          "두 이름의 글자를 번갈아 배치합니다",
+          "각 글자의 자음/모음을 ㅇ과 ㅎ로 변환합니다",
+          "ㅇ과 ㅎ의 획수(ㅇ=1, ㅎ=3)를 계산합니다",
+          "인접한 숫자를 더해 한 자리로 줄여가며 최종 궁합을 구합니다"
+        ]
+      },
+      "tips": {
+        "title": "알아두세요",
+        "items": [
+          "이름 궁합은 재미로 즐기는 것입니다",
+          "한글 이름만 입력 가능합니다 (2~5글자)",
+          "결과 카드를 이미지로 저장하거나 링크로 공유할 수 있습니다",
+          "같은 이름으로 항상 같은 결과가 나옵니다"
+        ]
+      }
+    }
+  },
+  "personalColor": {
+    "title": "퍼스널컬러 자가진단",
+    "description": "12개 문항으로 나에게 어울리는 컬러 톤을 찾아보세요",
+    "startButton": "진단 시작하기",
+    "retryButton": "다시 진단하기",
+    "shareButton": "결과 공유",
+    "saveImageButton": "이미지 저장",
+    "copyLinkButton": "링크 복사",
+    "linkCopied": "링크가 복사되었습니다!",
+    "questionOf": "/ 12",
+    "nextButton": "다음",
+    "prevButton": "이전",
+    "analyzing": "퍼스널컬러 분석 중...",
+    "resultTitle": "당신의 퍼스널컬러",
+    "bestColors": "베스트 컬러",
+    "worstColors": "피해야 할 컬러",
+    "celebrities": "같은 퍼스널컬러 연예인",
+    "fashionTips": "패션 & 메이크업 팁",
+    "colorPalette": "추천 컬러 팔레트",
+    "types": {
+      "springWarm": {
+        "name": "봄 웜톤",
+        "emoji": "🌸",
+        "description": "따뜻하고 밝은 봄처럼 화사한 분위기를 가진 당신! 맑고 따뜻한 색상이 잘 어울립니다.",
+        "characteristics": "밝고 따뜻한 피부톤, 노란기가 도는 피부, 갈색 또는 밝은 갈색 눈동자",
+        "celebrities": "수지, 아이유, 박보영",
+        "fashionTips": "코랄 립스틱, 피치 블러셔, 아이보리/베이지 베이스, 골드 악세서리가 잘 어울려요",
+        "bestColors": ["코랄", "피치", "아이보리", "살몬", "라이트 오렌지", "웜 핑크"],
+        "worstColors": ["블랙", "쿨 그레이", "버건디", "네이비"]
+      },
+      "summerCool": {
+        "name": "여름 쿨톤",
+        "emoji": "🌊",
+        "description": "시원하고 부드러운 여름 바다처럼 우아한 분위기의 당신! 파스텔과 쿨한 색상이 잘 어울립니다.",
+        "characteristics": "핑크빛이 도는 밝은 피부, 푸른기가 도는 피부, 검은색 또는 짙은 갈색 눈동자",
+        "celebrities": "김태희, 한가인, 윤아",
+        "fashionTips": "로즈 핑크 립스틱, 라벤더 아이섀도, 실버 악세서리, 블루 베이스 메이크업이 잘 어울려요",
+        "bestColors": ["라벤더", "로즈 핑크", "스카이 블루", "소프트 화이트", "베이비 블루", "라일락"],
+        "worstColors": ["오렌지", "카키", "골드", "머스타드"]
+      },
+      "autumnWarm": {
+        "name": "가을 웜톤",
+        "emoji": "🍂",
+        "description": "따뜻하고 깊은 가을 단풍처럼 성숙한 분위기의 당신! 깊고 따뜻한 색상이 잘 어울립니다.",
+        "characteristics": "황금빛이 도는 피부, 따뜻한 중간 톤의 피부, 짙은 갈색 또는 호박색 눈동자",
+        "celebrities": "전지현, 김혜수, 한소희",
+        "fashionTips": "브릭 레드 립스틱, 테라코타 블러셔, 골드/브론즈 악세서리, 내추럴 메이크업이 잘 어울려요",
+        "bestColors": ["테라코타", "버건디", "올리브", "머스타드", "카멜", "브릭 레드"],
+        "worstColors": ["파스텔 핑크", "실버", "네온", "쿨 블루"]
+      },
+      "winterCool": {
+        "name": "겨울 쿨톤",
+        "emoji": "❄️",
+        "description": "차갑고 선명한 겨울처럼 강렬한 분위기의 당신! 선명하고 강한 색상이 잘 어울립니다.",
+        "characteristics": "차가운 톤의 하얀 피부 또는 올리브 피부, 뚜렷한 눈동자 색, 선명한 이목구비",
+        "celebrities": "블랙핑크 제니, 이영애, 손예진",
+        "fashionTips": "레드 또는 와인 립스틱, 강렬한 아이라인, 실버/플래티넘 악세서리, 모노톤 스타일이 잘 어울려요",
+        "bestColors": ["퓨어 화이트", "블랙", "레드", "로열 블루", "에메랄드", "핫 핑크"],
+        "worstColors": ["베이지", "카키", "파스텔 옐로우", "골드"]
+      }
+    },
+    "questions": [
+      {
+        "question": "햇빛 아래에서 본 당신의 피부 톤은?",
+        "options": ["노란기가 도는 따뜻한 피부", "핑크빛이 도는 차가운 피부", "황금빛/올리브 톤의 피부", "하얗거나 푸른기가 도는 피부"]
+      },
+      {
+        "question": "은색과 금색 악세서리 중 더 잘 어울리는 것은?",
+        "options": ["금색이 훨씬 잘 어울린다", "은색이 더 잘 어울린다", "금색이 자연스럽다", "은색이 확실히 잘 어울린다"]
+      },
+      {
+        "question": "가장 자주 받는 피부 관련 칭찬은?",
+        "options": ["화사하고 밝아 보인다", "깨끗하고 맑아 보인다", "건강하고 윤기가 있다", "피부가 도자기처럼 하얗다"]
+      },
+      {
+        "question": "자연광에서 본 머리카락 색상은?",
+        "options": ["갈색/밝은 갈색 계열", "어두운 갈색/검은색", "짙은 갈색/적갈색 계열", "새까만 검은색"]
+      },
+      {
+        "question": "화이트 vs 아이보리 옷, 어떤 게 더 잘 어울리나요?",
+        "options": ["아이보리가 훨씬 자연스럽다", "화이트가 깨끗해 보인다", "아이보리나 베이지가 편하다", "순백색이 세련돼 보인다"]
+      },
+      {
+        "question": "얼굴이 가장 화사해 보이는 색상의 옷은?",
+        "options": ["코랄, 피치 계열", "라벤더, 로즈 계열", "카키, 브라운 계열", "블랙, 화이트 계열"]
+      },
+      {
+        "question": "눈동자 색은?",
+        "options": ["밝은 갈색/헤이즐", "짙은 갈색/회갈색", "호박색/진한 갈색", "새까만 검은색"]
+      },
+      {
+        "question": "혈관 색은? (손목 안쪽)",
+        "options": ["초록색에 가깝다", "파란색/보라색에 가깝다", "초록+갈색 느낌이다", "진한 파란색/보라색이다"]
+      },
+      {
+        "question": "틴트나 립스틱 중 가장 잘 어울리는 색은?",
+        "options": ["코랄 핑크/오렌지", "핑크/로즈", "브릭 레드/오렌지 브라운", "레드/와인/체리"]
+      },
+      {
+        "question": "태닝 후 피부 반응은?",
+        "options": ["잘 타고 골든 브라운이 된다", "쉽게 빨개지고 잘 안 탄다", "잘 타고 갈색이 된다", "잘 안 타거나 붉게 탄다"]
+      },
+      {
+        "question": "가장 편안하게 느끼는 전체 톤은?",
+        "options": ["밝고 따뜻한 색들", "부드럽고 시원한 색들", "깊고 따뜻한 색들", "선명하고 차가운 색들"]
+      },
+      {
+        "question": "패턴이나 프린트 옷 중 잘 어울리는 것은?",
+        "options": ["플로럴, 밝은 꽃무늬", "잔잔한 체크, 스트라이프", "페이즐리, 보헤미안", "지오메트릭, 모노톤"]
+      }
+    ],
+    "guide": {
+      "title": "퍼스널컬러 가이드",
+      "whatIs": {
+        "title": "퍼스널컬러란?",
+        "items": [
+          "태어날 때부터 가진 피부, 눈동자, 머리카락 색을 기반으로 가장 잘 어울리는 색 계열을 찾는 것입니다",
+          "크게 웜톤(봄/가을)과 쿨톤(여름/겨울) 4가지 유형으로 나뉩니다",
+          "자신의 퍼스널컬러를 알면 의류, 메이크업, 헤어컬러 선택이 쉬워집니다",
+          "전문 진단은 조명 환경에서 드레이핑으로 진행하지만, 셀프 테스트로도 대략적인 파악이 가능합니다"
+        ]
+      },
+      "tips": {
+        "title": "활용 팁",
+        "items": [
+          "피부와 가까운 상의, 악세서리 색상이 가장 중요합니다",
+          "하의는 어떤 색이든 크게 상관없습니다",
+          "메이크업은 퍼스널컬러에 맞추면 효과가 극대화됩니다",
+          "이 테스트는 재미로 즐기세요. 정확한 진단은 전문가 상담을 추천합니다"
+        ]
+      }
+    }
+  },
+  "ovulationCalculator": {
+    "title": "배란일 계산기",
+    "description": "생리주기를 입력하면 배란일과 가임기를 예측합니다",
+    "lastPeriod": "마지막 생리 시작일",
+    "cycleLength": "생리 주기",
+    "periodLength": "생리 기간",
+    "days": "일",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "result": "예측 결과",
+    "ovulationDate": "배란 예정일",
+    "fertileWindow": "가임기",
+    "nextPeriod": "다음 생리 예정일",
+    "safeEarly": "안전기 (초기)",
+    "safeLate": "안전기 (후기)",
+    "to": "~",
+    "calendar": "3개월 달력",
+    "legend": "범례",
+    "legendPeriod": "생리 기간",
+    "legendFertile": "가임기",
+    "legendOvulation": "배란일",
+    "legendSafe": "안전기",
+    "dueDateLink": "출산예정일 계산기로 이동",
+    "disclaimer": "이 계산기는 참고용입니다. 정확한 진단은 산부인과 전문의와 상담하세요.",
+    "shareButton": "결과 공유",
+    "copyLinkButton": "링크 복사",
+    "linkCopied": "링크가 복사되었습니다!",
+    "months": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+    "weekdays": ["일", "월", "화", "수", "목", "금", "토"],
+    "guide": {
+      "title": "배란일 계산 가이드",
+      "howItWorks": {
+        "title": "계산 원리",
+        "items": [
+          "배란은 보통 다음 생리 시작일 14일 전에 일어납니다",
+          "가임기는 배란일 전 5일 ~ 배란일 후 1일입니다",
+          "생리주기가 불규칙한 경우 예측 정확도가 낮아질 수 있습니다",
+          "기초체온법, 배란테스트기와 병행하면 더 정확합니다"
+        ]
+      },
+      "tips": {
+        "title": "알아두세요",
+        "items": [
+          "평균 생리주기는 28일이지만 21~35일도 정상 범위입니다",
+          "배란일은 개인차와 스트레스, 건강 상태에 따라 달라질 수 있습니다",
+          "임신을 원하면 가임기 중 2~3일 간격으로 관계하는 것이 권장됩니다",
+          "피임을 위해서는 이 계산기만으로는 불충분하며 반드시 피임법을 사용하세요"
+        ]
+      }
+    }
+  },
+  "csatGrade": {
+    "title": "수능 등급컷 계산기",
+    "description": "2026학년도 수능 과목별 원점수로 등급을 확인하세요",
+    "year": "수능 연도",
+    "subject": "과목 선택",
+    "rawScore": "원점수",
+    "standardScore": "표준점수",
+    "percentile": "백분위",
+    "grade": "등급",
+    "calculate": "등급 확인",
+    "reset": "초기화",
+    "result": "등급 판정 결과",
+    "gradeResult": "등급",
+    "yourScore": "내 점수",
+    "cutoff": "등급컷",
+    "maxScore": "만점",
+    "subjects": {
+      "korean": "국어",
+      "math": "수학",
+      "english": "영어",
+      "koreanHistory": "한국사",
+      "socialStudies": "사회탐구",
+      "science": "과학탐구"
+    },
+    "subjectDetail": {
+      "korean": "국어 (화법과 작문, 언어와 매체 선택)",
+      "mathCalc": "수학 (미적분/기하 선택)",
+      "mathProb": "수학 (확률과 통계 선택)",
+      "english": "영어 (절대평가)",
+      "koreanHistory": "한국사 (절대평가)",
+      "socialStudies": "사회탐구 (과목 선택)",
+      "science": "과학탐구 (과목 선택)"
+    },
+    "absoluteGrade": "절대평가",
+    "relativeGrade": "상대평가",
+    "gradeTable": "등급컷 표",
+    "allGrades": "전체 등급컷 보기",
+    "gradeRange": "점수 구간",
+    "shareButton": "결과 공유",
+    "copyLinkButton": "링크 복사",
+    "linkCopied": "링크가 복사되었습니다!",
+    "disclaimer": "등급컷은 2025학년도 수능 기준이며, 실제 등급컷은 매년 달라집니다.",
+    "guide": {
+      "title": "수능 등급 가이드",
+      "grading": {
+        "title": "등급 산출 방식",
+        "items": [
+          "상대평가 과목: 상위 4%까지 1등급, 11%까지 2등급, 23%까지 3등급 ...",
+          "절대평가 과목(영어/한국사): 원점수 구간에 따라 등급 부여",
+          "영어: 90점 이상 1등급, 80점 이상 2등급 ...",
+          "한국사: 40점 이상 1등급, 35점 이상 2등급 ..."
+        ]
+      },
+      "tips": {
+        "title": "참고사항",
+        "items": [
+          "표시된 등급컷은 전년도 기준이며 실제 수능에서는 달라질 수 있습니다",
+          "표준점수와 백분위는 상대평가 과목에만 적용됩니다",
+          "탐구 과목은 변환 표준점수가 별도로 적용됩니다",
+          "정확한 등급컷은 수능 성적 발표일에 한국교육과정평가원에서 공개됩니다"
+        ]
+      }
     }
   }
 }

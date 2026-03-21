@@ -1206,7 +1206,12 @@
       "biorhythm": "Biorhythm Calculator",
       "pomodoro": "Pomodoro Timer",
       "mbtiTest": "MBTI Personality Test",
-      "mbtiCompatibility": "MBTI Compatibility"
+      "mbtiCompatibility": "MBTI Compatibility",
+      "nameCompatibility": "Name Compatibility Test",
+      "personalColor": "Personal Color Analysis",
+      "ovulationCalculator": "Ovulation Calculator",
+      "csatGrade": "CSAT Grade Calculator",
+      "enneagram": "Enneagram Test"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -4382,6 +4387,26 @@
       "mbtiCompatibility": {
         "title": "MBTI Compatibility",
         "description": "16×16 compatibility matrix with detailed analysis by gender perspective"
+      },
+      "nameCompatibility": {
+        "title": "Name Compatibility Test",
+        "description": "Korean name stroke compatibility test with animated results and sharing"
+      },
+      "personalColor": {
+        "title": "Personal Color Analysis",
+        "description": "12-question self-diagnosis for Spring/Summer/Autumn/Winter color types"
+      },
+      "ovulationCalculator": {
+        "title": "Ovulation Calculator",
+        "description": "Predict ovulation & fertile window based on cycle, 3-month calendar, due date link"
+      },
+      "csatGrade": {
+        "title": "CSAT Grade Calculator",
+        "description": "2026 CSAT subject grade conversion, percentile & standard score analysis"
+      },
+      "enneagram": {
+        "title": "Enneagram Test",
+        "description": "36-question personality analysis for 9 types, radar chart, MBTI connection"
       }
     }
   },
@@ -5711,6 +5736,19 @@
           "Exclude P/F courses from GPA calculation"
         ]
       }
+    },
+    "copyLink": "Copy Link",
+    "copied": "Copied",
+    "reverse": {
+      "title": "Target GPA Calculator",
+      "description": "Calculates the required GPA for remaining credits to reach your target",
+      "currentGpa": "Current Cumulative GPA",
+      "targetGpa": "Target GPA",
+      "remainingCredits": "Remaining Credits",
+      "requiredGpa": "Required GPA",
+      "feasible": "Achievable within the scale.",
+      "impossible": "Not achievable — exceeds maximum scale of {max}.",
+      "alreadyAchieved": "You've already reached your target GPA!"
     }
   },
   "randomPicker": {
@@ -6080,6 +6118,27 @@
           "VAT (10%) and Electric Industry Fund (3.7%) are added"
         ]
       }
+    },
+    "copyLink": "Copy Link",
+    "simulator": {
+      "title": "Appliance Simulator",
+      "description": "Enter daily usage hours for your appliances to estimate monthly electricity consumption.",
+      "appliance": "Appliance",
+      "watt": "Power",
+      "hoursPerDay": "Hours/Day",
+      "monthlyKwh": "Monthly kWh",
+      "total": "Total",
+      "estimated": "Estimated",
+      "note": "* Actual usage may vary by product efficiency and environment.",
+      "apply": "Apply to Calculator"
+    },
+    "appliances": {
+      "ac": "Air Conditioner",
+      "fridge": "Refrigerator",
+      "tv": "TV",
+      "washer": "Washing Machine",
+      "microwave": "Microwave",
+      "computer": "Computer"
     }
   },
   "screenInfo": {
@@ -6597,7 +6656,20 @@
           "Simplified taxpayers have different VAT rates by industry (1.5%-4%)"
         ]
       }
-    }
+    },
+    "copyLink": "Copy Link",
+    "linkCopied": "Copied!",
+    "singleMode": "Single",
+    "batchMode": "Batch",
+    "calcMode": "Calculation Mode",
+    "amountLabel": "Enter Amount",
+    "pieChartTitle": "Breakdown",
+    "batchAdd": "Add Item",
+    "batchItemName": "Item Name",
+    "batchSupply": "Supply",
+    "batchVat": "VAT",
+    "batchTotal": "Total",
+    "batchTotalLabel": "Total"
   },
   "alcoholCalculator": {
     "title": "Blood Alcohol Calculator",
@@ -6792,6 +6864,24 @@
           "London (GMT) is 9 hours behind Korea (8 hours during BST)"
         ]
       }
+    },
+    "selectCity": "Select a city",
+    "add": "Add",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "dst": "DST active",
+    "standardTime": "Standard time",
+    "meetingPlanner": {
+      "title": "Meeting Planner",
+      "description": "Find the overlap window where all selected cities are within working hours.",
+      "workStart": "Work start",
+      "workEnd": "Work end",
+      "overlap": "Full overlap (best meeting time)",
+      "workingHours": "Working hours",
+      "offHours": "Off hours",
+      "overlapFound": "{hours} hours of overlap found",
+      "noOverlap": "No overlap in working hours across selected cities",
+      "noCities": "Add cities to enable the meeting planner"
     }
   },
   "rentConverter": {
@@ -6838,6 +6928,15 @@
           "Higher conversion rate means higher monthly rent for the same Jeonse amount"
         ]
       }
+    },
+    "copyLink": "Copy link",
+    "rateComparisonTable": {
+      "title": "Rate comparison",
+      "rate": "Rate",
+      "monthlyRent": "Monthly rent",
+      "jeonseDeposit": "Jeonse deposit",
+      "yearlyTotal": "Yearly total",
+      "current": "Current"
     }
   },
   "waterBill": {
@@ -7714,6 +7813,11 @@
     "annualLeaveAllowancePlaceholder": "0",
     "calculate": "Calculate",
     "reset": "Reset",
+    "inputInfo": "Input Info",
+    "emptyState": "Enter start date, end date, and monthly pay",
+    "copyLink": "Copy Link",
+    "linkCopied": "Copied",
+    "share": "Share",
     "result": {
       "title": "Severance Pay Result",
       "workPeriod": "Work Period",
@@ -7726,6 +7830,42 @@
       "won": "KRW",
       "taxExempt": "Retirement income tax exemption reference",
       "formula": "Formula: Avg Daily Wage × 30 days × (Total Days ÷ 365)"
+    },
+    "breakdown": {
+      "title": "Severance Breakdown",
+      "base": "Base Pay",
+      "bonus": "Bonus",
+      "leave": "Leave Allowance"
+    },
+    "simulation": {
+      "title": "Severance Simulation by Tenure",
+      "description": "Estimated severance based on current salary by tenure",
+      "maxYears": "Max tenure"
+    },
+    "irpGuide": {
+      "title": "Retirement Pension Comparison (IRP / DC / DB)",
+      "description": "Compare 3 ways to receive severance. Transferring to an IRP account at retirement provides tax benefits.",
+      "table": {
+        "category": "Category",
+        "db": "DB (Defined Benefit)",
+        "dc": "DC (Defined Contribution)",
+        "irp": "IRP (Individual)",
+        "rows": {
+          "manager": { "label": "Fund Manager", "db": "Company", "dc": "Employee", "irp": "Employee" },
+          "contribution": { "label": "Contribution", "db": "Company pays", "dc": "Min 1/12 of salary", "irp": "Free deposit (up to 18M/yr)" },
+          "returns": { "label": "Returns", "db": "Company investment returns", "dc": "Employee investment returns", "irp": "Employee investment returns" },
+          "risk": { "label": "Risk", "db": "Company bears (guaranteed benefit)", "dc": "Employee bears", "irp": "Employee bears" },
+          "taxBenefit": { "label": "Tax Credit", "db": "None", "dc": "None", "irp": "Up to 9M/yr tax credit" },
+          "recommended": { "label": "Recommended For", "db": "Workers expecting salary increases", "dc": "Workers interested in investing", "irp": "Workers needing additional tax savings" }
+        }
+      },
+      "taxBenefitTitle": "IRP Tax Credit Benefits",
+      "taxBenefitItems": [
+        "Up to 9M/yr tax credit (IRP + pension savings combined)",
+        "Income ≤55M: 16.5% credit rate",
+        "Income >55M: 13.2% credit rate",
+        "30% retirement income tax reduction when transferring severance to IRP"
+      ]
     },
     "guide": {
       "title": "Severance Pay Guide",
@@ -7755,8 +7895,40 @@
     "joinDate": "Join Date",
     "usedLeaves": "Used Leave Days",
     "usedLeavesPlaceholder": "0",
+    "calculationBasis": "Calculation Basis",
+    "joinDateBasis": "Join Date Basis",
+    "fiscalYearBasis": "Fiscal Year Basis",
+    "joinDateBasisDesc": "Calculates leave based on join date (Labor Standards Act default)",
+    "fiscalYearBasisDesc": "Prorates leave based on fiscal year (Jan-Dec)",
+    "dailyWage": "Daily Wage (KRW)",
+    "dailyWagePlaceholder": "Leave empty to skip pay calculation",
+    "dailyWageDesc": "Used for leave pay calculation. Regular wage ÷ prescribed work days",
+    "won": "KRW",
+    "copyLink": "Copy Link",
+    "copied": "Copied",
+    "share": "Share",
     "calculate": "Calculate",
     "reset": "Reset",
+    "leavePay": {
+      "title": "Unused Leave Pay (Estimated)",
+      "formula": "{remaining} days × {wage} KRW/day = {total} KRW"
+    },
+    "timeline": {
+      "title": "Leave Accrual Timeline",
+      "current": "Current",
+      "desc": "Leave milestones by years of service. +1 day every 2 years from year 3 (max 25 days)"
+    },
+    "promotion": {
+      "title": "Leave Promotion Notice",
+      "description": "Employers may follow the leave promotion procedure per Article 61 of the Labor Standards Act. Completing the procedure exempts the employer from compensating unused leave.",
+      "steps": [
+        "6 months before expiry: Notify unused leave days in writing",
+        "If employee doesn't designate dates: Urge in writing 2 months before expiry",
+        "If still unused: Employer designates dates in writing",
+        "Completing all steps exempts the employer from paying unused leave compensation"
+      ],
+      "warning": "If the promotion procedure is not followed, unused leave must be compensated. Written notice requirements must be met or the promotion is invalid."
+    },
     "result": {
       "title": "Annual Leave Result",
       "workPeriod": "Work Period",
@@ -7827,11 +7999,16 @@
     },
     "season": "Season",
     "seasons": {
+      "spring": "Spring (Mar-May)",
       "summer": "Summer (Apr-Sep)",
+      "autumn": "Autumn (Sep-Nov)",
       "winter": "Winter (Oct-Mar)"
     },
     "calculate": "Calculate",
     "reset": "Reset",
+    "shareLink": "Share Link",
+    "copied": "Copied",
+    "copyResult": "Copy Result",
     "result": {
       "title": "Gas Bill Result",
       "basicCharge": "Basic Charge",
@@ -7844,9 +8021,48 @@
     },
     "averageUsage": {
       "title": "Average Monthly Usage",
+      "spring": "Spring: approx. 100-180 MJ",
       "summer": "Summer: approx. 15-30 MJ",
+      "autumn": "Autumn: approx. 90-250 MJ",
       "winter": "Winter: approx. 80-150 MJ",
       "description": "Including heating, hot water, cooking"
+    },
+    "boilerSim": {
+      "title": "Boiler Usage Simulation",
+      "houseSize": "House Size",
+      "pyeong": "pyeong",
+      "insulation": "Insulation Grade",
+      "insulationGood": "Good (New, High Insulation)",
+      "insulationAverage": "Average (Standard Apartment)",
+      "insulationPoor": "Poor (Old Housing)",
+      "heatingHours": "Daily Heating Hours",
+      "hoursPerDay": "hrs/day",
+      "estimatedUsage": "Estimated Monthly Usage",
+      "apply": "Calculate with This Usage"
+    },
+    "tierBreakdown": {
+      "title": "Tiered Rate Breakdown",
+      "tier1": "Tier 1",
+      "tier2": "Tier 2",
+      "tier3": "Tier 3",
+      "tier4": "Tier 4"
+    },
+    "monthlyChart": {
+      "title": "Monthly Estimated Gas Cost",
+      "description": "Estimated costs based on average household usage patterns.",
+      "monthSuffix": "Month",
+      "monthLabel": "M"
+    },
+    "utility": {
+      "title": "Utility Bill Total",
+      "description": "Enter other utility bills alongside gas to see your total monthly utilities.",
+      "gas": "Gas",
+      "gasAuto": "Auto-filled from calculation above",
+      "electricity": "Electricity",
+      "water": "Water",
+      "internet": "Internet",
+      "enterAmount": "Enter amount",
+      "totalLabel": "Total Monthly Utilities"
     },
     "guide": {
       "title": "Gas Bill Guide",
@@ -8030,6 +8246,14 @@
           "Highway tolls are passenger's responsibility"
         ]
       }
+    },
+    "copyLink": "Copy Link",
+    "copyLinkDone": "Copied!",
+    "comparison": {
+      "title": "Fare Comparison by Taxi Type",
+      "subtitle": "Estimated fares for regular / deluxe / jumbo at current distance & time",
+      "selected": "selected",
+      "note": "* Same distance, time, and time-of-day. Night surcharge included."
     }
   },
   "installmentCalc": {
@@ -10951,7 +11175,20 @@
           "Real estate is assessed at official price rather than market value, which may affect the actual burden."
         ]
       }
-    }
+    },
+    "compareTab": "Compare",
+    "compareNote": "Compares inheritance tax vs gift tax for the same amount (using standard assumptions)",
+    "compareAssumption": {
+      "inheritance": "With spouse, lump-sum deduction ₩500M + spouse deduction ₩500M",
+      "gift": "Ascendant to adult child (₩50M deduction)"
+    },
+    "comparePrompt": "Enter an amount in the Inheritance or Gift tab to compare",
+    "lower": "Lower tax",
+    "compareSummary": {
+      "inheritanceLower": "Inheriting saves {diff} compared to gifting",
+      "giftLower": "Gifting saves {diff} compared to inheriting"
+    },
+    "copyLink": "Copy Link"
   },
   "freelancerTax": {
     "title": "Freelancer Tax Calculator",
@@ -12717,6 +12954,19 @@
           "Holiday pay applies during probation period as well"
         ]
       }
+    },
+    "copyLink": "Copy Link",
+    "linkCopied": "Link Copied",
+    "scenario": {
+      "title": "Compare by Weekly Hours",
+      "description": "Compare estimated pay across different weekly work hour scenarios at the same hourly wage.",
+      "colHours": "Weekly Hours",
+      "colEligible": "Holiday Pay",
+      "colWeeklyBase": "Weekly Base",
+      "colHolidayPay": "Holiday Pay",
+      "colMonthlyTotal": "Monthly Total",
+      "current": "Current",
+      "footnote": "* Monthly estimate uses the weeks-per-month value you entered."
     }
   },
   "chartStudio": {
@@ -17383,6 +17633,308 @@
         "Use the Reveal Word button to show the answer for the current word",
         "A new daily puzzle is available every day at midnight"
       ]
+    }
+  },
+  "nameCompatibility": {
+    "title": "Name Compatibility Test",
+    "description": "Check compatibility with two names",
+    "name1": "First Name",
+    "name2": "Second Name",
+    "name1Placeholder": "Enter name",
+    "name2Placeholder": "Enter name",
+    "startButton": "Check Compatibility",
+    "retryButton": "Try Again",
+    "shareButton": "Share Result",
+    "saveImageButton": "Save Image",
+    "copyLinkButton": "Copy Link",
+    "linkCopied": "Link copied!",
+    "calculating": "Calculating compatibility...",
+    "resultTitle": "Compatibility Result",
+    "score": "points",
+    "compatibility": "Compatibility Score",
+    "inputError": "Please enter both names",
+    "nameError": "Only Korean names are supported",
+    "and": "♥",
+    "resultMessages": {
+      "perfect": "A match made in heaven! Soulmates! 💕",
+      "great": "Great compatibility! You two are perfect together 😍",
+      "good": "Good compatibility! You'll be happy together 😊",
+      "average": "Average compatibility. With effort, it can work out 🙂",
+      "belowAverage": "Could be better. But love conquers all! 💪",
+      "low": "Low compatibility. But love knows no bounds! ❤️"
+    },
+    "process": "Calculation Process",
+    "step1": "ㅇ/ㅎ Conversion",
+    "step2": "Stroke Count",
+    "step3": "Adjacent Sum",
+    "guide": {
+      "title": "Name Compatibility Guide",
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "The characters from both names are arranged alternately",
+          "Each character's consonants/vowels are converted to ㅇ and ㅎ",
+          "Stroke counts are calculated (ㅇ=1, ㅎ=3)",
+          "Adjacent numbers are summed down to single digits for the final score"
+        ]
+      },
+      "tips": {
+        "title": "Good to Know",
+        "items": [
+          "Name compatibility is meant for fun",
+          "Only Korean names are supported (2-5 characters)",
+          "Save the result card as an image or share via link",
+          "Same names always produce the same result"
+        ]
+      }
+    }
+  },
+  "personalColor": {
+    "title": "Personal Color Analysis",
+    "description": "Find your best color tone with 12 questions",
+    "startButton": "Start Analysis",
+    "retryButton": "Try Again",
+    "shareButton": "Share Result",
+    "saveImageButton": "Save Image",
+    "copyLinkButton": "Copy Link",
+    "linkCopied": "Link copied!",
+    "questionOf": "/ 12",
+    "nextButton": "Next",
+    "prevButton": "Previous",
+    "analyzing": "Analyzing your personal color...",
+    "resultTitle": "Your Personal Color",
+    "bestColors": "Best Colors",
+    "worstColors": "Colors to Avoid",
+    "celebrities": "Celebrities with Same Color",
+    "fashionTips": "Fashion & Makeup Tips",
+    "colorPalette": "Recommended Color Palette",
+    "types": {
+      "springWarm": {
+        "name": "Spring Warm",
+        "emoji": "🌸",
+        "description": "You have a bright and warm aura like spring! Clear and warm colors suit you best.",
+        "characteristics": "Warm and bright skin tone, yellowish undertone, brown or light brown eyes",
+        "celebrities": "Jessica Alba, Amanda Seyfried, Emma Stone",
+        "fashionTips": "Coral lipstick, peach blush, ivory/beige base, gold accessories suit you perfectly",
+        "bestColors": ["Coral", "Peach", "Ivory", "Salmon", "Light Orange", "Warm Pink"],
+        "worstColors": ["Black", "Cool Gray", "Burgundy", "Navy"]
+      },
+      "summerCool": {
+        "name": "Summer Cool",
+        "emoji": "🌊",
+        "description": "You have an elegant aura like a cool summer breeze! Pastels and cool colors suit you best.",
+        "characteristics": "Pink-toned bright skin, blue undertone, black or dark brown eyes",
+        "celebrities": "Cate Blanchett, Anne Hathaway, Lupita Nyong'o",
+        "fashionTips": "Rose pink lipstick, lavender eyeshadow, silver accessories, blue-based makeup suit you perfectly",
+        "bestColors": ["Lavender", "Rose Pink", "Sky Blue", "Soft White", "Baby Blue", "Lilac"],
+        "worstColors": ["Orange", "Khaki", "Gold", "Mustard"]
+      },
+      "autumnWarm": {
+        "name": "Autumn Warm",
+        "emoji": "🍂",
+        "description": "You have a mature aura like warm autumn foliage! Deep and warm colors suit you best.",
+        "characteristics": "Golden skin tone, warm medium undertone, dark brown or amber eyes",
+        "celebrities": "Beyoncé, Jennifer Lopez, Angelina Jolie",
+        "fashionTips": "Brick red lipstick, terracotta blush, gold/bronze accessories, natural makeup suit you perfectly",
+        "bestColors": ["Terracotta", "Burgundy", "Olive", "Mustard", "Camel", "Brick Red"],
+        "worstColors": ["Pastel Pink", "Silver", "Neon", "Cool Blue"]
+      },
+      "winterCool": {
+        "name": "Winter Cool",
+        "emoji": "❄️",
+        "description": "You have a striking aura like crisp winter! Bold and vivid colors suit you best.",
+        "characteristics": "Cool-toned white or olive skin, distinct eye color, sharp features",
+        "celebrities": "Zendaya, Dua Lipa, Lucy Liu",
+        "fashionTips": "Red or wine lipstick, bold eyeliner, silver/platinum accessories, monochrome style suit you perfectly",
+        "bestColors": ["Pure White", "Black", "Red", "Royal Blue", "Emerald", "Hot Pink"],
+        "worstColors": ["Beige", "Khaki", "Pastel Yellow", "Gold"]
+      }
+    },
+    "questions": [
+      {
+        "question": "What is your skin tone under sunlight?",
+        "options": ["Warm skin with yellow undertone", "Cool skin with pink undertone", "Golden/olive toned skin", "White or blue-undertoned skin"]
+      },
+      {
+        "question": "Which looks better on you — silver or gold accessories?",
+        "options": ["Gold looks much better", "Silver suits me more", "Gold feels natural", "Silver definitely suits me"]
+      },
+      {
+        "question": "What compliments do you get about your skin?",
+        "options": ["You look bright and glowing", "You look clear and fresh", "You look healthy and radiant", "Your skin is porcelain-like"]
+      },
+      {
+        "question": "What is your natural hair color in sunlight?",
+        "options": ["Brown/light brown", "Dark brown/black", "Deep brown/auburn", "Jet black"]
+      },
+      {
+        "question": "White vs ivory clothes — which suits you better?",
+        "options": ["Ivory looks much more natural", "White looks cleaner", "Ivory or beige feels comfortable", "Pure white looks sophisticated"]
+      },
+      {
+        "question": "What color clothing makes your face glow?",
+        "options": ["Coral, peach tones", "Lavender, rose tones", "Khaki, brown tones", "Black, white tones"]
+      },
+      {
+        "question": "What is your eye color?",
+        "options": ["Light brown/hazel", "Dark brown/grayish brown", "Amber/deep brown", "Jet black"]
+      },
+      {
+        "question": "What color are your veins? (inner wrist)",
+        "options": ["Mostly green", "Blue/purple", "Green-brownish", "Deep blue/purple"]
+      },
+      {
+        "question": "What lip color suits you best?",
+        "options": ["Coral pink/orange", "Pink/rose", "Brick red/orange brown", "Red/wine/cherry"]
+      },
+      {
+        "question": "How does your skin react to tanning?",
+        "options": ["Tans easily to golden brown", "Burns easily, doesn't tan much", "Tans to brown easily", "Doesn't tan much or turns red"]
+      },
+      {
+        "question": "What overall color tone feels most comfortable?",
+        "options": ["Bright and warm colors", "Soft and cool colors", "Deep and warm colors", "Vivid and cool colors"]
+      },
+      {
+        "question": "What patterns or prints look best on you?",
+        "options": ["Floral, bright flowers", "Subtle checks, stripes", "Paisley, bohemian", "Geometric, monotone"]
+      }
+    ],
+    "guide": {
+      "title": "Personal Color Guide",
+      "whatIs": {
+        "title": "What is Personal Color?",
+        "items": [
+          "It's finding the most flattering color palette based on your natural skin, eye, and hair color",
+          "Divided into 4 types: Warm (Spring/Autumn) and Cool (Summer/Winter)",
+          "Knowing your personal color makes choosing clothes, makeup, and hair color easier",
+          "Professional analysis uses draping under specific lighting, but self-tests can give a general idea"
+        ]
+      },
+      "tips": {
+        "title": "How to Use",
+        "items": [
+          "Top and accessory colors near your face matter most",
+          "Bottom colors don't matter as much",
+          "Makeup matching your personal color maximizes the effect",
+          "This test is for fun. For accurate analysis, consult a professional"
+        ]
+      }
+    }
+  },
+  "ovulationCalculator": {
+    "title": "Ovulation Calculator",
+    "description": "Enter your menstrual cycle to predict ovulation and fertile window",
+    "lastPeriod": "Last Period Start Date",
+    "cycleLength": "Cycle Length",
+    "periodLength": "Period Length",
+    "days": "days",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": "Prediction Results",
+    "ovulationDate": "Estimated Ovulation Date",
+    "fertileWindow": "Fertile Window",
+    "nextPeriod": "Next Period Expected",
+    "safeEarly": "Safe Period (Early)",
+    "safeLate": "Safe Period (Late)",
+    "to": "~",
+    "calendar": "3-Month Calendar",
+    "legend": "Legend",
+    "legendPeriod": "Period",
+    "legendFertile": "Fertile Window",
+    "legendOvulation": "Ovulation Day",
+    "legendSafe": "Safe Period",
+    "dueDateLink": "Go to Due Date Calculator",
+    "disclaimer": "This calculator is for reference only. Consult a gynecologist for accurate diagnosis.",
+    "shareButton": "Share Result",
+    "copyLinkButton": "Copy Link",
+    "linkCopied": "Link copied!",
+    "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "weekdays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "guide": {
+      "title": "Ovulation Calculator Guide",
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Ovulation typically occurs 14 days before the next period starts",
+          "The fertile window is 5 days before ovulation to 1 day after",
+          "Predictions may be less accurate with irregular cycles",
+          "Combining with basal body temperature and ovulation tests improves accuracy"
+        ]
+      },
+      "tips": {
+        "title": "Important Notes",
+        "items": [
+          "Average menstrual cycle is 28 days, but 21-35 days is normal",
+          "Ovulation can vary due to individual differences, stress, and health",
+          "For conception, intercourse every 2-3 days during fertile window is recommended",
+          "This calculator alone is insufficient for contraception; always use proper birth control"
+        ]
+      }
+    }
+  },
+  "csatGrade": {
+    "title": "CSAT Grade Calculator",
+    "description": "Check your grade based on raw score for each CSAT subject",
+    "year": "CSAT Year",
+    "subject": "Select Subject",
+    "rawScore": "Raw Score",
+    "standardScore": "Standard Score",
+    "percentile": "Percentile",
+    "grade": "Grade",
+    "calculate": "Check Grade",
+    "reset": "Reset",
+    "result": "Grade Result",
+    "gradeResult": "Grade",
+    "yourScore": "Your Score",
+    "cutoff": "Cutoff",
+    "maxScore": "Max Score",
+    "subjects": {
+      "korean": "Korean",
+      "math": "Math",
+      "english": "English",
+      "koreanHistory": "Korean History",
+      "socialStudies": "Social Studies",
+      "science": "Science"
+    },
+    "subjectDetail": {
+      "korean": "Korean (Speech & Writing / Language & Media)",
+      "mathCalc": "Math (Calculus / Geometry)",
+      "mathProb": "Math (Probability & Statistics)",
+      "english": "English (Absolute Grading)",
+      "koreanHistory": "Korean History (Absolute Grading)",
+      "socialStudies": "Social Studies (Subject Selection)",
+      "science": "Science (Subject Selection)"
+    },
+    "absoluteGrade": "Absolute Grading",
+    "relativeGrade": "Relative Grading",
+    "gradeTable": "Grade Cutoff Table",
+    "allGrades": "View All Grade Cutoffs",
+    "gradeRange": "Score Range",
+    "shareButton": "Share Result",
+    "copyLinkButton": "Copy Link",
+    "linkCopied": "Link copied!",
+    "disclaimer": "Grade cutoffs are based on 2025 CSAT. Actual cutoffs vary each year.",
+    "guide": {
+      "title": "CSAT Grade Guide",
+      "grading": {
+        "title": "Grading Method",
+        "items": [
+          "Relative grading: Top 4% = Grade 1, Top 11% = Grade 2, Top 23% = Grade 3...",
+          "Absolute grading (English/Korean History): Grades based on raw score ranges",
+          "English: 90+ = Grade 1, 80+ = Grade 2...",
+          "Korean History: 40+ = Grade 1, 35+ = Grade 2..."
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Displayed cutoffs are based on previous year and may differ from actual CSAT",
+          "Standard scores and percentiles apply only to relatively graded subjects",
+          "Exploration subjects have separate converted standard scores",
+          "Official cutoffs are released by KICE on score release date"
+        ]
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import JsonFormatter from '@/components/JsonFormatter'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -75,6 +76,7 @@ export default function JsonFormatterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
+        <Breadcrumb />
         <JsonFormatter />
         <div className="mt-8">
 

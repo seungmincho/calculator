@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import InteriorCalc from '@/components/InteriorCalc'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -90,6 +91,7 @@ export default function InteriorCalculatorPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-8 text-gray-500">Loading...</div>}>
             <I18nWrapper>
+        <Breadcrumb />
               <InteriorCalc />
               <div className="mt-8">
 

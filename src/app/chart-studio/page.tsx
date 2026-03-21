@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import ChartStudio from '@/components/ChartStudio'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -27,6 +28,29 @@ export const metadata: Metadata = {
 }
 
 export default function ChartStudioPage() {
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '어떤 차트를 만들 수 있나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '막대 차트, 꺾은선 차트, 파이 차트, 도넛 차트, 영역 차트 등 다양한 유형을 지원합니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '만든 차트를 다운로드할 수 있나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '네, PNG 이미지로 다운로드하거나 데이터를 CSV로 내보낼 수 있습니다.',
+        },
+      },
+    ],
+  }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
@@ -43,10 +67,12 @@ export default function ChartStudioPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-violet-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
+        <Breadcrumb />
               <ChartStudio />
               <div className="mt-8">
 

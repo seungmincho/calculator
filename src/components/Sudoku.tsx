@@ -4,8 +4,10 @@ import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Play, Lightbulb, Undo, Eraser, Clock, BookOpen } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 type Cell = {
   value: number
@@ -38,6 +40,9 @@ export default function Sudoku() {
   const [isRunning, setIsRunning] = useState(false)
 
   const leaderboard = useLeaderboard('sudoku', difficulty)
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
+  const cellFillCountRef = useRef(0)
   const [showNameModal, setShowNameModal] = useState(false)
   const gameStartTimeRef = useRef<number>(Date.now())
 
@@ -54,9 +59,18 @@ export default function Sudoku() {
     }
   }, [isRunning, completed])
 
-  // Leaderboard: detect completion
+  // Leaderboard & achievements: detect completion
   useEffect(() => {
     if (completed) {
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        recordGameResult({
+          gameType: 'sudoku',
+          result: 'win',
+          difficulty,
+          moves: cellFillCountRef.current,
+        })
+      }
       if (leaderboard.checkQualifies(time)) {
         setShowNameModal(true)
       }
@@ -169,6 +183,8 @@ export default function Sudoku() {
     setCompleted(false)
     setTime(0)
     setIsRunning(true)
+    resultRecordedRef.current = false
+    cellFillCountRef.current = 0
     gameStartTimeRef.current = Date.now()
   }, [difficulty, generateSolution, generatePuzzle])
 
@@ -247,6 +263,9 @@ export default function Sudoku() {
       )
 
       setBoard(newBoard)
+      if (!notesMode) {
+        cellFillCountRef.current += 1
+      }
 
       // Check completion
       const isFilled = newBoard.every((row) => row.every((cell) => cell.value !== 0))
@@ -558,6 +577,13 @@ export default function Sudoku() {
         defaultName={leaderboard.savedPlayerName}
       />
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
@@ -589,6 +615,10 @@ export default function Sudoku() {
           </div>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Calculator, Copy, Check, BookOpen, AlertCircle } from 'lucide-react'
+import { Calculator, Copy, Check, BookOpen, AlertCircle, Link } from 'lucide-react'
 
 // ── 2025년 종합소득세 세율 (8단계) ──
 const INCOME_BRACKETS = [
@@ -61,6 +62,7 @@ const parseNum = (v: string) => parseInt(v.replace(/[^0-9]/g, ''), 10) || 0
 
 export default function FreelancerTax() {
   const t = useTranslations('freelancerTax')
+  const searchParams = useSearchParams()
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showGuide, setShowGuide] = useState(false)
 
@@ -72,6 +74,37 @@ export default function FreelancerTax() {
   const [dependents, setDependents] = useState('1')             // 부양가족 수 (본인 포함)
   const [nationalPensionPaid, setNationalPensionPaid] = useState('')  // 납부한 국민연금
   const [healthInsurancePaid, setHealthInsurancePaid] = useState('')  // 납부한 건강보험
+
+  // URL param sync - read on mount
+  useEffect(() => {
+    const rev = searchParams.get('revenue')
+    const ind = searchParams.get('industry')
+    const method = searchParams.get('method')
+    const dep = searchParams.get('dependents')
+    if (rev) setAnnualRevenue(rev)
+    if (ind) setIndustry(ind as IndustryCode)
+    if (method) setExpenseMethod(method as 'simple' | 'standard' | 'actual')
+    if (dep) setDependents(dep)
+  }, [])
+
+  // URL param sync - write on change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams()
+    if (annualRevenue) params.set('revenue', annualRevenue.replace(/[^0-9]/g, ''))
+    params.set('industry', industry)
+    params.set('method', expenseMethod)
+    params.set('dependents', dependents)
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+  }, [annualRevenue, industry, expenseMethod, dependents])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch { /* */ }
+    setCopiedId('link')
+    setTimeout(() => setCopiedId(null), 2000)
+  }, [])
 
   const result = useMemo(() => {
     const revenue = parseNum(annualRevenue)
@@ -189,12 +222,22 @@ export default function FreelancerTax() {
   return (
     <div className="space-y-6">
       {/* 헤더 */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          title="링크 복사"
+        >
+          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+        </button>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import ImageCompressor from '@/components/ImageCompressor'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -41,6 +42,7 @@ export default function ImageCompressorPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
+        <Breadcrumb />
               <ImageCompressor />
               <div className="mt-8">
 

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import GanttChart from '@/components/GanttChart'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -27,6 +28,29 @@ export const metadata: Metadata = {
 }
 
 export default function GanttChartPage() {
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '간트 차트란 무엇인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '프로젝트 일정을 막대 형태로 시각화하는 도구입니다. 작업의 시작일, 종료일, 진행률을 한눈에 파악할 수 있습니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '작성한 간트 차트를 저장할 수 있나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '네, 이미지(PNG)로 내보내기가 가능하며, 브라우저 로컬 저장소에 자동 저장됩니다.',
+        },
+      },
+    ],
+  }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
@@ -43,10 +67,12 @@ export default function GanttChartPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-cyan-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
+        <Breadcrumb />
               <GanttChart />
               <div className="mt-8">
 

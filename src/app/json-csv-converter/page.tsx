@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import JsonCsvConverter from '@/components/JsonCsvConverter'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -71,6 +72,7 @@ export default function JsonCsvConverterPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <I18nWrapper>
+        <Breadcrumb />
         <JsonCsvConverter />
         <div className="mt-8">
 

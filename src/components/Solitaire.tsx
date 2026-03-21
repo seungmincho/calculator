@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Trophy, RotateCcw, Undo2, Lightbulb, Volume2, VolumeX, Play } from 'lucide-react'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ══════════════════════════════════════════════════════════════════════════════
 // Types
@@ -264,6 +266,9 @@ export default function Solitaire() {
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [, forceRender] = useState(0)
 
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
+
   // ── Refs for game data (avoid re-renders during drag/animation) ──
   const tableauRef = useRef<Card[][]>([[], [], [], [], [], [], []])
   const foundationRef = useRef<Card[][]>([[], [], [], []])
@@ -398,10 +403,25 @@ export default function Solitaire() {
     setScore(0)
     setElapsedTime(0)
     gameStartedRef.current = false
+    resultRecordedRef.current = false
 
     soundEngineRef.current.shuffle(soundEnabledRef.current)
     forceRender(n => n + 1)
   }, [])
+
+  // ── Achievement recording ──
+  useEffect(() => {
+    if (gameState === 'won' && !resultRecordedRef.current) {
+      resultRecordedRef.current = true
+      recordGameResult({
+        gameType: 'solitaire',
+        result: 'win',
+        difficulty: 'normal',
+        moves: moveCountRef.current,
+      })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState])
 
   // ── Timer ──
   useEffect(() => {
@@ -1792,6 +1812,13 @@ export default function Solitaire() {
         </div>
       )}
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide section */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -1832,6 +1859,10 @@ export default function Solitaire() {
           </div>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

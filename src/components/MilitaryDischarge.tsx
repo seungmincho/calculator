@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Copy, Check, Calendar, TrendingUp, Star, Info } from 'lucide-react'
+import { Copy, Check, Calendar, TrendingUp, Star, Info, Link } from 'lucide-react'
 
 type Branch = 'army' | 'marines' | 'navy' | 'airForce' | 'socialService' | 'conscriptedPolice' | 'industrialTechnician' | 'researchAgent' | 'katusa'
 
@@ -53,11 +54,40 @@ interface Result {
 
 export default function MilitaryDischarge() {
   const t = useTranslations('militaryDischarge')
+  const searchParams = useSearchParams()
 
   const [enlistmentDate, setEnlistmentDate] = useState('')
   const [branch, setBranch] = useState<Branch>('army')
   const [earlyDays, setEarlyDays] = useState('')
   const [copiedId, setCopiedId] = useState<string | null>(null)
+
+  // URL param sync - read on mount
+  useEffect(() => {
+    const date = searchParams.get('date')
+    const b = searchParams.get('branch')
+    const early = searchParams.get('early')
+    if (date) setEnlistmentDate(date)
+    if (b) setBranch(b as Branch)
+    if (early) setEarlyDays(early)
+  }, [])
+
+  // URL param sync - write on change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams()
+    if (enlistmentDate) params.set('date', enlistmentDate)
+    params.set('branch', branch)
+    if (earlyDays) params.set('early', earlyDays)
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+  }, [enlistmentDate, branch, earlyDays])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch { /* */ }
+    setCopiedId('link')
+    setTimeout(() => setCopiedId(null), 2000)
+  }, [])
 
   const branches: Branch[] = [
     'army', 'marines', 'navy', 'airForce',
@@ -174,9 +204,19 @@ export default function MilitaryDischarge() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          title="링크 복사"
+        >
+          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+        </button>
       </div>
 
       {/* Celebration banners */}

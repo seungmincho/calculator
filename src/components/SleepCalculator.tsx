@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
-import { Moon, Sun, Clock, AlarmClock, BookOpen, ChevronRight } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Moon, Sun, Clock, AlarmClock, BookOpen, ChevronRight, Link, Check } from 'lucide-react'
 
 type Mode = 'sleepNow' | 'wakeAt'
 
@@ -64,12 +65,20 @@ const qualityColors: Record<string, { bg: string; border: string; text: string; 
 
 export default function SleepCalculator() {
   const t = useTranslations('sleepCalculator')
+  const searchParams = useSearchParams()
 
-  const [mode, setMode] = useState<Mode>('sleepNow')
+  const [mode, setMode] = useState<Mode>(() => {
+    const m = searchParams.get('mode')
+    return (m === 'wakeAt' ? 'wakeAt' : 'sleepNow') as Mode
+  })
   const [currentTime, setCurrentTime] = useState<Date>(new Date())
-  const [wakeUpInput, setWakeUpInput] = useState<string>('07:00')
-  const [fallAsleepMinutes, setFallAsleepMinutes] = useState<number>(DEFAULT_FALL_ASLEEP_MINUTES)
-  const [showResults, setShowResults] = useState<boolean>(false)
+  const [wakeUpInput, setWakeUpInput] = useState<string>(() => searchParams.get('wake') ?? '07:00')
+  const [fallAsleepMinutes, setFallAsleepMinutes] = useState<number>(() => {
+    const v = parseInt(searchParams.get('fallAsleep') ?? '', 10)
+    return isNaN(v) || v < 1 || v > 60 ? DEFAULT_FALL_ASLEEP_MINUTES : v
+  })
+  const [showResults, setShowResults] = useState<boolean>(() => searchParams.get('mode') !== 'wakeAt')
+  const [linkCopied, setLinkCopied] = useState(false)
 
   // Update clock every second
   useEffect(() => {
@@ -85,6 +94,24 @@ export default function SleepCalculator() {
       setShowResults(true)
     }
   }, [mode])
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('mode', mode)
+    url.searchParams.set('wake', wakeUpInput)
+    url.searchParams.set('fallAsleep', String(fallAsleepMinutes))
+    window.history.replaceState({}, '', url)
+  }, [mode, wakeUpInput, fallAsleepMinutes])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch {
+      // ignore
+    }
+    setLinkCopied(true)
+    setTimeout(() => setLinkCopied(false), 2000)
+  }, [])
 
   const sleepNowOptions = useMemo((): SleepOption[] => {
     if (mode !== 'sleepNow') return []
@@ -166,12 +193,21 @@ export default function SleepCalculator() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <Moon className="text-indigo-500" size={28} />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Moon className="text-indigo-500" size={28} />
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+        >
+          {linkCopied ? <Check size={16} className="text-green-500" /> : <Link size={16} />}
+          {linkCopied ? '복사됨' : '링크 복사'}
+        </button>
       </div>
 
       {/* Current Time Display */}

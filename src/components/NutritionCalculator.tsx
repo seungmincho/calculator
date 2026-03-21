@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Utensils, Search, Plus, Trash2, Copy, Check, BookOpen, X } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Utensils, Search, Plus, Trash2, Copy, Check, BookOpen, X, Link } from 'lucide-react'
 import dynamic from 'next/dynamic'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
@@ -86,12 +87,35 @@ const formatNumber = (n: number) => Math.round(n).toLocaleString('ko-KR')
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function NutritionCalculator() {
   const t = useTranslations('nutritionCalculator')
+  const searchParams = useSearchParams()
 
-  const [selectedCategory, setSelectedCategory] = useState<string>('all')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<string>(() => {
+    const c = searchParams.get('category') ?? 'all'
+    return CATEGORIES.includes(c as typeof CATEGORIES[number]) ? c : 'all'
+  })
+  const [searchQuery, setSearchQuery] = useState(() => searchParams.get('q') ?? '')
   const [mealEntries, setMealEntries] = useState<MealEntry[]>([])
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showGuide, setShowGuide] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(false)
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('category', selectedCategory)
+    if (searchQuery) url.searchParams.set('q', searchQuery)
+    else url.searchParams.delete('q')
+    window.history.replaceState({}, '', url)
+  }, [selectedCategory, searchQuery])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch {
+      // ignore
+    }
+    setLinkCopied(true)
+    setTimeout(() => setLinkCopied(false), 2000)
+  }, [])
 
   // ── Filtered food list ───────────────────────────────────────────────────
   const filteredFoods = useMemo(() => {
@@ -236,12 +260,21 @@ export default function NutritionCalculator() {
   return (
     <div className="space-y-6">
       {/* 헤더 */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <Utensils className="w-6 h-6 text-green-500" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Utensils className="w-6 h-6 text-green-500" />
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+        >
+          {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          {linkCopied ? '복사됨' : '링크 복사'}
+        </button>
       </div>
 
       {/* 카테고리 필터 + 검색 */}

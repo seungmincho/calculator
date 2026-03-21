@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import CarLoanCalculator from '@/components/CarLoanCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -34,6 +35,35 @@ export default function CarLoanCalculatorPage() {
       price: '0',
       priceCurrency: 'KRW'
     }
+  }
+
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '자동차 할부 계산기 사용 방법',
+    description: '차량 가격과 할부 조건을 입력해 월 납입금과 총 이자를 계산하는 방법입니다.',
+    step: [
+      {
+        '@type': 'HowToStep',
+        name: '차량 가격 입력',
+        text: '구매할 신차 또는 중고차의 실제 차량 가격(출고가 또는 계약 금액)을 입력합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '선수금(다운페이먼트) 설정',
+        text: '계약금 또는 선납금 금액을 입력합니다. 선수금이 높을수록 월 납입금과 총 이자가 줄어듭니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '할부 기간과 금리 입력',
+        text: '할부 기간(12/24/36/48/60개월 등)과 연 이율(캐피털사 또는 은행 금리)을 입력합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '월 상환금과 총 이자 확인',
+        text: '계산 결과에서 월 납입금, 총 납입액, 총 이자 부담액을 확인하고 여러 시나리오를 비교합니다.',
+      },
+    ],
   }
 
   const faqJsonLd = {
@@ -77,7 +107,12 @@ export default function CarLoanCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+      />
       <I18nWrapper>
+        <Breadcrumb />
         <div className="container mx-auto px-4 py-8">
           <CarLoanCalculator />
         </div>

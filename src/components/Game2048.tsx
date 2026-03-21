@@ -4,8 +4,10 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { RotateCcw, Trophy } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 type Tile = {
   id: number
@@ -50,6 +52,9 @@ export default function Game2048() {
   const touchStartRef = useRef<{ x: number; y: number } | null>(null)
 
   const leaderboard = useLeaderboard('game2048', undefined)
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
+  const moveCountRef = useRef(0)
   const [showNameModal, setShowNameModal] = useState(false)
   const gameStartTimeRef = useRef<number>(Date.now())
 
@@ -69,9 +74,18 @@ export default function Game2048() {
     }
   }, [score, bestScore])
 
-  // Leaderboard: detect game over
+  // Leaderboard & achievements: detect game over
   useEffect(() => {
     if (gameOver) {
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        recordGameResult({
+          gameType: 'game2048',
+          result: 'loss',
+          difficulty: 'normal',
+          moves: moveCountRef.current,
+        })
+      }
       if (leaderboard.checkQualifies(score)) {
         setShowNameModal(true)
       }
@@ -79,6 +93,20 @@ export default function Game2048() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameOver])
+
+  // Record win on reaching 2048
+  useEffect(() => {
+    if (won && !resultRecordedRef.current) {
+      resultRecordedRef.current = true
+      recordGameResult({
+        gameType: 'game2048',
+        result: 'win',
+        difficulty: 'normal',
+        moves: moveCountRef.current,
+      })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [won])
 
   const handleLeaderboardSubmit = useCallback(async (name: string) => {
     const duration = Date.now() - gameStartTimeRef.current
@@ -99,6 +127,8 @@ export default function Game2048() {
     setWon(false)
     setKeepPlayingAfterWin(false)
     setPreviousState(null)
+    resultRecordedRef.current = false
+    moveCountRef.current = 0
     gameStartTimeRef.current = Date.now()
   }, [])
 
@@ -217,6 +247,7 @@ export default function Game2048() {
     }
 
     if (moved) {
+      moveCountRef.current += 1
       addRandomTile(newTiles)
       setTiles(newTiles)
       setScore(prev => prev + addedScore)
@@ -445,6 +476,13 @@ export default function Game2048() {
         defaultName={leaderboard.savedPlayerName}
       />
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide Section */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
@@ -484,6 +522,11 @@ export default function Game2048() {
           </div>
         </div>
       </div>
+
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
 
       <style jsx>{`
         @keyframes scale {

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Copy, Check, BookOpen, Cake, Calendar, Star, Clock, RotateCcw, GraduationCap, ChevronDown, ChevronUp, Users } from 'lucide-react'
+import { Copy, Check, BookOpen, Cake, Calendar, Star, Clock, RotateCcw, GraduationCap, ChevronDown, ChevronUp, Users, Link } from 'lucide-react'
 
 interface SchoolInfo {
   elementaryEntryYear: number
@@ -100,6 +101,64 @@ export default function AgeCalculator() {
   const [birthDay, setBirthDay] = useState('')
   const [baseDate, setBaseDate] = useState(formatDateInput(now))
 
+  const searchParams = useSearchParams()
+
+  // Read URL params on mount
+  useEffect(() => {
+    const birth = searchParams.get('birth')
+    if (birth) {
+      const parts = birth.split('-')
+      if (parts.length === 3) {
+        setBirthYear(parts[0])
+        setBirthMonth(String(parseInt(parts[1])))
+        setBirthDay(String(parseInt(parts[2])))
+      }
+    }
+    const base = searchParams.get('base')
+    if (base) {
+      setBaseDate(base)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Sync state to URL
+  const updateURL = useCallback((year: string, month: string, day: string, base: string) => {
+    const url = new URL(window.location.href)
+    if (year && month && day) {
+      const m = String(parseInt(month)).padStart(2, '0')
+      const d = String(parseInt(day)).padStart(2, '0')
+      url.searchParams.set('birth', `${year}-${m}-${d}`)
+    } else {
+      url.searchParams.delete('birth')
+    }
+    const today = formatDateInput(new Date())
+    if (base && base !== today) {
+      url.searchParams.set('base', base)
+    } else {
+      url.searchParams.delete('base')
+    }
+    window.history.replaceState({}, '', url)
+  }, [])
+
+  const handleSetBirthYear = useCallback((v: string) => {
+    setBirthYear(v)
+    updateURL(v, birthMonth, birthDay, baseDate)
+  }, [birthMonth, birthDay, baseDate, updateURL])
+
+  const handleSetBirthMonth = useCallback((v: string) => {
+    setBirthMonth(v)
+    updateURL(birthYear, v, birthDay, baseDate)
+  }, [birthYear, birthDay, baseDate, updateURL])
+
+  const handleSetBirthDay = useCallback((v: string) => {
+    setBirthDay(v)
+    updateURL(birthYear, birthMonth, v, baseDate)
+  }, [birthYear, birthMonth, baseDate, updateURL])
+
+  const handleSetBaseDate = useCallback((v: string) => {
+    setBaseDate(v)
+    updateURL(birthYear, birthMonth, birthDay, v)
+  }, [birthYear, birthMonth, birthDay, updateURL])
+
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
       if (navigator.clipboard?.writeText) {
@@ -121,6 +180,10 @@ export default function AgeCalculator() {
       setTimeout(() => setCopiedId(null), 2000)
     }
   }, [])
+
+  const copyLink = useCallback(() => {
+    copyToClipboard(window.location.href, 'link')
+  }, [copyToClipboard])
 
   const result = useMemo(() => {
     const y = parseInt(birthYear)
@@ -229,6 +292,10 @@ export default function AgeCalculator() {
     setBirthDay('')
     setBaseDate(formatDateInput(new Date()))
     setShowTimeline(false)
+    const url = new URL(window.location.href)
+    url.searchParams.delete('birth')
+    url.searchParams.delete('base')
+    window.history.replaceState({}, '', url)
   }, [])
 
   // 연도 선택 옵션 생성
@@ -272,7 +339,7 @@ export default function AgeCalculator() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('year')}</label>
                 <select
                   value={birthYear}
-                  onChange={(e) => setBirthYear(e.target.value)}
+                  onChange={(e) => handleSetBirthYear(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">-- {t('year')} --</option>
@@ -286,7 +353,7 @@ export default function AgeCalculator() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('month')}</label>
                   <select
                     value={birthMonth}
-                    onChange={(e) => setBirthMonth(e.target.value)}
+                    onChange={(e) => handleSetBirthMonth(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">-- {t('month')} --</option>
@@ -299,7 +366,7 @@ export default function AgeCalculator() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('day')}</label>
                   <select
                     value={birthDay}
-                    onChange={(e) => setBirthDay(e.target.value)}
+                    onChange={(e) => handleSetBirthDay(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">-- {t('day')} --</option>
@@ -320,24 +387,33 @@ export default function AgeCalculator() {
               <input
                 type="date"
                 value={baseDate}
-                onChange={(e) => setBaseDate(e.target.value)}
+                onChange={(e) => handleSetBaseDate(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <button
-                onClick={() => setBaseDate(formatDateInput(new Date()))}
+                onClick={() => handleSetBaseDate(formatDateInput(new Date()))}
                 className="mt-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"
               >
                 {t('today')}
               </button>
             </div>
 
-            <button
-              onClick={handleReset}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors text-sm font-medium"
-            >
-              <RotateCcw className="w-4 h-4" />
-              {t('reset')}
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleReset}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors text-sm font-medium"
+              >
+                <RotateCcw className="w-4 h-4" />
+                {t('reset')}
+              </button>
+              <button
+                onClick={copyLink}
+                title="링크 복사"
+                className="flex items-center justify-center gap-1.5 px-3 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors text-sm font-medium"
+              >
+                {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
         </div>
 

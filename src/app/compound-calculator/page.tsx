@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import CompoundCalculator from '@/components/CompoundCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -15,6 +16,40 @@ export const metadata: Metadata = {
 
 export default function CompoundCalculatorPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '복리 계산기', description: '복리 이자 계산, 투자 수익률 시뮬레이션, 단리 vs 복리 비교', url: 'https://toolhub.ai.kr/compound-calculator', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['복리 이자 계산', '월 적립식 투자', '단리 vs 복리 비교', '연도별 성장 그래프'] }
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '복리 계산기 사용 방법',
+    description: '원금, 이율, 기간을 입력해 복리 이자와 투자 수익을 계산하는 방법입니다.',
+    step: [
+      {
+        '@type': 'HowToStep',
+        name: '초기 원금 입력',
+        text: '투자를 시작할 초기 원금(거치 금액)을 입력합니다. 목돈이 없으면 0으로 설정 후 월 적립액만 입력해도 됩니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '연 이율과 기간 설정',
+        text: '예상 연 수익률(%)과 투자 기간(년)을 입력합니다. 보수적인 수익률로 시뮬레이션해 보세요.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '복리 주기 선택',
+        text: '복리가 적용되는 주기(월간/분기/반기/연간)를 선택합니다. 주기가 짧을수록 수익이 커집니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '추가 납입금 설정',
+        text: '매월 추가로 적립할 금액을 입력합니다. 적립식 투자의 장기 복리 효과를 확인할 수 있습니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '최종 금액과 이자 확인',
+        text: '만기 수령 총액, 총 이자, 단리 vs 복리 비교 결과, 연도별 성장 그래프를 확인합니다.',
+      },
+    ],
+  }
+
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -49,6 +84,7 @@ export default function CompoundCalculatorPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}><I18nWrapper><CompoundCalculator />  <div className="mt-8">

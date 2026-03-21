@@ -6,6 +6,8 @@ import { RotateCcw, Trophy, Star, Clock, Zap, Volume2, VolumeX, BookOpen } from 
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Types ──
 type Difficulty = 'easy' | 'normal' | 'hard' | 'expert'
@@ -179,6 +181,9 @@ export default function MemoryGame() {
   const [showNameModal, setShowNameModal] = useState(false)
   const gameStartTimeRef = useRef<number>(Date.now())
 
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
+
   // Load best scores
   useEffect(() => {
     try {
@@ -203,6 +208,15 @@ export default function MemoryGame() {
       if (timerRef.current) clearInterval(timerRef.current)
       setGameState('won')
       if (soundEnabled) playWinSound()
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        recordGameResult({
+          gameType: 'memory',
+          result: 'win',
+          difficulty,
+          moves,
+        })
+      }
       // Save best score
       const stars = calcStars(moves, config.pairs)
       const key = `${difficulty}_${theme}`
@@ -247,6 +261,7 @@ export default function MemoryGame() {
     setLocked(false)
     setGameState('playing')
     gameStartTimeRef.current = Date.now()
+    resultRecordedRef.current = false
   }, [difficulty, theme])
 
   // Flip card
@@ -426,6 +441,13 @@ export default function MemoryGame() {
           </button>
         </div>
 
+        {/* Achievements */}
+        <GameAchievements
+          achievements={achievements}
+          unlockedCount={unlockedCount}
+          totalCount={totalCount}
+        />
+
         {/* Leaderboard */}
         <LeaderboardPanel leaderboard={leaderboard} />
         <NameInputModal
@@ -468,6 +490,10 @@ export default function MemoryGame() {
             </div>
           </div>
         </div>
+        <AchievementToast
+          achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+          onDismiss={dismissNewAchievements}
+        />
       </div>
     )
   }
@@ -557,6 +583,10 @@ export default function MemoryGame() {
             </div>
           </div>
         </div>
+        <AchievementToast
+          achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+          onDismiss={dismissNewAchievements}
+        />
       </div>
     )
   }
@@ -709,6 +739,10 @@ export default function MemoryGame() {
           {t(`theme.${theme}`)}
         </span>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

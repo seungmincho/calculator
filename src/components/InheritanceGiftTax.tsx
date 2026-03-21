@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Calculator, Copy, Check, BookOpen, AlertCircle } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Calculator, Copy, Check, BookOpen, AlertCircle, Link, GitCompare } from 'lucide-react'
 
 // ── 2025년 상속세/증여세 세율 (동일) ──
 const TAX_BRACKETS = [
@@ -24,7 +25,7 @@ function calcTax(taxable: number): { tax: number; rate: number; bracket: number 
   return { tax: 0, rate: 0, bracket: 0 }
 }
 
-type TaxType = 'inheritance' | 'gift'
+type TaxType = 'inheritance' | 'gift' | 'compare'
 
 // 증여 관계
 type GiftRelation = 'spouse' | 'ascendantAdult' | 'ascendantMinor' | 'descendant' | 'otherRelative' | 'nonRelative'
@@ -47,24 +48,45 @@ function parseNumInput(val: string): number {
 
 export default function InheritanceGiftTax() {
   const t = useTranslations('inheritanceGiftTax')
+  const searchParams = useSearchParams()
 
-  const [taxType, setTaxType] = useState<TaxType>('inheritance')
+  const [taxType, setTaxType] = useState<TaxType>(() => {
+    const p = searchParams.get('type')
+    return (p === 'gift' || p === 'compare') ? p : 'inheritance'
+  })
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showGuide, setShowGuide] = useState(false)
 
   // ── 상속세 입력 ──
-  const [totalEstate, setTotalEstate] = useState('') // 총 상속재산
-  const [debts, setDebts] = useState('') // 채무
-  const [hasSpouse, setHasSpouse] = useState(true)
-  const [childCount, setChildCount] = useState('1')
-  const [useItemizedDeduction, setUseItemizedDeduction] = useState(false) // 항목별 vs 일괄
-  const [funeralExpense, setFuneralExpense] = useState('10000000') // 장례비
-  const [financialAssets, setFinancialAssets] = useState('') // 순금융재산
+  const [totalEstate, setTotalEstate] = useState(() => searchParams.get('estate') ?? '') // 총 상속재산
+  const [debts, setDebts] = useState(() => searchParams.get('debts') ?? '') // 채무
+  const [hasSpouse, setHasSpouse] = useState(() => searchParams.get('spouse') !== '0')
+  const [childCount, setChildCount] = useState(() => searchParams.get('children') ?? '1')
+  const [useItemizedDeduction, setUseItemizedDeduction] = useState(() => searchParams.get('itemized') === '1') // 항목별 vs 일괄
+  const [funeralExpense, setFuneralExpense] = useState(() => searchParams.get('funeral') ?? '10000000') // 장례비
+  const [financialAssets, setFinancialAssets] = useState(() => searchParams.get('fin') ?? '') // 순금융재산
 
   // ── 증여세 입력 ──
-  const [giftAmount, setGiftAmount] = useState('')
-  const [giftRelation, setGiftRelation] = useState<GiftRelation>('ascendantAdult')
-  const [isMarriageGift, setIsMarriageGift] = useState(false) // 혼인·출산 추가공제
+  const [giftAmount, setGiftAmount] = useState(() => searchParams.get('gift') ?? '')
+  const [giftRelation, setGiftRelation] = useState<GiftRelation>(() => (searchParams.get('relation') as GiftRelation) ?? 'ascendantAdult')
+  const [isMarriageGift, setIsMarriageGift] = useState(() => searchParams.get('marriage') === '1') // 혼인·출산 추가공제
+
+  // ── URL 동기화 ──
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('type', taxType)
+    if (totalEstate) url.searchParams.set('estate', totalEstate); else url.searchParams.delete('estate')
+    if (debts) url.searchParams.set('debts', debts); else url.searchParams.delete('debts')
+    url.searchParams.set('spouse', hasSpouse ? '1' : '0')
+    url.searchParams.set('children', childCount)
+    url.searchParams.set('itemized', useItemizedDeduction ? '1' : '0')
+    if (funeralExpense !== '10000000') url.searchParams.set('funeral', funeralExpense); else url.searchParams.delete('funeral')
+    if (financialAssets) url.searchParams.set('fin', financialAssets); else url.searchParams.delete('fin')
+    if (giftAmount) url.searchParams.set('gift', giftAmount); else url.searchParams.delete('gift')
+    url.searchParams.set('relation', giftRelation)
+    url.searchParams.set('marriage', isMarriageGift ? '1' : '0')
+    window.history.replaceState({}, '', url)
+  }, [taxType, totalEstate, debts, hasSpouse, childCount, useItemizedDeduction, funeralExpense, financialAssets, giftAmount, giftRelation, isMarriageGift])
 
   // ── 상속세 계산 ──
   const inheritanceResult = useMemo(() => {
@@ -157,6 +179,34 @@ export default function InheritanceGiftTax() {
     }
   }, [giftAmount, giftRelation, isMarriageGift])
 
+  // ── 비교 계산: 같은 금액을 상속/증여 시 세금 비교 ──
+  const compareAmount = parseNumInput(totalEstate) || parseNumInput(giftAmount)
+  const compareResult = useMemo(() => {
+    if (compareAmount <= 0) return null
+    // 상속세 시나리오 (배우자+자녀1, 일괄공제 기본)
+    const funeralDed = Math.min(10_000_000, 15_000_000)
+    const net = compareAmount - funeralDed
+    const generalDed = 500_000_000
+    const spouseDed = 500_000_000
+    const inheritTaxable = Math.max(0, net - generalDed - spouseDed)
+    const { tax: inheritTax } = calcTax(inheritTaxable)
+    // 증여세 시나리오 (직계존속→성인자녀, 비혼인)
+    const giftDed = GIFT_DEDUCTIONS['ascendantAdult']
+    const giftTaxable = Math.max(0, compareAmount - giftDed)
+    const { tax: giftTaxAmt } = calcTax(giftTaxable)
+    return {
+      amount: compareAmount,
+      inheritTax,
+      inheritTaxable,
+      giftTax: giftTaxAmt,
+      giftTaxable,
+      inheritRate: compareAmount > 0 ? (inheritTax / compareAmount) * 100 : 0,
+      giftRate: compareAmount > 0 ? (giftTaxAmt / compareAmount) * 100 : 0,
+      lowerIs: inheritTax <= giftTaxAmt ? 'inheritance' : 'gift',
+      diff: Math.abs(inheritTax - giftTaxAmt),
+    }
+  }, [compareAmount])
+
   const currentResult = taxType === 'inheritance' ? inheritanceResult : giftResult
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
@@ -180,6 +230,10 @@ export default function InheritanceGiftTax() {
       setTimeout(() => setCopiedId(null), 2000)
     }
   }, [])
+
+  const copyLink = useCallback(async () => {
+    await copyToClipboard(window.location.href, 'link')
+  }, [copyToClipboard])
 
   const buildSummary = useCallback(() => {
     if (taxType === 'inheritance' && inheritanceResult) {
@@ -217,23 +271,96 @@ export default function InheritanceGiftTax() {
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
       </div>
 
-      {/* 탭 */}
-      <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+      {/* 탭 + 링크 복사 */}
+      <div className="flex items-center gap-2">
+        <div className="flex flex-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+          <button
+            onClick={() => setTaxType('inheritance')}
+            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'inheritance' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+          >
+            {t('inheritanceTab')}
+          </button>
+          <button
+            onClick={() => setTaxType('gift')}
+            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'gift' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+          >
+            {t('giftTab')}
+          </button>
+          <button
+            onClick={() => setTaxType('compare')}
+            className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors flex items-center justify-center gap-1 ${taxType === 'compare' ? 'bg-white dark:bg-gray-800 text-purple-600 dark:text-purple-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+          >
+            <GitCompare className="w-3.5 h-3.5" />
+            {t('compareTab')}
+          </button>
+        </div>
         <button
-          onClick={() => setTaxType('inheritance')}
-          className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'inheritance' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
+          onClick={copyLink}
+          title={t('copyLink')}
+          className="flex items-center gap-1.5 px-3 py-2.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-lg transition-colors shrink-0"
         >
-          {t('inheritanceTab')}
-        </button>
-        <button
-          onClick={() => setTaxType('gift')}
-          className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-colors ${taxType === 'gift' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow' : 'text-gray-600 dark:text-gray-300'}`}
-        >
-          {t('giftTab')}
+          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span className="hidden sm:inline">{copiedId === 'link' ? t('copied') : t('copyLink')}</span>
         </button>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      {/* 비교 패널 (compare 탭) */}
+      {taxType === 'compare' && (
+        <div className="space-y-4">
+          {compareResult ? (
+            <>
+              <div className="bg-purple-50 dark:bg-purple-950/30 rounded-xl p-4 flex items-center gap-2 text-sm text-purple-700 dark:text-purple-300">
+                <GitCompare className="w-4 h-4 shrink-0" />
+                <span>{t('compareNote')}</span>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {/* 상속세 카드 */}
+                <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-2 ${compareResult.lowerIs === 'inheritance' ? 'border-green-400 dark:border-green-500' : 'border-transparent'}`}>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">{t('inheritanceTab')}</h3>
+                    {compareResult.lowerIs === 'inheritance' && (
+                      <span className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full font-medium">{t('lower')}</span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('compareAssumption.inheritance')}</p>
+                  <div className="mt-4 space-y-2 text-sm">
+                    <Row label={t('taxableAmount')} value={formatWon(compareResult.inheritTaxable)} />
+                    <Row label={t('inheritanceTax')} value={formatWon(compareResult.inheritTax)} highlight />
+                    <Row label={t('effectiveRate')} value={`${compareResult.inheritRate.toFixed(1)}%`} sub />
+                  </div>
+                </div>
+                {/* 증여세 카드 */}
+                <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-2 ${compareResult.lowerIs === 'gift' ? 'border-green-400 dark:border-green-500' : 'border-transparent'}`}>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">{t('giftTab')}</h3>
+                    {compareResult.lowerIs === 'gift' && (
+                      <span className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full font-medium">{t('lower')}</span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('compareAssumption.gift')}</p>
+                  <div className="mt-4 space-y-2 text-sm">
+                    <Row label={t('taxableAmount')} value={formatWon(compareResult.giftTaxable)} />
+                    <Row label={t('giftTax')} value={formatWon(compareResult.giftTax)} highlight />
+                    <Row label={t('effectiveRate')} value={`${compareResult.giftRate.toFixed(1)}%`} sub />
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center text-sm text-gray-700 dark:text-gray-300">
+                {compareResult.lowerIs === 'inheritance'
+                  ? t('compareSummary.inheritanceLower', { diff: formatWon(compareResult.diff) })
+                  : t('compareSummary.giftLower', { diff: formatWon(compareResult.diff) })}
+              </div>
+            </>
+          ) : (
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center text-gray-400 dark:text-gray-500">
+              <GitCompare className="w-12 h-12 mx-auto mb-3 opacity-30" />
+              <p>{t('comparePrompt')}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className={`grid lg:grid-cols-3 gap-6 ${taxType === 'compare' ? 'hidden' : ''}`}>
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-4">
           {taxType === 'inheritance' ? (

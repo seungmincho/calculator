@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { TrendingUp, Calculator, Copy, Check, BookOpen, RotateCcw } from 'lucide-react'
+import { TrendingUp, Calculator, Copy, Check, BookOpen, RotateCcw, Link, GitCompare } from 'lucide-react'
 
 interface YearlyData {
   year: number
@@ -22,19 +23,189 @@ const frequencyValues: Record<CompoundFrequency, number> = {
   daily: 365,
 }
 
+function computeResults(
+  principal: number,
+  annualRate: number,
+  period: number,
+  periodType: PeriodType,
+  compoundFrequency: CompoundFrequency,
+  monthlyDeposit: number
+) {
+  const years = periodType === 'years' ? period : period / 12
+  const r = annualRate / 100
+  const n = frequencyValues[compoundFrequency]
+  const t = years
+
+  if (years <= 0 || annualRate < 0 || principal < 0 || monthlyDeposit < 0) {
+    return {
+      totalAmount: 0,
+      totalInterest: 0,
+      totalDeposited: 0,
+      effectiveRate: 0,
+      yearlyBreakdown: [] as YearlyData[],
+      simpleInterest: 0,
+      compoundAdvantage: 0,
+    }
+  }
+
+  const compoundMultiplier = Math.pow(1 + r / n, n * t)
+  const principalGrowth = principal * compoundMultiplier
+
+  let depositGrowth = 0
+  if (monthlyDeposit > 0 && r > 0) {
+    const ratePerPeriod = r / n
+    depositGrowth = (monthlyDeposit * 12 / n) * ((compoundMultiplier - 1) / ratePerPeriod)
+  } else if (monthlyDeposit > 0) {
+    depositGrowth = monthlyDeposit * 12 * t
+  }
+
+  const totalAmount = principalGrowth + depositGrowth
+  const totalDeposited = principal + monthlyDeposit * 12 * t
+  const totalInterest = totalAmount - totalDeposited
+  const effectiveRate = totalDeposited > 0 ? (totalInterest / totalDeposited) * 100 : 0
+
+  const simpleInterest = principal * r * t + (monthlyDeposit * 12 * t * r * t / 2)
+  const compoundAdvantage = totalInterest - simpleInterest
+
+  const yearlyBreakdown: YearlyData[] = []
+  for (let year = 1; year <= Math.ceil(years); year++) {
+    const yearT = year
+    const yearCompoundMultiplier = Math.pow(1 + r / n, n * yearT)
+    const yearPrincipalGrowth = principal * yearCompoundMultiplier
+
+    let yearDepositGrowth = 0
+    if (monthlyDeposit > 0 && r > 0) {
+      const ratePerPeriod = r / n
+      yearDepositGrowth = (monthlyDeposit * 12 / n) * ((Math.pow(1 + ratePerPeriod, n * yearT) - 1) / ratePerPeriod)
+    } else if (monthlyDeposit > 0) {
+      yearDepositGrowth = monthlyDeposit * 12 * yearT
+    }
+
+    const yearTotalAmount = yearPrincipalGrowth + yearDepositGrowth
+    const yearTotalDeposited = principal + monthlyDeposit * 12 * yearT
+    const yearInterest = yearTotalAmount - yearTotalDeposited
+
+    yearlyBreakdown.push({
+      year,
+      deposit: yearTotalDeposited,
+      interest: Math.max(0, yearInterest),
+      balance: yearTotalAmount,
+    })
+  }
+
+  return { totalAmount, totalInterest, totalDeposited, effectiveRate, yearlyBreakdown, simpleInterest, compoundAdvantage }
+}
+
+// ── Scenario comparison rates ──────────────────────────────────────────────
+interface ScenarioRate {
+  id: number
+  rate: number
+}
+
+const DEFAULT_SCENARIOS: ScenarioRate[] = [
+  { id: 1, rate: 3 },
+  { id: 2, rate: 5 },
+  { id: 3, rate: 7 },
+]
+
+const SCENARIO_COLORS = [
+  { bg: 'bg-blue-500', text: 'text-blue-600 dark:text-blue-400', bar: 'bg-blue-500', light: 'bg-blue-50 dark:bg-blue-950' },
+  { bg: 'bg-emerald-500', text: 'text-emerald-600 dark:text-emerald-400', bar: 'bg-emerald-500', light: 'bg-emerald-50 dark:bg-emerald-950' },
+  { bg: 'bg-violet-500', text: 'text-violet-600 dark:text-violet-400', bar: 'bg-violet-500', light: 'bg-violet-50 dark:bg-violet-950' },
+]
+
+// ── Stacked bar chart helpers ──────────────────────────────────────────────
+function GrowthChart({ yearlyBreakdown, maxBalance }: { yearlyBreakdown: YearlyData[]; maxBalance: number }) {
+  if (yearlyBreakdown.length === 0) return null
+  return (
+    <div className="space-y-2">
+      {/* Legend */}
+      <div className="flex gap-4 text-xs text-gray-500 dark:text-gray-400 mb-3">
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block w-3 h-3 rounded-sm bg-blue-500" />
+          원금+납입
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block w-3 h-3 rounded-sm bg-green-500" />
+          이자
+        </span>
+      </div>
+      {yearlyBreakdown.map((data) => {
+        const totalPct = (data.balance / maxBalance) * 100
+        const depositPct = (data.deposit / data.balance) * 100
+        const interestPct = 100 - depositPct
+        return (
+          <div key={data.year} className="space-y-1">
+            <div className="flex justify-between text-xs">
+              <span className="text-gray-600 dark:text-gray-300 w-10 shrink-0">{data.year}년</span>
+              <span className="font-semibold text-gray-900 dark:text-white">
+                ₩{data.balance.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+              <div className="h-full flex rounded-full overflow-hidden" style={{ width: `${totalPct}%` }}>
+                <div className="h-full bg-blue-500 transition-all duration-300" style={{ width: `${depositPct}%` }} />
+                <div className="h-full bg-green-500 transition-all duration-300" style={{ width: `${interestPct}%` }} />
+              </div>
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 export default function CompoundCalculator() {
   const t = useTranslations('compoundCalculator')
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
-  // Form state
-  const [principal, setPrincipal] = useState<number>(10000000)
-  const [annualRate, setAnnualRate] = useState<number>(5)
-  const [period, setPeriod] = useState<number>(10)
-  const [periodType, setPeriodType] = useState<PeriodType>('years')
-  const [compoundFrequency, setCompoundFrequency] = useState<CompoundFrequency>('yearly')
-  const [monthlyDeposit, setMonthlyDeposit] = useState<number>(0)
+  // ── Init from URL params ─────────────────────────────────────────────────
+  const [principal, setPrincipal] = useState<number>(() => {
+    const v = searchParams.get('p')
+    return v ? Number(v) : 10000000
+  })
+  const [annualRate, setAnnualRate] = useState<number>(() => {
+    const v = searchParams.get('r')
+    return v ? Number(v) : 5
+  })
+  const [period, setPeriod] = useState<number>(() => {
+    const v = searchParams.get('t')
+    return v ? Number(v) : 10
+  })
+  const [periodType, setPeriodType] = useState<PeriodType>(() => {
+    const v = searchParams.get('pt')
+    return v === 'months' ? 'months' : 'years'
+  })
+  const [compoundFrequency, setCompoundFrequency] = useState<CompoundFrequency>(() => {
+    const v = searchParams.get('f')
+    const valid: CompoundFrequency[] = ['yearly', 'semiannually', 'quarterly', 'monthly', 'daily']
+    return valid.includes(v as CompoundFrequency) ? (v as CompoundFrequency) : 'yearly'
+  })
+  const [monthlyDeposit, setMonthlyDeposit] = useState<number>(() => {
+    const v = searchParams.get('md')
+    return v ? Number(v) : 0
+  })
 
-  // Copy to clipboard
+  // ── Scenario comparison state ────────────────────────────────────────────
+  const [showScenarios, setShowScenarios] = useState(false)
+  const [scenarios, setScenarios] = useState<ScenarioRate[]>(DEFAULT_SCENARIOS)
+
+  // ── Sync URL when inputs change ──────────────────────────────────────────
+  useEffect(() => {
+    const params = new URLSearchParams()
+    params.set('p', String(principal))
+    params.set('r', String(annualRate))
+    params.set('t', String(period))
+    params.set('pt', periodType)
+    params.set('f', compoundFrequency)
+    if (monthlyDeposit > 0) params.set('md', String(monthlyDeposit))
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }, [principal, annualRate, period, periodType, compoundFrequency, monthlyDeposit, router, pathname])
+
+  // ── Copy helpers ─────────────────────────────────────────────────────────
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
       if (navigator.clipboard?.writeText) {
@@ -57,7 +228,11 @@ export default function CompoundCalculator() {
     }
   }, [])
 
-  // Reset form
+  const copyLink = useCallback(() => {
+    copyToClipboard(window.location.href, 'link')
+  }, [copyToClipboard])
+
+  // ── Reset ────────────────────────────────────────────────────────────────
   const handleReset = useCallback(() => {
     setPrincipal(10000000)
     setAnnualRate(5)
@@ -65,103 +240,52 @@ export default function CompoundCalculator() {
     setPeriodType('years')
     setCompoundFrequency('yearly')
     setMonthlyDeposit(0)
+    setScenarios(DEFAULT_SCENARIOS)
   }, [])
 
-  // Calculate compound interest
-  const results = useMemo(() => {
-    const years = periodType === 'years' ? period : period / 12
-    const r = annualRate / 100
-    const n = frequencyValues[compoundFrequency]
-    const t = years
+  // ── Main calculation ─────────────────────────────────────────────────────
+  const results = useMemo(
+    () => computeResults(principal, annualRate, period, periodType, compoundFrequency, monthlyDeposit),
+    [principal, annualRate, period, periodType, compoundFrequency, monthlyDeposit]
+  )
 
-    if (years <= 0 || annualRate < 0 || principal < 0 || monthlyDeposit < 0) {
-      return {
-        totalAmount: 0,
-        totalInterest: 0,
-        totalDeposited: 0,
-        effectiveRate: 0,
-        yearlyBreakdown: [],
-        simpleInterest: 0,
-        compoundAdvantage: 0,
-      }
-    }
+  const maxBalance = useMemo(() => Math.max(...results.yearlyBreakdown.map(d => d.balance), 1), [results.yearlyBreakdown])
 
-    // Compound interest formula with regular deposits
-    // A = P(1 + r/n)^(nt) + PMT * [((1 + r/n)^(nt) - 1) / (r/n)]
-    const compoundMultiplier = Math.pow(1 + r / n, n * t)
-    const principalGrowth = principal * compoundMultiplier
+  // ── Scenario calculations ────────────────────────────────────────────────
+  const scenarioResults = useMemo(() =>
+    scenarios.map(s => ({
+      ...s,
+      result: computeResults(principal, s.rate, period, periodType, compoundFrequency, monthlyDeposit),
+    })),
+    [scenarios, principal, period, periodType, compoundFrequency, monthlyDeposit]
+  )
 
-    let depositGrowth = 0
-    if (monthlyDeposit > 0 && r > 0) {
-      // Convert monthly deposits to match compound frequency
-      const depositsPerYear = 12
-      const totalDeposits = monthlyDeposit * depositsPerYear * t
-      // Future value of annuity formula adjusted for compound frequency
-      const ratePerPeriod = r / n
-      const totalPeriods = n * t
-      depositGrowth = (monthlyDeposit * depositsPerYear / n) * ((compoundMultiplier - 1) / ratePerPeriod)
-    } else if (monthlyDeposit > 0) {
-      depositGrowth = monthlyDeposit * 12 * t
-    }
+  const scenarioMax = useMemo(() =>
+    Math.max(...scenarioResults.map(s => s.result.totalAmount), 1),
+    [scenarioResults]
+  )
 
-    const totalAmount = principalGrowth + depositGrowth
-    const totalDeposited = principal + monthlyDeposit * 12 * t
-    const totalInterest = totalAmount - totalDeposited
-    const effectiveRate = totalDeposited > 0 ? (totalInterest / totalDeposited) * 100 : 0
-
-    // Simple interest comparison
-    const simpleInterest = principal * r * t + (monthlyDeposit * 12 * t * r * t / 2)
-    const compoundAdvantage = totalInterest - simpleInterest
-
-    // Yearly breakdown
-    const yearlyBreakdown: YearlyData[] = []
-    for (let year = 1; year <= Math.ceil(years); year++) {
-      const yearT = year
-      const yearCompoundMultiplier = Math.pow(1 + r / n, n * yearT)
-      const yearPrincipalGrowth = principal * yearCompoundMultiplier
-
-      let yearDepositGrowth = 0
-      if (monthlyDeposit > 0 && r > 0) {
-        const ratePerPeriod = r / n
-        const totalPeriodsYear = n * yearT
-        yearDepositGrowth = (monthlyDeposit * 12 / n) * ((Math.pow(1 + ratePerPeriod, totalPeriodsYear) - 1) / ratePerPeriod)
-      } else if (monthlyDeposit > 0) {
-        yearDepositGrowth = monthlyDeposit * 12 * yearT
-      }
-
-      const yearTotalAmount = yearPrincipalGrowth + yearDepositGrowth
-      const yearTotalDeposited = principal + monthlyDeposit * 12 * yearT
-      const yearInterest = yearTotalAmount - yearTotalDeposited
-
-      yearlyBreakdown.push({
-        year,
-        deposit: yearTotalDeposited,
-        interest: yearInterest,
-        balance: yearTotalAmount,
-      })
-    }
-
-    return {
-      totalAmount,
-      totalInterest,
-      totalDeposited,
-      effectiveRate,
-      yearlyBreakdown,
-      simpleInterest,
-      compoundAdvantage,
-    }
-  }, [principal, annualRate, period, periodType, compoundFrequency, monthlyDeposit])
-
-  const maxBalance = useMemo(() => {
-    return Math.max(...results.yearlyBreakdown.map(d => d.balance), 1)
-  }, [results.yearlyBreakdown])
+  const updateScenarioRate = useCallback((id: number, rate: number) => {
+    setScenarios(prev => prev.map(s => s.id === id ? { ...s, rate } : s))
+  }, [])
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        {/* Copy Link button */}
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          title="현재 계산 결과 링크 복사"
+        >
+          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨!' : '링크 복사'}</span>
+        </button>
       </div>
 
       {/* Main Grid */}
@@ -399,37 +523,141 @@ export default function CompoundCalculator() {
             </div>
           </div>
 
-          {/* Growth Visualization */}
+          {/* Growth Chart — stacked bars */}
           {results.yearlyBreakdown.length > 0 && (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 {t('result.growthChart')}
               </h2>
-              <div className="space-y-2">
-                {results.yearlyBreakdown.map((data) => {
-                  const percentage = (data.balance / maxBalance) * 100
-                  return (
-                    <div key={data.year} className="space-y-1">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600 dark:text-gray-300">
-                          {data.year}{t('result.year')}
-                        </span>
-                        <span className="font-semibold text-gray-900 dark:text-white">
-                          ₩{data.balance.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-300"
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+              <GrowthChart yearlyBreakdown={results.yearlyBreakdown} maxBalance={maxBalance} />
             </div>
           )}
+
+          {/* Scenario Comparison */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <GitCompare className="w-5 h-5" />
+                금리 시나리오 비교
+              </h2>
+              <button
+                onClick={() => setShowScenarios(v => !v)}
+                className="text-sm px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+              >
+                {showScenarios ? '접기' : '펼치기'}
+              </button>
+            </div>
+
+            {/* Always-visible summary bars */}
+            <div className="space-y-3">
+              {scenarioResults.map((s, idx) => {
+                const color = SCENARIO_COLORS[idx % SCENARIO_COLORS.length]
+                const pct = (s.result.totalAmount / scenarioMax) * 100
+                const depositPct = s.result.totalAmount > 0
+                  ? (s.result.totalDeposited / s.result.totalAmount) * 100
+                  : 100
+                return (
+                  <div key={s.id} className="space-y-1">
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className={`inline-block w-3 h-3 rounded-sm ${color.bg}`} />
+                        <span className="text-gray-700 dark:text-gray-300 font-medium">{s.rate}%</span>
+                      </div>
+                      <span className={`font-bold ${color.text}`}>
+                        ₩{s.result.totalAmount.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-5 overflow-hidden">
+                      <div className="h-full flex rounded-full overflow-hidden" style={{ width: `${pct}%` }}>
+                        <div className="h-full bg-blue-200 dark:bg-blue-900 transition-all duration-300" style={{ width: `${depositPct}%` }} />
+                        <div className={`h-full ${color.bar} transition-all duration-300`} style={{ width: `${100 - depositPct}%` }} />
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Expandable rate editors + detail table */}
+            {showScenarios && (
+              <div className="mt-6 space-y-4">
+                {/* Rate inputs */}
+                <div className="grid grid-cols-3 gap-3">
+                  {scenarios.map((s, idx) => {
+                    const color = SCENARIO_COLORS[idx % SCENARIO_COLORS.length]
+                    return (
+                      <div key={s.id} className={`${color.light} rounded-lg p-3`}>
+                        <label className="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">
+                          시나리오 {s.id} 금리
+                        </label>
+                        <div className="flex items-center gap-1">
+                          <input
+                            type="number"
+                            value={s.rate}
+                            onChange={e => updateScenarioRate(s.id, Number(e.target.value))}
+                            className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                            min="0"
+                            step="0.5"
+                          />
+                          <span className={`text-sm font-medium ${color.text}`}>%</span>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+
+                {/* Detail comparison table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="border-b border-gray-200 dark:border-gray-700">
+                      <tr className="text-gray-600 dark:text-gray-300">
+                        <th className="text-left py-2 px-2">항목</th>
+                        {scenarioResults.map((s, idx) => (
+                          <th key={s.id} className={`text-right py-2 px-2 ${SCENARIO_COLORS[idx % SCENARIO_COLORS.length].text}`}>
+                            {s.rate}%
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                      <tr>
+                        <td className="py-2 px-2 text-gray-600 dark:text-gray-300">최종 금액</td>
+                        {scenarioResults.map(s => (
+                          <td key={s.id} className="text-right py-2 px-2 font-semibold text-gray-900 dark:text-white">
+                            ₩{s.result.totalAmount.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td className="py-2 px-2 text-gray-600 dark:text-gray-300">총 이자</td>
+                        {scenarioResults.map((s, idx) => (
+                          <td key={s.id} className={`text-right py-2 px-2 font-medium ${SCENARIO_COLORS[idx % SCENARIO_COLORS.length].text}`}>
+                            ₩{s.result.totalInterest.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td className="py-2 px-2 text-gray-600 dark:text-gray-300">실질 수익률</td>
+                        {scenarioResults.map(s => (
+                          <td key={s.id} className="text-right py-2 px-2 text-gray-900 dark:text-white">
+                            {s.result.effectiveRate.toFixed(2)}%
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td className="py-2 px-2 text-gray-600 dark:text-gray-300">복리 우위</td>
+                        {scenarioResults.map(s => (
+                          <td key={s.id} className="text-right py-2 px-2 text-green-600 dark:text-green-400">
+                            +₩{s.result.compoundAdvantage.toLocaleString('ko-KR', { maximumFractionDigits: 0 })}
+                          </td>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Yearly Breakdown Table */}
           {results.yearlyBreakdown.length > 0 && (

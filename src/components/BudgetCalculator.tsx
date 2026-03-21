@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import { useSearchParams } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import {
   Check,
@@ -15,6 +16,7 @@ import {
   Wallet,
   PiggyBank,
   RotateCcw,
+  Link,
 } from 'lucide-react'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
@@ -108,23 +110,44 @@ function parseWonInput(value: string): number {
 
 export default function BudgetCalculator() {
   const t = useTranslations('budgetCalculator')
+  const searchParams = useSearchParams()
 
   // ── State ──
-  const [income, setIncome] = useState<IncomeData>({
-    salary: 3000000,
-    sideIncome: 0,
-    otherIncome: 0,
+  const [income, setIncome] = useState<IncomeData>(() => {
+    const s = searchParams.get('salary')
+    const si = searchParams.get('sideIncome')
+    const oi = searchParams.get('otherIncome')
+    return {
+      salary: s ? parseInt(s, 10) : 3000000,
+      sideIncome: si ? parseInt(si, 10) : 0,
+      otherIncome: oi ? parseInt(oi, 10) : 0,
+    }
   })
 
-  const [expenses, setExpenses] = useState<ExpenseCategory[]>(
-    DEFAULT_EXPENSES.map((e) => ({ ...e }))
-  )
+  const [expenses, setExpenses] = useState<ExpenseCategory[]>(() => {
+    return DEFAULT_EXPENSES.map((e) => {
+      const paramVal = searchParams.get(`exp_${e.id}`)
+      return { ...e, amount: paramVal ? parseInt(paramVal, 10) : 0 }
+    })
+  })
 
   const [presets, setPresets] = useState<BudgetPreset[]>([])
   const [presetName, setPresetName] = useState('')
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showGuide, setShowGuide] = useState(false)
   const [isDark, setIsDark] = useState(false)
+
+  // ── URL sync ──
+  const updateURL = useCallback((newIncome: IncomeData, newExpenses: ExpenseCategory[]) => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('salary', String(newIncome.salary))
+    url.searchParams.set('sideIncome', String(newIncome.sideIncome))
+    url.searchParams.set('otherIncome', String(newIncome.otherIncome))
+    newExpenses.forEach((e) => {
+      url.searchParams.set(`exp_${e.id}`, String(e.amount))
+    })
+    window.history.replaceState({}, '', url)
+  }, [])
 
   useEffect(() => {
     const check = () => setIsDark(document.documentElement.classList.contains('dark'))
@@ -261,25 +284,36 @@ export default function BudgetCalculator() {
   // ── Handlers ──
 
   const handleIncomeChange = useCallback((field: keyof IncomeData, value: string) => {
-    setIncome((prev) => ({ ...prev, [field]: parseWonInput(value) }))
-  }, [])
+    setIncome((prev) => {
+      const next = { ...prev, [field]: parseWonInput(value) }
+      setExpenses((prevExp) => { updateURL(next, prevExp); return prevExp })
+      return next
+    })
+  }, [updateURL])
 
   const handleExpenseChange = useCallback((id: string, value: string) => {
-    setExpenses((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, amount: parseWonInput(value) } : e))
-    )
-  }, [])
+    setExpenses((prev) => {
+      const next = prev.map((e) => (e.id === id ? { ...e, amount: parseWonInput(value) } : e))
+      setIncome((prevInc) => { updateURL(prevInc, next); return prevInc })
+      return next
+    })
+  }, [updateURL])
 
   const handleExpenseSlider = useCallback((id: string, value: number) => {
-    setExpenses((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, amount: value } : e))
-    )
-  }, [])
+    setExpenses((prev) => {
+      const next = prev.map((e) => (e.id === id ? { ...e, amount: value } : e))
+      setIncome((prevInc) => { updateURL(prevInc, next); return prevInc })
+      return next
+    })
+  }, [updateURL])
 
   const handleReset = useCallback(() => {
-    setIncome({ salary: 3000000, sideIncome: 0, otherIncome: 0 })
-    setExpenses(DEFAULT_EXPENSES.map((e) => ({ ...e })))
-  }, [])
+    const resetIncome = { salary: 3000000, sideIncome: 0, otherIncome: 0 }
+    const resetExpenses = DEFAULT_EXPENSES.map((e) => ({ ...e }))
+    setIncome(resetIncome)
+    setExpenses(resetExpenses)
+    updateURL(resetIncome, resetExpenses)
+  }, [updateURL])
 
   const handleSavePreset = useCallback(() => {
     const name = presetName.trim() || t('preset.defaultName')
@@ -301,9 +335,12 @@ export default function BudgetCalculator() {
   }, [income, expenses, presets, presetName, t])
 
   const handleLoadPreset = useCallback((preset: BudgetPreset) => {
-    setIncome({ ...preset.income })
-    setExpenses(preset.expenses.map((e) => ({ ...e })))
-  }, [])
+    const newIncome = { ...preset.income }
+    const newExpenses = preset.expenses.map((e) => ({ ...e }))
+    setIncome(newIncome)
+    setExpenses(newExpenses)
+    updateURL(newIncome, newExpenses)
+  }, [updateURL])
 
   const handleDeletePreset = useCallback((id: string) => {
     const updated = presets.filter((p) => p.id !== id)
@@ -339,6 +376,10 @@ export default function BudgetCalculator() {
     },
     []
   )
+
+  const handleCopyLink = useCallback(() => {
+    copyToClipboard(window.location.href, 'link')
+  }, [copyToClipboard])
 
   const handleShareSummary = useCallback(() => {
     const lines: string[] = [
@@ -451,6 +492,17 @@ export default function BudgetCalculator() {
                   <Share2 className="w-4 h-4" />
                 )}
                 {copiedId === 'share' ? t('actions.copied') : t('actions.share')}
+              </button>
+              <button
+                onClick={handleCopyLink}
+                className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+              >
+                {copiedId === 'link' ? (
+                  <Check className="w-4 h-4 text-green-500" />
+                ) : (
+                  <Link className="w-4 h-4" />
+                )}
+                {copiedId === 'link' ? t('actions.copied') : '링크 복사'}
               </button>
             </div>
 

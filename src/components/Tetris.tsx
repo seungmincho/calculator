@@ -4,8 +4,10 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Trophy, RotateCcw, Pause, Play, Gamepad2 } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type TetrominoType = 'I' | 'O' | 'T' | 'S' | 'Z' | 'J' | 'L'
@@ -244,6 +246,8 @@ export default function Tetris() {
   const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null)
 
   const leaderboard = useLeaderboard('tetris', undefined)
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
   const [showNameModal, setShowNameModal] = useState(false)
   const gameStartTimeRef = useRef<number>(Date.now())
 
@@ -474,6 +478,7 @@ export default function Tetris() {
     setGameState('playing')
     lastDropRef.current = performance.now()
     softDropRef.current = false
+    resultRecordedRef.current = false
     gameStartTimeRef.current = Date.now()
 
     if (rafRef.current) cancelAnimationFrame(rafRef.current)
@@ -612,9 +617,19 @@ export default function Tetris() {
     }
   }, [])
 
-  // Leaderboard: detect game over
+  // Leaderboard & achievements: detect game over
   useEffect(() => {
     if (gameState === 'gameover') {
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        const clearedLines = linesRef.current
+        recordGameResult({
+          gameType: 'tetris',
+          result: clearedLines >= 10 ? 'win' : 'loss',
+          difficulty: 'normal',
+          moves: clearedLines,
+        })
+      }
       if (leaderboard.checkQualifies(score)) {
         setShowNameModal(true)
       }
@@ -1014,6 +1029,17 @@ export default function Tetris() {
           </div>
         </div>
       </div>
+
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

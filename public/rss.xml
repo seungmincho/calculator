@@ -3,9 +3,9 @@
   <channel>
     <title>툴허브 - 무료 온라인 도구 모음</title>
     <link>https://toolhub.ai.kr</link>
-    <description>계산기, 개발도구, 미디어 도구, 건강 도구, 게임 등 220+ 무료 온라인 도구를 제공합니다.</description>
+    <description>계산기, 개발도구, 미디어 도구, 건강 도구, 게임 등 223+ 무료 온라인 도구를 제공합니다.</description>
     <language>ko</language>
-    <lastBuildDate>Sat, 21 Mar 2026 02:25:53 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 21 Mar 2026 04:45:38 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://toolhub.ai.kr/android-chrome-192x192.png</url>
@@ -1117,10 +1117,34 @@
       <guid>https://toolhub.ai.kr/mbti-compatibility/</guid>
     </item>
     <item>
-      <title><![CDATA[게임 센터]]></title>
-      <link>https://toolhub.ai.kr/games/</link>
-      <description><![CDATA[다양한 1:1 대전 게임 모음]]></description>
-      <guid>https://toolhub.ai.kr/games/</guid>
+      <title><![CDATA[이름 궁합 테스트]]></title>
+      <link>https://toolhub.ai.kr/name-compatibility/</link>
+      <description><![CDATA[ㅇ/ㅎ 획수 궁합 테스트, 애니메이션 결과, 카카오톡 공유]]></description>
+      <guid>https://toolhub.ai.kr/name-compatibility/</guid>
+    </item>
+    <item>
+      <title><![CDATA[퍼스널컬러 자가진단]]></title>
+      <link>https://toolhub.ai.kr/personal-color/</link>
+      <description><![CDATA[12문항으로 봄웜/여름쿨/가을웜/겨울쿨 진단, 컬러 팔레트 제공]]></description>
+      <guid>https://toolhub.ai.kr/personal-color/</guid>
+    </item>
+    <item>
+      <title><![CDATA[배란일 계산기]]></title>
+      <link>https://toolhub.ai.kr/ovulation-calculator/</link>
+      <description><![CDATA[생리주기 기반 배란일·가임기 예측, 3개월 달력, 출산예정일 연계]]></description>
+      <guid>https://toolhub.ai.kr/ovulation-calculator/</guid>
+    </item>
+    <item>
+      <title><![CDATA[수능 등급컷 계산기]]></title>
+      <link>https://toolhub.ai.kr/csat-grade/</link>
+      <description><![CDATA[2026 수능 과목별 원점수→등급 변환, 백분위·표준점수 분석]]></description>
+      <guid>https://toolhub.ai.kr/csat-grade/</guid>
+    </item>
+    <item>
+      <title><![CDATA[에니어그램 테스트]]></title>
+      <link>https://toolhub.ai.kr/enneagram/</link>
+      <description><![CDATA[36문항으로 9가지 성격 유형 분석, 레이더 차트, MBTI 연계]]></description>
+      <guid>https://toolhub.ai.kr/enneagram/</guid>
     </item>
     <item>
       <title><![CDATA[온라인 오목]]></title>

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Calculator, Info, ChevronDown, ChevronUp } from 'lucide-react'
+import { Calculator, Info, ChevronDown, ChevronUp, Link, Check } from 'lucide-react'
 
 interface PensionResult {
   monthlyPension: number
@@ -111,6 +112,8 @@ function calculatePension(
 
 export default function PensionCalculator() {
   const t = useTranslations('pensionCalculator')
+  const searchParams = useSearchParams()
+  const [copiedId, setCopiedId] = useState<string | null>(null)
 
   const [currentAge, setCurrentAge] = useState(30)
   const [monthlyIncome, setMonthlyIncome] = useState(300)
@@ -123,6 +126,39 @@ export default function PensionCalculator() {
     contribution: false,
     tips: false,
   })
+
+  // URL param sync - read on mount
+  useEffect(() => {
+    const age = searchParams.get('age')
+    const income = searchParams.get('income')
+    const start = searchParams.get('start')
+    const retire = searchParams.get('retire')
+    if (age) setCurrentAge(Number(age))
+    if (income) setMonthlyIncome(Number(income))
+    if (start) setStartAge(Number(start))
+    if (retire) setRetirementAge(Number(retire))
+  }, [])
+
+  // URL param sync - write on change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams()
+    params.set('age', String(currentAge))
+    params.set('income', String(monthlyIncome))
+    params.set('start', String(startAge))
+    params.set('retire', String(retirementAge))
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+  }, [currentAge, monthlyIncome, startAge, retirementAge])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch {
+      // fallback
+    }
+    setCopiedId('link')
+    setTimeout(() => setCopiedId(null), 2000)
+  }, [])
 
   const toggleSection = useCallback((key: string) => {
     setOpenSections(prev => ({ ...prev, [key]: !prev[key] }))
@@ -170,14 +206,24 @@ export default function PensionCalculator() {
   return (
     <div className="space-y-8">
       {/* 헤더 */}
-      <div className="flex items-start gap-3">
-        <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg mt-0.5">
-          <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3">
+          <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg mt-0.5">
+            <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
-        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          title="링크 복사"
+        >
+          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+        </button>
       </div>
 
       {/* 메인 그리드: 설정(1/3) + 결과(2/3) */}

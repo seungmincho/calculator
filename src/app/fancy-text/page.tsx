@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import FancyText from '@/components/FancyText'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -120,6 +121,7 @@ export default function FancyTextPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center text-gray-500 py-20">Loading...</div>}>
             <I18nWrapper>
+        <Breadcrumb />
               <FancyText />
               <div className="mt-8">
 

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Info, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react'
+import { Info, RotateCcw, ChevronDown, ChevronUp, Link, Check } from 'lucide-react'
 
 // ── Scoring tables ──────────────────────────────────────────────
 
@@ -196,6 +197,8 @@ type InputMode = 'date' | 'direct'
 
 export default function HousingSubscription() {
   const t = useTranslations('housingSubscription')
+  const searchParams = useSearchParams()
+  const [copiedId, setCopiedId] = useState<string | null>(null)
 
   const today = new Date()
   const todayStr = today.toISOString().split('T')[0]
@@ -217,6 +220,37 @@ export default function HousingSubscription() {
 
   // ── Guide accordion ──────────────────────────────────────────
   const [guideOpen, setGuideOpen] = useState(false)
+
+  // URL param sync - read on mount
+  useEffect(() => {
+    const dep = searchParams.get('dependents')
+    const married = searchParams.get('married')
+    const hYears = searchParams.get('homelessYears')
+    const subMonths = searchParams.get('subMonths')
+    if (dep) setDependentCount(Number(dep))
+    if (married === 'true') setIsMarried(true)
+    if (hYears) { setHomelessMode('direct'); setHomelessYearsDirect(hYears) }
+    if (subMonths) { setSubMode('direct'); setSubMonthsDirect(subMonths) }
+  }, [])
+
+  // URL param sync - write on change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams()
+    params.set('dependents', String(dependentCount))
+    if (isMarried) params.set('married', 'true')
+    if (homelessMode === 'direct' && homelessYearsDirect) params.set('homelessYears', homelessYearsDirect)
+    if (subMode === 'direct' && subMonthsDirect) params.set('subMonths', subMonthsDirect)
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+  }, [dependentCount, isMarried, homelessMode, homelessYearsDirect, subMode, subMonthsDirect])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch { /* */ }
+    setCopiedId('link')
+    setTimeout(() => setCopiedId(null), 2000)
+  }, [])
 
   // ── Derived calculations ─────────────────────────────────────
   const { homelessYears } = useMemo(() => {
@@ -290,14 +324,24 @@ export default function HousingSubscription() {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
         </div>
-        <button
-          onClick={reset}
-          className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
-          aria-label={t('reset')}
-        >
-          <RotateCcw size={14} />
-          {t('reset')}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={copyLink}
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            title="링크 복사"
+          >
+            {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+            <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+          </button>
+          <button
+            onClick={reset}
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            aria-label={t('reset')}
+          >
+            <RotateCcw size={14} />
+            {t('reset')}
+          </button>
+        </div>
       </div>
 
       {/* Main grid */}

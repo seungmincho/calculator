@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import JsonXmlConverter from '@/components/JsonXmlConverter'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -73,6 +74,7 @@ export default function JsonXmlConverterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
+        <Breadcrumb />
         <JsonXmlConverter />
         <div className="mt-8">
 

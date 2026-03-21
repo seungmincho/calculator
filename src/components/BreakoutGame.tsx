@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Trophy, RotateCcw, Pause, Play, Gamepad2, Volume2, VolumeX } from 'lucide-react'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type GameState = 'idle' | 'playing' | 'paused' | 'gameover' | 'levelclear'
@@ -206,6 +208,9 @@ export default function BreakoutGame() {
   const [highScore, setHighScore] = useState(0)
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [showGuide, setShowGuide] = useState(false)
+
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
 
   // ── Refs for game loop (no re-renders during gameplay) ──
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -519,6 +524,7 @@ export default function BreakoutGame() {
     initLevel(1)
     setGameState('playing')
     lastTimeRef.current = 0
+    resultRecordedRef.current = false
   }, [initLevel, updateCanvasSize])
 
   // ── Next Level ──
@@ -831,6 +837,15 @@ export default function BreakoutGame() {
           if (livesRef.current <= 0) {
             playGameOver()
             setGameState('gameover')
+            if (!resultRecordedRef.current) {
+              resultRecordedRef.current = true
+              recordGameResult({
+                gameType: 'breakout',
+                result: 'loss',
+                difficulty: 'normal',
+                moves: scoreRef.current,
+              })
+            }
             return
           }
 
@@ -925,6 +940,15 @@ export default function BreakoutGame() {
         if (activeBricks.length === 0) {
           playLevelClear()
           setGameState('levelclear')
+          if (!resultRecordedRef.current) {
+            resultRecordedRef.current = true
+            recordGameResult({
+              gameType: 'breakout',
+              result: 'win',
+              difficulty: 'normal',
+              moves: scoreRef.current,
+            })
+          }
           return
         }
       }
@@ -1314,6 +1338,13 @@ export default function BreakoutGame() {
             </div>
           </div>
 
+          {/* Achievements */}
+          <GameAchievements
+            achievements={achievements}
+            unlockedCount={unlockedCount}
+            totalCount={totalCount}
+          />
+
           {/* Controls Guide */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
             <button
@@ -1342,6 +1373,10 @@ export default function BreakoutGame() {
           </div>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

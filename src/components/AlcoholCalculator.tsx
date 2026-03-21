@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Wine, Plus, Trash2, AlertTriangle, Clock, BookOpen, Calculator } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Wine, Plus, Trash2, AlertTriangle, Clock, BookOpen, Calculator, Link, Check } from 'lucide-react'
 
 interface Drink {
   id: string
@@ -30,13 +31,46 @@ const QUICK_ADD_PRESETS = [
 
 export default function AlcoholCalculator() {
   const t = useTranslations('alcoholCalculator')
+  const searchParams = useSearchParams()
 
-  const [gender, setGender] = useState<'male' | 'female'>('male')
-  const [weight, setWeight] = useState<number>(70)
+  const [gender, setGender] = useState<'male' | 'female'>(() => {
+    const g = searchParams.get('gender')
+    return g === 'female' ? 'female' : 'male'
+  })
+  const [weight, setWeight] = useState<number>(() => {
+    const w = parseFloat(searchParams.get('weight') ?? '')
+    return isNaN(w) || w <= 0 ? 70 : w
+  })
   const [drinks, setDrinks] = useState<Drink[]>([])
-  const [drinkingDuration, setDrinkingDuration] = useState<number>(2)
-  const [timeSinceDrinking, setTimeSinceDrinking] = useState<number>(0)
+  const [drinkingDuration, setDrinkingDuration] = useState<number>(() => {
+    const d = parseFloat(searchParams.get('duration') ?? '')
+    return isNaN(d) || d < 0 ? 2 : d
+  })
+  const [timeSinceDrinking, setTimeSinceDrinking] = useState<number>(() => {
+    const ts = parseFloat(searchParams.get('timeSince') ?? '')
+    return isNaN(ts) || ts < 0 ? 0 : ts
+  })
   const [showResult, setShowResult] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(false)
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('gender', gender)
+    url.searchParams.set('weight', String(weight))
+    url.searchParams.set('duration', String(drinkingDuration))
+    url.searchParams.set('timeSince', String(timeSinceDrinking))
+    window.history.replaceState({}, '', url)
+  }, [gender, weight, drinkingDuration, timeSinceDrinking])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch {
+      // ignore
+    }
+    setLinkCopied(true)
+    setTimeout(() => setLinkCopied(false), 2000)
+  }, [])
 
   const addDrink = useCallback((type: Drink['type'], customAmount?: number) => {
     const preset = DRINK_PRESETS[type]
@@ -139,9 +173,18 @@ export default function AlcoholCalculator() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+        >
+          {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          {linkCopied ? '복사됨' : '링크 복사'}
+        </button>
       </div>
 
       {/* Main Grid */}

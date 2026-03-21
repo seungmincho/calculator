@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { useTranslations } from 'next-intl'
-import { Copy, Check, BookOpen, AlertTriangle, Info } from 'lucide-react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { Copy, Check, BookOpen, AlertTriangle, Info, Link } from 'lucide-react'
 import dynamic from 'next/dynamic'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
@@ -23,19 +24,59 @@ interface CalcResult {
   holidayRatio: number
 }
 
-export default function WeeklyHolidayPay() {
-  const t = useTranslations('weeklyHolidayPay')
+// Scenario comparison row for a given weekly total hours
+function calcScenario(hourlyWage: number, totalWeeklyHours: number, weeksPerMonth: number) {
+  const eligible = totalWeeklyHours >= 15
+  const holidayHours = eligible ? Math.min((totalWeeklyHours / 40) * 8, 8) : 0
+  const weeklyBase = hourlyWage * totalWeeklyHours
+  const holidayPay = eligible ? hourlyWage * holidayHours : 0
+  const weeklyTotal = weeklyBase + holidayPay
+  const monthlyTotal = weeklyTotal * weeksPerMonth
+  return { weeklyBase, holidayPay, weeklyTotal, monthlyTotal, eligible, holidayHours }
+}
 
-  const [hourlyWage, setHourlyWage] = useState(10030)
-  const [workDays, setWorkDays] = useState(5)
-  const [dailyHours, setDailyHours] = useState(8)
-  const [weeksPerMonth, setWeeksPerMonth] = useState(4.345)
+const SCENARIO_HOURS = [15, 20, 30, 40]
+
+function WeeklyHolidayPayInner() {
+  const t = useTranslations('weeklyHolidayPay')
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  // Parse initial state from URL params
+  const [hourlyWage, setHourlyWage] = useState(() => {
+    const v = searchParams.get('wage')
+    return v ? Number(v) : 10030
+  })
+  const [workDays, setWorkDays] = useState(() => {
+    const v = searchParams.get('days')
+    return v ? Number(v) : 5
+  })
+  const [dailyHours, setDailyHours] = useState(() => {
+    const v = searchParams.get('hours')
+    return v ? Number(v) : 8
+  })
+  const [weeksPerMonth, setWeeksPerMonth] = useState(() => {
+    const v = searchParams.get('weeks')
+    return v ? Number(v) : 4.345
+  })
+
   const [copied, setCopied] = useState(false)
+  const [copiedLink, setCopiedLink] = useState(false)
+
+  // Sync state to URL whenever inputs change
+  useEffect(() => {
+    const params = new URLSearchParams()
+    params.set('wage', String(hourlyWage))
+    params.set('days', String(workDays))
+    params.set('hours', String(dailyHours))
+    params.set('weeks', String(weeksPerMonth))
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }, [hourlyWage, workDays, dailyHours, weeksPerMonth, router, pathname])
 
   const result = useMemo<CalcResult>(() => {
     const weeklyHours = workDays * dailyHours
     const eligible = weeklyHours >= 15
-    // 주휴시간 = (주간 총 근로시간 / 40) × 8, 최대 8시간
     const holidayHours = eligible ? Math.min((weeklyHours / 40) * 8, 8) : 0
     const weeklyBase = hourlyWage * dailyHours * workDays
     const holidayPay = eligible ? hourlyWage * holidayHours : 0
@@ -60,6 +101,15 @@ export default function WeeklyHolidayPay() {
       holidayRatio,
     }
   }, [hourlyWage, workDays, dailyHours, weeksPerMonth])
+
+  // Scenario comparison data
+  const scenarios = useMemo(() =>
+    SCENARIO_HOURS.map(h => ({
+      hours: h,
+      ...calcScenario(hourlyWage, h, weeksPerMonth),
+    })),
+    [hourlyWage, weeksPerMonth]
+  )
 
   const chartOption = useMemo(() => {
     if (!result.eligible || result.weeklyTotal === 0) return {}
@@ -133,12 +183,44 @@ export default function WeeklyHolidayPay() {
     setTimeout(() => setCopied(false), 2000)
   }, [hourlyWage, workDays, dailyHours, weeksPerMonth, result, t])
 
+  const copyLink = useCallback(async () => {
+    const url = window.location.href
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url)
+      } else {
+        const ta = document.createElement('textarea')
+        ta.value = url
+        ta.style.position = 'fixed'
+        ta.style.left = '-999999px'
+        document.body.appendChild(ta)
+        ta.select()
+        document.execCommand('copy')
+        document.body.removeChild(ta)
+      }
+    } catch {
+      // ignore
+    }
+    setCopiedLink(true)
+    setTimeout(() => setCopiedLink(false), 2000)
+  }, [])
+
   return (
     <div className="space-y-8">
       {/* 헤더 */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 text-sm px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex-shrink-0"
+          aria-label={t('copyLink')}
+        >
+          {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span>{copiedLink ? t('linkCopied') : t('copyLink')}</span>
+        </button>
       </div>
 
       {/* 메인 그리드 */}
@@ -320,6 +402,53 @@ export default function WeeklyHolidayPay() {
                   </div>
                 </div>
               </div>
+
+              {/* 월 급여 구성 시각화 (스택 바) */}
+              {result.monthlyTotal > 0 && (
+                <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                  <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">{t('result.monthlyBarTitle')}</p>
+                  <div className="space-y-2">
+                    <div className="flex h-7 rounded-lg overflow-hidden w-full">
+                      <div
+                        className="bg-blue-500 flex items-center justify-center transition-all duration-300"
+                        style={{ width: `${result.baseRatio}%` }}
+                        title={`${t('result.monthlyBase')}: ${formatWon(result.monthlyBase)}`}
+                      >
+                        {result.baseRatio > 20 && (
+                          <span className="text-white text-xs font-semibold px-1 truncate">
+                            {result.baseRatio.toFixed(0)}%
+                          </span>
+                        )}
+                      </div>
+                      {result.eligible && result.holidayRatio > 0 && (
+                        <div
+                          className="bg-emerald-500 flex items-center justify-center transition-all duration-300"
+                          style={{ width: `${result.holidayRatio}%` }}
+                          title={`${t('result.holidayPay')}: ${formatWon(result.holidayPay)}`}
+                        >
+                          {result.holidayRatio > 10 && (
+                            <span className="text-white text-xs font-semibold px-1 truncate">
+                              {result.holidayRatio.toFixed(0)}%
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                      <span className="flex items-center gap-1.5">
+                        <span className="inline-block w-3 h-3 rounded-sm bg-blue-500"></span>
+                        {t('result.monthlyBase')} {formatWon(result.monthlyBase)}
+                      </span>
+                      {result.eligible && (
+                        <span className="flex items-center gap-1.5">
+                          <span className="inline-block w-3 h-3 rounded-sm bg-emerald-500"></span>
+                          {t('result.holidayPay')} {formatWon(result.monthlyTotal - result.monthlyBase)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -335,6 +464,65 @@ export default function WeeklyHolidayPay() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* 시나리오 비교 테이블 */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">{t('scenario.title')}</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('scenario.description')}</p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-200 dark:border-gray-700">
+                <th className="text-left py-2 pr-4 font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">{t('scenario.colHours')}</th>
+                <th className="text-right py-2 px-3 font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">{t('scenario.colEligible')}</th>
+                <th className="text-right py-2 px-3 font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">{t('scenario.colWeeklyBase')}</th>
+                <th className="text-right py-2 px-3 font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">{t('scenario.colHolidayPay')}</th>
+                <th className="text-right py-2 pl-3 font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">{t('scenario.colMonthlyTotal')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {scenarios.map((s) => {
+                const isCurrent = result.weeklyHours === s.hours
+                return (
+                  <tr
+                    key={s.hours}
+                    className={`border-b border-gray-100 dark:border-gray-700/50 transition-colors ${
+                      isCurrent
+                        ? 'bg-blue-50 dark:bg-blue-900/20'
+                        : 'hover:bg-gray-50 dark:hover:bg-gray-700/30'
+                    }`}
+                  >
+                    <td className="py-3 pr-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                      {s.hours}{t('input.hoursUnit')}
+                      {isCurrent && (
+                        <span className="ml-2 text-xs bg-blue-600 text-white rounded px-1.5 py-0.5">{t('scenario.current')}</span>
+                      )}
+                    </td>
+                    <td className="py-3 px-3 text-right">
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                        s.eligible
+                          ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
+                          : 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400'
+                      }`}>
+                        {s.eligible ? t('eligible') : t('notEligible')}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3 text-right text-blue-600 dark:text-blue-400 font-medium">{formatWon(s.weeklyBase)}</td>
+                    <td className="py-3 px-3 text-right font-medium">
+                      {s.eligible
+                        ? <span className="text-emerald-600 dark:text-emerald-400">{formatWon(s.holidayPay)}</span>
+                        : <span className="text-gray-400 dark:text-gray-500">-</span>
+                      }
+                    </td>
+                    <td className="py-3 pl-3 text-right font-bold text-gray-900 dark:text-white">{formatWon(s.monthlyTotal)}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">{t('scenario.footnote')}</p>
       </div>
 
       {/* 15시간 룰 안내 */}
@@ -384,5 +572,13 @@ export default function WeeklyHolidayPay() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function WeeklyHolidayPay() {
+  return (
+    <Suspense fallback={<div className="text-center py-12 text-gray-500 dark:text-gray-400">Loading...</div>}>
+      <WeeklyHolidayPayInner />
+    </Suspense>
   )
 }

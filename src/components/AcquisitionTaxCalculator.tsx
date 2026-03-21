@@ -24,9 +24,10 @@
 // guide.educationTax.title, guide.educationTax.items (string[])
 // guide.tips.title, guide.tips.items (string[])
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Calculator, Building, Info, BookOpen, Copy, Check } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Calculator, Building, Info, BookOpen, Copy, Check, Link } from 'lucide-react'
 
 // ── 유틸 ──
 
@@ -174,15 +175,44 @@ function toEokMan(value: number): string {
 
 export default function AcquisitionTaxCalculator() {
   const t = useTranslations('acquisitionTaxCalc')
+  const searchParams = useSearchParams()
 
-  const [propertyType, setPropertyType] = useState<PropertyType>('house')
-  const [price, setPrice] = useState('')
-  const [area, setArea] = useState('')
-  const [houseCount, setHouseCount] = useState<HouseCount>('1')
-  const [isAdjusted, setIsAdjusted] = useState(false)
-  const [isOver85, setIsOver85] = useState(false)
+  // ── URL 파라미터로 초기값 복원 ──
+  const [propertyType, setPropertyType] = useState<PropertyType>(
+    () => (searchParams.get('type') as PropertyType) || 'house'
+  )
+  const [price, setPrice] = useState(() => {
+    const p = searchParams.get('price')
+    return p ? Number(p).toLocaleString('ko-KR') : ''
+  })
+  const [area, setArea] = useState(() => searchParams.get('area') || '')
+  const [houseCount, setHouseCount] = useState<HouseCount>(
+    () => (searchParams.get('houseCount') as HouseCount) || '1'
+  )
+  const [isAdjusted, setIsAdjusted] = useState(
+    () => searchParams.get('adjusted') === '1'
+  )
+  const [isOver85, setIsOver85] = useState(
+    () => searchParams.get('over85') === '1'
+  )
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showGuide, setShowGuide] = useState(false)
+
+  // ── URL 파라미터 동기화 ──
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (propertyType !== 'house') params.set('type', propertyType)
+    const priceRaw = parseNumber(price)
+    if (priceRaw > 0) params.set('price', String(priceRaw))
+    if (area) params.set('area', area)
+    if (propertyType === 'house') {
+      if (houseCount !== '1') params.set('houseCount', houseCount)
+      if (isAdjusted) params.set('adjusted', '1')
+      if (isOver85) params.set('over85', '1')
+    }
+    const query = params.toString()
+    window.history.replaceState(null, '', query ? `?${query}` : window.location.pathname)
+  }, [propertyType, price, area, houseCount, isAdjusted, isOver85])
 
   const priceNum = parseNumber(price)
   const areaNum = parseFloat(area) || 0
@@ -229,17 +259,31 @@ export default function AcquisitionTaxCalculator() {
     copyToClipboard(text, 'result')
   }, [result, t, copyToClipboard])
 
+  const copyLink = useCallback(() => {
+    copyToClipboard(window.location.href, 'link')
+  }, [copyToClipboard])
+
   return (
     <div className="space-y-8">
       {/* 헤더 */}
-      <div className="flex items-center gap-3">
-        <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-xl">
-          <Building className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-xl">
+            <Building className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
-        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
+          title="링크 복사"
+        >
+          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+        </button>
       </div>
 
       {/* 메인 그리드 */}

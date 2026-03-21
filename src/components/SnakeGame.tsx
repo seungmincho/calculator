@@ -4,8 +4,10 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Trophy, RotateCcw, Pause, Play, Gamepad2, BookOpen, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type GameMode = 'classic' | 'infinite' | 'obstacles'
@@ -115,6 +117,8 @@ export default function SnakeGame() {
   const [deathFlash, setDeathFlash] = useState(false)
 
   const leaderboard = useLeaderboard('snakeGame', mode === 'classic' && difficulty !== 'accelerating' ? difficulty : undefined)
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
   const [showNameModal, setShowNameModal] = useState(false)
   const gameStartTimeRef = useRef<number>(Date.now())
 
@@ -154,13 +158,24 @@ export default function SnakeGame() {
     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
   }, [])
 
-  // Leaderboard: detect game over
+  // Leaderboard & achievements: detect game over
   useEffect(() => {
-    if (gameState === 'gameover' && mode === 'classic' && difficulty !== 'accelerating') {
-      if (leaderboard.checkQualifies(score)) {
-        setShowNameModal(true)
+    if (gameState === 'gameover') {
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        recordGameResult({
+          gameType: 'snake',
+          result: score >= 10 ? 'win' : 'loss',
+          difficulty: difficulty,
+          moves: score,
+        })
       }
-      leaderboard.fetchLeaderboard()
+      if (mode === 'classic' && difficulty !== 'accelerating') {
+        if (leaderboard.checkQualifies(score)) {
+          setShowNameModal(true)
+        }
+        leaderboard.fetchLeaderboard()
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState])
@@ -582,6 +597,7 @@ export default function SnakeGame() {
     nextDirectionRef.current = 'right'
     scoreRef.current = 0
     setScore(0)
+    resultRecordedRef.current = false
     gameStartTimeRef.current = Date.now()
 
     // Load high score for current mode
@@ -1063,6 +1079,17 @@ export default function SnakeGame() {
           </div>
         </div>
       </div>
+
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

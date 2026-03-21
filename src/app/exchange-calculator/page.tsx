@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import ExchangeRateCalculator from '@/components/ExchangeRateCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -113,6 +114,7 @@ export default function ExchangeCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
+        <Breadcrumb />
         <ExchangeRateCalculator />
         <div className="mt-8">
 

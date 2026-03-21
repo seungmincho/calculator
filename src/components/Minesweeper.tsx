@@ -4,8 +4,10 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Flag, Bomb, RotateCcw } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 type Difficulty = 'beginner' | 'intermediate' | 'expert'
 
@@ -54,6 +56,8 @@ export default function Minesweeper() {
 
   const config = DIFFICULTIES[difficulty]
   const leaderboard = useLeaderboard('minesweeper', difficulty)
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
   const [showNameModal, setShowNameModal] = useState(false)
   const gameStartTimeRef = useRef<number>(Date.now())
 
@@ -119,6 +123,7 @@ export default function Minesweeper() {
     setTimer(0)
     setIsFirstClick(true)
     setClickedMine(null)
+    resultRecordedRef.current = false
     gameStartTimeRef.current = Date.now()
     if (timerRef.current) {
       clearInterval(timerRef.current)
@@ -132,10 +137,29 @@ export default function Minesweeper() {
 
   useEffect(() => {
     if (gameStatus === 'won') {
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        recordGameResult({
+          gameType: 'minesweeper',
+          result: 'win',
+          difficulty,
+          moves: timer,
+        })
+      }
       if (leaderboard.checkQualifies(timer)) {
         setShowNameModal(true)
       }
       leaderboard.fetchLeaderboard()
+    } else if (gameStatus === 'lost') {
+      if (!resultRecordedRef.current) {
+        resultRecordedRef.current = true
+        recordGameResult({
+          gameType: 'minesweeper',
+          result: 'loss',
+          difficulty,
+          moves: timer,
+        })
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus])
@@ -475,6 +499,13 @@ export default function Minesweeper() {
         defaultName={leaderboard.savedPlayerName}
       />
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide Section */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -505,6 +536,10 @@ export default function Minesweeper() {
           </div>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

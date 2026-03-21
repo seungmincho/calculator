@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Car, Clock, Settings, BookOpen, Calculator, RotateCcw } from 'lucide-react'
+import { Car, Clock, Settings, BookOpen, Calculator, RotateCcw, Link, Check } from 'lucide-react'
 
 interface FeeSettings {
   baseFee: number
@@ -44,11 +45,16 @@ const presetConfigs: Record<string, FeeSettings> = {
 
 export default function ParkingFee() {
   const t = useTranslations('parkingFee')
-  const [parkingType, setParkingType] = useState<ParkingType>('public')
+  const searchParams = useSearchParams()
+  const [linkCopied, setLinkCopied] = useState(false)
+  const [parkingType, setParkingType] = useState<ParkingType>(() => {
+    const p = searchParams.get('type')
+    return (p === 'public' || p === 'private' || p === 'apartment') ? p : 'public'
+  })
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
-  const [manualHours, setManualHours] = useState(2)
-  const [manualMinutes, setManualMinutes] = useState(30)
+  const [manualHours, setManualHours] = useState(() => parseInt(searchParams.get('hours') || '') || 2)
+  const [manualMinutes, setManualMinutes] = useState(() => parseInt(searchParams.get('mins') || '') || 30)
   const [useManualInput, setUseManualInput] = useState(true)
   const [settings, setSettings] = useState<FeeSettings>(presetConfigs.publicSeoul)
 
@@ -68,6 +74,22 @@ export default function ParkingFee() {
 
   const updateSetting = useCallback((key: keyof FeeSettings, value: number) => {
     setSettings(prev => ({ ...prev, [key]: Math.max(0, value) }))
+  }, [])
+
+  // ── URL sync ──
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('type', parkingType)
+    url.searchParams.set('hours', String(manualHours))
+    url.searchParams.set('mins', String(manualMinutes))
+    window.history.replaceState({}, '', url)
+  }, [parkingType, manualHours, manualMinutes])
+
+  const copyLink = useCallback(() => {
+    navigator.clipboard?.writeText(window.location.href).then(() => {
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    })
   }, [])
 
   const result = useMemo(() => {
@@ -137,12 +159,17 @@ export default function ParkingFee() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <Car className="w-7 h-7" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Car className="w-7 h-7" />
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+          {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
+        </button>
       </div>
 
       {/* Main Grid */}

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Copy, Check, BookOpen, RotateCcw, ChevronDown, ChevronUp, BarChart3, TrendingUp, Clock, GitCompareArrows } from 'lucide-react'
+import { Copy, Check, BookOpen, RotateCcw, ChevronDown, ChevronUp, BarChart3, TrendingUp, Clock, GitCompareArrows, Link } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 type Mode = 'cagr' | 'future' | 'period'
@@ -342,6 +342,10 @@ export default function CagrCalculator() {
     }
   }, [])
 
+  const copyLink = useCallback(() => {
+    copyToClipboard(window.location.href, 'link')
+  }, [copyToClipboard])
+
   const handlePreset = useCallback((presetKey: string) => {
     const preset = PRESETS.find(p => p.key === presetKey)
     if (!preset) return
@@ -530,9 +534,19 @@ export default function CagrCalculator() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          title="링크 복사"
+        >
+          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+        </button>
       </div>
 
       {/* Mode Tabs */}

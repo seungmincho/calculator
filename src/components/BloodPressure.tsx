@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Heart, Trash2, BookOpen, Activity } from 'lucide-react'
+import { Heart, Trash2, BookOpen, Activity, Link, Check } from 'lucide-react'
 
 interface BloodPressureRecord {
   id: string
@@ -18,11 +19,29 @@ type Classification = 'normal' | 'elevated' | 'high1' | 'high2' | 'crisis'
 
 export default function BloodPressure() {
   const t = useTranslations('bloodPressure')
-  const [systolic, setSystolic] = useState('')
-  const [diastolic, setDiastolic] = useState('')
-  const [pulse, setPulse] = useState('')
+  const searchParams = useSearchParams()
+  const [systolic, setSystolic] = useState(() => searchParams.get('sys') || '')
+  const [diastolic, setDiastolic] = useState(() => searchParams.get('dia') || '')
+  const [pulse, setPulse] = useState(() => searchParams.get('pulse') || '')
   const [memo, setMemo] = useState('')
   const [records, setRecords] = useState<BloodPressureRecord[]>([])
+  const [linkCopied, setLinkCopied] = useState(false)
+
+  // URL sync
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    if (systolic) url.searchParams.set('sys', systolic); else url.searchParams.delete('sys')
+    if (diastolic) url.searchParams.set('dia', diastolic); else url.searchParams.delete('dia')
+    if (pulse) url.searchParams.set('pulse', pulse); else url.searchParams.delete('pulse')
+    window.history.replaceState({}, '', url)
+  }, [systolic, diastolic, pulse])
+
+  const copyLink = useCallback(() => {
+    navigator.clipboard?.writeText(window.location.href).then(() => {
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    })
+  }, [])
 
   // Load records from localStorage
   useEffect(() => {
@@ -138,12 +157,17 @@ export default function BloodPressure() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <Heart className="w-7 h-7 text-red-500" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Heart className="w-7 h-7 text-red-500" />
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+          {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
+        </button>
       </div>
 
       {/* Main Grid */}

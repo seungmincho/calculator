@@ -42,9 +42,14 @@ interface GameStats {
 // ═══════════════════════════════════════════════════════════
 
 const MAX_GUESSES = 6
-const WORD_LENGTH = 2
-const STATS_KEY = 'koreanWordle_stats'
-const GAME_STATE_KEY = 'koreanWordle_gameState'
+type WordLength = 2 | 3 | 4
+
+function getStatsKey(len: WordLength): string {
+  return `koreanWordle_stats_${len}`
+}
+function getGameStateKey(len: WordLength): string {
+  return `koreanWordle_gameState_${len}`
+}
 
 // Korean jamo tables
 const CHOSUNG = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
@@ -363,16 +368,113 @@ const WORD_LIST: string[] = [
 const WORD_SET = new Set(WORD_LIST)
 
 // ═══════════════════════════════════════════════════════════
+// 3-syllable word list (~200 common Korean words)
+// ═══════════════════════════════════════════════════════════
+
+const WORD_LIST_3: string[] = [
+  // Family & People
+  '어머니','아버지','할머니','할아범','아이들','사람들','선생님','어린이','청소년','직장인',
+  '대학생','고등생','운전사','의사들','간호사','소방관','경찰관','요리사','연예인','정치인',
+  // Places & Buildings
+  '도서관','병원장','유치원','초등학','중학교','고등학','대학교','경복궁','광화문','남산탑',
+  '편의점','미용실','세탁소','운동장','수영장','놀이터','사무실','아파트','경찰서','소방서',
+  // Technology
+  '컴퓨터','인터넷','스마트','프로그','소프트','하드웨','모니터','키보드','마우스','프린터',
+  '데이터','서버실','네트워','블로그','유튜브','인스타','카메라','배터리','충전기','이어폰',
+  // Transportation
+  '자동차','비행기','기차역','버스정','지하철','오토바','자전거','택시비','고속도','주차장',
+  // Food & Drink
+  '삼겹살','비빔밥','냉면집','김밥집','떡볶이','치킨집','피자집','햄버거','아이스','초콜릿',
+  '라면집','돈까스','칼국수','된장찌','김치찌','부대찌','만두국','떡국집','삼계탕','갈비탕',
+  // Nature & Weather
+  '해바라','민들레','소나무','벚꽃잎','진달래','무궁화','개나리','장미꽃','국화꽃','연꽃잎',
+  '태풍이','장마철','가뭄이','폭설이','일출때','일몰때','무지개','번개가','안개가','이슬비',
+  // Body & Health
+  '손가락','발가락','팔꿈치','무릎뼈','어깨뼈','등뼈가','심장이','위장병','두통약','감기약',
+  // Objects & Daily Life
+  '거울앞','우산꽂','지갑속','가방끈','시계탑','냉장고','세탁기','에어컨','전자레','식기세',
+  '청소기','텔레비','다리미','가습기','선풍기','전기밥','정수기','공기청','건조기','믹서기',
+  // Abstract & Emotions
+  '행복감','외로움','그리움','설레임','즐거움','괴로움','두려움','자신감','자존심','성취감',
+  '소속감','안정감','불안감','긴장감','기대감','만족감','허탈감','배신감','책임감','정의감',
+  // Culture & Activities
+  '음악회','영화관','미술관','박물관','전시회','콘서트','동물원','식물원','수족관','테마파',
+  '도자기','캘리그','수공예','바느질','뜨개질','독서실','스터디','동아리','봉사활','체험학',
+  // Society
+  '대통령','국회의','시청역','구청앞','동사무','우체국','세무서','법원앞','검찰청','국방부',
+  // Misc
+  '고양이','강아지','토끼굴','햄스터','거북이','금붕어','앵무새','다람쥐','고슴도','카멜레',
+]
+
+const WORD_SET_3 = new Set(WORD_LIST_3)
+
+// ═══════════════════════════════════════════════════════════
+// 4-syllable word list (~150 common Korean words)
+// ═══════════════════════════════════════════════════════════
+
+const WORD_LIST_4: string[] = [
+  // Nation & Society
+  '대한민국','인공지능','가상현실','증강현실','사물인터','블록체인','빅데이터','클라우드',
+  '자율주행','전기자동','하이브리','소셜미디','온라인쇼','전자상거','모바일앱','운영체제',
+  // Education
+  '초등학교','중학교생','고등학교','대학교수','대학원생','입학시험','졸업논문','장학금제',
+  '교육과정','학습목표','수행평가','중간고사','기말고사','방과후활','특별활동','학교생활',
+  // Occupations
+  '소프트웨','프로그래','웹디자인','데이터분','시스템관','프로젝트','마케팅팀','영업사원',
+  '회계사무','건축설계','인테리어','그래픽디','애니메이','방송작가','신문기자','사진작가',
+  // Food & Culture
+  '불고기집','순두부찌','해물파전','김치볶음','제육볶음','오징어볶','잡채만들','닭갈비집',
+  '부침개집','감자탕집','청국장찌','미역국집','설렁탕집','곰탕한그','추어탕집','매운탕집',
+  // Places
+  '국립공원','자연휴양','해수욕장','스키리조','워터파크','백화점앞','대형마트','전통시장',
+  '재래시장','지하상가','아울렛몰','쇼핑센터','문화센터','복지센터','체육센터','건강센터',
+  // Daily Life
+  '출퇴근길','주말여행','가족여행','해외여행','신혼여행','배낭여행','자유여행','패키지여',
+  '생일파티','결혼식장','돌잔치집','환갑잔치','졸업파티','송년회장','신년회장','동창회모',
+  // Health & Wellness
+  '건강검진','종합병원','응급실앞','수술실앞','진료예약','건강보험','의료보험','실손보험',
+  '치과진료','안과진료','피부과진','정형외과','내과진료','외과수술','재활치료','물리치료',
+  // Nature
+  '봄꽃소풍','여름바다','가을단풍','겨울눈꽃','벚꽃축제','단풍구경','눈꽃축제','해돋이산',
+  // Finance
+  '신용카드','체크카드','통장개설','적금통장','예금이자','주식투자','부동산투','펀드투자',
+  '보험가입','연금저축','퇴직연금','국민연금','건강보험','고용보험','산재보험','기본급여',
+  // Transportation
+  '고속버스','시외버스','마을버스','공항버스','택시승강','기차예매','비행기표','선박운항',
+  '내비게이','교통카드','정기권구','자유이용','환승할인','주차요금','통행요금','교통정보',
+  // Sports & Leisure
+  '축구경기','야구경기','농구경기','배구경기','테니스장','골프연습','수영강습','요가교실',
+  '헬스장앞','등산동호','자전거길','마라톤대','태권도장','유도교실','검도수련','볼링장앞',
+]
+
+const WORD_SET_4 = new Set(WORD_LIST_4)
+
+// Word lists and sets by length
+function getWordList(len: WordLength): string[] {
+  if (len === 3) return WORD_LIST_3
+  if (len === 4) return WORD_LIST_4
+  return WORD_LIST
+}
+
+function getWordSet(len: WordLength): Set<string> {
+  if (len === 3) return WORD_SET_3
+  if (len === 4) return WORD_SET_4
+  return WORD_SET
+}
+
+// ═══════════════════════════════════════════════════════════
 // Daily word selection (deterministic based on date)
 // ═══════════════════════════════════════════════════════════
 
-function getDailyWord(): string {
+function getDailyWord(len: WordLength): string {
+  const list = getWordList(len)
   const today = new Date()
   const epoch = new Date(2024, 0, 1) // Jan 1, 2024
   const dayIndex = Math.floor((today.getTime() - epoch.getTime()) / (1000 * 60 * 60 * 24))
-  // Simple hash for deterministic but shuffled selection
-  const hash = ((dayIndex * 2654435761) >>> 0) % WORD_LIST.length
-  return WORD_LIST[hash]
+  // Different seed multiplier per word length for different daily words
+  const seed = len === 2 ? 2654435761 : len === 3 ? 1597334677 : 3266489917
+  const hash = ((dayIndex * seed) >>> 0) % list.length
+  return list[hash]
 }
 
 function getTodayKey(): string {
@@ -466,19 +568,30 @@ function evaluateGuess(guess: string, answer: string): JamoCell[][] {
 // Stats persistence
 // ═══════════════════════════════════════════════════════════
 
-function loadStats(): GameStats {
-  if (typeof window === 'undefined') {
-    return { gamesPlayed: 0, gamesWon: 0, currentStreak: 0, maxStreak: 0, guessDistribution: [0,0,0,0,0,0], lastPlayedDate: '' }
-  }
+const DEFAULT_STATS: GameStats = { gamesPlayed: 0, gamesWon: 0, currentStreak: 0, maxStreak: 0, guessDistribution: [0,0,0,0,0,0], lastPlayedDate: '' }
+
+function loadStats(len: WordLength): GameStats {
+  if (typeof window === 'undefined') return { ...DEFAULT_STATS }
   try {
-    const raw = localStorage.getItem(STATS_KEY)
+    // Try new key first, fall back to legacy key for 2-syllable
+    const key = getStatsKey(len)
+    const raw = localStorage.getItem(key)
     if (raw) return JSON.parse(raw)
+    // Migrate legacy stats for 2-syllable mode
+    if (len === 2) {
+      const legacy = localStorage.getItem('koreanWordle_stats')
+      if (legacy) {
+        const parsed = JSON.parse(legacy)
+        localStorage.setItem(key, legacy)
+        return parsed
+      }
+    }
   } catch { /* ignore */ }
-  return { gamesPlayed: 0, gamesWon: 0, currentStreak: 0, maxStreak: 0, guessDistribution: [0,0,0,0,0,0], lastPlayedDate: '' }
+  return { ...DEFAULT_STATS }
 }
 
-function saveStats(stats: GameStats) {
-  try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)) } catch { /* ignore */ }
+function saveStats(stats: GameStats, len: WordLength) {
+  try { localStorage.setItem(getStatsKey(len), JSON.stringify(stats)) } catch { /* ignore */ }
 }
 
 interface SavedGameState {
@@ -489,20 +602,32 @@ interface SavedGameState {
   hardMode: boolean
 }
 
-function loadGameState(): SavedGameState | null {
+function loadGameState(len: WordLength): SavedGameState | null {
   if (typeof window === 'undefined') return null
   try {
-    const raw = localStorage.getItem(GAME_STATE_KEY)
+    const key = getGameStateKey(len)
+    const raw = localStorage.getItem(key)
     if (raw) {
       const parsed = JSON.parse(raw)
       if (parsed.date === getTodayKey()) return parsed
+    }
+    // Migrate legacy game state for 2-syllable mode
+    if (len === 2) {
+      const legacy = localStorage.getItem('koreanWordle_gameState')
+      if (legacy) {
+        const parsed = JSON.parse(legacy)
+        if (parsed.date === getTodayKey()) {
+          localStorage.setItem(key, legacy)
+          return parsed
+        }
+      }
     }
   } catch { /* ignore */ }
   return null
 }
 
-function saveGameState(state: SavedGameState) {
-  try { localStorage.setItem(GAME_STATE_KEY, JSON.stringify(state)) } catch { /* ignore */ }
+function saveGameState(state: SavedGameState, len: WordLength) {
+  try { localStorage.setItem(getGameStateKey(len), JSON.stringify(state)) } catch { /* ignore */ }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -512,8 +637,11 @@ function saveGameState(state: SavedGameState) {
 export default function KoreanWordle() {
   const t = useTranslations('koreanWordle')
 
+  // Word length mode
+  const [wordLength, setWordLength] = useState<WordLength>(2)
+
   // Game state
-  const [answer] = useState<string>(() => getDailyWord())
+  const [answer, setAnswer] = useState<string>(() => getDailyWord(2))
   const [guesses, setGuesses] = useState<string[]>([])
   const [gameStatus, setGameStatus] = useState<GameStatus>('playing')
   const [hardMode, setHardMode] = useState(false)
@@ -522,7 +650,7 @@ export default function KoreanWordle() {
   // UI state
   const [showHelp, setShowHelp] = useState(false)
   const [showStats, setShowStats] = useState(false)
-  const [stats, setStats] = useState<GameStats>(loadStats)
+  const [stats, setStats] = useState<GameStats>(() => loadStats(2))
   const [toast, setToast] = useState<string | null>(null)
   const [copiedShare, setCopiedShare] = useState(false)
   const [shakeRow, setShakeRow] = useState(-1)
@@ -538,6 +666,42 @@ export default function KoreanWordle() {
   const [showNameModal, setShowNameModal] = useState(false)
   const gameStartTimeRef = useRef<number>(Date.now())
 
+  // Active word set for current mode
+  const activeWordSet = useMemo(() => getWordSet(wordLength), [wordLength])
+
+  // Mode switch handler
+  const switchMode = useCallback((newLen: WordLength) => {
+    if (newLen === wordLength) return
+    setWordLength(newLen)
+    const newAnswer = getDailyWord(newLen)
+    setAnswer(newAnswer)
+    setHangulState(createEmptyHangulState())
+    setRevealingRow(-1)
+    setBounceRow(-1)
+    setShakeRow(-1)
+    setEndStreak(null)
+    gameStartTimeRef.current = Date.now()
+
+    // Load saved state for this mode
+    const saved = loadGameState(newLen)
+    const s = loadStats(newLen)
+    if (saved && saved.answer === newAnswer) {
+      setGuesses(saved.guesses)
+      setGameStatus(saved.gameStatus)
+      setHardMode(saved.hardMode)
+      if (saved.gameStatus === 'won') {
+        setEndStreak({ value: s.currentStreak, wasLost: false })
+      } else if (saved.gameStatus === 'lost') {
+        setEndStreak({ value: 0, wasLost: false })
+      }
+    } else {
+      setGuesses([])
+      setGameStatus('playing')
+      setHardMode(false)
+    }
+    setStats(s)
+  }, [wordLength])
+
   // Current input text from hangul state machine
   const currentInput = getCurrentText(hangulState)
 
@@ -552,8 +716,8 @@ export default function KoreanWordle() {
 
   // ── Load saved game state on mount ──
   useEffect(() => {
-    const saved = loadGameState()
-    const s = loadStats()
+    const saved = loadGameState(wordLength)
+    const s = loadStats(wordLength)
     if (saved) {
       setGuesses(saved.guesses)
       setGameStatus(saved.gameStatus)
@@ -561,16 +725,15 @@ export default function KoreanWordle() {
       if (saved.gameStatus === 'won') {
         setEndStreak({ value: s.currentStreak, wasLost: false })
       } else if (saved.gameStatus === 'lost') {
-        // streak was already reset on loss — show 0 broken (no banner if was already 0)
         setEndStreak({ value: 0, wasLost: false })
       }
     } else {
-      // First time today - check if user has never played (show help)
       if (s.gamesPlayed === 0) {
         setShowHelp(true)
       }
     }
     setStats(s)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // ── Save game state on changes ──
@@ -582,9 +745,9 @@ export default function KoreanWordle() {
         gameStatus,
         answer,
         hardMode,
-      })
+      }, wordLength)
     }
-  }, [guesses, gameStatus, answer, hardMode])
+  }, [guesses, gameStatus, answer, hardMode, wordLength])
 
   // ── Win detection for leaderboard ──
   useEffect(() => {
@@ -675,7 +838,7 @@ export default function KoreanWordle() {
     const flushed = flushHangulState(hangulState)
     const word = flushed.chars.join('')
 
-    if (word.length !== WORD_LENGTH) {
+    if (word.length !== wordLength) {
       showToast(t('notEnoughLetters'))
       setShakeRow(guesses.length)
       setTimeout(() => setShakeRow(-1), 600)
@@ -693,7 +856,7 @@ export default function KoreanWordle() {
     }
 
     // Check word is in list
-    if (!WORD_SET.has(word)) {
+    if (!activeWordSet.has(word)) {
       showToast(t('notInList'))
       setShakeRow(guesses.length)
       setTimeout(() => setShakeRow(-1), 600)
@@ -737,7 +900,7 @@ export default function KoreanWordle() {
         newStats.guessDistribution[rowIdx]++
         newStats.lastPlayedDate = getTodayKey()
         setStats(newStats)
-        saveStats(newStats)
+        saveStats(newStats, wordLength)
         setEndStreak({ value: newStats.currentStreak, wasLost: false })
 
         setTimeout(() => {
@@ -752,7 +915,7 @@ export default function KoreanWordle() {
         newStats.currentStreak = 0
         newStats.lastPlayedDate = getTodayKey()
         setStats(newStats)
-        saveStats(newStats)
+        saveStats(newStats, wordLength)
         setEndStreak({ value: prevStreak, wasLost: true })
 
         setTimeout(() => {
@@ -761,7 +924,7 @@ export default function KoreanWordle() {
         }, 300)
       }
     }, revealDuration)
-  }, [hangulState, guesses, gameStatus, answer, stats, showToast, validateHardMode, t])
+  }, [hangulState, guesses, gameStatus, answer, stats, showToast, validateHardMode, t, wordLength, activeWordSet])
 
   // ── Handle virtual keyboard press ──
   const handleKeyPress = useCallback((key: string) => {
@@ -779,12 +942,12 @@ export default function KoreanWordle() {
     // Check if adding this jamo would exceed the max character length
     const nextState = addJamo(hangulState, key)
     const nextText = getCurrentText(nextState)
-    if (nextText.length > WORD_LENGTH) {
+    if (nextText.length > wordLength) {
       return
     }
 
     setHangulState(nextState)
-  }, [gameStatus, hangulState, submitGuess])
+  }, [gameStatus, hangulState, submitGuess, wordLength])
 
   // ── Physical keyboard support ──
   useEffect(() => {
@@ -830,7 +993,8 @@ export default function KoreanWordle() {
   const buildShareText = useCallback((): string => {
     const dayNumber = Math.floor((new Date().getTime() - new Date(2024, 0, 1).getTime()) / (1000 * 60 * 60 * 24))
     const guessCount = gameStatus === 'won' ? guesses.length : 'X'
-    let text = `${t('shareTitle')} #${dayNumber} ${guessCount}/${MAX_GUESSES}\n\n`
+    const modeLabel = wordLength > 2 ? ` (${wordLength}글자)` : ''
+    let text = `${t('shareTitle')}${modeLabel} #${dayNumber} ${guessCount}/${MAX_GUESSES}\n\n`
     guesses.forEach(guess => {
       const evaluation = evaluateGuess(guess, answer)
       const line = evaluation.map(syllJamos =>
@@ -844,7 +1008,7 @@ export default function KoreanWordle() {
     })
     text += `\ntoolhub.ai.kr/korean-wordle`
     return text
-  }, [gameStatus, guesses, answer, t])
+  }, [gameStatus, guesses, answer, t, wordLength])
 
   // ── Build emoji grid only (for display) ──
   const buildEmojiGrid = useCallback((): string => {
@@ -944,7 +1108,7 @@ export default function KoreanWordle() {
       const inputText = currentInput
       const syllables: GuessRow['syllables'] = []
 
-      for (let i = 0; i < WORD_LENGTH; i++) {
+      for (let i = 0; i < wordLength; i++) {
         if (i < inputText.length) {
           const ch = inputText[i]
           const jamos = isHangulSyllable(ch)
@@ -962,14 +1126,14 @@ export default function KoreanWordle() {
     const remaining = MAX_GUESSES - rows.length
     for (let i = 0; i < remaining; i++) {
       const syllables: GuessRow['syllables'] = []
-      for (let j = 0; j < WORD_LENGTH; j++) {
+      for (let j = 0; j < wordLength; j++) {
         syllables.push({ char: '', jamos: [] })
       }
       rows.push({ word: '', syllables, revealed: false })
     }
 
     return rows
-  }, [guesses, answer, currentInput, revealingRow, gameStatus])
+  }, [guesses, answer, currentInput, revealingRow, gameStatus, wordLength])
 
   // ── Render ──
 
@@ -1052,6 +1216,25 @@ export default function KoreanWordle() {
           </div>
         </div>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+
+        {/* Word Length Mode Selector */}
+        <div className="flex gap-2 mt-3">
+          {([2, 3, 4] as WordLength[]).map(len => (
+            <button
+              key={len}
+              onClick={() => switchMode(len)}
+              className={`
+                flex-1 py-2 rounded-lg text-sm font-bold transition-all
+                ${wordLength === len
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }
+              `}
+            >
+              {len}글자
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Toast */}
@@ -1074,7 +1257,7 @@ export default function KoreanWordle() {
             return (
               <div
                 key={rowIdx}
-                className={`flex gap-3 sm:gap-4 ${isShaking ? 'animate-shake' : ''} ${isBouncing ? 'animate-bounce-cells' : ''}`}
+                className={`flex ${wordLength <= 2 ? 'gap-3 sm:gap-4' : wordLength === 3 ? 'gap-2 sm:gap-3' : 'gap-1.5 sm:gap-2'} ${isShaking ? 'animate-shake' : ''} ${isBouncing ? 'animate-bounce-cells' : ''}`}
               >
                 {row.syllables.map((syll, cellIdx) => {
                   const hasContent = syll.char !== ''
@@ -1092,9 +1275,9 @@ export default function KoreanWordle() {
                       {/* Main syllable cell */}
                       <div
                         className={`
-                          w-16 h-16 sm:w-20 sm:h-20
+                          ${wordLength <= 2 ? 'w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl' : wordLength === 3 ? 'w-14 h-14 sm:w-16 sm:h-16 text-xl sm:text-2xl' : 'w-12 h-12 sm:w-14 sm:h-14 text-lg sm:text-xl'}
                           flex items-center justify-center
-                          border-2 rounded-lg text-2xl sm:text-3xl font-bold
+                          border-2 rounded-lg font-bold
                           transition-all duration-300
                           ${isIncompleteJamo ? 'border-amber-400 dark:border-amber-500 scale-105' : ''}
                           ${hasContent && !isGuessed && !isIncompleteJamo ? 'border-gray-500 dark:border-gray-400 scale-105' : ''}

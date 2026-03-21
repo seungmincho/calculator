@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import {
   Car,
@@ -25,7 +26,8 @@ import {
   ExternalLink,
   Plus,
   Trash2,
-  Upload
+  Upload,
+  Link
 } from 'lucide-react'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
@@ -72,14 +74,19 @@ interface DrivingLogEntry {
 const FuelCalculator = () => {
   const t = useTranslations('fuelCalculator')
   const tc = useTranslations('common')
+  const searchParams = useSearchParams()
+  const [linkCopied, setLinkCopied] = useState(false)
 
   // Tab state
   const [activeTab, setActiveTab] = useState<'calculator' | 'drivingLog'>('calculator')
 
   // Calculator state
-  const [distance, setDistance] = useState<number>(0)
-  const [vehicleType, setVehicleType] = useState<string>('compact')
-  const [fuelType, setFuelType] = useState<'gasoline' | 'diesel' | 'lpg'>('gasoline')
+  const [distance, setDistance] = useState<number>(() => parseInt(searchParams.get('distance') || '') || 0)
+  const [vehicleType, setVehicleType] = useState<string>(() => searchParams.get('vehicleType') || 'compact')
+  const [fuelType, setFuelType] = useState<'gasoline' | 'diesel' | 'lpg'>(() => {
+    const p = searchParams.get('fuelType')
+    return (p === 'gasoline' || p === 'diesel' || p === 'lpg') ? p : 'gasoline'
+  })
   const [customEfficiency, setCustomEfficiency] = useState<number>(0)
   const [useCustomEfficiency, setUseCustomEfficiency] = useState(false)
   const [calculation, setCalculation] = useState<FuelCalculation | null>(null)
@@ -183,6 +190,22 @@ const FuelCalculator = () => {
         // ignore invalid driving log data
       }
     }
+  }, [])
+
+  // ── URL sync ──
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    if (distance > 0) url.searchParams.set('distance', String(distance)); else url.searchParams.delete('distance')
+    url.searchParams.set('vehicleType', vehicleType)
+    url.searchParams.set('fuelType', fuelType)
+    window.history.replaceState({}, '', url)
+  }, [distance, vehicleType, fuelType])
+
+  const copyLink = useCallback(() => {
+    navigator.clipboard?.writeText(window.location.href).then(() => {
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    })
   }, [])
 
   // 연비 조정
@@ -570,14 +593,19 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
             {t('description')}
           </p>
         </div>
-        <CalculationHistory
-          histories={histories}
-          isLoading={false}
-          onLoadHistory={handleLoadFromHistory}
-          onRemoveHistory={removeHistory}
-          onClearHistories={clearHistories}
-          formatResult={formatHistoryResult}
-        />
+        <div className="flex items-center gap-2">
+          <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
+            {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
+          </button>
+          <CalculationHistory
+            histories={histories}
+            isLoading={false}
+            onLoadHistory={handleLoadFromHistory}
+            onRemoveHistory={removeHistory}
+            onClearHistories={clearHistories}
+            formatResult={formatHistoryResult}
+          />
+        </div>
       </div>
 
       {/* Tabs */}

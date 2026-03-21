@@ -45,6 +45,40 @@ export default function BogeumjariLoanPage() {
     ],
   };
 
+  const howToJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: '보금자리론 계산기 사용 방법',
+    description: '주택 가격과 소득 조건을 입력해 보금자리론 대출 한도·금리·월 상환액을 계산하는 방법입니다.',
+    step: [
+      {
+        '@type': 'HowToStep',
+        name: '주택 가격과 대출 금액 입력',
+        text: '구매할 주택의 매매가격과 희망 대출 금액을 입력합니다. 주택 가격은 6억원 이하여야 합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '소득 요건 확인',
+        text: '부부합산 연소득을 입력하여 일반(7천만원), 신혼부부(8.5천만원), 다자녀(9천만원) 중 해당 유형의 자격 요건을 확인합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '금리 유형 선택',
+        text: '고정금리 또는 5년 혼합금리(5년 고정 후 변동) 중 선택하고, 생애최초·신혼·다자녀 우대금리 적용 여부를 확인합니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '상환 기간 설정',
+        text: '10년~50년 중 원하는 대출 상환 기간을 선택합니다. 기간이 길수록 금리가 소폭 높아집니다.',
+      },
+      {
+        '@type': 'HowToStep',
+        name: '월 상환금과 총 이자 확인',
+        text: '최종 적용 금리, 월 상환금, 총 이자 합계, DTI 비율을 확인하고 상환 가능 여부를 판단합니다.',
+      },
+    ],
+  };
+
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -96,6 +130,7 @@ export default function BogeumjariLoanPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
 
       <Suspense fallback={
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">

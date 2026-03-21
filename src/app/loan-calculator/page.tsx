@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
+import Breadcrumb from '@/components/Breadcrumb'
 import LoanCalculator from '@/components/LoanCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -118,6 +119,7 @@ export default function LoanCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
+        <Breadcrumb />
         <LoanCalculator />
         <div className="mt-8">
 

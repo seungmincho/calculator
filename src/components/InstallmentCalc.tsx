@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { CreditCard, Calculator, BookOpen } from 'lucide-react'
+import { CreditCard, Calculator, BookOpen, Link, Check } from 'lucide-react'
 
 interface ScheduleRow {
   month: number
@@ -14,11 +15,44 @@ interface ScheduleRow {
 
 export default function InstallmentCalc() {
   const t = useTranslations('installmentCalc')
+  const searchParams = useSearchParams()
+  const [copiedId, setCopiedId] = useState<string | null>(null)
 
   const [totalAmount, setTotalAmount] = useState<string>('1000000')
   const [months, setMonths] = useState<number>(12)
   const [interestRate, setInterestRate] = useState<string>('5.9')
   const [isFreeInstallment, setIsFreeInstallment] = useState<boolean>(false)
+
+  // URL param sync - read on mount
+  useEffect(() => {
+    const amount = searchParams.get('amount')
+    const m = searchParams.get('months')
+    const rate = searchParams.get('rate')
+    const free = searchParams.get('free')
+    if (amount) setTotalAmount(amount)
+    if (m) setMonths(Number(m))
+    if (rate) setInterestRate(rate)
+    if (free === 'true') { setIsFreeInstallment(true); setInterestRate('0') }
+  }, [])
+
+  // URL param sync - write on change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams()
+    params.set('amount', totalAmount)
+    params.set('months', String(months))
+    params.set('rate', interestRate)
+    if (isFreeInstallment) params.set('free', 'true')
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+  }, [totalAmount, months, interestRate, isFreeInstallment])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch { /* */ }
+    setCopiedId('link')
+    setTimeout(() => setCopiedId(null), 2000)
+  }, [])
 
   const quickMonthOptions = [2, 3, 6, 10, 12, 24]
 
@@ -107,9 +141,19 @@ export default function InstallmentCalc() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          title="링크 복사"
+        >
+          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+        </button>
       </div>
 
       {/* Main Grid */}

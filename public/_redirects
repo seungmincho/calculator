@@ -50,6 +50,7 @@
 /cron-tester /cron-tester/ 301
 /crontab-generator /crontab-generator/ 301
 /crossword /crossword/ 301
+/csat-grade /csat-grade/ 301
 /css-gradient /css-gradient/ 301
 /css-unit-converter /css-unit-converter/ 301
 /curl-builder /curl-builder/ 301
@@ -63,6 +64,7 @@
 /electricity-calculator /electricity-calculator/ 301
 /email-template /email-template/ 301
 /emoji-picker /emoji-picker/ 301
+/enneagram /enneagram/ 301
 /env-editor /env-editor/ 301
 /exchange-calculator /exchange-calculator/ 301
 /exercise-calorie /exercise-calorie/ 301
@@ -135,14 +137,15 @@
 /monthly-rent-subsidy /monthly-rent-subsidy/ 301
 /morse-code /morse-code/ 301
 /moving-cost /moving-cost/ 301
+/name-compatibility /name-compatibility/ 301
 /noise-meter /noise-meter/ 301
 /notepad /notepad/ 301
 /number-baseball /number-baseball/ 301
 /number-to-korean /number-to-korean/ 301
 /nutrition-calculator /nutrition-calculator/ 301
-/offline /offline/ 301
 /omok /omok/ 301
 /othello /othello/ 301
+/ovulation-calculator /ovulation-calculator/ 301
 /pac-man /pac-man/ 301
 /parental-leave /parental-leave/ 301
 /parking-fee /parking-fee/ 301
@@ -151,11 +154,11 @@
 /pdf-tools /pdf-tools/ 301
 /pension-calculator /pension-calculator/ 301
 /percent-calculator /percent-calculator/ 301
+/personal-color /personal-color/ 301
 /picross /picross/ 301
 /pomodoro /pomodoro/ 301
 /port-reference /port-reference/ 301
 /presentation-timer /presentation-timer/ 301
-/privacy /privacy/ 301
 /prompt-generator /prompt-generator/ 301
 /pyeong-calculator /pyeong-calculator/ 301
 /qr-generator /qr-generator/ 301
@@ -198,7 +201,6 @@
 /text-to-speech /text-to-speech/ 301
 /time-converter /time-converter/ 301
 /timer /timer/ 301
-/tips /tips/ 301
 /typing-test /typing-test/ 301
 /unemployment-benefit /unemployment-benefit/ 301
 /unit-converter /unit-converter/ 301

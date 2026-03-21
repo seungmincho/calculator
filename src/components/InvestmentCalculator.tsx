@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { TrendingUp, Calculator, BarChart3, ArrowUpRight, ArrowDownRight, RefreshCw, BookOpen } from 'lucide-react'
+import { TrendingUp, Calculator, BarChart3, ArrowUpRight, ArrowDownRight, RefreshCw, BookOpen, Link, Check } from 'lucide-react'
 import dynamic from 'next/dynamic'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
@@ -45,6 +46,8 @@ const parseInputNumber = (value: string): number => {
 export default function InvestmentCalculator() {
   const t = useTranslations('investmentCalculator')
 
+  const searchParams = useSearchParams()
+  const [copiedId, setCopiedId] = useState<string | null>(null)
   const [investmentType, setInvestmentType] = useState<InvestmentType>('lumpSum')
   const [initialAmount, setInitialAmount] = useState('10,000,000')
   const [monthlyContribution, setMonthlyContribution] = useState('500,000')
@@ -54,6 +57,43 @@ export default function InvestmentCalculator() {
   const [result, setResult] = useState<InvestmentResult | null>(null)
   const [comparisonResult, setComparisonResult] = useState<{ lumpSum: InvestmentResult; dca: InvestmentResult } | null>(null)
   const [showTable, setShowTable] = useState(false)
+
+  // URL param sync - read on mount
+  useEffect(() => {
+    const type = searchParams.get('type')
+    const initial = searchParams.get('initial')
+    const monthly = searchParams.get('monthly')
+    const ret = searchParams.get('return')
+    const period = searchParams.get('period')
+    const inflation = searchParams.get('inflation')
+    if (type) setInvestmentType(type as InvestmentType)
+    if (initial) setInitialAmount(formatInputNumber(initial))
+    if (monthly) setMonthlyContribution(formatInputNumber(monthly))
+    if (ret) setAnnualReturn(ret)
+    if (period) setInvestmentPeriod(period)
+    if (inflation) setInflationRate(inflation)
+  }, [])
+
+  // URL param sync - write on change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams()
+    params.set('type', investmentType)
+    params.set('initial', String(parseInputNumber(initialAmount)))
+    params.set('monthly', String(parseInputNumber(monthlyContribution)))
+    params.set('return', annualReturn)
+    params.set('period', investmentPeriod)
+    params.set('inflation', inflationRate)
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+  }, [investmentType, initialAmount, monthlyContribution, annualReturn, investmentPeriod, inflationRate])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch { /* */ }
+    setCopiedId('link')
+    setTimeout(() => setCopiedId(null), 2000)
+  }, [])
 
   const calculateLumpSum = useCallback((initial: number, rate: number, years: number, inflation: number): InvestmentResult => {
     const monthlyRate = rate / 100 / 12
@@ -350,12 +390,22 @@ export default function InvestmentCalculator() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <div className="flex items-center gap-3 mb-2">
-          <TrendingUp className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <TrendingUp className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          </div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('description')}</p>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">{t('description')}</p>
+        <button
+          onClick={copyLink}
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          title="링크 복사"
+        >
+          {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+          <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+        </button>
       </div>
 
       {/* Investment Type Tabs */}

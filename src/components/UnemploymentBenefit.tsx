@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Calculator, Copy, Check, BookOpen, AlertCircle, Info } from 'lucide-react'
+import { Calculator, Copy, Check, BookOpen, AlertCircle, Info, Link } from 'lucide-react'
 import dynamic from 'next/dynamic'
+import { useSearchParams } from 'next/navigation'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
@@ -63,6 +64,7 @@ interface CalcResult {
 
 export default function UnemploymentBenefit() {
   const t = useTranslations('unemploymentBenefit')
+  const searchParams = useSearchParams()
 
   const [ageGroup, setAgeGroup] = useState<AgeGroup>('under50')
   const [insurancePeriod, setInsurancePeriod] = useState<InsurancePeriod>('1to3')
@@ -71,6 +73,44 @@ export default function UnemploymentBenefit() {
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [hasCalculated, setHasCalculated] = useState(false)
   const [result, setResult] = useState<CalcResult | null>(null)
+
+  // ── URL 파라미터 초기화 ──
+  useEffect(() => {
+    const age = searchParams.get('age') as AgeGroup | null
+    const period = searchParams.get('period') as InsurancePeriod | null
+    const wage = searchParams.get('wage')
+    const reason = searchParams.get('reason') as SeparationReason | null
+
+    const validAges: AgeGroup[] = ['under50', 'over50']
+    const validPeriods: InsurancePeriod[] = ['under1', '1to3', '3to5', '5to10', 'over10']
+    const validReasons: SeparationReason[] = ['involuntary', 'voluntary']
+
+    if (age && validAges.includes(age)) setAgeGroup(age)
+    if (period && validPeriods.includes(period)) setInsurancePeriod(period)
+    if (reason && validReasons.includes(reason)) setSeparationReason(reason)
+    if (wage) {
+      const num = parseInt(wage, 10)
+      if (!isNaN(num) && num > 0) setAvgDailyWageStr(num.toLocaleString('ko-KR'))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // ── URL 동기화 ──
+  const updateURL = useCallback((params: {
+    age: AgeGroup
+    period: InsurancePeriod
+    wage: string
+    reason: SeparationReason
+  }) => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('age', params.age)
+    url.searchParams.set('period', params.period)
+    url.searchParams.set('reason', params.reason)
+    const wageNum = parseInt(params.wage.replace(/[^0-9]/g, ''), 10)
+    if (wageNum > 0) url.searchParams.set('wage', String(wageNum))
+    else url.searchParams.delete('wage')
+    window.history.replaceState({}, '', url)
+  }, [])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -119,12 +159,32 @@ export default function UnemploymentBenefit() {
     setSeparationReason('involuntary')
     setResult(null)
     setHasCalculated(false)
+    const url = new URL(window.location.href)
+    ;['age', 'period', 'wage', 'reason'].forEach((k) => url.searchParams.delete(k))
+    window.history.replaceState({}, '', url)
   }, [])
 
   const handleWageInput = useCallback((v: string) => {
     const digits = v.replace(/[^0-9]/g, '')
-    setAvgDailyWageStr(digits ? Number(digits).toLocaleString('ko-KR') : '')
-  }, [])
+    const formatted = digits ? Number(digits).toLocaleString('ko-KR') : ''
+    setAvgDailyWageStr(formatted)
+    updateURL({ age: ageGroup, period: insurancePeriod, wage: formatted, reason: separationReason })
+  }, [ageGroup, insurancePeriod, separationReason, updateURL])
+
+  const handleAgeGroup = useCallback((a: AgeGroup) => {
+    setAgeGroup(a)
+    updateURL({ age: a, period: insurancePeriod, wage: avgDailyWageStr, reason: separationReason })
+  }, [insurancePeriod, avgDailyWageStr, separationReason, updateURL])
+
+  const handleInsurancePeriod = useCallback((p: InsurancePeriod) => {
+    setInsurancePeriod(p)
+    updateURL({ age: ageGroup, period: p, wage: avgDailyWageStr, reason: separationReason })
+  }, [ageGroup, avgDailyWageStr, separationReason, updateURL])
+
+  const handleSeparationReason = useCallback((r: SeparationReason) => {
+    setSeparationReason(r)
+    updateURL({ age: ageGroup, period: insurancePeriod, wage: avgDailyWageStr, reason: r })
+  }, [ageGroup, insurancePeriod, avgDailyWageStr, updateURL])
 
   const chartOption = useMemo(() => {
     if (!result) return {}
@@ -175,12 +235,26 @@ export default function UnemploymentBenefit() {
   return (
     <div className="space-y-8">
       {/* 헤더 */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <Calculator className="w-7 h-7 text-blue-600" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Calculator className="w-7 h-7 text-blue-600" />
+            {t('title')}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+        </div>
+        <button
+          onClick={() => copyToClipboard(window.location.href, 'link')}
+          className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap flex-shrink-0 mt-1"
+          title="링크 복사"
+        >
+          {copiedId === 'link' ? (
+            <Check className="w-4 h-4 text-green-500" />
+          ) : (
+            <Link className="w-4 h-4" />
+          )}
+          {copiedId === 'link' ? '복사됨' : '링크 복사'}
+        </button>
       </div>
 
       {/* 자발적 이직 경고 */}
@@ -207,7 +281,7 @@ export default function UnemploymentBenefit() {
                 {(['involuntary', 'voluntary'] as const).map((r) => (
                   <button
                     key={r}
-                    onClick={() => setSeparationReason(r)}
+                    onClick={() => handleSeparationReason(r)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       separationReason === r
                         ? 'bg-blue-600 text-white'
@@ -229,7 +303,7 @@ export default function UnemploymentBenefit() {
                 {(['under50', 'over50'] as const).map((a) => (
                   <button
                     key={a}
-                    onClick={() => setAgeGroup(a)}
+                    onClick={() => handleAgeGroup(a)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       ageGroup === a
                         ? 'bg-blue-600 text-white'
@@ -249,7 +323,7 @@ export default function UnemploymentBenefit() {
               </label>
               <select
                 value={insurancePeriod}
-                onChange={(e) => setInsurancePeriod(e.target.value as InsurancePeriod)}
+                onChange={(e) => handleInsurancePeriod(e.target.value as InsurancePeriod)}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 {(['under1', '1to3', '3to5', '5to10', 'over10'] as const).map((p) => (

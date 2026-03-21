@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import {
   Copy, Check, BookOpen, ChevronDown, ChevronUp, Plus, Trash2,
   RotateCcw, FileDown, Heart, Users, PieChart as PieChartIcon,
-  LayoutDashboard
+  LayoutDashboard, Link
 } from 'lucide-react'
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend,
@@ -172,6 +173,7 @@ function buildDefaultItems(region: Region): WeddingItem[] {
 
 export default function WeddingCalculator() {
   const t = useTranslations('weddingCalculator')
+  const searchParams = useSearchParams()
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<TabId>('costs')
   const [region, setRegion] = useState<Region>('seoul')
@@ -187,6 +189,31 @@ export default function WeddingCalculator() {
   const [openCategories, setOpenCategories] = useState<Set<string>>(new Set(['venue']))
   const [loaded, setLoaded] = useState(false)
   const dashboardRef = useRef<HTMLDivElement>(null)
+
+  // URL param sync - read on mount
+  useEffect(() => {
+    const r = searchParams.get('region')
+    const tab = searchParams.get('tab')
+    if (r === 'seoul' || r === 'regional') setRegion(r)
+    if (tab) setActiveTab(tab as TabId)
+  }, [])
+
+  // URL param sync - write on change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams()
+    params.set('region', region)
+    params.set('tab', activeTab)
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+  }, [region, activeTab])
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch { /* */ }
+    setCopiedId('link')
+    setTimeout(() => setCopiedId(null), 2000)
+  }, [])
 
   // ── Load from localStorage ──
   useEffect(() => {
@@ -524,13 +551,23 @@ export default function WeddingCalculator() {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
         </div>
-        <button
-          onClick={handleReset}
-          className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
-        >
-          <RotateCcw size={14} />
-          {t('actions.reset')}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={copyLink}
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            title="링크 복사"
+          >
+            {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
+            <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+          </button>
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+          >
+            <RotateCcw size={14} />
+            {t('actions.reset')}
+          </button>
+        </div>
       </div>
 
       {/* Region toggle */}

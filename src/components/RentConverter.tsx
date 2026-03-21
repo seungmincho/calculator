@@ -1,25 +1,54 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Home, Copy, Check, RotateCcw, BookOpen, ArrowLeftRight } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Home, Copy, Check, RotateCcw, BookOpen, ArrowLeftRight, Link } from 'lucide-react'
 
 type ConversionMode = 'jeonseToWolse' | 'wolseToJeonse'
 
 export default function RentConverter() {
   const t = useTranslations('rentConverter')
-  const [mode, setMode] = useState<ConversionMode>('jeonseToWolse')
+  const searchParams = useSearchParams()
+  const [mode, setMode] = useState<ConversionMode>(
+    (searchParams.get('mode') as ConversionMode) || 'jeonseToWolse'
+  )
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
   // Jeonse to Wolse inputs
-  const [jeonseDeposit, setJeonseDeposit] = useState(300000000) // 3억
-  const [wolseDeposit, setWolseDeposit] = useState(100000000) // 1억
-  const [conversionRate, setConversionRate] = useState(4.5)
+  const [jeonseDeposit, setJeonseDeposit] = useState(
+    Number(searchParams.get('jd')) || 300000000
+  )
+  const [wolseDeposit, setWolseDeposit] = useState(
+    Number(searchParams.get('wd')) || 100000000
+  )
+  const [conversionRate, setConversionRate] = useState(
+    Number(searchParams.get('cr')) || 4.5
+  )
 
   // Wolse to Jeonse inputs
-  const [reverseWolseDeposit, setReverseWolseDeposit] = useState(100000000) // 1억
-  const [monthlyRent, setMonthlyRent] = useState(750000) // 75만
-  const [reverseConversionRate, setReverseConversionRate] = useState(4.5)
+  const [reverseWolseDeposit, setReverseWolseDeposit] = useState(
+    Number(searchParams.get('rwd')) || 100000000
+  )
+  const [monthlyRent, setMonthlyRent] = useState(
+    Number(searchParams.get('mr')) || 750000
+  )
+  const [reverseConversionRate, setReverseConversionRate] = useState(
+    Number(searchParams.get('rcr')) || 4.5
+  )
+
+  // Sync URL params when inputs change
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('mode', mode)
+    url.searchParams.set('jd', String(jeonseDeposit))
+    url.searchParams.set('wd', String(wolseDeposit))
+    url.searchParams.set('cr', String(conversionRate))
+    url.searchParams.set('rwd', String(reverseWolseDeposit))
+    url.searchParams.set('mr', String(monthlyRent))
+    url.searchParams.set('rcr', String(reverseConversionRate))
+    window.history.replaceState({}, '', url)
+  }, [mode, jeonseDeposit, wolseDeposit, conversionRate, reverseWolseDeposit, monthlyRent, reverseConversionRate])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -137,13 +166,26 @@ export default function RentConverter() {
                   설정
                 </h2>
               </div>
-              <button
-                onClick={resetForm}
-                className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                title={t('reset')}
-              >
-                <RotateCcw className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => copyToClipboard(window.location.href, 'link')}
+                  className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  title={t('copyLink')}
+                >
+                  {copiedId === 'link' ? (
+                    <Check className="w-5 h-5 text-green-500" />
+                  ) : (
+                    <Link className="w-5 h-5" />
+                  )}
+                </button>
+                <button
+                  onClick={resetForm}
+                  className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  title={t('reset')}
+                >
+                  <RotateCcw className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Mode Tabs */}
@@ -482,6 +524,83 @@ export default function RentConverter() {
                   )}
                 </p>
               </div>
+            </div>
+          </div>
+
+          {/* Conversion Rate Comparison Table */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              {t('rateComparisonTable.title')}
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 dark:border-gray-700">
+                    <th className="text-left py-2 pr-4 font-medium text-gray-500 dark:text-gray-400">
+                      {t('rateComparisonTable.rate')}
+                    </th>
+                    <th className="text-right py-2 px-4 font-medium text-gray-500 dark:text-gray-400">
+                      {mode === 'jeonseToWolse'
+                        ? t('rateComparisonTable.monthlyRent')
+                        : t('rateComparisonTable.jeonseDeposit')}
+                    </th>
+                    <th className="text-right py-2 pl-4 font-medium text-gray-500 dark:text-gray-400">
+                      {t('rateComparisonTable.yearlyTotal')}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[2, 3, 4, 5, 6].map((rate) => {
+                    let mainValue: number
+                    let yearly: number
+                    if (mode === 'jeonseToWolse') {
+                      const diff = jeonseDeposit - wolseDeposit
+                      mainValue = diff > 0 ? Math.round((diff * rate) / 100 / 12) : 0
+                      yearly = mainValue * 12
+                    } else {
+                      yearly = monthlyRent * 12
+                      const converted = rate > 0 ? (yearly / rate) * 100 : 0
+                      mainValue = Math.round(reverseWolseDeposit + converted)
+                    }
+                    const isActive = currentRate === rate
+                    return (
+                      <tr
+                        key={rate}
+                        className={`border-b border-gray-100 dark:border-gray-700 transition-colors ${
+                          isActive
+                            ? 'bg-blue-50 dark:bg-blue-950'
+                            : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+                        }`}
+                      >
+                        <td className="py-2 pr-4">
+                          <span
+                            className={`font-semibold ${
+                              isActive
+                                ? 'text-blue-700 dark:text-blue-300'
+                                : 'text-gray-700 dark:text-gray-300'
+                            }`}
+                          >
+                            {rate}%
+                            {isActive && (
+                              <span className="ml-2 text-xs bg-blue-600 text-white px-1.5 py-0.5 rounded">
+                                {t('rateComparisonTable.current')}
+                              </span>
+                            )}
+                          </span>
+                        </td>
+                        <td className="text-right py-2 px-4 font-medium text-gray-900 dark:text-white">
+                          {mode === 'jeonseToWolse'
+                            ? `${formatWon(mainValue)}원`
+                            : `${formatWonUnit(mainValue)}원`}
+                        </td>
+                        <td className="text-right py-2 pl-4 text-gray-600 dark:text-gray-400">
+                          {formatWonUnit(yearly)}원
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
 
