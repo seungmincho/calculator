@@ -2,9 +2,9 @@
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
-import { RotateCcw, Search, Copy, Check, ChevronDown, ChevronUp, Shuffle, BookOpen } from 'lucide-react'
+import { RotateCcw, Search, Copy, Check, ChevronDown, ChevronUp, Shuffle, BookOpen, Trophy, Zap, Star, ArrowRight } from 'lucide-react'
 
-// ── Food Database (200+ items, 10 categories) ──
+// ── Food Database (350+ items, 12 categories) ──
 interface FoodItem {
   name: string
   emoji: string
@@ -32,6 +32,11 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
       { name: '수제비', emoji: '🍜' }, { name: '닭볶음탕', emoji: '🍗' },
       { name: '해물파전', emoji: '🥞' }, { name: '김치볶음밥', emoji: '🍳' },
       { name: '제육덮밥', emoji: '🍚' }, { name: '된장비빔밥', emoji: '🍚' },
+      { name: '물냉면', emoji: '🍜' }, { name: '비빔냉면', emoji: '🍜' },
+      { name: '매생이국', emoji: '🍲' }, { name: '닭갈비', emoji: '🍗' },
+      { name: '간장계란밥', emoji: '🍳' }, { name: '참치김밥', emoji: '🍙' },
+      { name: '충무김밥', emoji: '🍙' }, { name: '꽁치조림', emoji: '🐟' },
+      { name: '백반정식', emoji: '🍚' }, { name: '순대국밥', emoji: '🍲' },
     ],
   },
   meat: {
@@ -49,6 +54,9 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
       { name: '찜닭', emoji: '🍗' }, { name: '수육', emoji: '🍖' },
       { name: '뼈해장국', emoji: '🍲' }, { name: '돼지갈비', emoji: '🍖' },
       { name: '등심스테이크', emoji: '🥩' }, { name: '채끝스테이크', emoji: '🥩' },
+      { name: '토시살', emoji: '🥩' }, { name: '안심구이', emoji: '🥩' },
+      { name: '오리고기', emoji: '🦆' }, { name: '양념족발', emoji: '🍖' },
+      { name: '곱창전골', emoji: '🫕' }, { name: '소꼬리찜', emoji: '🍖' },
     ],
   },
   seafood: {
@@ -65,6 +73,9 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
       { name: '생선회', emoji: '🐟' }, { name: '해물칼국수', emoji: '🍜' },
       { name: '조개탕', emoji: '🐚' }, { name: '참치회', emoji: '🍣' },
       { name: '연어덮밥', emoji: '🍣' }, { name: '광어회', emoji: '🐟' },
+      { name: '해물라면', emoji: '🍜' }, { name: '전복구이', emoji: '🐚' },
+      { name: '홍합탕', emoji: '🐚' }, { name: '생선조림', emoji: '🐟' },
+      { name: '새우장', emoji: '🦐' }, { name: '바지락칼국수', emoji: '🍜' },
     ],
   },
   chinese: {
@@ -80,6 +91,9 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
       { name: '양장피', emoji: '🥗' }, { name: '울면', emoji: '🍜' },
       { name: '잡채밥', emoji: '🍚' }, { name: '유산슬', emoji: '🥘' },
       { name: '칠리새우', emoji: '🦐' }, { name: '멘보샤', emoji: '🍤' },
+      { name: '볶음짬뽕', emoji: '🍜' }, { name: '삼선짬뽕', emoji: '🍜' },
+      { name: '군만두', emoji: '🥟' }, { name: '깐쇼새우', emoji: '🦐' },
+      { name: '마라로우', emoji: '🌶️' }, { name: '동파육', emoji: '🍖' },
     ],
   },
   japanese: {
@@ -95,6 +109,9 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
       { name: '나베', emoji: '🍲' }, { name: '차슈덮밥', emoji: '🍚' },
       { name: '에비텐동', emoji: '🍤' }, { name: '규카츠', emoji: '🥩' },
       { name: '연어덮밥', emoji: '🍣' }, { name: '스키야키', emoji: '🍲' },
+      { name: '히레카츠', emoji: '🥩' }, { name: '가라아게', emoji: '🍗' },
+      { name: '장어덮밥', emoji: '🐟' }, { name: '냉우동', emoji: '🍜' },
+      { name: '모밀', emoji: '🍝' }, { name: '치킨난반', emoji: '🍗' },
     ],
   },
   western: {
@@ -111,6 +128,9 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
       { name: '라자냐', emoji: '🧀' }, { name: '필레미뇽', emoji: '🥩' },
       { name: '치킨텐더', emoji: '🍗' }, { name: '피쉬앤칩스', emoji: '🐟' },
       { name: '타코', emoji: '🌮' }, { name: '부리또', emoji: '🌯' },
+      { name: '알리오올리오', emoji: '🍝' }, { name: '감바스', emoji: '🦐' },
+      { name: '미트볼파스타', emoji: '🍝' }, { name: '포케', emoji: '🥗' },
+      { name: '또띠아랩', emoji: '🌯' }, { name: '케사디아', emoji: '🧀' },
     ],
   },
   snack: {
@@ -126,6 +146,9 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
       { name: '라볶이', emoji: '🍜' }, { name: '계란빵', emoji: '🥚' },
       { name: '군고구마', emoji: '🍠' }, { name: '닭꼬치', emoji: '🍢' },
       { name: '주먹밥', emoji: '🍙' }, { name: '쫄면', emoji: '🍜' },
+      { name: '오뎅탕', emoji: '🍢' }, { name: '타코야끼', emoji: '🐙' },
+      { name: '소떡소떡', emoji: '🍢' }, { name: '감자핫도그', emoji: '🌭' },
+      { name: '치즈스틱', emoji: '🧀' }, { name: '군만두', emoji: '🥟' },
     ],
   },
   chicken: {
@@ -139,6 +162,11 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
       { name: '교촌치킨', emoji: '🍗' }, { name: '굽네치킨', emoji: '🍗' },
       { name: 'BBQ치킨', emoji: '🍗' }, { name: 'BHC치킨', emoji: '🍗' },
       { name: '네네치킨', emoji: '🍗' }, { name: '치킨윙', emoji: '🍗' },
+      { name: '핫크리스피', emoji: '🍗' }, { name: '치즈볼치킨', emoji: '🍗' },
+      { name: '반반치킨', emoji: '🍗' }, { name: '고추치킨', emoji: '🍗' },
+      { name: '맵단치킨', emoji: '🍗' }, { name: '치밥', emoji: '🍗' },
+      { name: '참숯치킨', emoji: '🍗' }, { name: '마늘보쌈치킨', emoji: '🍗' },
+      { name: '크리스피치킨', emoji: '🍗' },
     ],
   },
   fastfood: {
@@ -151,6 +179,9 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
       { name: '피자헛', emoji: '🍕' }, { name: '도미노피자', emoji: '🍕' },
       { name: '미스터피자', emoji: '🍕' }, { name: '타코벨', emoji: '🌮' },
       { name: '노브랜드버거', emoji: '🍔' }, { name: '이삭토스트', emoji: '🍞' },
+      { name: '다운타우너', emoji: '🍔' }, { name: '쉑쉑버거', emoji: '🍔' },
+      { name: '모스버거', emoji: '🍔' }, { name: '컴포즈커피', emoji: '☕' },
+      { name: '피자스쿨', emoji: '🍕' }, { name: '파파존스', emoji: '🍕' },
     ],
   },
   asian: {
@@ -166,19 +197,67 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
       { name: '소고기쌀국수', emoji: '🍜' }, { name: '탄탄면', emoji: '🍜' },
       { name: '마살라커리', emoji: '🍛' }, { name: '비리야니', emoji: '🍚' },
       { name: '난+커리', emoji: '🍛' }, { name: '훠궈', emoji: '🍲' },
+      { name: '바인미', emoji: '🥖' }, { name: '분보후에', emoji: '🍜' },
+      { name: '카레우동', emoji: '🍛' }, { name: '팟씨유', emoji: '🍝' },
+      { name: '솜땀', emoji: '🥗' }, { name: '양고기커리', emoji: '🍛' },
+      { name: '볶음밥(태국식)', emoji: '🍚' }, { name: '차슈라멘', emoji: '🍜' },
     ],
   },
+  dessert: {
+    emoji: '🍰',
+    items: [
+      { name: '빙수', emoji: '🍧' }, { name: '와플', emoji: '🧇' },
+      { name: '마카롱', emoji: '🍪' }, { name: '케이크', emoji: '🎂' },
+      { name: '아이스크림', emoji: '🍦' }, { name: '크로플', emoji: '🧇' },
+      { name: '호떡', emoji: '🫓' }, { name: '붕어빵', emoji: '🐟' },
+      { name: '에그타르트', emoji: '🥧' }, { name: '크레페', emoji: '🥞' },
+      { name: '츄러스', emoji: '🍩' }, { name: '도넛', emoji: '🍩' },
+      { name: '파르페', emoji: '🍨' }, { name: '티라미수', emoji: '🍰' },
+      { name: '브라우니', emoji: '🍫' }, { name: '스콘', emoji: '🧁' },
+      { name: '치즈케이크', emoji: '🍰' }, { name: '타르트', emoji: '🥧' },
+    ],
+  },
+  soup: {
+    emoji: '🍲',
+    items: [
+      { name: '갈비탕', emoji: '🍲' }, { name: '삼계탕', emoji: '🐔' },
+      { name: '곰탕', emoji: '🍲' }, { name: '설렁탕', emoji: '🍲' },
+      { name: '해장국', emoji: '🍲' }, { name: '육개장', emoji: '🍲' },
+      { name: '감자탕', emoji: '🍲' }, { name: '추어탕', emoji: '🐟' },
+      { name: '꽃게탕', emoji: '🦀' }, { name: '닭한마리', emoji: '🐔' },
+      { name: '부대찌개', emoji: '🍲' }, { name: '차돌된장찌개', emoji: '🍲' },
+      { name: '참치김치찌개', emoji: '🍲' }, { name: '고추장찌개', emoji: '🍲' },
+      { name: '청국장찌개', emoji: '🍲' }, { name: '사골국', emoji: '🦴' },
+      { name: '미역국', emoji: '🍲' }, { name: '만두국', emoji: '🥟' },
+    ],
+  },
+}
+
+// Hardcoded category labels (fallback for new categories without i18n keys)
+const CATEGORY_LABELS: Record<string, string> = {
+  korean: '한식',
+  meat: '고기',
+  seafood: '해산물',
+  chinese: '중식',
+  japanese: '일식',
+  western: '양식',
+  snack: '분식/간식',
+  chicken: '치킨',
+  fastfood: '패스트푸드',
+  asian: '아시안',
+  dessert: '디저트/카페',
+  soup: '국/탕/찌개',
 }
 
 const ALL_CATEGORIES = Object.keys(FOOD_DB)
 
 const SITUATION_PRESETS: Record<string, string[]> = {
   any: ALL_CATEGORIES,
-  solo: ['korean', 'snack', 'chicken', 'fastfood', 'japanese'],
-  group: ['korean', 'meat', 'chinese', 'chicken', 'seafood'],
-  date: ['japanese', 'western', 'asian', 'seafood', 'meat'],
-  lateNight: ['chicken', 'snack', 'chinese', 'korean', 'fastfood'],
-  hangover: ['korean'],
+  solo: ['korean', 'snack', 'chicken', 'fastfood', 'japanese', 'dessert'],
+  group: ['korean', 'meat', 'chinese', 'chicken', 'seafood', 'soup'],
+  date: ['japanese', 'western', 'asian', 'seafood', 'meat', 'dessert'],
+  lateNight: ['chicken', 'snack', 'chinese', 'korean', 'fastfood', 'soup'],
+  hangover: ['korean', 'soup'],
   diet: ['japanese', 'western', 'asian', 'korean', 'seafood'],
 }
 
@@ -203,6 +282,9 @@ const SEGMENT_COLORS = [
 
 const WHEEL_ITEM_COUNT = 10
 
+type PickerMode = 'roulette' | 'tournament' | 'top3'
+type TournamentPhase = 'setup' | 'playing' | 'finished'
+
 function shuffleArray<T>(arr: T[]): T[] {
   const shuffled = [...arr]
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -217,20 +299,33 @@ function getInitialWheelItems(): FoodItem[] {
   return shuffleArray(pool).slice(0, WHEEL_ITEM_COUNT)
 }
 
+// Find category for a food item
+function findCategory(item: FoodItem): string {
+  for (const [cat, data] of Object.entries(FOOD_DB)) {
+    if (data.items.some(f => f.name === item.name)) return cat
+  }
+  return 'korean'
+}
+
+// Tournament round labels
+function getRoundLabel(remaining: number): string {
+  if (remaining === 2) return '결승'
+  if (remaining === 4) return '준결승'
+  return `${remaining}강`
+}
+
 export default function MenuPicker() {
   const t = useTranslations('menuPicker')
 
-  // State
+  // Mode state
+  const [mode, setMode] = useState<PickerMode>('roulette')
+
+  // Shared state
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set(ALL_CATEGORIES))
   const [situation, setSituation] = useState<string>('any')
-  const [wheelItems, setWheelItems] = useState<FoodItem[]>(getInitialWheelItems)
-  const [spinning, setSpinning] = useState(false)
-  const [result, setResult] = useState<FoodItem | null>(null)
-  const [showResult, setShowResult] = useState(false)
   const [history, setHistory] = useState<FoodItem[]>([])
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showGuide, setShowGuide] = useState(false)
-  const [canvasSize, setCanvasSize] = useState(380)
   const [favorites, setFavorites] = useState<string[]>(() => {
     if (typeof window === 'undefined') return []
     try {
@@ -243,6 +338,28 @@ export default function MenuPicker() {
       return JSON.parse(sessionStorage.getItem('menuPicker_eaten') || '[]')
     } catch { return [] }
   })
+
+  // Roulette state
+  const [wheelItems, setWheelItems] = useState<FoodItem[]>(getInitialWheelItems)
+  const [spinning, setSpinning] = useState(false)
+  const [result, setResult] = useState<FoodItem | null>(null)
+  const [showResult, setShowResult] = useState(false)
+  const [canvasSize, setCanvasSize] = useState(380)
+
+  // Tournament state
+  const [tournamentSize, setTournamentSize] = useState<8 | 16>(8)
+  const [tournamentPhase, setTournamentPhase] = useState<TournamentPhase>('setup')
+  const [tournamentItems, setTournamentItems] = useState<FoodItem[]>([])
+  const [tournamentRound, setTournamentRound] = useState(0)
+  const [tournamentWinners, setTournamentWinners] = useState<FoodItem[]>([])
+  const [tournamentWinner, setTournamentWinner] = useState<FoodItem | null>(null)
+  const [tournamentAnim, setTournamentAnim] = useState(false)
+  const [tournamentPicked, setTournamentPicked] = useState<'left' | 'right' | null>(null)
+
+  // Top3 state
+  const [top3Items, setTop3Items] = useState<FoodItem[]>([])
+  const [top3Selected, setTop3Selected] = useState<FoodItem | null>(null)
+  const [top3Anim, setTop3Anim] = useState(false)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const rotationRef = useRef(0)
@@ -558,7 +675,112 @@ export default function MenuPicker() {
     })
   }, [])
 
+  // ── Tournament Logic ──
+  // tournamentItems = current round's items (shrinks each round)
+  // tournamentWinners = winners accumulated in current round
+  // When tournamentWinners.length === tournamentItems.length / 2, advance round
+
+  const startTournament = useCallback(() => {
+    if (itemPool.length < tournamentSize) return
+    const items = shuffleArray(itemPool).slice(0, tournamentSize)
+    setTournamentItems(items)
+    setTournamentRound(0)
+    setTournamentWinners([])
+    setTournamentWinner(null)
+    setTournamentPhase('playing')
+    setTournamentPicked(null)
+    setTournamentAnim(false)
+  }, [itemPool, tournamentSize])
+
+  // Current pair index = tournamentWinners.length (each winner represents one completed match)
+  const currentMatchup = useMemo(() => {
+    if (tournamentPhase !== 'playing' || tournamentItems.length < 2) return null
+    const pairIdx = tournamentWinners.length
+    const leftIdx = pairIdx * 2
+    const rightIdx = leftIdx + 1
+    if (rightIdx >= tournamentItems.length) return null
+    return {
+      left: tournamentItems[leftIdx],
+      right: tournamentItems[rightIdx],
+      totalInRound: tournamentItems.length,
+      matchNumber: pairIdx + 1,
+      totalMatches: tournamentItems.length / 2,
+    }
+  }, [tournamentPhase, tournamentItems, tournamentWinners])
+
+  const pickTournamentWinner = useCallback((side: 'left' | 'right') => {
+    if (!currentMatchup || tournamentPicked) return
+    const winner = side === 'left' ? currentMatchup.left : currentMatchup.right
+    setTournamentPicked(side)
+    setTournamentAnim(true)
+
+    setTimeout(() => {
+      setTournamentPicked(null)
+      setTournamentAnim(false)
+
+      const newWinners = [...tournamentWinners, winner]
+      const expectedWinners = tournamentItems.length / 2
+
+      if (newWinners.length >= expectedWinners) {
+        // Round complete
+        if (newWinners.length === 1) {
+          // Final winner!
+          setTournamentWinner(winner)
+          setTournamentPhase('finished')
+          setHistory(prev => [winner, ...prev.slice(0, 9)])
+        } else {
+          // Advance to next round
+          setTournamentItems(newWinners)
+          setTournamentWinners([])
+          setTournamentRound(prev => prev + 1)
+        }
+      } else {
+        // More matches in this round
+        setTournamentWinners(newWinners)
+      }
+    }, 600)
+  }, [currentMatchup, tournamentPicked, tournamentItems, tournamentWinners])
+
+  // ── Top 3 Logic ──
+  const drawTop3 = useCallback(() => {
+    if (itemPool.length < 3) return
+    setTop3Items(shuffleArray(itemPool).slice(0, 3))
+    setTop3Selected(null)
+    setTop3Anim(false)
+  }, [itemPool])
+
+  const selectTop3 = useCallback((item: FoodItem) => {
+    setTop3Selected(item)
+    setTop3Anim(true)
+    setHistory(prev => [item, ...prev.slice(0, 9)])
+  }, [])
+
+  // Initialize top3 when switching to that mode
+  useEffect(() => {
+    if (mode === 'top3' && top3Items.length === 0 && itemPool.length >= 3) {
+      drawTop3()
+    }
+  }, [mode, top3Items.length, itemPool.length, drawTop3])
+
   const situationKeys = ['any', 'solo', 'group', 'date', 'lateNight', 'hangover', 'diet'] as const
+
+  // Category label helper with fallback
+  const getCategoryLabel = useCallback((cat: string): string => {
+    try {
+      return t(`categoryLabels.${cat}`)
+    } catch {
+      return CATEGORY_LABELS[cat] || cat
+    }
+  }, [t])
+
+  // Safe translation helper - returns fallback label for keys that may not exist in i18n
+  const getCategoryLabelSafe = (cat: string): string => {
+    // For new categories without i18n keys, use hardcoded labels
+    if (cat === 'dessert' || cat === 'soup') {
+      return CATEGORY_LABELS[cat]
+    }
+    return getCategoryLabel(cat)
+  }
 
   return (
     <div className="space-y-6">
@@ -568,6 +790,45 @@ export default function MenuPicker() {
           {t('title')}
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
+      </div>
+
+      {/* Mode Selector */}
+      <div className="flex justify-center">
+        <div className="inline-flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1 gap-1">
+          <button
+            onClick={() => setMode('roulette')}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              mode === 'roulette'
+                ? 'bg-white dark:bg-gray-800 text-orange-600 dark:text-orange-400 shadow-md'
+                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            <Zap className="w-4 h-4" />
+            <span className="hidden sm:inline">룰렛</span>
+          </button>
+          <button
+            onClick={() => setMode('tournament')}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              mode === 'tournament'
+                ? 'bg-white dark:bg-gray-800 text-purple-600 dark:text-purple-400 shadow-md'
+                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            <Trophy className="w-4 h-4" />
+            <span className="hidden sm:inline">음식 월드컵</span>
+          </button>
+          <button
+            onClick={() => setMode('top3')}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              mode === 'top3'
+                ? 'bg-white dark:bg-gray-800 text-amber-600 dark:text-amber-400 shadow-md'
+                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            <Star className="w-4 h-4" />
+            <span className="hidden sm:inline">오늘의 추천 3</span>
+          </button>
+        </div>
       </div>
 
       {/* Situation Chips */}
@@ -609,7 +870,7 @@ export default function MenuPicker() {
               }`}
             >
               <span>{FOOD_DB[cat].emoji}</span>
-              <span>{t(`categoryLabels.${cat}`)}</span>
+              <span>{getCategoryLabelSafe(cat)}</span>
             </button>
           ))}
         </div>
@@ -641,105 +902,363 @@ export default function MenuPicker() {
         </div>
       )}
 
-      {/* Roulette Wheel */}
-      <div className="flex flex-col items-center">
-        <div className="relative">
-          <canvas
-            ref={canvasRef}
-            className="cursor-pointer"
-            onClick={spin}
-            style={{ width: canvasSize, height: canvasSize }}
-          />
-        </div>
+      {/* ══════════ ROULETTE MODE ══════════ */}
+      {mode === 'roulette' && (
+        <>
+          {/* Roulette Wheel */}
+          <div className="flex flex-col items-center">
+            <div className="relative">
+              <canvas
+                ref={canvasRef}
+                className="cursor-pointer"
+                onClick={spin}
+                style={{ width: canvasSize, height: canvasSize }}
+              />
+            </div>
 
-        {/* Buttons */}
-        <div className="flex gap-3 mt-4">
-          <button
-            onClick={handleShuffle}
-            disabled={spinning}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 transition-all text-sm font-medium"
-          >
-            <Shuffle className="w-4 h-4" />
-            {t('shuffle')}
-          </button>
-          <button
-            onClick={spin}
-            disabled={spinning || wheelItems.length === 0}
-            className={`flex items-center gap-2 px-8 py-2.5 rounded-lg font-bold text-white text-lg transition-all shadow-lg ${
-              spinning
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 hover:shadow-xl hover:scale-105 active:scale-95'
-            }`}
-          >
-            {spinning ? t('spinning') : t('spin')}
-          </button>
-        </div>
-      </div>
-
-      {/* Result Card */}
-      {result && (
-        <div
-          className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-500 ${
-            showResult ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
-          <div className="bg-gradient-to-r from-orange-500 to-red-500 px-6 py-3">
-            <p className="text-white font-semibold text-sm">{t('result')}</p>
-          </div>
-          <div className="p-6 text-center">
-            <div className="text-5xl mb-3">{result.emoji}</div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              {result.name}
-            </h2>
-            <div className="flex flex-wrap justify-center gap-2">
+            {/* Buttons */}
+            <div className="flex gap-3 mt-4">
               <button
-                onClick={handleRespin}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium hover:from-orange-600 hover:to-red-600 transition-all text-sm"
+                onClick={handleShuffle}
+                disabled={spinning}
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 transition-all text-sm font-medium"
               >
-                <RotateCcw className="w-4 h-4" />
-                {t('respin')}
-              </button>
-              <a
-                href={`https://map.naver.com/v5/search/${encodeURIComponent(result.name + ' 맛집')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all text-sm"
-              >
-                <Search className="w-4 h-4" />
-                {t('searchNaver')}
-              </a>
-              <button
-                onClick={() => copyResult(result.name)}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all text-sm"
-              >
-                {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                {copiedId === 'result' ? t('copied') : t('copy')}
+                <Shuffle className="w-4 h-4" />
+                {t('shuffle')}
               </button>
               <button
-                onClick={() => markEatenToday(result.name)}
-                disabled={eatenToday.includes(result.name)}
-                className="text-xs px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={spin}
+                disabled={spinning || wheelItems.length === 0}
+                className={`flex items-center gap-2 px-8 py-2.5 rounded-lg font-bold text-white text-lg transition-all shadow-lg ${
+                  spinning
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 hover:shadow-xl hover:scale-105 active:scale-95'
+                }`}
               >
-                {eatenToday.includes(result.name) ? '오늘 제외됨' : '오늘 이미 먹었어요'}
-              </button>
-              <button
-                onClick={() => toggleFavorite(result.name)}
-                className="text-xs px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-lg hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors"
-              >
-                {favorites.includes(result.name) ? '⭐ 즐겨찾기 해제' : '☆ 즐겨찾기 추가'}
+                {spinning ? t('spinning') : t('spin')}
               </button>
             </div>
-            {eatenToday.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-1 mt-3">
-                <span className="text-xs text-gray-500 dark:text-gray-400">오늘 제외:</span>
-                {eatenToday.map(name => (
-                  <span key={name} className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full line-through">
-                    {name}
-                  </span>
+          </div>
+
+          {/* Roulette Result Card */}
+          {result && (
+            <ResultCard
+              item={result}
+              show={showResult}
+              copiedId={copiedId}
+              eatenToday={eatenToday}
+              favorites={favorites}
+              onRespin={handleRespin}
+              onCopy={copyResult}
+              onMarkEaten={markEatenToday}
+              onToggleFavorite={toggleFavorite}
+              t={t}
+            />
+          )}
+        </>
+      )}
+
+      {/* ══════════ TOURNAMENT MODE ══════════ */}
+      {mode === 'tournament' && (
+        <div className="space-y-4">
+          {tournamentPhase === 'setup' && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center space-y-5">
+              <div>
+                <Trophy className="w-12 h-12 mx-auto text-purple-500 mb-3" />
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">음식 월드컵</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  두 메뉴 중 더 끌리는 것을 골라주세요!
+                </p>
+              </div>
+
+              <div className="flex justify-center gap-3">
+                {([8, 16] as const).map(size => (
+                  <button
+                    key={size}
+                    onClick={() => setTournamentSize(size)}
+                    className={`px-6 py-3 rounded-xl text-lg font-bold transition-all ${
+                      tournamentSize === size
+                        ? 'bg-purple-500 text-white shadow-lg scale-105'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    {size}강
+                  </button>
                 ))}
               </div>
+
+              {itemPool.length < tournamentSize ? (
+                <p className="text-sm text-red-500">
+                  선택된 카테고리에 메뉴가 부족합니다 ({itemPool.length}/{tournamentSize})
+                </p>
+              ) : (
+                <button
+                  onClick={startTournament}
+                  className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-bold text-lg hover:from-purple-600 hover:to-indigo-600 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+                >
+                  <Trophy className="w-5 h-5" />
+                  시작하기
+                </button>
+              )}
+            </div>
+          )}
+
+          {tournamentPhase === 'playing' && currentMatchup && (
+            <div className="space-y-4">
+              {/* Round info */}
+              <div className="text-center">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-bold">
+                  {getRoundLabel(currentMatchup.totalInRound)} ({currentMatchup.matchNumber}/{currentMatchup.totalMatches})
+                </span>
+              </div>
+
+              {/* VS Cards */}
+              <div className="grid grid-cols-2 gap-3 sm:gap-6">
+                {(['left', 'right'] as const).map(side => {
+                  const item = currentMatchup[side]
+                  const isPicked = tournamentPicked === side
+                  const isOther = tournamentPicked !== null && tournamentPicked !== side
+                  return (
+                    <button
+                      key={side}
+                      onClick={() => pickTournamentWinner(side)}
+                      disabled={!!tournamentPicked}
+                      className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-8 transition-all duration-500 flex flex-col items-center gap-3 ${
+                        isPicked
+                          ? 'ring-4 ring-purple-500 scale-105 shadow-xl shadow-purple-200 dark:shadow-purple-900/30'
+                          : isOther
+                          ? 'opacity-30 scale-95 grayscale'
+                          : 'hover:shadow-xl hover:scale-102 active:scale-95 cursor-pointer'
+                      }`}
+                    >
+                      <span className="text-5xl sm:text-6xl">{item.emoji}</span>
+                      <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white text-center">
+                        {item.name}
+                      </span>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+                        {CATEGORY_LABELS[findCategory(item)] || findCategory(item)}
+                      </span>
+                      {isPicked && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-purple-500/10 rounded-2xl">
+                          <Check className="w-10 h-10 text-purple-500" />
+                        </div>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+
+              {/* VS badge */}
+              <div className="flex justify-center -mt-2">
+                <div className={`relative -top-14 sm:-top-16 z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg ${
+                  tournamentAnim ? 'animate-bounce' : ''
+                }`}>
+                  <span className="text-white font-black text-sm sm:text-base">VS</span>
+                </div>
+              </div>
+
+              {/* Progress bar */}
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 -mt-8">
+                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-2">
+                  <span>진행률</span>
+                  <span>{Math.round((currentMatchup.matchNumber / currentMatchup.totalMatches) * 100)}%</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div
+                    className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full transition-all duration-500"
+                    style={{ width: `${((currentMatchup.matchNumber - 1) / currentMatchup.totalMatches) * 100}%` }}
+                  />
+                </div>
+              </div>
+
+              <div className="text-center">
+                <button
+                  onClick={() => setTournamentPhase('setup')}
+                  className="text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                >
+                  처음부터 다시
+                </button>
+              </div>
+            </div>
+          )}
+
+          {tournamentPhase === 'finished' && tournamentWinner && (
+            <div className="space-y-4">
+              {/* Winner celebration */}
+              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-2xl shadow-xl p-8 text-center relative overflow-hidden">
+                {/* Decorative sparkles */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {[...Array(12)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute text-yellow-400 animate-pulse"
+                      style={{
+                        left: `${10 + (i * 7) % 80}%`,
+                        top: `${5 + (i * 13) % 85}%`,
+                        animationDelay: `${i * 0.2}s`,
+                        fontSize: `${10 + (i % 3) * 6}px`,
+                      }}
+                    >
+                      ✨
+                    </div>
+                  ))}
+                </div>
+
+                <Trophy className="w-16 h-16 mx-auto text-yellow-500 mb-4" />
+                <p className="text-sm font-semibold text-yellow-600 dark:text-yellow-400 mb-2">
+                  우승!
+                </p>
+                <div className="text-6xl mb-4">{tournamentWinner.emoji}</div>
+                <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-2">
+                  {tournamentWinner.name}
+                </h2>
+                <span className="inline-block text-xs px-3 py-1 rounded-full bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 font-medium">
+                  {CATEGORY_LABELS[findCategory(tournamentWinner)] || findCategory(tournamentWinner)}
+                </span>
+
+                <div className="flex flex-wrap justify-center gap-2 mt-6">
+                  <button
+                    onClick={() => {
+                      setTournamentPhase('setup')
+                      setTournamentWinner(null)
+                    }}
+                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium hover:from-purple-600 hover:to-indigo-600 transition-all text-sm"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    다시 하기
+                  </button>
+                  <a
+                    href={`https://map.naver.com/v5/search/${encodeURIComponent(tournamentWinner.name + ' 맛집')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all text-sm"
+                  >
+                    <Search className="w-4 h-4" />
+                    {t('searchNaver')}
+                  </a>
+                  <button
+                    onClick={() => toggleFavorite(tournamentWinner.name)}
+                    className="text-sm px-4 py-2.5 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors font-medium"
+                  >
+                    {favorites.includes(tournamentWinner.name) ? '⭐ 즐겨찾기 해제' : '☆ 즐겨찾기'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ══════════ TOP 3 MODE ══════════ */}
+      {mode === 'top3' && (
+        <div className="space-y-4">
+          <div className="text-center">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
+              <Star className="w-5 h-5 text-amber-500" />
+              오늘의 추천 3
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              세 가지 중 하나를 골라보세요!
+            </p>
+          </div>
+
+          {top3Items.length >= 3 && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {top3Items.map((item, idx) => {
+                const isSelected = top3Selected?.name === item.name
+                const isUnselected = top3Selected !== null && !isSelected
+                const cat = findCategory(item)
+                return (
+                  <div
+                    key={`${item.name}-${idx}`}
+                    className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-500 ${
+                      isSelected
+                        ? 'ring-4 ring-amber-400 shadow-xl shadow-amber-200 dark:shadow-amber-900/30 scale-105'
+                        : isUnselected
+                        ? 'opacity-40 scale-95 grayscale'
+                        : 'hover:shadow-xl hover:-translate-y-1'
+                    }`}
+                  >
+                    {/* Card gradient top */}
+                    <div className={`h-2 ${
+                      idx === 0 ? 'bg-gradient-to-r from-rose-400 to-pink-400' :
+                      idx === 1 ? 'bg-gradient-to-r from-blue-400 to-cyan-400' :
+                      'bg-gradient-to-r from-amber-400 to-orange-400'
+                    }`} />
+
+                    <div className="p-6 text-center">
+                      <div className="text-5xl mb-3">{item.emoji}</div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                        {item.name}
+                      </h3>
+                      <span className="inline-block text-xs px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 mb-4">
+                        {CATEGORY_LABELS[cat] || cat}
+                      </span>
+
+                      <div className="space-y-2">
+                        {!top3Selected && (
+                          <button
+                            onClick={() => selectTop3(item)}
+                            className={`w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg font-bold text-white transition-all text-sm ${
+                              idx === 0 ? 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600' :
+                              idx === 1 ? 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600' :
+                              'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600'
+                            } hover:scale-105 active:scale-95`}
+                          >
+                            이거!
+                          </button>
+                        )}
+                        {isSelected && (
+                          <a
+                            href={`https://map.naver.com/v5/search/${encodeURIComponent(item.name + ' 맛집')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all text-sm"
+                          >
+                            <Search className="w-4 h-4" />
+                            주변 맛집 검색
+                            <ArrowRight className="w-3 h-3" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+
+                    {isSelected && top3Anim && (
+                      <div className="absolute top-3 right-3">
+                        <div className="w-8 h-8 rounded-full bg-amber-400 flex items-center justify-center shadow-lg animate-bounce">
+                          <Check className="w-5 h-5 text-white" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+
+          <div className="flex justify-center gap-3">
+            <button
+              onClick={drawTop3}
+              className="flex items-center gap-1.5 px-6 py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-sm"
+            >
+              <Shuffle className="w-4 h-4" />
+              {top3Selected ? '다시 뽑기' : '새로 뽑기'}
+            </button>
+            {top3Selected && (
+              <button
+                onClick={() => toggleFavorite(top3Selected.name)}
+                className="text-sm px-4 py-2.5 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors font-medium"
+              >
+                {favorites.includes(top3Selected.name) ? '⭐ 즐겨찾기 해제' : '☆ 즐겨찾기'}
+              </button>
             )}
           </div>
+
+          {itemPool.length < 3 && (
+            <p className="text-sm text-red-500 text-center">
+              선택된 카테고리에 메뉴가 부족합니다 (최소 3개 필요)
+            </p>
+          )}
         </div>
       )}
 
@@ -827,6 +1346,97 @@ export default function MenuPicker() {
             </details>
           ))}
         </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Result Card Component ──
+function ResultCard({
+  item,
+  show,
+  copiedId,
+  eatenToday,
+  favorites,
+  onRespin,
+  onCopy,
+  onMarkEaten,
+  onToggleFavorite,
+  t,
+}: {
+  item: FoodItem
+  show: boolean
+  copiedId: string | null
+  eatenToday: string[]
+  favorites: string[]
+  onRespin: () => void
+  onCopy: (text: string) => void
+  onMarkEaten: (name: string) => void
+  onToggleFavorite: (name: string) => void
+  t: ReturnType<typeof useTranslations>
+}) {
+  return (
+    <div
+      className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-500 ${
+        show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+      }`}
+    >
+      <div className="bg-gradient-to-r from-orange-500 to-red-500 px-6 py-3">
+        <p className="text-white font-semibold text-sm">{t('result')}</p>
+      </div>
+      <div className="p-6 text-center">
+        <div className="text-5xl mb-3">{item.emoji}</div>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          {item.name}
+        </h2>
+        <div className="flex flex-wrap justify-center gap-2">
+          <button
+            onClick={onRespin}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium hover:from-orange-600 hover:to-red-600 transition-all text-sm"
+          >
+            <RotateCcw className="w-4 h-4" />
+            {t('respin')}
+          </button>
+          <a
+            href={`https://map.naver.com/v5/search/${encodeURIComponent(item.name + ' 맛집')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all text-sm"
+          >
+            <Search className="w-4 h-4" />
+            {t('searchNaver')}
+          </a>
+          <button
+            onClick={() => onCopy(item.name)}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all text-sm"
+          >
+            {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+            {copiedId === 'result' ? t('copied') : t('copy')}
+          </button>
+          <button
+            onClick={() => onMarkEaten(item.name)}
+            disabled={eatenToday.includes(item.name)}
+            className="text-xs px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {eatenToday.includes(item.name) ? '오늘 제외됨' : '오늘 이미 먹었어요'}
+          </button>
+          <button
+            onClick={() => onToggleFavorite(item.name)}
+            className="text-xs px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-lg hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors"
+          >
+            {favorites.includes(item.name) ? '⭐ 즐겨찾기 해제' : '☆ 즐겨찾기 추가'}
+          </button>
+        </div>
+        {eatenToday.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-1 mt-3">
+            <span className="text-xs text-gray-500 dark:text-gray-400">오늘 제외:</span>
+            {eatenToday.map(name => (
+              <span key={name} className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full line-through">
+                {name}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
