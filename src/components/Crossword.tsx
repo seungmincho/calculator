@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { Clock, Check, Eye, RotateCcw, ChevronRight, BookOpen } from 'lucide-react'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Types ──
 interface ClueData {
@@ -332,6 +334,9 @@ export default function Crossword() {
   const [isRunning, setIsRunning] = useState(false)
   const [checkedOnce, setCheckedOnce] = useState(false)
   const gridRef = useRef<HTMLDivElement>(null)
+  const resultRecorded = useRef(false)
+
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
 
   const numberMap = useMemo(() => buildNumberMap(puzzle), [puzzle])
 
@@ -544,8 +549,12 @@ export default function Crossword() {
     if (allFilled && allCorrect) {
       setCompleted(true)
       setIsRunning(false)
+      if (!resultRecorded.current) {
+        resultRecorded.current = true
+        recordGameResult({ gameType: 'crossword', result: 'win', difficulty: 'normal', moves: 0 })
+      }
     }
-  }, [userGrid, puzzle, completed])
+  }, [userGrid, puzzle, completed, recordGameResult])
 
   // ── Check answers ──
   const handleCheck = useCallback(() => {
@@ -894,6 +903,13 @@ export default function Crossword() {
             </div>
           )}
 
+          {/* Achievements */}
+          <GameAchievements
+            achievements={achievements}
+            unlockedCount={unlockedCount}
+            totalCount={totalCount}
+          />
+
           {/* Guide */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
@@ -912,5 +928,9 @@ export default function Crossword() {
         </div>
       </div>
     </div>
+    <AchievementToast
+      achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+      onDismiss={dismissNewAchievements}
+    />
   )
 }

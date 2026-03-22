@@ -1270,6 +1270,7 @@
       "savingsCalculator": "적금 계산기",
       "stockCalculator": "주식 수익률 계산기",
       "retirementCalculator": "퇴직금 계산기",
+      "nationalPension": "국민연금 수령액 계산기",
       "taxCalculator": "세금 계산기",
       "exchangeCalculator": "환율 계산기",
       "realEstateCalculator": "부동산 계산기",
@@ -1420,6 +1421,7 @@
       "sleepCalculator": "수면 계산기",
       "presentationTimer": "프레젠테이션 타이머",
       "nutritionCalculator": "영양소 계산기",
+      "mealDiary": "식단/칼로리 일지",
       "unemploymentBenefit": "실업급여 계산기",
       "weeklyHolidayPay": "주휴수당 계산기",
       "chartStudio": "차트 스튜디오",
@@ -1455,6 +1457,8 @@
       "militaryDischarge": "전역일 계산기",
       "yearEndTax": "연말정산 계산기",
       "incomeTax": "종합소득세 계산기",
+      "lottoTax": "로또 당첨금 세금 계산기",
+      "salaryRank": "내 연봉 상위 몇 %?",
       "jeonseLoan": "전세대출 계산기",
       "dsrCalculator": "DSR 계산기",
       "marginCalculator": "마진 계산기",
@@ -3540,6 +3544,10 @@
         "title": "은퇴 계산기",
         "description": "은퇴 자금 준비 계획"
       },
+      "nationalPension": {
+        "title": "국민연금 수령액 계산기",
+        "description": "가입 기간·소득 기반 국민연금 예상 수령액, 조기/연기 수령 비교"
+      },
       "tax": {
         "title": "세금 계산기",
         "description": "종합소득세 및 각종 세금"
@@ -4068,6 +4076,10 @@
         "title": "영양소 계산기",
         "description": "한국 음식 데이터베이스로 식사별 칼로리·3대 영양소 계산"
       },
+      "mealDiary": {
+        "title": "식단/칼로리 일지",
+        "description": "매일 식단을 기록하고 칼로리·영양소 트렌드를 추적하세요"
+      },
       "noiseMeter": {
         "title": "소음 측정기",
         "description": "마이크로 실시간 데시벨(dB) 측정"
@@ -4283,6 +4295,14 @@
       "incomeTax": {
         "title": "종합소득세 계산기",
         "description": "프리랜서·사업자 종합소득세 자동 계산, 업종별 경비율·세액공제 반영"
+      },
+      "lottoTax": {
+        "title": "로또 당첨금 세금 계산기",
+        "description": "로또·복권 당첨금 세금(22%/33%) 자동 계산, 실수령액 확인"
+      },
+      "salaryRank": {
+        "title": "내 연봉 상위 몇 %?",
+        "description": "국세청·통계청 데이터 기반 연봉 순위, 나이·성별·직업군별 비교"
       },
       "jeonseLoan": {
         "title": "전세대출 계산기",
@@ -6719,6 +6739,14 @@
       "wineGlass": "와인잔 (150ml)",
       "makgeolliGlass": "막걸리잔 (300ml)"
     },
+    "linkCopied": "복사됨",
+    "copyLink": "링크 복사",
+    "addDrinksPrompt": "주류를 추가해주세요",
+    "quickAdd": "빠른 추가",
+    "addAndCalculate": "주류를 추가하고 계산해주세요",
+    "exceeded": "초과",
+    "within": "이내",
+    "peakBac": "최고 BAC: {value}%",
     "warning": "이 계산기는 참고용이며 실제 혈중알코올 농도와 차이가 있을 수 있습니다. 음주 후에는 절대 운전하지 마세요.",
     "guide": {
       "title": "혈중알코올 계산 가이드",
@@ -11423,6 +11451,8 @@
   "exerciseCalorie": {
     "title": "운동 칼로리 계산기",
     "description": "운동별 소모 칼로리를 MET(대사당량) 기반으로 정확하게 계산합니다.",
+    "linkCopied": "복사됨",
+    "copyLink": "링크 복사",
     "inputTitle": "기본 정보",
     "weight": "체중",
     "exercises": "운동 목록",
@@ -12498,6 +12528,8 @@
   "sleepCalculator": {
     "title": "수면 계산기",
     "description": "90분 수면 사이클을 기반으로 최적의 취침·기상 시간을 계산합니다",
+    "linkCopied": "복사됨",
+    "copyLink": "링크 복사",
     "currentTime": "현재 시각",
     "modeNow": "지금 잠들면",
     "modeWakeAt": "일어나야 할 시간",
@@ -12609,6 +12641,8 @@
   "nutritionCalculator": {
     "title": "영양소 계산기",
     "description": "한국 음식 데이터베이스 기반으로 식사의 칼로리와 3대 영양소(탄수화물·단백질·지방)를 계산합니다.",
+    "linkCopied": "복사됨",
+    "copyLink": "링크 복사",
     "searchPlaceholder": "음식 이름 검색...",
     "clearSearch": "검색어 지우기",
     "foodDatabase": "음식 데이터베이스",
@@ -13730,8 +13764,36 @@
       "snack": "분식",
       "chicken": "치킨",
       "fastfood": "패스트푸드",
-      "asian": "아시안"
+      "asian": "아시안",
+      "dessert": "디저트/카페",
+      "soup": "국/탕/찌개"
     },
+    "modeRoulette": "룰렛",
+    "modeTournament": "음식 월드컵",
+    "modeTop3": "오늘의 추천 3",
+    "favorites": "즐겨찾기",
+    "removeFavorite": "즐겨찾기 해제",
+    "addFavorite": "즐겨찾기 추가",
+    "tournamentDesc": "두 메뉴 중 더 끌리는 것을 골라주세요!",
+    "round": "{size}강",
+    "roundFinal": "결승",
+    "roundSemifinal": "준결승",
+    "notEnoughItems": "선택된 카테고리에 메뉴가 부족합니다 ({current}/{required})",
+    "start": "시작하기",
+    "progress": "진행률",
+    "restartTournament": "처음부터 다시",
+    "champion": "우승!",
+    "playAgain": "다시 하기",
+    "searchNearby": "주변 맛집 검색",
+    "top3Desc": "세 가지 중 하나를 골라보세요!",
+    "pickThis": "이거!",
+    "redraw": "다시 뽑기",
+    "drawNew": "새로 뽑기",
+    "notEnoughTop3": "선택된 카테고리에 메뉴가 부족합니다 (최소 3개 필요)",
+    "excludedToday": "오늘 제외됨",
+    "alreadyAte": "오늘 이미 먹었어요",
+    "todayExcluded": "오늘 제외:",
+    "restaurantSuffix": " 맛집",
     "faqTitle": "자주 묻는 질문",
     "faq": {
       "q1": {
@@ -14289,6 +14351,17 @@
       "countries": "나라",
       "fruits": "과일"
     },
+    "svgLabel": "행맨 그림: 틀린 횟수 {wrong}/{max}",
+    "wordDisplay": "단어 표시",
+    "unrevealed": "미공개",
+    "consonants": "자음",
+    "vowels": "모음",
+    "consonantLabel": "자음 {letter}",
+    "consonantUsed": "자음 {letter} (사용됨)",
+    "vowelLabel": "모음 {letter}",
+    "vowelUsed": "모음 {letter} (사용됨)",
+    "gameWon": "게임 승리",
+    "gameLost": "게임 패배",
     "guide": {
       "title": "단어 맞추기 가이드",
       "rules": {
@@ -17935,6 +18008,405 @@
           "탐구 과목은 변환 표준점수가 별도로 적용됩니다",
           "정확한 등급컷은 수능 성적 발표일에 한국교육과정평가원에서 공개됩니다"
         ]
+      }
+    }
+  },
+  "lottoTax": {
+    "title": "로또 당첨금 세금 계산기",
+    "description": "로또·복권 당첨금에 부과되는 세금을 계산하고 실수령액을 확인하세요",
+    "prizeAmount": "당첨금액",
+    "prizeAmountPlaceholder": "당첨 금액을 입력하세요",
+    "prizeType": "당첨 유형",
+    "prizeTypes": {
+      "lotto": "로또 6/45",
+      "pension": "연금복권 520+",
+      "speetto": "스피또",
+      "scratch": "즉석복권",
+      "custom": "기타 복권"
+    },
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "linkCopied": "복사됨",
+    "copyLink": "링크 복사",
+    "result": "세금 계산 결과",
+    "totalPrize": "당첨금액",
+    "taxBelow300m": "3억 이하 구간 세금",
+    "taxAbove300m": "3억 초과 구간 세금",
+    "totalTax": "총 세금",
+    "netPrize": "실수령액",
+    "effectiveRate": "실효세율",
+    "incomeTax": "소득세",
+    "localTax": "주민세",
+    "taxRate22": "22% (소득세 20% + 주민세 2%)",
+    "taxRate33": "33% (소득세 30% + 주민세 3%)",
+    "threshold": "3억원",
+    "belowThreshold": "3억 이하 구간",
+    "aboveThreshold": "3억 초과 구간",
+    "noTax": "비과세 (5만원 이하)",
+    "taxFree": "비과세",
+    "quickAmounts": "빠른 입력",
+    "rankPresets": "로또 등수별 평균 당첨금",
+    "rank1": "1등",
+    "rank2": "2등",
+    "rank3": "3등",
+    "rank4": "4등",
+    "rank5": "5등",
+    "avgPrize": "평균 당첨금",
+    "comparisonTitle": "당첨금별 세금 비교",
+    "comparisonDesc": "다양한 당첨금 금액에 대한 세금과 실수령액을 비교합니다",
+    "chartTitle": "당첨금 구성",
+    "chartNetPrize": "실수령액",
+    "chartTax": "세금",
+    "won": "원",
+    "man": "만",
+    "eok": "억",
+    "guide": {
+      "title": "복권 당첨금 세금 가이드",
+      "taxStructure": {
+        "title": "세금 구조",
+        "items": [
+          "5만원 이하: 비과세 (세금 없음)",
+          "5만원 초과 ~ 3억원 이하: 22% (소득세 20% + 주민세 2%)",
+          "3억원 초과: 33% (소득세 30% + 주민세 3%)",
+          "당첨금은 '기타소득'으로 분류되어 원천징수됩니다",
+          "별도 종합소득세 신고는 불필요합니다 (분리과세)"
+        ]
+      },
+      "claimProcess": {
+        "title": "당첨금 수령 절차",
+        "items": [
+          "5만원 이하: 복권 판매점에서 즉시 수령",
+          "5만원 초과 ~ 200만원: 농협은행 영업점",
+          "200만원 초과: 농협은행 본점 (신분증 필요)",
+          "1등 당첨금: NH농협은행 본점 1층 (서울 중구)",
+          "당첨일로부터 1년 이내에 수령해야 합니다"
+        ]
+      },
+      "tips": {
+        "title": "알아두면 좋은 점",
+        "items": [
+          "로또 1등 당첨 확률: 약 1/8,145,060",
+          "세금은 자동으로 원천징수되어 실수령액만 지급됩니다",
+          "연금복권은 매월 수령액에 대해 각각 과세됩니다",
+          "당첨금은 건강보험료 산정에 포함되지 않습니다",
+          "가족·지인에게 나눠주면 증여세가 부과될 수 있습니다"
+        ]
+      }
+    },
+    "faqTitle": "자주 묻는 질문",
+    "faq": {
+      "q1": {
+        "question": "로또 1등에 당첨되면 세금이 얼마나 되나요?",
+        "answer": "1등 평균 당첨금 약 20억원 기준, 3억원까지는 22%(6,600만원), 나머지 17억원은 33%(5억6,100만원)가 과세되어 총 약 6억2,700만원의 세금이 부과됩니다. 실수령액은 약 13억7,300만원입니다."
+      },
+      "q2": {
+        "question": "복권 당첨금에 종합소득세 신고를 해야 하나요?",
+        "answer": "아니요. 복권 당첨금은 분리과세 대상이므로 원천징수로 납세 의무가 완료됩니다. 별도 종합소득세 신고는 불필요합니다."
+      },
+      "q3": {
+        "question": "당첨금을 가족에게 나눠줘도 되나요?",
+        "answer": "가능하지만 증여세가 부과됩니다. 배우자는 6억원, 성인 자녀는 5천만원까지 비과세 증여가 가능하며, 초과분에 대해 10~50%의 증여세가 적용됩니다."
+      }
+    }
+  },
+  "nationalPension": {
+    "title": "국민연금 수령액 계산기",
+    "description": "가입 기간과 평균 소득을 기반으로 국민연금 예상 수령액을 계산합니다 (2025년 기준)",
+    "birthYear": "출생연도",
+    "year": "년",
+    "contributionYears": "가입 기간",
+    "yearUnit": "년",
+    "monthlyIncome": "월 평균 소득 (기준소득월액)",
+    "incomeMin": "하한",
+    "incomeMax": "상한",
+    "pensionStartAge": "수급개시연령",
+    "autoCalculated": "출생연도 기준 자동 계산",
+    "calculate": "계산하기",
+    "reset": "초기화",
+    "linkCopied": "복사됨",
+    "copyLink": "링크 복사",
+    "enterToCalculate": "정보를 입력하고 계산해주세요",
+    "minContribution": "최소 10년(120개월) 이상 가입해야 수급 가능합니다",
+    "earlyPension": "조기수령",
+    "normalPension": "정상수령",
+    "deferredPension": "연기수령",
+    "earlyDesc": "수급개시연령보다 최대 5년 일찍, 연 6% 감액",
+    "normalDesc": "수급개시연령에 맞춰 정상 수령",
+    "deferredDesc": "수급개시연령보다 최대 5년 연기, 연 7.2% 증액",
+    "recommended": "추천",
+    "startAge": "수령 시작",
+    "monthlyAmount": "월 수령액",
+    "yearlyAmount": "연 수령액",
+    "earlyReduction": "조기감액",
+    "deferredIncrease": "연기증액",
+    "standardAmount": "기본 연금액",
+    "totalComparison": "총 수령액 비교",
+    "totalBy80": "80세까지",
+    "totalBy85": "85세까지",
+    "totalBy90": "90세까지",
+    "cumulativeChart": "누적 수령액 추이",
+    "cumulativeDesc": "수령 시작 후 나이별 누적 수령액을 비교합니다",
+    "age": "세",
+    "cumulativeAmount": "누적 수령액",
+    "won": "원",
+    "man": "만",
+    "eok": "억",
+    "calculationDetails": "산출 근거",
+    "aValue": "A값 (전체 가입자 평균소득월액)",
+    "aValueDesc": "2024년 기준 전체 국민연금 가입자의 3년간 평균소득월액",
+    "bValue": "B값 (본인 기준소득월액 평균)",
+    "bValueDesc": "가입기간 중 본인의 월 평균 소득",
+    "replacementRate": "소득대체율",
+    "year2025": "2025년 기준",
+    "extraYears": "추가 가입년수 (20년 초과분)",
+    "extraYearsDesc": "20년 초과 가입 시 연 5%씩 추가 지급",
+    "guide": {
+      "title": "국민연금 수령액 가이드",
+      "formula": {
+        "title": "계산 공식",
+        "items": [
+          "기본연금액(월) = {소득대체율 × (A + B) × (1 + 0.05n)} / 12",
+          "A값: 전체 가입자 평균소득월액 (2024년 약 286만원)",
+          "B값: 본인의 가입기간 중 기준소득월액 평균",
+          "n: 20년 초과 가입연수 (20년 미만이면 0)",
+          "소득대체율: 2025년 42% (매년 0.5%p 감소, 2028년 40% 고정)"
+        ]
+      },
+      "earlyVsDeferred": {
+        "title": "조기수령 vs 연기수령",
+        "items": [
+          "조기수령: 최대 5년 일찍, 연 6% 감액 (최대 30% 감소). 빠른 수령이 필요할 때 유리",
+          "연기수령: 최대 5년 늦게, 연 7.2% 증액 (최대 36% 증가). 장수할수록 유리",
+          "평균 수명 기준으로는 정상수령이 가장 균형 잡힌 선택",
+          "건강 상태와 다른 수입원을 고려하여 결정하세요",
+          "조기수령 후 소득이 있으면 연금이 감액될 수 있습니다 (소득활동자 감액)"
+        ]
+      },
+      "requirements": {
+        "title": "수급 자격 요건",
+        "items": [
+          "최소 가입 기간: 10년 (120개월) 이상",
+          "수급개시연령: 출생연도에 따라 60~65세",
+          "조기수령: 가입 10년 이상 + 소득활동 미종사 + 수급개시연령 5년 전부터",
+          "유족연금: 가입기간 10년 이상 가입자 사망 시 유족에게 지급",
+          "장애연금: 가입 중 질병·부상으로 장애 발생 시 장애 등급에 따라 지급"
+        ]
+      }
+    },
+    "faqTitle": "자주 묻는 질문",
+    "faq": {
+      "q1": {
+        "question": "국민연금 최소 가입 기간은 얼마인가요?",
+        "answer": "노령연금을 받으려면 최소 10년(120개월) 이상 가입해야 합니다. 10년 미만이면 일시금으로 반환받습니다."
+      },
+      "q2": {
+        "question": "조기수령과 연기수령 중 무엇이 유리한가요?",
+        "answer": "평균 수명(약 83세)까지 산다면 총 수령액은 비슷합니다. 85세 이상 장수하면 연기수령이, 평균 수명보다 짧으면 조기수령이 유리합니다."
+      },
+      "q3": {
+        "question": "물가상승률이 반영되나요?",
+        "answer": "네, 국민연금은 매년 전년도 소비자물가변동률을 반영하여 연금액이 조정됩니다. 이 계산기에서는 물가상승률 미적용 기준 금액을 표시합니다."
+      }
+    }
+  },
+  "mealDiary": {
+    "title": "식단/칼로리 일지",
+    "description": "매일 식단을 기록하고 칼로리·영양소 트렌드를 추적하세요",
+    "linkCopied": "복사됨",
+    "copyLink": "링크 복사",
+    "today": "오늘",
+    "totalCalories": "총 칼로리",
+    "protein": "단백질",
+    "fat": "지방",
+    "carbs": "탄수화물",
+    "recommended": "권장량",
+    "breakfast": "아침",
+    "lunch": "점심",
+    "dinner": "저녁",
+    "snack": "간식",
+    "searchFood": "음식 이름 검색...",
+    "addFood": "추가",
+    "addManual": "직접 입력",
+    "customFood": "음식 이름",
+    "portion": "인분",
+    "delete": "삭제",
+    "cal": "kcal",
+    "gram": "g",
+    "note": "메모",
+    "notePlaceholder": "오늘의 식단 메모...",
+    "noMeals": "등록된 식사가 없습니다",
+    "addFirst": "위에서 음식을 검색하여 추가하세요",
+    "trendTitle": "칼로리 트렌드",
+    "trend7d": "7일",
+    "trend30d": "30일",
+    "dailyCalories": "일별 칼로리 섭취량",
+    "macroTrend": "영양소 트렌드",
+    "targetLine": "목표 2,000kcal",
+    "exportCsv": "CSV 내보내기",
+    "importCsv": "CSV 가져오기",
+    "importSuccess": "가져오기 완료!",
+    "importError": "가져오기 실패",
+    "foods": {
+      "rice": "흰 쌀밥",
+      "bibimbap": "비빔밥",
+      "kimchiFriedRice": "김치볶음밥",
+      "kimbap": "김밥",
+      "curryRice": "카레라이스",
+      "ramyeon": "라면",
+      "jajangmyeon": "짜장면",
+      "naengmyeon": "냉면",
+      "udong": "우동",
+      "japchae": "잡채",
+      "kimchiJjigae": "김치찌개",
+      "doenjangJjigae": "된장찌개",
+      "sundubuJjigae": "순두부찌개",
+      "miyeokguk": "미역국",
+      "samgyetang": "삼계탕",
+      "kimchi": "김치",
+      "gyeranjjim": "계란찜",
+      "dubuJorim": "두부조림",
+      "samgyeopsal": "삼겹살",
+      "bulgogi": "불고기",
+      "dakgalbi": "닭갈비",
+      "tonkatsu": "돈까스",
+      "tteokbokki": "떡볶이",
+      "friedChicken": "치킨",
+      "hotdog": "핫도그",
+      "bungeoppang": "붕어빵",
+      "americano": "아메리카노",
+      "cafeLatte": "카페라떼",
+      "cola": "콜라",
+      "hamburger": "햄버거",
+      "pizza": "피자",
+      "frenchFries": "감자튀김"
+    },
+    "guide": {
+      "title": "사용 가이드",
+      "howToUse": {
+        "title": "사용법",
+        "items": [
+          "날짜를 선택하고 식사 유형(아침/점심/저녁/간식)을 선택합니다",
+          "음식 이름을 검색하여 목록에서 추가하거나, '직접 입력'으로 수동 등록합니다",
+          "인분 수를 조절하면 칼로리와 영양소가 자동 계산됩니다",
+          "아래 트렌드 차트에서 7일/30일간의 섭취 추이를 확인하세요",
+          "CSV 내보내기로 데이터를 백업하거나 엑셀에서 분석할 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "식단 관리 팁",
+        "items": [
+          "성인 일일 권장 칼로리: 약 2,000kcal (활동량에 따라 다름)",
+          "탄수화물:단백질:지방 = 5:3:2 비율이 이상적입니다",
+          "기록만 해도 식습관 인식이 달라집니다 — 꾸준히 기록하세요",
+          "데이터는 브라우저에 90일간 보관됩니다"
+        ]
+      }
+    }
+  },
+  "salaryRank": {
+    "title": "내 연봉 상위 몇 %?",
+    "description": "국세청·통계청 공식 데이터 기반으로 내 연봉 순위를 확인하세요",
+    "annualSalary": "연간 총급여 (세전)",
+    "salaryPlaceholder": "연봉을 입력하세요",
+    "salaryHint": "세전 연봉 기준 (4대보험·세금 공제 전)",
+    "won": "원",
+    "calculate": "순위 확인",
+    "reset": "초기화",
+    "linkCopied": "복사됨",
+    "copyLink": "링크 복사",
+    "enterSalary": "연봉을 입력하고 순위를 확인하세요",
+    "ageGroup": "연령대 (선택)",
+    "gender": "성별 (선택)",
+    "industry": "직업군 (선택)",
+    "industryAll": "전체 직업군",
+    "ages": {
+      "20s": "20대",
+      "30s": "30대",
+      "40s": "40대",
+      "50s": "50대",
+      "60s": "60대"
+    },
+    "genders": {
+      "male": "남성",
+      "female": "여성"
+    },
+    "industries": {
+      "it": "IT/개발",
+      "finance": "금융/보험",
+      "medical": "의료/제약",
+      "civil": "공무원/공공",
+      "education": "교육",
+      "manufacturing": "제조업",
+      "construction": "건설",
+      "service": "서비스/유통",
+      "selfEmployed": "자영업",
+      "logistics": "물류/운송",
+      "media": "미디어/광고",
+      "legal": "법률/회계"
+    },
+    "dataSource": "데이터 출처",
+    "dataSourceDesc": "국세청 근로소득 백분위 통계 (2023 귀속), 통계청 경제활동인구조사, 고용노동부 고용형태별근로실태조사",
+    "yourSalary": "내 연봉",
+    "overallRank": "한국 전체 근로소득자 중",
+    "top": "상위",
+    "beatsPercent": "전체의 {percent}%보다 높습니다",
+    "share": "공유하기",
+    "ageComparison": "같은 연령대 비교",
+    "genderComparison": "같은 성별 비교",
+    "industryComparison": "같은 직업군 비교",
+    "median": "중위연봉",
+    "average": "평균연봉",
+    "distributionChart": "한국 근로소득 분포",
+    "workerPercent": "근로자 비율",
+    "chartNote": "파란 막대 = 내 위치 · 출처: 국세청 2023 근로소득 통계",
+    "contributeTitle": "익명 데이터 기여하기",
+    "contributeDesc": "내 정보를 익명으로 기여하면 더 정확한 통계를 만들 수 있습니다 (브라우저에만 저장)",
+    "contributeBtn": "기여하기",
+    "contributed": "감사합니다!",
+    "surveyStats": "현재 {count}명 참여 · 평균 연봉 {avg}원",
+    "guide": {
+      "title": "연봉 순위 가이드",
+      "howToRead": {
+        "title": "결과 읽는 법",
+        "items": [
+          "'상위 10%'는 100명 중 10번째 안에 든다는 뜻입니다",
+          "전체 순위는 한국 전체 근로소득자(약 2,000만 명) 기준입니다",
+          "연령대·성별·직업군별 순위는 해당 그룹 내 상대적 위치입니다",
+          "중위연봉은 정확히 중간(50%)에 해당하는 금액입니다"
+        ]
+      },
+      "dataExplain": {
+        "title": "데이터 설명",
+        "items": [
+          "국세청 근로소득 백분위: 연말정산 신고자 기준 총급여 분포",
+          "통계청 경제활동인구조사: 연령·성별 소득 분포",
+          "고용노동부 고용형태별근로실태조사: 직업군별 임금 현황",
+          "데이터는 2023 귀속(2024 공개) 기준이며, 매년 업데이트됩니다"
+        ]
+      },
+      "tips": {
+        "title": "참고사항",
+        "items": [
+          "연봉에는 기본급+상여금+수당이 포함됩니다 (비과세 제외)",
+          "자영업자·프리랜서 소득은 근로소득과 별도 통계입니다",
+          "물가 상승을 고려하면 실질 구매력은 명목 연봉과 다를 수 있습니다",
+          "같은 연봉이라도 지역(서울 vs 지방)에 따라 체감이 다릅니다"
+        ]
+      }
+    },
+    "faqTitle": "자주 묻는 질문",
+    "faq": {
+      "q1": {
+        "question": "한국 직장인 중위연봉은 얼마인가요?",
+        "answer": "2023년 기준 한국 근로소득자의 중위 총급여는 약 3,500만원입니다. 평균은 약 4,200만원이지만, 고소득자에 의해 상향 편향되므로 중위값이 더 대표적입니다."
+      },
+      "q2": {
+        "question": "상위 1%에 들려면 연봉이 얼마여야 하나요?",
+        "answer": "근로소득 기준 상위 1%는 약 2억원 이상입니다. 상위 5%는 약 1억1천만원, 상위 10%는 약 8,500만원 수준입니다."
+      },
+      "q3": {
+        "question": "데이터가 정확한가요?",
+        "answer": "국세청 연말정산 통계와 통계청 공식 조사를 기반으로 하되, 구간 보간은 추정치입니다. 정확한 백분위는 국세청 국세통계포털(TASIS)에서 확인하실 수 있습니다."
       }
     }
   }

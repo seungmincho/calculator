@@ -252,9 +252,13 @@ export const generateHistoryTitle = {
     return `${vehicleLabel}(${fuelLabel}) ${distance}km ${costText}천원`;
   },
 
-  // TODO: 이후에 추가할것
-  regex: (_inputs: Record<string, unknown>): string => {
-    return ''
+  regex: (inputs: Record<string, unknown>): string => {
+    const pattern = str(inputs.pattern, '');
+    const operation = str(inputs.operation, 'match');
+    const matchCount = Number(inputs.matchCount) || 0;
+    const opLabel = operation === 'replace' ? '치환' : operation === 'split' ? '분할' : '매칭';
+    const patternShort = pattern.length > 20 ? pattern.slice(0, 20) + '…' : pattern;
+    return `${opLabel} /${patternShort}/ ${matchCount}건`;
   },
   bmi: (inputs: Record<string, unknown>): string => {
     const height = Number(inputs.height) || 0;

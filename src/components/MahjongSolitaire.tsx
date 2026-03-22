@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { RotateCcw, Lightbulb, Shuffle, Clock, Trophy, RotateCw } from 'lucide-react'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ═══════════════════════════════════════════════════════════════
 // Types
@@ -268,6 +270,9 @@ export default function MahjongSolitaire() {
   const [shufflesUsed, setShufflesUsed] = useState(0)
   const [matchAnimation, setMatchAnimation] = useState<[number, number] | null>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const gameResultRecordedRef = useRef(false)
+
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
 
   // ── Initialize game ──
   const initGame = useCallback(() => {
@@ -292,6 +297,7 @@ export default function MahjongSolitaire() {
     setIsRunning(false)
     setShufflesUsed(0)
     setMatchAnimation(null)
+    gameResultRecordedRef.current = false
   }, [])
 
   useEffect(() => { initGame() }, [initGame])
@@ -313,14 +319,22 @@ export default function MahjongSolitaire() {
     if (remaining.length === 0) {
       setGameStatus('won')
       setIsRunning(false)
+      if (!gameResultRecordedRef.current) {
+        gameResultRecordedRef.current = true
+        recordGameResult({ gameType: 'mahjongSolitaire', result: 'win', difficulty: 'normal', moves: 0 })
+      }
       return
     }
     const pairs = findAvailablePairs(tiles)
     if (pairs.length === 0 && remaining.length > 0) {
       setGameStatus('stuck')
       setIsRunning(false)
+      if (!gameResultRecordedRef.current) {
+        gameResultRecordedRef.current = true
+        recordGameResult({ gameType: 'mahjongSolitaire', result: 'loss', difficulty: 'normal', moves: 0 })
+      }
     }
-  }, [tiles])
+  }, [tiles, recordGameResult])
 
   // ── Tile click handler ──
   const handleTileClick = useCallback((tileId: number) => {
@@ -644,6 +658,13 @@ export default function MahjongSolitaire() {
         </div>
       )}
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide section */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('guideTitle')}</h2>
@@ -680,6 +701,10 @@ export default function MahjongSolitaire() {
           </div>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

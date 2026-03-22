@@ -24,9 +24,10 @@
  * - guide.harmonic.title, guide.harmonic.items (array)
  */
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Copy, Check, Calculator, Plus, Trash2, BookOpen, BarChart3 } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface WeightedPair {
   id: number
@@ -38,6 +39,8 @@ let pairIdCounter = 2
 
 export default function AverageCalculator() {
   const t = useTranslations('averageCalc')
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [inputText, setInputText] = useState('')
   const [isWeightedMode, setIsWeightedMode] = useState(false)
@@ -45,6 +48,38 @@ export default function AverageCalculator() {
     { id: 0, value: '', weight: '1' },
     { id: 1, value: '', weight: '1' },
   ])
+
+  const updateURL = useCallback((newParams: Record<string, string>) => {
+    const params = new URLSearchParams(searchParams)
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value) {
+        params.set(key, value)
+      } else {
+        params.delete(key)
+      }
+    })
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }, [router, searchParams])
+
+  // Restore from URL on mount
+  useEffect(() => {
+    const data = searchParams.get('data')
+    if (!data) return
+    setInputText(data)
+    const mode = searchParams.get('mode')
+    if (mode === 'weighted') setIsWeightedMode(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Sync to URL when inputText or isWeightedMode changes
+  useEffect(() => {
+    if (inputText.trim()) {
+      updateURL({
+        data: inputText.trim(),
+        mode: isWeightedMode ? 'weighted' : '',
+      })
+    }
+  }, [inputText, isWeightedMode, updateURL])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {

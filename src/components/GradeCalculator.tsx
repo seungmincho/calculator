@@ -21,8 +21,9 @@
  * - error.invalidRank, error.rankExceedsTotal, error.required
  */
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Calculator, RotateCcw, Award, BarChart3, BookOpen, Info } from 'lucide-react'
 
 /** 9등급제 누적비율 상한 */
@@ -56,12 +57,43 @@ function calculateGrade(rank: number, totalStudents: number): GradeResult {
 
 export default function GradeCalculator() {
   const t = useTranslations('gradeCalc')
+  const router = useRouter()
+  const searchParams = useSearchParams()
 
   const [score, setScore] = useState('')
   const [rank, setRank] = useState('')
   const [totalStudents, setTotalStudents] = useState('')
   const [result, setResult] = useState<GradeResult | null>(null)
   const [error, setError] = useState('')
+
+  const updateURL = useCallback((newParams: Record<string, string>) => {
+    const params = new URLSearchParams(searchParams)
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value) {
+        params.set(key, value)
+      } else {
+        params.delete(key)
+      }
+    })
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }, [router, searchParams])
+
+  useEffect(() => {
+    const scoreParam = searchParams.get('score')
+    if (!scoreParam) return
+    const rankParam = searchParams.get('rank')
+    const totalParam = searchParams.get('total')
+    if (scoreParam && /^\d+(\.\d+)?$/.test(scoreParam)) setScore(scoreParam)
+    if (rankParam && /^\d+$/.test(rankParam)) setRank(rankParam)
+    if (totalParam && /^\d+$/.test(totalParam)) setTotalStudents(totalParam)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (score || rank || totalStudents) {
+      updateURL({ score, rank, total: totalStudents })
+    }
+  }, [score, rank, totalStudents, updateURL])
 
   const handleCalculate = useCallback(() => {
     setError('')

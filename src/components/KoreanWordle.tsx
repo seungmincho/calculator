@@ -6,6 +6,8 @@ import { BarChart3, HelpCircle, Share2, Check, X, Copy, Twitter } from 'lucide-r
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ═══════════════════════════════════════════════════════════
 // Types
@@ -665,6 +667,8 @@ export default function KoreanWordle() {
   const leaderboard = useLeaderboard('koreanWordle', undefined)
   const [showNameModal, setShowNameModal] = useState(false)
   const gameStartTimeRef = useRef<number>(Date.now())
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const resultRecordedRef = useRef(false)
 
   // Active word set for current mode
   const activeWordSet = useMemo(() => getWordSet(wordLength), [wordLength])
@@ -756,6 +760,23 @@ export default function KoreanWordle() {
         setShowNameModal(true)
       }
       leaderboard.fetchLeaderboard()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameStatus])
+
+  // ── Achievement recording ──
+  useEffect(() => {
+    if (gameStatus === 'playing') {
+      resultRecordedRef.current = false
+      return
+    }
+    if (resultRecordedRef.current) return
+    resultRecordedRef.current = true
+    const difficulty = wordLength === 2 ? 'easy' : wordLength === 3 ? 'normal' : 'hard'
+    if (gameStatus === 'won') {
+      recordGameResult({ gameType: 'koreanWordle', result: 'win', difficulty, moves: guesses.length })
+    } else if (gameStatus === 'lost') {
+      recordGameResult({ gameType: 'koreanWordle', result: 'loss', difficulty, moves: guesses.length })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus])
@@ -1657,6 +1678,12 @@ export default function KoreanWordle() {
         defaultName={leaderboard.savedPlayerName}
       />
 
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide Section */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
@@ -1730,6 +1757,10 @@ export default function KoreanWordle() {
           animation: fade-in 0.2s ease-out;
         }
       `}</style>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

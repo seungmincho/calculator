@@ -37,14 +37,14 @@ const VOWELS = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ
 const MAX_WRONG = 7
 
 // ── SVG Hangman drawing ────────────────────────────────────────────────────
-function HangmanSVG({ wrongCount }: { wrongCount: number }) {
+function HangmanSVG({ wrongCount, label }: { wrongCount: number; label: string }) {
   const isGameOver = wrongCount >= MAX_WRONG
   return (
     <svg
       viewBox="0 0 200 240"
       width="200"
       height="240"
-      aria-label={`행맨 그림: 틀린 횟수 ${wrongCount}/${MAX_WRONG}`}
+      aria-label={label}
       className="mx-auto"
     >
       {/* Gallows */}
@@ -230,7 +230,7 @@ export default function Hangman() {
       <div className="grid md:grid-cols-2 gap-6">
         {/* Left: Hangman figure */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col items-center">
-          <HangmanSVG wrongCount={wrongCount} />
+          <HangmanSVG wrongCount={wrongCount} label={t('svgLabel', { wrong: wrongCount, max: MAX_WRONG })} />
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {t('remainingTries')}: <span className={`font-bold text-lg ${remainingTries <= 2 ? 'text-red-500' : 'text-green-600 dark:text-green-400'}`}>{remainingTries}</span> / {MAX_WRONG}
@@ -249,7 +249,7 @@ export default function Hangman() {
 
           {/* Word display */}
           {word && (
-            <div className="flex flex-wrap gap-2 justify-center" aria-label="단어 표시">
+            <div className="flex flex-wrap gap-2 justify-center" aria-label={t('wordDisplay')}>
               {[...word].map((ch, i) => {
                 const revealed = isCharRevealed(ch, guessed)
                 return (
@@ -260,7 +260,7 @@ export default function Hangman() {
                         ? 'border-blue-500 text-gray-900 dark:text-white'
                         : 'border-gray-400 dark:border-gray-500 text-transparent'
                     }`}
-                    aria-label={revealed ? ch : '미공개'}
+                    aria-label={revealed ? ch : t('unrevealed')}
                   >
                     {revealed ? ch : '_'}
                   </div>
@@ -280,7 +280,7 @@ export default function Hangman() {
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
         {/* Consonants */}
         <div>
-          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">자음</p>
+          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('consonants')}</p>
           <div className="flex flex-wrap gap-1.5">
             {CONSONANTS.map((con) => {
               const used = guessed.has(con)
@@ -292,7 +292,7 @@ export default function Hangman() {
                   onClick={() => handleGuess(con)}
                   disabled={used || gameStatus !== 'playing'}
                   aria-pressed={used}
-                  aria-label={`자음 ${con}${used ? ' (사용됨)' : ''}`}
+                  aria-label={used ? t('consonantUsed', { letter: con }) : t('consonantLabel', { letter: con })}
                   className={`w-10 h-10 rounded-lg text-base font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                     isCorrect
                       ? 'bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 opacity-70 cursor-not-allowed'
@@ -310,7 +310,7 @@ export default function Hangman() {
 
         {/* Vowels */}
         <div>
-          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">모음</p>
+          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('vowels')}</p>
           <div className="flex flex-wrap gap-1.5">
             {VOWELS.map((vow) => {
               const used = guessed.has(vow)
@@ -322,7 +322,7 @@ export default function Hangman() {
                   onClick={() => handleGuess(vow)}
                   disabled={used || gameStatus !== 'playing'}
                   aria-pressed={used}
-                  aria-label={`모음 ${vow}${used ? ' (사용됨)' : ''}`}
+                  aria-label={used ? t('vowelUsed', { letter: vow }) : t('vowelLabel', { letter: vow })}
                   className={`w-10 h-10 rounded-lg text-base font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                     isCorrect
                       ? 'bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 opacity-70 cursor-not-allowed'
@@ -345,7 +345,7 @@ export default function Hangman() {
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
           role="dialog"
           aria-modal="true"
-          aria-label={gameStatus === 'won' ? '게임 승리' : '게임 패배'}
+          aria-label={gameStatus === 'won' ? t('gameWon') : t('gameLost')}
         >
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 mx-4 max-w-sm w-full text-center space-y-4">
             <div className="text-5xl">{gameStatus === 'won' ? '🎉' : '😢'}</div>

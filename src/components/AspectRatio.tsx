@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Monitor, ArrowLeftRight, Lock, Unlock, Maximize, BookOpen } from 'lucide-react'
 
 interface Preset {
@@ -12,12 +13,41 @@ interface Preset {
 
 export default function AspectRatio() {
   const t = useTranslations('aspectRatio')
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [width, setWidth] = useState<string>('1920')
   const [height, setHeight] = useState<string>('1080')
   const [isRatioLocked, setIsRatioLocked] = useState(false)
   const [lockedRatio, setLockedRatio] = useState<number | null>(null)
   const [targetWidth, setTargetWidth] = useState<string>('')
   const [targetHeight, setTargetHeight] = useState<string>('')
+
+  const updateURL = useCallback((newParams: Record<string, string>) => {
+    const params = new URLSearchParams(searchParams)
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value && value !== '0') {
+        params.set(key, value)
+      } else {
+        params.delete(key)
+      }
+    })
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }, [router, searchParams])
+
+  useEffect(() => {
+    const w = searchParams.get('w')
+    if (!w) return
+    const h = searchParams.get('h')
+    if (w && /^\d+(\.\d+)?$/.test(w)) setWidth(w)
+    if (h && /^\d+(\.\d+)?$/.test(h)) setHeight(h)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (width && height) {
+      updateURL({ w: width, h: height })
+    }
+  }, [width, height, updateURL])
 
   const presets: Preset[] = useMemo(() => [
     { name: t('presets.items.hd'), width: 1280, height: 720 },

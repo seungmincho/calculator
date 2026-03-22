@@ -233,21 +233,6 @@ const FOOD_DB: Record<string, { emoji: string; items: FoodItem[] }> = {
   },
 }
 
-// Hardcoded category labels (fallback for new categories without i18n keys)
-const CATEGORY_LABELS: Record<string, string> = {
-  korean: '한식',
-  meat: '고기',
-  seafood: '해산물',
-  chinese: '중식',
-  japanese: '일식',
-  western: '양식',
-  snack: '분식/간식',
-  chicken: '치킨',
-  fastfood: '패스트푸드',
-  asian: '아시안',
-  dessert: '디저트/카페',
-  soup: '국/탕/찌개',
-}
 
 const ALL_CATEGORIES = Object.keys(FOOD_DB)
 
@@ -307,12 +292,6 @@ function findCategory(item: FoodItem): string {
   return 'korean'
 }
 
-// Tournament round labels
-function getRoundLabel(remaining: number): string {
-  if (remaining === 2) return '결승'
-  if (remaining === 4) return '준결승'
-  return `${remaining}강`
-}
 
 export default function MenuPicker() {
   const t = useTranslations('menuPicker')
@@ -764,23 +743,18 @@ export default function MenuPicker() {
 
   const situationKeys = ['any', 'solo', 'group', 'date', 'lateNight', 'hangover', 'diet'] as const
 
-  // Category label helper with fallback
+  // Category label helper
   const getCategoryLabel = useCallback((cat: string): string => {
     try {
       return t(`categoryLabels.${cat}`)
     } catch {
-      return CATEGORY_LABELS[cat] || cat
+      return cat
     }
   }, [t])
 
-  // Safe translation helper - returns fallback label for keys that may not exist in i18n
-  const getCategoryLabelSafe = (cat: string): string => {
-    // For new categories without i18n keys, use hardcoded labels
-    if (cat === 'dessert' || cat === 'soup') {
-      return CATEGORY_LABELS[cat]
-    }
+  const getCategoryLabelSafe = useCallback((cat: string): string => {
     return getCategoryLabel(cat)
-  }
+  }, [getCategoryLabel])
 
   return (
     <div className="space-y-6">
@@ -804,7 +778,7 @@ export default function MenuPicker() {
             }`}
           >
             <Zap className="w-4 h-4" />
-            <span className="hidden sm:inline">룰렛</span>
+            <span className="hidden sm:inline">{t('modeRoulette')}</span>
           </button>
           <button
             onClick={() => setMode('tournament')}
@@ -815,7 +789,7 @@ export default function MenuPicker() {
             }`}
           >
             <Trophy className="w-4 h-4" />
-            <span className="hidden sm:inline">음식 월드컵</span>
+            <span className="hidden sm:inline">{t('modeTournament')}</span>
           </button>
           <button
             onClick={() => setMode('top3')}
@@ -826,7 +800,7 @@ export default function MenuPicker() {
             }`}
           >
             <Star className="w-4 h-4" />
-            <span className="hidden sm:inline">오늘의 추천 3</span>
+            <span className="hidden sm:inline">{t('modeTop3')}</span>
           </button>
         </div>
       </div>
@@ -883,7 +857,7 @@ export default function MenuPicker() {
       {favorites.length > 0 && (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
           <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
-            ⭐ 즐겨찾기
+            {`⭐ ${t('favorites')}`}
           </p>
           <div className="flex flex-wrap gap-2">
             {favorites.map(name => (
@@ -892,7 +866,7 @@ export default function MenuPicker() {
                 <button
                   onClick={() => toggleFavorite(name)}
                   className="text-yellow-500 hover:text-yellow-700 dark:hover:text-yellow-100 leading-none ml-0.5"
-                  title="즐겨찾기 해제"
+                  title={t('removeFavorite')}
                 >
                   ×
                 </button>
@@ -965,9 +939,9 @@ export default function MenuPicker() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center space-y-5">
               <div>
                 <Trophy className="w-12 h-12 mx-auto text-purple-500 mb-3" />
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">음식 월드컵</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('modeTournament')}</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  두 메뉴 중 더 끌리는 것을 골라주세요!
+                  {t('tournamentDesc')}
                 </p>
               </div>
 
@@ -982,14 +956,14 @@ export default function MenuPicker() {
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
-                    {size}강
+                    {t('round', { size })}
                   </button>
                 ))}
               </div>
 
               {itemPool.length < tournamentSize ? (
                 <p className="text-sm text-red-500">
-                  선택된 카테고리에 메뉴가 부족합니다 ({itemPool.length}/{tournamentSize})
+                  {t('notEnoughItems', { current: itemPool.length, required: tournamentSize })}
                 </p>
               ) : (
                 <button
@@ -997,7 +971,7 @@ export default function MenuPicker() {
                   className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-bold text-lg hover:from-purple-600 hover:to-indigo-600 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
                 >
                   <Trophy className="w-5 h-5" />
-                  시작하기
+                  {t('start')}
                 </button>
               )}
             </div>
@@ -1008,7 +982,7 @@ export default function MenuPicker() {
               {/* Round info */}
               <div className="text-center">
                 <span className="inline-block px-4 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-bold">
-                  {getRoundLabel(currentMatchup.totalInRound)} ({currentMatchup.matchNumber}/{currentMatchup.totalMatches})
+                  {currentMatchup.totalInRound === 2 ? t('roundFinal') : currentMatchup.totalInRound === 4 ? t('roundSemifinal') : t('round', { size: currentMatchup.totalInRound })} ({currentMatchup.matchNumber}/{currentMatchup.totalMatches})
                 </span>
               </div>
 
@@ -1036,7 +1010,7 @@ export default function MenuPicker() {
                         {item.name}
                       </span>
                       <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
-                        {CATEGORY_LABELS[findCategory(item)] || findCategory(item)}
+                        {getCategoryLabelSafe(findCategory(item))}
                       </span>
                       {isPicked && (
                         <div className="absolute inset-0 flex items-center justify-center bg-purple-500/10 rounded-2xl">
@@ -1060,7 +1034,7 @@ export default function MenuPicker() {
               {/* Progress bar */}
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 -mt-8">
                 <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-2">
-                  <span>진행률</span>
+                  <span>{t('progress')}</span>
                   <span>{Math.round((currentMatchup.matchNumber / currentMatchup.totalMatches) * 100)}%</span>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
@@ -1076,7 +1050,7 @@ export default function MenuPicker() {
                   onClick={() => setTournamentPhase('setup')}
                   className="text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
                 >
-                  처음부터 다시
+                  {t('restartTournament')}
                 </button>
               </div>
             </div>
@@ -1106,14 +1080,14 @@ export default function MenuPicker() {
 
                 <Trophy className="w-16 h-16 mx-auto text-yellow-500 mb-4" />
                 <p className="text-sm font-semibold text-yellow-600 dark:text-yellow-400 mb-2">
-                  우승!
+                  {t('champion')}
                 </p>
                 <div className="text-6xl mb-4">{tournamentWinner.emoji}</div>
                 <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-2">
                   {tournamentWinner.name}
                 </h2>
                 <span className="inline-block text-xs px-3 py-1 rounded-full bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 font-medium">
-                  {CATEGORY_LABELS[findCategory(tournamentWinner)] || findCategory(tournamentWinner)}
+                  {getCategoryLabelSafe(findCategory(tournamentWinner))}
                 </span>
 
                 <div className="flex flex-wrap justify-center gap-2 mt-6">
@@ -1125,10 +1099,10 @@ export default function MenuPicker() {
                     className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium hover:from-purple-600 hover:to-indigo-600 transition-all text-sm"
                   >
                     <RotateCcw className="w-4 h-4" />
-                    다시 하기
+                    {t('playAgain')}
                   </button>
                   <a
-                    href={`https://map.naver.com/v5/search/${encodeURIComponent(tournamentWinner.name + ' 맛집')}`}
+                    href={`https://map.naver.com/v5/search/${encodeURIComponent(tournamentWinner.name + t('restaurantSuffix'))}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all text-sm"
@@ -1140,7 +1114,7 @@ export default function MenuPicker() {
                     onClick={() => toggleFavorite(tournamentWinner.name)}
                     className="text-sm px-4 py-2.5 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors font-medium"
                   >
-                    {favorites.includes(tournamentWinner.name) ? '⭐ 즐겨찾기 해제' : '☆ 즐겨찾기'}
+                    {favorites.includes(tournamentWinner.name) ? '⭐ ' + t('removeFavorite') : '☆ ' + t('addFavorite')}
                   </button>
                 </div>
               </div>
@@ -1155,10 +1129,10 @@ export default function MenuPicker() {
           <div className="text-center">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
               <Star className="w-5 h-5 text-amber-500" />
-              오늘의 추천 3
+              {t('modeTop3')}
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              세 가지 중 하나를 골라보세요!
+              {t('top3Desc')}
             </p>
           </div>
 
@@ -1192,7 +1166,7 @@ export default function MenuPicker() {
                         {item.name}
                       </h3>
                       <span className="inline-block text-xs px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 mb-4">
-                        {CATEGORY_LABELS[cat] || cat}
+                        {getCategoryLabelSafe(cat)}
                       </span>
 
                       <div className="space-y-2">
@@ -1205,18 +1179,18 @@ export default function MenuPicker() {
                               'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600'
                             } hover:scale-105 active:scale-95`}
                           >
-                            이거!
+                            {t('pickThis')}
                           </button>
                         )}
                         {isSelected && (
                           <a
-                            href={`https://map.naver.com/v5/search/${encodeURIComponent(item.name + ' 맛집')}`}
+                            href={`https://map.naver.com/v5/search/${encodeURIComponent(item.name + t('restaurantSuffix'))}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-full flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all text-sm"
                           >
                             <Search className="w-4 h-4" />
-                            주변 맛집 검색
+                            {t('searchNearby')}
                             <ArrowRight className="w-3 h-3" />
                           </a>
                         )}
@@ -1242,21 +1216,21 @@ export default function MenuPicker() {
               className="flex items-center gap-1.5 px-6 py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-sm"
             >
               <Shuffle className="w-4 h-4" />
-              {top3Selected ? '다시 뽑기' : '새로 뽑기'}
+              {top3Selected ? t('redraw') : t('drawNew')}
             </button>
             {top3Selected && (
               <button
                 onClick={() => toggleFavorite(top3Selected.name)}
                 className="text-sm px-4 py-2.5 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors font-medium"
               >
-                {favorites.includes(top3Selected.name) ? '⭐ 즐겨찾기 해제' : '☆ 즐겨찾기'}
+                {favorites.includes(top3Selected.name) ? '⭐ ' + t('removeFavorite') : '☆ ' + t('addFavorite')}
               </button>
             )}
           </div>
 
           {itemPool.length < 3 && (
             <p className="text-sm text-red-500 text-center">
-              선택된 카테고리에 메뉴가 부족합니다 (최소 3개 필요)
+              {t('notEnoughTop3')}
             </p>
           )}
         </div>
@@ -1398,7 +1372,7 @@ function ResultCard({
             {t('respin')}
           </button>
           <a
-            href={`https://map.naver.com/v5/search/${encodeURIComponent(item.name + ' 맛집')}`}
+            href={`https://map.naver.com/v5/search/${encodeURIComponent(item.name + t('restaurantSuffix'))}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all text-sm"
@@ -1418,18 +1392,18 @@ function ResultCard({
             disabled={eatenToday.includes(item.name)}
             className="text-xs px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {eatenToday.includes(item.name) ? '오늘 제외됨' : '오늘 이미 먹었어요'}
+            {eatenToday.includes(item.name) ? t('excludedToday') : t('alreadyAte')}
           </button>
           <button
             onClick={() => onToggleFavorite(item.name)}
             className="text-xs px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-lg hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors"
           >
-            {favorites.includes(item.name) ? '⭐ 즐겨찾기 해제' : '☆ 즐겨찾기 추가'}
+            {favorites.includes(item.name) ? '⭐ ' + t('removeFavorite') : '☆ ' + t('addFavorite')}
           </button>
         </div>
         {eatenToday.length > 0 && (
           <div className="flex flex-wrap justify-center gap-1 mt-3">
-            <span className="text-xs text-gray-500 dark:text-gray-400">오늘 제외:</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">{t('todayExcluded')}</span>
             {eatenToday.map(name => (
               <span key={name} className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full line-through">
                 {name}

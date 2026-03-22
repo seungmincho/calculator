@@ -206,7 +206,7 @@ export default function SleepCalculator() {
           className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
         >
           {linkCopied ? <Check size={16} className="text-green-500" /> : <Link size={16} />}
-          {linkCopied ? '복사됨' : '링크 복사'}
+          {linkCopied ? t('linkCopied') : t('copyLink')}
         </button>
       </div>
 

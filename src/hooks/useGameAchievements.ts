@@ -47,6 +47,10 @@ export type GameType =
   | 'battleship'
   | 'dotsandboxes'
   | 'chess'
+  | 'koreanWordle'
+  | 'picross'
+  | 'mahjongSolitaire'
+  | 'crossword'
 
 const ALL_GAME_TYPES: GameType[] = [
   'omok',
@@ -57,6 +61,10 @@ const ALL_GAME_TYPES: GameType[] = [
   'battleship',
   'dotsandboxes',
   'chess',
+  'koreanWordle',
+  'picross',
+  'mahjongSolitaire',
+  'crossword',
 ]
 
 const STORAGE_KEY = 'game_achievements'

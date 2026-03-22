@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { RotateCcw, Share2, Trophy, Clock, Grid3X3, Calendar, Sparkles } from 'lucide-react'
+import { useGameAchievements } from '@/hooks/useGameAchievements'
+import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
 // ── Types ──
 type CellState = 0 | 1 | 2 // 0=empty, 1=filled, 2=marked-X
@@ -126,9 +128,12 @@ export default function Picross() {
   const [showConfetti, setShowConfetti] = useState(false)
   const [copiedShare, setCopiedShare] = useState(false)
 
+  const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const longPressRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const longPressFiredRef = useRef(false)
+  const winRecordedRef = useRef(false)
 
   // Current puzzle
   const solution = useMemo(() => generatePuzzle(gridSize, seed), [gridSize, seed])
@@ -146,6 +151,7 @@ export default function Picross() {
     setGameWon(false)
     setMistakes(0)
     setShowConfetti(false)
+    winRecordedRef.current = false
     if (timerRef.current) clearInterval(timerRef.current)
   }, [])
 
@@ -187,7 +193,13 @@ export default function Picross() {
     }
     setStats(newStats)
     saveStats(newStats)
-  }, [stats, gridSize, timer])
+
+    if (!winRecordedRef.current) {
+      winRecordedRef.current = true
+      const difficulty = gridSize === 5 ? 'easy' : gridSize === 10 ? 'normal' : 'hard'
+      recordGameResult({ gameType: 'picross', result: 'win', difficulty, moves: 0 })
+    }
+  }, [stats, gridSize, timer, recordGameResult])
 
   // Cell interaction
   const handleCellClick = useCallback((r: number, c: number) => {
@@ -557,6 +569,13 @@ export default function Picross() {
         </div>
       </div>
 
+      {/* Achievements */}
+      <GameAchievements
+        achievements={achievements}
+        unlockedCount={unlockedCount}
+        totalCount={totalCount}
+      />
+
       {/* Guide */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
@@ -590,6 +609,10 @@ export default function Picross() {
           </div>
         </div>
       </div>
+      <AchievementToast
+        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
+        onDismiss={dismissNewAchievements}
+      />
     </div>
   )
 }

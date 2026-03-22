@@ -183,7 +183,7 @@ export default function AlcoholCalculator() {
           className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors shrink-0"
         >
           {linkCopied ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-          {linkCopied ? '복사됨' : '링크 복사'}
+          {linkCopied ? t('linkCopied') : t('copyLink')}
         </button>
       </div>
 
@@ -258,7 +258,7 @@ export default function AlcoholCalculator() {
 
               {drinks.length === 0 ? (
                 <div className="text-center py-8 text-gray-500 dark:text-gray-400 text-sm">
-                  주류를 추가해주세요
+                  {t('addDrinksPrompt')}
                 </div>
               ) : (
                 <div className="space-y-3 max-h-64 overflow-y-auto">
@@ -332,7 +332,7 @@ export default function AlcoholCalculator() {
             {/* Quick Add Buttons */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                빠른 추가
+                {t('quickAdd')}
               </label>
               <div className="grid grid-cols-2 gap-2">
                 {QUICK_ADD_PRESETS.map((preset) => (
@@ -405,7 +405,7 @@ export default function AlcoholCalculator() {
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
             {!showResult || drinks.length === 0 ? (
               <div className="text-center py-16 text-gray-500 dark:text-gray-400">
-                주류를 추가하고 계산해주세요
+                {t('addAndCalculate')}
               </div>
             ) : (
               <>
@@ -442,7 +442,7 @@ export default function AlcoholCalculator() {
                         style={{ width: `${Math.min(100, (currentBAC / 0.03) * 100)}%` }}
                       />
                       <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-gray-900 dark:text-white">
-                        {currentBAC >= 0.03 ? '초과' : '이내'}
+                        {currentBAC >= 0.03 ? t('exceeded') : t('within')}
                       </div>
                     </div>
                   </div>
@@ -459,7 +459,7 @@ export default function AlcoholCalculator() {
                         style={{ width: `${Math.min(100, (currentBAC / 0.08) * 100)}%` }}
                       />
                       <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-gray-900 dark:text-white">
-                        {currentBAC >= 0.08 ? '초과' : '이내'}
+                        {currentBAC >= 0.08 ? t('exceeded') : t('within')}
                       </div>
                     </div>
                   </div>
@@ -498,7 +498,7 @@ export default function AlcoholCalculator() {
                 {/* Peak BAC Info */}
                 {timeSinceDrinking > 0 && (
                   <div className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                    최고 BAC: {peakBAC.toFixed(3)}%
+                    {t('peakBac', { value: peakBAC.toFixed(3) })}
                   </div>
                 )}
               </>

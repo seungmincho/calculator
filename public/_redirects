@@ -119,13 +119,16 @@
 /loan-schedule /loan-schedule/ 301
 /lorem-ipsum /lorem-ipsum/ 301
 /lotto-generator /lotto-generator/ 301
+/lotto-tax /lotto-tax/ 301
 /lunar-converter /lunar-converter/ 301
+/salary-rank /salary-rank/ 301
 /mahjong-solitaire /mahjong-solitaire/ 301
 /mancala /mancala/ 301
 /margin-calculator /margin-calculator/ 301
 /markdown-editor /markdown-editor/ 301
 /mbti-compatibility /mbti-compatibility/ 301
 /mbti-test /mbti-test/ 301
+/meal-diary /meal-diary/ 301
 /median-income /median-income/ 301
 /meeting-minutes /meeting-minutes/ 301
 /memory-game /memory-game/ 301
@@ -138,11 +141,13 @@
 /morse-code /morse-code/ 301
 /moving-cost /moving-cost/ 301
 /name-compatibility /name-compatibility/ 301
+/national-pension /national-pension/ 301
 /noise-meter /noise-meter/ 301
 /notepad /notepad/ 301
 /number-baseball /number-baseball/ 301
 /number-to-korean /number-to-korean/ 301
 /nutrition-calculator /nutrition-calculator/ 301
+/offline /offline/ 301
 /omok /omok/ 301
 /othello /othello/ 301
 /ovulation-calculator /ovulation-calculator/ 301
@@ -159,6 +164,7 @@
 /pomodoro /pomodoro/ 301
 /port-reference /port-reference/ 301
 /presentation-timer /presentation-timer/ 301
+/privacy /privacy/ 301
 /prompt-generator /prompt-generator/ 301
 /pyeong-calculator /pyeong-calculator/ 301
 /qr-generator /qr-generator/ 301
@@ -201,6 +207,7 @@
 /text-to-speech /text-to-speech/ 301
 /time-converter /time-converter/ 301
 /timer /timer/ 301
+/tips /tips/ 301
 /typing-test /typing-test/ 301
 /unemployment-benefit /unemployment-benefit/ 301
 /unit-converter /unit-converter/ 301

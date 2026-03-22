@@ -996,6 +996,7 @@
       "savingsCalculator": "Savings Calculator",
       "stockCalculator": "Stock Calculator",
       "retirementCalculator": "Retirement Calculator",
+      "nationalPension": "National Pension Calculator",
       "taxCalculator": "Tax Calculator",
       "exchangeCalculator": "Exchange Calculator",
       "realEstateCalculator": "Real Estate Calculator",
@@ -1146,6 +1147,7 @@
       "sleepCalculator": "Sleep Calculator",
       "presentationTimer": "Presentation Timer",
       "nutritionCalculator": "Nutrition Calculator",
+      "mealDiary": "Meal/Calorie Diary",
       "unemploymentBenefit": "Unemployment Benefits Calculator",
       "weeklyHolidayPay": "Weekly Holiday Pay Calculator",
       "chartStudio": "Chart Studio",
@@ -1181,6 +1183,8 @@
       "militaryDischarge": "Military Discharge Calculator",
       "yearEndTax": "Year-End Tax Settlement Calculator",
       "incomeTax": "Comprehensive Income Tax Calculator",
+      "lottoTax": "Lottery Prize Tax Calculator",
+      "salaryRank": "My Salary Rank - Top %?",
       "jeonseLoan": "Jeonse Loan Calculator",
       "dsrCalculator": "DSR Calculator",
       "marginCalculator": "Margin Calculator",
@@ -3540,6 +3544,10 @@
         "title": "Retirement Calculator",
         "description": "Plan your retirement savings"
       },
+      "nationalPension": {
+        "title": "National Pension Calculator",
+        "description": "Estimate pension benefits based on contribution period and income, compare early/normal/deferred options"
+      },
       "tax": {
         "title": "Tax Calculator",
         "description": "Income tax and various taxes"
@@ -4068,6 +4076,10 @@
         "title": "Nutrition Calculator",
         "description": "Calculate meal calories and macros with Korean food database"
       },
+      "mealDiary": {
+        "title": "Meal/Calorie Diary",
+        "description": "Track daily meals and monitor calorie & nutrient trends"
+      },
       "noiseMeter": {
         "title": "Noise Meter",
         "description": "Real-time decibel (dB) measurement via microphone"
@@ -4283,6 +4295,14 @@
       "incomeTax": {
         "title": "Comprehensive Income Tax Calculator",
         "description": "Auto-calculate income tax for freelancers & business owners with expense ratios and tax credits"
+      },
+      "lottoTax": {
+        "title": "Lottery Prize Tax Calculator",
+        "description": "Calculate taxes (22%/33%) on lottery winnings and see your actual take-home amount"
+      },
+      "salaryRank": {
+        "title": "My Salary Rank - Top %?",
+        "description": "See where your salary ranks in Korea based on official NTS & Statistics Korea data"
       },
       "jeonseLoan": {
         "title": "Jeonse Loan Calculator",
@@ -6719,6 +6739,14 @@
       "wineGlass": "Wine glass (150ml)",
       "makgeolliGlass": "Makgeolli glass (300ml)"
     },
+    "linkCopied": "Copied",
+    "copyLink": "Copy Link",
+    "addDrinksPrompt": "Please add drinks",
+    "quickAdd": "Quick Add",
+    "addAndCalculate": "Add drinks and calculate",
+    "exceeded": "Exceeded",
+    "within": "Within",
+    "peakBac": "Peak BAC: {value}%",
     "warning": "This calculator is for reference only and may differ from actual BAC. Never drive after drinking.",
     "guide": {
       "title": "Blood Alcohol Calculator Guide",
@@ -11423,6 +11451,8 @@
   "exerciseCalorie": {
     "title": "Exercise Calorie Calculator",
     "description": "Calculate calories burned during exercise based on MET (Metabolic Equivalent of Task).",
+    "linkCopied": "Copied",
+    "copyLink": "Copy Link",
     "inputTitle": "Basic Info",
     "weight": "Weight",
     "exercises": "Exercise List",
@@ -12498,6 +12528,8 @@
   "sleepCalculator": {
     "title": "Sleep Calculator",
     "description": "Calculate optimal bedtime and wake-up times based on 90-minute sleep cycles",
+    "linkCopied": "Copied",
+    "copyLink": "Copy Link",
     "currentTime": "Current Time",
     "modeNow": "If I sleep now",
     "modeWakeAt": "I need to wake at",
@@ -12609,6 +12641,8 @@
   "nutritionCalculator": {
     "title": "Nutrition Calculator",
     "description": "Calculate calories and macronutrients (carbs, protein, fat) for meals using a Korean food database.",
+    "linkCopied": "Copied",
+    "copyLink": "Copy Link",
     "searchPlaceholder": "Search food name...",
     "clearSearch": "Clear search",
     "foodDatabase": "Food Database",
@@ -13730,8 +13764,36 @@
       "snack": "Street Food",
       "chicken": "Chicken",
       "fastfood": "Fast Food",
-      "asian": "Asian"
+      "asian": "Asian",
+      "dessert": "Dessert/Cafe",
+      "soup": "Soup/Stew"
     },
+    "modeRoulette": "Roulette",
+    "modeTournament": "Food World Cup",
+    "modeTop3": "Today's Top 3",
+    "favorites": "Favorites",
+    "removeFavorite": "Remove Favorite",
+    "addFavorite": "Add to Favorites",
+    "tournamentDesc": "Pick the one you prefer between two menus!",
+    "round": "Round of {size}",
+    "roundFinal": "Final",
+    "roundSemifinal": "Semifinal",
+    "notEnoughItems": "Not enough items in selected categories ({current}/{required})",
+    "start": "Start",
+    "progress": "Progress",
+    "restartTournament": "Start Over",
+    "champion": "Champion!",
+    "playAgain": "Play Again",
+    "searchNearby": "Search Nearby",
+    "top3Desc": "Pick one of the three!",
+    "pickThis": "This one!",
+    "redraw": "Redraw",
+    "drawNew": "Draw New",
+    "notEnoughTop3": "Not enough items in selected categories (minimum 3 required)",
+    "excludedToday": "Excluded today",
+    "alreadyAte": "Already ate today",
+    "todayExcluded": "Excluded today:",
+    "restaurantSuffix": " restaurant",
     "faqTitle": "FAQ",
     "faq": {
       "q1": {
@@ -14289,6 +14351,17 @@
       "countries": "Countries",
       "fruits": "Fruits"
     },
+    "svgLabel": "Hangman figure: {wrong}/{max} wrong",
+    "wordDisplay": "Word display",
+    "unrevealed": "Hidden",
+    "consonants": "Consonants",
+    "vowels": "Vowels",
+    "consonantLabel": "Consonant {letter}",
+    "consonantUsed": "Consonant {letter} (used)",
+    "vowelLabel": "Vowel {letter}",
+    "vowelUsed": "Vowel {letter} (used)",
+    "gameWon": "You Win",
+    "gameLost": "You Lose",
     "guide": {
       "title": "Hangman Guide",
       "rules": {
@@ -17935,6 +18008,405 @@
           "Exploration subjects have separate converted standard scores",
           "Official cutoffs are released by KICE on score release date"
         ]
+      }
+    }
+  },
+  "lottoTax": {
+    "title": "Lottery Prize Tax Calculator",
+    "description": "Calculate taxes on lottery winnings and see your actual take-home amount",
+    "prizeAmount": "Prize Amount",
+    "prizeAmountPlaceholder": "Enter prize amount",
+    "prizeType": "Lottery Type",
+    "prizeTypes": {
+      "lotto": "Lotto 6/45",
+      "pension": "Pension Lottery 520+",
+      "speetto": "Speetto",
+      "scratch": "Scratch Card",
+      "custom": "Other Lottery"
+    },
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "linkCopied": "Copied",
+    "copyLink": "Copy Link",
+    "result": "Tax Calculation Result",
+    "totalPrize": "Prize Amount",
+    "taxBelow300m": "Tax on ≤300M KRW",
+    "taxAbove300m": "Tax on >300M KRW",
+    "totalTax": "Total Tax",
+    "netPrize": "Take-home Amount",
+    "effectiveRate": "Effective Tax Rate",
+    "incomeTax": "Income Tax",
+    "localTax": "Local Tax",
+    "taxRate22": "22% (Income 20% + Local 2%)",
+    "taxRate33": "33% (Income 30% + Local 3%)",
+    "threshold": "300M KRW",
+    "belowThreshold": "≤300M bracket",
+    "aboveThreshold": ">300M bracket",
+    "noTax": "Tax-free (≤50,000 KRW)",
+    "taxFree": "Tax-free",
+    "quickAmounts": "Quick Input",
+    "rankPresets": "Average Prize by Lotto Rank",
+    "rank1": "1st",
+    "rank2": "2nd",
+    "rank3": "3rd",
+    "rank4": "4th",
+    "rank5": "5th",
+    "avgPrize": "Avg. Prize",
+    "comparisonTitle": "Tax Comparison by Prize Amount",
+    "comparisonDesc": "Compare taxes and take-home amounts for various prize amounts",
+    "chartTitle": "Prize Breakdown",
+    "chartNetPrize": "Take-home",
+    "chartTax": "Tax",
+    "won": "KRW",
+    "man": "万",
+    "eok": "억",
+    "guide": {
+      "title": "Lottery Prize Tax Guide",
+      "taxStructure": {
+        "title": "Tax Structure",
+        "items": [
+          "≤50,000 KRW: Tax-free",
+          ">50,000 ~ ≤300M KRW: 22% (Income Tax 20% + Local Tax 2%)",
+          ">300M KRW: 33% (Income Tax 30% + Local Tax 3%)",
+          "Winnings are classified as 'other income' and withheld at source",
+          "No separate income tax filing is required (separate taxation)"
+        ]
+      },
+      "claimProcess": {
+        "title": "How to Claim",
+        "items": [
+          "≤50,000 KRW: Collect at any lottery retailer",
+          ">50,000 ~ ≤2M KRW: Any NH Bank branch",
+          ">2M KRW: NH Bank headquarters (ID required)",
+          "1st prize: NH Bank HQ 1st floor (Jung-gu, Seoul)",
+          "Must be claimed within 1 year of the draw date"
+        ]
+      },
+      "tips": {
+        "title": "Good to Know",
+        "items": [
+          "Lotto 1st prize odds: approximately 1 in 8,145,060",
+          "Taxes are automatically withheld — you receive the net amount",
+          "Pension lottery is taxed on each monthly payment",
+          "Winnings are not included in health insurance premium calculations",
+          "Sharing with family/friends may trigger gift tax"
+        ]
+      }
+    },
+    "faqTitle": "FAQ",
+    "faq": {
+      "q1": {
+        "question": "How much tax do I pay on a Lotto 1st prize?",
+        "answer": "Based on an average 1st prize of ~2B KRW: 22% on the first 300M (66M tax) and 33% on the remaining 1.7B (561M tax), totaling ~627M in taxes. Take-home is approximately 1.373B KRW."
+      },
+      "q2": {
+        "question": "Do I need to file income tax separately?",
+        "answer": "No. Lottery winnings are subject to separate taxation, so the withholding tax at source completes your tax obligation. No additional filing is needed."
+      },
+      "q3": {
+        "question": "Can I share my winnings with family?",
+        "answer": "Yes, but gift tax applies. Spouses can receive up to 600M KRW tax-free, adult children up to 50M KRW. Amounts beyond these thresholds are subject to 10-50% gift tax."
+      }
+    }
+  },
+  "nationalPension": {
+    "title": "National Pension Calculator",
+    "description": "Estimate your national pension benefits based on contribution period and average income (2025 standards)",
+    "birthYear": "Birth Year",
+    "year": "",
+    "contributionYears": "Contribution Period",
+    "yearUnit": "years",
+    "monthlyIncome": "Monthly Average Income",
+    "incomeMin": "Min",
+    "incomeMax": "Max",
+    "pensionStartAge": "Pension Start Age",
+    "autoCalculated": "Auto-calculated from birth year",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "linkCopied": "Copied",
+    "copyLink": "Copy Link",
+    "enterToCalculate": "Enter your information and calculate",
+    "minContribution": "Minimum 10 years (120 months) of contribution required",
+    "earlyPension": "Early Pension",
+    "normalPension": "Normal Pension",
+    "deferredPension": "Deferred Pension",
+    "earlyDesc": "Up to 5 years early, 6% reduction per year",
+    "normalDesc": "Standard pension at normal retirement age",
+    "deferredDesc": "Up to 5 years deferred, 7.2% increase per year",
+    "recommended": "Recommended",
+    "startAge": "Start Age",
+    "monthlyAmount": "Monthly Amount",
+    "yearlyAmount": "Yearly Amount",
+    "earlyReduction": "Early Reduction",
+    "deferredIncrease": "Deferred Increase",
+    "standardAmount": "Base Pension",
+    "totalComparison": "Total Benefit Comparison",
+    "totalBy80": "By age 80",
+    "totalBy85": "By age 85",
+    "totalBy90": "By age 90",
+    "cumulativeChart": "Cumulative Benefits",
+    "cumulativeDesc": "Compare cumulative benefits by age for all three options",
+    "age": "",
+    "cumulativeAmount": "Cumulative Amount",
+    "won": "KRW",
+    "man": "万",
+    "eok": "억",
+    "calculationDetails": "Calculation Details",
+    "aValue": "A Value (Average Monthly Income of All Contributors)",
+    "aValueDesc": "3-year average monthly income of all NPS contributors (2024)",
+    "bValue": "B Value (Your Average Monthly Income)",
+    "bValueDesc": "Your average monthly income during contribution period",
+    "replacementRate": "Income Replacement Rate",
+    "year2025": "2025 standard",
+    "extraYears": "Extra Years (beyond 20)",
+    "extraYearsDesc": "5% additional benefit per year beyond 20 years",
+    "guide": {
+      "title": "National Pension Guide",
+      "formula": {
+        "title": "Calculation Formula",
+        "items": [
+          "Monthly Basic = {Replacement Rate × (A + B) × (1 + 0.05n)} / 12",
+          "A: Average monthly income of all contributors (~2.86M KRW in 2024)",
+          "B: Your average monthly standard income during contribution",
+          "n: Years of contribution beyond 20 (0 if less than 20)",
+          "Replacement rate: 42% in 2025 (decreasing 0.5%p/year, fixed at 40% from 2028)"
+        ]
+      },
+      "earlyVsDeferred": {
+        "title": "Early vs Deferred",
+        "items": [
+          "Early: Up to 5 years early, 6%/year reduction (max 30%). Useful for those needing income sooner",
+          "Deferred: Up to 5 years late, 7.2%/year increase (max 36%). Better for longer life expectancy",
+          "Normal pension is the most balanced choice based on average life expectancy",
+          "Consider your health and other income sources when deciding",
+          "Early pension may be reduced if you have employment income"
+        ]
+      },
+      "requirements": {
+        "title": "Eligibility Requirements",
+        "items": [
+          "Minimum contribution: 10 years (120 months)",
+          "Pension start age: 60-65 depending on birth year",
+          "Early pension: 10+ years contribution + not working + from 5 years before start age",
+          "Survivor pension: Paid to survivors of contributors with 10+ years",
+          "Disability pension: Paid based on disability grade for illness/injury during contribution"
+        ]
+      }
+    },
+    "faqTitle": "FAQ",
+    "faq": {
+      "q1": {
+        "question": "What is the minimum contribution period?",
+        "answer": "You need at least 10 years (120 months) of contributions to receive the old-age pension. If less than 10 years, you receive a lump-sum refund."
+      },
+      "q2": {
+        "question": "Is early or deferred pension better?",
+        "answer": "If you live to average life expectancy (~83), total benefits are similar. Deferred is better if you live past 85, early is better if below average."
+      },
+      "q3": {
+        "question": "Is inflation adjustment included?",
+        "answer": "Yes, the national pension adjusts annually based on CPI changes. This calculator shows amounts without inflation adjustment."
+      }
+    }
+  },
+  "mealDiary": {
+    "title": "Meal/Calorie Diary",
+    "description": "Track daily meals and monitor calorie & nutrient trends",
+    "linkCopied": "Copied",
+    "copyLink": "Copy Link",
+    "today": "Today",
+    "totalCalories": "Total Calories",
+    "protein": "Protein",
+    "fat": "Fat",
+    "carbs": "Carbs",
+    "recommended": "Recommended",
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "snack": "Snack",
+    "searchFood": "Search food...",
+    "addFood": "Add",
+    "addManual": "Manual Entry",
+    "customFood": "Food name",
+    "portion": "servings",
+    "delete": "Delete",
+    "cal": "kcal",
+    "gram": "g",
+    "note": "Note",
+    "notePlaceholder": "Today's meal notes...",
+    "noMeals": "No meals recorded",
+    "addFirst": "Search and add foods above",
+    "trendTitle": "Calorie Trends",
+    "trend7d": "7 Days",
+    "trend30d": "30 Days",
+    "dailyCalories": "Daily Calorie Intake",
+    "macroTrend": "Macro Trends",
+    "targetLine": "Target 2,000kcal",
+    "exportCsv": "Export CSV",
+    "importCsv": "Import CSV",
+    "importSuccess": "Import complete!",
+    "importError": "Import failed",
+    "foods": {
+      "rice": "White Rice",
+      "bibimbap": "Bibimbap",
+      "kimchiFriedRice": "Kimchi Fried Rice",
+      "kimbap": "Kimbap",
+      "curryRice": "Curry Rice",
+      "ramyeon": "Ramyeon",
+      "jajangmyeon": "Jajangmyeon",
+      "naengmyeon": "Naengmyeon",
+      "udong": "Udon",
+      "japchae": "Japchae",
+      "kimchiJjigae": "Kimchi Jjigae",
+      "doenjangJjigae": "Doenjang Jjigae",
+      "sundubuJjigae": "Sundubu Jjigae",
+      "miyeokguk": "Seaweed Soup",
+      "samgyetang": "Samgyetang",
+      "kimchi": "Kimchi",
+      "gyeranjjim": "Steamed Egg",
+      "dubuJorim": "Braised Tofu",
+      "samgyeopsal": "Pork Belly",
+      "bulgogi": "Bulgogi",
+      "dakgalbi": "Dakgalbi",
+      "tonkatsu": "Tonkatsu",
+      "tteokbokki": "Tteokbokki",
+      "friedChicken": "Fried Chicken",
+      "hotdog": "Hot Dog",
+      "bungeoppang": "Fish Cake Bread",
+      "americano": "Americano",
+      "cafeLatte": "Cafe Latte",
+      "cola": "Cola",
+      "hamburger": "Hamburger",
+      "pizza": "Pizza",
+      "frenchFries": "French Fries"
+    },
+    "guide": {
+      "title": "User Guide",
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select a date and choose meal type (Breakfast/Lunch/Dinner/Snack)",
+          "Search for food in the database or use 'Manual Entry' to add custom items",
+          "Adjust portions to auto-calculate calories and nutrients",
+          "Check the trend charts below for 7-day or 30-day intake patterns",
+          "Export to CSV to backup data or analyze in Excel"
+        ]
+      },
+      "tips": {
+        "title": "Diet Tips",
+        "items": [
+          "Recommended daily intake for adults: ~2,000 kcal (varies by activity level)",
+          "Ideal ratio: Carbs:Protein:Fat = 5:3:2",
+          "Tracking alone improves food awareness — keep recording consistently",
+          "Data is stored in your browser for 90 days"
+        ]
+      }
+    }
+  },
+  "salaryRank": {
+    "title": "My Salary Rank - Top %?",
+    "description": "See where your salary ranks in Korea based on official data",
+    "annualSalary": "Annual Gross Salary (Pre-tax)",
+    "salaryPlaceholder": "Enter your annual salary",
+    "salaryHint": "Pre-tax gross salary (before deductions)",
+    "won": "KRW",
+    "calculate": "Check Rank",
+    "reset": "Reset",
+    "linkCopied": "Copied",
+    "copyLink": "Copy Link",
+    "enterSalary": "Enter your salary to check your rank",
+    "ageGroup": "Age Group (optional)",
+    "gender": "Gender (optional)",
+    "industry": "Industry (optional)",
+    "industryAll": "All Industries",
+    "ages": {
+      "20s": "20s",
+      "30s": "30s",
+      "40s": "40s",
+      "50s": "50s",
+      "60s": "60s"
+    },
+    "genders": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "industries": {
+      "it": "IT/Software",
+      "finance": "Finance/Insurance",
+      "medical": "Healthcare/Pharma",
+      "civil": "Government/Public",
+      "education": "Education",
+      "manufacturing": "Manufacturing",
+      "construction": "Construction",
+      "service": "Service/Retail",
+      "selfEmployed": "Self-employed",
+      "logistics": "Logistics/Transport",
+      "media": "Media/Advertising",
+      "legal": "Legal/Accounting"
+    },
+    "dataSource": "Data Source",
+    "dataSourceDesc": "NTS Income Percentile Statistics (2023), Statistics Korea Economically Active Population Survey, MOEL Employment Survey",
+    "yourSalary": "Your Salary",
+    "overallRank": "Among all Korean workers",
+    "top": "Top",
+    "beatsPercent": "Higher than {percent}% of all workers",
+    "share": "Share",
+    "ageComparison": "Same Age Group",
+    "genderComparison": "Same Gender",
+    "industryComparison": "Same Industry",
+    "median": "Median",
+    "average": "Average",
+    "distributionChart": "Korean Income Distribution",
+    "workerPercent": "Worker %",
+    "chartNote": "Blue bar = Your position · Source: NTS 2023 Income Statistics",
+    "contributeTitle": "Contribute Anonymous Data",
+    "contributeDesc": "Share your info anonymously to help build more accurate statistics (stored locally only)",
+    "contributeBtn": "Contribute",
+    "contributed": "Thank you!",
+    "surveyStats": "{count} participants · Average salary {avg} KRW",
+    "guide": {
+      "title": "Salary Rank Guide",
+      "howToRead": {
+        "title": "How to Read Results",
+        "items": [
+          "'Top 10%' means you're in the top 10 out of 100 workers",
+          "Overall rank is based on all Korean wage earners (~20 million)",
+          "Age/gender/industry ranks show your position within that group",
+          "Median salary is the exact middle (50th percentile) value"
+        ]
+      },
+      "dataExplain": {
+        "title": "About the Data",
+        "items": [
+          "NTS Income Percentiles: Based on year-end tax filing gross salary distribution",
+          "Statistics Korea: Age and gender income distribution surveys",
+          "MOEL Employment Survey: Industry-specific wage data",
+          "Data is based on 2023 tax year (published 2024), updated annually"
+        ]
+      },
+      "tips": {
+        "title": "Notes",
+        "items": [
+          "Salary includes base pay + bonuses + allowances (excluding tax-free items)",
+          "Self-employed/freelance income uses separate statistics",
+          "Real purchasing power may differ from nominal salary due to inflation",
+          "Same salary feels different depending on region (Seoul vs. rural areas)"
+        ]
+      }
+    },
+    "faqTitle": "FAQ",
+    "faq": {
+      "q1": {
+        "question": "What is the median salary in Korea?",
+        "answer": "As of 2023, the median gross salary of Korean workers is approximately 35M KRW. The average is about 42M KRW, but this is skewed upward by high earners, making the median more representative."
+      },
+      "q2": {
+        "question": "How much do I need to earn to be in the top 1%?",
+        "answer": "The top 1% of wage earners in Korea earn approximately 200M KRW or more. Top 5% is about 110M KRW, and top 10% is about 85M KRW."
+      },
+      "q3": {
+        "question": "How accurate is this data?",
+        "answer": "Based on official NTS tax filing statistics and Statistics Korea surveys. Interpolation between brackets is estimated. For exact percentiles, check the NTS TASIS portal."
       }
     }
   }
