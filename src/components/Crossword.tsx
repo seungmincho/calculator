@@ -620,6 +620,7 @@ export default function Crossword() {
   const fontSize = puzzle.size <= 7 ? 'text-lg sm:text-xl' : 'text-base sm:text-lg'
 
   return (
+    <>
     <div className="space-y-6">
       {/* Header */}
       <div>
@@ -932,5 +933,6 @@ export default function Crossword() {
       achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
       onDismiss={dismissNewAchievements}
     />
+    </>
   )
 }

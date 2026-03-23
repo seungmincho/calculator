@@ -98,6 +98,10 @@ src/
 - `BogeumjariLoanCalculator`: 보금자리론 (government housing loan) calculator
 - `MonthlyRentSubsidyCalculator`: 월세보조금 (rent subsidy) calculator
 - `MedianIncomeTable`: 중위소득 (median income) reference table
+- `LottoTaxCalculator`: Lottery prize tax (22%/33% brackets) with net amount
+- `NationalPensionCalculator`: National pension estimator (early/normal/deferred)
+- `SalaryRank`: Salary percentile rank by age/gender/industry (NTS data)
+- `MealDiary`: Daily meal/calorie diary with trend charts and CSV export
 
 #### Health & Fitness Tools (4 tools)
 - `BMICalculator`: Body mass index and health analysis

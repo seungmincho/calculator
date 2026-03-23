@@ -3,8 +3,9 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Check, Link, RotateCcw, BookOpen, ChevronDown, ChevronUp, Download, Share2, Trophy, Users, TrendingUp, BarChart3 } from 'lucide-react'
+import { Check, Link, RotateCcw, BookOpen, ChevronDown, ChevronUp, Download, Share2, Trophy, Users, TrendingUp, BarChart3, Loader2, AlertCircle } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts'
+import { submitSalarySurvey, getCommunityStats, getCommunityRank, type CommunityStats, type CommunityRank } from '@/utils/salarySurvey'
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // 공식 데이터: 국세청 근로소득 백분위 (2023 귀속, 2024 공개)
@@ -163,49 +164,8 @@ function calculateRank(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// 사용자 데이터 수집 (localStorage 기반, 향후 서버 연동 가능)
+// Supabase 기반 커뮤니티 데이터 수집
 // ═══════════════════════════════════════════════════════════════════════════════
-
-const SURVEY_KEY = 'salary_rank_survey'
-
-interface SurveyEntry {
-  salary: number
-  ageGroup: string
-  gender: string
-  industry: string
-  ts: number
-}
-
-function loadSurveyData(): SurveyEntry[] {
-  if (typeof window === 'undefined') return []
-  try {
-    const raw = localStorage.getItem(SURVEY_KEY)
-    return raw ? JSON.parse(raw) : []
-  } catch { return [] }
-}
-
-function saveSurveyEntry(entry: SurveyEntry) {
-  if (typeof window === 'undefined') return
-  try {
-    const data = loadSurveyData()
-    // 중복 방지: 같은 세션에서 같은 금액이면 업데이트
-    const existing = data.findIndex(e => Math.abs(e.ts - entry.ts) < 60000)
-    if (existing >= 0) data[existing] = entry
-    else data.push(entry)
-    // 최대 1000건 보관
-    const trimmed = data.slice(-1000)
-    localStorage.setItem(SURVEY_KEY, JSON.stringify(trimmed))
-  } catch { /* ignore */ }
-}
-
-function getSurveyStats() {
-  const data = loadSurveyData()
-  if (data.length < 10) return null
-  const salaries = data.map(d => d.salary).sort((a, b) => a - b)
-  const median = salaries[Math.floor(salaries.length / 2)]
-  const avg = Math.round(salaries.reduce((a, b) => a + b, 0) / salaries.length)
-  return { count: data.length, median, avg }
-}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // 유틸
@@ -260,9 +220,24 @@ export default function SalaryRank() {
   const [result, setResult] = useState<RankResult | null>(null)
   const [linkCopied, setLinkCopied] = useState(false)
   const [showGuide, setShowGuide] = useState(false)
-  const [surveyStats, setSurveyStats] = useState<ReturnType<typeof getSurveyStats>>(null)
   const [showContribute, setShowContribute] = useState(false)
   const [contributed, setContributed] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'already' | 'error'>('idle')
+  const [communityStats, setCommunityStats] = useState<CommunityStats | null>(null)
+  const [communityRank, setCommunityRank] = useState<CommunityRank | null>(null)
+  const [statsLoading, setStatsLoading] = useState(false)
+  const [isDark, setIsDark] = useState(false)
+
+  // Dark mode detection
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    const check = () => setIsDark(document.documentElement.classList.contains('dark') || mq.matches)
+    check()
+    const observer = new MutationObserver(check)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    mq.addEventListener('change', check)
+    return () => { observer.disconnect(); mq.removeEventListener('change', check) }
+  }, [])
 
   const updateURL = useCallback((params: Record<string, string>) => {
     const p = new URLSearchParams(searchParams)
@@ -272,10 +247,24 @@ export default function SalaryRank() {
     router.replace(`?${p.toString()}`, { scroll: false })
   }, [router, searchParams])
 
+  // Fetch community stats
+  const fetchStats = useCallback(async (salary?: number) => {
+    setStatsLoading(true)
+    try {
+      const [stats, rank] = await Promise.all([
+        getCommunityStats(),
+        salary ? getCommunityRank(salary) : Promise.resolve(null),
+      ])
+      setCommunityStats(stats)
+      setCommunityRank(rank)
+    } catch { /* ignore */ }
+    setStatsLoading(false)
+  }, [])
+
   // Restore from URL
   useEffect(() => {
     const s = searchParams.get('salary')
-    if (!s) return
+    if (!s) { fetchStats(); return }
     setSalaryInput(s)
     const a = searchParams.get('age') || ''
     const g = searchParams.get('gender') || ''
@@ -285,8 +274,10 @@ export default function SalaryRank() {
     if (i) setIndustry(i)
     if (/^\d+$/.test(s)) {
       setResult(calculateRank(Number(s), a, g, i))
+      fetchStats(Number(s))
+    } else {
+      fetchStats()
     }
-    setSurveyStats(getSurveyStats())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -296,19 +287,28 @@ export default function SalaryRank() {
     const res = calculateRank(salary, ageGroup, gender, industry)
     setResult(res)
     setContributed(false)
+    setSubmitStatus('idle')
     setShowContribute(true)
     updateURL({ salary: String(salary), age: ageGroup, gender, industry })
-    setSurveyStats(getSurveyStats())
+    fetchStats(salary)
     setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
-  }, [salaryInput, ageGroup, gender, industry, updateURL])
+  }, [salaryInput, ageGroup, gender, industry, updateURL, fetchStats])
 
-  const handleContribute = useCallback(() => {
+  const handleContribute = useCallback(async () => {
     const salary = Number(salaryInput.replace(/,/g, ''))
     if (!salary) return
-    saveSurveyEntry({ salary, ageGroup, gender, industry, ts: Date.now() })
-    setContributed(true)
-    setSurveyStats(getSurveyStats())
-  }, [salaryInput, ageGroup, gender, industry])
+    setSubmitStatus('loading')
+    const { success, error } = await submitSalarySurvey({ salary, ageGroup, gender, industry })
+    if (success) {
+      setContributed(true)
+      setSubmitStatus('idle')
+      fetchStats(salary) // refresh stats after contribution
+    } else if (error === 'already_submitted') {
+      setSubmitStatus('already')
+    } else {
+      setSubmitStatus('error')
+    }
+  }, [salaryInput, ageGroup, gender, industry, fetchStats])
 
   const handleReset = useCallback(() => {
     setSalaryInput('')
@@ -318,6 +318,8 @@ export default function SalaryRank() {
     setResult(null)
     setContributed(false)
     setShowContribute(false)
+    setSubmitStatus('idle')
+    setCommunityRank(null)
     updateURL({ salary: '', age: '', gender: '', industry: '' })
   }, [updateURL])
 
@@ -565,13 +567,16 @@ export default function SalaryRank() {
                 <div className="h-64">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={distributionData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" className="dark:opacity-20" />
-                      <XAxis dataKey="label" tick={{ fontSize: 10 }} />
-                      <YAxis tick={{ fontSize: 10 }} unit="%" />
-                      <Tooltip formatter={(value: number) => `${value}%`} />
+                      <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#374151' : '#e5e7eb'} />
+                      <XAxis dataKey="label" tick={{ fontSize: 10, fill: isDark ? '#9ca3af' : '#6b7280' }} />
+                      <YAxis tick={{ fontSize: 10, fill: isDark ? '#9ca3af' : '#6b7280' }} unit="%" />
+                      <Tooltip
+                        formatter={(value) => `${value}%`}
+                        contentStyle={{ backgroundColor: isDark ? '#1f2937' : '#fff', border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`, borderRadius: '8px', color: isDark ? '#f3f4f6' : '#111827' }}
+                      />
                       <Bar dataKey="pct" name={t('workerPercent')} radius={[4, 4, 0, 0]}>
                         {distributionData.map((entry, i) => (
-                          <Cell key={i} fill={entry.isYou ? '#3b82f6' : '#d1d5db'} />
+                          <Cell key={i} fill={entry.isYou ? '#3b82f6' : (isDark ? '#4b5563' : '#d1d5db')} />
                         ))}
                       </Bar>
                       {result && (
@@ -595,17 +600,121 @@ export default function SalaryRank() {
                       <span className="flex items-center gap-1 text-sm text-green-600 dark:text-green-400 font-medium">
                         <Check className="w-4 h-4" /> {t('contributed')}
                       </span>
+                    ) : submitStatus === 'already' ? (
+                      <span className="flex items-center gap-1 text-sm text-amber-600 dark:text-amber-400 font-medium">
+                        <AlertCircle className="w-4 h-4" /> {t('contributeAlready')}
+                      </span>
                     ) : (
-                      <button onClick={handleContribute}
-                        className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg transition-colors">
+                      <button onClick={handleContribute} disabled={submitStatus === 'loading'}
+                        className="px-4 py-2 bg-green-500 hover:bg-green-600 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5">
+                        {submitStatus === 'loading' && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                         {t('contributeBtn')}
                       </button>
                     )}
                   </div>
-                  {surveyStats && (
-                    <p className="text-xs text-green-600 dark:text-green-400 mt-2">
-                      {t('surveyStats', { count: surveyStats.count, avg: formatKRW(surveyStats.avg) })}
-                    </p>
+                  {submitStatus === 'error' && (
+                    <p className="text-xs text-red-500 mt-2">{t('contributeError')}</p>
+                  )}
+                </div>
+              )}
+
+              {/* Community Stats */}
+              {communityStats && communityStats.totalCount >= 5 && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
+                    <Users className="w-4 h-4 text-indigo-500" /> {t('community.title')}
+                    <span className="text-xs font-normal text-gray-400 dark:text-gray-500">({t('community.realtime')})</span>
+                  </h3>
+
+                  {/* Summary stats */}
+                  <div className="grid grid-cols-3 gap-3 mb-5">
+                    <div className="bg-indigo-50 dark:bg-indigo-950 rounded-lg p-3 text-center">
+                      <p className="text-xs text-indigo-600 dark:text-indigo-400">{t('community.participants')}</p>
+                      <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300">{communityStats.totalCount.toLocaleString()}{t('community.people')}</p>
+                    </div>
+                    <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3 text-center">
+                      <p className="text-xs text-blue-600 dark:text-blue-400">{t('community.avgSalary')}</p>
+                      <p className="text-lg font-bold text-blue-700 dark:text-blue-300">{formatKRW(communityStats.avgSalary)}</p>
+                    </div>
+                    <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-3 text-center">
+                      <p className="text-xs text-purple-600 dark:text-purple-400">{t('community.medianSalary')}</p>
+                      <p className="text-lg font-bold text-purple-700 dark:text-purple-300">{formatKRW(communityStats.medianSalary)}</p>
+                    </div>
+                  </div>
+
+                  {/* Community rank */}
+                  {communityRank && communityRank.total > 0 && (
+                    <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950 dark:to-purple-950 rounded-lg p-4 mb-5">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm text-indigo-700 dark:text-indigo-300">{t('community.yourRank')}</p>
+                        <p className="text-xl font-black text-indigo-700 dark:text-indigo-300">
+                          {t('top')} {Math.max(0.1, Math.round((100 - communityRank.percentile) * 10) / 10)}%
+                        </p>
+                      </div>
+                      <div className="mt-2 h-2.5 bg-indigo-200 dark:bg-indigo-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-indigo-500 rounded-full transition-all" style={{ width: `${communityRank.percentile}%` }} />
+                      </div>
+                      <p className="text-xs text-indigo-500 dark:text-indigo-400 mt-1.5">
+                        {t('community.rankDesc', { below: communityRank.below.toLocaleString(), total: communityRank.total.toLocaleString() })}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Age group breakdown */}
+                  {Object.keys(communityStats.byAge).length > 0 && (
+                    <div className="mb-4">
+                      <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">{t('community.byAge')}</p>
+                      <div className="space-y-1.5">
+                        {AGE_GROUPS.filter(ag => communityStats.byAge[ag]).map(ag => {
+                          const d = communityStats.byAge[ag]
+                          const maxAvg = Math.max(...Object.values(communityStats.byAge).map(v => v.avg))
+                          return (
+                            <div key={ag} className="flex items-center gap-2 text-xs">
+                              <span className="w-10 text-gray-500 dark:text-gray-400 shrink-0">{t(`ages.${ag}`)}</span>
+                              <div className="flex-1 h-5 bg-gray-100 dark:bg-gray-700 rounded overflow-hidden">
+                                <div className="h-full bg-blue-400 dark:bg-blue-600 rounded flex items-center px-1.5 text-white font-medium transition-all"
+                                  style={{ width: `${(d.avg / maxAvg) * 100}%`, minWidth: '2rem' }}>
+                                  {formatKRW(d.avg)}
+                                </div>
+                              </div>
+                              <span className="w-12 text-gray-400 dark:text-gray-500 text-right shrink-0">{d.count}{t('community.people')}</span>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Industry breakdown */}
+                  {Object.keys(communityStats.byIndustry).length > 0 && (
+                    <div>
+                      <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">{t('community.byIndustry')}</p>
+                      <div className="space-y-1.5">
+                        {INDUSTRIES.filter(ind => communityStats.byIndustry[ind]).map(ind => {
+                          const d = communityStats.byIndustry[ind]
+                          const maxAvg = Math.max(...Object.values(communityStats.byIndustry).map(v => v.avg))
+                          return (
+                            <div key={ind} className="flex items-center gap-2 text-xs">
+                              <span className="w-16 text-gray-500 dark:text-gray-400 truncate shrink-0">{t(`industries.${ind}`)}</span>
+                              <div className="flex-1 h-5 bg-gray-100 dark:bg-gray-700 rounded overflow-hidden">
+                                <div className="h-full bg-green-400 dark:bg-green-600 rounded flex items-center px-1.5 text-white font-medium transition-all"
+                                  style={{ width: `${(d.avg / maxAvg) * 100}%`, minWidth: '2rem' }}>
+                                  {formatKRW(d.avg)}
+                                </div>
+                              </div>
+                              <span className="w-12 text-gray-400 dark:text-gray-500 text-right shrink-0">{d.count}{t('community.people')}</span>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {statsLoading && (
+                    <div className="flex items-center justify-center gap-2 py-4 text-gray-400">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span className="text-xs">{t('community.loading')}</span>
+                    </div>
                   )}
                 </div>
               )}

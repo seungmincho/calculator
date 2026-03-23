@@ -18360,10 +18360,24 @@
     "workerPercent": "Worker %",
     "chartNote": "Blue bar = Your position · Source: NTS 2023 Income Statistics",
     "contributeTitle": "Contribute Anonymous Data",
-    "contributeDesc": "Share your info anonymously to help build more accurate statistics (stored locally only)",
+    "contributeDesc": "Share your salary anonymously to help build more accurate community statistics",
     "contributeBtn": "Contribute",
     "contributed": "Thank you!",
-    "surveyStats": "{count} participants · Average salary {avg} KRW",
+    "contributeAlready": "Already submitted today",
+    "contributeError": "An error occurred. Please try again later.",
+    "community": {
+      "title": "Community Live Statistics",
+      "realtime": "Live",
+      "participants": "Participants",
+      "people": "",
+      "avgSalary": "Average Salary",
+      "medianSalary": "Median Salary",
+      "yourRank": "Your Rank Among Participants",
+      "rankDesc": "Higher than {below} out of {total} participants",
+      "byAge": "Average Salary by Age",
+      "byIndustry": "Average Salary by Industry",
+      "loading": "Loading stats..."
+    },
     "guide": {
       "title": "Salary Rank Guide",
       "howToRead": {

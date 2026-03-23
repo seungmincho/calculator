@@ -413,7 +413,7 @@ export default function LottoTaxCalculator() {
                                   <Cell key={i} fill={PIE_COLORS[i]} />
                                 ))}
                               </Pie>
-                              <Tooltip formatter={(value: number) => value.toLocaleString() + t('won')} />
+                              <Tooltip formatter={(value) => `${Number(value).toLocaleString()}${t('won')}`} />
                             </PieChart>
                           </ResponsiveContainer>
                           <div className="flex justify-center gap-4 mt-1">
@@ -504,7 +504,7 @@ export default function LottoTaxCalculator() {
                       <CartesianGrid strokeDasharray="3 3" className="dark:opacity-20" />
                       <XAxis dataKey="label" tick={{ fontSize: 10 }} />
                       <YAxis tick={{ fontSize: 10 }} tickFormatter={(v: number) => formatKRW(v)} />
-                      <Tooltip formatter={(value: number) => value.toLocaleString() + t('won')} />
+                      <Tooltip formatter={(value) => `${Number(value).toLocaleString()}${t('won')}`} />
                       <Bar dataKey="net" name={t('chartNetPrize')} fill="#22c55e" stackId="a" />
                       <Bar dataKey="tax" name={t('chartTax')} fill="#ef4444" stackId="a" />
                     </BarChart>

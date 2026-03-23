@@ -506,7 +506,7 @@ export default function NationalPensionCalculator() {
                         tickFormatter={(v: number) => formatKRW(v)}
                       />
                       <Tooltip
-                        formatter={(value: number) => chartTooltipFormatter(value)}
+                        formatter={(value) => chartTooltipFormatter(Number(value))}
                         contentStyle={{
                           backgroundColor: 'var(--tooltip-bg, #fff)',
                           borderColor: '#e5e7eb',
@@ -545,8 +545,8 @@ export default function NationalPensionCalculator() {
                         tickFormatter={(v: number) => formatKRW(v)}
                       />
                       <Tooltip
-                        labelFormatter={(label: number) => `${label}${t('age')}`}
-                        formatter={(value: number, name: string) => [chartTooltipFormatter(value), name]}
+                        labelFormatter={(label) => `${label}${t('age')}`}
+                        formatter={(value, name) => [chartTooltipFormatter(Number(value)), name]}
                         contentStyle={{
                           backgroundColor: 'var(--tooltip-bg, #fff)',
                           borderColor: '#e5e7eb',

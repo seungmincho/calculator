@@ -18360,10 +18360,24 @@
     "workerPercent": "근로자 비율",
     "chartNote": "파란 막대 = 내 위치 · 출처: 국세청 2023 근로소득 통계",
     "contributeTitle": "익명 데이터 기여하기",
-    "contributeDesc": "내 정보를 익명으로 기여하면 더 정확한 통계를 만들 수 있습니다 (브라우저에만 저장)",
+    "contributeDesc": "내 연봉 정보를 익명으로 기여하면 더 정확한 커뮤니티 통계를 만들 수 있습니다",
     "contributeBtn": "기여하기",
     "contributed": "감사합니다!",
-    "surveyStats": "현재 {count}명 참여 · 평균 연봉 {avg}원",
+    "contributeAlready": "오늘 이미 참여했습니다",
+    "contributeError": "참여 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+    "community": {
+      "title": "커뮤니티 실시간 통계",
+      "realtime": "실시간",
+      "participants": "참여자",
+      "people": "명",
+      "avgSalary": "평균 연봉",
+      "medianSalary": "중위 연봉",
+      "yourRank": "참여자 중 내 순위",
+      "rankDesc": "{total}명 중 {below}명보다 높은 연봉",
+      "byAge": "연령대별 평균 연봉",
+      "byIndustry": "업종별 평균 연봉",
+      "loading": "통계 로딩 중..."
+    },
     "guide": {
       "title": "연봉 순위 가이드",
       "howToRead": {
