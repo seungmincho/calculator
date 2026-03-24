@@ -4,8 +4,9 @@ import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
   Sparkles, Copy, Check, Download, Share2, RefreshCw,
-  ChevronDown, ChevronLeft, ChevronRight, BookOpen,
+  ChevronLeft, ChevronRight,
 } from 'lucide-react'
+import GuideSection from '@/components/GuideSection'
 
 // ─── Type Data ───────────────────────────────────────────────
 interface TypeInfo {
@@ -121,7 +122,6 @@ export default function Enneagram() {
   const [currentQ, setCurrentQ] = useState(0)
   const [answers, setAnswers] = useState<number[]>(new Array(36).fill(0))
   const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [guideOpen, setGuideOpen] = useState(false)
 
   // Compute scores
   const scores = useMemo(() => {
@@ -696,57 +696,7 @@ export default function Enneagram() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <button
-          onClick={() => setGuideOpen(!guideOpen)}
-          className="w-full flex items-center justify-between text-left"
-        >
-          <div className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-indigo-500" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">에니어그램 가이드</h3>
-          </div>
-          <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${guideOpen ? 'rotate-180' : ''}`} />
-        </button>
-
-        {guideOpen && (
-          <div className="mt-6 space-y-6">
-            <div>
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">에니어그램이란?</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                에니어그램(Enneagram)은 그리스어 &apos;아홉&apos;(ennea)과 &apos;그림&apos;(gramma)에서 유래한 성격 유형 체계입니다.
-                인간의 성격을 9가지 기본 유형으로 분류하며, 각 유형은 고유한 세계관, 동기, 두려움을 가지고 있습니다.
-                단순한 성격 분류를 넘어 자기 이해, 대인관계 개선, 개인 성장의 도구로 널리 활용됩니다.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-3">9가지 유형 한눈에 보기</h4>
-              <div className="grid sm:grid-cols-3 gap-3">
-                {TYPES.map(t => (
-                  <div key={t.num} className="border border-gray-200 dark:border-gray-600 rounded-lg p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xl">{t.emoji}</span>
-                      <span className="font-semibold text-sm text-gray-900 dark:text-white">{t.num}. {t.name}</span>
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{t.traits}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">결과 활용 팁</h4>
-              <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1.5 list-disc list-inside">
-                <li>에니어그램 유형은 고정된 것이 아니라 성장과 스트레스에 따라 변화합니다.</li>
-                <li>날개(인접 유형)의 영향도 고려하면 더 정확한 자기 이해가 가능합니다.</li>
-                <li>모든 유형에는 건강한 상태와 불건강한 상태가 있으며, 성장 방향을 의식하세요.</li>
-                <li>대인관계에서 상대방의 유형을 이해하면 소통이 원활해집니다.</li>
-                <li>이 테스트는 참고용이며, 전문 상담을 대체하지 않습니다.</li>
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
+      <GuideSection namespace="enneagram" />
     </div>
   )
 }
