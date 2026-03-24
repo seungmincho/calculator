@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { Trophy, RotateCcw, Pause, Play, Gamepad2, Volume2, VolumeX } from 'lucide-react'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
+import GuideSection from '@/components/GuideSection'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type GameState = 'idle' | 'playing' | 'paused' | 'gameover' | 'levelclear'
@@ -1377,6 +1378,8 @@ export default function BreakoutGame() {
         achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
         onDismiss={dismissNewAchievements}
       />
+
+      <GuideSection namespace="breakoutGame" />
     </div>
   )
 }

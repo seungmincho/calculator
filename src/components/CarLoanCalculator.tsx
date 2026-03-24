@@ -6,6 +6,7 @@ import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
+import GuideSection from '@/components/GuideSection'
 
 interface CarLoanResult {
   monthlyPayment: number
@@ -475,6 +476,8 @@ export default function CarLoanCalculator() {
           </div>
         </div>
       </div>
+
+      <GuideSection namespace="carLoan" />
     </div>
   )
 }

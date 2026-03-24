@@ -6,6 +6,7 @@ import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
+import GuideSection from '@/components/GuideSection'
 
 interface CarTaxResult {
   acquisitionTax: number // 취득세
@@ -901,6 +902,8 @@ export default function CarTaxCalculator() {
           </div>
         </div>
       </div>
+
+      <GuideSection namespace="carTax" />
     </div>
   )
 }

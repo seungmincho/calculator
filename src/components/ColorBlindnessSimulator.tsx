@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Upload, Camera, Download, Info, ChevronDown, ChevronUp } from 'lucide-react'
+import GuideSection from '@/components/GuideSection'
 
 // ── CVD Transformation Matrices ──────────────────────────────────────────────
 // Based on Brettel/Viénot algorithm (simplified linear approximation)
@@ -751,6 +752,8 @@ export default function ColorBlindnessSimulator() {
         className="hidden"
         onChange={handleFileChange}
       />
+
+      <GuideSection namespace="colorBlindnessSimulator" />
     </div>
   )
 }

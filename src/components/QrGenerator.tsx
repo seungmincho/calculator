@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import GuideSection from '@/components/GuideSection'
 import QRCode from 'qrcode'
 import { 
   QrCode, 
@@ -878,6 +879,8 @@ const QrGenerator = () => {
           </div>
         </div>
       </div>
+
+      <GuideSection namespace="qrGenerator" />
     </div>
   )
 }

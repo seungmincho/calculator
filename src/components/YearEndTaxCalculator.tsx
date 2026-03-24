@@ -142,6 +142,7 @@ import { useState, useCallback, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Calculator, Share2, Check, ChevronRight, RotateCcw, BookOpen, AlertTriangle } from 'lucide-react'
+import GuideSection from '@/components/GuideSection'
 
 // ────────────────────────────────────────
 // Types
@@ -1174,6 +1175,8 @@ function YearEndTaxCalculatorContent() {
           </button>
         )}
       </div>
+
+      <GuideSection namespace="yearEndTaxCalc" />
     </div>
   )
 }

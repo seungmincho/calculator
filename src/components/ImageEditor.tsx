@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Upload, Download, RotateCw, RotateCcw, Square, Type, Palette, Sliders, Undo, Redo, Maximize, X, Save, Image as ImageIcon } from 'lucide-react';
+import GuideSection from '@/components/GuideSection';
 
 interface ImageDimensions {
   width: number;
@@ -1070,6 +1071,8 @@ const ImageEditor = () => {
 
         {/* Canvas for processing */}
         <canvas ref={canvasRef} className="hidden" />
+
+        <GuideSection namespace="imageEditor" />
 
         {/* Fullscreen close button */}
         {isFullscreen && (

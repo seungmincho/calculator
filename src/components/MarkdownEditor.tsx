@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import GuideSection from '@/components/GuideSection'
 
 // ── Markdown-to-HTML converter (no external libraries) ──────────────────────
 
@@ -900,6 +901,8 @@ export default function MarkdownEditor() {
         }
         .dark .md-preview .md-hr { background: #374151; }
       `}</style>
+
+      <GuideSection namespace="markdownEditor" />
     </div>
   )
 }

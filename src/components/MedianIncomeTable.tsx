@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Users, TrendingUp, Info, ChevronRight, Calculator, Building2, Heart, GraduationCap, Home, Stethoscope, Wallet, Baby, Briefcase, AlertCircle } from 'lucide-react';
+import GuideSection from '@/components/GuideSection';
 
 // 중위소득 데이터 (월/원) - [1인, 2인, 3인, 4인, 5인, 6인 가구]
 const medianIncomeData: Record<string, number[]> = {
@@ -968,6 +969,8 @@ const MedianIncomeTable = () => {
             ※ 기준 중위소득은 매년 보건복지부에서 고시하며, 각종 복지사업의 수급자 선정기준으로 활용됩니다.
           </div>
         </div>
+
+        <GuideSection namespace="medianIncome" />
       </div>
     </div>
   );

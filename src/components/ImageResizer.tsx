@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useCallback } from 'react';
 import { Upload, Download, RotateCcw, Maximize, Image as ImageIcon, Info, Settings, X } from 'lucide-react';
+import GuideSection from '@/components/GuideSection';
 
 interface ImageDimensions {
   width: number;
@@ -508,6 +509,8 @@ const ImageResizer = () => {
 
         {/* Canvas for processing */}
         <canvas ref={canvasRef} className="hidden" />
+
+        <GuideSection namespace="imageResizer" />
 
         {/* Fullscreen close button */}
         {isFullscreen && (

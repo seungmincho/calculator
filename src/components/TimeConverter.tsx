@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Globe, Copy, Check, Calendar, Timer, ArrowRightLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import GuideSection from '@/components/GuideSection';
 
 const TimeConverter = () => {
   const t = useTranslations('timeConverter');
@@ -880,6 +881,8 @@ const TimeConverter = () => {
             </div>
           </div>
         </div>
+
+        <GuideSection namespace="timeConverter" />
       </div>
     </div>
   );

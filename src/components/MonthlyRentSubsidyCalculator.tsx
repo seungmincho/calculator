@@ -6,6 +6,7 @@ import { Home, Heart, Users, Calculator, Share2, Check, Save, Info, AlertCircle,
 import { useTranslations } from 'next-intl';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
+import GuideSection from '@/components/GuideSection';
 
 const MonthlyRentSubsidyCalculatorContent = () => {
   const router = useRouter();
@@ -625,6 +626,8 @@ const MonthlyRentSubsidyCalculatorContent = () => {
           </div>
         </div>
       </div>
+
+      <GuideSection namespace="rentSubsidy" />
     </div>
   );
 };

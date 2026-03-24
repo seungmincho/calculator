@@ -24,6 +24,7 @@ import {
 } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
+import GuideSection from '@/components/GuideSection'
 
 function useCountdown(targetDate: Date) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -555,6 +556,8 @@ export default function TaxSeason() {
           ))}
         </div>
       </section>
+
+      <GuideSection namespace="taxSeason" />
 
       <RelatedTools />
     </div>

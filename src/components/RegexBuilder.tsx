@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { Copy, Check } from 'lucide-react'
+import GuideSection from '@/components/GuideSection'
 
 type Flag = 'g' | 'i' | 'm' | 's' | 'u'
 
@@ -456,6 +457,8 @@ export default function RegexBuilder() {
           ))}
         </div>
       </div>
+
+      <GuideSection namespace="regexBuilder" />
     </div>
   )
 }

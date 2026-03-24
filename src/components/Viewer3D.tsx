@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import GuideSection from '@/components/GuideSection'
 import {
   Upload, RotateCcw, Maximize2, Camera, Play, Pause, Grid3X3, Box,
   RefreshCw, Square, Film, Layers, Download, Settings, Printer, FileType,
@@ -1727,6 +1728,8 @@ export default function Viewer3D() {
           </div>
         </div>
       </div>
+
+      <GuideSection namespace="viewer3d" />
     </div>
   )
 }

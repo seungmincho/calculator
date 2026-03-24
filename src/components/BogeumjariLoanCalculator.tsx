@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Home, Calculator, Share2, Check, Save, Info, AlertCircle, CheckCircle, Baby, Heart, Users } from 'lucide-react';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
+import GuideSection from '@/components/GuideSection';
 
 type LoanType = 'general' | 'first' | 'newlywed' | 'multichild';
 
@@ -737,6 +738,8 @@ const BogeumjariLoanCalculatorContent = () => {
           주택가격 6억원 이하, 전용면적 85㎡ 이하 주택에 한해 적용됩니다.
         </p>
       </div>
+
+      <GuideSection namespace="bogeumjariLoan" />
     </div>
   );
 };

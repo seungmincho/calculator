@@ -191,6 +191,29 @@
       "sydney": "Sydney (AEDT/AEST)",
       "chicago": "Chicago (CST/CDT)",
       "denver": "Denver (MST/MDT)"
+    },
+    "guide": {
+      "title": "Time Converter Guide",
+      "whatIs": {
+        "title": "What is the Time Converter?",
+        "description": "Convert time zones in real-time across major cities worldwide, and convert between Unix timestamps and dates. Supports 12+ major time zones including KST, UTC, EST/PST, CET, and JST."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Select source and target time zones, then enter date and time to convert.", "In the Unix Timestamp tab, enter a number to convert to KST/UTC/ISO 8601 format.", "The Relative Time tab shows how long ago or until a given time.", "Click copy to save converted times to clipboard."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["New York (EST) is 14 hours behind Korea (13 during DST).", "Unix timestamps count seconds since Jan 1, 1970 00:00:00 UTC.", "DST regions change UTC offsets seasonally - verify when converting US/EU times.", "Use this to convert server log UTC timestamps to local time."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "What's the time difference between Korea and the US?", "a": "Eastern US (New York) is 14 hours behind Korea, Western US (LA) is 17 hours behind. During DST (Mar-Nov), it's 13 and 16 hours respectively."},
+          {"q": "What is a Unix timestamp?", "a": "A Unix timestamp (Epoch time) is the number of seconds elapsed since January 1, 1970 00:00:00 UTC. It's timezone-independent."},
+          {"q": "What is DST?", "a": "Daylight Saving Time advances clocks by 1 hour in summer. The US observes it from March to November. Korea, Japan, and China do not use DST."}
+        ]
+      }
     }
   },
   "salary": {
@@ -969,6 +992,29 @@
       "resize": "Resize",
       "download": "Download",
       "reset": "Reset"
+    },
+    "guide": {
+      "title": "Image Resizer Guide",
+      "whatIs": {
+        "title": "What is this tool?",
+        "description": "The Image Resizer changes photo dimensions to your desired resolution, converts between JPEG/PNG/WebP formats, and adjusts quality to reduce file size. Includes presets for social media profiles and thumbnails."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Drag and drop or select an image file to upload.", "Choose a preset or enter custom width × height dimensions.", "Adjust the quality slider and select output format.", "Click resize, preview the result, and download."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["Enable aspect ratio lock to auto-calculate dimensions from one value.", "WebP format is 25-35% smaller than JPEG at the same quality.", "Use social media presets to prevent images from being cropped on platforms."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "Does resizing reduce image quality?", "a": "Enlarging beyond original size will reduce quality. When shrinking, keep quality at 80%+ for minimal visible degradation."},
+          {"q": "JPEG, PNG, or WebP - which is best?", "a": "JPEG for photos (small size), PNG for transparency needs, WebP for web optimization."},
+          {"q": "What's the maximum upload size?", "a": "Processing is done in-browser with no server limits, but images over 50MB may take longer to process."}
+        ]
+      }
     }
   },
   "imageEditor": {
@@ -982,6 +1028,29 @@
       "rotate": "Rotate",
       "filter": "Filter",
       "download": "Download"
+    },
+    "guide": {
+      "title": "Image Editor Guide",
+      "whatIs": {
+        "title": "What is this tool?",
+        "description": "The Image Editor lets you crop, rotate, add text, and apply filters (brightness, contrast, saturation, blur, sepia) to photos directly in your browser. Includes undo/redo for safe editing."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Drag and drop or select an image to upload.", "Choose crop, text, filter, or rotate from the tool tabs.", "For crop, drag to select an area. For text, type and position on the image.", "Download the edited result when finished."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["Adjusting brightness and contrast together effectively corrects backlit or dark photos.", "When adding text, set font size, color, and style before positioning on the image.", "Use the Undo button freely to experiment without worry."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "Is original image quality preserved?", "a": "Yes, processing uses Canvas API at original resolution. JPEG compression may cause slight quality differences on save."},
+          {"q": "Can I add non-English text?", "a": "Yes, all Unicode text including Korean, Japanese, Chinese, and emoji is supported."},
+          {"q": "What if I close the browser during editing?", "a": "Edits are not saved. Always download your result before closing."}
+        ]
+      }
     }
   },
   "footer": {
@@ -1531,6 +1600,26 @@
         "1": "Used Car Installment: 5-10% annually",
         "2": "Capital Installment: 7-15% annually",
         "3": "Bank Auto Loan: 3-6% annually"
+      },
+      "whatIs": {
+        "title": "What is the Car Loan Calculator?",
+        "description": "This tool calculates monthly payments, total interest, and total repayment for car loans. Enter vehicle price, down payment, loan term, and interest rate to get a monthly repayment schedule."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Enter the vehicle price including tax.", "Enter the down payment amount.", "Set the loan term (12-84 months) and annual interest rate.", "Review monthly payment, total interest, and the repayment schedule."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["Compare manufacturer financing rates with bank auto loans.", "Longer terms mean lower monthly payments but more total interest.", "A 20-30% down payment improves approval rates and reduces interest burden."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "What's the typical car loan interest rate?", "a": "As of 2025, finance companies charge 5-9% annually, while bank auto loans range from 3.5-6%."},
+          {"q": "Loan vs lease - which is better?", "a": "Loans give you ownership after payoff, better for long-term keeping. Leases have lower upfront costs, ideal for 3-5 year vehicle cycling."},
+          {"q": "Can I get a car loan with no down payment?", "a": "Some finance companies offer 100% financing, but rates are higher and approval criteria stricter."}
+        ]
       }
     }
   },
@@ -1611,7 +1700,81 @@
       },
       "ecoCarBenefitTitle": "Eco-friendly Vehicle Tax Benefits Applied",
       "ecoCarBenefitElectric": "50% reduction in acquisition & registration tax applied for electric vehicle.",
-      "ecoCarBenefitHybrid": "50% reduction in acquisition & registration tax applied for hybrid vehicle."
+      "ecoCarBenefitHybrid": "50% reduction in acquisition & registration tax applied for hybrid vehicle.",
+      "whatIs": {
+        "title": "What is the Car Tax Calculator?",
+        "description": "This tool accurately calculates all taxes incurred when purchasing a vehicle, including acquisition tax, registration tax, bond purchase, and stamp duty by vehicle type, purpose, and region. It automatically applies eco-vehicle discounts and multi-child family benefits."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Enter the vehicle price. Use the factory price for new cars or the actual transaction price for used cars.", "Select vehicle type (sedan/compact/van/truck/motorcycle/EV), fuel type, and purpose (personal/commercial).", "Select the registration region. Bond purchase rates vary by region.", "Check applicable discount categories (multi-child family, disabled, veteran) to reflect tax benefits.", "Click calculate to see itemized amounts and total cost."]
+      },
+      "usageTips": {
+        "title": "Tips",
+        "items": ["Compact cars (1,000cc or less) qualify for acquisition tax discounts.", "EVs get up to 1.4M KRW acquisition tax reduction as of 2025.", "Multi-child families (3+ children under 18) may qualify for tax exemption.", "Used car taxes may be based on standard assessed value rather than actual price."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "How much is car registration tax?", "a": "For passenger cars, acquisition tax is 7% (personal use) or 4% (commercial). Compact cars get a reduced rate of 4% with additional discounts."},
+          {"q": "What are EV tax benefits?", "a": "As of 2025, EVs get up to 1.4M KRW reduction in acquisition tax. Hybrids get up to 400K KRW."},
+          {"q": "What is bond purchase?", "a": "A mandatory bond purchase when registering a vehicle. The rate varies by vehicle price, displacement, and region."}
+        ]
+      }
+    }
+  },
+  "bogeumjariLoan": {
+    "title": "Bogeumjari Loan Calculator",
+    "description": "Check eligibility and estimate monthly payments for the government-backed Bogeumjari housing loan",
+    "guide": {
+      "title": "Bogeumjari Loan Guide",
+      "whatIs": {
+        "title": "What is Bogeumjari Loan?",
+        "description": "Bogeumjari Loan is a government-backed fixed-rate mortgage provided by Korea Housing Finance Corporation (HF). It offers more stable rates than variable-rate bank loans, with preferential terms for first-time buyers, newlyweds, and multi-child families."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Select loan type (general/first-time/newlywed/multi-child).", "Enter property price and combined household annual income.", "Choose loan term (10-50 years).", "View eligibility, estimated loan limit, and monthly payment."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["First-time buyers get LTV up to 80% vs 70% for general type.", "Newlywed type offers 0.3%p rate discount. Check if you married within 7 years.", "Online-only (Akkim-e) version offers 0.1-0.2%p additional rate discount."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "What are the eligibility requirements?", "a": "Combined household income under 70M KRW, property under 600M KRW, and homeownership restrictions apply."},
+          {"q": "What's the interest rate?", "a": "As of 2026, Akkim-e Bogeumjari rates are approximately 4.05-4.35% annually. Type-specific discounts apply additionally."},
+          {"q": "How does it differ from Didimddol Loan?", "a": "Didimddol has stricter income requirements but lower rates (2-3%). Bogeumjari has broader eligibility and higher loan limits. Compare both for your situation."}
+        ]
+      }
+    }
+  },
+  "medianIncome": {
+    "title": "Median Income Reference",
+    "description": "Check standard median income by household size and government welfare program eligibility thresholds",
+    "guide": {
+      "title": "Median Income Guide",
+      "whatIs": {
+        "title": "What is Median Income?",
+        "description": "The standard median income is the midpoint of national household income announced annually by the Ministry of Health and Welfare. It serves as the qualification threshold for various government welfare programs including basic livelihood benefits and housing support."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Select the year (2023-2026) to view median income data.", "Review median income by household size (1-6 persons).", "Check amounts at various percentage thresholds (32%-100%).", "See which government welfare programs each threshold qualifies for."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["Livelihood benefits: 32%, medical: 40%, housing: 48%, education: 50% of median income.", "Median income uses pre-tax income. The 'recognized income' calculation differs from simple salary.", "Median income increases yearly - check again even if you didn't qualify last year."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "What is the 2026 median income?", "a": "For 1-person households approximately 2.56M KRW/month, 4-person households approximately 6.49M KRW/month. About 6.4% increase from the previous year."},
+          {"q": "How is recognized income calculated?", "a": "Recognized income = Income assessment + Asset-to-income conversion. Use the Bokjiro (bokjiro.go.kr) simulation tool for precise calculation."},
+          {"q": "What benefits are available at 100% median income?", "a": "National Employment Support System, youth rent subsidy, and child tax credit may apply. Each program has additional requirements beyond income."}
+        ]
+      }
     }
   },
   "bmi": {
@@ -3232,6 +3395,22 @@
         "2": "Print at minimum 3cm × 3cm size for best results",
         "3": "Use URL shortening services for complex URLs",
         "4": "Use the copy image button to copy QR code as PNG image to clipboard"
+      },
+      "whatIs": {
+        "title": "What is this tool?",
+        "description": "The QR Code Generator converts text, URLs, email, phone numbers, SMS, WiFi credentials, and contact cards (vCard) into QR codes. Customize colors, error correction levels, and embed logos for branded QR codes."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Select the QR code type (text, URL, email, phone, SMS, WiFi, vCard).", "Enter the information for your selected type.", "Adjust size, colors, and error correction level. Upload a logo if needed.", "Download the QR code as PNG or copy to clipboard."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "What is error correction level?", "a": "It's the QR code's ability to remain readable even when partially damaged or covered by a logo. Choose from L(7%), M(15%), Q(25%), H(30%). H is recommended when embedding logos."},
+          {"q": "Do QR codes expire?", "a": "QR codes themselves don't expire. If it contains a URL, it works as long as the web address is valid."},
+          {"q": "Will colored QR codes still scan?", "a": "Yes, as long as the foreground is sufficiently darker than the background. Light foreground on dark background may not scan properly."}
+        ]
       }
     },
     "placeholder": "QR code will be automatically generated when you enter data"
@@ -5233,6 +5412,29 @@
       "loading": "Loading...",
       "ready": "Ready to render",
       "rendering": "Rendering..."
+    },
+    "guide": {
+      "title": "3D Model Viewer Guide",
+      "whatIs": {
+        "title": "What is this tool?",
+        "description": "The 3D Model Viewer opens GLB, GLTF, OBJ, and STL files directly in your browser. Built on Babylon.js, it supports model info, animation playback, wireframe view, format conversion, mesh optimization, and 3D printing analysis."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Drag and drop or select a GLB, GLTF, OBJ, or STL file.", "Drag to rotate the model and scroll to zoom in/out.", "Use tabs to switch between Viewer, Convert, Optimize, and Print analysis.", "Take screenshots or export to different formats."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["Enable auto-rotate to view the model from all angles.", "Wireframe mode reveals mesh structure and polygon density.", "The Print tab estimates volume, print time, and material weight before actual printing."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "Which 3D file formats are supported?", "a": "GLB, GLTF, OBJ, and STL. GLB is most convenient as it includes textures in a single file."},
+          {"q": "Are files uploaded to a server?", "a": "No. All processing happens in your browser. Files are never sent to external servers."},
+          {"q": "How accurate is the 3D printing analysis?", "a": "Volume and bounding box calculations are precise, but print time and material estimates are based on default FDM/SLA settings."}
+        ]
+      }
     }
   },
   "passwordGenerator": {
@@ -13888,6 +14090,22 @@
           "Power-ups must be caught with the paddle to activate",
           "Focus on one side to let the ball auto-clear bricks above"
         ]
+      },
+      "whatIs": {
+        "title": "What is this game?",
+        "description": "Breakout is a classic arcade game where you move a paddle to bounce a ball and break bricks. Features 5 levels, 2-hit bricks, 3 power-up types, and particle effects."
+      },
+      "howToUse": {
+        "title": "How to Play",
+        "items": ["Click start or tap the screen to begin.", "Move your mouse or touch to control the paddle.", "The ball breaks bricks on contact for points.", "Catch falling power-ups with your paddle for special effects."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "How many levels are there?", "a": "There are 5 unique brick patterns. After level 5, patterns repeat with increasing ball speed."},
+          {"q": "What are the power-up types?", "a": "W(Wide): Paddle expands for 10 seconds. M(Multi): Ball splits into 3. +(Life): Adds 1 life (max 5)."},
+          {"q": "What happens when the ball falls?", "a": "You lose 1 life and a new ball appears on the paddle. Game over when all lives are lost."}
+        ]
       }
     }
   },
@@ -14044,7 +14262,30 @@
     "patternKorean": "Korean only",
     "patternHtml": "HTML Tag",
     "patternDate": "Date (YYYY-MM-DD)",
-    "patternRrn": "Korean SSN"
+    "patternRrn": "Korean SSN",
+    "guide": {
+      "title": "Regex Builder Guide",
+      "whatIs": {
+        "title": "What is this tool?",
+        "description": "The Regex Builder lets you visually create and test regular expressions. It includes a pattern library for common patterns (email, phone, URL, IP) and auto-explains regex in plain language."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Type a regex pattern or select from the pattern library.", "Set flags (g: global, i: case-insensitive, m: multiline, etc.) as needed.", "Enter test text to see matches highlighted in real-time.", "View the pattern explanation for each token in plain language."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["Start by loading common patterns to learn regex structure.", "The g (global) flag finds all matches; without it, only the first match is returned.", "Use the copy button to paste completed regex directly into your code."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "What is regex?", "a": "Regular expressions (regex) are rules for finding or validating patterns in text strings. Widely used in programming, data processing, and text editors."},
+          {"q": "How do I match phone numbers?", "a": "Use the 'Phone Number' pattern from the library to match various formats like 010-1234-5678 or 01012345678."},
+          {"q": "Can I use the same regex in JavaScript and Python?", "a": "Basic syntax is the same, but some flags and features may differ between engines. This tool uses the JavaScript regex engine."}
+        ]
+      }
+    }
   },
   "envEditor": {
     "title": "Env Editor",
@@ -14160,6 +14401,26 @@
           "| Col1 | Col2 | for tables",
           "> Blockquote, --- Horizontal rule",
           "Empty lines separate paragraphs"
+        ]
+      },
+      "whatIs": {
+        "title": "What is this tool?",
+        "description": "The Markdown Editor lets you write Markdown with real-time preview. It includes a formatting toolbar, auto-generated table of contents (TOC), and file upload support for quickly creating GitHub READMEs, blog posts, and technical documentation."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Write Markdown text in the left editor panel. Use toolbar buttons for bold, italic, links, etc.", "View the real-time rendered output in the right preview panel.", "Use the TOC feature to auto-generate a heading-based table of contents.", "Copy the Markdown source or HTML when done."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["Wrap code in triple backticks with a language name for syntax highlighting.", "Upload existing .md files to edit them directly.", "Use checkboxes (- [ ]) and tables (| | |) for well-structured GitHub READMEs."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "What is Markdown?", "a": "Markdown is a lightweight markup language using simple symbols (#, *, - etc.) for formatting. It's widely used on GitHub, Notion, blogs, and more."},
+          {"q": "Is content auto-saved?", "a": "Auto-save is not currently available. Please copy or download your work regularly."},
+          {"q": "Can I insert images?", "a": "Yes, use ![alt text](image URL) syntax with externally hosted image URLs."}
         ]
       }
     }
@@ -16086,6 +16347,26 @@
           "Medical expenses: only amount exceeding 3% of salary is deductible—concentrate in one year",
           "Traditional markets and public transport each have separate additional 1M limit"
         ]
+      },
+      "whatIs": {
+        "title": "What is the Year-End Tax Calculator?",
+        "description": "This tool estimates your year-end tax settlement refund (or additional payment). Enter gross salary, personal deductions, social insurance, card spending, pension savings, medical/education expenses to calculate your final tax and refund amount."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Enter basic info: gross salary, non-taxable income, dependents, prepaid tax.", "Enter income deductions: social insurance, housing savings, credit/debit card spending.", "Enter tax credits: pension savings/IRP, medical, education, and donation amounts.", "Review taxable income, final tax amount, and estimated refund."]
+      },
+      "savingTips": {
+        "title": "Tips",
+        "items": ["Debit card/cash receipts have 30% deduction rate vs 15% for credit cards. Use credit cards up to 25% of salary threshold, then switch to debit.", "Pension savings (up to 6M KRW) and IRP (up to 9M combined) qualify for 13.2-16.5% tax credit.", "For dual-income couples, assign dependents to the higher earner for maximum benefit."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "When do I receive my refund?", "a": "Usually reflected in February salary. Additional tax due is deducted from salary."},
+          {"q": "Income deduction vs tax credit - what's the difference?", "a": "Income deductions reduce your taxable income base, while tax credits directly reduce the calculated tax amount. Tax credits have a more direct impact."},
+          {"q": "Who qualifies as a dependent?", "a": "Spouse (income under 1M KRW), parents (age 60+), children (under 20 or disabled), siblings (under 20 or 60+, income under 1M KRW)."}
+        ]
       }
     }
   },
@@ -17010,7 +17291,30 @@
   },
   "rentSubsidy": {
     "title": "LH Monthly Rent Subsidy Calculator",
-    "description": "Calculate monthly rent subsidies for youth, newlyweds, and general households."
+    "description": "Calculate monthly rent subsidies for youth, newlyweds, and general households.",
+    "guide": {
+      "title": "Rent Subsidy Guide",
+      "whatIs": {
+        "title": "What is the Rent Subsidy Calculator?",
+        "description": "This tool checks eligibility and estimates support amounts for government rent subsidy programs (youth, newlywed, general low-income). Enter household income, family size, rent, and region for qualification assessment."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Select application type (youth/newlywed/general).", "Enter monthly household income (pre-tax) and family size.", "Enter current monthly rent, deposit, and residential region.", "View eligibility status and estimated monthly subsidy amount."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["Youth rent subsidy targets ages 19-34 with income below 60% of median, providing up to 200K KRW/month.", "Income thresholds vary by household size. Enter the exact number of family members.", "Other housing support programs (housing benefits, jeonse loans) are also available."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "What are youth rent subsidy requirements?", "a": "Ages 19-34, living independently, personal income below 60% of median income, and household income below 100%."},
+          {"q": "How much subsidy can I receive?", "a": "Youth program provides up to 200K KRW/month (2.4M KRW/year). Actual amount depends on rent and income level."},
+          {"q": "Are housing benefits and rent subsidy the same?", "a": "No. Housing benefits are part of the basic livelihood security system for households below 48% of median income. Rent subsidy is a separate program."}
+        ]
+      }
+    }
   },
   "mbtiTest": {
     "title": "MBTI Personality Test",
@@ -17506,6 +17810,29 @@
         "q": "Can I file without a tax accountant?",
         "a": "Freelancers and business owners with simple income structures can use Hometax's pre-filled (모두채움) or simple filing feature. Complex situations (multiple income types, rental income, etc.) warrant professional advice."
       }
+    },
+    "guide": {
+      "title": "Tax Filing Guide",
+      "whatIs": {
+        "title": "What is Comprehensive Income Tax?",
+        "description": "Comprehensive income tax is filed every May by individuals with income beyond employment (business, freelance, interest/dividend, pension, or other income), covering the previous year's combined income."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Check the countdown to the May 31 filing deadline at the top.", "Review the income tax rate table by taxable income bracket.", "Follow the step-by-step filing procedure guide.", "Use linked calculators to estimate your tax amount."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["Freelancers (3.3% withholding) may get refunds by applying expense ratios.", "Late filing incurs a 20% penalty plus daily late payment interest.", "Use the NTS 'pre-filled filing' for quick, easy submission."]
+      },
+      "guideFaq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "Who needs to file?", "a": "Anyone with business income, freelance income (3.3%), interest/dividends over 20M KRW, pension over 12M KRW, or other income over 3M KRW."},
+          {"q": "When is the filing period?", "a": "May 1 to May 31 each year. Extended to June 30 for certified diligent filers."},
+          {"q": "What are the tax rates?", "a": "Progressive rates from 6% to 45% based on taxable income brackets: 6% up to 14M, 15% up to 50M, 24% up to 88M, 35% up to 150M, and higher."}
+        ]
+      }
     }
   },
   "colorBlindnessSimulator": {
@@ -17595,6 +17922,29 @@
       "q4": {
         "q": "Can color blindness be treated?",
         "a": "Congenital color blindness has no known cure. Specialty lenses (e.g., EnChroma glasses) can improve color discrimination for some people, but effectiveness varies. Consult an ophthalmologist if you suspect a color vision deficiency."
+      }
+    },
+    "guide": {
+      "title": "Color Blindness Simulator Guide",
+      "whatIs": {
+        "title": "What is this tool?",
+        "description": "The Color Blindness Simulator shows how uploaded images appear to users with various color vision deficiencies (red-green, blue-yellow, total color blindness). Useful for web/app designers to verify accessibility."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": ["Drag and drop or select an image to upload.", "Select the color vision type to simulate (protanopia, deuteranopia, tritanopia, achromatopsia, etc.).", "Compare the original and simulated images side by side.", "Adjust your color palette and retest if issues are found."]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": ["Red-green color blindness affects ~8% of males worldwide - always test for this.", "Don't rely on color alone to convey information. Use icons, patterns, and text labels.", "Mild deficiencies (anomaly types) can also be simulated for comprehensive coverage."]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {"q": "What's the difference between color blindness and color weakness?", "a": "Color blindness (-opia) means complete loss of certain cone cell function, while color weakness (-omaly) means partial reduction. Both are simulated here."},
+          {"q": "Can this be used for accessibility auditing?", "a": "Yes. WCAG 2.1 recommends not relying solely on color for information. Use this tool to verify your designs are accessible."},
+          {"q": "How accurate is the simulation?", "a": "It uses the Brettel/Viénot algorithm, a well-established method in academic research with high correlation to actual color vision deficiency experience."}
+        ]
       }
     }
   },
