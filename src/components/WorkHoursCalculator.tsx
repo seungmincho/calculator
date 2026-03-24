@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Clock, Calculator, DollarSign, Users, Share2, Check, Save, Zap, TrendingUp, Shield, CalendarRange, CalendarDays, RefreshCw, Info } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
@@ -127,21 +128,32 @@ function generateDaysFromPeriod(
 export default function WorkHoursCalculator() {
   const t = useTranslations('workHours')
   const tCommon = useTranslations('common')
+  const searchParams = useSearchParams()
 
-  const [activeTab, setActiveTab] = useState<TabType>('daily')
-  const [inputMode, setInputMode] = useState<InputMode>('period')
+  const [activeTab, setActiveTab] = useState<TabType>(() => {
+    const v = searchParams.get('tab')
+    return v === 'conversion' ? 'conversion' : 'daily'
+  })
+  const [inputMode, setInputMode] = useState<InputMode>(() => {
+    const v = searchParams.get('mode')
+    return v === 'individual' ? 'individual' : 'period'
+  })
 
   // 시급 / 소정근로시간
-  const [hourlyWage, setHourlyWage] = useState(String(MIN_WAGE_2026))
-  const [weeklyHours, setWeeklyHours] = useState('40')
+  const [hourlyWage, setHourlyWage] = useState(() => searchParams.get('wage') || String(MIN_WAGE_2026))
+  const [weeklyHours, setWeeklyHours] = useState(() => searchParams.get('hours') || '40')
 
   // 기간 입력 모드
-  const [periodStart, setPeriodStart] = useState('')
-  const [periodEnd, setPeriodEnd] = useState('')
-  const [selectedWeekdays, setSelectedWeekdays] = useState([true, true, true, true, true, false, false]) // 월~금
-  const [periodStartTime, setPeriodStartTime] = useState('09:00')
-  const [periodEndTime, setPeriodEndTime] = useState('18:00')
-  const [periodBreakTime, setPeriodBreakTime] = useState(60)
+  const [periodStart, setPeriodStart] = useState(() => searchParams.get('start') || '')
+  const [periodEnd, setPeriodEnd] = useState(() => searchParams.get('end') || '')
+  const [selectedWeekdays, setSelectedWeekdays] = useState(() => {
+    const v = searchParams.get('days')
+    if (v && v.length === 7) return v.split('').map(c => c === '1')
+    return [true, true, true, true, true, false, false] // 월~금
+  })
+  const [periodStartTime, setPeriodStartTime] = useState(() => searchParams.get('st') || '09:00')
+  const [periodEndTime, setPeriodEndTime] = useState(() => searchParams.get('et') || '18:00')
+  const [periodBreakTime, setPeriodBreakTime] = useState(() => parseInt(searchParams.get('break') || '') || 60)
 
   // 날짜별 입력 모드
   const [dailyWork, setDailyWork] = useState<DayWork[]>([
@@ -154,9 +166,9 @@ export default function WorkHoursCalculator() {
   const [showSaveButton, setShowSaveButton] = useState(false)
 
   // 시급 환산
-  const [convWage, setConvWage] = useState(String(MIN_WAGE_2026))
-  const [convWeeklyHours, setConvWeeklyHours] = useState('40')
-  const [convDaysPerWeek, setConvDaysPerWeek] = useState('5')
+  const [convWage, setConvWage] = useState(() => searchParams.get('cwage') || String(MIN_WAGE_2026))
+  const [convWeeklyHours, setConvWeeklyHours] = useState(() => searchParams.get('chours') || '40')
+  const [convDaysPerWeek, setConvDaysPerWeek] = useState(() => searchParams.get('cdays') || '5')
   const [convResult, setConvResult] = useState<ConversionResult | null>(null)
 
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('workHours')
@@ -222,6 +234,38 @@ export default function WorkHoursCalculator() {
       deductions: { nationalPension: np, healthInsurance: hi, longTermCare: lt, employmentInsurance: ei, total },
       netMonthly: base - total })
   }, [convWage, convWeeklyHours, convDaysPerWeek])
+
+  // ─── URL 상태 동기화 ─────────────────────────────────────
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const url = new URL(window.location.href)
+    const s = url.searchParams
+    s.set('tab', activeTab)
+    if (activeTab === 'daily') {
+      s.set('mode', inputMode)
+      s.set('wage', hourlyWage)
+      s.set('hours', weeklyHours)
+      if (inputMode === 'period') {
+        if (periodStart) s.set('start', periodStart); else s.delete('start')
+        if (periodEnd) s.set('end', periodEnd); else s.delete('end')
+        s.set('days', selectedWeekdays.map(b => b ? '1' : '0').join(''))
+        s.set('st', periodStartTime)
+        s.set('et', periodEndTime)
+        s.set('break', String(periodBreakTime))
+      }
+      // conversion 파라미터 제거
+      s.delete('cwage'); s.delete('chours'); s.delete('cdays')
+    } else {
+      s.set('cwage', convWage)
+      s.set('chours', convWeeklyHours)
+      s.set('cdays', convDaysPerWeek)
+      // daily 파라미터 제거
+      s.delete('mode'); s.delete('wage'); s.delete('hours')
+      s.delete('start'); s.delete('end'); s.delete('days')
+      s.delete('st'); s.delete('et'); s.delete('break')
+    }
+    window.history.replaceState({}, '', url)
+  }, [activeTab, inputMode, hourlyWage, weeklyHours, periodStart, periodEnd, selectedWeekdays, periodStartTime, periodEndTime, periodBreakTime, convWage, convWeeklyHours, convDaysPerWeek])
 
   // ─── 헬퍼 ─────────────────────────────────────────────
   const fmt = (n: number) => new Intl.NumberFormat('ko-KR').format(Math.round(n))

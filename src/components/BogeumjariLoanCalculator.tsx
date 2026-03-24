@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Home, Calculator, Share2, Check, Save, Info, AlertCircle, CheckCircle, Baby, Heart, Users } from 'lucide-react';
+import { Home, Calculator, Share2, Check, Save, Info, AlertCircle, CheckCircle, Baby, Heart, Users, BarChart3, TrendingDown } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import GuideSection from '@/components/GuideSection';
@@ -633,6 +634,140 @@ const BogeumjariLoanCalculatorContent = () => {
           )}
         </div>
       </div>
+
+      {/* 상환 스케줄 차트 */}
+      {result && result.eligible && (() => {
+        const rate = result.interestRate / 100 / 12;
+        const months = parseInt(loanPeriod) * 12;
+        const loan = result.maxLoanAmount;
+        const yearlyData: { year: number; principal: number; interest: number; balance: number }[] = [];
+        let balance = loan;
+        let yearPrincipal = 0, yearInterest = 0;
+
+        for (let m = 1; m <= months; m++) {
+          const interestPart = balance * rate;
+          const principalPart = result.monthlyPayment - interestPart;
+          balance = Math.max(0, balance - principalPart);
+          yearPrincipal += principalPart;
+          yearInterest += interestPart;
+
+          if (m % 12 === 0 || m === months) {
+            yearlyData.push({
+              year: Math.ceil(m / 12),
+              principal: Math.round(yearPrincipal),
+              interest: Math.round(yearInterest),
+              balance: Math.round(balance),
+            });
+            yearPrincipal = 0;
+            yearInterest = 0;
+          }
+        }
+
+        // 기간별 비교 데이터
+        const periods = ['10', '15', '20', '25', '30', '40', '50'];
+        const comparisonData = periods.map(p => {
+          const r = (PERIOD_RATES[p] ?? 4.25) - result.totalDiscount;
+          const finalR = Math.max(r, 2.90);
+          const mr = finalR / 100 / 12;
+          const mo = parseInt(p) * 12;
+          const mp = Math.round(loan * (mr * Math.pow(1 + mr, mo)) / (Math.pow(1 + mr, mo) - 1));
+          return {
+            period: `${p}년`,
+            monthlyPayment: mp,
+            totalInterest: mp * mo - loan,
+            totalPayment: mp * mo,
+            rate: finalR,
+            isCurrent: p === loanPeriod,
+          };
+        });
+
+        const fmtWon = (n: number) => {
+          if (n >= 100_000_000) return `${(n / 100_000_000).toFixed(1)}억`;
+          return `${Math.round(n / 10_000).toLocaleString()}만`;
+        };
+
+        return (
+          <>
+            {/* 연도별 상환 스케줄 */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-blue-500" />
+                연도별 상환 스케줄
+              </h3>
+              <div className="h-72 sm:h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={yearlyData} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis
+                      dataKey="year"
+                      tickFormatter={(v) => `${v}년`}
+                      tick={{ fontSize: 11, fill: '#9ca3af' }}
+                      interval={Math.max(0, Math.floor(yearlyData.length / 8) - 1)}
+                    />
+                    <YAxis
+                      tickFormatter={(v) => fmtWon(v)}
+                      tick={{ fontSize: 11, fill: '#9ca3af' }}
+                      width={50}
+                    />
+                    <Tooltip
+                      formatter={(value, name) => [
+                        `${Math.round(Number(value ?? 0)).toLocaleString()}원`,
+                        name === 'principal' ? '원금 상환' : name === 'interest' ? '이자' : '잔액'
+                      ]}
+                      labelFormatter={(v) => `${v}년차`}
+                      contentStyle={{ fontSize: 12, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.95)', border: '1px solid #e5e7eb' }}
+                    />
+                    <Area type="monotone" dataKey="principal" stackId="1" stroke="#3b82f6" fill="#93c5fd" name="principal" />
+                    <Area type="monotone" dataKey="interest" stackId="1" stroke="#f97316" fill="#fdba74" name="interest" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex justify-center gap-6 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-blue-300 inline-block" /> 원금 상환</span>
+                <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-orange-300 inline-block" /> 이자</span>
+              </div>
+            </div>
+
+            {/* 기간별 비교 */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <TrendingDown className="w-5 h-5 text-green-500" />
+                대출 기간별 비교 <span className="text-xs font-normal text-gray-400">(대출금 {formatCurrency(loan)} 기준)</span>
+              </h3>
+              <div className="overflow-x-auto -mx-2">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-200 dark:border-gray-700">
+                      <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium text-xs">기간</th>
+                      <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium text-xs">금리</th>
+                      <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium text-xs">월 상환액</th>
+                      <th className="text-right py-2 px-2 text-gray-500 dark:text-gray-400 font-medium text-xs">총 이자</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {comparisonData.map((row) => (
+                      <tr
+                        key={row.period}
+                        className={`border-b border-gray-100 dark:border-gray-700/50 ${row.isCurrent ? 'bg-blue-50 dark:bg-blue-900/20 font-semibold' : ''}`}
+                      >
+                        <td className="py-2.5 px-2 text-gray-900 dark:text-white">
+                          {row.period} {row.isCurrent && <span className="text-xs text-blue-500 ml-1">선택</span>}
+                        </td>
+                        <td className="py-2.5 px-2 text-right text-gray-700 dark:text-gray-300">{row.rate.toFixed(2)}%</td>
+                        <td className="py-2.5 px-2 text-right text-gray-900 dark:text-white">{formatNumber(row.monthlyPayment)}원</td>
+                        <td className="py-2.5 px-2 text-right text-orange-600 dark:text-orange-400">{fmtWon(row.totalInterest)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-xs text-gray-400 mt-3">
+                ※ 기간이 짧을수록 월 상환액은 크지만 총 이자는 적습니다. 상환 여력에 맞게 선택하세요.
+              </p>
+            </div>
+          </>
+        );
+      })()}
 
       {/* 관련 사이트 */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">

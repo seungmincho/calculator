@@ -27,8 +27,10 @@ import {
   Plus,
   Trash2,
   Upload,
-  Link
+  Link,
+  BarChart3
 } from 'lucide-react'
+import { PieChart, Pie, Cell as PieCell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
 import { safeStorage, STORAGE_KEYS } from '@/utils/localStorage'
@@ -100,6 +102,8 @@ const FuelCalculator = () => {
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
   const [isEditingPrices, setIsEditingPrices] = useState(false)
   const [tempPrices, setTempPrices] = useState(fuelPrices)
+  const [priceSource, setPriceSource] = useState<'manual' | 'opinet'>('manual')
+  const [priceLoading, setPriceLoading] = useState(false)
 
   // Vehicle settings state
   const [hasVehicleSettings, setHasVehicleSettings] = useState(false)
@@ -191,6 +195,41 @@ const FuelCalculator = () => {
       }
     }
   }, [])
+
+  // ── OPINET 실시간 유가 가져오기 ──
+  const fetchOpinetPrices = useCallback(async () => {
+    setPriceLoading(true)
+    try {
+      const res = await fetch('/api/fuel-prices')
+      if (!res.ok) throw new Error('API error')
+      const data = await res.json()
+      const oils = data?.RESULT?.OIL
+      if (Array.isArray(oils)) {
+        const priceMap: Record<string, number> = {}
+        for (const oil of oils) {
+          if (oil.PRODCD === 'B027') priceMap.gasoline = Math.round(Number(oil.PRICE))
+          if (oil.PRODCD === 'D047') priceMap.diesel = Math.round(Number(oil.PRICE))
+          if (oil.PRODCD === 'K015') priceMap.lpg = Math.round(Number(oil.PRICE))
+        }
+        if (priceMap.gasoline && priceMap.diesel && priceMap.lpg) {
+          const newPrices = { gasoline: priceMap.gasoline, diesel: priceMap.diesel, lpg: priceMap.lpg }
+          setFuelPrices(newPrices)
+          setTempPrices(newPrices)
+          setLastUpdated(new Date())
+          setPriceSource('opinet')
+        }
+      }
+    } catch {
+      // 실패 시 기존 수동 가격 유지
+    } finally {
+      setPriceLoading(false)
+    }
+  }, [])
+
+  // 마운트 시 OPINET 가격 자동 로드
+  useEffect(() => {
+    fetchOpinetPrices()
+  }, [fetchOpinetPrices])
 
   // ── URL sync ──
   useEffect(() => {
@@ -865,9 +904,23 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                 </div>
 
                 <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center space-x-1 text-xs text-gray-500 mb-3">
-                    <Clock className="w-3 h-3" />
-                    <span>최종 수정: {lastUpdated.toLocaleTimeString('ko-KR')}</span>
+                  <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                    <div className="flex items-center space-x-1">
+                      <Clock className="w-3 h-3" />
+                      <span>
+                        {priceSource === 'opinet' ? (
+                          <span className="text-green-600 dark:text-green-400">OPINET 실시간</span>
+                        ) : '수동 입력'} · {lastUpdated.toLocaleTimeString('ko-KR')}
+                      </span>
+                    </div>
+                    <button
+                      onClick={fetchOpinetPrices}
+                      disabled={priceLoading}
+                      className="text-blue-500 hover:text-blue-700 disabled:opacity-50"
+                      title="OPINET 가격 새로고침"
+                    >
+                      {priceLoading ? '...' : '↻'}
+                    </button>
                   </div>
 
                   {/* OPINET Link */}
@@ -1019,6 +1072,81 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       <span className="text-gray-600 dark:text-gray-400">{t('result.depreciationRate')}</span>
                       <span className="font-medium">{vehicleTypes[vehicleType].depreciation.toLocaleString()}원/km</span>
                     </div>
+                  </div>
+                </div>
+
+                {/* 비용 구성 파이차트 + 연료별 비교 */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* 비용 구성 */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4 text-blue-500" />
+                      비용 구성
+                    </h3>
+                    <div className="h-52">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { name: '유류비', value: Math.round(calculation.fuelCost) },
+                              { name: '감가상각비', value: Math.round(calculation.depreciationCost) },
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={50}
+                            outerRadius={80}
+                            dataKey="value"
+                            label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                            labelLine={false}
+                          >
+                            <PieCell fill="#3b82f6" />
+                            <PieCell fill="#f97316" />
+                          </Pie>
+                          <Tooltip formatter={(value) => `${Number(value ?? 0).toLocaleString()}원`} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+
+                  {/* 연료별 비교 */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                      <Fuel className="w-4 h-4 text-green-500" />
+                      연료별 비용 비교
+                    </h3>
+                    {(() => {
+                      const selectedVehicle = vehicleTypes[vehicleType]
+                      const fuelTypes: ('gasoline' | 'diesel' | 'lpg')[] = ['gasoline', 'diesel', 'lpg']
+                      const fuelLabels = { gasoline: '휘발유', diesel: '경유', lpg: 'LPG' }
+                      const fuelColors = { gasoline: '#3b82f6', diesel: '#10b981', lpg: '#f59e0b' }
+                      const compData = fuelTypes.map(ft => {
+                        const eff = useCustomEfficiency && customEfficiency > 0
+                          ? customEfficiency
+                          : getAdjustedEfficiency(selectedVehicle.efficiency, ft)
+                        const cost = (distance / eff) * fuelPrices[ft]
+                        return { name: fuelLabels[ft], cost: Math.round(cost), fill: fuelColors[ft], isCurrent: ft === fuelType }
+                      })
+                      return (
+                        <div className="h-52">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={compData} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+                              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                              <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#9ca3af' }} />
+                              <YAxis tickFormatter={(v) => `${Math.round(v / 1000)}천`} tick={{ fontSize: 11, fill: '#9ca3af' }} width={45} />
+                              <Tooltip formatter={(value) => [`${Number(value ?? 0).toLocaleString()}원`, '유류비']} />
+                              <Bar dataKey="cost" radius={[4, 4, 0, 0]}>
+                                {compData.map((entry, idx) => (
+                                  <PieCell key={idx} fill={entry.fill} opacity={entry.isCurrent ? 1 : 0.6} />
+                                ))}
+                              </Bar>
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      )
+                    })()}
+                    <p className="text-xs text-gray-400 mt-2 text-center">
+                      {distance.toLocaleString()}km 기준 · 굵은 바 = 현재 선택 연료
+                    </p>
                   </div>
                 </div>
               </>
