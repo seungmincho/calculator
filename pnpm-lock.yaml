@@ -32,6 +32,9 @@ dependencies:
   '@uiw/react-codemirror':
     specifier: ^4.25.4
     version: 4.25.8(@babel/runtime@7.29.2)(@codemirror/autocomplete@6.20.1)(@codemirror/language@6.12.2)(@codemirror/lint@6.9.5)(@codemirror/search@6.6.0)(@codemirror/state@6.6.0)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.40.0)(codemirror@6.0.2)(react-dom@19.2.4)(react@19.2.4)
+  date-fns:
+    specifier: ^4.1.0
+    version: 4.1.0
   echarts:
     specifier: ^6.0.0
     version: 6.0.0
@@ -112,9 +115,6 @@ devDependencies:
   '@types/react-dom':
     specifier: ^19.2.3
     version: 19.2.3(@types/react@19.2.14)
-  baseline-browser-mapping:
-    specifier: ^2.10.10
-    version: 2.10.10
   eslint:
     specifier: ^9.39.1
     version: 9.39.4
@@ -2811,6 +2811,10 @@ packages:
       es-errors: 1.3.0
       is-data-view: 1.0.2
     dev: true
+
+  /date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+    dev: false
 
   /debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}

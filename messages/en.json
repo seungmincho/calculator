@@ -4346,7 +4346,8 @@
       "customEfficiency": "Custom Fuel Efficiency (km/L)"
     },
     "fuelTypes": {
-      "gasoline": "Gasoline",
+      "gasoline": "Gasoline (Regular)",
+      "premium_gasoline": "Gasoline (Premium)",
       "diesel": "Diesel",
       "lpg": "LPG"
     },

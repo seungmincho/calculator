@@ -4346,7 +4346,8 @@
       "customEfficiency": "직접 입력 연비 (km/L)"
     },
     "fuelTypes": {
-      "gasoline": "휘발유",
+      "gasoline": "휘발유 (일반)",
+      "premium_gasoline": "휘발유 (고급)",
       "diesel": "경유",
       "lpg": "LPG"
     },

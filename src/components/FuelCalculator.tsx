@@ -34,6 +34,7 @@ import { PieChart, Pie, Cell as PieCell, BarChart, Bar, XAxis, YAxis, CartesianG
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
 import { safeStorage, STORAGE_KEYS } from '@/utils/localStorage'
+import DatePicker from '@/components/ui/DatePicker'
 
 interface FuelCalculation {
   distance: number
@@ -53,11 +54,12 @@ interface VehicleType {
 
 interface VehicleSettings {
   vehicleType: string
-  fuelType: 'gasoline' | 'diesel' | 'lpg'
+  fuelType: 'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg'
   customEfficiency: number
   useCustomEfficiency: boolean
   fuelPrices: {
     gasoline: number
+    premium_gasoline: number
     diesel: number
     lpg: number
   }
@@ -109,9 +111,9 @@ const FuelCalculator = () => {
   // Calculator state
   const [distance, setDistance] = useState<number>(() => parseInt(searchParams.get('distance') || '') || 0)
   const [vehicleType, setVehicleType] = useState<string>(() => searchParams.get('vehicleType') || 'compact')
-  const [fuelType, setFuelType] = useState<'gasoline' | 'diesel' | 'lpg'>(() => {
+  const [fuelType, setFuelType] = useState<'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg'>(() => {
     const p = searchParams.get('fuelType')
-    return (p === 'gasoline' || p === 'diesel' || p === 'lpg') ? p : 'gasoline'
+    return (p === 'gasoline' || p === 'premium_gasoline' || p === 'diesel' || p === 'lpg') ? p : 'gasoline'
   })
   const [customEfficiency, setCustomEfficiency] = useState<number>(0)
   const [useCustomEfficiency, setUseCustomEfficiency] = useState(false)
@@ -120,6 +122,7 @@ const FuelCalculator = () => {
   const [isSaved, setIsSaved] = useState(false)
   const [fuelPrices, setFuelPrices] = useState({
     gasoline: 1600,
+    premium_gasoline: 1800,
     diesel: 1400,
     lpg: 900
   })
@@ -237,28 +240,34 @@ const FuelCalculator = () => {
 
       // Supabase 과거 데이터 응답
       if (data.source === 'supabase' && Array.isArray(data.data)) {
-        const rows = data.data as Array<{ gasoline?: number; diesel?: number; lpg?: number; trade_date?: string; sido_nm?: string }>
+        const rows = data.data as Array<{ gasoline?: number; premium_gasoline?: number; diesel?: number; lpg?: number; trade_date?: string; sido_nm?: string }>
         if (rows.length > 0) {
-          // 여러 시도 데이터 중 첫 번째 (sido 지정 시 1개, 미지정 시 전국 평균 계산)
-          let gasoline = 0, diesel = 0, lpg = 0
+          let gasoline = 0, premiumGasoline = 0, diesel = 0, lpg = 0
           if (sido) {
             gasoline = Math.round(Number(rows[0].gasoline ?? 0))
+            premiumGasoline = Math.round(Number(rows[0].premium_gasoline ?? 0))
             diesel = Math.round(Number(rows[0].diesel ?? 0))
             lpg = Math.round(Number(rows[0].lpg ?? 0))
           } else {
-            // 전체 시도 평균
-            const count = rows.length
+            let gCount = 0, pgCount = 0, dCount = 0, lCount = 0
             for (const r of rows) {
-              gasoline += Number(r.gasoline ?? 0)
-              diesel += Number(r.diesel ?? 0)
-              lpg += Number(r.lpg ?? 0)
+              if (r.gasoline) { gasoline += Number(r.gasoline); gCount++ }
+              if (r.premium_gasoline) { premiumGasoline += Number(r.premium_gasoline); pgCount++ }
+              if (r.diesel) { diesel += Number(r.diesel); dCount++ }
+              if (r.lpg) { lpg += Number(r.lpg); lCount++ }
             }
-            gasoline = Math.round(gasoline / count)
-            diesel = Math.round(diesel / count)
-            lpg = Math.round(lpg / count)
+            if (gCount) gasoline = Math.round(gasoline / gCount)
+            if (pgCount) premiumGasoline = Math.round(premiumGasoline / pgCount)
+            if (dCount) diesel = Math.round(diesel / dCount)
+            if (lCount) lpg = Math.round(lpg / lCount)
           }
-          if (gasoline && diesel && lpg) {
-            const newPrices = { gasoline, diesel, lpg }
+          if (gasoline || diesel) {
+            const newPrices = {
+              gasoline: gasoline || fuelPrices.gasoline,
+              premium_gasoline: premiumGasoline || fuelPrices.premium_gasoline,
+              diesel: diesel || fuelPrices.diesel,
+              lpg: lpg || fuelPrices.lpg,
+            }
             setFuelPrices(newPrices)
             setTempPrices(newPrices)
             setLastUpdated(new Date())
@@ -274,11 +283,17 @@ const FuelCalculator = () => {
         const priceMap: Record<string, number> = {}
         for (const oil of oils) {
           if (oil.PRODCD === 'B027') priceMap.gasoline = Math.round(Number(oil.PRICE))
+          if (oil.PRODCD === 'B034') priceMap.premium_gasoline = Math.round(Number(oil.PRICE))
           if (oil.PRODCD === 'D047') priceMap.diesel = Math.round(Number(oil.PRICE))
           if (oil.PRODCD === 'K015') priceMap.lpg = Math.round(Number(oil.PRICE))
         }
-        if (priceMap.gasoline && priceMap.diesel && priceMap.lpg) {
-          const newPrices = { gasoline: priceMap.gasoline, diesel: priceMap.diesel, lpg: priceMap.lpg }
+        if (priceMap.gasoline || priceMap.diesel) {
+          const newPrices = {
+            gasoline: priceMap.gasoline || fuelPrices.gasoline,
+            premium_gasoline: priceMap.premium_gasoline || fuelPrices.premium_gasoline,
+            diesel: priceMap.diesel || fuelPrices.diesel,
+            lpg: priceMap.lpg || fuelPrices.lpg,
+          }
           setFuelPrices(newPrices)
           setTempPrices(newPrices)
           setLastUpdated(new Date())
@@ -823,10 +838,11 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   </label>
                   <select
                     value={fuelType}
-                    onChange={(e) => setFuelType(e.target.value as 'gasoline' | 'diesel' | 'lpg')}
+                    onChange={(e) => setFuelType(e.target.value as 'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg')}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   >
                     <option value="gasoline">{t('fuelTypes.gasoline')} ({fuelPrices.gasoline.toLocaleString()}원/L)</option>
+                    <option value="premium_gasoline">{t('fuelTypes.premium_gasoline')} ({fuelPrices.premium_gasoline.toLocaleString()}원/L)</option>
                     <option value="diesel">{t('fuelTypes.diesel')} ({fuelPrices.diesel.toLocaleString()}원/L)</option>
                     <option value="lpg">{t('fuelTypes.lpg')} ({fuelPrices.lpg.toLocaleString()}원/L)</option>
                   </select>
@@ -957,17 +973,16 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
                     {t('region.date')}
                   </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="date"
+                  <div className="flex gap-2 items-start">
+                    <DatePicker
                       value={selectedDate}
-                      max={new Date().toISOString().slice(0, 10)}
-                      onChange={(e) => {
-                        const date = e.target.value
+                      onChange={(date) => {
                         setSelectedDate(date)
                         fetchOpinetPrices(selectedSido || undefined, date || undefined)
                       }}
-                      className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      maxDate={new Date()}
+                      placeholder={t('region.realtime')}
+                      className="flex-1"
                     />
                     {selectedDate && (
                       <button
@@ -975,16 +990,18 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                           setSelectedDate('')
                           fetchOpinetPrices(selectedSido || undefined)
                         }}
-                        className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-lg transition-colors"
+                        className="px-2 py-2 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-lg transition-colors shrink-0"
                         title="실시간으로 전환"
                       >
                         {t('region.today')}
                       </button>
                     )}
                   </div>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                    {selectedDate ? `${selectedDate} 기준 유가` : t('region.realtime')}
-                  </p>
+                  {selectedDate && (
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                      {selectedDate} 기준 유가 적용
+                    </p>
+                  )}
                 </div>
 
                 <div className="pt-2 border-t border-gray-200 dark:border-gray-700" />
@@ -1003,6 +1020,21 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                     />
                   ) : (
                     <span className="font-medium">{fuelPrices.gasoline.toLocaleString()}원/L</span>
+                  )}
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">{t('fuelTypes.premium_gasoline')}</span>
+                  {isEditingPrices ? (
+                    <input
+                      type="number"
+                      value={tempPrices.premium_gasoline}
+                      onChange={(e) => setTempPrices(prev => ({ ...prev, premium_gasoline: Number(e.target.value) }))}
+                      className="w-24 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      min="1000"
+                      max="3000"
+                    />
+                  ) : (
+                    <span className="font-medium">{fuelPrices.premium_gasoline.toLocaleString()}원/L</span>
                   )}
                 </div>
                 <div className="flex justify-between items-center">
@@ -1304,9 +1336,9 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                     </h3>
                     {(() => {
                       const selectedVehicle = vehicleTypes[vehicleType]
-                      const fuelTypes: ('gasoline' | 'diesel' | 'lpg')[] = ['gasoline', 'diesel', 'lpg']
-                      const fuelLabels = { gasoline: '휘발유', diesel: '경유', lpg: 'LPG' }
-                      const fuelColors = { gasoline: '#3b82f6', diesel: '#10b981', lpg: '#f59e0b' }
+                      const fuelTypes: ('gasoline' | 'premium_gasoline' | 'diesel' | 'lpg')[] = ['gasoline', 'premium_gasoline', 'diesel', 'lpg']
+                      const fuelLabels = { gasoline: '일반', premium_gasoline: '고급', diesel: '경유', lpg: 'LPG' }
+                      const fuelColors = { gasoline: '#3b82f6', premium_gasoline: '#8b5cf6', diesel: '#10b981', lpg: '#f59e0b' }
                       const compData = fuelTypes.map(ft => {
                         const eff = useCustomEfficiency && customEfficiency > 0
                           ? customEfficiency
