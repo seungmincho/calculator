@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback, useEffect, useMemo } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import {
@@ -61,8 +61,32 @@ interface VehicleSettings {
     diesel: number
     lpg: number
   }
+  depreciationMultiplier: number
+  selectedSido: string
   savedAt: string
 }
+
+// OPINET 시도 코드 매핑
+const SIDO_OPTIONS = [
+  { code: '', name: '전국 평균' },
+  { code: '01', name: '서울' },
+  { code: '02', name: '경기' },
+  { code: '03', name: '강원' },
+  { code: '04', name: '충북' },
+  { code: '05', name: '충남' },
+  { code: '06', name: '전북' },
+  { code: '07', name: '전남' },
+  { code: '08', name: '경북' },
+  { code: '09', name: '경남' },
+  { code: '10', name: '부산' },
+  { code: '11', name: '제주' },
+  { code: '14', name: '대구' },
+  { code: '15', name: '인천' },
+  { code: '16', name: '광주' },
+  { code: '17', name: '대전' },
+  { code: '18', name: '울산' },
+  { code: '19', name: '세종' },
+] as const
 
 interface DrivingLogEntry {
   id: string
@@ -104,6 +128,9 @@ const FuelCalculator = () => {
   const [tempPrices, setTempPrices] = useState(fuelPrices)
   const [priceSource, setPriceSource] = useState<'manual' | 'opinet'>('manual')
   const [priceLoading, setPriceLoading] = useState(false)
+  const [selectedSido, setSelectedSido] = useState<string>('')
+  const [selectedDate, setSelectedDate] = useState<string>('') // YYYY-MM-DD, 빈 값이면 실시간
+  const [depreciationMultiplier, setDepreciationMultiplier] = useState<number>(1.0) // 감가비 계수
 
   // Vehicle settings state
   const [hasVehicleSettings, setHasVehicleSettings] = useState(false)
@@ -196,13 +223,52 @@ const FuelCalculator = () => {
     }
   }, [])
 
-  // ── OPINET 실시간 유가 가져오기 ──
-  const fetchOpinetPrices = useCallback(async () => {
+  // ── OPINET 유가 가져오기 (실시간 또는 과거 날짜) ──
+  const fetchOpinetPrices = useCallback(async (sido?: string, date?: string) => {
     setPriceLoading(true)
     try {
-      const res = await fetch('/api/fuel-prices')
+      const params = new URLSearchParams()
+      if (sido) params.set('sido', sido)
+      if (date) params.set('date', date)
+      const qs = params.toString()
+      const res = await fetch(`/api/fuel-prices${qs ? `?${qs}` : ''}`)
       if (!res.ok) throw new Error('API error')
       const data = await res.json()
+
+      // Supabase 과거 데이터 응답
+      if (data.source === 'supabase' && Array.isArray(data.data)) {
+        const rows = data.data as Array<{ gasoline?: number; diesel?: number; lpg?: number; trade_date?: string; sido_nm?: string }>
+        if (rows.length > 0) {
+          // 여러 시도 데이터 중 첫 번째 (sido 지정 시 1개, 미지정 시 전국 평균 계산)
+          let gasoline = 0, diesel = 0, lpg = 0
+          if (sido) {
+            gasoline = Math.round(Number(rows[0].gasoline ?? 0))
+            diesel = Math.round(Number(rows[0].diesel ?? 0))
+            lpg = Math.round(Number(rows[0].lpg ?? 0))
+          } else {
+            // 전체 시도 평균
+            const count = rows.length
+            for (const r of rows) {
+              gasoline += Number(r.gasoline ?? 0)
+              diesel += Number(r.diesel ?? 0)
+              lpg += Number(r.lpg ?? 0)
+            }
+            gasoline = Math.round(gasoline / count)
+            diesel = Math.round(diesel / count)
+            lpg = Math.round(lpg / count)
+          }
+          if (gasoline && diesel && lpg) {
+            const newPrices = { gasoline, diesel, lpg }
+            setFuelPrices(newPrices)
+            setTempPrices(newPrices)
+            setLastUpdated(new Date())
+            setPriceSource('opinet')
+          }
+        }
+        return
+      }
+
+      // OPINET 실시간 응답 (전국 또는 시도별)
       const oils = data?.RESULT?.OIL
       if (Array.isArray(oils)) {
         const priceMap: Record<string, number> = {}
@@ -226,9 +292,13 @@ const FuelCalculator = () => {
     }
   }, [])
 
-  // 마운트 시 OPINET 가격 자동 로드
+  // 마운트 시 OPINET 가격 자동 로드 + localStorage에서 감가비 계수/지역 복원
   useEffect(() => {
-    fetchOpinetPrices()
+    const savedMultiplier = safeStorage.getItem('fuel_depreciation_multiplier')
+    if (savedMultiplier) setDepreciationMultiplier(Number(savedMultiplier) || 1.0)
+    const savedSido = safeStorage.getItem('fuel_selected_sido')
+    if (savedSido) setSelectedSido(savedSido)
+    fetchOpinetPrices(savedSido || undefined)
   }, [fetchOpinetPrices])
 
   // ── URL sync ──
@@ -274,7 +344,7 @@ const FuelCalculator = () => {
     const fuelPrice = fuelPrices[fuelType]
     const fuelConsumption = distance / efficiency
     const fuelCost = fuelConsumption * fuelPrice
-    const depreciationCost = distance * selectedVehicle.depreciation
+    const depreciationCost = distance * selectedVehicle.depreciation * depreciationMultiplier
     const totalCost = fuelCost + depreciationCost
     const costPerKm = totalCost / distance
 
@@ -288,7 +358,7 @@ const FuelCalculator = () => {
     }
 
     setCalculation(result)
-  }, [distance, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, vehicleTypes, getAdjustedEfficiency])
+  }, [distance, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, vehicleTypes, getAdjustedEfficiency, depreciationMultiplier])
 
   // Manual fuel price editing
   const startEditingPrices = useCallback(() => {
@@ -315,6 +385,8 @@ const FuelCalculator = () => {
       customEfficiency,
       useCustomEfficiency,
       fuelPrices,
+      depreciationMultiplier,
+      selectedSido,
       savedAt: new Date().toISOString()
     }
 
@@ -324,7 +396,7 @@ const FuelCalculator = () => {
       setSettingsFeedback(t('vehicleSettings.saved'))
       setTimeout(() => setSettingsFeedback(null), 2000)
     }
-  }, [vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, t])
+  }, [vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, depreciationMultiplier, selectedSido, t])
 
   const loadVehicleSettings = useCallback(() => {
     const savedSettings = safeStorage.getItem(STORAGE_KEYS.VEHICLE_SETTINGS)
@@ -336,6 +408,8 @@ const FuelCalculator = () => {
         setCustomEfficiency(settings.customEfficiency)
         setUseCustomEfficiency(settings.useCustomEfficiency)
         setFuelPrices(settings.fuelPrices)
+        if (settings.depreciationMultiplier) setDepreciationMultiplier(settings.depreciationMultiplier)
+        if (settings.selectedSido !== undefined) setSelectedSido(settings.selectedSido)
         setSettingsFeedback(t('vehicleSettings.loaded'))
         setTimeout(() => setSettingsFeedback(null), 2000)
       } catch {
@@ -819,7 +893,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
               </div>
             </div>
 
-            {/* Manual Fuel Prices */}
+            {/* 유가 정보 (지역/날짜/가격) */}
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-2">
@@ -857,6 +931,65 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
               </div>
 
               <div className="space-y-3">
+                {/* 지역 선택 */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    {t('region.label')}
+                  </label>
+                  <select
+                    value={selectedSido}
+                    onChange={(e) => {
+                      const sido = e.target.value
+                      setSelectedSido(sido)
+                      safeStorage.setItem('fuel_selected_sido', sido)
+                      fetchOpinetPrices(sido || undefined, selectedDate || undefined)
+                    }}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  >
+                    {SIDO_OPTIONS.map(s => (
+                      <option key={s.code} value={s.code}>{s.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* 날짜 선택 (출장일) */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    {t('region.date')}
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="date"
+                      value={selectedDate}
+                      max={new Date().toISOString().slice(0, 10)}
+                      onChange={(e) => {
+                        const date = e.target.value
+                        setSelectedDate(date)
+                        fetchOpinetPrices(selectedSido || undefined, date || undefined)
+                      }}
+                      className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    />
+                    {selectedDate && (
+                      <button
+                        onClick={() => {
+                          setSelectedDate('')
+                          fetchOpinetPrices(selectedSido || undefined)
+                        }}
+                        className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-lg transition-colors"
+                        title="실시간으로 전환"
+                      >
+                        {t('region.today')}
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                    {selectedDate ? `${selectedDate} 기준 유가` : t('region.realtime')}
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-gray-200 dark:border-gray-700" />
+
+                {/* 유가 표시 */}
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600 dark:text-gray-400">{t('fuelTypes.gasoline')}</span>
                   {isEditingPrices ? (
@@ -909,12 +1042,14 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       <Clock className="w-3 h-3" />
                       <span>
                         {priceSource === 'opinet' ? (
-                          <span className="text-green-600 dark:text-green-400">OPINET 실시간</span>
+                          <span className="text-green-600 dark:text-green-400">
+                            OPINET {selectedSido ? SIDO_OPTIONS.find(s => s.code === selectedSido)?.name : '전국'}
+                          </span>
                         ) : '수동 입력'} · {lastUpdated.toLocaleTimeString('ko-KR')}
                       </span>
                     </div>
                     <button
-                      onClick={fetchOpinetPrices}
+                      onClick={() => fetchOpinetPrices(selectedSido || undefined, selectedDate || undefined)}
                       disabled={priceLoading}
                       className="text-blue-500 hover:text-blue-700 disabled:opacity-50"
                       title="OPINET 가격 새로고침"
@@ -937,6 +1072,59 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                     {t('opinet.linkDescription')}
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* 감가비 계수 설정 */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="flex items-center space-x-2 mb-4">
+                <Wrench className="w-5 h-5 text-purple-600" />
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {t('depreciation.title')}
+                </h2>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    {t('depreciation.multiplier')}
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="1.0"
+                      max="1.5"
+                      step="0.05"
+                      value={depreciationMultiplier}
+                      onChange={(e) => {
+                        const val = Number(e.target.value)
+                        setDepreciationMultiplier(val)
+                        safeStorage.setItem('fuel_depreciation_multiplier', String(val))
+                      }}
+                      className="flex-1 accent-purple-600"
+                    />
+                    <span className="text-sm font-bold text-purple-700 dark:text-purple-300 w-12 text-right">
+                      ×{depreciationMultiplier.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>×1.00</span>
+                    <span>×1.50</span>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {t('depreciation.description')}
+                </p>
+                {depreciationMultiplier !== 1.0 && (
+                  <button
+                    onClick={() => {
+                      setDepreciationMultiplier(1.0)
+                      safeStorage.setItem('fuel_depreciation_multiplier', '1.0')
+                    }}
+                    className="text-xs text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300"
+                  >
+                    {t('depreciation.reset')}
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -1083,9 +1271,9 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       <BarChart3 className="w-4 h-4 text-blue-500" />
                       비용 구성
                     </h3>
-                    <div className="h-52">
+                    <div className="h-64">
                       <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
+                        <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
                           <Pie
                             data={[
                               { name: '유류비', value: Math.round(calculation.fuelCost) },

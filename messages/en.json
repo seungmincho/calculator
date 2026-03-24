@@ -4556,6 +4556,18 @@
       "checkPrice": "Check Latest Prices on OPINET",
       "linkDescription": "Click to visit OPINET website"
     },
+    "region": {
+      "label": "Region",
+      "date": "Trip Date (price reference)",
+      "today": "Live",
+      "realtime": "Using live fuel prices"
+    },
+    "depreciation": {
+      "title": "Depreciation Multiplier",
+      "multiplier": "Fuel cost adjustment",
+      "description": "Set the depreciation multiplier per your company policy. Settings are auto-saved.",
+      "reset": "Reset to default (×1.00)"
+    },
     "vehicleSettings": {
       "title": "My Vehicle Settings",
       "save": "Save My Vehicle",

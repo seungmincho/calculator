@@ -4556,6 +4556,18 @@
       "checkPrice": "오피넷에서 최신 유가 확인",
       "linkDescription": "클릭하면 오피넷 사이트로 이동합니다"
     },
+    "region": {
+      "label": "지역 선택",
+      "date": "출장일 (유가 기준일)",
+      "today": "실시간",
+      "realtime": "실시간 유가 적용 중"
+    },
+    "depreciation": {
+      "title": "감가비 계수",
+      "multiplier": "유류비 보정 계수",
+      "description": "회사별 규정에 따라 유류비에 곱하는 감가비 계수를 설정하세요. 설정은 자동 저장됩니다.",
+      "reset": "기본값 (×1.00)으로 초기화"
+    },
     "vehicleSettings": {
       "title": "내 차량 설정",
       "save": "내 차량 저장",
