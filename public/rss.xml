@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>계산기, 개발도구, 미디어 도구, 건강 도구, 게임 등 220+ 무료 온라인 도구를 제공합니다.</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 22 Mar 2026 12:46:52 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 25 Mar 2026 02:45:22 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://toolhub.ai.kr/android-chrome-192x192.png</url>
@@ -325,9 +325,9 @@
       <guid>https://toolhub.ai.kr/lotto-tax/</guid>
     </item>
     <item>
-      <title><![CDATA[내 연봉 상위 몇 %? - 연봉 순위 계산기]]></title>
+      <title><![CDATA[내 연봉 상위 몇 %?]]></title>
       <link>https://toolhub.ai.kr/salary-rank/</link>
-      <description><![CDATA[국세청·통계청 데이터 기반 연봉 순위 확인, 나이·성별·직업군별 비교]]></description>
+      <description><![CDATA[국세청·통계청 데이터 기반 연봉 순위, 나이·성별·직업군별 비교]]></description>
       <guid>https://toolhub.ai.kr/salary-rank/</guid>
     </item>
     <item>
@@ -419,6 +419,12 @@
       <link>https://toolhub.ai.kr/tax-season/</link>
       <description><![CDATA[5월 종합소득세 신고 대상·세율·공제 항목·절세 팁 완벽 가이드]]></description>
       <guid>https://toolhub.ai.kr/tax-season/</guid>
+    </item>
+    <item>
+      <title><![CDATA[성과급 계산기]]></title>
+      <link>https://toolhub.ai.kr/bonus-calculator/</link>
+      <description><![CDATA[성과급·인센티브 세후 실수령액 계산, 비율별 시뮬레이션, 세금 분석]]></description>
+      <guid>https://toolhub.ai.kr/bonus-calculator/</guid>
     </item>
     <item>
       <title><![CDATA[정규식 추출기]]></title>
