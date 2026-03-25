@@ -71,7 +71,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     // 시도별로 유가 정리
     const today = new Date().toISOString().slice(0, 10) // YYYY-MM-DD
-    const priceMap: Record<string, { sido_nm: string; gasoline?: number; diesel?: number; lpg?: number }> = {}
+    const priceMap: Record<string, { sido_nm: string; gasoline?: number; premium_gasoline?: number; diesel?: number; lpg?: number }> = {}
 
     for (const oil of oils) {
       if (!priceMap[oil.SIDOCD]) {
@@ -79,6 +79,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       }
       const entry = priceMap[oil.SIDOCD]
       if (oil.PRODCD === 'B027') entry.gasoline = Math.round(Number(oil.PRICE) * 100) / 100
+      if (oil.PRODCD === 'B034') entry.premium_gasoline = Math.round(Number(oil.PRICE) * 100) / 100
       if (oil.PRODCD === 'D047') entry.diesel = Math.round(Number(oil.PRICE) * 100) / 100
       if (oil.PRODCD === 'K015') entry.lpg = Math.round(Number(oil.PRICE) * 100) / 100
     }
@@ -89,6 +90,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       sido_cd: sidoCd,
       sido_nm: data.sido_nm,
       gasoline: data.gasoline || null,
+      premium_gasoline: data.premium_gasoline || null,
       diesel: data.diesel || null,
       lpg: data.lpg || null,
     }))

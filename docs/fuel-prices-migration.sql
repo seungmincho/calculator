@@ -37,12 +37,13 @@ RETURNS TABLE (
   sido_cd VARCHAR,
   sido_nm VARCHAR,
   gasoline NUMERIC,
+  premium_gasoline NUMERIC,
   diesel NUMERIC,
   lpg NUMERIC
 ) AS $$
 BEGIN
   RETURN QUERY
-  SELECT fp.trade_date, fp.sido_cd, fp.sido_nm, fp.gasoline, fp.diesel, fp.lpg
+  SELECT fp.trade_date, fp.sido_cd, fp.sido_nm, fp.gasoline, fp.premium_gasoline, fp.diesel, fp.lpg
   FROM fuel_prices fp
   WHERE fp.trade_date = p_date
     AND (p_sido_cd IS NULL OR fp.sido_cd = p_sido_cd)
@@ -57,12 +58,13 @@ RETURNS TABLE (
   sido_cd VARCHAR,
   sido_nm VARCHAR,
   gasoline NUMERIC,
+  premium_gasoline NUMERIC,
   diesel NUMERIC,
   lpg NUMERIC
 ) AS $$
 BEGIN
   RETURN QUERY
-  SELECT fp.trade_date, fp.sido_cd, fp.sido_nm, fp.gasoline, fp.diesel, fp.lpg
+  SELECT fp.trade_date, fp.sido_cd, fp.sido_nm, fp.gasoline, fp.premium_gasoline, fp.diesel, fp.lpg
   FROM fuel_prices fp
   WHERE (p_sido_cd IS NULL OR fp.sido_cd = p_sido_cd)
     AND fp.trade_date <= p_date
@@ -70,6 +72,12 @@ BEGIN
   LIMIT CASE WHEN p_sido_cd IS NULL THEN 18 ELSE 1 END;
 END;
 $$ LANGUAGE plpgsql;
+
+-- ============================================================
+-- premium_gasoline 컬럼 추가 (2026-03-24)
+-- 기존 테이블에 고급휘발유 컬럼 추가 + RPC 업데이트
+-- ============================================================
+ALTER TABLE fuel_prices ADD COLUMN IF NOT EXISTS premium_gasoline NUMERIC(8,2);
 
 -- 저장된 날짜 범위 조회 (UI에서 달력 제한용)
 CREATE OR REPLACE FUNCTION get_fuel_price_date_range()

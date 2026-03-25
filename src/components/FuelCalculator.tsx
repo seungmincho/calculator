@@ -712,8 +712,8 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-2">
-        <div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-2">
+        <div className="min-w-0">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
             {t('title')}
           </h1>
@@ -721,7 +721,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
             {t('description')}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap">
             {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
           </button>
