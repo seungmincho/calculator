@@ -28602,12 +28602,7 @@
       "title": "Bonus Tax Guide",
       "whatIs": {
         "title": "What is a Performance Bonus?",
-        "items": [
-          "A performance bonus is additional pay beyond base salary, based on company or individual performance",
-          "PS (Profit Sharing) distributes company profits to employees, mainly at large corporations",
-          "PI (Productivity Incentive) is paid when department/team targets are met",
-          "Management bonuses depend on overall business performance and can range from 0% to hundreds of percent of salary"
-        ]
+        "description": "A performance bonus is additional compensation paid beyond base salary, determined by company profitability or individual performance. In Korean companies, bonuses come in various forms including PS (Profit Sharing), PI (Productivity Incentive), management performance bonuses, and individual incentives. PS distributes a portion of company profits to employees, primarily at large corporations like Samsung and Hyundai, with amounts ranging from 0% to several hundred percent of annual salary. PI is awarded based on department or team-level target achievement. Under Korean tax law, bonuses are classified as earned income, subject to progressive income tax (6-45%), local income tax (10% of income tax), and four types of social insurance (National Pension, Health Insurance, Long-term Care Insurance, and Employment Insurance). When a bonus is added, total annual income increases, potentially pushing the taxpayer into a higher tax bracket with a higher marginal rate, resulting in a greater perceived tax burden. This calculator applies the latest 2025 tax rates and social insurance contribution rates to automatically compute deductions and take-home amounts from your pre-tax salary and bonus inputs. The ratio simulation feature lets you compare scenarios from 50% to 500% bonus ratios at a glance, while the tax structure analysis visually shows how tax brackets and additional tax burdens change with and without the bonus."
       },
       "howToUse": {
         "title": "How to Use",
@@ -28628,28 +28623,39 @@
           "Don't miss additional deductions at year-end (medical, education, donations, etc.)"
         ]
       },
-      "faq": [
-        {
-          "q": "Are social insurance contributions applied to bonuses?",
-          "a": "Yes, bonuses are considered earned income, so national pension, health insurance, and employment insurance apply. However, national pension has a monthly cap (5.9M KRW), limiting the additional burden for high earners."
-        },
-        {
-          "q": "Why does the tax rate on bonuses seem higher than regular salary?",
-          "a": "The bonus itself isn't taxed at a higher rate. Rather, adding the bonus increases your total annual income, potentially pushing you into a higher progressive tax bracket (6-45% in Korea)."
-        },
-        {
-          "q": "How much can I save by putting my bonus into a retirement pension?",
-          "a": "You can contribute up to 9M KRW annually to an IRP, with a 16.5% tax credit (salary ≤55M KRW) or 13.2% (>55M KRW). A full 9M KRW contribution saves up to 1.485M KRW in taxes."
-        },
-        {
-          "q": "Why do withholding taxes differ from actual taxes?",
-          "a": "Withholding uses simplified tax tables for monthly deductions. Year-end settlement reconciles with actual income and deductions. Even if a large amount is withheld from a bonus month, you may get a refund."
-        },
-        {
-          "q": "What's the difference between a bonus and performance pay?",
-          "a": "A regular bonus splits the annual salary into extra payments on specific months (total unchanged). Performance pay is additional income beyond the annual salary. Tax calculation methods are the same."
-        }
-      ]
+      "faq": {
+        "title": "Frequently Asked Questions",
+        "items": [
+          {
+            "q": "Are social insurance contributions applied to bonuses?",
+            "a": "Yes, bonuses are considered earned income, so national pension, health insurance, and employment insurance apply. However, national pension has a monthly cap (5.9M KRW), limiting the additional burden for high earners."
+          },
+          {
+            "q": "Why does the tax rate on bonuses seem higher than regular salary?",
+            "a": "The bonus itself isn't taxed at a higher rate. Rather, adding the bonus increases your total annual income, potentially pushing you into a higher progressive tax bracket (6-45% in Korea)."
+          },
+          {
+            "q": "How much can I save by putting my bonus into a retirement pension?",
+            "a": "You can contribute up to 9M KRW annually to an IRP, with a 16.5% tax credit (salary ≤55M KRW) or 13.2% (>55M KRW). A full 9M KRW contribution saves up to 1.485M KRW in taxes."
+          },
+          {
+            "q": "Why do withholding taxes differ from actual taxes?",
+            "a": "Withholding uses simplified tax tables for monthly deductions. Year-end settlement reconciles with actual income and deductions. Even if a large amount is withheld from a bonus month, you may get a refund."
+          },
+          {
+            "q": "What's the difference between a bonus and performance pay?",
+            "a": "A regular bonus splits the annual salary into extra payments on specific months (total unchanged). Performance pay is additional income beyond the annual salary. Tax calculation methods are the same."
+          },
+          {
+            "q": "Does splitting bonus payments across months reduce taxes?",
+            "a": "Splitting bonus payments across months may lower the withholding rate per month, but since total annual income remains the same, the final tax amount at year-end settlement is identical. However, it can help with cash flow management."
+          },
+          {
+            "q": "Are bonuses received after resignation still taxed?",
+            "a": "Yes, bonuses paid after resignation are still classified as earned income and subject to income tax and social insurance contributions. They are processed as earned income (not severance), with taxes withheld before payment."
+          }
+        ]
+      }
     }
   },
   "enneagram": {
