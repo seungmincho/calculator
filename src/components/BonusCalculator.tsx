@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Calculator, RotateCcw, Copy, Check, ChevronDown, ChevronUp, TrendingUp, AlertTriangle } from 'lucide-react'
 import dynamic from 'next/dynamic'
@@ -140,7 +140,6 @@ function formatInputValue(value: string): string {
 // ── Component ──
 
 function BonusCalculatorContent() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const t = useTranslations('bonusCalculator')
 
@@ -180,19 +179,19 @@ function BonusCalculatorContent() {
 
   // State → URL params
   const syncURL = useCallback(() => {
-    const params = new URLSearchParams()
-    if (salary) params.set('salary', salary.replace(/,/g, ''))
-    params.set('bonusMethod', bonusMethod)
-    if (bonusMethod === 'percent') params.set('bonusPercent', String(bonusPercent))
-    else if (bonusAmount) params.set('bonusAmount', bonusAmount.replace(/,/g, ''))
-    if (bonusType !== 'ps') params.set('bonusType', bonusType)
-    if (dependents !== 1) params.set('dependents', String(dependents))
-    if (children !== 0) params.set('children', String(children))
+    const url = new URL(window.location.href)
+    url.search = ''
+    if (salary) url.searchParams.set('salary', salary.replace(/,/g, ''))
+    url.searchParams.set('bonusMethod', bonusMethod)
+    if (bonusMethod === 'percent') url.searchParams.set('bonusPercent', String(bonusPercent))
+    else if (bonusAmount) url.searchParams.set('bonusAmount', bonusAmount.replace(/,/g, ''))
+    if (bonusType !== 'ps') url.searchParams.set('bonusType', bonusType)
+    if (dependents !== 1) url.searchParams.set('dependents', String(dependents))
+    if (children !== 0) url.searchParams.set('children', String(children))
     const ntVal = nonTaxable.replace(/,/g, '')
-    if (ntVal !== '200000') params.set('nonTaxable', ntVal)
-    const qs = params.toString()
-    router.replace(qs ? `?${qs}` : '', { scroll: false })
-  }, [salary, bonusMethod, bonusPercent, bonusAmount, bonusType, dependents, children, nonTaxable, router])
+    if (ntVal !== '200000') url.searchParams.set('nonTaxable', ntVal)
+    window.history.replaceState({}, '', url.toString())
+  }, [salary, bonusMethod, bonusPercent, bonusAmount, bonusType, dependents, children, nonTaxable])
 
   useEffect(() => {
     const timer = setTimeout(syncURL, 300)
@@ -289,8 +288,8 @@ function BonusCalculatorContent() {
     setDependents(1)
     setChildren(0)
     setNonTaxable('200,000')
-    router.replace('?', { scroll: false })
-  }, [router])
+    window.history.replaceState({}, '', window.location.pathname)
+  }, [])
 
   const tabs = ['result', 'simulation', 'taxAnalysis']
 
