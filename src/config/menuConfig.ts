@@ -111,6 +111,7 @@ export const menuConfig: MenuConfig = {
       { href: '/comprehensive-property-tax', labelKey: 'footer.links.comprehensivePropertyTax', descriptionKey: 'toolsShowcase.tools.comprehensivePropertyTax.description', icon: '🏘️', addedDate: '2026-03-21', subcategory: 'subcategory.tax' },
       { href: '/cagr-calculator', labelKey: 'footer.links.cagrCalculator', descriptionKey: 'toolsShowcase.tools.cagrCalculator.description', icon: '📈', addedDate: '2026-03-21', subcategory: 'subcategory.investSavings' },
       { href: '/tax-season', labelKey: 'footer.links.taxSeason', descriptionKey: 'toolsShowcase.tools.taxSeason.description', icon: '📋', addedDate: '2026-03-21', subcategory: 'subcategory.tax' },
+      { href: '/bonus-calculator', labelKey: 'footer.links.bonusCalculator', descriptionKey: 'toolsShowcase.tools.bonusCalculator.description', icon: '🎯', addedDate: '2026-03-25', subcategory: 'subcategory.salaryWork' },
     ],
   },
   tools: {

@@ -1721,7 +1721,8 @@
       "personalColor": "Personal Color Analysis",
       "ovulationCalculator": "Ovulation Calculator",
       "csatGrade": "CSAT Grade Calculator",
-      "enneagram": "Enneagram Test"
+      "enneagram": "Enneagram Test",
+      "bonusCalculator": "Bonus Calculator"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -5568,6 +5569,10 @@
       "enneagram": {
         "title": "Enneagram Test",
         "description": "36-question personality analysis for 9 types, radar chart, MBTI connection"
+      },
+      "bonusCalculator": {
+        "title": "Bonus Calculator",
+        "description": "Performance bonus & incentive after-tax calculation, ratio simulation, tax analysis"
       }
     }
   },
@@ -28504,6 +28509,147 @@
           }
         ]
       }
+    }
+  },
+  "bonusCalculator": {
+    "title": "Bonus Calculator",
+    "description": "Calculate the after-tax take-home amount for performance bonuses and incentives",
+    "annualSalary": "Annual Salary (Pre-tax)",
+    "annualSalaryPlaceholder": "e.g., 50,000,000",
+    "bonusType": "Bonus Type",
+    "bonusTypes": {
+      "ps": "PS (Profit Sharing)",
+      "pi": "PI (Productivity Incentive)",
+      "management": "Management Bonus",
+      "individual": "Individual Incentive",
+      "custom": "Custom"
+    },
+    "bonusInput": "Bonus Input Method",
+    "byPercent": "% of Annual Salary",
+    "byAmount": "Enter Amount",
+    "bonusPercent": "Bonus Ratio (%)",
+    "bonusAmount": "Bonus Amount",
+    "bonusAmountPlaceholder": "e.g., 10,000,000",
+    "dependents": "Number of Dependents (incl. self)",
+    "childrenUnder20": "Children Under 20",
+    "nonTaxable": "Non-taxable Amount (Monthly)",
+    "nonTaxablePlaceholder": "Meal allowance, etc. (default 200,000)",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": {
+      "title": "Bonus Take-Home Amount",
+      "bonusGross": "Gross Bonus (Pre-tax)",
+      "incomeTax": "Income Tax",
+      "localTax": "Local Income Tax",
+      "nationalPension": "National Pension",
+      "healthInsurance": "Health Insurance",
+      "longTermCare": "Long-term Care Insurance",
+      "employmentInsurance": "Employment Insurance",
+      "totalDeduction": "Total Deductions",
+      "bonusNet": "Net Bonus (Take-Home)",
+      "effectiveRate": "Effective Tax Rate",
+      "totalAnnual": "Total Annual Income (Salary+Bonus)",
+      "totalAnnualNet": "Annual Take-Home",
+      "salaryOnly": "Salary Only",
+      "withBonus": "Salary+Bonus",
+      "monthlyBase": "Monthly Base Pay (excl. bonus)",
+      "bonusMonth": "Bonus Payment Month"
+    },
+    "simulation": {
+      "title": "Bonus Ratio Simulation",
+      "description": "Compare take-home amounts at different bonus ratios",
+      "ratio": "Ratio",
+      "grossBonus": "Gross Bonus",
+      "tax": "Tax & Deductions",
+      "netBonus": "Take-Home",
+      "netRate": "Take-Home Rate",
+      "current": "Current"
+    },
+    "taxAnalysis": {
+      "title": "Tax Structure Analysis",
+      "description": "Adding a bonus increases total income, which may push you into a higher tax bracket",
+      "withoutBonus": "Without Bonus",
+      "withBonus": "With Bonus",
+      "taxBracket": "Tax Bracket",
+      "marginalRate": "Marginal Rate",
+      "totalIncomeTax": "Income Tax",
+      "difference": "Additional Tax Burden",
+      "bracketWarning": "Tax bracket has increased!",
+      "brackets": {
+        "b1": "≤14M KRW (6%)",
+        "b2": "14~50M KRW (15%)",
+        "b3": "50~88M KRW (24%)",
+        "b4": "88~150M KRW (35%)",
+        "b5": "150~300M KRW (38%)",
+        "b6": "300~500M KRW (40%)",
+        "b7": "500M~1B KRW (42%)",
+        "b8": ">1B KRW (45%)"
+      }
+    },
+    "chart": {
+      "deductionBreakdown": "Deduction Breakdown",
+      "monthlyIncome": "Monthly Income Flow",
+      "baseSalary": "Base Salary",
+      "bonus": "Bonus",
+      "won": "KRW",
+      "manwon": "M"
+    },
+    "share": {
+      "copy": "Copy Result Link",
+      "copied": "Copied!"
+    },
+    "guide": {
+      "title": "Bonus Tax Guide",
+      "whatIs": {
+        "title": "What is a Performance Bonus?",
+        "items": [
+          "A performance bonus is additional pay beyond base salary, based on company or individual performance",
+          "PS (Profit Sharing) distributes company profits to employees, mainly at large corporations",
+          "PI (Productivity Incentive) is paid when department/team targets are met",
+          "Management bonuses depend on overall business performance and can range from 0% to hundreds of percent of salary"
+        ]
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter your pre-tax annual salary and bonus ratio (or amount)",
+          "Enter the number of dependents accurately — it affects income tax calculations",
+          "Use the simulation tab to compare different ratios at a glance",
+          "Check the tax analysis tab for bracket changes and marginal tax rates"
+        ]
+      },
+      "tips": {
+        "title": "Tax-Saving Tips for Bonuses",
+        "items": [
+          "Contribute your bonus to an IRP (Individual Retirement Pension) for up to 9M KRW tax credit",
+          "Combined with pension savings, up to 9M KRW annual tax credit (16.5% if salary ≤55M KRW)",
+          "Spreading bonus payments across months can lower your marginal tax rate",
+          "Maximize non-taxable benefits like meal allowances (200K KRW/month)",
+          "Don't miss additional deductions at year-end (medical, education, donations, etc.)"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Are social insurance contributions applied to bonuses?",
+          "a": "Yes, bonuses are considered earned income, so national pension, health insurance, and employment insurance apply. However, national pension has a monthly cap (5.9M KRW), limiting the additional burden for high earners."
+        },
+        {
+          "q": "Why does the tax rate on bonuses seem higher than regular salary?",
+          "a": "The bonus itself isn't taxed at a higher rate. Rather, adding the bonus increases your total annual income, potentially pushing you into a higher progressive tax bracket (6-45% in Korea)."
+        },
+        {
+          "q": "How much can I save by putting my bonus into a retirement pension?",
+          "a": "You can contribute up to 9M KRW annually to an IRP, with a 16.5% tax credit (salary ≤55M KRW) or 13.2% (>55M KRW). A full 9M KRW contribution saves up to 1.485M KRW in taxes."
+        },
+        {
+          "q": "Why do withholding taxes differ from actual taxes?",
+          "a": "Withholding uses simplified tax tables for monthly deductions. Year-end settlement reconciles with actual income and deductions. Even if a large amount is withheld from a bonus month, you may get a refund."
+        },
+        {
+          "q": "What's the difference between a bonus and performance pay?",
+          "a": "A regular bonus splits the annual salary into extra payments on specific months (total unchanged). Performance pay is additional income beyond the annual salary. Tax calculation methods are the same."
+        }
+      ]
     }
   },
   "enneagram": {
