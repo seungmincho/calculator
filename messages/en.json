@@ -29994,5 +29994,273 @@
         ]
       }
     }
+  },
+  "floodFillVisualizer": {
+    "title": "Flood Fill Visualization",
+    "description": "Click like a paint bucket to learn BFS/DFS flood fill algorithm",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "mode": {
+      "bfs": "BFS (Breadth-first)",
+      "dfs": "DFS (Depth-first)"
+    },
+    "grid": {
+      "newColor": "Fill color",
+      "frontier": "Frontier",
+      "current": "Current cell",
+      "random": "Random",
+      "checkerboard": "Checkerboard",
+      "islands": "Islands"
+    },
+    "controls": {
+      "fillColor": "Pick fill color",
+      "gridSize": "Grid size",
+      "clickHint": "Click any cell on the grid to start flood fill from that position"
+    },
+    "stats": {
+      "filled": "Filled",
+      "queue": "Queue",
+      "stack": "Stack",
+      "done": "Done",
+      "cells": "cells"
+    },
+    "stepsGuide": {
+      "hint": "Click any cell on the grid to start flood fill.",
+      "bfsDescription": "BFS flood fill uses a queue (FIFO) to spread outward in concentric rings from the start, filling all connected cells of the same color.",
+      "dfsDescription": "DFS flood fill uses a stack (LIFO) to dive deep in one direction before backtracking, filling all connected cells of the same color.",
+      "visitLabel": "Visit: ({x}, {y})",
+      "fillLabel": "Fill: ({x}, {y})",
+      "doneLabel": "Done — {count} cells filled",
+      "queueSize": "Queue: {size}",
+      "stackSize": "Stack: {size}"
+    },
+    "guide": {
+      "title": "Flood Fill Guide",
+      "whatIs": {
+        "title": "What is Flood Fill?",
+        "description": "Flood Fill is the algorithm behind the paint bucket tool in image editors. Starting from a clicked cell, it fills all adjacent cells of the same color with a new color. BFS spreads like ripples in water; DFS dives deep like a maze solver."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Pick a fill color from the color palette",
+          "Click any cell on the grid to start flood fill from there",
+          "Toggle BFS or DFS mode to compare traversal styles",
+          "Use the play button to watch step-by-step filling animation",
+          "Try Random, Checkerboard, or Islands patterns for different scenarios"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "BFS fills cells in a circular wave pattern from the origin",
+          "DFS fills cells in a snake-like deep path before backtracking",
+          "Both fill the exact same cells — only the order differs",
+          "Checkerboard grids fill only 1 cell since all neighbors differ",
+          "Real use cases: Photoshop bucket tool, Minesweeper blank reveal, game map exploration"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is BFS or DFS faster for flood fill?",
+            "a": "Both fill the same number of cells. BFS fills in shortest-path order. DFS risks stack overflow for large areas, so iterative implementation (explicit stack) is recommended."
+          },
+          {
+            "q": "Where is flood fill used in practice?",
+            "a": "Image editors (paint bucket), Minesweeper (revealing blank cells), game map traversal, connected-component labeling, and territory calculation in board games like Go or Reversi."
+          },
+          {
+            "q": "Can it fill diagonally?",
+            "a": "Yes — simply define 8 neighbors instead of 4. Paint programs typically use 8-directional fill. The algorithm itself doesn't change, only which cells count as 'adjacent'."
+          }
+        ]
+      }
+    }
+  },
+  "stackQueueVisualizer": {
+    "title": "Stack & Queue Visualizer",
+    "description": "Interactively learn how Stack (LIFO) and Queue (FIFO) work",
+    "chip": "Data Structure",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "runDemo": "Run Auto Demo",
+    "resetDemo": "Reset",
+    "demoMode": "Demo mode — use playback controls to step through",
+    "stats": {
+      "stackSize": "Stack Size",
+      "queueSize": "Queue Size",
+      "lastOp": "Last Operation"
+    },
+    "steps": {
+      "hint": "Press an operation button or run the auto demo.",
+      "step": "Step",
+      "lifoDesc": "Last In, First Out — like a stack of plates, you always take from the top.",
+      "fifoDesc": "First In, First Out — like a queue of people, the first one in is the first one out.",
+      "complexity": "Time Complexity",
+      "operation": "Operation",
+      "useCases": "Use Cases",
+      "stackUses": "DFS traversal, function call stack, bracket matching, Undo/Redo, expression evaluation",
+      "queueUses": "BFS traversal, print queue, event loop, cache eviction, process scheduling"
+    },
+    "guide": {
+      "title": "Stack & Queue Guide",
+      "whatIs": {
+        "title": "What are Stack & Queue?",
+        "description": "Stack and Queue are the most fundamental linear data structures. A Stack is LIFO (Last In First Out) — the most recently inserted element is removed first. A Queue is FIFO (First In First Out) — the earliest inserted element is removed first. Both are essential building blocks used throughout computer science: DFS/BFS traversal, function call stacks, event handling, and more."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter a number and click Push (Stack) or Enqueue (Queue) to add an element",
+          "Pop (Stack) removes from the TOP; Dequeue (Queue) removes from the FRONT",
+          "Run the auto demo to compare LIFO and FIFO side by side, step by step",
+          "Use the playback controls to move forward and backward through each step",
+          "Check the Code tab for a JavaScript implementation you can copy"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Stack: push 10→20→30, then pop gives 30→20→10 (LIFO — last in, first out)",
+          "Queue: enqueue 10→20→30, then dequeue gives 10→20→30 (FIFO — first in, first out)",
+          "DFS uses a stack internally; BFS uses a queue internally",
+          "JavaScript's Call Stack is literally a stack data structure",
+          "A linked-list implementation makes dequeue O(1) instead of O(n)"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What's the key difference between Stack and Queue?",
+            "a": "The order of removal. A stack removes the most recently added element (TOP), while a queue removes the earliest added element (FRONT). Given the same insertion order, the removal order is the exact opposite."
+          },
+          {
+            "q": "Can I implement a stack/queue with a JavaScript array?",
+            "a": "Yes. A stack uses push() and pop() for O(1) operations. A queue can use push() and shift(), but shift() is O(n). For performance-critical code, use a linked-list or circular buffer implementation."
+          },
+          {
+            "q": "What is a Deque?",
+            "a": "A Double-Ended Queue (Deque) supports insertion and removal at both ends. It generalizes both stack and queue. JavaScript arrays act as a deque since they support push, pop, shift, and unshift."
+          }
+        ]
+      }
+    }
+  }
+,
+  "radixSortVisualizer": {
+    "title": "Radix Sort Visualizer",
+    "description": "Watch LSD Radix Sort distribute and collect elements through 10 buckets digit by digit",
+    "tabs": { "steps": "Step by Step", "code": "Code", "guide": "Guide" },
+    "controls": { "arraySize": "Array Size", "random": "Random", "sameDigits": "Same Digits" },
+    "legend": { "distributing": "Distributing", "collecting": "Collecting", "inBucket": "In Bucket" },
+    "stats": { "currentDigit": "Current Digit", "totalDigits": "Total Digits", "action": "Action", "distribute": "Distributing", "collect": "Collecting", "digitComplete": "Pass Complete", "done": "Sorting Complete!" },
+    "stepsGuide": {
+      "description": "Observe how elements are distributed into 10 buckets (0-9) and collected back in order for each digit pass.",
+      "distribute": "Distribute: arr[{idx}]={val} → bucket {bucket}",
+      "collect": "Collect: bucket {bucket} ← {val}",
+      "digitComplete": "Digit {digit} pass complete",
+      "digitPass": "Digit {digit} Pass"
+    },
+    "guide": {
+      "title": "Radix Sort Guide",
+      "whatIs": { "title": "What is Radix Sort?", "description": "Radix Sort is a non-comparison sorting algorithm that sorts by individual digit positions. The LSD (Least Significant Digit) approach starts from the lowest digit (ones place) and repeatedly applies counting sort up to the highest digit. Time complexity O(d×n) makes it very fast when the number of digits (d) is small, and it is a stable sort." },
+      "howToUse": { "title": "How to Use", "items": ["Adjust array size and generate input with random or same-digits buttons", "Press play to start the LSD Radix Sort animation", "Observe elements distributed into buckets 0-9 and collected back in order each pass", "The highlighted digit box shows the current sorting digit position"] },
+      "tips": { "title": "Learning Tips", "items": ["LSD sorts from lowest digit first — stability is required for correctness", "Each pass is a Counting Sort O(n+10)=O(n), making the total O(d×n)", "Compare same-digits (fixed d) vs random (variable d) to see how d affects speed", "Even a large number range is fast if digits (d) are few (e.g. 64-bit integers d=19)"] },
+      "faq": { "title": "FAQ", "items": [{ "q": "LSD vs MSD Radix Sort?", "a": "LSD (Least Significant Digit first) is simpler and naturally stable. MSD (Most Significant Digit first) works recursively and is better suited for string sorting. This visualizer uses LSD." }, { "q": "When is Radix Sort fast?", "a": "When the number of digits (d) is fixed or small (e.g. phone numbers, zip codes, dates YYYYMMDD). It beats comparison sorts when d×n < n log n." }] }
+    }
+  },
+  "hashTableVisualizer": {
+    "title": "Hash Table Visualizer",
+    "description": "Observe how hash collisions are resolved step by step with chaining and open addressing",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "strategySelector": {
+      "title": "Collision Strategy"
+    },
+    "strategy": {
+      "chaining": "Chaining",
+      "chainingDesc": "On collision, append to a linked list in the same bucket",
+      "linearProbing": "Linear Probing",
+      "linearProbingDesc": "On collision, scan next slots sequentially (+1, +2, ...)",
+      "quadraticProbing": "Quadratic Probing",
+      "quadraticProbingDesc": "On collision, probe with quadratic steps (+1², +2², ...)"
+    },
+    "input": {
+      "title": "Operations",
+      "keyPlaceholder": "Key",
+      "valuePlaceholder": "Value",
+      "insertButton": "Insert",
+      "searchButton": "Search",
+      "batchInsert": "Batch Random Insert"
+    },
+    "params": {
+      "title": "Table Settings",
+      "tableSize": "Table Size"
+    },
+    "stats": {
+      "insertedCount": "Insertions",
+      "collisionCount": "Collisions",
+      "loadFactor": "Load Factor"
+    },
+    "stepsGuide": {
+      "description": "Enter a key and press Insert/Search to observe the hash function → bucket mapping process.",
+      "hint": "Enter a key and press Insert or Search to begin."
+    },
+    "guide": {
+      "title": "Hash Table Guide",
+      "whatIs": {
+        "title": "What is a Hash Table?",
+        "description": "A hash table stores key-value pairs with O(1) average-case insert, lookup, and delete. A hash function maps keys to bucket indices; collisions (two keys mapping to the same index) are resolved by chaining or open addressing. JavaScript's Object and Map, Python's dict, and Java's HashMap are all hash table implementations."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Choose a collision strategy: Chaining, Linear Probing, or Quadratic Probing",
+          "Adjust the table size — smaller tables cause more collisions",
+          "Enter a key and press Insert to watch the hash → bucket assignment",
+          "Use Batch Insert to populate the table with multiple random keys",
+          "Observe how the same bucket handles multiple keys in each strategy"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Performance degrades quickly above a load factor of 0.7 — resizing is needed",
+          "Chaining supports load factor > 1; open addressing requires < 1",
+          "Linear probing is simple but suffers from primary clustering",
+          "Quadratic probing reduces clustering but works best with prime table sizes",
+          "Java HashMap auto-resizes at load factor 0.75, doubling the capacity"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What happens with a bad hash function?",
+            "a": "Many collisions occur, degrading O(1) average to O(n) worst case. A good hash function distributes keys evenly. Cryptographic hashes (SHA-256) and data-structure hashes (MurmurHash) are designed for different goals."
+          },
+          {
+            "q": "Chaining vs open addressing — when to use which?",
+            "a": "Chaining: better when deletions are frequent or load factor is high; each bucket is a dynamic list with memory overhead. Open addressing: cache-friendly (contiguous memory), more memory-efficient, but needs low load factor. Java uses chaining; Python uses open addressing (compact tables)."
+          },
+          {
+            "q": "Hash table vs tree map (BST)?",
+            "a": "Hash table: O(1) average lookup, no ordering. Tree map: O(log n) lookup, keys kept sorted. Choose hash table for fast lookup without ordering; choose tree map when range queries or sorted iteration are needed."
+          }
+        ]
+      }
+    }
   }
 }

@@ -28,6 +28,10 @@ export const algorithms: AlgorithmInfo[] = [
   { id: 'dijkstra', href: '/algorithm/dijkstra', category: 'search', difficulty: 2, renderMode: '2d', icon: '🗺️', labelKey: 'dijkstra', status: 'ready' },
   { id: 'merge-sort', href: '/algorithm/merge-sort', category: 'sort', difficulty: 2, renderMode: '2d', icon: '🔀', labelKey: 'mergeSort', status: 'ready' },
   { id: 'counting-sort', href: '/algorithm/counting-sort', category: 'sort', difficulty: 1, renderMode: '2d', icon: '📊', labelKey: 'countingSort', status: 'ready' },
+  { id: 'radix-sort', href: '/algorithm/radix-sort', category: 'sort', difficulty: 2, renderMode: '2d', icon: '🔢', labelKey: 'radixSort', status: 'ready' },
+  { id: 'flood-fill', href: '/algorithm/flood-fill', category: 'search', difficulty: 1, renderMode: '2d', icon: '🎨', labelKey: 'floodFill', status: 'ready' },
+  { id: 'stack-queue', href: '/algorithm/stack-queue', category: 'data-structure', difficulty: 1, renderMode: '2d', icon: '📚', labelKey: 'stackQueue', status: 'ready' },
+  { id: 'hash-table', href: '/algorithm/hash-table', category: 'data-structure', difficulty: 2, renderMode: '2d', icon: '#️⃣', labelKey: 'hashTable', status: 'ready' },
   { id: 'bst', href: '/algorithm/bst', category: 'data-structure', difficulty: 2, renderMode: '2d', icon: '🌲', labelKey: 'bst', status: 'ready' },
   { id: 'quadtree', href: '/algorithm/quadtree', category: 'data-structure', difficulty: 2, renderMode: '2d', icon: '🌳', labelKey: 'quadtree', status: 'ready' },
 ]
