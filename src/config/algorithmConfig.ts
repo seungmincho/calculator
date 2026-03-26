@@ -17,12 +17,17 @@ export const algorithms: AlgorithmInfo[] = [
   { id: 'aabb', href: '/algorithm/aabb', category: 'collision', difficulty: 1, renderMode: '2d', icon: '📦', labelKey: 'aabb', status: 'ready' },
   { id: 'sat', href: '/algorithm/sat', category: 'collision', difficulty: 2, renderMode: 'both', icon: '🔲', labelKey: 'sat', status: 'ready' },
   { id: 'bfs-dfs', href: '/algorithm/bfs-dfs', category: 'search', difficulty: 1, renderMode: '2d', icon: '🔍', labelKey: 'bfsDfs', status: 'ready' },
-  // 향후 추가 예정:
-  // { id: 'a-star', href: '/algorithm/a-star', category: 'search', difficulty: 2, renderMode: '2d', icon: '⭐', labelKey: 'aStar', status: 'coming-soon' },
-  // { id: 'bubble-sort', href: '/algorithm/bubble-sort', category: 'sort', difficulty: 1, renderMode: '2d', icon: '🫧', labelKey: 'bubbleSort', status: 'coming-soon' },
-  // { id: 'quick-sort', href: '/algorithm/quick-sort', category: 'sort', difficulty: 2, renderMode: '2d', icon: '⚡', labelKey: 'quickSort', status: 'coming-soon' },
-  // { id: 'minimax', href: '/algorithm/minimax', category: 'game-ai', difficulty: 2, renderMode: '2d', icon: '🎮', labelKey: 'minimax', status: 'coming-soon' },
-  // { id: 'quadtree', href: '/algorithm/quadtree', category: 'data-structure', difficulty: 2, renderMode: 'both', icon: '🌳', labelKey: 'quadtree', status: 'coming-soon' },
+  { id: 'a-star', href: '/algorithm/a-star', category: 'search', difficulty: 2, renderMode: '2d', icon: '⭐', labelKey: 'aStar', status: 'ready' },
+  { id: 'bubble-sort', href: '/algorithm/bubble-sort', category: 'sort', difficulty: 1, renderMode: '2d', icon: '🫧', labelKey: 'bubbleSort', status: 'ready' },
+  { id: 'quick-sort', href: '/algorithm/quick-sort', category: 'sort', difficulty: 2, renderMode: '2d', icon: '⚡', labelKey: 'quickSort', status: 'ready' },
+  { id: 'insertion-sort', href: '/algorithm/insertion-sort', category: 'sort', difficulty: 1, renderMode: '2d', icon: '📌', labelKey: 'insertionSort', status: 'ready' },
+  { id: 'selection-sort', href: '/algorithm/selection-sort', category: 'sort', difficulty: 1, renderMode: '2d', icon: '✋', labelKey: 'selectionSort', status: 'ready' },
+  { id: 'heap-sort', href: '/algorithm/heap-sort', category: 'sort', difficulty: 2, renderMode: '2d', icon: '🏔️', labelKey: 'heapSort', status: 'ready' },
+  { id: 'binary-search', href: '/algorithm/binary-search', category: 'search', difficulty: 1, renderMode: '2d', icon: '🔎', labelKey: 'binarySearch', status: 'ready' },
+  { id: 'minimax', href: '/algorithm/minimax', category: 'game-ai', difficulty: 2, renderMode: '2d', icon: '🎮', labelKey: 'minimax', status: 'ready' },
+  { id: 'dijkstra', href: '/algorithm/dijkstra', category: 'search', difficulty: 2, renderMode: '2d', icon: '🗺️', labelKey: 'dijkstra', status: 'ready' },
+  { id: 'merge-sort', href: '/algorithm/merge-sort', category: 'sort', difficulty: 2, renderMode: '2d', icon: '🔀', labelKey: 'mergeSort', status: 'ready' },
+  { id: 'quadtree', href: '/algorithm/quadtree', category: 'data-structure', difficulty: 2, renderMode: '2d', icon: '🌳', labelKey: 'quadtree', status: 'ready' },
 ]
 
 export const categoryColors: Record<AlgorithmCategory, string> = {

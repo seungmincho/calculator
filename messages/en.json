@@ -28738,6 +28738,50 @@
       "bfsDfs": {
         "title": "BFS / DFS Search",
         "description": "Visually compare Breadth-First Search and Depth-First Search on a grid"
+      },
+      "aStar": {
+        "title": "A* Pathfinding",
+        "description": "Learn A* shortest path algorithm interactively with heuristic visualization"
+      },
+      "bubbleSort": {
+        "title": "Bubble Sort",
+        "description": "The most fundamental sorting algorithm that compares and swaps adjacent elements"
+      },
+      "quickSort": {
+        "title": "Quick Sort",
+        "description": "High-performance divide-and-conquer sorting algorithm using pivot partitioning"
+      },
+      "minimax": {
+        "title": "Minimax Game AI",
+        "description": "Learn optimal strategy search and alpha-beta pruning through tic-tac-toe game trees"
+      },
+      "insertionSort": {
+        "title": "Insertion Sort",
+        "description": "Intuitive sorting that inserts each element into its correct position, like sorting cards"
+      },
+      "selectionSort": {
+        "title": "Selection Sort",
+        "description": "Simple sorting that repeatedly finds the minimum and moves it to the front"
+      },
+      "heapSort": {
+        "title": "Heap Sort",
+        "description": "In-place sorting using a binary heap — visualized as both tree and array"
+      },
+      "binarySearch": {
+        "title": "Binary Search",
+        "description": "Efficiently find a target in a sorted array by halving the search range"
+      },
+      "dijkstra": {
+        "title": "Dijkstra's Shortest Path",
+        "description": "Classic greedy algorithm for finding shortest paths in weighted graphs"
+      },
+      "mergeSort": {
+        "title": "Merge Sort",
+        "description": "Stable divide-and-conquer sort that splits the array and merges sorted halves"
+      },
+      "quadtree": {
+        "title": "Quad Tree",
+        "description": "Spatial data structure that recursively divides 2D space into quadrants for efficient point management"
       }
     },
     "card": {
@@ -29031,6 +29075,798 @@
           {
             "q": "How does this relate to A*?",
             "a": "A* extends BFS by using a heuristic (estimated distance to goal) to guide the search direction. It finds the shortest path much more efficiently than BFS."
+          }
+        ]
+      }
+    }
+  },
+  "insertionSortVisualizer": {
+    "title": "Insertion Sort Visualizer",
+    "description": "Watch elements being picked up and inserted into their correct position in the sorted portion",
+    "tabs": { "steps": "Step by Step", "code": "Code" },
+    "controls": { "arraySize": "Array Size", "random": "Random", "nearlySorted": "Nearly Sorted", "reversed": "Reversed" },
+    "grid": { "current": "Current Element", "comparing": "Comparing", "shifting": "Shifting", "sortedPortion": "Sorted Portion", "sorted": "Sorted", "default": "Unsorted" },
+    "stats": { "comparisons": "Comparisons", "shifts": "Shifts", "done": "Sorting Complete!" },
+    "stepsGuide": { "description": "Observe how each element is inserted into its correct position.", "select": "Select: arr[{i}] = {value}", "comparing": "Compare: {a} vs {b}", "shift": "Shift: arr[{i}] → arr[{j}]", "insert": "Insert: arr[{pos}] = {value}" },
+    "guide": {
+      "title": "Insertion Sort Guide",
+      "whatIs": { "title": "What is Insertion Sort?", "description": "Insertion Sort works like sorting cards — pick up one element at a time and insert it into its correct position in the sorted portion. It's very efficient for small or nearly-sorted data." },
+      "howToUse": { "title": "How to Use", "items": ["Adjust the array size", "Purple bar is the element being inserted", "Orange bars are elements shifting right", "The lighter area on the left is the sorted portion", "Notice how nearly-sorted input finishes much faster"] },
+      "tips": { "title": "Learning Tips", "items": ["Nearly-sorted arrays run close to O(n)", "Reversed arrays show worst case O(n²)", "It's both stable and in-place", "For small arrays (n<50), it can be faster than Quick Sort"] },
+      "faq": { "title": "FAQ", "items": [{ "q": "How does it differ from Bubble Sort?", "a": "Insertion Sort inserts into the sorted portion, Bubble Sort repeatedly swaps adjacent elements. Insertion Sort is faster on average." }, { "q": "Time complexity?", "a": "Best O(n), average/worst O(n²). Space O(1)." }] }
+    }
+  },
+  "selectionSortVisualizer": {
+    "title": "Selection Sort Visualizer",
+    "description": "Watch the minimum being found and moved to the front at each pass",
+    "tabs": { "steps": "Step by Step", "code": "Code" },
+    "controls": { "arraySize": "Array Size", "random": "Random", "nearlySorted": "Nearly Sorted", "reversed": "Reversed" },
+    "grid": { "scanning": "Scanning", "minimum": "Current Minimum", "comparing": "Comparing", "swapping": "Swapping", "sorted": "Sorted", "default": "Unsorted", "scanRange": "Scan Range" },
+    "stats": { "comparisons": "Comparisons", "swaps": "Swaps", "done": "Sorting Complete!" },
+    "stepsGuide": { "description": "Observe how the minimum is found and swapped into position.", "scanStart": "Scan start: from position {i}", "comparing": "Compare: arr[{i}]={a} vs arr[{j}]={b}", "newMin": "New minimum: arr[{i}] = {value}", "swapped": "Swap: arr[{i}]={a} ↔ arr[{j}]={b}", "noSwap": "No swap needed (already in position)" },
+    "guide": {
+      "title": "Selection Sort Guide",
+      "whatIs": { "title": "What is Selection Sort?", "description": "Selection Sort finds the minimum element in the unsorted portion and places it at the end of the sorted portion. Very simple to implement but always requires O(n²) comparisons." },
+      "howToUse": { "title": "How to Use", "items": ["Adjust the array size", "Red bar is the current minimum found so far", "Yellow bar is the element being compared", "Purple background shows the scan range", "Each pass moves exactly one element to its final position"] },
+      "tips": { "title": "Learning Tips", "items": ["Always performs exactly n(n-1)/2 comparisons regardless of input", "Maximum n-1 swaps, very few compared to Bubble Sort", "Unstable sort — equal elements may change order", "Advantageous when memory writes are expensive (minimal swaps)"] },
+      "faq": { "title": "FAQ", "items": [{ "q": "How does it differ from Bubble Sort?", "a": "Selection Sort finds the minimum position first, then swaps once. Bubble Sort repeatedly swaps adjacent elements. Selection Sort makes far fewer swaps." }, { "q": "Time complexity?", "a": "Always O(n²) comparisons. O(n) swaps. Space O(1)." }] }
+    }
+  },
+  "heapSortVisualizer": {
+    "title": "Heap Sort Visualizer",
+    "description": "Watch heap construction and extraction through simultaneous tree and bar chart views",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "controls": {
+      "arraySize": "Array Size",
+      "random": "Random",
+      "nearlySorted": "Nearly Sorted",
+      "reversed": "Reversed"
+    },
+    "grid": {
+      "comparing": "Comparing",
+      "swapping": "Swapping",
+      "sorted": "Sorted",
+      "inHeap": "In Heap",
+      "outsideHeap": "Outside Heap"
+    },
+    "stats": {
+      "phase": "Phase",
+      "phaseBuild": "Build Heap",
+      "phaseExtract": "Extract & Sort",
+      "comparisons": "Comparisons",
+      "swaps": "Swaps",
+      "heapSize": "Heap Size",
+      "done": "Sorting Complete!"
+    },
+    "stepsGuide": {
+      "description": "Observe how the binary heap is built and the maximum is extracted at each step.",
+      "heapifyStart": "Heapify: node {index}",
+      "comparing": "Compare: arr[{i}]={a} vs arr[{j}]={b}",
+      "swapped": "Swap: arr[{i}]={a} ↔ arr[{j}]={b}",
+      "extract": "Extract: max {value} → position {index}"
+    },
+    "guide": {
+      "title": "Heap Sort Guide",
+      "whatIs": {
+        "title": "What is Heap Sort?",
+        "description": "Heap Sort is a comparison-based sorting algorithm that uses a binary heap data structure. It first builds a max-heap, then repeatedly extracts the root (maximum value) to sort the array. It always guarantees O(n log n) and is an in-place sort requiring no extra memory."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust the array size (max 31 recommended for clear tree visualization)",
+          "The tree view and bar chart update simultaneously",
+          "In the build phase, watch the heap property being restored bottom-up",
+          "In the extract phase, the root (max) moves to the end of the array",
+          "Gray nodes are already sorted and removed from the heap"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "In a max-heap, every parent is greater than or equal to its children",
+          "Building the heap takes O(n) time (not O(n log n)!)",
+          "Each extraction moves the maximum to its correct final position",
+          "Reversed arrays build the heap with fewest swaps (already satisfies heap property)"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How does it compare to Quick Sort?",
+            "a": "Heap Sort guarantees worst-case O(n log n) but has worse cache locality, making it slower in practice than Quick Sort. Use it when worst-case guarantees matter."
+          },
+          {
+            "q": "Is it a stable sort?",
+            "a": "No. The relative order of equal elements may change during heap extraction."
+          },
+          {
+            "q": "How does it relate to priority queues?",
+            "a": "A heap is the standard implementation of a priority queue. The priority queues used in Dijkstra and A* algorithms are binary heaps."
+          }
+        ]
+      }
+    }
+  },
+  "dijkstraVisualizer": {
+    "title": "Dijkstra's Shortest Path Visualizer",
+    "description": "Learn Dijkstra's algorithm for finding shortest paths in weighted grids",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "mode": {
+      "dijkstra": "Dijkstra",
+      "compare": "Dijkstra vs A*"
+    },
+    "weight": {
+      "title": "Weight Type",
+      "uniform": "Uniform (1)",
+      "random": "Random (1-5)",
+      "terrain": "Terrain"
+    },
+    "grid": {
+      "start": "Start",
+      "goal": "Goal",
+      "wall": "Wall",
+      "visited": "Closed Set",
+      "path": "Shortest Path",
+      "open": "Open Set"
+    },
+    "controls": {
+      "drawWall": "Draw Wall",
+      "eraseWall": "Erase Wall",
+      "setStart": "Set Start",
+      "setGoal": "Set Goal",
+      "clearWalls": "Clear Walls",
+      "randomMaze": "Random Maze",
+      "gridSize": "Grid Size",
+      "diagonal": "Diagonal Movement",
+      "showWeights": "Show Weights",
+      "showDistances": "Show Distances"
+    },
+    "stats": {
+      "visited": "Visited Nodes",
+      "pathLength": "Path Length",
+      "totalCost": "Total Cost",
+      "openSet": "Open Set Size",
+      "found": "Shortest Path Found!",
+      "notFound": "No Path"
+    },
+    "stepsGuide": {
+      "description": "Observe how Dijkstra selects the node with the shortest distance.",
+      "dijkstraDescription": "Dijkstra always explores the node with the smallest distance from the start. No heuristic — only actual distances.",
+      "exploring": "Exploring: ({x}, {y})",
+      "updated": "Distance Updated: ({x}, {y})",
+      "distance": "Distance = {dist}"
+    },
+    "guide": {
+      "title": "Dijkstra's Algorithm Guide",
+      "whatIs": {
+        "title": "What is Dijkstra's Algorithm?",
+        "description": "Dijkstra's algorithm finds the shortest path from one vertex to all other vertices in a weighted graph. Invented by Edsger Dijkstra in 1956, it is widely used in navigation, network routing, and game AI."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Choose a weight type — Uniform (1), Random (1-5), or Terrain",
+          "Click/drag to draw walls on the grid",
+          "Toggle weight display to see movement costs per cell",
+          "Toggle distance display to see shortest distances from start",
+          "Use Dijkstra vs A* mode to compare search efficiency"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Dijkstra is a special case of A* where h=0",
+          "With uniform weights, Dijkstra behaves identically to BFS",
+          "In terrain mode, observe how paths detour around heavy (dark) areas",
+          "Compare with A* to see Dijkstra exploring more nodes"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What's the difference from A*?",
+            "a": "Dijkstra uses only actual distance from start (g). A* adds a heuristic (h) to guide search toward the goal, making it more efficient."
+          },
+          {
+            "q": "What about negative weights?",
+            "a": "Dijkstra cannot handle negative edge weights. Use the Bellman-Ford algorithm for graphs with negative weights."
+          },
+          {
+            "q": "What's the time complexity?",
+            "a": "O((V + E) log V) with a binary heap. Can be improved to O(V log V + E) with a Fibonacci heap."
+          }
+        ]
+      }
+    }
+  },
+  "mergeSortVisualizer": {
+    "title": "Merge Sort Visualizer",
+    "description": "Watch the array being split in half and merged back together in sorted order",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "controls": {
+      "arraySize": "Array Size",
+      "random": "Random",
+      "nearlySorted": "Nearly Sorted",
+      "reversed": "Reversed"
+    },
+    "grid": {
+      "leftHalf": "Left Half",
+      "rightHalf": "Right Half",
+      "comparing": "Comparing",
+      "placing": "Placing",
+      "sorted": "Sorted",
+      "default": "Unsorted"
+    },
+    "stats": {
+      "depth": "Recursion Depth",
+      "comparisons": "Comparisons",
+      "merges": "Merges",
+      "done": "Sorting Complete!"
+    },
+    "stepsGuide": {
+      "description": "Observe how the array is split and merged step by step.",
+      "split": "Split: [{left}~{right}] → mid {mid}",
+      "comparing": "Compare: arr[{i}]={a} vs arr[{j}]={b}",
+      "mergePlace": "Place: arr[{k}] = {value}",
+      "mergeComplete": "Merge complete: [{left}~{right}]"
+    },
+    "guide": {
+      "title": "Merge Sort Guide",
+      "whatIs": {
+        "title": "What is Merge Sort?",
+        "description": "Merge Sort is a divide-and-conquer algorithm that splits the array in half, recursively sorts each half, then merges the two sorted halves back together. It guarantees O(n log n) time complexity and is a stable sort that preserves the relative order of equal elements."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust the array size with the slider (5-50)",
+          "Generate different inputs with Random, Nearly Sorted, or Reversed buttons",
+          "Teal bars are the left sub-array, orange bars are the right sub-array",
+          "Yellow means comparing, purple means placing a merged element",
+          "Follow the split-merge flow in the Code tab"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Merge Sort is always O(n log n) regardless of input data",
+          "The split depth is log₂(n), and n elements are merged at each depth",
+          "Unlike Quick Sort, it requires O(n) extra memory",
+          "Being a stable sort means equal values keep their original order"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How does it differ from Quick Sort?",
+            "a": "Merge Sort is always O(n log n) but needs O(n) extra memory. Quick Sort averages O(n log n) with worst case O(n²) but sorts in-place with O(1) extra memory."
+          },
+          {
+            "q": "Why does stable sorting matter?",
+            "a": "When sorting a database by name then by age, a stable sort preserves the name order for equal ages. Python's sorted() and Java's Arrays.sort(Objects) are merge sort-based."
+          },
+          {
+            "q": "When should I use Merge Sort?",
+            "a": "When you need stable sorting, guaranteed worst-case performance, or sorting linked lists (where it uses O(1) extra memory)."
+          }
+        ]
+      }
+    }
+  },
+  "quadTreeVisualizer": {
+    "title": "Quad Tree Visualizer",
+    "description": "Watch how 2D space is recursively divided into quadrants for efficient point management and range search",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "mode": {
+      "build": "Build Tree",
+      "search": "Range Search"
+    },
+    "controls": {
+      "pointCount": "Point Count",
+      "capacity": "Node Capacity",
+      "random": "Random",
+      "clustered": "Clustered",
+      "clear": "Clear",
+      "drawSearch": "Drag to set search area"
+    },
+    "stats": {
+      "totalNodes": "Total Nodes",
+      "totalPoints": "Total Points",
+      "maxDepth": "Max Depth",
+      "found": "Found Points",
+      "checked": "Checked Nodes",
+      "skipped": "Skipped Nodes"
+    },
+    "grid": {
+      "boundary": "Boundary",
+      "point": "Point",
+      "activeNode": "Active Node",
+      "searchArea": "Search Area",
+      "foundPoint": "Found Point",
+      "skippedNode": "Skipped Node"
+    },
+    "stepsGuide": {
+      "description": "Observe how points are inserted and space is subdivided.",
+      "insert": "Insert: point ({x}, {y})",
+      "subdivide": "Subdivide: depth {depth}",
+      "searchCheck": "Search: checking node",
+      "searchFound": "Found: point ({x}, {y})",
+      "searchSkip": "Skip: out of range"
+    },
+    "guide": {
+      "title": "Quad Tree Guide",
+      "whatIs": {
+        "title": "What is a Quad Tree?",
+        "description": "A Quad Tree is a spatial data structure that recursively divides 2D space into four quadrants to efficiently store and search point data. It is widely used in game collision detection, map systems, image compression, and more."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click the canvas to add points manually, or use Random/Clustered buttons",
+          "Adjust node capacity (default 4) to change subdivision frequency",
+          "In Build mode, watch points being inserted and space being divided",
+          "In Search mode, observe how only points within the green area are found efficiently",
+          "Skipped nodes (red dashed) are areas that don't need to be checked"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Set capacity to 1 to see subdivisions happen at every point insertion",
+          "With clustered patterns, notice how only certain areas are deeply subdivided",
+          "More skipped nodes in range search means more efficient searching",
+          "Quad trees work best when points are evenly distributed"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Where are Quad Trees used?",
+            "a": "Game collision detection (only compare nearby objects), map/GIS systems (regional search), image compression, and particle simulations."
+          },
+          {
+            "q": "What's a good node capacity?",
+            "a": "Usually 4-16 is appropriate. Too small makes the tree deep, too large reduces search efficiency."
+          },
+          {
+            "q": "What's the time complexity?",
+            "a": "Balanced case: insert/search O(log n), worst case (all points in one spot) O(n). Range search averages O(√n + k), much faster than O(n) brute force."
+          }
+        ]
+      }
+    }
+  },
+  "minimaxVisualizer": {
+    "title": "Minimax Game AI Visualizer",
+    "description": "Learn Minimax algorithm and alpha-beta pruning through tic-tac-toe game trees",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "controls": {
+      "alphaBeta": "Alpha-Beta Pruning",
+      "clearBoard": "Clear Board",
+      "preset": {
+        "empty": "Empty Board",
+        "midGame": "Mid-Game",
+        "nearEnd": "Near End"
+      }
+    },
+    "stats": {
+      "totalNodes": "Total Nodes",
+      "prunedNodes": "Pruned",
+      "bestMove": "Best Move",
+      "rootScore": "Root Score"
+    },
+    "board": {
+      "clickToPlace": "Click to place",
+      "playerTurn": "{player}'s turn"
+    },
+    "grid": {
+      "maximizing": "Maximizing (MAX)",
+      "minimizing": "Minimizing (MIN)",
+      "pruned": "Pruned",
+      "terminal": "Terminal Node",
+      "bestPath": "Best Path"
+    },
+    "stepsGuide": {
+      "description": "Observe how the game tree is explored and scores propagate upward.",
+      "expand": "Expand node: depth {depth}",
+      "evaluate": "Terminal evaluation: score = {score}",
+      "backpropagate": "Backpropagate: {score} (α={alpha}, β={beta})",
+      "prune": "Pruned! β({beta}) ≤ α({alpha})"
+    },
+    "guide": {
+      "title": "Minimax Game AI Guide",
+      "whatIs": {
+        "title": "What is the Minimax Algorithm?",
+        "description": "Minimax finds the optimal strategy in two-player zero-sum games. One player (MAX) tries to maximize the score while the opponent (MIN) tries to minimize it. Adding alpha-beta pruning cuts branches that can't affect the result, greatly speeding up the search."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click the board to place X and O alternately (set up initial position)",
+          "Or use preset buttons for empty/mid-game/near-end states",
+          "Toggle alpha-beta pruning on/off to compare the difference",
+          "Press play to watch the game tree being built step by step",
+          "Orange nodes are MAX (maximizing), blue nodes are MIN (minimizing)"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Compare node counts with alpha-beta ON vs OFF on an empty board",
+          "Near-end positions have smaller trees, making it easier to follow the process",
+          "Pruned nodes (gray) are skipped because they can't change the result",
+          "MAX nodes choose the highest child score, MIN nodes choose the lowest"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What games use Minimax?",
+            "a": "All two-player perfect-information zero-sum games: chess, Go, Gomoku, checkers, etc. The Gomoku, Othello, and Connect4 AIs on this site are also Minimax-based."
+          },
+          {
+            "q": "Does alpha-beta pruning change the result?",
+            "a": "No. Pruning only speeds up the search — the final result (optimal move) is identical. It simply skips unnecessary branches."
+          },
+          {
+            "q": "What's the optimal strategy in Tic-Tac-Toe?",
+            "a": "If both players play optimally, it's always a draw. Minimax proves this — the root score becomes 0 (draw)."
+          }
+        ]
+      }
+    }
+  },
+  "quickSortVisualizer": {
+    "title": "Quick Sort Visualizer",
+    "description": "Watch the pivot-based partitioning and recursive sorting process",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "controls": {
+      "arraySize": "Array Size",
+      "random": "Random",
+      "nearlySorted": "Nearly Sorted",
+      "reversed": "Reversed"
+    },
+    "grid": {
+      "pivot": "Pivot",
+      "comparing": "Comparing",
+      "swapping": "Swapping",
+      "sorted": "Final Position",
+      "default": "Unsorted",
+      "partition": "Partition Range"
+    },
+    "stats": {
+      "depth": "Recursion Depth",
+      "comparisons": "Comparisons",
+      "swaps": "Swaps",
+      "done": "Sorting Complete!"
+    },
+    "stepsGuide": {
+      "description": "Observe the pivot selection and partitioning process step by step.",
+      "pivotSelect": "Pivot selected: arr[{i}] = {value}",
+      "comparing": "Compare: arr[{j}]={a} vs pivot={b}",
+      "swapped": "Swap: arr[{i}]={a} ↔ arr[{j}]={b}",
+      "noSwap": "No swap (greater than pivot)",
+      "pivotPlace": "Pivot placed: arr[{i}] = {value}"
+    },
+    "guide": {
+      "title": "Quick Sort Guide",
+      "whatIs": {
+        "title": "What is Quick Sort?",
+        "description": "Quick Sort is a high-performance sorting algorithm that uses the divide-and-conquer strategy. It selects a pivot element, partitions the array into elements smaller and larger than the pivot, then recursively sorts each partition. It has an average time complexity of O(n log n)."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust the array size with the slider (5-50)",
+          "Generate different inputs with Random, Nearly Sorted, or Reversed buttons",
+          "The purple bar is the current pivot",
+          "The light purple background shows the current partition range",
+          "Green bars are elements in their final confirmed position"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Once a pivot is placed, its position is final (it never moves again)",
+          "Choosing the last element as pivot on a reversed array triggers worst case (O(n²))",
+          "Deeper recursion means smaller sub-arrays are being processed",
+          "Random arrays show near-average O(n log n) performance"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is Quick Sort a stable sort?",
+            "a": "No. Both Lomuto and Hoare partition schemes don't preserve the relative order of equal elements. Use Merge Sort if stability is needed."
+          },
+          {
+            "q": "What's the time complexity?",
+            "a": "Average O(n log n), worst case O(n²) (sorted array + end pivot). Random or median-of-three pivot selection avoids worst case."
+          },
+          {
+            "q": "How does it compare to Bubble Sort?",
+            "a": "Quick Sort is much faster on average (O(n log n) vs O(n²)). It's one of the most widely used sorting algorithms in practice."
+          }
+        ]
+      }
+    }
+  },
+  "bubbleSortVisualizer": {
+    "title": "Bubble Sort Visualizer",
+    "description": "Watch adjacent elements being compared and swapped through bar chart animation",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "controls": {
+      "arraySize": "Array Size",
+      "random": "Random",
+      "nearlySorted": "Nearly Sorted",
+      "reversed": "Reversed"
+    },
+    "grid": {
+      "comparing": "Comparing",
+      "swapping": "Swapping",
+      "sorted": "Sorted",
+      "default": "Unsorted"
+    },
+    "stats": {
+      "pass": "Pass",
+      "comparisons": "Comparisons",
+      "swaps": "Swaps",
+      "done": "Sorting Complete!"
+    },
+    "stepsGuide": {
+      "description": "Observe which elements are compared and swapped at each step.",
+      "comparing": "Compare: arr[{i}]={a} vs arr[{j}]={b}",
+      "swapped": "Swap: arr[{i}]={a} ↔ arr[{j}]={b}",
+      "noSwap": "No swap needed",
+      "passComplete": "Pass {n} complete"
+    },
+    "guide": {
+      "title": "Bubble Sort Guide",
+      "whatIs": {
+        "title": "What is Bubble Sort?",
+        "description": "Bubble Sort is the most fundamental sorting algorithm that repeatedly compares adjacent elements and swaps them if they are in the wrong order. The name comes from the way larger values 'bubble up' to the end of the array."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust the array size with the slider (5-50)",
+          "Generate different inputs with Random, Nearly Sorted, or Reversed buttons",
+          "Press play to watch the sorting process step by step",
+          "Yellow means comparing, red means swapping, green means sorted",
+          "The Code tab highlights the current line being executed"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Notice how reversed arrays require maximum comparisons and swaps (O(n²))",
+          "Nearly sorted arrays finish quickly thanks to early termination optimization",
+          "Each pass moves the largest unsorted element to its correct position",
+          "If no swaps occur in a pass, the array is already sorted"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is Bubble Sort used in practice?",
+            "a": "Rarely. Its O(n²) time complexity makes it inefficient for large datasets, but it's useful for learning algorithms and small datasets."
+          },
+          {
+            "q": "What's the time complexity?",
+            "a": "Best case O(n) (already sorted), average and worst case O(n²). Space complexity is O(1) as it sorts in-place."
+          },
+          {
+            "q": "Is it a stable sort?",
+            "a": "Yes, the relative order of equal elements is preserved. This is one of Bubble Sort's advantages."
+          }
+        ]
+      }
+    }
+  },
+  "aStarVisualizer": {
+    "title": "A* Pathfinding Visualizer",
+    "description": "Learn the A* (A-Star) shortest path algorithm through interactive visualization",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "mode": {
+      "astar": "A* Pathfinding",
+      "compare": "A* vs BFS"
+    },
+    "heuristic": {
+      "title": "Heuristic",
+      "manhattan": "Manhattan",
+      "euclidean": "Euclidean",
+      "chebyshev": "Chebyshev"
+    },
+    "grid": {
+      "start": "Start",
+      "goal": "Goal",
+      "wall": "Wall",
+      "visited": "Closed Set",
+      "path": "Shortest Path",
+      "open": "Open Set"
+    },
+    "controls": {
+      "drawWall": "Draw Wall",
+      "eraseWall": "Erase Wall",
+      "setStart": "Set Start",
+      "setGoal": "Set Goal",
+      "clearWalls": "Clear Walls",
+      "randomMaze": "Random Maze",
+      "gridSize": "Grid Size",
+      "diagonal": "Diagonal Movement",
+      "showCosts": "Show Costs"
+    },
+    "stats": {
+      "visited": "Visited Nodes",
+      "pathLength": "Path Length",
+      "totalCost": "Total Cost",
+      "openSet": "Open Set Size",
+      "found": "Shortest Path Found!",
+      "notFound": "No Path"
+    },
+    "stepsGuide": {
+      "description": "Observe how A* selects the node with the lowest cost.",
+      "astarDescription": "A* prioritizes nodes with the lowest f = g + h (actual cost + estimated cost).",
+      "exploring": "Exploring: ({x}, {y})",
+      "updated": "Cost Updated: ({x}, {y})",
+      "fCost": "f = {value}",
+      "gCost": "g = {value}",
+      "hCost": "h = {value}",
+      "openSetSize": "Open set: {size}"
+    },
+    "guide": {
+      "title": "A* Pathfinding Guide",
+      "whatIs": {
+        "title": "What is the A* Algorithm?",
+        "description": "A* (A-Star) is an algorithm that efficiently finds the shortest path in a graph. It extends Dijkstra's algorithm by adding a heuristic (estimated distance to goal) to guide the search direction. It is widely used in game AI, robot navigation, and GPS routing."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click/drag on the grid to draw or erase walls",
+          "Set the start point (green) and goal point (red)",
+          "Choose a heuristic type (Manhattan/Euclidean/Chebyshev)",
+          "Enable diagonal movement for 8-directional search",
+          "Toggle cost display to see f/g/h values in each cell",
+          "Use A* vs BFS mode to compare efficiency"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "A* guarantees the shortest path with an admissible heuristic",
+          "Manhattan distance works best for 4-directional, Chebyshev for 8-directional movement",
+          "Compare with BFS to see how A* explores far fewer nodes",
+          "When h=0, A* behaves identically to Dijkstra's algorithm",
+          "Watch how cells with lower f-values (lighter colors) are explored first"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is A* always faster than BFS?",
+            "a": "In most cases A* explores fewer nodes. However, with poor heuristics or very short paths, the difference may be minimal."
+          },
+          {
+            "q": "Which heuristic should I choose?",
+            "a": "Manhattan for 4-directional movement, Chebyshev for 8-directional. Euclidean works for free movement but can be slightly inefficient on grids."
+          },
+          {
+            "q": "What's the time complexity?",
+            "a": "Worst case O(b^d) (b=branching factor, d=depth), but with a good heuristic it's much faster than BFS in practice."
+          }
+        ]
+      }
+    }
+  },
+  "binarySearchVisualizer": {
+    "title": "Binary Search Visualizer",
+    "description": "Watch how O(log n) search halves the range each step to find a target in a sorted array",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "controls": {
+      "arraySize": "Array Size",
+      "generate": "Generate Array",
+      "target": "Search Target",
+      "randomTarget": "Random Target"
+    },
+    "grid": {
+      "active": "Search Range",
+      "mid": "Mid",
+      "eliminated": "Eliminated",
+      "found": "Found!",
+      "low": "Low Boundary",
+      "high": "High Boundary"
+    },
+    "stats": {
+      "comparisons": "Comparisons",
+      "remaining": "Remaining Range",
+      "eliminated": "Eliminated",
+      "found": "Found!",
+      "notFound": "Not Found"
+    },
+    "stepsGuide": {
+      "description": "Watch how each comparison halves the search range until the target is found or eliminated.",
+      "comparing": "Compare: arr[{mid}]={val} vs target {target}",
+      "goLeft": "Go left: high = {high}",
+      "goRight": "Go right: low = {low}",
+      "found": "Found! index {idx} = {val}",
+      "notFound": "{target} is not in the array"
+    },
+    "guide": {
+      "title": "Binary Search Guide",
+      "whatIs": {
+        "title": "What is Binary Search?",
+        "description": "Binary Search finds a target value in a sorted array by halving the search range at each step. With O(log n) time complexity, it vastly outperforms linear search (O(n)). For 1,000 elements it takes at most 10 comparisons; for 1,000,000 elements, just 20."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust array size with the slider (10–100)",
+          "Enter a target number or click 'Random Target'",
+          "Click 'Generate Array' to create a new sorted array",
+          "Press play to watch the search step by step",
+          "Yellow = current mid, blue = active range, gray = eliminated"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Try searching for a value not in the array to see the range shrink to zero",
+          "Doubling the array size only adds one more comparison — feel the log!",
+          "When L and H pointers cross, the search terminates",
+          "Binary search only works on sorted arrays"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Why does the array need to be sorted?",
+            "a": "Binary search assumes that if the mid value is less than the target, the target must be to the right. Without sorting, this assumption breaks."
+          },
+          {
+            "q": "Why is O(log n) so fast?",
+            "a": "For n=1,000,000 linear search may take 1,000,000 steps, but binary search takes at most 20 (log₂(1,000,000) ≈ 20)."
+          },
+          {
+            "q": "Where is it used in practice?",
+            "a": "Database index lookups, searching sorted lists, numerical bisection, and many standard library functions like std::binary_search or Array.prototype methods."
           }
         ]
       }
