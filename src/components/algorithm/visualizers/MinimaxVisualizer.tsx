@@ -588,7 +588,13 @@ function MinimaxStepsList({
   useEffect(() => {
     if (!listRef.current) return
     const el = listRef.current.querySelector('[data-active="true"]')
-    if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    if (el) {
+      const container = listRef.current
+      const elTop = (el as HTMLElement).offsetTop
+      const elH = (el as HTMLElement).offsetHeight
+      if (elTop < container.scrollTop) container.scrollTop = elTop
+      else if (elTop + elH > container.scrollTop + container.clientHeight) container.scrollTop = elTop + elH - container.clientHeight
+    }
   }, [currentIndex])
 
   if (displaySteps.length === 0) return null

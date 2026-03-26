@@ -651,7 +651,13 @@ function QuadTreeStepsList({
   useEffect(() => {
     if (!listRef.current) return
     const activeEl = listRef.current.querySelector('[data-active="true"]')
-    if (activeEl) activeEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    if (activeEl) {
+      const container = listRef.current
+      const elTop = (activeEl as HTMLElement).offsetTop
+      const elH = (activeEl as HTMLElement).offsetHeight
+      if (elTop < container.scrollTop) container.scrollTop = elTop
+      else if (elTop + elH > container.scrollTop + container.clientHeight) container.scrollTop = elTop + elH - container.clientHeight
+    }
   }, [currentIndex])
 
   if (displaySteps.length === 0) return null
