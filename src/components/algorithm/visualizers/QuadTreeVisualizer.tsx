@@ -16,9 +16,10 @@ import {
 import QuadTreeCanvas2D from './QuadTreeCanvas2D'
 import VisualizerControls from '../VisualizerControls'
 import CodeViewer from '../CodeViewer'
+import GuideSection from '@/components/GuideSection'
 
 type VisMode = 'build' | 'search'
-type TabKey = 'steps' | 'code'
+type TabKey = 'steps' | 'code' | 'guide'
 
 const CANVAS_W = 560
 const CANVAS_H = 420
@@ -324,6 +325,7 @@ export default function QuadTreeVisualizer() {
   const tabs: { key: TabKey; icon: string; label: string }[] = [
     { key: 'steps', icon: '🌲', label: t('tabs.steps') },
     { key: 'code', icon: '💻', label: t('tabs.code') },
+    { key: 'guide', icon: '📖', label: t('tabs.guide') },
   ]
 
   return (
@@ -586,6 +588,10 @@ export default function QuadTreeVisualizer() {
                     highlightLines={codeHighlightLines}
                     title={mode === 'search' ? 'rangeSearch.js' : 'quadTree.js'}
                   />
+                )}
+
+                {activeTab === 'guide' && (
+                  <GuideSection namespace="quadTreeVisualizer" defaultOpen />
                 )}
               </div>
             </div>

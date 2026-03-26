@@ -28997,7 +28997,8 @@
     "description": "Compare Breadth-First Search and Depth-First Search on a grid",
     "tabs": {
       "steps": "Step by Step",
-      "code": "Code"
+      "code": "Code",
+      "guide": "Guide"
     },
     "mode": {
       "bfs": "BFS (Breadth-First)",
@@ -29084,7 +29085,7 @@
   "insertionSortVisualizer": {
     "title": "Insertion Sort Visualizer",
     "description": "Watch elements being picked up and inserted into their correct position in the sorted portion",
-    "tabs": { "steps": "Step by Step", "code": "Code" },
+    "tabs": { "steps": "Step by Step", "code": "Code", "guide": "Guide" },
     "controls": { "arraySize": "Array Size", "random": "Random", "nearlySorted": "Nearly Sorted", "reversed": "Reversed" },
     "grid": { "current": "Current Element", "comparing": "Comparing", "shifting": "Shifting", "sortedPortion": "Sorted Portion", "sorted": "Sorted", "default": "Unsorted" },
     "stats": { "comparisons": "Comparisons", "shifts": "Shifts", "done": "Sorting Complete!" },
@@ -29100,7 +29101,7 @@
   "selectionSortVisualizer": {
     "title": "Selection Sort Visualizer",
     "description": "Watch the minimum being found and moved to the front at each pass",
-    "tabs": { "steps": "Step by Step", "code": "Code" },
+    "tabs": { "steps": "Step by Step", "code": "Code", "guide": "Guide" },
     "controls": { "arraySize": "Array Size", "random": "Random", "nearlySorted": "Nearly Sorted", "reversed": "Reversed" },
     "grid": { "scanning": "Scanning", "minimum": "Current Minimum", "comparing": "Comparing", "swapping": "Swapping", "sorted": "Sorted", "default": "Unsorted", "scanRange": "Scan Range" },
     "stats": { "comparisons": "Comparisons", "swaps": "Swaps", "done": "Sorting Complete!" },
@@ -29118,7 +29119,8 @@
     "description": "Watch heap construction and extraction through simultaneous tree and bar chart views",
     "tabs": {
       "steps": "Step by Step",
-      "code": "Code"
+      "code": "Code",
+      "guide": "Guide"
     },
     "controls": {
       "arraySize": "Array Size",
@@ -29198,7 +29200,8 @@
     "description": "Learn Dijkstra's algorithm for finding shortest paths in weighted grids",
     "tabs": {
       "steps": "Step by Step",
-      "code": "Code"
+      "code": "Code",
+      "guide": "Guide"
     },
     "mode": {
       "dijkstra": "Dijkstra",
@@ -29294,7 +29297,8 @@
     "description": "Watch the array being split in half and merged back together in sorted order",
     "tabs": {
       "steps": "Step by Step",
-      "code": "Code"
+      "code": "Code",
+      "guide": "Guide"
     },
     "controls": {
       "arraySize": "Array Size",
@@ -29372,7 +29376,8 @@
     "description": "Watch how 2D space is recursively divided into quadrants for efficient point management and range search",
     "tabs": {
       "steps": "Step by Step",
-      "code": "Code"
+      "code": "Code",
+      "guide": "Guide"
     },
     "mode": {
       "build": "Build Tree",
@@ -29459,7 +29464,8 @@
     "description": "Learn Minimax algorithm and alpha-beta pruning through tic-tac-toe game trees",
     "tabs": {
       "steps": "Step by Step",
-      "code": "Code"
+      "code": "Code",
+      "guide": "Guide"
     },
     "controls": {
       "alphaBeta": "Alpha-Beta Pruning",
@@ -29543,7 +29549,8 @@
     "description": "Watch the pivot-based partitioning and recursive sorting process",
     "tabs": {
       "steps": "Step by Step",
-      "code": "Code"
+      "code": "Code",
+      "guide": "Guide"
     },
     "controls": {
       "arraySize": "Array Size",
@@ -29622,7 +29629,8 @@
     "description": "Watch adjacent elements being compared and swapped through bar chart animation",
     "tabs": {
       "steps": "Step by Step",
-      "code": "Code"
+      "code": "Code",
+      "guide": "Guide"
     },
     "controls": {
       "arraySize": "Array Size",
@@ -29698,7 +29706,8 @@
     "description": "Learn the A* (A-Star) shortest path algorithm through interactive visualization",
     "tabs": {
       "steps": "Step by Step",
-      "code": "Code"
+      "code": "Code",
+      "guide": "Guide"
     },
     "mode": {
       "astar": "A* Pathfinding",
@@ -29798,7 +29807,8 @@
     "description": "Watch how O(log n) search halves the range each step to find a target in a sorted array",
     "tabs": {
       "steps": "Step by Step",
-      "code": "Code"
+      "code": "Code",
+      "guide": "Guide"
     },
     "controls": {
       "arraySize": "Array Size",

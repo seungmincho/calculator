@@ -5,7 +5,6 @@ import HeapSortVisualizer from '@/components/algorithm/visualizers/HeapSortVisua
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: '힙정렬 시각화 - 이진 힙 정렬 알고리즘 | 툴허브',
@@ -61,9 +60,6 @@ export default function HeapSortPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <HeapSortVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="heapSortVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

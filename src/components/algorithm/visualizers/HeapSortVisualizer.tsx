@@ -12,8 +12,9 @@ import {
 import HeapSortCanvas2D from './HeapSortCanvas2D'
 import VisualizerControls from '../VisualizerControls'
 import CodeViewer from '../CodeViewer'
+import GuideSection from '@/components/GuideSection'
 
-type TabKey = 'steps' | 'code'
+type TabKey = 'steps' | 'code' | 'guide'
 
 const DEFAULT_SIZE = 15
 
@@ -145,6 +146,7 @@ export default function HeapSortVisualizer() {
   const tabs: { key: TabKey; icon: string; label: string }[] = [
     { key: 'steps', icon: '🔍', label: t('tabs.steps') },
     { key: 'code',  icon: '💻', label: t('tabs.code')  },
+    { key: 'guide', icon: '📖', label: t('tabs.guide') },
   ]
 
   const phase       = currentStep?.phase ?? null
@@ -349,6 +351,10 @@ export default function HeapSortVisualizer() {
                     highlightLines={codeHighlightLines}
                     title="heapSort.js"
                   />
+                )}
+
+                {activeTab === 'guide' && (
+                  <GuideSection namespace="heapSortVisualizer" defaultOpen />
                 )}
               </div>
             </div>

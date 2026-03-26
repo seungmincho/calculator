@@ -13,10 +13,11 @@ import {
 import BFSDFSCanvas2D from './BFSDFSCanvas2D'
 import VisualizerControls from '../VisualizerControls'
 import CodeViewer from '../CodeViewer'
+import GuideSection from '@/components/GuideSection'
 
 type AlgoMode = 'bfs' | 'dfs' | 'both'
 type DrawMode = 'wall' | 'erase' | 'start' | 'goal'
-type TabKey = 'steps' | 'code'
+type TabKey = 'steps' | 'code' | 'guide'
 
 const DEFAULT_ROWS = 15
 const DEFAULT_COLS = 20
@@ -259,6 +260,7 @@ export default function BFSDFSVisualizer() {
   const tabs: { key: TabKey; icon: string; label: string }[] = [
     { key: 'steps', icon: '🔍', label: t('tabs.steps') },
     { key: 'code', icon: '💻', label: t('tabs.code') },
+    { key: 'guide', icon: '📖', label: t('tabs.guide') },
   ]
 
   const drawModes: { mode: DrawMode; label: string; icon: string }[] = [
@@ -551,6 +553,10 @@ export default function BFSDFSVisualizer() {
                     highlightLines={codeHighlightLines}
                     title={algoMode === 'dfs' ? 'dfs.js' : 'bfs.js'}
                   />
+                )}
+
+                {activeTab === 'guide' && (
+                  <GuideSection namespace="bfsDfsVisualizer" defaultOpen />
                 )}
               </div>
             </div>

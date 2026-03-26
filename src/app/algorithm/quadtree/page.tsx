@@ -5,7 +5,6 @@ import QuadTreeVisualizer from '@/components/algorithm/visualizers/QuadTreeVisua
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: '쿼드트리 시각화 - 공간 분할 자료구조 | 툴허브',
@@ -61,9 +60,6 @@ export default function QuadTreePage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <QuadTreeVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="quadTreeVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

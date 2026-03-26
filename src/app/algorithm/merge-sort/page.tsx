@@ -5,7 +5,6 @@ import MergeSortVisualizer from '@/components/algorithm/visualizers/MergeSortVis
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: '병합정렬 시각화 - 분할정복 안정정렬 | 툴허브',
@@ -61,9 +60,6 @@ export default function MergeSortPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <MergeSortVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="mergeSortVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

@@ -5,7 +5,6 @@ import AStarVisualizer from '@/components/algorithm/visualizers/AStarVisualizer'
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: 'A* 경로탐색 시각화 - 최단 경로 알고리즘 | 툴허브',
@@ -61,9 +60,6 @@ export default function AStarPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <AStarVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="aStarVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

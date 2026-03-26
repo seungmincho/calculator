@@ -15,8 +15,9 @@ import {
 import MinimaxCanvas2D from './MinimaxCanvas2D'
 import VisualizerControls from '../VisualizerControls'
 import CodeViewer from '../CodeViewer'
+import GuideSection from '@/components/GuideSection'
 
-type TabKey = 'steps' | 'code'
+type TabKey = 'steps' | 'code' | 'guide'
 
 // ── Pseudocode ────────────────────────────────────────────────────────────
 const MINIMAX_CODE = `// Minimax + 알파-베타 가지치기
@@ -273,6 +274,7 @@ export default function MinimaxVisualizer() {
   const tabs: { key: TabKey; icon: string; label: string }[] = [
     { key: 'steps', icon: '🔍', label: t('tabs.steps') },
     { key: 'code', icon: '💻', label: t('tabs.code') },
+    { key: 'guide', icon: '📖', label: t('tabs.guide') },
   ]
 
   return (
@@ -554,6 +556,10 @@ export default function MinimaxVisualizer() {
                     highlightLines={codeHighlightLines}
                     title="minimax.js"
                   />
+                )}
+
+                {activeTab === 'guide' && (
+                  <GuideSection namespace="minimaxVisualizer" defaultOpen />
                 )}
               </div>
             </div>

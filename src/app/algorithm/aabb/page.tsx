@@ -5,7 +5,6 @@ import AABBVisualizer from '@/components/algorithm/visualizers/AABBVisualizer'
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: 'AABB 충돌감지 시각화 - 바운딩 박스 | 툴허브',
@@ -56,9 +55,6 @@ export default function AABBPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <AABBVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="aabbVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

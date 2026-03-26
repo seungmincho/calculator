@@ -5,7 +5,6 @@ import DijkstraVisualizer from '@/components/algorithm/visualizers/DijkstraVisua
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: '다익스트라 시각화 - 가중치 최단경로 알고리즘 | 툴허브',
@@ -61,9 +60,6 @@ export default function DijkstraPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <DijkstraVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="dijkstraVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

@@ -5,7 +5,6 @@ import SelectionSortVisualizer from '@/components/algorithm/visualizers/Selectio
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: '선택정렬 시각화 - 최솟값 선택 정렬 | 툴허브',
@@ -61,9 +60,6 @@ export default function SelectionSortPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <SelectionSortVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="selectionSortVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

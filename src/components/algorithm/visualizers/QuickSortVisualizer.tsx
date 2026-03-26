@@ -12,8 +12,9 @@ import {
 import QuickSortCanvas2D from './QuickSortCanvas2D'
 import VisualizerControls from '../VisualizerControls'
 import CodeViewer from '../CodeViewer'
+import GuideSection from '@/components/GuideSection'
 
-type TabKey = 'steps' | 'code'
+type TabKey = 'steps' | 'code' | 'guide'
 
 const DEFAULT_SIZE = 20
 
@@ -157,6 +158,7 @@ export default function QuickSortVisualizer() {
   const tabs: { key: TabKey; icon: string; label: string }[] = [
     { key: 'steps', icon: '🔍', label: t('tabs.steps') },
     { key: 'code', icon: '💻', label: t('tabs.code') },
+    { key: 'guide', icon: '📖', label: t('tabs.guide') },
   ]
 
   // Stats
@@ -359,6 +361,10 @@ export default function QuickSortVisualizer() {
                     highlightLines={codeHighlightLines}
                     title="quickSort.js"
                   />
+                )}
+
+                {activeTab === 'guide' && (
+                  <GuideSection namespace="quickSortVisualizer" defaultOpen />
                 )}
               </div>
             </div>

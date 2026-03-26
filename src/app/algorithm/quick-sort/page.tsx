@@ -5,7 +5,6 @@ import QuickSortVisualizer from '@/components/algorithm/visualizers/QuickSortVis
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: '퀵정렬 시각화 - 분할정복 정렬 알고리즘 | 툴허브',
@@ -61,9 +60,6 @@ export default function QuickSortPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <QuickSortVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="quickSortVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

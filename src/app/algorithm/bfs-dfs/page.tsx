@@ -5,7 +5,6 @@ import BFSDFSVisualizer from '@/components/algorithm/visualizers/BFSDFSVisualize
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: 'BFS/DFS 탐색 시각화 - 너비우선·깊이우선 | 툴허브',
@@ -60,9 +59,6 @@ export default function BFSDFSPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <BFSDFSVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="bfsDfsVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

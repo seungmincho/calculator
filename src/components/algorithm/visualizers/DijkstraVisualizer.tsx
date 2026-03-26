@@ -15,10 +15,11 @@ import { aStar, type AStarResult } from '@/utils/algorithm/aStar'
 import DijkstraCanvas2D from './DijkstraCanvas2D'
 import VisualizerControls from '../VisualizerControls'
 import CodeViewer from '../CodeViewer'
+import GuideSection from '@/components/GuideSection'
 
 type VisualizerMode = 'dijkstra' | 'compare'
 type DrawMode = 'wall' | 'erase' | 'start' | 'goal'
-type TabKey = 'steps' | 'code'
+type TabKey = 'steps' | 'code' | 'guide'
 
 const DEFAULT_ROWS = 15
 const DEFAULT_COLS = 20
@@ -314,6 +315,7 @@ export default function DijkstraVisualizer() {
   const tabs: { key: TabKey; icon: string; label: string }[] = [
     { key: 'steps', icon: '🔍', label: t('tabs.steps') },
     { key: 'code', icon: '💻', label: t('tabs.code') },
+    { key: 'guide', icon: '📖', label: t('tabs.guide') },
   ]
 
   const drawModes: { mode: DrawMode; label: string; icon: string }[] = [
@@ -695,6 +697,10 @@ export default function DijkstraVisualizer() {
                     highlightLines={codeHighlightLines}
                     title="dijkstra.js"
                   />
+                )}
+
+                {activeTab === 'guide' && (
+                  <GuideSection namespace="dijkstraVisualizer" defaultOpen />
                 )}
               </div>
             </div>

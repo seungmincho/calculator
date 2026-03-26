@@ -5,7 +5,6 @@ import BinarySearchVisualizer from '@/components/algorithm/visualizers/BinarySea
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: '이진탐색 시각화 - 분할정복 검색 알고리즘 | 툴허브',
@@ -61,9 +60,6 @@ export default function BinarySearchPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <BinarySearchVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="binarySearchVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

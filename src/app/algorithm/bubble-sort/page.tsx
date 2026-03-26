@@ -5,7 +5,6 @@ import BubbleSortVisualizer from '@/components/algorithm/visualizers/BubbleSortV
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: '버블정렬 시각화 - 정렬 알고리즘 | 툴허브',
@@ -61,9 +60,6 @@ export default function BubbleSortPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <BubbleSortVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="bubbleSortVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

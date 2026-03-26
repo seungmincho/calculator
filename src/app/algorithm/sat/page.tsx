@@ -5,7 +5,6 @@ import SATVisualizer from '@/components/algorithm/visualizers/SATVisualizer'
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: 'SAT 충돌감지 시각화 - 분리축 정리 | 툴허브',
@@ -58,9 +57,6 @@ export default function SATPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <SATVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="satVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

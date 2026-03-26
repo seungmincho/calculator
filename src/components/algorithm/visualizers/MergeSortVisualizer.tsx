@@ -12,8 +12,9 @@ import {
 import MergeSortCanvas2D from './MergeSortCanvas2D'
 import VisualizerControls from '../VisualizerControls'
 import CodeViewer from '../CodeViewer'
+import GuideSection from '@/components/GuideSection'
 
-type TabKey = 'steps' | 'code'
+type TabKey = 'steps' | 'code' | 'guide'
 
 const DEFAULT_SIZE = 20
 
@@ -165,6 +166,7 @@ export default function MergeSortVisualizer() {
   const tabs: { key: TabKey; icon: string; label: string }[] = [
     { key: 'steps', icon: '🔍', label: t('tabs.steps') },
     { key: 'code', icon: '💻', label: t('tabs.code') },
+    { key: 'guide', icon: '📖', label: t('tabs.guide') },
   ]
 
   // Stats
@@ -368,6 +370,10 @@ export default function MergeSortVisualizer() {
                     highlightLines={codeHighlightLines}
                     title="mergeSort.js"
                   />
+                )}
+
+                {activeTab === 'guide' && (
+                  <GuideSection namespace="mergeSortVisualizer" defaultOpen />
                 )}
               </div>
             </div>

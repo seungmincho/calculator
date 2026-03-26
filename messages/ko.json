@@ -28997,7 +28997,8 @@
     "description": "너비우선탐색(BFS)과 깊이우선탐색(DFS)을 그리드에서 비교합니다",
     "tabs": {
       "steps": "단계별",
-      "code": "코드"
+      "code": "코드",
+      "guide": "가이드"
     },
     "mode": {
       "bfs": "BFS (너비우선)",
@@ -29084,7 +29085,7 @@
   "insertionSortVisualizer": {
     "title": "삽입정렬 시각화",
     "description": "요소를 하나씩 꺼내 정렬된 부분의 올바른 위치에 삽입하는 과정을 관찰합니다",
-    "tabs": { "steps": "단계별", "code": "코드" },
+    "tabs": { "steps": "단계별", "code": "코드", "guide": "가이드" },
     "controls": { "arraySize": "배열 크기", "random": "랜덤", "nearlySorted": "거의 정렬됨", "reversed": "역순" },
     "grid": { "current": "현재 요소", "comparing": "비교 중", "shifting": "이동 중", "sortedPortion": "정렬된 부분", "sorted": "정렬 완료", "default": "미정렬" },
     "stats": { "comparisons": "비교 횟수", "shifts": "이동 횟수", "done": "정렬 완료!" },
@@ -29100,7 +29101,7 @@
   "selectionSortVisualizer": {
     "title": "선택정렬 시각화",
     "description": "미정렬 부분에서 최솟값을 찾아 앞쪽으로 이동시키는 과정을 관찰합니다",
-    "tabs": { "steps": "단계별", "code": "코드" },
+    "tabs": { "steps": "단계별", "code": "코드", "guide": "가이드" },
     "controls": { "arraySize": "배열 크기", "random": "랜덤", "nearlySorted": "거의 정렬됨", "reversed": "역순" },
     "grid": { "scanning": "스캔 중", "minimum": "현재 최솟값", "comparing": "비교 중", "swapping": "스왑", "sorted": "정렬 완료", "default": "미정렬", "scanRange": "스캔 범위" },
     "stats": { "comparisons": "비교 횟수", "swaps": "스왑 횟수", "done": "정렬 완료!" },
@@ -29118,7 +29119,8 @@
     "description": "이진 힙 트리와 배열을 동시에 보며 힙정렬 과정을 학습합니다",
     "tabs": {
       "steps": "단계별",
-      "code": "코드"
+      "code": "코드",
+      "guide": "가이드"
     },
     "controls": {
       "arraySize": "배열 크기",
@@ -29198,7 +29200,8 @@
     "description": "가중치 그리드에서 최소 비용 경로를 찾는 다익스트라 알고리즘을 학습합니다",
     "tabs": {
       "steps": "단계별",
-      "code": "코드"
+      "code": "코드",
+      "guide": "가이드"
     },
     "mode": {
       "dijkstra": "다익스트라",
@@ -29294,7 +29297,8 @@
     "description": "배열을 반으로 나누고, 정렬된 부분을 병합하는 과정을 관찰합니다",
     "tabs": {
       "steps": "단계별",
-      "code": "코드"
+      "code": "코드",
+      "guide": "가이드"
     },
     "controls": {
       "arraySize": "배열 크기",
@@ -29372,7 +29376,8 @@
     "description": "2D 공간을 4분할하여 점을 관리하고 범위 검색하는 과정을 관찰합니다",
     "tabs": {
       "steps": "단계별",
-      "code": "코드"
+      "code": "코드",
+      "guide": "가이드"
     },
     "mode": {
       "build": "트리 구성",
@@ -29459,7 +29464,8 @@
     "description": "Minimax 알고리즘과 알파-베타 가지치기를 틱택토 게임 트리로 학습합니다",
     "tabs": {
       "steps": "단계별",
-      "code": "코드"
+      "code": "코드",
+      "guide": "가이드"
     },
     "controls": {
       "alphaBeta": "알파-베타 가지치기",
@@ -29543,7 +29549,8 @@
     "description": "피벗을 기준으로 배열을 분할하고 재귀적으로 정렬하는 과정을 관찰합니다",
     "tabs": {
       "steps": "단계별",
-      "code": "코드"
+      "code": "코드",
+      "guide": "가이드"
     },
     "controls": {
       "arraySize": "배열 크기",
@@ -29622,7 +29629,8 @@
     "description": "인접한 두 요소를 비교·스왑하여 정렬하는 과정을 막대 차트로 관찰합니다",
     "tabs": {
       "steps": "단계별",
-      "code": "코드"
+      "code": "코드",
+      "guide": "가이드"
     },
     "controls": {
       "arraySize": "배열 크기",
@@ -29698,7 +29706,8 @@
     "description": "휴리스틱 기반 최단 경로 탐색 A*(A-Star) 알고리즘을 시각적으로 학습합니다",
     "tabs": {
       "steps": "단계별",
-      "code": "코드"
+      "code": "코드",
+      "guide": "가이드"
     },
     "mode": {
       "astar": "A* 경로탐색",
@@ -29798,7 +29807,8 @@
     "description": "정렬된 배열에서 절반씩 범위를 줄여 목표값을 찾는 O(log n) 탐색 과정을 관찰합니다",
     "tabs": {
       "steps": "단계별",
-      "code": "코드"
+      "code": "코드",
+      "guide": "가이드"
     },
     "controls": {
       "arraySize": "배열 크기",

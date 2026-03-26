@@ -5,7 +5,6 @@ import InsertionSortVisualizer from '@/components/algorithm/visualizers/Insertio
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: '삽입정렬 시각화 - 카드 정렬 알고리즘 | 툴허브',
@@ -61,9 +60,6 @@ export default function InsertionSortPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <InsertionSortVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="insertionSortVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>

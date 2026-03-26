@@ -12,8 +12,9 @@ import {
 import BubbleSortCanvas2D from './BubbleSortCanvas2D'
 import VisualizerControls from '../VisualizerControls'
 import CodeViewer from '../CodeViewer'
+import GuideSection from '@/components/GuideSection'
 
-type TabKey = 'steps' | 'code'
+type TabKey = 'steps' | 'code' | 'guide'
 
 const DEFAULT_SIZE = 20
 
@@ -150,6 +151,7 @@ export default function BubbleSortVisualizer() {
   const tabs: { key: TabKey; icon: string; label: string }[] = [
     { key: 'steps', icon: '🔍', label: t('tabs.steps') },
     { key: 'code', icon: '💻', label: t('tabs.code') },
+    { key: 'guide', icon: '📖', label: t('tabs.guide') },
   ]
 
   // Stats
@@ -342,6 +344,10 @@ export default function BubbleSortVisualizer() {
                     highlightLines={codeHighlightLines}
                     title="bubbleSort.js"
                   />
+                )}
+
+                {activeTab === 'guide' && (
+                  <GuideSection namespace="bubbleSortVisualizer" defaultOpen />
                 )}
               </div>
             </div>

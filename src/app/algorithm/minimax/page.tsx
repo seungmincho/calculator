@@ -5,7 +5,6 @@ import MinimaxVisualizer from '@/components/algorithm/visualizers/MinimaxVisuali
 import I18nWrapper from '@/components/I18nWrapper'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
-import GuideSection from '@/components/GuideSection'
 
 export const metadata: Metadata = {
   title: 'Minimax 시각화 - 게임 AI 알고리즘 | 툴허브',
@@ -61,9 +60,6 @@ export default function MinimaxPage() {
           <AlgorithmLayout>
             <Breadcrumb />
             <MinimaxVisualizer />
-            <div className="mt-8">
-              <GuideSection namespace="minimaxVisualizer" />
-            </div>
             <div className="mt-8">
               <RelatedTools />
             </div>
