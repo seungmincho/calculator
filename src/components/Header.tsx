@@ -257,6 +257,14 @@ const Header = () => {
               </div>
             ))}
 
+            {/* 알고리즘 시각화 */}
+            <Link
+              href="/algorithm"
+              className="px-3 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-colors"
+            >
+              🧠 {t('navigation.algorithm')}
+            </Link>
+
             {/* 금융 팁 */}
             <Link
               href="/tips"
@@ -410,6 +418,18 @@ const Header = () => {
                   )}
                 </div>
               ))}
+
+              {/* 알고리즘 시각화 */}
+              <div>
+                <Link
+                  href="/algorithm"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center space-x-3 px-3 py-3 text-gray-600 dark:text-gray-300 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-900/20 rounded-lg mx-3 transition-colors font-medium"
+                >
+                  <span className="text-lg">🧠</span>
+                  <span>{t('navigation.algorithm')}</span>
+                </Link>
+              </div>
 
               {/* 금융 팁 */}
               <div>
