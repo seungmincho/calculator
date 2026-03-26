@@ -1684,6 +1684,7 @@
       "crossword": "Crossword Puzzle",
       "colorBlindnessSimulator": "Color Blindness Simulator",
       "screenCompare": "Screen Size Compare",
+      "algorithmHub": "Algorithm Visualizer",
       "housingSubscription": "Housing Subscription Score",
       "capitalGainsTax": "Capital Gains Tax",
       "militaryDischarge": "Military Discharge Calculator",
@@ -5417,6 +5418,10 @@
       "screenCompare": {
         "title": "Screen Size Compare",
         "description": "Compare phone, tablet, and monitor screen sizes at actual ratios"
+      },
+      "algorithmHub": {
+        "title": "Algorithm Visualizer",
+        "description": "Learn core algorithms like SAT collision detection through interactive visualization"
       },
       "housingSubscription": {
         "title": "Housing Subscription Score",
@@ -24725,7 +24730,8 @@
     "textTools": "Text",
     "convertEncode": "Convert/Encode",
     "generators": "Generators",
-    "otherTools": "Other Tools"
+    "otherTools": "Other Tools",
+    "education": "Education"
   },
   "parentalLeave": {
     "title": "Parental Leave Benefit Calculator",
@@ -28702,6 +28708,155 @@
           {
             "q": "Surprised by my result?",
             "a": "Read full descriptions of the top types. The one whose core fear and desire resonate most is usually the most accurate."
+          }
+        ]
+      }
+    }
+  },
+  "algorithmHub": {
+    "title": "Algorithm Visualizer",
+    "description": "Understand algorithms intuitively through interactive visualization. Drag and learn.",
+    "filter": {
+      "all": "All"
+    },
+    "categories": {
+      "collision": "Collision/Physics",
+      "search": "Search",
+      "sort": "Sort",
+      "gameAi": "Game AI",
+      "dataStructure": "Data Structure"
+    },
+    "algorithms": {
+      "sat": {
+        "title": "SAT Collision",
+        "description": "Detect collision between two convex polygons using the Separating Axis Theorem"
+      }
+    },
+    "card": {
+      "start": "Start Visualizer"
+    },
+    "comingSoon": "More algorithms coming soon!",
+    "sidebar": {
+      "tip": "We recommend starting with collision detection"
+    },
+    "controls": {
+      "play": "Play",
+      "pause": "Pause",
+      "reset": "Reset",
+      "stepForward": "Step Forward",
+      "stepBack": "Step Back",
+      "speed": "Speed"
+    },
+    "projection": {
+      "title": "Axis Projection",
+      "dragToStart": "Drag shapes or press play to start",
+      "fromEdge": "Edge from polygon {polygon}",
+      "gap": "Separated (GAP)",
+      "overlap": "Overlap (OVERLAP)",
+      "colliding": "Collision! Overlap on all axes",
+      "separated": "Separated! Separating axis found"
+    },
+    "code": {
+      "copy": "Copy",
+      "copied": "Copied"
+    }
+  },
+  "satVisualizer": {
+    "title": "SAT Collision Detection Visualizer",
+    "description": "Separating Axis Theorem — Detect collision between two convex polygons using separating axes",
+    "tabs": {
+      "theory": "Theory",
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "theory": {
+      "whatIs": {
+        "title": "What is SAT?",
+        "content": "If two convex shapes are not colliding, there must exist an axis (Separating Axis) that separates them. Conversely, if projections overlap on all candidate axes, the shapes are colliding. This is the core of the Separating Axis Theorem."
+      },
+      "math": {
+        "title": "Mathematical Principle",
+        "content": "For each edge of both polygons, compute the perpendicular normal. These normals are the separating axis candidates. Project all vertices onto each axis (using dot product) to get 1D intervals, then check if the intervals overlap. If any axis has no overlap, there is no collision."
+      },
+      "convex": {
+        "title": "Why Only Convex Polygons?",
+        "content": "Concave polygons cannot be fully tested with edge normals alone. To apply SAT to concave shapes, you must first perform Convex Decomposition."
+      },
+      "optimization": {
+        "title": "Optimization Techniques",
+        "content": "Early Exit: Return 'no collision' as soon as one separating axis is found. This makes most non-collision cases very efficient. The MTV (Minimum Translation Vector) is the axis direction with the smallest overlap, used for collision resolution."
+      }
+    },
+    "stepsGuide": {
+      "description": "Click each axis to see its projection on the canvas.",
+      "axisFrom": "Normal axis from polygon {polygon}'s edge",
+      "separated": "Separated",
+      "overlapping": "Overlapping"
+    },
+    "params": {
+      "title": "Shape Parameters",
+      "polygonA": "Polygon A (Blue)",
+      "polygonB": "Polygon B (Amber)",
+      "sides": "Vertices",
+      "size": "Size",
+      "rotation": "Rotation"
+    },
+    "modeLabel": {
+      "interactive": "Interactive",
+      "multiView": "Multi-View"
+    },
+    "threeView": {
+      "perspective": "Perspective (Final)",
+      "topView": "Top View",
+      "frontView": "Front View",
+      "sideView": "Side View",
+      "axis": " Axis",
+      "play": "Play",
+      "pause": "Pause",
+      "crash": "Collision!",
+      "safe": "Separated (GAP found)",
+      "howItWorks": "How SAT 3D Works",
+      "explanation": "Project two 3D boxes onto X, Y, and Z axes. If shadows overlap on ALL axes, it's a collision. If there's a GAP on even one axis, the shapes are separated. The 4 viewports show projections from each axis direction."
+    },
+    "guide": {
+      "title": "SAT Collision Detection Guide",
+      "whatIs": {
+        "title": "What is SAT Collision Detection?",
+        "description": "SAT (Separating Axis Theorem) is a key algorithm used in game physics engines, robotics, and CAD to quickly and accurately detect collisions between convex shapes."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Drag the blue (A) or amber (B) polygon on the canvas to move it",
+          "Press the play button to run the step-by-step axis checking animation",
+          "Check GAP/OVERLAP for each axis in the projection panel",
+          "Adjust vertices, size, and rotation in the parameter panel to experiment",
+          "View and copy the TypeScript implementation in the Code tab"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Start by placing shapes far apart and observe the first axis projection",
+          "Slowly move shapes closer and watch GAP turn into OVERLAP",
+          "A triangle (3) and square (4) check 7 axes total (3+4=7)",
+          "Two pentagons check 10 axes — more vertices means higher cost"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Can SAT work with circles?",
+            "a": "Yes, circles theoretically need infinite axes, but in practice you only need to add one axis toward the nearest vertex. Commonly used for polygon-circle collision."
+          },
+          {
+            "q": "Does SAT work in 3D?",
+            "a": "Yes, in 3D the axis candidates are face normals plus cross products of all edge pairs. Used in OBB (Oriented Bounding Box) collision detection."
+          },
+          {
+            "q": "What is SAT's time complexity?",
+            "a": "O(n × m) — where n is the vertex count of polygon A and m is polygon B's. Early Exit makes non-collision cases much faster."
           }
         ]
       }
