@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import SalaryCalculator from '@/components/SalaryCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -156,7 +155,6 @@ export default function SalaryCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
-        <Breadcrumb />
         <SalaryCalculator />
         <div className="mt-8">
 

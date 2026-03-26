@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import CarLoanCalculator from '@/components/CarLoanCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -112,7 +111,6 @@ export default function CarLoanCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
-        <Breadcrumb />
         <div className="container mx-auto px-4 py-8">
           <CarLoanCalculator />
         </div>

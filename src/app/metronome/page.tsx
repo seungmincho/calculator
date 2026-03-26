@@ -2,7 +2,6 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import Metronome from '@/components/Metronome'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -81,7 +80,6 @@ export default function MetronomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
             <I18nWrapper>
-              <Breadcrumb />
               <Metronome />
               <div className="mt-8">
                 <RelatedTools />

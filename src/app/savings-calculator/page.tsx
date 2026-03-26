@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import SavingsCalculator from '@/components/SavingsCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -141,7 +140,6 @@ export default function SavingsCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
-        <Breadcrumb />
         <SavingsCalculator />
         <div className="mt-8">
 

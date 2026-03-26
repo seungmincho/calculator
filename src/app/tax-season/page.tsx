@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import TaxSeason from '@/components/TaxSeason'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 
 export const metadata: Metadata = {
   title: '5월 종합소득세 신고 가이드 | 툴허브',
@@ -176,7 +175,6 @@ export default function TaxSeasonPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
             <I18nWrapper>
-        <Breadcrumb />
               <TaxSeason />
             </I18nWrapper>
           </Suspense>

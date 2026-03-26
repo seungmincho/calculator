@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RetirementCalculator from '@/components/RetirementCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -121,7 +120,6 @@ export default function RetirementCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
-        <Breadcrumb />
         <RetirementCalculator />
         <div className="mt-8">
 

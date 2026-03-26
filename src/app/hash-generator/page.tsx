@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import HashGenerator from '@/components/HashGenerator'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -76,7 +75,6 @@ export default function HashGeneratorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
-        <Breadcrumb />
         <HashGenerator />
         <div className="mt-8">
 

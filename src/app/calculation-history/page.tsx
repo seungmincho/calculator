@@ -3,7 +3,6 @@ import { Suspense } from 'react'
 import I18nWrapper from '@/components/I18nWrapper'
 import AllCalculationHistory from '@/components/AllCalculationHistory'
 import RelatedTools from '@/components/RelatedTools'
-import Breadcrumb from '@/components/Breadcrumb'
 
 export const metadata: Metadata = {
   title: '계산 히스토리 - 저장된 계산 기록 | 툴허브',
@@ -69,7 +68,6 @@ export default function CalculationHistoryPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-8 text-gray-500">Loading...</div>}>
             <I18nWrapper>
-              <Breadcrumb />
               <AllCalculationHistory />
               <div className="mt-8">
                 <RelatedTools />

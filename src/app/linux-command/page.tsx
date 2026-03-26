@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import LinuxCommand from '@/components/LinuxCommand'
 import RelatedTools from '@/components/RelatedTools'
-import Breadcrumb from '@/components/Breadcrumb'
 
 export const metadata: Metadata = {
   title: 'Linux 명령어 빌더 - 옵션 가이드 | 툴허브',
@@ -85,7 +84,6 @@ export default function LinuxCommandPage() {
       <I18nWrapper>
         <div className="min-h-screen bg-gradient-to-br from-gray-100 to-slate-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Breadcrumb />
             <LinuxCommand />
             <div className="mt-8">
               <RelatedTools />

@@ -2,7 +2,6 @@ import { Suspense } from 'react'
 import { Metadata } from 'next'
 import JwtDecoder from '@/components/JwtDecoder'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -96,7 +95,6 @@ export default function JwtDecoderPage() {
       />
       <Suspense fallback={<div>Loading...</div>}>
         <I18nWrapper>
-        <Breadcrumb />
           <JwtDecoder />
           <div className="mt-8">
 

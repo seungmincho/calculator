@@ -2,7 +2,6 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import GanttChart from '@/components/GanttChart'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -72,7 +71,6 @@ export default function GanttChartPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
-        <Breadcrumb />
               <GanttChart />
               <div className="mt-8">
 

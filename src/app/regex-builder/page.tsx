@@ -2,7 +2,6 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import RegexBuilder from '@/components/RegexBuilder'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -116,7 +115,6 @@ export default function RegexBuilderPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-20 text-gray-500 dark:text-gray-400">Loading...</div>}>
             <I18nWrapper>
-        <Breadcrumb />
               <RegexBuilder />
               <div className="mt-8">
 

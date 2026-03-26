@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RealEstateCalculator from '@/components/RealEstateCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -119,7 +118,6 @@ export default function RealEstateCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
-        <Breadcrumb />
         <RealEstateCalculator />
         <div className="mt-8">
 

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import TaxCalculator from '@/components/TaxCalculator'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -112,7 +111,6 @@ export default function TaxCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
-        <Breadcrumb />
         <TaxCalculator />
         <div className="mt-8">
 

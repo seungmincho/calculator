@@ -2,7 +2,6 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 import InheritanceGiftTax from '@/components/InheritanceGiftTax'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -80,7 +79,6 @@ export default function InheritanceGiftTaxPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
             <I18nWrapper>
-              <Breadcrumb />
               <InheritanceGiftTax />
               <div className="mt-8">
                 <RelatedTools />

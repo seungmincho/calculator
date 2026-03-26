@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import WorkHoursCalculator from '@/components/WorkHoursCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -111,7 +110,6 @@ export default function WorkHoursCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
-        <Breadcrumb />
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
           <div className="container mx-auto px-4">
             <WorkHoursCalculator />

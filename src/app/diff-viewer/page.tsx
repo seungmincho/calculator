@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import DiffViewer from '@/components/DiffViewer'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -68,7 +67,6 @@ export default function DiffViewerPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
-        <Breadcrumb />
         <DiffViewer />
         <div className="mt-8">
 

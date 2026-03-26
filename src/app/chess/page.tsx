@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import ChessPageContent from '@/components/ChessPageContent'
 import RelatedTools from '@/components/RelatedTools'
 
@@ -96,7 +95,6 @@ export default function ChessPage() {
           </div>
         }>
           <I18nWrapper>
-        <Breadcrumb />
             <ChessPageContent />
             <div className="mt-8">
 
