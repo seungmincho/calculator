@@ -28791,6 +28791,22 @@
       "bst": {
         "title": "이진탐색트리 (BST)",
         "description": "삽입·탐색·삭제를 단계별 애니메이션으로 배우는 이진탐색트리 자료구조"
+      },
+      "radixSort": {
+        "title": "래딕스정렬",
+        "description": "자릿수별로 버킷에 분배하여 정렬하는 비교 없는 O(d·n) 알고리즘"
+      },
+      "floodFill": {
+        "title": "플러드필",
+        "description": "페인트 버킷처럼 연결된 동일 색상 영역을 채우는 BFS/DFS 응용"
+      },
+      "stackQueue": {
+        "title": "스택 & 큐",
+        "description": "LIFO 스택과 FIFO 큐의 push/pop/enqueue/dequeue 연산 시각화"
+      },
+      "hashTable": {
+        "title": "해시테이블",
+        "description": "해시 함수와 충돌 해결(체이닝/개방주소법)을 단계별로 시각화"
       }
     },
     "card": {

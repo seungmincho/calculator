@@ -28791,6 +28791,22 @@
       "bst": {
         "title": "Binary Search Tree (BST)",
         "description": "Interactive BST visualizer: learn insert, search, and delete with step-by-step animations"
+      },
+      "radixSort": {
+        "title": "Radix Sort",
+        "description": "Non-comparison O(d·n) sort that distributes elements into digit-based buckets"
+      },
+      "floodFill": {
+        "title": "Flood Fill",
+        "description": "Paint-bucket style BFS/DFS that fills connected same-color regions"
+      },
+      "stackQueue": {
+        "title": "Stack & Queue",
+        "description": "Visualize push/pop/enqueue/dequeue operations on LIFO stack and FIFO queue"
+      },
+      "hashTable": {
+        "title": "Hash Table",
+        "description": "Step-by-step visualization of hash functions and collision resolution (chaining/probing)"
       }
     },
     "card": {
