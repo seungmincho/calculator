@@ -28730,6 +28730,14 @@
       "sat": {
         "title": "SAT 충돌감지",
         "description": "두 볼록 다각형의 충돌 여부를 분리축 정리(Separating Axis Theorem)로 판정"
+      },
+      "aabb": {
+        "title": "AABB 충돌감지",
+        "description": "축 정렬 바운딩 박스(Axis-Aligned Bounding Box)로 두 사각형의 충돌을 빠르게 판정"
+      },
+      "bfsDfs": {
+        "title": "BFS / DFS 탐색",
+        "description": "너비우선탐색과 깊이우선탐색을 그리드에서 시각적으로 비교하며 학습"
       }
     },
     "card": {
@@ -28857,6 +28865,172 @@
           {
             "q": "SAT의 시간 복잡도는?",
             "a": "O(n × m) — n은 다각형 A의 꼭짓점 수, m은 다각형 B의 꼭짓점 수입니다. Early Exit 덕분에 비충돌 시 훨씬 빠릅니다."
+          }
+        ]
+      }
+    }
+  },
+  "aabbVisualizer": {
+    "title": "AABB 충돌감지 시각화",
+    "description": "Axis-Aligned Bounding Box — 축 정렬 바운딩 박스로 두 사각형의 충돌을 판정합니다",
+    "tabs": {
+      "steps": "단계별",
+      "code": "코드"
+    },
+    "stepsGuide": {
+      "description": "X축과 Y축의 투영을 확인하여 충돌 여부를 판정합니다.",
+      "checkX": "X축 범위 비교",
+      "checkY": "Y축 범위 비교",
+      "xOverlap": "X축 겹침",
+      "xSeparated": "X축 분리",
+      "yOverlap": "Y축 겹침",
+      "ySeparated": "Y축 분리",
+      "result": "최종 판정",
+      "colliding": "충돌! X축과 Y축 모두 겹침",
+      "separated": "분리! {axis}축에서 분리 발견"
+    },
+    "params": {
+      "title": "박스 파라미터",
+      "boxA": "박스 A (파란색)",
+      "boxB": "박스 B (주황색)",
+      "width": "너비",
+      "height": "높이"
+    },
+    "projection": {
+      "title": "축 투영",
+      "dragToStart": "박스를 드래그하여 이동하세요",
+      "xAxis": "X축",
+      "yAxis": "Y축",
+      "gap": "분리 (GAP)",
+      "overlap": "겹침 (OVERLAP)"
+    },
+    "guide": {
+      "title": "AABB 충돌감지 가이드",
+      "whatIs": {
+        "title": "AABB 충돌감지란?",
+        "description": "AABB(Axis-Aligned Bounding Box)는 축에 정렬된 직사각형 두 개의 충돌을 판정하는 가장 기본적이고 빠른 알고리즘입니다. 게임 물리, UI 히트테스트, 넓은 단계(Broad Phase) 충돌감지에 널리 사용됩니다."
+      },
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "파란색(A) 또는 주황색(B) 박스를 드래그하여 이동하세요",
+          "X축과 Y축의 투영 바에서 겹침/분리를 실시간으로 확인하세요",
+          "박스 크기를 슬라이더로 조절하여 다양한 케이스를 실험하세요",
+          "코드 탭에서 구현 코드를 확인하고 복사할 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "학습 팁",
+        "items": [
+          "AABB는 회전을 고려하지 않으므로 항상 축에 정렬되어 있습니다",
+          "X축 또는 Y축 하나라도 분리되면 충돌이 아닙니다 (Early Exit)",
+          "SAT의 특수 케이스: AABB는 검사할 축이 X, Y 단 2개뿐입니다",
+          "게임에서는 먼저 AABB로 빠르게 걸러낸 후, 정밀 충돌감지(SAT 등)를 적용합니다"
+        ]
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "items": [
+          {
+            "q": "AABB와 SAT의 차이점은?",
+            "a": "AABB는 축에 정렬된 직사각형만 처리하고 축 2개만 검사합니다. SAT는 임의 볼록 다각형을 처리하며 모든 엣지 법선을 검사합니다. AABB가 훨씬 빠르지만 회전된 도형에는 부정확합니다."
+          },
+          {
+            "q": "왜 Broad Phase에서 AABB를 사용하나요?",
+            "a": "수백 개의 객체가 있을 때 모든 쌍에 SAT를 적용하면 느립니다. AABB로 먼저 명백히 떨어진 쌍을 걸러내면 정밀 검사 대상을 크게 줄일 수 있습니다."
+          },
+          {
+            "q": "3D AABB는 어떻게 동작하나요?",
+            "a": "원리는 동일합니다. X, Y, Z 세 축에서 범위를 비교하며, 세 축 모두 겹쳐야 충돌입니다."
+          }
+        ]
+      }
+    }
+  },
+  "bfsDfsVisualizer": {
+    "title": "BFS / DFS 탐색 시각화",
+    "description": "너비우선탐색(BFS)과 깊이우선탐색(DFS)을 그리드에서 비교합니다",
+    "tabs": {
+      "steps": "단계별",
+      "code": "코드"
+    },
+    "mode": {
+      "bfs": "BFS (너비우선)",
+      "dfs": "DFS (깊이우선)",
+      "both": "동시 비교"
+    },
+    "grid": {
+      "start": "시작점",
+      "goal": "목표점",
+      "wall": "벽",
+      "visited": "방문",
+      "path": "경로",
+      "frontier": "탐색 대기"
+    },
+    "controls": {
+      "drawWall": "벽 그리기",
+      "eraseWall": "벽 지우기",
+      "setStart": "시작점 설정",
+      "setGoal": "목표점 설정",
+      "clearWalls": "벽 초기화",
+      "randomMaze": "랜덤 미로",
+      "gridSize": "그리드 크기"
+    },
+    "stats": {
+      "visited": "방문 노드",
+      "pathLength": "경로 길이",
+      "frontier": "대기열 크기",
+      "found": "경로 발견!",
+      "notFound": "경로 없음"
+    },
+    "stepsGuide": {
+      "description": "각 단계에서 어떤 노드가 탐색되는지 관찰하세요.",
+      "bfsDescription": "BFS는 큐(FIFO)를 사용하여 시작점에서 가까운 노드부터 레벨별로 탐색합니다.",
+      "dfsDescription": "DFS는 스택(LIFO)을 사용하여 한 방향으로 깊이 들어간 후 되돌아옵니다.",
+      "step": "단계 {n}",
+      "exploring": "탐색 중: ({x}, {y})",
+      "queueSize": "큐 크기: {size}",
+      "stackSize": "스택 크기: {size}"
+    },
+    "guide": {
+      "title": "BFS / DFS 탐색 가이드",
+      "whatIs": {
+        "title": "BFS와 DFS란?",
+        "description": "BFS(너비우선탐색)와 DFS(깊이우선탐색)는 그래프/트리 탐색의 가장 기본적인 두 알고리즘입니다. BFS는 시작점에서 가까운 노드부터 탐색하고, DFS는 한 방향으로 끝까지 탐색한 후 돌아옵니다."
+      },
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "그리드를 클릭/드래그하여 벽을 그리거나 지우세요",
+          "시작점(녹색)과 목표점(빨간색)을 설정하세요",
+          "BFS, DFS, 또는 동시 비교 모드를 선택하세요",
+          "재생 버튼으로 탐색 과정을 단계별로 관찰하세요",
+          "랜덤 미로 버튼으로 다양한 시나리오를 실험하세요"
+        ]
+      },
+      "tips": {
+        "title": "학습 팁",
+        "items": [
+          "BFS는 최단 경로를 보장합니다 (가중치 없는 그래프에서)",
+          "DFS는 메모리를 적게 사용하지만 최단 경로를 보장하지 않습니다",
+          "좁은 통로가 있는 미로에서 두 알고리즘의 탐색 패턴 차이를 관찰하세요",
+          "동시 비교 모드에서 방문 노드 수와 경로 길이를 비교해보세요"
+        ]
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "items": [
+          {
+            "q": "BFS가 항상 DFS보다 나은가요?",
+            "a": "아닙니다. BFS는 최단 경로가 필요할 때, DFS는 모든 경로 탐색이나 위상 정렬 등에 적합합니다. 메모리도 DFS가 유리합니다."
+          },
+          {
+            "q": "시간 복잡도는 어떻게 되나요?",
+            "a": "둘 다 O(V + E) — V는 노드 수, E는 간선 수입니다. 그리드에서는 O(행 × 열)입니다."
+          },
+          {
+            "q": "A* 알고리즘과의 관계는?",
+            "a": "A*는 BFS를 확장한 것으로, 휴리스틱(목표까지의 예상 거리)을 사용해 탐색 방향을 결정합니다. BFS보다 훨씬 효율적으로 최단 경로를 찾습니다."
           }
         ]
       }

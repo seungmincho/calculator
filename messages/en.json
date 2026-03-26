@@ -28730,6 +28730,14 @@
       "sat": {
         "title": "SAT Collision",
         "description": "Detect collision between two convex polygons using the Separating Axis Theorem"
+      },
+      "aabb": {
+        "title": "AABB Collision",
+        "description": "Quickly detect collision between two rectangles using Axis-Aligned Bounding Boxes"
+      },
+      "bfsDfs": {
+        "title": "BFS / DFS Search",
+        "description": "Visually compare Breadth-First Search and Depth-First Search on a grid"
       }
     },
     "card": {
@@ -28857,6 +28865,172 @@
           {
             "q": "What is SAT's time complexity?",
             "a": "O(n × m) — where n is the vertex count of polygon A and m is polygon B's. Early Exit makes non-collision cases much faster."
+          }
+        ]
+      }
+    }
+  },
+  "aabbVisualizer": {
+    "title": "AABB Collision Detection Visualizer",
+    "description": "Axis-Aligned Bounding Box — Detect collision between two rectangles aligned to axes",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "stepsGuide": {
+      "description": "Check X and Y axis projections to determine collision.",
+      "checkX": "X-axis range comparison",
+      "checkY": "Y-axis range comparison",
+      "xOverlap": "X-axis overlap",
+      "xSeparated": "X-axis separated",
+      "yOverlap": "Y-axis overlap",
+      "ySeparated": "Y-axis separated",
+      "result": "Final Result",
+      "colliding": "Collision! Both X and Y axes overlap",
+      "separated": "Separated! Gap found on {axis} axis"
+    },
+    "params": {
+      "title": "Box Parameters",
+      "boxA": "Box A (Blue)",
+      "boxB": "Box B (Amber)",
+      "width": "Width",
+      "height": "Height"
+    },
+    "projection": {
+      "title": "Axis Projection",
+      "dragToStart": "Drag boxes to move them",
+      "xAxis": "X-axis",
+      "yAxis": "Y-axis",
+      "gap": "Separated (GAP)",
+      "overlap": "Overlap (OVERLAP)"
+    },
+    "guide": {
+      "title": "AABB Collision Detection Guide",
+      "whatIs": {
+        "title": "What is AABB Collision Detection?",
+        "description": "AABB (Axis-Aligned Bounding Box) is the most basic and fastest algorithm for detecting collisions between two axis-aligned rectangles. Widely used in game physics, UI hit testing, and broad phase collision detection."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Drag the blue (A) or amber (B) box to move it",
+          "Watch the X and Y axis projection bars update in real time",
+          "Adjust box sizes with sliders to experiment with different cases",
+          "View and copy the implementation code in the Code tab"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "AABB doesn't consider rotation — boxes are always axis-aligned",
+          "If either X or Y axis is separated, there's no collision (Early Exit)",
+          "AABB is a special case of SAT: only 2 axes (X and Y) to check",
+          "Games often use AABB for quick filtering before precise detection (SAT, etc.)"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What's the difference between AABB and SAT?",
+            "a": "AABB only handles axis-aligned rectangles and checks 2 axes. SAT handles any convex polygon and checks all edge normals. AABB is much faster but inaccurate for rotated shapes."
+          },
+          {
+            "q": "Why use AABB in Broad Phase?",
+            "a": "With hundreds of objects, applying SAT to every pair is slow. AABB quickly filters out obviously separated pairs, greatly reducing the number of precise checks needed."
+          },
+          {
+            "q": "How does 3D AABB work?",
+            "a": "Same principle. Compare ranges on X, Y, and Z axes — all three must overlap for a collision."
+          }
+        ]
+      }
+    }
+  },
+  "bfsDfsVisualizer": {
+    "title": "BFS / DFS Search Visualizer",
+    "description": "Compare Breadth-First Search and Depth-First Search on a grid",
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code"
+    },
+    "mode": {
+      "bfs": "BFS (Breadth-First)",
+      "dfs": "DFS (Depth-First)",
+      "both": "Side by Side"
+    },
+    "grid": {
+      "start": "Start",
+      "goal": "Goal",
+      "wall": "Wall",
+      "visited": "Visited",
+      "path": "Path",
+      "frontier": "Frontier"
+    },
+    "controls": {
+      "drawWall": "Draw Wall",
+      "eraseWall": "Erase Wall",
+      "setStart": "Set Start",
+      "setGoal": "Set Goal",
+      "clearWalls": "Clear Walls",
+      "randomMaze": "Random Maze",
+      "gridSize": "Grid Size"
+    },
+    "stats": {
+      "visited": "Visited Nodes",
+      "pathLength": "Path Length",
+      "frontier": "Queue Size",
+      "found": "Path Found!",
+      "notFound": "No Path"
+    },
+    "stepsGuide": {
+      "description": "Observe which nodes are explored at each step.",
+      "bfsDescription": "BFS uses a queue (FIFO) to explore nodes level by level from the start.",
+      "dfsDescription": "DFS uses a stack (LIFO) to go deep in one direction before backtracking.",
+      "step": "Step {n}",
+      "exploring": "Exploring: ({x}, {y})",
+      "queueSize": "Queue size: {size}",
+      "stackSize": "Stack size: {size}"
+    },
+    "guide": {
+      "title": "BFS / DFS Search Guide",
+      "whatIs": {
+        "title": "What are BFS and DFS?",
+        "description": "BFS (Breadth-First Search) and DFS (Depth-First Search) are the two most fundamental graph/tree traversal algorithms. BFS explores nodes closest to the start first, while DFS goes as deep as possible before backtracking."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click/drag on the grid to draw or erase walls",
+          "Set the start point (green) and goal point (red)",
+          "Choose BFS, DFS, or side-by-side comparison mode",
+          "Press play to watch the search process step by step",
+          "Use the random maze button to experiment with different scenarios"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "BFS guarantees the shortest path (in unweighted graphs)",
+          "DFS uses less memory but doesn't guarantee the shortest path",
+          "Observe the different search patterns in mazes with narrow corridors",
+          "Compare visited node counts and path lengths in side-by-side mode"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is BFS always better than DFS?",
+            "a": "No. BFS is ideal when shortest path is needed, while DFS is better for exhaustive search or topological sorting. DFS also uses less memory."
+          },
+          {
+            "q": "What's the time complexity?",
+            "a": "Both are O(V + E) — V is the number of nodes, E is the number of edges. On a grid, that's O(rows × columns)."
+          },
+          {
+            "q": "How does this relate to A*?",
+            "a": "A* extends BFS by using a heuristic (estimated distance to goal) to guide the search direction. It finds the shortest path much more efficiently than BFS."
           }
         ]
       }

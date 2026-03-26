@@ -14,10 +14,10 @@ export interface AlgorithmInfo {
 }
 
 export const algorithms: AlgorithmInfo[] = [
+  { id: 'aabb', href: '/algorithm/aabb', category: 'collision', difficulty: 1, renderMode: '2d', icon: '📦', labelKey: 'aabb', status: 'ready' },
   { id: 'sat', href: '/algorithm/sat', category: 'collision', difficulty: 2, renderMode: 'both', icon: '🔲', labelKey: 'sat', status: 'ready' },
+  { id: 'bfs-dfs', href: '/algorithm/bfs-dfs', category: 'search', difficulty: 1, renderMode: '2d', icon: '🔍', labelKey: 'bfsDfs', status: 'ready' },
   // 향후 추가 예정:
-  // { id: 'aabb', href: '/algorithm/aabb', category: 'collision', difficulty: 1, renderMode: '2d', icon: '📦', labelKey: 'aabb', status: 'coming-soon' },
-  // { id: 'bfs-dfs', href: '/algorithm/bfs-dfs', category: 'search', difficulty: 1, renderMode: '2d', icon: '🔍', labelKey: 'bfsDfs', status: 'coming-soon' },
   // { id: 'a-star', href: '/algorithm/a-star', category: 'search', difficulty: 2, renderMode: '2d', icon: '⭐', labelKey: 'aStar', status: 'coming-soon' },
   // { id: 'bubble-sort', href: '/algorithm/bubble-sort', category: 'sort', difficulty: 1, renderMode: '2d', icon: '🫧', labelKey: 'bubbleSort', status: 'coming-soon' },
   // { id: 'quick-sort', href: '/algorithm/quick-sort', category: 'sort', difficulty: 2, renderMode: '2d', icon: '⚡', labelKey: 'quickSort', status: 'coming-soon' },
