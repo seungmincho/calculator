@@ -28783,6 +28783,14 @@
       "quadtree": {
         "title": "Quad Tree",
         "description": "Spatial data structure that recursively divides 2D space into quadrants for efficient point management"
+      },
+      "countingSort": {
+        "title": "Counting Sort",
+        "description": "Non-comparison O(n+k) sort that counts frequencies to arrange elements"
+      },
+      "bst": {
+        "title": "Binary Search Tree (BST)",
+        "description": "Interactive BST visualizer: learn insert, search, and delete with step-by-step animations"
       }
     },
     "card": {
@@ -29878,6 +29886,110 @@
           {
             "q": "Where is it used in practice?",
             "a": "Database index lookups, searching sorted lists, numerical bisection, and many standard library functions like std::binary_search or Array.prototype methods."
+          }
+        ]
+      }
+    }
+  },
+  "countingSortVisualizer": {
+    "title": "Counting Sort Visualizer",
+    "description": "Watch the 3-phase non-comparison sorting: count frequencies, accumulate, and place",
+    "tabs": { "steps": "Step by Step", "code": "Code", "guide": "Guide" },
+    "controls": { "arraySize": "Array Size", "random": "Random", "duplicates": "Many Duplicates" },
+    "grid": { "input": "Input Array", "count": "Count Array", "output": "Output Array", "active": "Active" },
+    "stats": { "phase": "Phase", "phaseCounting": "Counting", "phaseAccumulating": "Accumulating", "phasePlacing": "Placing", "maxValue": "Max Value", "done": "Sorting Complete!" },
+    "stepsGuide": { "description": "Observe the 3 phases: count frequencies, compute prefix sums, and place into output.", "count": "Count: count[{val}]++", "accumulate": "Accumulate: count[{i}] += count[{prev}]", "place": "Place: output[{pos}] = {val}" },
+    "guide": {
+      "title": "Counting Sort Guide",
+      "whatIs": { "title": "What is Counting Sort?", "description": "Counting Sort is a non-comparison sorting algorithm that counts the frequency of each value to sort. With O(n+k) time complexity, it's extremely fast when the value range (k) is small, and it's a stable sort." },
+      "howToUse": { "title": "How to Use", "items": ["Adjust the array size", "Use the Duplicates button for input with many repeated values", "Three arrays (Input/Count/Output) are displayed simultaneously", "Observe the 3 phases: counting → accumulation → placement"] },
+      "tips": { "title": "Learning Tips", "items": ["Bypasses the O(n log n) lower bound of comparison-based sorts", "Wastes memory when the value range is large", "Used as a subroutine in Radix Sort due to its stability", "Negative values can be handled by adding an offset"] },
+      "faq": { "title": "FAQ", "items": [{ "q": "When should I use it?", "a": "When the value range (k) is similar to or smaller than n (e.g., test scores 0-100, ages 0-150). Inefficient when k >> n." }, { "q": "Time complexity?", "a": "O(n+k) where n is array size and k is value range. Space is also O(n+k)." }] }
+    }
+  },
+  "bstVisualizer": {
+    "title": "Binary Search Tree Visualizer",
+    "description": "Interactive BST visualizer: learn insert, search, and delete with step-by-step animations",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "operation": {
+      "insert": "Insert",
+      "search": "Search",
+      "delete": "Delete"
+    },
+    "controls": {
+      "operation": "Select Operation",
+      "value": "Value (1–999)",
+      "execute": "Execute",
+      "treeSize": "Tree Size",
+      "random": "Random",
+      "sorted": "Sorted (worst)",
+      "balanced": "Balanced",
+      "clear": "Clear"
+    },
+    "stats": {
+      "nodeCount": "Node Count",
+      "treeHeight": "Tree Height",
+      "comparisons": "Comparisons"
+    },
+    "grid": {
+      "active": "Current Node",
+      "visited": "Visited",
+      "inserted": "Inserted",
+      "deleted": "Deleted"
+    },
+    "stepsGuide": {
+      "description": "Observe how each operation maintains the BST property step by step.",
+      "hint": "Enter a value and press Execute to start.",
+      "compare": "Compare",
+      "goLeft": "← Go Left",
+      "goRight": "Go Right →",
+      "insert": "Insert",
+      "found": "Found!",
+      "notFound": "Not Found"
+    },
+    "guide": {
+      "title": "Binary Search Tree Guide",
+      "whatIs": {
+        "title": "What is a Binary Search Tree?",
+        "description": "A Binary Search Tree (BST) is a tree data structure where each node has at most two children. Key property: all values in the left subtree < parent value < all values in the right subtree. This property enables O(log n) average-case insert, search, and delete operations."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter a value, select an operation (Insert/Search/Delete), and press Execute",
+          "Press Play to watch the step-by-step animation",
+          "Use Random to build a random tree, or Sorted to see the worst-case degenerate tree",
+          "Use Balanced to build a height-optimal tree for comparison",
+          "Follow the Steps panel and code tab simultaneously to understand each operation"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Inserting values in sorted order creates a degenerate (linked-list-like) tree with O(n) height",
+          "A balanced tree keeps height near log n, ensuring O(log n) for all operations",
+          "For two-child deletion, observe how the in-order successor replaces the deleted node",
+          "Compare the node count, tree height, and comparison count across different input patterns"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What is the difference between a BST and a binary heap?",
+            "a": "A BST uses left<parent<right ordering, optimized for arbitrary value search. A binary heap uses parent≥children ordering, optimized for finding min/max. Heap search for an arbitrary value is O(n)."
+          },
+          {
+            "q": "What is the in-order successor?",
+            "a": "When deleting a node with two children, the in-order successor is the smallest value in the right subtree. Replacing the node with its successor and deleting the successor preserves the BST property."
+          },
+          {
+            "q": "How do self-balancing BSTs work?",
+            "a": "AVL trees and Red-Black trees apply rotation operations after each insert/delete to keep tree height O(log n). Java's TreeMap and C++'s std::map use Red-Black trees internally."
           }
         ]
       }
