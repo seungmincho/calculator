@@ -29088,7 +29088,7 @@
     "controls": { "arraySize": "배열 크기", "random": "랜덤", "nearlySorted": "거의 정렬됨", "reversed": "역순" },
     "grid": { "current": "현재 요소", "comparing": "비교 중", "shifting": "이동 중", "sortedPortion": "정렬된 부분", "sorted": "정렬 완료", "default": "미정렬" },
     "stats": { "comparisons": "비교 횟수", "shifts": "이동 횟수", "done": "정렬 완료!" },
-    "stepsGuide": { "description": "요소가 정렬된 부분의 올바른 위치에 삽입되는 과정을 관찰하세요.", "select": "선택: arr[{i}] = {value}", "comparing": "비교: {a} vs {b}", "shift": "이동: arr[{i}] → arr[{j}]", "insert": "삽입: arr[{pos}] = {value}" },
+    "stepsGuide": { "description": "요소가 정렬된 부분의 올바른 위치에 삽입되는 과정을 관찰하세요.", "select": "선택: 위치 {i}", "comparing": "비교: arr[{j}] vs arr[{k}]", "shift": "이동: 위치 {j}", "insert": "삽입: 위치 {pos}" },
     "guide": {
       "title": "삽입정렬 가이드",
       "whatIs": { "title": "삽입정렬이란?", "description": "삽입정렬(Insertion Sort)은 카드를 정리하듯, 정렬되지 않은 부분에서 요소를 하나씩 꺼내 정렬된 부분의 올바른 위치에 삽입하는 알고리즘입니다. 소규모 데이터나 거의 정렬된 데이터에서 매우 효율적입니다." },
@@ -29104,7 +29104,7 @@
     "controls": { "arraySize": "배열 크기", "random": "랜덤", "nearlySorted": "거의 정렬됨", "reversed": "역순" },
     "grid": { "scanning": "스캔 중", "minimum": "현재 최솟값", "comparing": "비교 중", "swapping": "스왑", "sorted": "정렬 완료", "default": "미정렬", "scanRange": "스캔 범위" },
     "stats": { "comparisons": "비교 횟수", "swaps": "스왑 횟수", "done": "정렬 완료!" },
-    "stepsGuide": { "description": "미정렬 영역에서 최솟값을 찾아 교환하는 과정을 관찰하세요.", "scanStart": "스캔 시작: 위치 {i}부터", "comparing": "비교: arr[{i}]={a} vs arr[{j}]={b}", "newMin": "새 최솟값: arr[{i}] = {value}", "swapped": "스왑: arr[{i}]={a} ↔ arr[{j}]={b}", "noSwap": "스왑 불필요 (이미 올바른 위치)" },
+    "stepsGuide": { "description": "미정렬 영역에서 최솟값을 찾아 교환하는 과정을 관찰하세요.", "scanStart": "스캔 시작: 위치 {i}부터", "comparing": "비교: arr[{j}] vs arr[{k}]", "newMin": "새 최솟값: 위치 {idx}", "swapped": "스왑: arr[{j}] ↔ arr[{k}]", "noSwap": "스왑 불필요 (이미 올바른 위치)" },
     "guide": {
       "title": "선택정렬 가이드",
       "whatIs": { "title": "선택정렬이란?", "description": "선택정렬(Selection Sort)은 미정렬 부분에서 최솟값을 찾아 정렬된 부분의 끝에 놓는 알고리즘입니다. 구현이 매우 간단하지만 항상 O(n²) 비교가 필요합니다." },
@@ -29145,9 +29145,9 @@
     "stepsGuide": {
       "description": "이진 힙이 구성되고 최댓값이 추출되는 과정을 관찰하세요.",
       "heapifyStart": "힙 복원: 노드 {index}",
-      "comparing": "비교: arr[{i}]={a} vs arr[{j}]={b}",
-      "swapped": "스왑: arr[{i}]={a} ↔ arr[{j}]={b}",
-      "extract": "추출: 최댓값 {value} → 위치 {index}"
+      "comparing": "비교: arr[{j}] vs arr[{k}]",
+      "swapped": "스왑: arr[{j}] ↔ arr[{k}]",
+      "extract": "추출: 최댓값 추출"
     },
     "guide": {
       "title": "힙정렬 가이드",
@@ -29318,9 +29318,9 @@
     },
     "stepsGuide": {
       "description": "배열이 분할되고 병합되는 과정을 단계별로 관찰하세요.",
-      "split": "분할: [{left}~{right}] → 중간 {mid}",
-      "comparing": "비교: arr[{i}]={a} vs arr[{j}]={b}",
-      "mergePlace": "배치: arr[{k}] = {value}",
+      "split": "분할: [{left}~{right}]",
+      "comparing": "비교: arr[{j}] vs arr[{k}]",
+      "mergePlace": "배치: 위치 {idx}",
       "mergeComplete": "병합 완료: [{left}~{right}]"
     },
     "guide": {
@@ -29567,11 +29567,11 @@
     },
     "stepsGuide": {
       "description": "피벗 선택과 파티션 과정을 단계별로 관찰하세요.",
-      "pivotSelect": "피벗 선택: arr[{i}] = {value}",
-      "comparing": "비교: arr[{j}]={a} vs 피벗={b}",
-      "swapped": "스왑: arr[{i}]={a} ↔ arr[{j}]={b}",
+      "pivotSelect": "피벗 선택: 위치 {idx}",
+      "comparing": "비교: arr[{j}] vs arr[{k}]",
+      "swapped": "스왑: arr[{j}] ↔ arr[{k}]",
       "noSwap": "유지 (피벗보다 큼)",
-      "pivotPlace": "피벗 배치: arr[{i}] = {value}"
+      "pivotPlace": "피벗 배치: 위치 {idx}"
     },
     "guide": {
       "title": "퀵정렬 가이드",
@@ -29644,10 +29644,10 @@
     },
     "stepsGuide": {
       "description": "각 단계에서 어떤 요소가 비교·스왑되는지 관찰하세요.",
-      "comparing": "비교: arr[{i}]={a} vs arr[{j}]={b}",
-      "swapped": "스왑: arr[{i}]={a} ↔ arr[{j}]={b}",
+      "comparing": "비교: arr[{j}] vs arr[{k}]",
+      "swapped": "스왑: arr[{j}] ↔ arr[{k}]",
       "noSwap": "유지 (스왑 불필요)",
-      "passComplete": "패스 {n} 완료"
+      "passComplete": "패스 {pass} 완료"
     },
     "guide": {
       "title": "버블정렬 가이드",

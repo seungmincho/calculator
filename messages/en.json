@@ -29088,7 +29088,7 @@
     "controls": { "arraySize": "Array Size", "random": "Random", "nearlySorted": "Nearly Sorted", "reversed": "Reversed" },
     "grid": { "current": "Current Element", "comparing": "Comparing", "shifting": "Shifting", "sortedPortion": "Sorted Portion", "sorted": "Sorted", "default": "Unsorted" },
     "stats": { "comparisons": "Comparisons", "shifts": "Shifts", "done": "Sorting Complete!" },
-    "stepsGuide": { "description": "Observe how each element is inserted into its correct position.", "select": "Select: arr[{i}] = {value}", "comparing": "Compare: {a} vs {b}", "shift": "Shift: arr[{i}] → arr[{j}]", "insert": "Insert: arr[{pos}] = {value}" },
+    "stepsGuide": { "description": "Observe how each element is inserted into its correct position.", "select": "Select: index {i}", "comparing": "Compare: arr[{j}] vs arr[{k}]", "shift": "Shift: index {j}", "insert": "Insert: index {pos}" },
     "guide": {
       "title": "Insertion Sort Guide",
       "whatIs": { "title": "What is Insertion Sort?", "description": "Insertion Sort works like sorting cards — pick up one element at a time and insert it into its correct position in the sorted portion. It's very efficient for small or nearly-sorted data." },
@@ -29104,7 +29104,7 @@
     "controls": { "arraySize": "Array Size", "random": "Random", "nearlySorted": "Nearly Sorted", "reversed": "Reversed" },
     "grid": { "scanning": "Scanning", "minimum": "Current Minimum", "comparing": "Comparing", "swapping": "Swapping", "sorted": "Sorted", "default": "Unsorted", "scanRange": "Scan Range" },
     "stats": { "comparisons": "Comparisons", "swaps": "Swaps", "done": "Sorting Complete!" },
-    "stepsGuide": { "description": "Observe how the minimum is found and swapped into position.", "scanStart": "Scan start: from position {i}", "comparing": "Compare: arr[{i}]={a} vs arr[{j}]={b}", "newMin": "New minimum: arr[{i}] = {value}", "swapped": "Swap: arr[{i}]={a} ↔ arr[{j}]={b}", "noSwap": "No swap needed (already in position)" },
+    "stepsGuide": { "description": "Observe how the minimum is found and swapped into position.", "scanStart": "Scan start: from position {i}", "comparing": "Compare: arr[{j}] vs arr[{k}]", "newMin": "New minimum: index {idx}", "swapped": "Swap: arr[{j}] ↔ arr[{k}]", "noSwap": "No swap needed (already in position)" },
     "guide": {
       "title": "Selection Sort Guide",
       "whatIs": { "title": "What is Selection Sort?", "description": "Selection Sort finds the minimum element in the unsorted portion and places it at the end of the sorted portion. Very simple to implement but always requires O(n²) comparisons." },
@@ -29145,9 +29145,9 @@
     "stepsGuide": {
       "description": "Observe how the binary heap is built and the maximum is extracted at each step.",
       "heapifyStart": "Heapify: node {index}",
-      "comparing": "Compare: arr[{i}]={a} vs arr[{j}]={b}",
-      "swapped": "Swap: arr[{i}]={a} ↔ arr[{j}]={b}",
-      "extract": "Extract: max {value} → position {index}"
+      "comparing": "Compare: arr[{j}] vs arr[{k}]",
+      "swapped": "Swap: arr[{j}] ↔ arr[{k}]",
+      "extract": "Extract: max value extracted"
     },
     "guide": {
       "title": "Heap Sort Guide",
@@ -29318,9 +29318,9 @@
     },
     "stepsGuide": {
       "description": "Observe how the array is split and merged step by step.",
-      "split": "Split: [{left}~{right}] → mid {mid}",
-      "comparing": "Compare: arr[{i}]={a} vs arr[{j}]={b}",
-      "mergePlace": "Place: arr[{k}] = {value}",
+      "split": "Split: [{left}~{right}]",
+      "comparing": "Compare: arr[{j}] vs arr[{k}]",
+      "mergePlace": "Place: index {idx}",
       "mergeComplete": "Merge complete: [{left}~{right}]"
     },
     "guide": {
@@ -29567,11 +29567,11 @@
     },
     "stepsGuide": {
       "description": "Observe the pivot selection and partitioning process step by step.",
-      "pivotSelect": "Pivot selected: arr[{i}] = {value}",
-      "comparing": "Compare: arr[{j}]={a} vs pivot={b}",
-      "swapped": "Swap: arr[{i}]={a} ↔ arr[{j}]={b}",
+      "pivotSelect": "Pivot selected: index {idx}",
+      "comparing": "Compare: arr[{j}] vs arr[{k}]",
+      "swapped": "Swap: arr[{j}] ↔ arr[{k}]",
       "noSwap": "No swap (greater than pivot)",
-      "pivotPlace": "Pivot placed: arr[{i}] = {value}"
+      "pivotPlace": "Pivot placed: index {idx}"
     },
     "guide": {
       "title": "Quick Sort Guide",
@@ -29644,10 +29644,10 @@
     },
     "stepsGuide": {
       "description": "Observe which elements are compared and swapped at each step.",
-      "comparing": "Compare: arr[{i}]={a} vs arr[{j}]={b}",
-      "swapped": "Swap: arr[{i}]={a} ↔ arr[{j}]={b}",
+      "comparing": "Compare: arr[{j}] vs arr[{k}]",
+      "swapped": "Swap: arr[{j}] ↔ arr[{k}]",
       "noSwap": "No swap needed",
-      "passComplete": "Pass {n} complete"
+      "passComplete": "Pass {pass} complete"
     },
     "guide": {
       "title": "Bubble Sort Guide",
