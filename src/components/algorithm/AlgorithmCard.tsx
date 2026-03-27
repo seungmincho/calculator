@@ -40,6 +40,31 @@ export default function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
       glow: 'group-hover:shadow-emerald-500/20',
       border: 'border-emerald-200/50 dark:border-emerald-800/30',
     },
+    teal: {
+      chip: 'bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400',
+      glow: 'group-hover:shadow-teal-500/20',
+      border: 'border-teal-200/50 dark:border-teal-800/30',
+    },
+    cyan: {
+      chip: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400',
+      glow: 'group-hover:shadow-cyan-500/20',
+      border: 'border-cyan-200/50 dark:border-cyan-800/30',
+    },
+    pink: {
+      chip: 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400',
+      glow: 'group-hover:shadow-pink-500/20',
+      border: 'border-pink-200/50 dark:border-pink-800/30',
+    },
+    indigo: {
+      chip: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400',
+      glow: 'group-hover:shadow-indigo-500/20',
+      border: 'border-indigo-200/50 dark:border-indigo-800/30',
+    },
+    rose: {
+      chip: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400',
+      glow: 'group-hover:shadow-rose-500/20',
+      border: 'border-rose-200/50 dark:border-rose-800/30',
+    },
   }
 
   const color = categoryColors[algorithm.category]

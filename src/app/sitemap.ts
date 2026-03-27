@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
+import { algorithms } from '@/config/algorithmConfig'
 
 export const dynamic = 'force-static'
 export const revalidate = false
@@ -97,6 +98,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: item.addedDate || today,
         changeFrequency: frequencyOverrides[item.href] || defaults.changeFrequency,
         priority: priorityOverrides[item.href] ?? defaults.priority,
+      })
+    }
+  }
+
+  // 알고리즘 개별 페이지 (algorithmConfig 기반)
+  for (const algo of algorithms) {
+    if (algo.status === 'ready' && !seen.has(algo.href)) {
+      seen.add(algo.href)
+      entries.push({
+        url: `https://toolhub.ai.kr${algo.href}/`,
+        lastModified: today,
+        changeFrequency: 'monthly',
+        priority: 0.7,
       })
     }
   }

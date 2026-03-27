@@ -28725,7 +28725,12 @@
       "search": "Search",
       "sort": "Sort",
       "gameAi": "Game AI",
-      "dataStructure": "Data Structure"
+      "dataStructure": "Data Structure",
+      "graph": "Graph",
+      "dp": "Dynamic Programming",
+      "string": "String",
+      "geometry": "Geometry",
+      "backtracking": "Backtracking"
     },
     "algorithms": {
       "sat": {
@@ -28807,6 +28812,82 @@
       "hashTable": {
         "title": "Hash Table",
         "description": "Step-by-step visualization of hash functions and collision resolution (chaining/probing)"
+      },
+      "kruskal": {
+        "title": "Kruskal's MST",
+        "description": "Greedy algorithm that builds a minimum spanning tree by selecting edges in weight order"
+      },
+      "topologicalSort": {
+        "title": "Topological Sort",
+        "description": "Ordering algorithm for directed acyclic graphs (DAG) based on dependency relationships"
+      },
+      "unionFind": {
+        "title": "Union-Find",
+        "description": "Disjoint set data structure with path compression and union by rank"
+      },
+      "bellmanFord": {
+        "title": "Bellman-Ford",
+        "description": "Shortest path algorithm that handles negative edge weights in graphs"
+      },
+      "fibonacciDp": {
+        "title": "Fibonacci DP",
+        "description": "Compare recursive tree explosion vs memoization/tabulation efficiency — intro to DP"
+      },
+      "knapsack": {
+        "title": "Knapsack Problem",
+        "description": "Classic DP problem: find the maximum value combination within a weight limit"
+      },
+      "lcs": {
+        "title": "LCS (Longest Common Subsequence)",
+        "description": "Find the longest common subsequence of two strings using a DP table"
+      },
+      "kmp": {
+        "title": "KMP Pattern Matching",
+        "description": "O(n+m) string pattern matching using failure function"
+      },
+      "trie": {
+        "title": "Trie",
+        "description": "Tree-based data structure for fast string search and autocomplete"
+      },
+      "convexHull": {
+        "title": "Convex Hull",
+        "description": "Find the smallest convex polygon enclosing a set of 2D points using Graham Scan"
+      },
+      "voronoi": {
+        "title": "Voronoi Diagram",
+        "description": "Spatial partitioning algorithm that divides space into regions closest to each point"
+      },
+      "raycasting": {
+        "title": "Raycasting",
+        "description": "Cast rays to calculate wall intersections and generate a 2.5D perspective view"
+      },
+      "avlTree": {
+        "title": "AVL Tree",
+        "description": "Self-balancing binary search tree with rotation operations visualized"
+      },
+      "heap": {
+        "title": "Heap (Priority Queue)",
+        "description": "Complete binary tree providing O(1) access to min/max values"
+      },
+      "linkedList": {
+        "title": "Linked List",
+        "description": "Linear data structure with nodes and pointers — insert, delete, and reverse visualization"
+      },
+      "graphRepr": {
+        "title": "Graph Representation",
+        "description": "Compare adjacency matrix and adjacency list graph representations side by side"
+      },
+      "nQueens": {
+        "title": "N-Queens",
+        "description": "Place N queens on an N×N chessboard so no two queens attack each other — backtracking"
+      },
+      "shellSort": {
+        "title": "Shell Sort",
+        "description": "Improved insertion sort using decreasing gap sequences for better efficiency"
+      },
+      "pathfindingCompare": {
+        "title": "Pathfinding Compare",
+        "description": "Run A* and Dijkstra simultaneously on the same map to compare search efficiency"
       }
     },
     "card": {
@@ -29187,39 +29268,204 @@
   "insertionSortVisualizer": {
     "title": "Insertion Sort Visualizer",
     "description": "Watch elements being picked up and inserted into their correct position in the sorted portion",
-    "tabs": { "steps": "Step by Step", "code": "Code", "guide": "Guide" },
-    "controls": { "arraySize": "Array Size", "random": "Random", "nearlySorted": "Nearly Sorted", "reversed": "Reversed" },
-    "grid": { "current": "Current Element", "comparing": "Comparing", "shifting": "Shifting", "sortedPortion": "Sorted Portion", "sorted": "Sorted", "default": "Unsorted" },
-    "stats": { "comparisons": "Comparisons", "shifts": "Shifts", "done": "Sorting Complete!" },
-    "stepsGuide": { "description": "Observe how each element is inserted into its correct position.", "select": "Select: index {i}", "comparing": "Compare: arr[{j}] vs arr[{k}]", "shift": "Shift: index {j}", "insert": "Insert: index {pos}" },
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "arraySize": "Array Size",
+      "random": "Random",
+      "nearlySorted": "Nearly Sorted",
+      "reversed": "Reversed"
+    },
+    "grid": {
+      "current": "Current Element",
+      "comparing": "Comparing",
+      "shifting": "Shifting",
+      "sortedPortion": "Sorted Portion",
+      "sorted": "Sorted",
+      "default": "Unsorted"
+    },
+    "stats": {
+      "comparisons": "Comparisons",
+      "shifts": "Shifts",
+      "done": "Sorting Complete!"
+    },
+    "stepsGuide": {
+      "description": "Observe how each element is inserted into its correct position.",
+      "select": "Select: index {i}",
+      "comparing": "Compare: arr[{j}] vs arr[{k}]",
+      "shift": "Shift: index {j}",
+      "insert": "Insert: index {pos}"
+    },
     "guide": {
       "title": "Insertion Sort Guide",
-      "whatIs": { "title": "What is Insertion Sort?", "description": "Insertion Sort works like sorting cards — pick up one element at a time and insert it into its correct position in the sorted portion. It's very efficient for small or nearly-sorted data." },
-      "howToUse": { "title": "How to Use", "items": ["Adjust the array size", "Purple bar is the element being inserted", "Orange bars are elements shifting right", "The lighter area on the left is the sorted portion", "Notice how nearly-sorted input finishes much faster"] },
-      "howItWorks": { "title": "How It Works", "items": ["Starting from the second element, save the current element as the 'key'", "Shift elements in the sorted portion that are greater than the key one position to the right", "Insert the key into the vacated spot", "Repeat for every element through to the last one"] },
-      "realWorld": { "title": "Real-World Applications", "items": ["Card sorting — the most natural way people arrange cards in their hand", "Keeping a sorted list up to date with small insertions in database systems", "Used inside Python's Timsort for sorting small sub-arrays (runs)", "Online algorithm — each incoming value can immediately be inserted into its sorted position"] },
-      "comparison": { "title": "Similar Algorithms", "items": ["Bubble Sort — also O(n²), but Insertion Sort makes fewer comparisons and shifts on average, making it the preferred choice in practice", "Shell Sort — an extension of Insertion Sort using gaps between comparisons, achieving O(n^1.3–1.5) in practice", "Binary Insertion Sort — uses binary search to find the insertion position, reducing comparisons to O(n log n), but shifting is still O(n²)"] },
-      "tips": { "title": "Learning Tips", "items": ["Nearly-sorted arrays run close to O(n)", "Reversed arrays show worst case O(n²)", "It's both stable and in-place", "For small arrays (n<50), it can be faster than Quick Sort"] },
-      "faq": { "title": "FAQ", "items": [{ "q": "How does it differ from Bubble Sort?", "a": "Insertion Sort inserts into the sorted portion, Bubble Sort repeatedly swaps adjacent elements. Insertion Sort is faster on average." }, { "q": "Time complexity?", "a": "Best O(n), average/worst O(n²). Space O(1)." }] }
+      "whatIs": {
+        "title": "What is Insertion Sort?",
+        "description": "Insertion Sort works like sorting cards — pick up one element at a time and insert it into its correct position in the sorted portion. It's very efficient for small or nearly-sorted data."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust the array size",
+          "Purple bar is the element being inserted",
+          "Orange bars are elements shifting right",
+          "The lighter area on the left is the sorted portion",
+          "Notice how nearly-sorted input finishes much faster"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Starting from the second element, save the current element as the 'key'",
+          "Shift elements in the sorted portion that are greater than the key one position to the right",
+          "Insert the key into the vacated spot",
+          "Repeat for every element through to the last one"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Card sorting — the most natural way people arrange cards in their hand",
+          "Keeping a sorted list up to date with small insertions in database systems",
+          "Used inside Python's Timsort for sorting small sub-arrays (runs)",
+          "Online algorithm — each incoming value can immediately be inserted into its sorted position"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Bubble Sort — also O(n²), but Insertion Sort makes fewer comparisons and shifts on average, making it the preferred choice in practice",
+          "Shell Sort — an extension of Insertion Sort using gaps between comparisons, achieving O(n^1.3–1.5) in practice",
+          "Binary Insertion Sort — uses binary search to find the insertion position, reducing comparisons to O(n log n), but shifting is still O(n²)"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Nearly-sorted arrays run close to O(n)",
+          "Reversed arrays show worst case O(n²)",
+          "It's both stable and in-place",
+          "For small arrays (n<50), it can be faster than Quick Sort"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How does it differ from Bubble Sort?",
+            "a": "Insertion Sort inserts into the sorted portion, Bubble Sort repeatedly swaps adjacent elements. Insertion Sort is faster on average."
+          },
+          {
+            "q": "Time complexity?",
+            "a": "Best O(n), average/worst O(n²). Space O(1)."
+          }
+        ]
+      }
     }
   },
   "selectionSortVisualizer": {
     "title": "Selection Sort Visualizer",
     "description": "Watch the minimum being found and moved to the front at each pass",
-    "tabs": { "steps": "Step by Step", "code": "Code", "guide": "Guide" },
-    "controls": { "arraySize": "Array Size", "random": "Random", "nearlySorted": "Nearly Sorted", "reversed": "Reversed" },
-    "grid": { "scanning": "Scanning", "minimum": "Current Minimum", "comparing": "Comparing", "swapping": "Swapping", "sorted": "Sorted", "default": "Unsorted", "scanRange": "Scan Range" },
-    "stats": { "comparisons": "Comparisons", "swaps": "Swaps", "done": "Sorting Complete!" },
-    "stepsGuide": { "description": "Observe how the minimum is found and swapped into position.", "scanStart": "Scan start: from position {i}", "comparing": "Compare: arr[{j}] vs arr[{k}]", "newMin": "New minimum: index {idx}", "swapped": "Swap: arr[{j}] ↔ arr[{k}]", "noSwap": "No swap needed (already in position)" },
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "arraySize": "Array Size",
+      "random": "Random",
+      "nearlySorted": "Nearly Sorted",
+      "reversed": "Reversed"
+    },
+    "grid": {
+      "scanning": "Scanning",
+      "minimum": "Current Minimum",
+      "comparing": "Comparing",
+      "swapping": "Swapping",
+      "sorted": "Sorted",
+      "default": "Unsorted",
+      "scanRange": "Scan Range"
+    },
+    "stats": {
+      "comparisons": "Comparisons",
+      "swaps": "Swaps",
+      "done": "Sorting Complete!"
+    },
+    "stepsGuide": {
+      "description": "Observe how the minimum is found and swapped into position.",
+      "scanStart": "Scan start: from position {i}",
+      "comparing": "Compare: arr[{j}] vs arr[{k}]",
+      "newMin": "New minimum: index {idx}",
+      "swapped": "Swap: arr[{j}] ↔ arr[{k}]",
+      "noSwap": "No swap needed (already in position)"
+    },
     "guide": {
       "title": "Selection Sort Guide",
-      "whatIs": { "title": "What is Selection Sort?", "description": "Selection Sort finds the minimum element in the unsorted portion and places it at the end of the sorted portion. Very simple to implement but always requires O(n²) comparisons." },
-      "howToUse": { "title": "How to Use", "items": ["Adjust the array size", "Red bar is the current minimum found so far", "Yellow bar is the element being compared", "Purple background shows the scan range", "Each pass moves exactly one element to its final position"] },
-      "howItWorks": { "title": "How It Works", "items": ["Find the index of the minimum value in the unsorted portion", "Swap it with the first element of the unsorted portion", "The sorted portion grows by one element", "Scan the remaining unsorted portion for the next minimum", "Repeat n-1 times — always exactly O(n²) comparisons"] },
-      "realWorld": { "title": "Real-World Applications", "items": ["Useful when swap cost is high — Selection Sort makes at most n-1 swaps total", "Flash memory / EEPROM environments where write operations are expensive", "Teaching 'find minimum + swap' as a fundamental programming pattern", "Small datasets where simplicity of implementation outweighs performance"] },
-      "comparison": { "title": "Similar Algorithms", "items": ["Bubble Sort — more swaps (up to O(n²)) but can exit early with best case O(n). Selection Sort always does exactly O(n²) comparisons", "Insertion Sort — faster than Selection Sort in most cases, especially for nearly-sorted data", "Heap Sort — improves Selection Sort's 'find minimum' step using a heap, achieving O(n log n)"] },
-      "tips": { "title": "Learning Tips", "items": ["Always performs exactly n(n-1)/2 comparisons regardless of input", "Maximum n-1 swaps, very few compared to Bubble Sort", "Unstable sort — equal elements may change order", "Advantageous when memory writes are expensive (minimal swaps)"] },
-      "faq": { "title": "FAQ", "items": [{ "q": "How does it differ from Bubble Sort?", "a": "Selection Sort finds the minimum position first, then swaps once. Bubble Sort repeatedly swaps adjacent elements. Selection Sort makes far fewer swaps." }, { "q": "Time complexity?", "a": "Always O(n²) comparisons. O(n) swaps. Space O(1)." }] }
+      "whatIs": {
+        "title": "What is Selection Sort?",
+        "description": "Selection Sort finds the minimum element in the unsorted portion and places it at the end of the sorted portion. Very simple to implement but always requires O(n²) comparisons."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust the array size",
+          "Red bar is the current minimum found so far",
+          "Yellow bar is the element being compared",
+          "Purple background shows the scan range",
+          "Each pass moves exactly one element to its final position"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Find the index of the minimum value in the unsorted portion",
+          "Swap it with the first element of the unsorted portion",
+          "The sorted portion grows by one element",
+          "Scan the remaining unsorted portion for the next minimum",
+          "Repeat n-1 times — always exactly O(n²) comparisons"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Useful when swap cost is high — Selection Sort makes at most n-1 swaps total",
+          "Flash memory / EEPROM environments where write operations are expensive",
+          "Teaching 'find minimum + swap' as a fundamental programming pattern",
+          "Small datasets where simplicity of implementation outweighs performance"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Bubble Sort — more swaps (up to O(n²)) but can exit early with best case O(n). Selection Sort always does exactly O(n²) comparisons",
+          "Insertion Sort — faster than Selection Sort in most cases, especially for nearly-sorted data",
+          "Heap Sort — improves Selection Sort's 'find minimum' step using a heap, achieving O(n log n)"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Always performs exactly n(n-1)/2 comparisons regardless of input",
+          "Maximum n-1 swaps, very few compared to Bubble Sort",
+          "Unstable sort — equal elements may change order",
+          "Advantageous when memory writes are expensive (minimal swaps)"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How does it differ from Bubble Sort?",
+            "a": "Selection Sort finds the minimum position first, then swaps once. Bubble Sort repeatedly swaps adjacent elements. Selection Sort makes far fewer swaps."
+          },
+          {
+            "q": "Time complexity?",
+            "a": "Always O(n²) comparisons. O(n) swaps. Space O(1)."
+          }
+        ]
+      }
     }
   },
   "heapSortVisualizer": {
@@ -30242,20 +30488,101 @@
   "countingSortVisualizer": {
     "title": "Counting Sort Visualizer",
     "description": "Watch the 3-phase non-comparison sorting: count frequencies, accumulate, and place",
-    "tabs": { "steps": "Step by Step", "code": "Code", "guide": "Guide" },
-    "controls": { "arraySize": "Array Size", "random": "Random", "duplicates": "Many Duplicates" },
-    "grid": { "input": "Input Array", "count": "Count Array", "output": "Output Array", "active": "Active" },
-    "stats": { "phase": "Phase", "phaseCounting": "Counting", "phaseAccumulating": "Accumulating", "phasePlacing": "Placing", "maxValue": "Max Value", "done": "Sorting Complete!" },
-    "stepsGuide": { "description": "Observe the 3 phases: count frequencies, compute prefix sums, and place into output.", "count": "Count: count[{val}]++", "accumulate": "Accumulate: count[{i}] += count[{prev}]", "place": "Place: output[{pos}] = {val}" },
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "arraySize": "Array Size",
+      "random": "Random",
+      "duplicates": "Many Duplicates"
+    },
+    "grid": {
+      "input": "Input Array",
+      "count": "Count Array",
+      "output": "Output Array",
+      "active": "Active"
+    },
+    "stats": {
+      "phase": "Phase",
+      "phaseCounting": "Counting",
+      "phaseAccumulating": "Accumulating",
+      "phasePlacing": "Placing",
+      "maxValue": "Max Value",
+      "done": "Sorting Complete!"
+    },
+    "stepsGuide": {
+      "description": "Observe the 3 phases: count frequencies, compute prefix sums, and place into output.",
+      "count": "Count: count[{val}]++",
+      "accumulate": "Accumulate: count[{i}] += count[{prev}]",
+      "place": "Place: output[{pos}] = {val}"
+    },
     "guide": {
       "title": "Counting Sort Guide",
-      "whatIs": { "title": "What is Counting Sort?", "description": "Counting Sort is a non-comparison sorting algorithm that counts the frequency of each value to sort. With O(n+k) time complexity, it's extremely fast when the value range (k) is small, and it's a stable sort." },
-      "howToUse": { "title": "How to Use", "items": ["Adjust the array size", "Use the Duplicates button for input with many repeated values", "Three arrays (Input/Count/Output) are displayed simultaneously", "Observe the 3 phases: counting → accumulation → placement"] },
-      "howItWorks": { "title": "How It Works", "items": ["Find the maximum value (k) in the input array", "Create a count array of size k+1 and record how many times each value appears", "Transform the count array into a prefix-sum array to determine each value's output position", "Iterate through the input array in reverse, placing each element at its correct position in the output", "Time O(n+k), Space O(n+k)"] },
-      "realWorld": { "title": "Real-World Applications", "items": ["Sorting exam scores (range 0–100) — limited range makes it very fast", "Sorting integers with a known bounded range: ages, status codes, grade levels", "Used as the inner subroutine in Radix Sort (counting sort on each digit position)", "Histogram generation and frequency analysis", "Bitmap index construction in databases"] },
-      "comparison": { "title": "Similar Algorithms", "items": ["Comparison sorts (Bubble/Quick/Merge) — minimum O(n log n). Counting Sort bypasses this bound with O(n+k) by not comparing elements, at the cost of O(k) memory", "Radix Sort — applies Counting Sort repeatedly on each digit; handles arbitrarily large integers", "Bucket Sort — distributes values into interval buckets then sorts each; can handle floating-point values"] },
-      "tips": { "title": "Learning Tips", "items": ["Bypasses the O(n log n) lower bound of comparison-based sorts", "Wastes memory when the value range is large", "Used as a subroutine in Radix Sort due to its stability", "Negative values can be handled by adding an offset"] },
-      "faq": { "title": "FAQ", "items": [{ "q": "When should I use it?", "a": "When the value range (k) is similar to or smaller than n (e.g., test scores 0-100, ages 0-150). Inefficient when k >> n." }, { "q": "Time complexity?", "a": "O(n+k) where n is array size and k is value range. Space is also O(n+k)." }] }
+      "whatIs": {
+        "title": "What is Counting Sort?",
+        "description": "Counting Sort is a non-comparison sorting algorithm that counts the frequency of each value to sort. With O(n+k) time complexity, it's extremely fast when the value range (k) is small, and it's a stable sort."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust the array size",
+          "Use the Duplicates button for input with many repeated values",
+          "Three arrays (Input/Count/Output) are displayed simultaneously",
+          "Observe the 3 phases: counting → accumulation → placement"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Find the maximum value (k) in the input array",
+          "Create a count array of size k+1 and record how many times each value appears",
+          "Transform the count array into a prefix-sum array to determine each value's output position",
+          "Iterate through the input array in reverse, placing each element at its correct position in the output",
+          "Time O(n+k), Space O(n+k)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Sorting exam scores (range 0–100) — limited range makes it very fast",
+          "Sorting integers with a known bounded range: ages, status codes, grade levels",
+          "Used as the inner subroutine in Radix Sort (counting sort on each digit position)",
+          "Histogram generation and frequency analysis",
+          "Bitmap index construction in databases"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Comparison sorts (Bubble/Quick/Merge) — minimum O(n log n). Counting Sort bypasses this bound with O(n+k) by not comparing elements, at the cost of O(k) memory",
+          "Radix Sort — applies Counting Sort repeatedly on each digit; handles arbitrarily large integers",
+          "Bucket Sort — distributes values into interval buckets then sorts each; can handle floating-point values"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Bypasses the O(n log n) lower bound of comparison-based sorts",
+          "Wastes memory when the value range is large",
+          "Used as a subroutine in Radix Sort due to its stability",
+          "Negative values can be handled by adding an offset"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "When should I use it?",
+            "a": "When the value range (k) is similar to or smaller than n (e.g., test scores 0-100, ages 0-150). Inefficient when k >> n."
+          },
+          {
+            "q": "Time complexity?",
+            "a": "O(n+k) where n is array size and k is value range. Space is also O(n+k)."
+          }
+        ]
+      }
     }
   },
   "bstVisualizer": {
@@ -30581,15 +30908,34 @@
         ]
       }
     }
-  }
-,
+  },
   "radixSortVisualizer": {
     "title": "Radix Sort Visualizer",
     "description": "Watch LSD Radix Sort distribute and collect elements through 10 buckets digit by digit",
-    "tabs": { "steps": "Step by Step", "code": "Code", "guide": "Guide" },
-    "controls": { "arraySize": "Array Size", "random": "Random", "sameDigits": "Same Digits" },
-    "legend": { "distributing": "Distributing", "collecting": "Collecting", "inBucket": "In Bucket" },
-    "stats": { "currentDigit": "Current Digit", "totalDigits": "Total Digits", "action": "Action", "distribute": "Distributing", "collect": "Collecting", "digitComplete": "Pass Complete", "done": "Sorting Complete!" },
+    "tabs": {
+      "steps": "Step by Step",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "arraySize": "Array Size",
+      "random": "Random",
+      "sameDigits": "Same Digits"
+    },
+    "legend": {
+      "distributing": "Distributing",
+      "collecting": "Collecting",
+      "inBucket": "In Bucket"
+    },
+    "stats": {
+      "currentDigit": "Current Digit",
+      "totalDigits": "Total Digits",
+      "action": "Action",
+      "distribute": "Distributing",
+      "collect": "Collecting",
+      "digitComplete": "Pass Complete",
+      "done": "Sorting Complete!"
+    },
     "stepsGuide": {
       "description": "Observe how elements are distributed into 10 buckets (0-9) and collected back in order for each digit pass.",
       "distribute": "Distribute: arr[{idx}]={val} → bucket {bucket}",
@@ -30599,13 +30945,69 @@
     },
     "guide": {
       "title": "Radix Sort Guide",
-      "whatIs": { "title": "What is Radix Sort?", "description": "Radix Sort is a non-comparison sorting algorithm that sorts by individual digit positions. The LSD (Least Significant Digit) approach starts from the lowest digit (ones place) and repeatedly applies counting sort up to the highest digit. Time complexity O(d×n) makes it very fast when the number of digits (d) is small, and it is a stable sort." },
-      "howToUse": { "title": "How to Use", "items": ["Adjust array size and generate input with random or same-digits buttons", "Press play to start the LSD Radix Sort animation", "Observe elements distributed into buckets 0-9 and collected back in order each pass", "The highlighted digit box shows the current sorting digit position"] },
-      "howItWorks": { "title": "How It Works", "items": ["Start from the least significant digit (ones place)", "Distribute each element into one of 10 buckets (0–9) based on the current digit", "Collect elements from the buckets back into the array in order (0 to 9)", "Advance to the next digit and repeat distribute + collect", "After completing the most significant digit, the array is fully sorted — O(d × n)"] },
-      "realWorld": { "title": "Real-World Applications", "items": ["ZIP code sorting — fixed digit count makes it near O(n)", "Bulk sorting of integers/strings with fixed width: phone numbers, IP addresses", "Card sorters (IBM punch-card era) — Radix Sort is historically one of the oldest sorting methods", "Parallel GPU sorting — Radix Sort parallelizes extremely well", "Bulk integer key index construction in databases"] },
-      "comparison": { "title": "Similar Algorithms", "items": ["Quick Sort / Merge Sort O(n log n) — comparison-based sorts are general-purpose; Radix Sort is faster when d×n < n log n (short keys)", "Counting Sort — the inner subroutine used at each digit pass of Radix Sort", "MSD (Most Significant Digit) Radix Sort — processes digits from the highest down; supports early termination but requires recursion"] },
-      "tips": { "title": "Learning Tips", "items": ["LSD sorts from lowest digit first — stability is required for correctness", "Each pass is a Counting Sort O(n+10)=O(n), making the total O(d×n)", "Compare same-digits (fixed d) vs random (variable d) to see how d affects speed", "Even a large number range is fast if digits (d) are few (e.g. 64-bit integers d=19)"] },
-      "faq": { "title": "FAQ", "items": [{ "q": "LSD vs MSD Radix Sort?", "a": "LSD (Least Significant Digit first) is simpler and naturally stable. MSD (Most Significant Digit first) works recursively and is better suited for string sorting. This visualizer uses LSD." }, { "q": "When is Radix Sort fast?", "a": "When the number of digits (d) is fixed or small (e.g. phone numbers, zip codes, dates YYYYMMDD). It beats comparison sorts when d×n < n log n." }] }
+      "whatIs": {
+        "title": "What is Radix Sort?",
+        "description": "Radix Sort is a non-comparison sorting algorithm that sorts by individual digit positions. The LSD (Least Significant Digit) approach starts from the lowest digit (ones place) and repeatedly applies counting sort up to the highest digit. Time complexity O(d×n) makes it very fast when the number of digits (d) is small, and it is a stable sort."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust array size and generate input with random or same-digits buttons",
+          "Press play to start the LSD Radix Sort animation",
+          "Observe elements distributed into buckets 0-9 and collected back in order each pass",
+          "The highlighted digit box shows the current sorting digit position"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Start from the least significant digit (ones place)",
+          "Distribute each element into one of 10 buckets (0–9) based on the current digit",
+          "Collect elements from the buckets back into the array in order (0 to 9)",
+          "Advance to the next digit and repeat distribute + collect",
+          "After completing the most significant digit, the array is fully sorted — O(d × n)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "ZIP code sorting — fixed digit count makes it near O(n)",
+          "Bulk sorting of integers/strings with fixed width: phone numbers, IP addresses",
+          "Card sorters (IBM punch-card era) — Radix Sort is historically one of the oldest sorting methods",
+          "Parallel GPU sorting — Radix Sort parallelizes extremely well",
+          "Bulk integer key index construction in databases"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Quick Sort / Merge Sort O(n log n) — comparison-based sorts are general-purpose; Radix Sort is faster when d×n < n log n (short keys)",
+          "Counting Sort — the inner subroutine used at each digit pass of Radix Sort",
+          "MSD (Most Significant Digit) Radix Sort — processes digits from the highest down; supports early termination but requires recursion"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "LSD sorts from lowest digit first — stability is required for correctness",
+          "Each pass is a Counting Sort O(n+10)=O(n), making the total O(d×n)",
+          "Compare same-digits (fixed d) vs random (variable d) to see how d affects speed",
+          "Even a large number range is fast if digits (d) are few (e.g. 64-bit integers d=19)"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "LSD vs MSD Radix Sort?",
+            "a": "LSD (Least Significant Digit first) is simpler and naturally stable. MSD (Most Significant Digit first) works recursively and is better suited for string sorting. This visualizer uses LSD."
+          },
+          {
+            "q": "When is Radix Sort fast?",
+            "a": "When the number of digits (d) is fixed or small (e.g. phone numbers, zip codes, dates YYYYMMDD). It beats comparison sorts when d×n < n log n."
+          }
+        ]
+      }
     }
   },
   "hashTableVisualizer": {
@@ -30716,6 +31118,1656 @@
           {
             "q": "Hash table vs tree map (BST)?",
             "a": "Hash table: O(1) average lookup, no ordering. Tree map: O(log n) lookup, keys kept sorted. Choose hash table for fast lookup without ordering; choose tree map when range queries or sorted iteration are needed."
+          }
+        ]
+      }
+    }
+  },
+  "kruskalVisualizer": {
+    "title": "Kruskal's MST Visualization",
+    "description": "Learn the greedy algorithm that builds a Minimum Spanning Tree by selecting edges in weight order",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "newGraph": "New Graph"
+    },
+    "legend": {
+      "mst": "MST Edge",
+      "checking": "Checking",
+      "skipped": "Skipped (Cycle)",
+      "unvisited": "Unvisited"
+    },
+    "stats": {
+      "mstEdges": "MST Edges",
+      "totalWeight": "Total Weight",
+      "complete": "MST Complete!"
+    },
+    "stepsGuide": {
+      "description": "Watch Kruskal's algorithm select edges by weight to build the MST.",
+      "sorted": "Sort edges by weight",
+      "checking": "Check: {from}-{to} (weight {w})",
+      "added": "Add: {from}-{to} (no cycle)",
+      "skipped": "Skip: {from}-{to} (would form cycle)",
+      "done": "MST complete! Total weight: {w}"
+    },
+    "guide": {
+      "title": "Kruskal's Algorithm Guide",
+      "whatIs": {
+        "title": "What is Kruskal's Algorithm?",
+        "description": "Kruskal's algorithm is a greedy algorithm that finds a Minimum Spanning Tree (MST) for a weighted undirected graph. Invented by Joseph Kruskal in 1956, it connects all vertices with minimum total edge weight. It uses the Union-Find data structure to efficiently detect cycles."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click 'New Graph' to generate a random weighted graph",
+          "Press play to sort edges by weight and start selection",
+          "Each edge is checked for cycles using Union-Find",
+          "Edges without cycles are added to MST (green), others are skipped (red)",
+          "Drag nodes to adjust the graph layout"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Kruskal's is edge-centric, while Prim's is vertex-centric",
+          "Kruskal's is more efficient for sparse graphs with fewer edges",
+          "Union-Find with path compression and union by rank achieves near-O(1) operations",
+          "An MST always has exactly V-1 edges (V = number of vertices)"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Kruskal's vs Prim's — when to use which?",
+            "a": "Kruskal's sorts edges and is O(E log E), better for sparse graphs. Prim's expands from a vertex and is O(V^2) or O(E log V) with a heap, better for dense graphs."
+          },
+          {
+            "q": "Is the MST unique?",
+            "a": "If all edge weights are distinct, the MST is unique. If some edges have equal weights, multiple MSTs may exist."
+          }
+        ]
+      }
+    }
+  },
+  "topologicalSortVisualizer": {
+    "title": "Topological Sort Visualization",
+    "description": "Learn Kahn's BFS-based algorithm for ordering vertices in a Directed Acyclic Graph (DAG)",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "newGraph": "New DAG"
+    },
+    "legend": {
+      "unprocessed": "Unprocessed",
+      "queued": "In Queue",
+      "current": "Processing",
+      "processed": "Processed"
+    },
+    "stats": {
+      "processed": "Processed",
+      "queueSize": "Queue Size",
+      "order": "Order",
+      "complete": "Topological Sort Complete!",
+      "cycleDetected": "Cycle Detected!"
+    },
+    "stepsGuide": {
+      "description": "Watch Kahn's algorithm track in-degrees and determine topological order.",
+      "init": "In-degrees computed",
+      "enqueued": "Enqueue: {node} (in-degree 0)",
+      "dequeued": "Dequeue: {node}",
+      "updated": "Decrease in-degree: {node} (new: {deg})",
+      "done": "Topological sort complete!",
+      "cycle": "Cycle detected — not a DAG!"
+    },
+    "guide": {
+      "title": "Topological Sort Guide",
+      "whatIs": {
+        "title": "What is Topological Sort?",
+        "description": "Topological Sort orders all vertices of a Directed Acyclic Graph (DAG) such that for every directed edge u→v, vertex u comes before v. It determines the execution order of tasks with dependencies. Kahn's algorithm uses in-degree tracking with BFS."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click 'New DAG' to generate a random directed acyclic graph",
+          "The number badge next to each node shows its in-degree (incoming edges)",
+          "Nodes with in-degree 0 enter the queue first",
+          "When a node is processed, outgoing edges are removed and neighbor in-degrees decrease",
+          "The green badge below processed nodes shows their topological order number"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Topological sort is only possible for DAGs — cycles make it impossible",
+          "The result may not be unique (multiple valid orderings exist)",
+          "Build systems (Make, Gradle) use topological sort for dependency resolution",
+          "Course prerequisite planning and project scheduling also use topological sort"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "DFS-based vs Kahn's algorithm?",
+            "a": "Kahn's uses in-degree BFS and naturally detects cycles. DFS-based uses reverse post-order and needs separate cycle detection (visited state tracking). Both are O(V+E)."
+          },
+          {
+            "q": "Where is topological sort used?",
+            "a": "Build system compilation order, package manager dependency resolution, spreadsheet cell evaluation order, course prerequisite checking, and project management (PERT/CPM)."
+          }
+        ]
+      }
+    }
+  },
+  "unionFindVisualizer": {
+    "title": "Union-Find Visualization",
+    "description": "Learn the Disjoint Set data structure with path compression and union by rank optimization",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "newOperations": "New Operations",
+      "nodeCount": "Node Count"
+    },
+    "legend": {
+      "root": "Root Node",
+      "highlighted": "Currently Exploring"
+    },
+    "stats": {
+      "components": "Sets",
+      "nodes": "Nodes",
+      "complete": "All Operations Complete!"
+    },
+    "stepsGuide": {
+      "description": "Watch Union-Find perform Union/Find operations with path compression optimization.",
+      "init": "Initialize each node as its own set",
+      "findRoots": "Finding roots: {a} and {b}",
+      "findOnly": "Find operation: root of {node}",
+      "findStep": "Tracing paths: {a}→root, {b}→root",
+      "findDone": "Find complete: root of {node} = {root}",
+      "sameSet": "Already same set: {a} and {b}",
+      "union": "Union complete: merged {a} and {b}",
+      "compress": "Path compression: {node} → {root}",
+      "done": "All operations complete!"
+    },
+    "guide": {
+      "title": "Union-Find Data Structure Guide",
+      "whatIs": {
+        "title": "What is Union-Find?",
+        "description": "Union-Find (Disjoint Set Union) is a data structure for efficiently managing disjoint sets. It supports Find (check if two elements are in the same set) and Union (merge two sets) in nearly O(1) time. It is essential for Kruskal's MST, network connectivity, image processing, and more."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Use the node count slider to adjust the number of elements",
+          "Click 'New Operations' to generate random Union/Find operations",
+          "Union(a,b) merges two sets, Find(a) finds the root",
+          "Same-colored nodes belong to the same set",
+          "Watch path compression flatten the tree structure"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Without path compression, trees become deep and Find is O(n)",
+          "Union by rank attaches smaller trees under larger ones to minimize height",
+          "Path compression + union by rank = inverse Ackermann α(n) ≈ O(1)",
+          "Union-Find is essential for cycle detection in Kruskal's MST"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Do I need both path compression and union by rank?",
+            "a": "Using just one gives O(log n), but both together achieve O(α(n)) which is practically constant. In practice, both are typically used."
+          },
+          {
+            "q": "Real-world applications of Union-Find?",
+            "a": "Network connectivity checking, image segmentation (connected component labeling), Kruskal's MST cycle detection, social network community detection, and equivalence relation determination."
+          }
+        ]
+      }
+    }
+  },
+  "bellmanFordVisualizer": {
+    "title": "Bellman-Ford Shortest Path Visualization",
+    "description": "Learn the algorithm that finds shortest paths in graphs with negative weights and detects negative cycles",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "newGraph": "New Graph",
+      "allowNegative": "Allow Negative Weights",
+      "source": "Source"
+    },
+    "legend": {
+      "source": "Source",
+      "updated": "Updated",
+      "checking": "Checking",
+      "negative": "Negative Edge/Cycle"
+    },
+    "stats": {
+      "iteration": "Iteration",
+      "relaxations": "Relaxations",
+      "node": "Node",
+      "distance": "Distance",
+      "complete": "Shortest Paths Complete!",
+      "negativeCycle": "Negative Cycle Detected!"
+    },
+    "stepsGuide": {
+      "description": "Watch Bellman-Ford relax all edges V-1 times to find shortest paths.",
+      "init": "Source distance = 0, rest = ∞",
+      "startIteration": "Iteration {i} start",
+      "updated": "Update: {from}→{to}, distance = {dist}",
+      "endIteration": "Iteration {i} end ({r} relaxations)",
+      "checkNegative": "Checking for negative cycles...",
+      "negativeCycle": "Negative cycle detected!",
+      "done": "Shortest path computation complete!"
+    },
+    "guide": {
+      "title": "Bellman-Ford Algorithm Guide",
+      "whatIs": {
+        "title": "What is Bellman-Ford?",
+        "description": "The Bellman-Ford algorithm finds shortest paths from a single source to all other vertices. Unlike Dijkstra's, it handles negative weight edges and can detect negative cycles. It works by relaxing all edges V-1 times."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click 'New Graph' to generate a directed weighted graph",
+          "Check 'Allow Negative Weights' to include negative edges",
+          "Use the source dropdown to change the starting vertex",
+          "The badge below each node shows current shortest distance from source",
+          "Red edges indicate negative weights"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Dijkstra fails with negative weights, but Bellman-Ford handles them correctly",
+          "If updates still occur after V-1 iterations, a negative cycle exists",
+          "Time complexity is O(VE), slower than Dijkstra's O(E log V)",
+          "SPFA is a queue-optimized variant of Bellman-Ford"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Bellman-Ford vs Dijkstra — when to use which?",
+            "a": "Dijkstra is faster (O(E log V)) when there are no negative edges. Bellman-Ford is needed when negative edges exist or negative cycle detection is required (O(VE)). The RIP routing protocol uses a Bellman-Ford variant."
+          },
+          {
+            "q": "Why V-1 iterations?",
+            "a": "A shortest path has at most V-1 edges. Each iteration correctly determines at least one more edge's shortest distance, so V-1 iterations cover all shortest paths."
+          }
+        ]
+      }
+    }
+  },
+  "fibonacciDpVisualizer": {
+    "title": "Fibonacci DP Visualization",
+    "description": "Learn DP fundamentals by comparing naive recursion vs memoization vs tabulation",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "modes": {
+      "naive": "Naive Recursion",
+      "memoization": "Memoization",
+      "tabulation": "Tabulation"
+    },
+    "controls": {
+      "mode": "Algorithm Mode",
+      "run": "Run"
+    },
+    "stats": {
+      "calls": "Call Count",
+      "result": "Result",
+      "steps": "Steps"
+    },
+    "legend": {
+      "active": "Current Node",
+      "visited": "Visited",
+      "memoHit": "Memo Hit",
+      "baseCase": "Base Case"
+    },
+    "stepsGuide": {
+      "description": "Click any step to jump to that point.",
+      "hint": "Press Run to start."
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is Fibonacci DP?",
+        "description": "Compare three ways to compute Fibonacci numbers (0, 1, 1, 2, 3, 5, 8, ...). Naive recursion recalculates identical subproblems yielding O(2^n). Memoization (top-down) and tabulation (bottom-up) eliminate redundant work for O(n)."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select an algorithm mode (Naive/Memoization/Tabulation)",
+          "Adjust N with the slider (Naive: 0-10, DP: 0-15)",
+          "Press Run or use playback controls to animate",
+          "Step forward/backward to examine each call",
+          "Check the Code tab to see which line is executing"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Naive recursion: directly calls fib(n-1) + fib(n-2), creating an exponentially growing call tree (fib(10) = 177 calls)",
+          "Memoization: caches computed values in a memo object. Repeated fib(k) calls return in O(1), pruning entire subtrees",
+          "Tabulation: fills dp[0]=0, dp[1]=1, then dp[i] = dp[i-1] + dp[i-2] sequentially",
+          "Both DP approaches run in O(n) time, O(n) space. Tabulation avoids recursion stack overflow"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "The quintessential DP intro example, frequently appears in coding interviews",
+          "Fibonacci heaps and golden-ratio algorithms use Fibonacci numbers",
+          "Memoization pattern is used in React.memo, useMemo, Python's @lru_cache",
+          "Tabulation pattern is the foundation of Knapsack, LCS, edit distance DP problems"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Run Naive mode with N=8 to feel how massive the call tree gets",
+          "In Memoization mode, notice yellow 'memo' nodes — branches are pruned",
+          "Compare call counts across all three modes to quantify DP's power"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What's the difference between memoization and tabulation?",
+            "a": "Memoization is top-down (recursion + caching), tabulation is bottom-up (iteration + table). Same result, but tabulation avoids recursion stack overflow for large N."
+          },
+          {
+            "q": "Why is Naive limited to N=10?",
+            "a": "At N=10 there are 177 calls. N=20 produces 21,891, N=30 about 2.7 million — enough to freeze the browser."
+          },
+          {
+            "q": "Can we reduce O(n) space?",
+            "a": "Yes, by keeping only the last two values you get O(1) space. But problems requiring traceback (like Knapsack) need the full table."
+          }
+        ]
+      }
+    }
+  },
+  "knapsackVisualizer": {
+    "title": "Knapsack Problem Visualization",
+    "description": "Find the maximum value combination within a weight limit — a classic DP problem",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "preset": "Preset",
+      "items": "Items",
+      "capacity": "Capacity",
+      "run": "Run"
+    },
+    "presets": {
+      "camping": "Camping",
+      "treasure": "Treasure",
+      "study": "Study"
+    },
+    "stats": {
+      "maxValue": "Max Value",
+      "totalWeight": "Total Weight",
+      "selected": "Selected Items"
+    },
+    "stepsGuide": {
+      "description": "Click any step to jump to that point.",
+      "hint": "Press Run to start."
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is the Knapsack Problem?",
+        "description": "An optimization problem where you pack items into a weight-limited knapsack to maximize value. In the 0/1 variant, each item is either included (1) or excluded (0). dp[i][w] stores the maximum value using the first i items with capacity w."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select a preset (Camping/Treasure/Study) or adjust capacity",
+          "Press Run to start filling the DP table",
+          "Hover over cells to see dp[i][w] values",
+          "During traceback, selected items are highlighted",
+          "The Steps tab shows include/exclude decisions"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "dp[i][w] = max(dp[i-1][w], dp[i-1][w-w_i] + v_i): compare including vs excluding item i",
+          "If item weight exceeds capacity, dp[i][w] = dp[i-1][w] (can't include)",
+          "After filling the table, trace back from dp[n][W] to find selected items",
+          "Time complexity O(n*W), space O(n*W). Pseudo-polynomial algorithm"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Investment portfolio optimization — maximize returns within budget",
+          "Cargo loading — maximize value within truck/container weight limits",
+          "Cloud resource allocation — schedule jobs within CPU/memory constraints",
+          "Ad budget allocation — maximize impressions within budget"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Start with the Camping preset for a small example",
+          "The key insight is comparing include vs exclude values at each cell",
+          "During traceback, dp[i][w] != dp[i-1][w] means item i was selected"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "0/1 Knapsack vs Fractional Knapsack?",
+            "a": "0/1 requires DP (items can't be split). Fractional allows splitting items and can be solved greedily by value-to-weight ratio."
+          },
+          {
+            "q": "Why is it pseudo-polynomial?",
+            "a": "O(n*W) depends on the value of W, not its bit-length. If W has b bits, the actual complexity is O(n*2^b), which is exponential in input size."
+          }
+        ]
+      }
+    }
+  },
+  "lcsVisualizer": {
+    "title": "LCS (Longest Common Subsequence) Visualization",
+    "description": "Find the longest common subsequence of two strings using a DP table",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "preset": "Preset",
+      "str1": "String 1",
+      "str2": "String 2",
+      "run": "Run"
+    },
+    "stats": {
+      "lcsLength": "LCS Length",
+      "lcsString": "LCS String"
+    },
+    "legend": {
+      "match": "Match",
+      "filled": "Computed",
+      "traceback": "Traceback"
+    },
+    "stepsGuide": {
+      "description": "Click any step to jump to that point.",
+      "hint": "Press Run to start."
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is LCS?",
+        "description": "LCS (Longest Common Subsequence) finds the longest subsequence common to two strings while maintaining order. A subsequence doesn't need to be contiguous. Example: LCS of 'ABCDE' and 'ACE' is 'ACE' (length 3)."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select a preset or enter two strings (max 10 chars each)",
+          "Press Run to start filling the DP table",
+          "Green cells indicate character matches, red cells indicate mismatches",
+          "Arrow directions show the traceback path",
+          "After traceback, the LCS string appears at the bottom"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "If str1[i] == str2[j]: dp[i][j] = dp[i-1][j-1] + 1 (diagonal arrow)",
+          "If str1[i] != str2[j]: dp[i][j] = max(dp[i-1][j], dp[i][j-1]) (up or left arrow)",
+          "dp[m][n] is the LCS length. Follow arrows backward to construct the LCS string",
+          "Time complexity O(m*n), space O(m*n)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "git diff — file change comparison uses LCS variants",
+          "DNA/RNA sequence alignment in bioinformatics",
+          "Plagiarism detection — finding common passages between documents",
+          "Auto-merge — 3-way merge in source code uses LCS-based algorithms"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Start with the 'ABCDE' / 'ACE' preset for a simple example",
+          "Diagonal arrows correspond to LCS characters",
+          "Follow the yellow traceback path to see how the LCS is constructed"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Subsequence vs substring?",
+            "a": "A subsequence maintains order but needn't be contiguous. A substring must be contiguous. 'ACE' is a subsequence of 'ABCDE' but not a substring."
+          },
+          {
+            "q": "Can there be multiple LCS?",
+            "a": "Yes, multiple LCS of the same length can exist. This visualization shows one based on arrow directions. Finding all requires exploring branches during traceback."
+          }
+        ]
+      }
+    }
+  },
+  "kmpVisualizer": {
+    "title": "KMP Pattern Matching Visualization",
+    "description": "O(n+m) string pattern matching using the failure function",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "preset": "Preset",
+      "text": "Text",
+      "pattern": "Pattern",
+      "run": "Run"
+    },
+    "stats": {
+      "matches": "Matches",
+      "phase": "Phase",
+      "failurePhase": "Building Failure",
+      "searchPhase": "Searching",
+      "positions": "Match Positions"
+    },
+    "stepsGuide": {
+      "description": "Click any step to jump to that point.",
+      "hint": "Press Run to start."
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is KMP?",
+        "description": "KMP (Knuth-Morris-Pratt) finds pattern occurrences in text in O(n+m) time. Unlike the naive O(n*m) approach, it uses a 'failure function' to skip unnecessary comparisons on mismatch."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select a preset or enter custom text and pattern",
+          "Press Run to start Phase 1 (failure function) then Phase 2 (search)",
+          "Watch the failure table (bottom) being filled",
+          "During search, observe the pattern sliding along the text",
+          "Match positions are highlighted in green"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Phase 1 (Failure function): Pre-computes prefix-suffix match lengths for the pattern. failure[i] is the longest proper prefix of pattern[0..i] that is also a suffix",
+          "Phase 2 (Search): Compares text and pattern character by character. On match, both advance",
+          "On mismatch: set pi = failure[pi-1] to efficiently shift the pattern, reusing already-matched prefix",
+          "When the full pattern matches (pi == m), record the match and use failure to continue searching"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Text editor Find/Replace functionality",
+          "Network Intrusion Detection Systems (IDS) pattern matching",
+          "DNA sequence pattern searching in bioinformatics",
+          "Compiler lexical analysis"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "The failure function is the key — understand why it enables skipping",
+          "Hand-compute the failure function for 'ABABC' = [0,0,1,2,0]",
+          "Think about why pi = failure[pi-1] is correct on mismatch"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "KMP vs Rabin-Karp vs Boyer-Moore?",
+            "a": "KMP: guaranteed O(n+m), uses failure function. Rabin-Karp: hash-based, average O(n+m), worst O(nm). Boyer-Moore: compares from right, often fastest in practice. Choose KMP when worst-case guarantee is needed."
+          },
+          {
+            "q": "Why is it called 'failure' function?",
+            "a": "It tells you where to go back on a mismatch (failure). Also known as 'partial match table' or 'prefix function'."
+          }
+        ]
+      }
+    }
+  },
+  "trieVisualizer": {
+    "title": "Trie Visualization",
+    "description": "A tree-based data structure for fast string lookup and autocomplete",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "operation": {
+      "insert": "Insert",
+      "search": "Search",
+      "autocomplete": "Autocomplete"
+    },
+    "controls": {
+      "operation": "Operation",
+      "word": "Word",
+      "prefix": "Prefix",
+      "execute": "Execute",
+      "resetTrie": "Reset Trie"
+    },
+    "stats": {
+      "nodeCount": "Nodes",
+      "searchResult": "Search Result",
+      "found": "Found",
+      "notFound": "Not Found",
+      "suggestions": "Suggestions"
+    },
+    "legend": {
+      "active": "Current Node",
+      "visited": "Visited",
+      "endNode": "Word End",
+      "root": "Root"
+    },
+    "stepsGuide": {
+      "description": "Click any step to jump to that point.",
+      "hint": "Select an operation and press Execute."
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is a Trie?",
+        "description": "A Trie (prefix tree) stores a set of strings character-by-character in a tree. Shared prefixes save memory, and insert/search/autocomplete all run in O(m) where m is the string length. Word-end nodes are shown with double circles."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "The initial trie contains CAR, CARD, CARE, CAT, DO, DOG, DONE",
+          "Select an operation (Insert/Search/Autocomplete) and enter a word",
+          "Insert: creates new nodes and marks word end",
+          "Search: follows path and checks existence",
+          "Autocomplete: navigates to prefix end, then collects all words below"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Insert: traverse from root, creating child nodes for each character, mark the final node as word-end",
+          "Search: follow characters from root. If a child is missing, return 'not found'. If reached end, check isEnd flag",
+          "Autocomplete: navigate to prefix-end node, then DFS to collect all words in the subtree",
+          "Time complexity: all operations O(m). Autocomplete is O(m + total output length)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Search engine autocomplete (Google, Bing)",
+          "Smartphone keyboard word prediction",
+          "IP routing tables (longest prefix matching)",
+          "Spell checkers and dictionaries"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Try autocomplete with 'CA' — you'll get CAR, CARD, CARE, CAT showing prefix sharing",
+          "Insert 'DARE' to see a new D-A-R-E path separate from DO",
+          "Double circles mark word-end nodes — if R in C-A-R has a double circle, 'CAR' exists"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Trie vs Hash Table?",
+            "a": "Hash tables offer O(1) exact lookup but can't do prefix search/autocomplete. Tries excel at prefix operations but use more memory. Choose Trie for autocomplete, Hash Table for exact lookup."
+          },
+          {
+            "q": "How to reduce memory?",
+            "a": "Compressed tries (Patricia/radix trees) merge single-child nodes to save space. Using arrays instead of hash maps for children reduces pointer overhead."
+          }
+        ]
+      }
+    }
+  },
+  "convexHullVisualizer": {
+    "title": "Convex Hull Visualizer",
+    "description": "Visualize the Graham Scan algorithm building a convex hull step by step",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "random": "Random",
+      "circle": "Circle",
+      "pointCount": "Point count",
+      "clickToAdd": "Click the canvas to add points. Drag points to reposition."
+    },
+    "grid": {
+      "pivot": "Pivot (lowest)",
+      "stack": "Stack",
+      "current": "Processing",
+      "comparing": "Comparing",
+      "hullEdge": "Hull edge"
+    },
+    "stats": {
+      "points": "Points",
+      "hullVertices": "Hull vertices",
+      "done": "Convex hull complete!"
+    },
+    "stepsGuide": {
+      "description": "Watch how Graham Scan uses a stack to build the convex hull."
+    },
+    "guide": {
+      "title": "Convex Hull Guide",
+      "whatIs": {
+        "title": "What is Convex Hull?",
+        "description": "The convex hull of a set of points is the smallest convex polygon containing all points. Graham Scan computes it in O(n log n)."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust point count or click canvas to add points",
+          "Use Random or Circle buttons to generate points",
+          "Press play to watch Graham Scan step by step",
+          "Orange is pivot, purple is stack, yellow is current point",
+          "Drag points to see how the hull changes"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Find the lowest point as pivot",
+          "Sort points by polar angle from pivot",
+          "Push points onto stack; pop on clockwise turns",
+          "Cross product determines turn direction",
+          "Time: O(n log n). Space: O(n)"
+        ]
+      },
+      "realWorld": {
+        "title": "Applications",
+        "items": [
+          "Collision detection in games/CAD",
+          "GIS service area computation",
+          "Image processing contour analysis",
+          "Robotics obstacle avoidance"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Graham Scan vs Jarvis March — O(n log n) vs O(nh)",
+          "Quickhull — divide-and-conquer, fast in practice",
+          "Andrew Monotone Chain — simpler implementation"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Circle placement keeps all points on hull",
+          "More interior points mean more pops",
+          "Collinear points are removed (cross product = 0)",
+          "Drag points to build intuition"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Convex vs concave hull?",
+            "a": "Convex hull has all angles ≤ 180°. Concave hull (alpha shape) wraps tighter."
+          },
+          {
+            "q": "Time complexity?",
+            "a": "O(n log n), dominated by sorting."
+          },
+          {
+            "q": "3D convex hull?",
+            "a": "Yes, Quickhull 3D runs in O(n log n)."
+          }
+        ]
+      }
+    }
+  },
+  "voronoiVisualizer": {
+    "title": "Voronoi Diagram Visualizer",
+    "description": "Watch how each pixel is assigned to its nearest site, forming a Voronoi partition",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "random": "Random",
+      "grid": "Grid",
+      "siteCount": "Site count",
+      "clickToAdd": "Click the canvas to add a site."
+    },
+    "stats": {
+      "sites": "Sites",
+      "sweepProgress": "Sweep progress",
+      "done": "Diagram complete!"
+    },
+    "stepsGuide": {
+      "description": "The sweep line moves top to bottom, assigning each pixel to its nearest site.",
+      "sweepAt": "Sweep position: y={y}"
+    },
+    "guide": {
+      "title": "Voronoi Guide",
+      "whatIs": {
+        "title": "What is a Voronoi Diagram?",
+        "description": "A Voronoi diagram partitions a plane into regions around seed points where every point is closest to its site."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust site count or click canvas to add sites",
+          "Use Random or Grid buttons",
+          "Press play to watch sweep animation",
+          "Regions are colored by site; dark lines are boundaries"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Compute distance from each pixel to all sites",
+          "Assign pixel to nearest site",
+          "Mark boundary where nearest site changes",
+          "Brute force O(n*w*h), Fortune O(n log n)",
+          "This visualization uses brute-force for clarity"
+        ]
+      },
+      "realWorld": {
+        "title": "Applications",
+        "items": [
+          "Urban planning — nearest facility assignment",
+          "Game development — map generation",
+          "Network design — cell tower coverage",
+          "Meteorology — spatial interpolation"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Voronoi vs Delaunay Triangulation — dual structures",
+          "Fortune Sweep Line — optimal O(n log n)",
+          "k-d Tree — nearest neighbor search"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Even spacing produces similar-sized regions",
+          "Clustering creates size contrasts",
+          "Voronoi edges are perpendicular bisectors"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Voronoi-Delaunay relationship?",
+            "a": "Dual structures. Delaunay circumcenters become Voronoi vertices."
+          },
+          {
+            "q": "Fortune algorithm?",
+            "a": "O(n log n) sweep line with beach line and event queue."
+          },
+          {
+            "q": "3D extension?",
+            "a": "Yes, produces polyhedral cells."
+          }
+        ]
+      }
+    }
+  },
+  "raycastingVisualizer": {
+    "title": "Raycasting Visualizer",
+    "description": "Experience a Wolfenstein-style 2.5D first-person view rendered in real-time using DDA",
+    "tabs": {
+      "steps": "Explanation",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "editMap": "Edit Map",
+      "stopEdit": "Stop Editing",
+      "resetMap": "Reset Map",
+      "keyboardHint": "WASD: move, Arrow keys: rotate (or use touch buttons)"
+    },
+    "stats": {
+      "position": "Position",
+      "angle": "Angle",
+      "rays": "Ray count"
+    },
+    "stepsGuide": {
+      "description": "Raycasting casts one ray per column to find wall distance, then draws each column inversely proportional to distance.",
+      "step1": "Cast rays within FOV (60°) from player position",
+      "step2": "DDA steps along grid until ray hits a wall",
+      "step3": "Calculate perpendicular distance with fisheye correction",
+      "step4": "Draw column height inversely proportional to distance"
+    },
+    "guide": {
+      "title": "Raycasting Guide",
+      "whatIs": {
+        "title": "What is Raycasting?",
+        "description": "Raycasting creates a 3D-like first-person view from 2D map data. Popularized by Wolfenstein 3D (1992)."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "WASD or arrow keys to move/rotate",
+          "Use touch buttons on mobile",
+          "Edit Map to add/remove walls",
+          "Watch minimap for ray distribution",
+          "Reset Map to restore defaults"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "FOV divided into columns, one ray per column",
+          "DDA checks wall at each grid crossing",
+          "Perpendicular distance with fisheye correction",
+          "Shorter distance = taller wall column",
+          "Different shading for vertical/horizontal walls"
+        ]
+      },
+      "realWorld": {
+        "title": "Applications",
+        "items": [
+          "Early FPS games — Wolfenstein 3D, DOOM",
+          "Robot LiDAR scanning",
+          "Autonomous vehicle sensor simulation",
+          "Architecture lighting analysis"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Raycasting vs Ray Tracing — column-based vs pixel-based with reflections",
+          "BSP — DOOM rendering order",
+          "Rasterization — modern GPU triangle-based rendering"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Walk close to walls to see perspective projection",
+          "Observe fan-shaped rays on minimap — that is FOV",
+          "Wall shading differences create depth perception",
+          "Edit map to create mazes"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What is DDA?",
+            "a": "Digital Differential Analyzer — steps along grid checking for wall intersections."
+          },
+          {
+            "q": "Why fisheye correction?",
+            "a": "Edge rays travel farther; cos(angle_diff) corrects the distortion."
+          },
+          {
+            "q": "Still used today?",
+            "a": "In 2D grid games, yes. Ray tracing (RTX) is the modern extension."
+          }
+        ]
+      }
+    }
+  },
+  "nQueensVisualizer": {
+    "title": "N-Queens Visualizer",
+    "description": "Watch backtracking place N queens on an N×N board with no mutual attacks",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "boardSize": "Board size"
+    },
+    "grid": {
+      "queen": "Queen",
+      "attacked": "Attacked",
+      "current": "Trying",
+      "conflict": "Conflict"
+    },
+    "stats": {
+      "solutions": "Solutions",
+      "attempts": "Attempts",
+      "done": "Search complete!"
+    },
+    "stepsGuide": {
+      "description": "Watch the algorithm place a queen per row, backtracking on conflicts."
+    },
+    "guide": {
+      "title": "N-Queens Guide",
+      "whatIs": {
+        "title": "What is N-Queens?",
+        "description": "Place N queens on an N×N chessboard so no two attack each other. A classic backtracking problem."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select board size 4-12",
+          "Press play to watch backtracking",
+          "Purple circles are queens, red overlay shows attacks",
+          "Yellow is current cell, red marks conflicts",
+          "Code tab highlights executing line"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Place one queen per row starting from row 0",
+          "Check column and diagonal conflicts",
+          "No conflict: advance; conflict: try next column",
+          "All columns fail: backtrack to previous row",
+          "Time: O(N!) with pruning"
+        ]
+      },
+      "realWorld": {
+        "title": "Applications",
+        "items": [
+          "Constraint satisfaction — scheduling, resource allocation",
+          "VLSI circuit placement",
+          "Parallel computing education",
+          "AI search strategy benchmarks"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Backtracking vs Branch and Bound",
+          "Sudoku solving — same structure",
+          "Graph Coloring — similar constraints"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Try N=4 first — only 2 solutions",
+          "Attempts grow exponentially with N",
+          "Red overlay shows why columns are blocked",
+          "First queen position affects total search"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Solutions for N=1,2,3?",
+            "a": "N=1: trivial. N=2,3: no solutions. N≥4 has solutions."
+          },
+          {
+            "q": "Time complexity?",
+            "a": "Worst O(N!), pruning makes it much faster."
+          },
+          {
+            "q": "8-Queens solutions?",
+            "a": "92 distinct, 12 fundamental (removing symmetry)."
+          }
+        ]
+      }
+    }
+  },
+  "shellSortVisualizer": {
+    "title": "Shell Sort Visualizer",
+    "description": "Watch Shell Sort compare and swap elements across diminishing gaps with bar chart and arc visualization",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "arraySize": "Array size",
+      "random": "Random",
+      "nearlySorted": "Nearly sorted",
+      "reversed": "Reversed",
+      "gapSequence": "Gap sequence",
+      "gap_shell": "Shell",
+      "gap_knuth": "Knuth",
+      "gap_hibbard": "Hibbard"
+    },
+    "grid": {
+      "comparing": "Comparing",
+      "swapping": "Swapping",
+      "gapGroup": "Gap group",
+      "sorted": "Sorted"
+    },
+    "stats": {
+      "gap": "Current gap",
+      "comparisons": "Comparisons",
+      "swaps": "Swaps",
+      "gapSequence": "Gap sequence",
+      "done": "Sort complete!"
+    },
+    "stepsGuide": {
+      "description": "Watch elements gap-apart compared and swapped, reducing gaps to 1.",
+      "setGap": "Set gap = {gap}",
+      "comparing": "Compare: arr[{j}] vs arr[{k}]",
+      "swapped": "Swap: arr[{j}] <-> arr[{k}]",
+      "gapComplete": "Gap {gap} complete"
+    },
+    "guide": {
+      "title": "Shell Sort Guide",
+      "whatIs": {
+        "title": "What is Shell Sort?",
+        "description": "Shell Sort (1959) improves insertion sort by comparing far-apart elements first, then reducing the gap."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Adjust array size (5-50)",
+          "Choose gap sequence: Shell, Knuth, or Hibbard",
+          "Generate arrays with Random, Nearly Sorted, Reversed",
+          "Press play to watch step by step",
+          "Purple arcs show gap distances"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Start with largest gap (e.g., n/2)",
+          "Compare/swap elements gap positions apart",
+          "Insertion sort on each gap-spaced subsequence",
+          "Reduce gap and repeat; gap=1 is standard insertion sort",
+          "Time: Shell O(n^2), Knuth O(n^{3/2})"
+        ]
+      },
+      "realWorld": {
+        "title": "Applications",
+        "items": [
+          "Embedded systems — in-place, non-recursive",
+          "uClibc, bzip2 use Shell Sort",
+          "Education — gap sequence analysis",
+          "Medium-sized data sorting"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Shell vs Insertion Sort — gaps resolve long-range inversions",
+          "Shell vs Quick Sort — non-recursive but slower average",
+          "Comb Sort — gap concept applied to bubble sort"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Compare different gap sequences on same array",
+          "Large gaps quickly fix reversed arrays",
+          "Gap=1 phase runs fast on nearly-sorted data",
+          "Arc length visualizes gap size"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Optimal gap sequence?",
+            "a": "Open problem. Ciura empirical sequence is fastest in practice."
+          },
+          {
+            "q": "Is it stable?",
+            "a": "No. Gap-based swaps can change relative order."
+          },
+          {
+            "q": "Time complexity?",
+            "a": "Depends on gap sequence. Shell O(n^2), Hibbard O(n^{3/2})."
+          }
+        ]
+      }
+    }
+  },
+  "avlTreeVisualizer": {
+    "title": "AVL Tree Visualizer",
+    "description": "Learn AVL tree insert, delete, and rotations (LL/RR/LR/RL) with step-by-step animations",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "operation": {
+      "insert": "Insert",
+      "delete": "Delete"
+    },
+    "controls": {
+      "operation": "Select Operation",
+      "value": "Value (1-999)",
+      "execute": "Execute",
+      "treeSize": "Tree Size",
+      "random": "Random",
+      "clear": "Clear"
+    },
+    "code": {
+      "insertTitle": "Insert Code",
+      "rotateTitle": "Rotation Code"
+    },
+    "stats": {
+      "nodeCount": "Node Count",
+      "treeHeight": "Tree Height",
+      "rotations": "Rotations",
+      "balanceFactor": "Balance Factor"
+    },
+    "legend": {
+      "active": "Current Node",
+      "rotating": "Rotating",
+      "inserted": "Inserted",
+      "deleted": "Deleted",
+      "balanced": "Balanced (BF)",
+      "unbalanced": "Unbalanced (BF)"
+    },
+    "stepsGuide": {
+      "description": "Observe how the AVL tree maintains balance after each operation.",
+      "hint": "Enter a value and press Execute to start.",
+      "compare": "Compare",
+      "rotate": "Rotate",
+      "checkBalance": "Check Balance",
+      "insert": "Insert",
+      "updateHeight": "Update Height"
+    },
+    "guide": {
+      "title": "AVL Tree Guide",
+      "whatIs": {
+        "title": "What is an AVL Tree?",
+        "description": "An AVL tree is a self-balancing BST where the height difference between left and right subtrees of every node is at most 1. Invented by Adelson-Velsky and Landis in 1962, it guarantees O(log n) operations through automatic rotation rebalancing."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter a value and choose Insert or Delete",
+          "Watch the balance factor (BF) beside each node — |BF| > 1 means imbalance",
+          "Observe the rotation type (LL/RR/LR/RL) when rebalancing occurs",
+          "Generate random trees to explore different rotation patterns",
+          "Switch between insert code and rotation code in the Code tab"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "LL: left-left insertion → single right rotation",
+          "RR: right-right insertion → single left rotation",
+          "LR: left-right insertion → double rotation (left then right)",
+          "RL: right-left insertion → double rotation (right then left)",
+          "AVL is faster than Red-Black for lookups, but Red-Black has less rotation overhead for frequent inserts/deletes"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "AVL vs Red-Black tree?",
+            "a": "AVL enforces stricter balance (height diff ≤ 1), making lookups faster. Red-Black uses looser balance, making inserts/deletes faster."
+          },
+          {
+            "q": "Rotation time complexity?",
+            "a": "Both single (LL/RR) and double (LR/RL) rotations are O(1). Insert may trigger up to 2 rotations; delete up to O(log n)."
+          },
+          {
+            "q": "What is the balance factor?",
+            "a": "BF = left subtree height − right subtree height. AVL requires -1 ≤ BF ≤ 1 for all nodes."
+          }
+        ]
+      }
+    }
+  },
+  "heapVisualizer": {
+    "title": "Heap / Priority Queue Visualizer",
+    "description": "Learn min-heap and max-heap insert, extract, and heapify with dual tree+array view",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "operation": {
+      "insert": "Insert",
+      "extract": "Extract",
+      "heapify": "Heapify"
+    },
+    "controls": {
+      "heapType": "Heap Type",
+      "minHeap": "Min Heap",
+      "maxHeap": "Max Heap",
+      "operation": "Operation",
+      "value": "Value (0-999)",
+      "execute": "Execute",
+      "arraySize": "Array Size",
+      "random": "Random",
+      "clear": "Clear"
+    },
+    "stats": {
+      "size": "Size",
+      "valid": "Valid",
+      "comparisons": "Comparisons",
+      "swaps": "Swaps"
+    },
+    "legend": {
+      "active": "Current",
+      "swapping": "Swapping",
+      "comparing": "Comparing",
+      "done": "Done"
+    },
+    "indexMapping": {
+      "title": "Array ↔ Tree Index Mapping",
+      "parent": "Parent",
+      "left": "Left Child",
+      "right": "Right Child"
+    },
+    "stepsGuide": {
+      "description": "Observe how the heap property is maintained during each operation.",
+      "hint": "Enter a value and press Execute to start."
+    },
+    "guide": {
+      "title": "Heap Guide",
+      "whatIs": {
+        "title": "What is a Heap?",
+        "description": "A heap is a complete binary tree where the parent is always greater (max-heap) or smaller (min-heap) than its children. Efficiently implemented as an array, it is the core data structure behind priority queues."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select Min/Max Heap, then run Insert, Extract, or Heapify",
+          "Compare how the same data appears in tree view vs array view",
+          "Check the index mapping formulas: parent, left child, right child",
+          "Heapify converts an unsorted array into a heap in O(n)"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Insert: add at end → bubble up (compare with parent, swap if needed)",
+          "Extract: remove root → move last to root → bubble down",
+          "Heapify processes only internal nodes (bottom-up), achieving O(n)",
+          "Used in priority queues, heap sort, and Dijkstra's algorithm"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Heap vs BST?",
+            "a": "Heap: parent≥children (max) or parent≤children (min), O(1) min/max. BST: left<parent<right, O(log n) arbitrary search."
+          },
+          {
+            "q": "Why use an array?",
+            "a": "A heap is a complete binary tree, so parent/children indices can be computed in O(1) without pointers."
+          },
+          {
+            "q": "Why is heapify O(n)?",
+            "a": "Bottom-up processing means many deep nodes move little, few shallow nodes move far. The sum is O(n)."
+          }
+        ]
+      }
+    }
+  },
+  "linkedListVisualizer": {
+    "title": "Linked List Visualizer",
+    "description": "Learn singly and doubly linked list insert, delete, search, and reverse with pointer animations",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "operation": {
+      "insertHead": "Insert Head",
+      "insertTail": "Insert Tail",
+      "insertIndex": "Insert At",
+      "deleteHead": "Delete Head",
+      "deleteTail": "Delete Tail",
+      "deleteIndex": "Delete At",
+      "search": "Search",
+      "reverse": "Reverse"
+    },
+    "controls": {
+      "listType": "List Type",
+      "singly": "Singly Linked",
+      "doubly": "Doubly Linked",
+      "operation": "Operation",
+      "value": "Value",
+      "index": "Index",
+      "execute": "Execute",
+      "random": "Random",
+      "clear": "Clear"
+    },
+    "stats": {
+      "length": "Length",
+      "type": "Type"
+    },
+    "legend": {
+      "active": "Current",
+      "created": "Created",
+      "deleted": "Deleted",
+      "highlighted": "Highlighted"
+    },
+    "stepsGuide": {
+      "description": "Watch how pointers (next/prev) change with each operation.",
+      "hint": "Select an operation and press Execute to start."
+    },
+    "guide": {
+      "title": "Linked List Guide",
+      "whatIs": {
+        "title": "What is a Linked List?",
+        "description": "A linked list is a linear data structure where each node stores data and a reference (pointer) to the next node. Unlike arrays, it doesn't require contiguous memory, and insertions/deletions are O(1)."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Choose singly or doubly linked, then try various operations",
+          "Compare insert/delete at head, tail, and arbitrary index",
+          "Watch the reverse operation flip all pointers",
+          "Note the dashed prev pointers in doubly linked lists"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Head insert/delete is O(1); tail insert is O(1) with a tail pointer",
+          "Index access is O(n) — arrays offer O(1) but linked lists require traversal",
+          "Doubly linked lists allow bidirectional traversal at 2x memory cost",
+          "Real-world: browser history, LRU cache, memory allocation"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Array vs Linked List?",
+            "a": "Array: O(1) index access, O(n) insert/delete. Linked List: O(n) access, O(1) insert/delete."
+          },
+          {
+            "q": "Singly vs Doubly?",
+            "a": "Singly: less memory, one-way only. Doubly: two-way traversal, O(1) deletion with prev pointer."
+          },
+          {
+            "q": "What is a circular linked list?",
+            "a": "The last node's next points to the first node instead of null. Used in round-robin scheduling."
+          }
+        ]
+      }
+    }
+  },
+  "graphReprVisualizer": {
+    "title": "Graph Representation Visualizer",
+    "description": "Visualize graphs with synchronized adjacency matrix and adjacency list views in real time",
+    "tabs": {
+      "matrix": "Matrix",
+      "list": "List",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "direction": "Direction",
+      "directed": "Directed",
+      "undirected": "Undirected",
+      "weight": "Weight",
+      "weighted": "Weighted",
+      "unweighted": "Unweighted",
+      "edgeWeight": "Edge Weight",
+      "removeNode": "Remove Node",
+      "sample": "Sample",
+      "complete": "Complete",
+      "clear": "Clear",
+      "selectedHint": "Node {node} selected — click another node to add an edge",
+      "instructions": "Click empty space: add node | Click node: select/connect | Drag node: move"
+    },
+    "stats": {
+      "nodes": "Nodes",
+      "edges": "Edges",
+      "density": "Density",
+      "avgDegree": "Avg Degree"
+    },
+    "matrix": {
+      "title": "Adjacency Matrix",
+      "empty": "Add some nodes",
+      "hint": "Click cells to add/remove edges"
+    },
+    "list": {
+      "title": "Adjacency List",
+      "empty": "Add some nodes"
+    },
+    "guide": {
+      "title": "Graph Representation Guide",
+      "whatIs": {
+        "title": "What is Graph Representation?",
+        "description": "A graph consists of vertices (nodes) and edges. The same graph can be represented as an adjacency matrix (2D array) or adjacency list (array of lists), each with different trade-offs."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click empty space to add nodes",
+          "Click node A then node B to add an edge",
+          "Watch the matrix and list update in real time",
+          "Toggle directed/undirected and weighted/unweighted"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Adjacency matrix: O(V²) space, O(1) edge lookup. Best for dense graphs",
+          "Adjacency list: O(V+E) space, O(degree) edge lookup. Best for sparse graphs",
+          "Most real-world graphs (social networks, web) are sparse, so adjacency lists are standard",
+          "An undirected matrix is symmetric; a directed one is not"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Which representation to use?",
+            "a": "Dense graph → matrix. Sparse graph → list. Most practical graphs are sparse."
+          },
+          {
+            "q": "What is graph density?",
+            "a": "Actual edges / maximum possible edges. Close to 1 = dense, close to 0 = sparse."
+          },
+          {
+            "q": "What is degree?",
+            "a": "The number of edges connected to a node. In directed graphs, split into in-degree and out-degree."
+          }
+        ]
+      }
+    }
+  },
+  "pathfindingCompareVisualizer": {
+    "title": "Pathfinding Compare (A* vs Dijkstra)",
+    "description": "Run A* and Dijkstra simultaneously on the same map to visually compare search coverage and efficiency",
+    "tabs": {
+      "steps": "Analysis",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "placementMode": "Placement Mode",
+      "wall": "Wall",
+      "erase": "Erase",
+      "start": "Start",
+      "end": "End",
+      "gridSize": "Grid Size",
+      "randomWalls": "Random Walls",
+      "maze": "Maze",
+      "clear": "Clear"
+    },
+    "stats": {
+      "visited": "Visited",
+      "pathLength": "Path Length"
+    },
+    "legend": {
+      "visited": "Visited",
+      "both": "Both Visited",
+      "path": "Path"
+    },
+    "stepsGuide": {
+      "description": "Watch A* (blue) and Dijkstra (orange) search simultaneously.",
+      "comparison": "A* uses a heuristic (Manhattan distance) to prioritize exploring toward the goal, reducing unnecessary exploration. Dijkstra explores uniformly in all directions.",
+      "hint": "Press Play to start the comparison."
+    },
+    "guide": {
+      "title": "Pathfinding Compare Guide",
+      "whatIs": {
+        "title": "A* vs Dijkstra",
+        "description": "Both algorithms find shortest paths, but A* uses a heuristic (estimated distance to goal) to explore fewer nodes. Dijkstra expands uniformly from the start."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Draw walls or generate a maze for obstacles",
+          "Place start (S) and end (E) points",
+          "Press Play to watch both algorithms search simultaneously",
+          "Compare visited node counts and path lengths after completion"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "In open space, A* explores far fewer nodes than Dijkstra",
+          "In mazes, the difference between the two algorithms shrinks",
+          "Compare the shapes of blue (A*) and orange (Dijkstra) search regions",
+          "Purple cells were explored by both algorithms"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is A* always faster?",
+            "a": "Usually yes, but in worst case (all paths similar cost) it matches Dijkstra. Better heuristic = bigger advantage."
+          },
+          {
+            "q": "Same path length?",
+            "a": "Yes, both guarantee shortest path (with admissible heuristic). The difference is in explored nodes, not path quality."
+          },
+          {
+            "q": "What is a heuristic?",
+            "a": "An estimate of the cost from current position to the goal. This tool uses Manhattan distance (|dx|+|dy|)."
           }
         ]
       }
