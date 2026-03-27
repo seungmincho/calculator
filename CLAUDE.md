@@ -650,6 +650,67 @@ export default function NewTool() {
 - 배열은 `t.raw('key')` 사용: `(t.raw('guide.items') as string[]).map(...)`
 - 컴포넌트 네임스페이스 = 컴포넌트명 camelCase (예: `PasswordGenerator` → `passwordGenerator`)
 
+### 알고리즘 시각화 추가 시 가이드 콘텐츠 요구사항
+
+새 알고리즘 시각화를 추가할 때 반드시 아래 7개 섹션을 **ko.json + en.json** 모두에 포함해야 한다. GuideSection 컴포넌트가 자동으로 렌더링한다.
+
+```jsonc
+// {algorithmName}Visualizer.guide 내부
+"guide": {
+  "title": "가이드",
+  "whatIs": {
+    "title": "XXX란?",
+    "description": "알고리즘의 핵심 개념을 2~3문장으로 설명"
+  },
+  "howToUse": {
+    "title": "사용 방법",
+    "items": ["시각화 도구 조작법 4~5단계"]
+  },
+  "howItWorks": {
+    "title": "동작 원리",
+    "items": [
+      "알고리즘의 단계별 동작을 4~5개 항목으로 설명",
+      "각 단계가 왜 필요한지, 어떤 자료구조를 사용하는지 포함",
+      "시간/공간 복잡도 언급"
+    ]
+  },
+  "realWorld": {
+    "title": "실무 활용",
+    "items": [
+      "이 알고리즘이 실제로 쓰이는 곳 4~5개",
+      "구체적 제품/서비스명 포함 (예: Google Maps, Linux 커널)",
+      "어떤 문제를 해결하는지 명시"
+    ]
+  },
+  "comparison": {
+    "title": "비슷한 알고리즘",
+    "items": [
+      "유사 알고리즘 A vs 현재 알고리즘 — 차이점과 각각의 장단점",
+      "유사 알고리즘 B — 언제 대신 사용하는지",
+      "3~4개 비교 항목"
+    ]
+  },
+  "tips": {
+    "title": "학습 팁",
+    "items": ["시각화 도구로 학습할 때의 팁 3~4개"]
+  },
+  "faq": {
+    "title": "자주 묻는 질문",
+    "items": [
+      { "q": "질문", "a": "답변" }  // 2~3개
+    ]
+  }
+}
+```
+
+**알고리즘 추가 시 수정 파일:**
+- `/src/app/algorithm/{name}/page.tsx` — 페이지 (메타데이터 + JSON-LD)
+- `/src/components/algorithm/visualizers/{Name}Visualizer.tsx` — 시각화 컴포넌트
+- `/src/components/algorithm/visualizers/{Name}Canvas2D.tsx` — Canvas 렌더러
+- `/src/utils/algorithm/{name}.ts` — 알고리즘 로직 (순수 함수)
+- `/messages/ko.json`, `/messages/en.json` — `{name}Visualizer` 네임스페이스 + `algorithmHub.algorithms.{name}` 항목
+- `/src/components/algorithm/AlgorithmSidebar.tsx` — 사이드바에 추가
+
 ### 완료 체크리스트
 
 - [ ] 모든 UI 텍스트가 `t()` 번역 함수 사용
