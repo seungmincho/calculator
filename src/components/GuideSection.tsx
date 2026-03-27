@@ -45,6 +45,39 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
     }
   }, [t])
 
+  const howItWorks = useMemo(() => {
+    try {
+      const title = t('guide.howItWorks.title')
+      const items = t.raw('guide.howItWorks.items') as string[]
+      if (!Array.isArray(items)) return null
+      return { title, items }
+    } catch {
+      return null
+    }
+  }, [t])
+
+  const realWorld = useMemo(() => {
+    try {
+      const title = t('guide.realWorld.title')
+      const items = t.raw('guide.realWorld.items') as string[]
+      if (!Array.isArray(items)) return null
+      return { title, items }
+    } catch {
+      return null
+    }
+  }, [t])
+
+  const comparison = useMemo(() => {
+    try {
+      const title = t('guide.comparison.title')
+      const items = t.raw('guide.comparison.items') as string[]
+      if (!Array.isArray(items)) return null
+      return { title, items }
+    } catch {
+      return null
+    }
+  }, [t])
+
   const faq = useMemo(() => {
     try {
       const title = t('guide.faq.title')
@@ -64,7 +97,7 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
     }
   }, [t])
 
-  const hasContent = whatIs || howToUse || tips || faq
+  const hasContent = whatIs || howToUse || howItWorks || realWorld || comparison || tips || faq
   if (!hasContent) return null
 
   return (
@@ -113,6 +146,56 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
                   </li>
                 ))}
               </ol>
+            </div>
+          )}
+
+          {howItWorks && (
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                {howItWorks.title}
+              </h3>
+              <ol className="space-y-2 text-gray-700 dark:text-gray-300">
+                {howItWorks.items.map((item, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center text-sm font-medium">
+                      {index + 1}
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {realWorld && (
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                {realWorld.title}
+              </h3>
+              <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                {realWorld.items.map((item, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="text-blue-500 dark:text-blue-400 mt-1">▸</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {comparison && (
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                {comparison.title}
+              </h3>
+              <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                {comparison.items.map((item, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="text-amber-500 dark:text-amber-400 mt-1">⟷</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 

@@ -31,6 +31,7 @@ export interface MinimaxResult {
   rootScore: number
   totalNodes: number
   prunedNodes: number
+  hitLimit: boolean
 }
 
 // ── Winning line combinations ──────────────────────────────────────────────
@@ -84,6 +85,8 @@ interface MutableResult {
   steps: MinimaxStep[]
   counter: { value: number }
   prunedNodes: number
+  maxNodes: number
+  hitLimit: boolean
 }
 
 function buildNode(
@@ -123,6 +126,12 @@ function minimax(
   moveToHere: number | null,
   result: MutableResult,
 ): number {
+  // Node limit check — prevent browser-crashing trees
+  if (result.counter.value >= result.maxNodes) {
+    result.hitLimit = true
+    return isMaximizing ? -Infinity : Infinity
+  }
+
   const nodeId = result.counter.value++
   const currentPlayer: Player = isMaximizing ? 'X' : 'O'
 
@@ -233,16 +242,22 @@ function minimax(
 
 // ── Public API ─────────────────────────────────────────────────────────────
 
+/** Max nodes to prevent canvas from exceeding browser limits */
+const DEFAULT_MAX_NODES = 3000
+
 export function runMinimax(
   board: Board,
   isMaximizing: boolean,
   useAlphaBeta: boolean,
+  maxNodes: number = DEFAULT_MAX_NODES,
 ): MinimaxResult {
   const result: MutableResult = {
     nodes: new Map(),
     steps: [],
     counter: { value: 0 },
     prunedNodes: 0,
+    maxNodes,
+    hitLimit: false,
   }
 
   const rootScore = minimax(
@@ -259,7 +274,6 @@ export function runMinimax(
 
   // Determine best move from root's children
   const rootNode = result.nodes.get(0)!
-  const currentPlayer: Player = isMaximizing ? 'X' : 'O'
   let bestMove = -1
   let bestChildScore = isMaximizing ? -Infinity : Infinity
 
@@ -286,5 +300,6 @@ export function runMinimax(
     rootScore,
     totalNodes: result.counter.value,
     prunedNodes: result.prunedNodes,
+    hitLimit: result.hitLimit,
   }
 }

@@ -270,6 +270,11 @@ export default function MinimaxVisualizer() {
   const totalNodes = result?.totalNodes ?? 0
   const bestMove = result?.bestMove ?? -1
   const rootScore = result?.rootScore
+  const hitLimit = result?.hitLimit ?? false
+
+  // Warning: too many empty cells
+  const emptyCellCount = board.filter(c => c === null).length
+  const isTreeTooLarge = emptyCellCount >= 7
 
   const tabs: { key: TabKey; icon: string; label: string }[] = [
     { key: 'steps', icon: '🔍', label: t('tabs.steps') },
@@ -348,23 +353,37 @@ export default function MinimaxVisualizer() {
 
             {/* Stats bar */}
             {result && (
-              <div className="flex flex-wrap justify-center gap-4 text-sm">
-                <span className="text-gray-600 dark:text-gray-400">
-                  {t('stats.totalNodes')}: <strong className="text-blue-600 dark:text-blue-400">{totalNodes}</strong>
-                </span>
-                <span className="text-gray-600 dark:text-gray-400">
-                  {t('stats.prunedNodes')}: <strong className="text-red-500 dark:text-red-400">{prunedCount}</strong>
-                </span>
-                {rootScore !== undefined && (
+              <div className="space-y-2">
+                <div className="flex flex-wrap justify-center gap-4 text-sm">
                   <span className="text-gray-600 dark:text-gray-400">
-                    {t('stats.rootScore')}: <strong className={rootScore > 0 ? 'text-blue-600 dark:text-blue-400' : rootScore < 0 ? 'text-red-500 dark:text-red-400' : 'text-gray-600 dark:text-gray-400'}>{rootScore}</strong>
+                    {t('stats.totalNodes')}: <strong className="text-blue-600 dark:text-blue-400">{totalNodes}</strong>
                   </span>
-                )}
-                {bestMove >= 0 && (
                   <span className="text-gray-600 dark:text-gray-400">
-                    {t('stats.bestMove')}: <strong className="text-emerald-600 dark:text-emerald-400">{bestMove + 1}번</strong>
+                    {t('stats.prunedNodes')}: <strong className="text-red-500 dark:text-red-400">{prunedCount}</strong>
                   </span>
+                  {rootScore !== undefined && (
+                    <span className="text-gray-600 dark:text-gray-400">
+                      {t('stats.rootScore')}: <strong className={rootScore > 0 ? 'text-blue-600 dark:text-blue-400' : rootScore < 0 ? 'text-red-500 dark:text-red-400' : 'text-gray-600 dark:text-gray-400'}>{rootScore}</strong>
+                    </span>
+                  )}
+                  {bestMove >= 0 && (
+                    <span className="text-gray-600 dark:text-gray-400">
+                      {t('stats.bestMove')}: <strong className="text-emerald-600 dark:text-emerald-400">{bestMove + 1}번</strong>
+                    </span>
+                  )}
+                </div>
+                {hitLimit && (
+                  <div className="text-center text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 rounded-lg px-3 py-2">
+                    ⚠️ {t('stats.nodeLimitHit')}
+                  </div>
                 )}
+              </div>
+            )}
+
+            {/* Warning: too many empty cells */}
+            {!isRunning && isTreeTooLarge && (
+              <div className="text-center text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 rounded-lg px-3 py-2">
+                💡 {t('stats.tooManyEmpty')}
               </div>
             )}
           </div>

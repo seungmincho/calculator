@@ -28911,6 +28911,32 @@
           "View and copy the TypeScript implementation in the Code tab"
         ]
       },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Extract normals (perpendicular directions) from each edge of both convex polygons to build the list of candidate axes to test.",
+          "Project all vertices onto each axis using the dot product to compute each polygon's 1D interval (min~max) along that axis.",
+          "Check whether the two intervals overlap on each axis. If any axis shows a gap, immediately return 'no collision' (Early Exit).",
+          "If all axes overlap, declare a collision and compute the MTV (Minimum Translation Vector) along the axis with the smallest overlap."
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Used in 2D/3D game physics engines (Unity, Unreal collision pipelines) for convex shape collision detection.",
+          "Applied in robotics path planning to check for obstacle collisions with robot arms and mobile robots.",
+          "Used in CAD/manufacturing part interference checks and real-time obstacle avoidance for autonomous vehicles.",
+          "Directly applicable to collision detection logic in HTML5 Canvas-based interactive web applications."
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "AABB vs SAT — AABB handles only axis-aligned rectangles at O(1) speed but is inaccurate for rotated shapes. SAT supports any convex polygon.",
+          "GJK (Gilbert-Johnson-Keerthi) — More general than SAT and can compute minimum distances between convex shapes, but is more complex to implement.",
+          "OBB (Oriented Bounding Box) — A 3D extension of SAT that checks 15 axes for rotated bounding box collisions."
+        ]
+      },
       "tips": {
         "title": "Learning Tips",
         "items": [
@@ -28986,6 +29012,32 @@
           "Watch the X and Y axis projection bars update in real time",
           "Adjust box sizes with sliders to experiment with different cases",
           "View and copy the implementation code in the Code tab"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Calculate the min/max coordinates (minX, maxX, minY, maxY) of each rectangle.",
+          "Compare X-axis intervals: if A.maxX < B.minX or B.maxX < A.minX, the shapes are separated on X.",
+          "Compare Y-axis intervals the same way.",
+          "If both X and Y axes overlap, it's a collision. If either axis is separated, return no-collision."
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Used as the broad phase filter in game engines — quickly eliminates obviously non-colliding pairs before precise checks.",
+          "The most widely used collision method in 2D scrolling games for enemies, items, and player characters.",
+          "Used in map apps for rectangular region POI (point of interest) queries and in web UI drag-and-drop overlap detection.",
+          "Ideal for simple hit testing such as selection-area intersection checks in image editors."
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "SAT — A superset of AABB that handles rotated convex polygons, but requires more computation.",
+          "OBB — A bounding box that allows rotation, more precise than AABB but loses the axis-alignment advantage.",
+          "Circle-circle collision — Compares distance between centers vs sum of radii, equally fast and more accurate for circular objects."
         ]
       },
       "tips": {
@@ -29078,6 +29130,32 @@
           "Use the random maze button to experiment with different scenarios"
         ]
       },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "BFS — Push the start node onto a queue, then repeatedly dequeue a node and enqueue all unvisited neighbors (marking them visited). This explores nodes level by level.",
+          "DFS — Push the start node onto a stack, then repeatedly pop a node and push unvisited neighbors. This dives deep along one path before backtracking (also implementable recursively).",
+          "BFS uses a FIFO queue so nodes closest to the start are processed first. DFS uses a LIFO stack so the most recently discovered node is processed first.",
+          "Both algorithms have O(V+E) time complexity. On a grid, that's O(rows × columns)."
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "BFS — Finding degrees of connection in social networks (LinkedIn 1st/2nd connections) and shortest path navigation in unweighted graphs.",
+          "BFS — Web crawlers collecting links level by level, exploring pages in order of distance from the start.",
+          "DFS — Maze solving, puzzle solving, compiler syntax tree traversal, and Git commit history exploration.",
+          "DFS — Essential for topological sorting (determining build dependency order) and finding strongly connected components (SCC)."
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "BFS vs DFS — BFS guarantees the shortest path (unweighted) but requires O(V) memory. DFS is memory-efficient but doesn't guarantee shortest path.",
+          "A* — An extension of BFS that uses a heuristic to steer toward the goal, finding shortest paths much faster.",
+          "Dijkstra — A weighted version of BFS using a priority queue to find shortest paths in weighted graphs."
+        ]
+      },
       "tips": {
         "title": "Learning Tips",
         "items": [
@@ -29118,6 +29196,9 @@
       "title": "Insertion Sort Guide",
       "whatIs": { "title": "What is Insertion Sort?", "description": "Insertion Sort works like sorting cards — pick up one element at a time and insert it into its correct position in the sorted portion. It's very efficient for small or nearly-sorted data." },
       "howToUse": { "title": "How to Use", "items": ["Adjust the array size", "Purple bar is the element being inserted", "Orange bars are elements shifting right", "The lighter area on the left is the sorted portion", "Notice how nearly-sorted input finishes much faster"] },
+      "howItWorks": { "title": "How It Works", "items": ["Starting from the second element, save the current element as the 'key'", "Shift elements in the sorted portion that are greater than the key one position to the right", "Insert the key into the vacated spot", "Repeat for every element through to the last one"] },
+      "realWorld": { "title": "Real-World Applications", "items": ["Card sorting — the most natural way people arrange cards in their hand", "Keeping a sorted list up to date with small insertions in database systems", "Used inside Python's Timsort for sorting small sub-arrays (runs)", "Online algorithm — each incoming value can immediately be inserted into its sorted position"] },
+      "comparison": { "title": "Similar Algorithms", "items": ["Bubble Sort — also O(n²), but Insertion Sort makes fewer comparisons and shifts on average, making it the preferred choice in practice", "Shell Sort — an extension of Insertion Sort using gaps between comparisons, achieving O(n^1.3–1.5) in practice", "Binary Insertion Sort — uses binary search to find the insertion position, reducing comparisons to O(n log n), but shifting is still O(n²)"] },
       "tips": { "title": "Learning Tips", "items": ["Nearly-sorted arrays run close to O(n)", "Reversed arrays show worst case O(n²)", "It's both stable and in-place", "For small arrays (n<50), it can be faster than Quick Sort"] },
       "faq": { "title": "FAQ", "items": [{ "q": "How does it differ from Bubble Sort?", "a": "Insertion Sort inserts into the sorted portion, Bubble Sort repeatedly swaps adjacent elements. Insertion Sort is faster on average." }, { "q": "Time complexity?", "a": "Best O(n), average/worst O(n²). Space O(1)." }] }
     }
@@ -29134,6 +29215,9 @@
       "title": "Selection Sort Guide",
       "whatIs": { "title": "What is Selection Sort?", "description": "Selection Sort finds the minimum element in the unsorted portion and places it at the end of the sorted portion. Very simple to implement but always requires O(n²) comparisons." },
       "howToUse": { "title": "How to Use", "items": ["Adjust the array size", "Red bar is the current minimum found so far", "Yellow bar is the element being compared", "Purple background shows the scan range", "Each pass moves exactly one element to its final position"] },
+      "howItWorks": { "title": "How It Works", "items": ["Find the index of the minimum value in the unsorted portion", "Swap it with the first element of the unsorted portion", "The sorted portion grows by one element", "Scan the remaining unsorted portion for the next minimum", "Repeat n-1 times — always exactly O(n²) comparisons"] },
+      "realWorld": { "title": "Real-World Applications", "items": ["Useful when swap cost is high — Selection Sort makes at most n-1 swaps total", "Flash memory / EEPROM environments where write operations are expensive", "Teaching 'find minimum + swap' as a fundamental programming pattern", "Small datasets where simplicity of implementation outweighs performance"] },
+      "comparison": { "title": "Similar Algorithms", "items": ["Bubble Sort — more swaps (up to O(n²)) but can exit early with best case O(n). Selection Sort always does exactly O(n²) comparisons", "Insertion Sort — faster than Selection Sort in most cases, especially for nearly-sorted data", "Heap Sort — improves Selection Sort's 'find minimum' step using a heap, achieving O(n log n)"] },
       "tips": { "title": "Learning Tips", "items": ["Always performs exactly n(n-1)/2 comparisons regardless of input", "Maximum n-1 swaps, very few compared to Bubble Sort", "Unstable sort — equal elements may change order", "Advantageous when memory writes are expensive (minimal swaps)"] },
       "faq": { "title": "FAQ", "items": [{ "q": "How does it differ from Bubble Sort?", "a": "Selection Sort finds the minimum position first, then swaps once. Bubble Sort repeatedly swaps adjacent elements. Selection Sort makes far fewer swaps." }, { "q": "Time complexity?", "a": "Always O(n²) comparisons. O(n) swaps. Space O(1)." }] }
     }
@@ -29189,6 +29273,34 @@
           "In the build phase, watch the heap property being restored bottom-up",
           "In the extract phase, the root (max) moves to the end of the array",
           "Gray nodes are already sorted and removed from the heap"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Convert the input array into a max-heap (Build Heap, O(n))",
+          "Swap the root (maximum value) with the last element of the heap",
+          "Shrink the heap size by 1, then run Heapify (sift-down) from the root",
+          "Sift-down: compare the root with its children and swap with the larger child, repeating until heap property is restored",
+          "Repeat until heap size reaches 1 — the array is now sorted in ascending order"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Operating system process schedulers using a priority queue implementation",
+          "Real-time systems requiring guaranteed worst-case O(n log n) sorting",
+          "Top-K problems — extracting the top K items from a large dataset (news rankings, top-N search results)",
+          "Event-driven simulations for managing timer queues",
+          "Priority queues in Dijkstra's and A* shortest-path algorithms"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Quick Sort — faster in practice due to better cache locality, but worst case O(n²). Heap Sort always guarantees O(n log n)",
+          "Merge Sort — also O(n log n) guaranteed. Heap Sort is in-place (no extra memory), but Merge Sort is stable and Heap Sort is not",
+          "Binary Heap vs Fibonacci Heap — Fibonacci Heaps offer O(1) amortized decrease-key, making Dijkstra theoretically faster, though rarely used in practice"
         ]
       },
       "tips": {
@@ -29288,6 +29400,32 @@
           "Use Dijkstra vs A* mode to compare search efficiency"
         ]
       },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Initialize the start node's distance to 0 and all other nodes to infinity.",
+          "Use a greedy strategy: always select the unvisited node with the smallest known distance.",
+          "For each neighbor of the selected node, compute the new distance: dist[current] + weight(edge).",
+          "If the new distance is smaller, update (relax) it and record the parent. Repeat until all nodes are visited."
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Core algorithm for road network shortest path in navigation apps (Google Maps, Kakao Maps).",
+          "Used in network routing protocols (OSPF) to route packets along minimum-cost paths.",
+          "Airline route optimization (weight = cost/time) and logistics delivery route planning.",
+          "Finding the shortest connection path (degrees of separation) between two users in social networks."
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "A* vs Dijkstra — A* uses a heuristic to prioritize exploration toward the goal, making it faster. Dijkstra computes all shortest distances without needing a specific destination.",
+          "Bellman-Ford — Supports negative edge weights at O(VE), which is slower. Dijkstra only works on graphs with non-negative edge weights.",
+          "Floyd-Warshall — Computes shortest paths for all pairs of nodes in O(V³). Dijkstra computes from a single source only."
+        ]
+      },
       "tips": {
         "title": "Learning Tips",
         "items": [
@@ -29365,6 +29503,34 @@
           "Teal bars are the left sub-array, orange bars are the right sub-array",
           "Yellow means comparing, purple means placing a merged element",
           "Follow the split-merge flow in the Code tab"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Split (divide) the array in half",
+          "Recursively merge-sort each half",
+          "Recursion bottoms out at arrays of size 1",
+          "Merge the two sorted halves: repeatedly pick the smaller of the two front elements",
+          "After all levels complete, the full array is sorted"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Python's sorted() and list.sort() are based on Timsort, which builds on Merge Sort",
+          "Java's Arrays.sort(Object[]) uses Timsort (a Merge Sort variant)",
+          "External sorting — merging sorted file chunks when data is larger than memory",
+          "Linked list sorting — Merge Sort works with O(1) extra memory on linked lists",
+          "Git's 3-way merge is conceptually similar to the merge step in Merge Sort"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Quick Sort — faster on average and in-place, but worst case O(n²). Merge Sort always O(n log n) but needs O(n) extra memory",
+          "Heap Sort — also O(n log n) guaranteed and in-place, but poor cache locality can make it slower than Merge Sort in practice",
+          "Timsort — a hybrid of Merge Sort + Insertion Sort. Exploits pre-sorted runs in real-world data for exceptional performance"
         ]
       },
       "tips": {
@@ -29455,6 +29621,35 @@
           "Skipped nodes (red dashed) are areas that don't need to be checked"
         ]
       },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Create a root node defining the entire 2D boundary",
+          "When a point is added, insert it into the appropriate quadrant",
+          "When a node exceeds its capacity, split into four children (NW, NE, SW, SE)",
+          "Dense areas are subdivided deeper; empty areas are never split",
+          "Range search: recursively visit only quadrants that overlap the query region"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Game collision detection — partition space so only nearby objects are tested against each other",
+          "Map services (Google Maps) — spatial indexing of points of interest (POIs)",
+          "Image compression — represent uniform-color regions as single nodes",
+          "N-body simulations — Barnes-Hut algorithm approximates distant bodies as one",
+          "GIS (Geographic Information Systems) — spatial data indexing"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "KD-Tree — alternates splitting axis each level; better for nearest-neighbor search but harder to update dynamically",
+          "R-Tree — groups rectangular regions hierarchically; the standard spatial index in databases (PostGIS)",
+          "Octree — Quad Tree extended to 3D; used for spatial partitioning in 3D games and simulations",
+          "Uniform Grid — divides space equally; simpler to implement but inefficient when data density varies greatly"
+        ]
+      },
       "tips": {
         "title": "Learning Tips",
         "items": [
@@ -29504,7 +29699,9 @@
       "totalNodes": "Total Nodes",
       "prunedNodes": "Pruned",
       "bestMove": "Best Move",
-      "rootScore": "Root Score"
+      "rootScore": "Root Score",
+      "nodeLimitHit": "Node limit (3,000) reached — tree was truncated. Place more pieces on the board to see the full tree.",
+      "tooManyEmpty": "Too many empty cells — the tree will be very large. Place 3-4+ pieces before running for a cleaner visualization."
     },
     "board": {
       "clickToPlace": "Click to place",
@@ -29538,6 +29735,34 @@
           "Toggle alpha-beta pruning on/off to compare the difference",
           "Press play to watch the game tree being built step by step",
           "Orange nodes are MAX (maximizing), blue nodes are MIN (minimizing)"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Game states are represented as a tree: each node is a board position, each edge is a possible move",
+          "The maximizing player (MAX) picks the move with the highest score; the minimizing player (MIN) picks the lowest",
+          "Leaf nodes (game-over states) are evaluated and assigned a win/loss/draw score",
+          "Scores propagate back up: MAX nodes take the maximum child score, MIN nodes take the minimum",
+          "Alpha-beta pruning: if α (best MAX can guarantee) ≥ β (best MIN can guarantee), skip remaining children"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Chess/Go AI — foundation of Deep Blue (IBM) and AlphaGo; in practice combined with MCTS",
+          "Board game apps (Othello, Checkers, Connect4) for AI opponents",
+          "Card game AI (Poker, Hearts) — adapted variants handle imperfect information",
+          "Game theory in economics — modeling strategic decision-making in zero-sum scenarios",
+          "Automated negotiation systems — determining optimal offer/acceptance strategies"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "MCTS (Monte Carlo Tree Search) — uses random simulations to statistically evaluate promising moves; used by AlphaGo; better suited for large games like Go",
+          "Negamax — a simplified Minimax variant that eliminates the MAX/MIN distinction by negating scores at each level; cleaner to implement",
+          "Expectiminimax — extends Minimax to games with chance elements (dice, cards) by adding probability nodes"
         ]
       },
       "tips": {
@@ -29620,6 +29845,34 @@
           "Green bars are elements in their final confirmed position"
         ]
       },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Select a pivot — typically the last element, a random element, or the median of three",
+          "Partition: move elements smaller than the pivot to the left, larger to the right",
+          "Place the pivot in its correct final position",
+          "Recursively apply the same process to the left and right sub-arrays",
+          "Terminate when a sub-array has 1 or fewer elements"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Foundation of C's qsort() and Java's Arrays.sort() for primitive types",
+          "Default choice for sorting large datasets — average O(n log n) with excellent cache performance",
+          "Used in database engine sort operations",
+          "The canonical divide-and-conquer example taught in algorithms courses",
+          "Parallel Quick Sort — the left and right partitions can be sorted independently in parallel"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Merge Sort vs Quick Sort — Merge Sort guarantees O(n log n) but requires O(n) extra memory. Quick Sort is in-place but has worst case O(n²)",
+          "Heap Sort — also O(n log n) guaranteed and in-place, but poor cache locality makes it slower than Quick Sort in practice",
+          "Introsort — a hybrid of Quick Sort + Heap Sort. Switches to Heap Sort when recursion depth exceeds a threshold to guarantee O(n log n) worst case. Used by C++ std::sort"
+        ]
+      },
       "tips": {
         "title": "Learning Tips",
         "items": [
@@ -29695,6 +29948,33 @@
           "Press play to watch the sorting process step by step",
           "Yellow means comparing, red means swapping, green means sorted",
           "The Code tab highlights the current line being executed"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Compare adjacent elements from the start to the end of the array",
+          "If the left element is greater than the right, swap them",
+          "After one pass, the largest value has bubbled to the end",
+          "Repeat passes until no swaps occur",
+          "Time complexity: best O(n), average/worst O(n²)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Simple sorting of small datasets (10 or fewer elements) that are nearly in order",
+          "Educational purposes — the classic first algorithm for teaching sorting concepts",
+          "Embedded systems with tight memory constraints (in-place, zero extra memory)",
+          "Maintaining sorted order in a real-time data stream with one pass after each new insertion"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Insertion Sort vs Bubble Sort — both O(n²), but Insertion Sort is 2–3× faster in practice (fewer comparisons). Prefer Insertion Sort for nearly-sorted data",
+          "Selection Sort — at most O(n) swaps, but comparisons are always O(n²). Bubble Sort can exit early with the early-termination optimization",
+          "Cocktail Shaker Sort — a bidirectional variant of Bubble Sort that alleviates the 'turtle problem' (small values near the end take many passes to reach the front)"
         ]
       },
       "tips": {
@@ -29797,6 +30077,32 @@
           "Use A* vs BFS mode to compare efficiency"
         ]
       },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Add the start node to the open list (priority queue) and compute f(n) = g(n) + h(n), where g(n) is the actual cost from start and h(n) is the heuristic estimate to goal.",
+          "Pop the node with the lowest f-value as the current node. If it's the goal, backtrack the path and exit.",
+          "Update g-values for neighboring nodes and update parent pointers when a better path is found.",
+          "Repeat until the open list is empty (no path exists) or the goal is reached."
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Real-time pathfinding for game NPCs in RTS games like StarCraft and Age of Empires.",
+          "Path planning for robot vacuums and drones, and road network routing in car navigation systems.",
+          "Logistics delivery route optimization and puzzle solving (15-puzzle, Rubik's Cube).",
+          "Road network routing in map services using geographic indexing (H3/S2)."
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Dijkstra vs A* — Dijkstra is a special case of A* where h(n)=0. It explores all directions equally and is better when no specific destination is targeted.",
+          "BFS — The shortest path algorithm for unweighted graphs. Simpler and faster than A* when there are no edge weights.",
+          "JPS (Jump Point Search) — A grid-specific A* optimization that skips symmetric paths, achieving 10–100x speedup. D* Lite is an A* variant that incrementally repairs paths in dynamic environments."
+        ]
+      },
       "tips": {
         "title": "Learning Tips",
         "items": [
@@ -29879,6 +30185,32 @@
           "Yellow = current mid, blue = active range, gray = eliminated"
         ]
       },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Initialize the search range: left=0, right=n-1.",
+          "Compute mid = (left + right) / 2 and compare arr[mid] with the target.",
+          "If arr[mid] === target, search succeeds. If arr[mid] < target, set left = mid+1 (right half). If arr[mid] > target, set right = mid-1 (left half).",
+          "When left > right, the search fails — the value is not in the array. Each step halves the range, achieving O(log n) complexity."
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "The core principle behind database index (B-Tree) lookups — retrieving among hundreds of millions of records in O(log n).",
+          "Dictionary/phone book search (alphabetically sorted) and git bisect to binary-search commit history for bug introduction.",
+          "Sorted coordinate lookups for game hitbox detection and parametric search in competitive programming.",
+          "Provided as standard library functions (Python bisect, Java Arrays.binarySearch, C++ std::lower_bound) — used daily in production."
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Linear search O(n) vs Binary search O(log n) — For 1,000,000 elements: linear may take 1,000,000 comparisons, binary search takes at most 20.",
+          "Interpolation Search — O(log log n) when values are uniformly distributed, but degrades to O(n) on skewed distributions.",
+          "Hash lookup O(1) — Faster for single key lookups, but cannot handle range queries or order-based retrieval."
+        ]
+      },
       "tips": {
         "title": "Learning Tips",
         "items": [
@@ -29919,6 +30251,9 @@
       "title": "Counting Sort Guide",
       "whatIs": { "title": "What is Counting Sort?", "description": "Counting Sort is a non-comparison sorting algorithm that counts the frequency of each value to sort. With O(n+k) time complexity, it's extremely fast when the value range (k) is small, and it's a stable sort." },
       "howToUse": { "title": "How to Use", "items": ["Adjust the array size", "Use the Duplicates button for input with many repeated values", "Three arrays (Input/Count/Output) are displayed simultaneously", "Observe the 3 phases: counting → accumulation → placement"] },
+      "howItWorks": { "title": "How It Works", "items": ["Find the maximum value (k) in the input array", "Create a count array of size k+1 and record how many times each value appears", "Transform the count array into a prefix-sum array to determine each value's output position", "Iterate through the input array in reverse, placing each element at its correct position in the output", "Time O(n+k), Space O(n+k)"] },
+      "realWorld": { "title": "Real-World Applications", "items": ["Sorting exam scores (range 0–100) — limited range makes it very fast", "Sorting integers with a known bounded range: ages, status codes, grade levels", "Used as the inner subroutine in Radix Sort (counting sort on each digit position)", "Histogram generation and frequency analysis", "Bitmap index construction in databases"] },
+      "comparison": { "title": "Similar Algorithms", "items": ["Comparison sorts (Bubble/Quick/Merge) — minimum O(n log n). Counting Sort bypasses this bound with O(n+k) by not comparing elements, at the cost of O(k) memory", "Radix Sort — applies Counting Sort repeatedly on each digit; handles arbitrarily large integers", "Bucket Sort — distributes values into interval buckets then sorts each; can handle floating-point values"] },
       "tips": { "title": "Learning Tips", "items": ["Bypasses the O(n log n) lower bound of comparison-based sorts", "Wastes memory when the value range is large", "Used as a subroutine in Radix Sort due to its stability", "Negative values can be handled by adding an offset"] },
       "faq": { "title": "FAQ", "items": [{ "q": "When should I use it?", "a": "When the value range (k) is similar to or smaller than n (e.g., test scores 0-100, ages 0-150). Inefficient when k >> n." }, { "q": "Time complexity?", "a": "O(n+k) where n is array size and k is value range. Space is also O(n+k)." }] }
     }
@@ -29981,6 +30316,33 @@
           "Use Random to build a random tree, or Sorted to see the worst-case degenerate tree",
           "Use Balanced to build a height-optimal tree for comparison",
           "Follow the Steps panel and code tab simultaneously to understand each operation"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Insert — start at the root; if the value is smaller go left, larger go right; create a new node at the first empty slot",
+          "Search — compare from the root, moving left or right; return the node if found, fail if a leaf is reached",
+          "Delete — three cases: ① leaf node: remove directly, ② one child: replace node with child, ③ two children: replace with in-order successor (minimum of right subtree) and delete the successor",
+          "Average O(log n), worst case O(n) for a degenerate (sorted-input) tree"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Foundation of database indexes (B-Tree, B+Tree)",
+          "File system directory structure management",
+          "Compiler symbol tables (variable/function name lookup)",
+          "Autocomplete features (underlying concept behind Tries)",
+          "Game leaderboards — fast score-based rank queries and updates"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "AVL Tree — adds a height-balance constraint (height difference ≤ 1) to BST; always O(log n) but incurs rotation overhead on insert/delete",
+          "Red-Black Tree — looser balance than AVL; faster for frequent inserts/deletes; used by Java's TreeMap and C++'s std::map",
+          "B-Tree — optimized for disk-based lookups; nodes store multiple keys to minimize disk I/O; the standard index structure in databases"
         ]
       },
       "tips": {
@@ -30069,6 +30431,32 @@
           "Try Random, Checkerboard, or Islands patterns for different scenarios"
         ]
       },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Record the starting pixel's color (oldColor) and change it to the new color.",
+          "BFS approach: add the start cell to a queue. Dequeue a cell, check its 4 neighbors — if a neighbor matches oldColor, change it to the new color and enqueue it.",
+          "DFS approach: use a stack or recursion to dive deep in one direction, filling same-color cells before backtracking.",
+          "Repeat until the queue (or stack) is empty. Already-filled cells are not reprocessed."
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Core algorithm for the paint bucket and magic wand tools in image editors (Photoshop, GIMP).",
+          "Used in game terrain filling (Minecraft water flow, Minesweeper blank cell auto-reveal).",
+          "Medical image segmentation (organ/tumor region detection) and GIS contour region classification.",
+          "Circuit board connected region analysis and territory calculation in board games (Go, Reversi)."
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "BFS vs DFS flood fill — BFS produces a natural wave-like animation spreading level by level. DFS (recursive) risks stack overflow on large regions; iterative stack-based DFS is safer.",
+          "Connected Component Labeling — A generalization of flood fill that assigns a unique label to every connected region in an image, widely used in computer vision.",
+          "Watershed algorithm — An advanced flood fill variant specialized for image segmentation that more precisely separates boundary regions."
+        ]
+      },
       "tips": {
         "title": "Learning Tips",
         "items": [
@@ -30142,6 +30530,29 @@
           "Check the Code tab for a JavaScript implementation you can copy"
         ]
       },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Stack (LIFO) — Push: add element to the top; Pop: remove and return the top element; Peek: inspect the top without removing. Implemented with an array or linked list",
+          "Queue (FIFO) — Enqueue: add element to the back; Dequeue: remove and return the front element; Peek: inspect the front. Implemented with a circular array or linked list",
+          "All operations are O(1)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Stack — browser back/forward navigation, function call stack (recursion), Ctrl+Z undo, bracket matching, postfix expression evaluator",
+          "Queue — printer job queue, web server request handling, BFS traversal, message queues (Kafka, RabbitMQ), keyboard input buffer"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Data Structures",
+        "items": [
+          "Deque (Double-Ended Queue) — supports insertion and removal at both ends; a generalization of both stack and queue",
+          "Priority Queue — like a queue but elements dequeue in priority order rather than arrival order; typically implemented with a heap",
+          "Circular Queue — array-based queue that eliminates wasted space by wrapping around; ideal for fixed-size buffers"
+        ]
+      },
       "tips": {
         "title": "Learning Tips",
         "items": [
@@ -30190,6 +30601,9 @@
       "title": "Radix Sort Guide",
       "whatIs": { "title": "What is Radix Sort?", "description": "Radix Sort is a non-comparison sorting algorithm that sorts by individual digit positions. The LSD (Least Significant Digit) approach starts from the lowest digit (ones place) and repeatedly applies counting sort up to the highest digit. Time complexity O(d×n) makes it very fast when the number of digits (d) is small, and it is a stable sort." },
       "howToUse": { "title": "How to Use", "items": ["Adjust array size and generate input with random or same-digits buttons", "Press play to start the LSD Radix Sort animation", "Observe elements distributed into buckets 0-9 and collected back in order each pass", "The highlighted digit box shows the current sorting digit position"] },
+      "howItWorks": { "title": "How It Works", "items": ["Start from the least significant digit (ones place)", "Distribute each element into one of 10 buckets (0–9) based on the current digit", "Collect elements from the buckets back into the array in order (0 to 9)", "Advance to the next digit and repeat distribute + collect", "After completing the most significant digit, the array is fully sorted — O(d × n)"] },
+      "realWorld": { "title": "Real-World Applications", "items": ["ZIP code sorting — fixed digit count makes it near O(n)", "Bulk sorting of integers/strings with fixed width: phone numbers, IP addresses", "Card sorters (IBM punch-card era) — Radix Sort is historically one of the oldest sorting methods", "Parallel GPU sorting — Radix Sort parallelizes extremely well", "Bulk integer key index construction in databases"] },
+      "comparison": { "title": "Similar Algorithms", "items": ["Quick Sort / Merge Sort O(n log n) — comparison-based sorts are general-purpose; Radix Sort is faster when d×n < n log n (short keys)", "Counting Sort — the inner subroutine used at each digit pass of Radix Sort", "MSD (Most Significant Digit) Radix Sort — processes digits from the highest down; supports early termination but requires recursion"] },
       "tips": { "title": "Learning Tips", "items": ["LSD sorts from lowest digit first — stability is required for correctness", "Each pass is a Counting Sort O(n+10)=O(n), making the total O(d×n)", "Compare same-digits (fixed d) vs random (variable d) to see how d affects speed", "Even a large number range is fast if digits (d) are few (e.g. 64-bit integers d=19)"] },
       "faq": { "title": "FAQ", "items": [{ "q": "LSD vs MSD Radix Sort?", "a": "LSD (Least Significant Digit first) is simpler and naturally stable. MSD (Most Significant Digit first) works recursively and is better suited for string sorting. This visualizer uses LSD." }, { "q": "When is Radix Sort fast?", "a": "When the number of digits (d) is fixed or small (e.g. phone numbers, zip codes, dates YYYYMMDD). It beats comparison sorts when d×n < n log n." }] }
     }
@@ -30248,6 +30662,34 @@
           "Enter a key and press Insert to watch the hash → bucket assignment",
           "Use Batch Insert to populate the table with multiple random keys",
           "Observe how the same bucket handles multiple keys in each strategy"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Feed the key into a hash function to produce an integer hash value",
+          "Take the hash value modulo the array size to determine the bucket index",
+          "Collision resolution — Chaining: store multiple entries in the same bucket as a linked list. Open addressing: probe for an empty slot (linear, quadratic, or double hashing)",
+          "When the load factor rises, rehash by expanding the array and redistributing all entries",
+          "Average O(1) insert, lookup, and delete"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "JavaScript's Object/Map, Python's dict, Java's HashMap — the core data structure of every modern language",
+          "Database hash indexes optimized for exact-match queries",
+          "Cache systems (Redis, Memcached) for key-value storage",
+          "Blockchain hash chains and Merkle trees",
+          "DNS cache — mapping domain names to IP addresses"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Data Structures",
+        "items": [
+          "BST (Binary Search Tree) — preserves key ordering (sorted traversal possible) but averages O(log n); hash table is O(1) but unordered",
+          "Trie — specialized for string keys; prefix search in O(m) (m = key length); ideal for autocomplete",
+          "Bloom Filter — probabilistic hash structure; can definitively say 'not present' but may give false positives for 'present'; used for large-scale duplicate detection"
         ]
       },
       "tips": {

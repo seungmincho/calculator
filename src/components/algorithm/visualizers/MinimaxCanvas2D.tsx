@@ -98,6 +98,9 @@ function computeLayout(
   return layout
 }
 
+/** Browser canvas max dimension (conservative limit) */
+const MAX_CANVAS_DIM = 8192
+
 /** Canvas logical size needed to contain the whole tree. */
 function treeCanvasSize(nodes: Map<number, MinimaxNode>): { w: number; h: number } {
   if (nodes.size === 0) return { w: 400, h: 200 }
@@ -112,7 +115,7 @@ function treeCanvasSize(nodes: Map<number, MinimaxNode>): { w: number; h: number
   const unitW = NODE_W + H_GAP
   const w = PADDING * 2 + Math.max(1, leafCount) * unitW
   const h = PADDING * 2 + LEVEL_LABEL_H + (maxDepth + 1) * (NODE_H + V_GAP)
-  return { w, h }
+  return { w: Math.min(w, MAX_CANVAS_DIM), h: Math.min(h, MAX_CANVAS_DIM) }
 }
 
 // ── Canvas helpers ────────────────────────────────────────────────────────────
