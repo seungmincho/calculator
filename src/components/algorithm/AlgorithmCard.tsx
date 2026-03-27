@@ -65,6 +65,11 @@ export default function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
       glow: 'group-hover:shadow-rose-500/20',
       border: 'border-rose-200/50 dark:border-rose-800/30',
     },
+    sky: {
+      chip: 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400',
+      glow: 'group-hover:shadow-sky-500/20',
+      border: 'border-sky-200/50 dark:border-sky-800/30',
+    },
   }
 
   const color = categoryColors[algorithm.category]

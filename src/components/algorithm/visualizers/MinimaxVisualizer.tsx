@@ -135,6 +135,47 @@ function nextPlayer(board: Board): Player {
   return x <= o ? 'X' : 'O'
 }
 
+// ── Step explanation generator ────────────────────────────────────────────
+function getStepExplanation(
+  step: MinimaxStep | null,
+  node: MinimaxNode | null | undefined,
+  t: (key: string, params?: Record<string, string | number>) => string,
+): { emoji: string; title: string; desc: string; color: string } {
+  if (!step || !node) {
+    return { emoji: '👆', title: t('explain.idleTitle'), desc: t('explain.idleDesc'), color: 'gray' }
+  }
+
+  const isMax = node.depth % 2 === 0
+  const player = isMax ? 'X' : 'O'
+  const role = isMax ? 'MAX' : 'MIN'
+  const moveLabel = node.move !== null ? String(node.move + 1) : ''
+
+  switch (step.action) {
+    case 'expand':
+      if (node.depth === 0) {
+        return { emoji: '🔍', title: t('explain.expandRootTitle'), desc: t('explain.expandRootDesc', { player, role }), color: 'blue' }
+      }
+      return { emoji: '🔍', title: t('explain.expandTitle', { move: moveLabel }), desc: t('explain.expandDesc', { player, move: moveLabel, depth: node.depth }), color: 'blue' }
+
+    case 'evaluate':
+      if (step.score !== null && step.score > 0) {
+        return { emoji: '🏆', title: t('explain.winXTitle'), desc: t('explain.winXDesc', { score: step.score }), color: 'emerald' }
+      } else if (step.score !== null && step.score < 0) {
+        return { emoji: '💀', title: t('explain.winOTitle'), desc: t('explain.winODesc', { score: step.score }), color: 'red' }
+      }
+      return { emoji: '🤝', title: t('explain.drawTitle'), desc: t('explain.drawDesc'), color: 'gray' }
+
+    case 'backpropagate':
+      if (isMax) {
+        return { emoji: '⬆️', title: `MAX → ${step.score}`, desc: t('explain.backpropMaxDesc', { score: step.score ?? 0 }), color: 'amber' }
+      }
+      return { emoji: '⬇️', title: `MIN → ${step.score}`, desc: t('explain.backpropMinDesc', { score: step.score ?? 0 }), color: 'indigo' }
+
+    case 'prune':
+      return { emoji: '✂️', title: t('explain.pruneTitle'), desc: t('explain.pruneDesc', { alpha: step.alpha === -Infinity ? '-∞' : step.alpha, beta: step.beta === Infinity ? '+∞' : step.beta }), color: 'red' }
+  }
+}
+
 // ── Main component ────────────────────────────────────────────────────────
 export default function MinimaxVisualizer() {
   const t = useTranslations('minimaxVisualizer')
@@ -264,6 +305,12 @@ export default function MinimaxVisualizer() {
   // Current step for display
   const currentStep = result?.steps[currentStepIndex] ?? null
   const activeNode = currentStep ? result?.nodes.get(currentStep.nodeId) : null
+
+  // Step explanation
+  const explanation = useMemo(
+    () => getStepExplanation(currentStep, activeNode, t),
+    [currentStep, activeNode, t],
+  )
 
   // Stats
   const prunedCount = result?.prunedNodes ?? 0
@@ -510,6 +557,47 @@ export default function MinimaxVisualizer() {
         {/* ── Right column (sticky) ── */}
         <div className="xl:col-span-2">
           <div className="xl:sticky xl:top-20 space-y-4">
+            {/* ── Explanation box (always visible) ── */}
+            <div className={`rounded-2xl p-4 border-2 transition-colors ${
+              explanation.color === 'blue' ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700' :
+              explanation.color === 'emerald' ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-700' :
+              explanation.color === 'red' ? 'bg-red-50 dark:bg-red-950/40 border-red-300 dark:border-red-700' :
+              explanation.color === 'amber' ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700' :
+              explanation.color === 'indigo' ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-700' :
+              'bg-gray-50 dark:bg-gray-800/60 border-gray-300 dark:border-gray-700'
+            }`}>
+              <div className="flex items-start gap-3">
+                <span className="text-2xl flex-shrink-0 mt-0.5">{explanation.emoji}</span>
+                <div className="min-w-0">
+                  <div className="font-bold text-gray-900 dark:text-white text-base">
+                    {explanation.title}
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+                    {explanation.desc}
+                  </p>
+                  {currentStep && currentStep.score !== null && currentStep.action === 'backpropagate' && (
+                    <div className="mt-2 text-xs font-mono text-gray-500 dark:text-gray-400 bg-white/60 dark:bg-gray-800/60 rounded-lg px-2.5 py-1.5">
+                      α={currentStep.alpha === -Infinity ? '-∞' : currentStep.alpha}{' '}
+                      β={currentStep.beta === Infinity ? '+∞' : currentStep.beta}{' '}
+                      {t('explain.scoreLabel')}: {currentStep.score}
+                    </div>
+                  )}
+                  {isRunning && (
+                    <div className="mt-2 flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
+                      <span>{t('explain.step')} {currentStepIndex + 1} / {totalSteps}</span>
+                      <div className="flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-blue-500 dark:bg-blue-400 rounded-full transition-all"
+                          style={{ width: `${((currentStepIndex + 1) / totalSteps) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* ── Tabs panel ── */}
             <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-white/20 dark:border-gray-700/30 rounded-2xl overflow-hidden">
               {/* Tabs */}
               <div className="flex border-b border-gray-200/50 dark:border-gray-700/50">
@@ -528,14 +616,10 @@ export default function MinimaxVisualizer() {
                 ))}
               </div>
 
-              <div className="p-4 max-h-[70vh] overflow-y-auto">
+              <div className="p-4">
                 {/* Steps tab */}
                 {activeTab === 'steps' && (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                      {t('stepsGuide.description')}
-                    </p>
-
                     {/* Step type legend */}
                     <div className="grid grid-cols-2 gap-1.5 mb-3">
                       {(
@@ -639,15 +723,15 @@ function MinimaxStepsList({
   }
 
   const ACTION_LABELS: Record<MinimaxStep['action'], string> = {
-    expand: '확장',
+    expand: '탐색',
     evaluate: '평가',
-    backpropagate: '역전파',
+    backpropagate: '선택',
     prune: '가지치기',
   }
 
-  // Show surrounding window for performance
-  const windowStart = Math.max(0, currentIndex - 10)
-  const windowEnd = Math.min(displaySteps.length - 1, currentIndex + 20)
+  // Show surrounding window — compact, only ±5 around current
+  const windowStart = Math.max(0, currentIndex - 5)
+  const windowEnd = Math.min(displaySteps.length - 1, currentIndex + 8)
   const windowSteps = displaySteps.slice(windowStart, windowEnd + 1)
 
   return (
@@ -680,21 +764,24 @@ function MinimaxStepsList({
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${ACTION_BADGE[step.action]}`}>
                 {ACTION_LABELS[step.action]}
               </span>
-              <span className="text-gray-600 dark:text-gray-300">
-                노드 #{step.nodeId}
-                {node && ` (깊이 ${step.depth})`}
+              <span className="text-gray-600 dark:text-gray-300 truncate">
+                {node?.move !== null && node?.move !== undefined
+                  ? `${isMaximizing ? 'X' : 'O'} → ${node.move + 1}번칸`
+                  : step.depth === 0
+                    ? '루트'
+                    : `깊이 ${step.depth}`}
               </span>
-              <span className={`ml-auto text-[10px] font-medium ${isMaximizing ? 'text-blue-500' : 'text-red-500'}`}>
-                {isMaximizing ? 'MAX' : 'MIN'}
-              </span>
+              {step.score !== null && (
+                <span className={`ml-auto text-[10px] font-bold tabular-nums ${step.score > 0 ? 'text-blue-600 dark:text-blue-400' : step.score < 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-500'}`}>
+                  {step.score > 0 ? '+' : ''}{step.score}
+                </span>
+              )}
+              {step.score === null && (
+                <span className={`ml-auto text-[10px] font-medium ${isMaximizing ? 'text-amber-600 dark:text-amber-400' : 'text-blue-500'}`}>
+                  {isMaximizing ? 'MAX' : 'MIN'}
+                </span>
+              )}
             </div>
-            {step.score !== null && (
-              <div className="mt-1 text-[10px] text-gray-500 dark:text-gray-400">
-                점수: <strong className={step.score > 0 ? 'text-blue-500' : step.score < 0 ? 'text-red-500' : ''}>{step.score}</strong>
-                {' '} α={step.alpha === -Infinity ? '-∞' : step.alpha}
-                {' '} β={step.beta === Infinity ? '+∞' : step.beta}
-              </div>
-            )}
           </div>
         )
       })}

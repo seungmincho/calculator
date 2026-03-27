@@ -28720,6 +28720,11 @@
     "filter": {
       "all": "All"
     },
+    "totalCount": "{count} algorithms total",
+    "view": {
+      "list": "List view",
+      "card": "Card view"
+    },
     "categories": {
       "collision": "Collision/Physics",
       "search": "Search",
@@ -28730,7 +28735,9 @@
       "dp": "Dynamic Programming",
       "string": "String",
       "geometry": "Geometry",
-      "backtracking": "Backtracking"
+      "backtracking": "Backtracking",
+      "greedy": "Greedy",
+      "technique": "Technique/Pattern"
     },
     "algorithms": {
       "sat": {
@@ -28888,6 +28895,70 @@
       "pathfindingCompare": {
         "title": "Pathfinding Compare",
         "description": "Run A* and Dijkstra simultaneously on the same map to compare search efficiency"
+      },
+      "redBlackTree": {
+        "title": "Red-Black Tree",
+        "description": "Self-balancing BST using color rules and rotations to maintain balance on insert/delete"
+      },
+      "bTree": {
+        "title": "B-Tree",
+        "description": "Multi-way search tree minimizing disk I/O — the foundation of database indexing"
+      },
+      "segmentTree": {
+        "title": "Segment Tree",
+        "description": "Tree structure for O(log n) range queries like sum, min, and max"
+      },
+      "fenwickTree": {
+        "title": "Fenwick Tree (BIT)",
+        "description": "Binary Indexed Tree for O(log n) prefix sum updates and range queries"
+      },
+      "bloomFilter": {
+        "title": "Bloom Filter",
+        "description": "Probabilistic data structure for fast membership testing with possible false positives"
+      },
+      "prim": {
+        "title": "Prim's MST",
+        "description": "Greedy algorithm building minimum spanning tree by expanding from vertices"
+      },
+      "floydWarshall": {
+        "title": "Floyd-Warshall",
+        "description": "All-pairs shortest paths in O(V³) using dynamic programming"
+      },
+      "tarjanScc": {
+        "title": "Tarjan's SCC",
+        "description": "DFS-based algorithm to find Strongly Connected Components in directed graphs"
+      },
+      "eulerPath": {
+        "title": "Euler Path",
+        "description": "Find a path or circuit that visits every edge exactly once in a graph"
+      },
+      "editDistance": {
+        "title": "Edit Distance",
+        "description": "Minimum number of insert/delete/replace operations to transform one string into another"
+      },
+      "coinChange": {
+        "title": "Coin Change",
+        "description": "Find the minimum number of coins to make a target amount — classic DP problem"
+      },
+      "lis": {
+        "title": "LIS (Longest Increasing Subsequence)",
+        "description": "Find the longest increasing subsequence in O(n log n) using patience sorting"
+      },
+      "rabinKarp": {
+        "title": "Rabin-Karp",
+        "description": "String pattern matching using rolling hash — powerful for multi-pattern search"
+      },
+      "suffixArray": {
+        "title": "Suffix Array",
+        "description": "Sorted array of all suffixes — foundation for pattern search and LCP analysis"
+      },
+      "huffmanCoding": {
+        "title": "Huffman Coding",
+        "description": "Greedy algorithm generating optimal prefix codes based on frequency — basis of data compression"
+      },
+      "slidingWindow": {
+        "title": "Sliding Window",
+        "description": "Efficiently solve subarray/substring problems by moving a fixed or variable-size window"
       }
     },
     "card": {
@@ -29959,6 +30030,26 @@
       "pruned": "Pruned",
       "terminal": "Terminal Node",
       "bestPath": "Best Path"
+    },
+    "explain": {
+      "idleTitle": "Ready",
+      "idleDesc": "Place pieces on the board and press ▶ to start",
+      "expandRootTitle": "Search Begins",
+      "expandRootDesc": "{player}({role})'s turn — exploring all possible moves",
+      "expandTitle": "Exploring cell {move}",
+      "expandDesc": "Checking what happens if {player} plays cell {move} (depth {depth})",
+      "winXTitle": "X Wins!",
+      "winXDesc": "Score +{score} — faster wins get higher scores",
+      "winOTitle": "O Wins!",
+      "winODesc": "Score {score} — faster wins get lower scores",
+      "drawTitle": "Draw",
+      "drawDesc": "Score 0 — neither side can win",
+      "backpropMaxDesc": "Picks the highest score {score} among children",
+      "backpropMinDesc": "Picks the lowest score {score} among children",
+      "pruneTitle": "Pruned!",
+      "pruneDesc": "α({alpha}) ≥ β({beta}) → no need to search further",
+      "scoreLabel": "Score",
+      "step": "Step"
     },
     "stepsGuide": {
       "description": "Observe how the game tree is explored and scores propagate upward.",
@@ -32768,6 +32859,1647 @@
           {
             "q": "What is a heuristic?",
             "a": "An estimate of the cost from current position to the goal. This tool uses Manhattan distance (|dx|+|dy|)."
+          }
+        ]
+      }
+    }
+  },
+  "redBlackTreeVisualizer": {
+    "title": "Red-Black Tree Visualizer",
+    "description": "Learn how a self-balancing BST maintains balance using color rules and rotations on insert/delete",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "operation": {
+      "insert": "Insert",
+      "delete": "Delete"
+    },
+    "controls": {
+      "operation": "Operation",
+      "value": "Value (1~999)",
+      "execute": "Execute",
+      "treeSize": "Tree Size",
+      "random": "Random",
+      "clear": "Clear"
+    },
+    "code": {
+      "insertTitle": "Insert Code",
+      "fixupTitle": "Fixup Code"
+    },
+    "stats": {
+      "nodeCount": "Nodes",
+      "treeHeight": "Height",
+      "blackHeight": "Black Height",
+      "rotations": "Rotations",
+      "recolors": "Recolors"
+    },
+    "legend": {
+      "red": "Red Node",
+      "black": "Black Node",
+      "active": "Active Node",
+      "inserted": "Inserted",
+      "deleted": "Deleted",
+      "rotating": "Rotating",
+      "recoloring": "Recoloring"
+    },
+    "stepsGuide": {
+      "description": "Watch how a Red-Black Tree maintains balance using color rules.",
+      "hint": "Enter a value and click Execute to begin.",
+      "compare": "Compare",
+      "insert": "Insert",
+      "recolor": "Recolor",
+      "rotate": "Rotate",
+      "fixup": "Fixup",
+      "done": "Done"
+    },
+    "rules": "Red-Black Rules",
+    "rule1": "Every node is red or black",
+    "rule2": "Root is always black",
+    "rule3": "Red node's children are always black",
+    "rule4": "All paths have equal black height",
+    "guide": {
+      "title": "Red-Black Tree Guide",
+      "whatIs": {
+        "title": "What is a Red-Black Tree?",
+        "description": "A self-balancing BST that assigns red/black colors to nodes and enforces 5 rules to guarantee O(log n) worst-case search. Used internally by Java TreeMap and C++ std::map."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter a value and click Insert",
+          "Watch the recoloring and rotation steps",
+          "Click a node to delete it",
+          "Use Random to quickly add multiple values"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "New nodes are always inserted as red",
+          "If parent is red, violation occurs → recolor or rotate based on uncle's color",
+          "Rotations (left/right) restructure the tree to restore balance",
+          "Deletion uses double-black handling to maintain black height"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Java TreeMap/TreeSet, C++ std::map/std::set internals",
+          "Linux kernel CFS scheduler",
+          "Database in-memory index structures",
+          "Java HashMap (8+) bucket tree conversion"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "AVL vs Red-Black — AVL is stricter (faster search) but more rotations on insert/delete",
+          "B-Tree — optimized for disk-based storage, Red-Black for memory-based",
+          "Skip List — probabilistic, simpler implementation but less cache-efficient"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Check which rule is violated after insertion first",
+          "Uncle node's color is the key to deciding recolor vs rotation",
+          "Compare rotation counts with AVL tree"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Why Red-Black over AVL?",
+            "a": "Fewer rotations on insert/delete, making it faster in practice for write-heavy workloads."
+          },
+          {
+            "q": "What is black height?",
+            "a": "The number of black nodes on any path from root to leaf. Must be equal for all paths."
+          }
+        ]
+      }
+    }
+  },
+  "bTreeVisualizer": {
+    "title": "B-Tree Visualizer",
+    "description": "Learn the core data structure of database indexing — B-Tree insert, delete, and search step by step",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "operation": {
+      "insert": "Insert",
+      "delete": "Delete",
+      "search": "Search"
+    },
+    "controls": {
+      "operation": "Operation",
+      "value": "Value (1~999)",
+      "execute": "Execute",
+      "treeSize": "Tree Size",
+      "order": "Order (t)",
+      "random": "Random",
+      "clear": "Clear"
+    },
+    "code": {
+      "insertTitle": "Insert Code",
+      "searchTitle": "Search Code"
+    },
+    "stats": {
+      "nodeCount": "Nodes",
+      "keyCount": "Keys",
+      "treeHeight": "Height",
+      "splits": "Splits"
+    },
+    "legend": {
+      "active": "Active Node",
+      "found": "Found",
+      "notFound": "Not Found",
+      "splitting": "Splitting",
+      "inserted": "Inserted",
+      "promoting": "Promoting"
+    },
+    "stepsGuide": {
+      "description": "Watch how a B-Tree maintains balance through node splitting.",
+      "hint": "Enter a value and click Execute to begin.",
+      "compare": "Compare",
+      "descend": "Descend",
+      "insert": "Insert",
+      "split": "Split",
+      "promote": "Promote",
+      "found": "Found",
+      "notFound": "Not Found"
+    },
+    "guide": {
+      "title": "B-Tree Guide",
+      "whatIs": {
+        "title": "What is a B-Tree?",
+        "description": "A self-balancing multi-way search tree that stores multiple keys per node. Designed to minimize disk I/O, it's the standard for database and filesystem indexing."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Set the order (t) — each node stores up to 2t-1 keys",
+          "Insert values and observe the split process",
+          "Use Search to see the path taken to find a key",
+          "When a node overflows, it splits and promotes the median"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Insert adds keys to leaf nodes",
+          "When a node is full (2t-1 keys), it splits: median goes up, left/right split",
+          "Search compares keys at each level and descends to the appropriate child",
+          "Delete borrows from siblings or merges nodes when underflowing"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "MySQL InnoDB, PostgreSQL indexes (B+ tree variant)",
+          "Filesystems (NTFS, ext4, HFS+) directory indexing",
+          "MongoDB, CouchDB NoSQL database indexes",
+          "Key-value stores (LevelDB, RocksDB) SSTable indexes"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "B+ Tree — stores all data in leaves with leaf linked list, optimal for range queries",
+          "Red-Black Tree — binary tree for memory, B-Tree for disk",
+          "LSM Tree — write-optimized, better sequential writes than B-Tree"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Start with order 2 (2-3-4 tree) to learn split patterns",
+          "Explore the correspondence between Red-Black trees and 2-3-4 trees",
+          "Focus on how the median promotes upward during splits"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "B-Tree vs B+ Tree?",
+            "a": "B+ Tree stores data only in leaves and links them, making range queries faster."
+          },
+          {
+            "q": "How is order (t) chosen?",
+            "a": "Based on disk block size. Typically hundreds to thousands, so one I/O reads one node."
+          }
+        ]
+      }
+    }
+  },
+  "segmentTreeVisualizer": {
+    "title": "Segment Tree Visualizer",
+    "description": "Learn O(log n) range queries for sum, min, and max using a segment tree step by step",
+    "array": "Array",
+    "build": "Build Tree",
+    "query": "Range Query",
+    "update": "Update Value",
+    "random": "Random Generate",
+    "queryRange": "Query Range",
+    "updateIndex": "Update Index",
+    "updateValue": "New Value",
+    "queryType": "Query Type",
+    "sum": "Range Sum",
+    "min": "Range Min",
+    "max": "Range Max",
+    "result": "Result",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "operation": "Operation",
+      "execute": "Execute"
+    },
+    "legend": {
+      "active": "Active",
+      "matched": "Matched",
+      "visited": "Visited",
+      "skipped": "Skipped",
+      "updated": "Updated"
+    },
+    "stepsGuide": {
+      "description": "Observe the build, query, and update process of the segment tree step by step.",
+      "hint": "Select an operation and press Execute to begin."
+    },
+    "guide": {
+      "title": "Segment Tree Guide",
+      "whatIs": {
+        "title": "What is a Segment Tree?",
+        "description": "A tree that stores range information (sum, min, etc.) of an array, enabling both range queries and point updates in O(log n)."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter an array and build the segment tree",
+          "Specify a range for sum/min/max queries",
+          "Update specific indices and watch the tree update",
+          "Switch query types to experiment"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Leaves store original array elements",
+          "Internal nodes store aggregate of child ranges",
+          "Queries visit only relevant nodes for O(log n)",
+          "Updates propagate from leaf to root"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Competitive programming range query problems",
+          "Database OLAP range aggregation",
+          "Image processing 2D range sums",
+          "Game server real-time ranking systems"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Fenwick Tree (BIT) — simpler, more memory-efficient, but can't do range min/max",
+          "Sparse Table — O(1) query but no updates (static arrays only)",
+          "sqrt decomposition — simple but O(√n) queries"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Start with 4-8 elements to understand the tree structure",
+          "Observe which nodes are visited during queries",
+          "Use this as a foundation for lazy propagation"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Fenwick vs Segment Tree?",
+            "a": "Segment tree is more versatile (supports min/max). Fenwick is more compact for sum queries."
+          },
+          {
+            "q": "Memory usage?",
+            "a": "About 4n space for an array of size n."
+          }
+        ]
+      }
+    }
+  },
+  "fenwickTreeVisualizer": {
+    "title": "Fenwick Tree (BIT) Visualizer",
+    "description": "Learn O(log n) prefix sum updates and range queries using a Binary Indexed Tree",
+    "array": "Original Array",
+    "bitArray": "BIT Array",
+    "update": "Update Value",
+    "query": "Prefix Sum Query",
+    "prefixSum": "Prefix Sum",
+    "rangeSum": "Range Sum",
+    "index": "Index",
+    "value": "Value",
+    "from": "From",
+    "to": "To",
+    "result": "Result",
+    "random": "Random Generate",
+    "clear": "Clear",
+    "binaryRepr": "Binary Representation",
+    "responsible": "Responsible Range",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "operation": "Operation",
+      "execute": "Execute"
+    },
+    "legend": {
+      "active": "Active",
+      "visited": "Visited",
+      "updated": "Updated"
+    },
+    "stepsGuide": {
+      "description": "Observe the update and query process with lowbit operations.",
+      "hint": "Select an operation and press Execute to begin."
+    },
+    "guide": {
+      "title": "Fenwick Tree Guide",
+      "whatIs": {
+        "title": "What is a Fenwick Tree?",
+        "description": "A compact data structure using bit operations for O(log n) prefix sum updates and queries. Also known as Binary Indexed Tree (BIT)."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Generate an array and the BIT is built automatically",
+          "Update a value and watch the BIT update process",
+          "Query prefix sums to see the accumulation process",
+          "Observe binary representations and lowbit patterns"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Each index i is responsible for a range of size lowbit(i) = i & (-i)",
+          "Update: add lowbit to index to update parent nodes",
+          "Query: subtract lowbit from index to accumulate prefix sums",
+          "Range sum [l, r] = prefixSum(r) - prefixSum(l-1)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Competitive programming sum/inversion counting",
+          "Real-time ranking calculation",
+          "2D BIT for rectangular area sum queries",
+          "Online judge scoring statistics"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Segment Tree — more versatile but 2x memory and complex",
+          "Prefix Sum Array — O(1) query but O(n) update",
+          "sqrt decomposition — simple but O(√n) performance"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "lowbit(i) = i & (-i) is the key — returns the lowest set bit",
+          "Convert indices to binary to understand range responsibilities",
+          "Compare with Segment Tree to understand trade-offs"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What is lowbit?",
+            "a": "i & (-i) extracts the lowest set bit. This determines the range each index is responsible for."
+          },
+          {
+            "q": "Works with 0-indexed arrays?",
+            "a": "BIT is naturally 1-indexed. For 0-indexed, add 1 to all indices."
+          }
+        ]
+      }
+    }
+  },
+  "bloomFilterVisualizer": {
+    "title": "Bloom Filter Visualizer",
+    "description": "Understand how bloom filters work — fast membership testing with possible false positives",
+    "insert": "Insert",
+    "check": "Check",
+    "insertValue": "Value to insert",
+    "checkValue": "Value to check",
+    "clear": "Clear",
+    "bitArray": "Bit Array",
+    "hashFunctions": "Hash Functions",
+    "bitSize": "Bit Array Size",
+    "insertedCount": "Inserted Elements",
+    "fillRate": "Fill Rate",
+    "fpRate": "Theoretical FP Rate",
+    "definitelyNot": "Definitely not in set",
+    "probablyIn": "Possibly in set (may be false positive)",
+    "definitelyIn": "Inserted",
+    "falsePositive": "False Positive!",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "newFilter": "New Filter"
+    },
+    "legend": {
+      "bitSet": "Bit Set",
+      "bitUnset": "Bit Unset",
+      "hashTarget": "Hash Target",
+      "inserted": "Inserted"
+    },
+    "stats": {
+      "insertedCount": "Inserted",
+      "fillRate": "Fill Rate",
+      "fpRate": "FP Rate"
+    },
+    "stepsGuide": {
+      "description": "Observe how elements are inserted and checked in the bloom filter.",
+      "idle": "Insert or check a value",
+      "hashing": "Hash: h{k}(\"{val}\") = {pos}",
+      "setBit": "Set bit {pos} to 1",
+      "insertDone": "\"{val}\" inserted (k={k} bits set)",
+      "checkBit": "Check bit {pos}: {state}",
+      "checkPositive": "\"{val}\" — possibly in set",
+      "checkNegative": "\"{val}\" — definitely not in set (bit {pos} is 0)",
+      "checkFalsePositive": "\"{val}\" — false positive! (not inserted but all bits are 1)"
+    },
+    "guide": {
+      "title": "Bloom Filter Guide",
+      "whatIs": {
+        "title": "What is a Bloom Filter?",
+        "description": "A probabilistic data structure using k hash functions and an m-bit array for fast membership testing. False positives are possible, but false negatives never occur."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Set bit array size and number of hash functions",
+          "Insert values — k bit positions are set to 1",
+          "Check values — all k positions must be 1",
+          "Watch false positive rate increase with fill rate"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Insert: pass element through k hash functions, set k bit positions to 1",
+          "Check: if all k positions are 1 → 'possibly in set'; any 0 → 'definitely not'",
+          "False positive: bits set by other elements coincidentally match the pattern",
+          "Optimal k = (m/n) × ln(2), where m=bits, n=elements"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Chrome Safe Browsing malicious URL pre-filtering",
+          "Cassandra/HBase SSTable existence checks to avoid unnecessary disk I/O",
+          "Medium's recommendation system to filter already-read articles",
+          "Bitcoin SPV node transaction filtering"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Hash Table — exact but uses 10-50x more memory",
+          "Counting Bloom Filter — supports deletion but 3-4x memory",
+          "Cuckoo Filter — supports deletion + better space efficiency, modern alternative"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Insert few elements and verify no false positives",
+          "Add many elements to increase fill rate and experience false positives",
+          "Experiment with different hash function counts to find the optimum"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Can elements be deleted?",
+            "a": "Not in basic Bloom filters. Use Counting Bloom Filters for deletion support."
+          },
+          {
+            "q": "False negatives?",
+            "a": "Never occur. Inserted elements always test positive."
+          }
+        ]
+      }
+    }
+  },
+  "primVisualizer": {
+    "title": "Prim's MST Visualizer",
+    "description": "Learn Prim's algorithm building minimum spanning trees by expanding from vertices step by step",
+    "startNode": "Start Vertex",
+    "run": "Run",
+    "reset": "Reset",
+    "randomGraph": "Random Graph",
+    "nodeCount": "Vertices",
+    "totalWeight": "Total Weight",
+    "edgesAdded": "Edges Added",
+    "currentStep": "Current Step",
+    "mstComplete": "MST Complete",
+    "visited": "Visited",
+    "candidate": "Candidate Edge",
+    "selected": "Selected",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "newGraph": "New Graph"
+    },
+    "legend": {
+      "mst": "MST Edge",
+      "checking": "Checking",
+      "candidate": "Candidate",
+      "unvisited": "Unvisited"
+    },
+    "stats": {
+      "mstEdges": "MST Edges",
+      "totalWeight": "Total Weight",
+      "complete": "MST Complete!"
+    },
+    "stepsGuide": {
+      "description": "Watch Prim's algorithm expand from a start vertex to build the MST.",
+      "start": "Select start vertex {node}",
+      "addEdges": "Add edges from {node} to priority queue",
+      "extract": "Extract min edge: {from}-{to} (weight {w})",
+      "addToMst": "Add {from}-{to} to MST (visit vertex {node})",
+      "skipVisited": "Skip {from}-{to} (vertex {node} already visited)",
+      "done": "MST Complete! Total weight: {w}"
+    },
+    "guide": {
+      "title": "Prim's MST Guide",
+      "whatIs": {
+        "title": "What is Prim's Algorithm?",
+        "description": "A greedy algorithm that builds a minimum spanning tree by starting from any vertex and repeatedly selecting the minimum weight edge connecting to an unvisited vertex."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Generate a graph and select a start vertex",
+          "Run to watch the MST construction step by step",
+          "Distinguish candidate edges (yellow) from selected edges (green)",
+          "Compare results with Kruskal's algorithm"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Add start vertex to MST and insert adjacent edges into priority queue",
+          "Extract minimum weight edge; if opposite vertex is unvisited, add to MST",
+          "Insert new vertex's adjacent edges into the queue",
+          "Repeat until all vertices are in MST — O(E log V)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Network design — minimum cost cabling to connect all nodes",
+          "Road/pipeline design for minimum construction cost",
+          "Clustering algorithms (Single-linkage) foundation",
+          "VLSI circuit routing optimization"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Kruskal — edge-based MST, better for sparse graphs. Prim is better for dense graphs",
+          "Boruvka — parallel MST construction, suited for distributed environments",
+          "Dijkstra — similar structure but for shortest paths, not MST"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Run Kruskal on the same graph to verify identical total weight",
+          "Observe priority queue behavior to understand greedy selection",
+          "Change start vertex to confirm MST weight remains the same"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Prim vs Kruskal?",
+            "a": "Prim is vertex-based (better for dense graphs), Kruskal is edge-based (better for sparse graphs)."
+          },
+          {
+            "q": "Does start vertex matter?",
+            "a": "Edge selection may differ but total weight is always the same."
+          }
+        ]
+      }
+    }
+  },
+  "floydWarshallVisualizer": {
+    "title": "Floyd-Warshall Visualizer",
+    "description": "Learn all-pairs shortest paths using dynamic programming with an interactive distance matrix",
+    "run": "Run",
+    "reset": "Reset",
+    "randomGraph": "Random Graph",
+    "nodeCount": "Vertices",
+    "allowNegative": "Allow Negative Weights",
+    "distanceMatrix": "Distance Matrix",
+    "intermediateNode": "Intermediate Node k",
+    "iteration": "Iteration",
+    "updated": "Updated",
+    "infinity": "∞",
+    "negativeCycle": "Negative Cycle Detected",
+    "path": "Path",
+    "selectPair": "Select Start/End Vertices",
+    "guide": {
+      "title": "Floyd-Warshall Guide",
+      "whatIs": {
+        "title": "What is Floyd-Warshall?",
+        "description": "A DP algorithm computing shortest paths between all pairs of vertices in O(V³). It iteratively adds intermediate vertices k and updates the distance matrix."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Generate a graph and click Run",
+          "Watch the distance matrix update as intermediate vertex k increases",
+          "Updated cells are highlighted",
+          "Select vertex pairs to see shortest paths on the graph"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Initial matrix: direct edge weights, ∞ for non-connected pairs",
+          "For k = 0..V-1: dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])",
+          "After iteration k, shortest paths using vertices 0..k as intermediates are found",
+          "Negative diagonal means negative cycle exists"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Network routing table computation",
+          "Social network degrees of separation",
+          "Transportation all-pairs shortest time calculation",
+          "Transitive closure computation"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Dijkstra V times — O(V·E log V), no negative weights but faster for sparse graphs",
+          "Bellman-Ford V times — O(V²·E), handles negative weights but slower",
+          "Johnson's — O(V·E log V) for sparse all-pairs, faster than Floyd for sparse graphs"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Start with 4-5 vertices to trace matrix changes",
+          "Observe which paths improve as k increases",
+          "Add negative weights to test negative cycle detection"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Isn't O(V³) slow?",
+            "a": "For dense graphs with all-pairs shortest paths, it's the simplest and most efficient. Practical for V ≤ 500."
+          },
+          {
+            "q": "Path reconstruction?",
+            "a": "Maintain a next[i][j] matrix to track intermediate vertices for path recovery."
+          }
+        ]
+      }
+    },
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "newGraph": "New Graph",
+      "allowNegative": "Allow Negative Weights"
+    },
+    "legend": {
+      "k": "Intermediate k",
+      "updated": "Updated",
+      "path": "Selected Path",
+      "negative": "Negative Edge"
+    },
+    "stats": {
+      "complete": "All-Pairs Shortest Paths Complete!"
+    },
+    "stepsGuide": {
+      "description": "Watch the distance matrix update as intermediate vertex k increases.",
+      "init": "Initialize distance matrix (direct edges, rest ∞)",
+      "startK": "Intermediate vertex k = {k} start",
+      "update": "Update: dist[{i}][{j}] = dist[{i}][{k}] + dist[{k}][{j}] = {dist}",
+      "endK": "Intermediate vertex k = {k} done",
+      "checkNegative": "Checking for negative cycles...",
+      "negativeCycle": "Negative cycle found! (diagonal < 0)",
+      "done": "All-pairs shortest paths computed!"
+    }
+  },
+  "tarjanSccVisualizer": {
+    "title": "Tarjan's SCC Visualizer",
+    "description": "Learn how to find Strongly Connected Components in directed graphs using DFS-based Tarjan's algorithm",
+    "run": "Run",
+    "reset": "Reset",
+    "randomGraph": "Random Graph",
+    "nodeCount": "Vertices",
+    "sccCount": "SCC Count",
+    "currentStep": "Current Step",
+    "discoveryTime": "Discovery Time",
+    "lowLink": "Low-Link",
+    "onStack": "On Stack",
+    "sccFound": "SCC Found",
+    "dfsStack": "DFS Stack",
+    "guide": {
+      "title": "Tarjan's SCC Guide",
+      "whatIs": {
+        "title": "What is Tarjan's SCC?",
+        "description": "An algorithm that finds all Strongly Connected Components (SCCs) in a directed graph using a single DFS pass. An SCC is a maximal subgraph where every vertex pair is mutually reachable."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Generate a directed graph and run the algorithm",
+          "Watch DFS traversal order and discovery/low-link value changes",
+          "Observe when SCCs are extracted from the stack",
+          "Nodes of the same color belong to one SCC"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "DFS visits vertices, assigning discovery time and low-link values",
+          "Visited vertices are pushed onto a stack; low-link is updated from descendants",
+          "When low-link == discovery, vertex is SCC root → pop SCC members from stack",
+          "Runs in O(V + E) with a single DFS pass"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Compiler dependency analysis for circular dependency detection",
+          "Social network community/group detection",
+          "Web crawler link structure analysis",
+          "Core subroutine for solving 2-SAT problems"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Kosaraju — uses 2 DFS passes, more intuitive but needs graph transpose",
+          "Gabow — uses 2 stacks, same complexity as Tarjan",
+          "Topological Sort — DAG only, applicable after SCC condensation"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Understand the meaning of discovery and low-link values first",
+          "Manually trace values on small graphs before using the visualizer",
+          "Connect with SCC condensation graph concept"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Why are SCCs important?",
+            "a": "They're fundamental for circular dependency analysis, 2-SAT, and graph condensation."
+          },
+          {
+            "q": "Works for undirected graphs?",
+            "a": "Undirected graphs use simpler Connected Components (DFS/BFS suffices)."
+          }
+        ]
+      }
+    },
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "legend": {
+      "current": "Current Node",
+      "onStack": "On Stack",
+      "unvisited": "Unvisited",
+      "scc": "SCC Group"
+    },
+    "stats": {
+      "node": "Node",
+      "complete": "SCC Search Complete!"
+    },
+    "stepsGuide": {
+      "description": "Watch DFS traverse vertices, tracking discovery/low-link values and extracting SCCs.",
+      "init": "Initialize: disc/low = -1, empty stack",
+      "visit": "Visit {node} (disc = {d})",
+      "exploreEdge": "Explore {from} → {to} (tree edge)",
+      "updateLowlink": "Update {node} low-link = {low}",
+      "backEdge": "{from} → {to} back edge (on stack)",
+      "sccRoot": "{node} is SCC root (low == disc)",
+      "popScc": "Extract SCC: {{{nodes}}}",
+      "done": "All SCCs found!"
+    }
+  },
+  "eulerPathVisualizer": {
+    "title": "Euler Path Visualizer",
+    "description": "Learn how to find paths and circuits that visit every edge exactly once in a graph",
+    "run": "Run",
+    "reset": "Reset",
+    "randomGraph": "Random Graph",
+    "nodeCount": "Vertices",
+    "edgeCount": "Edges",
+    "eulerType": "Type",
+    "circuit": "Euler Circuit",
+    "path": "Euler Path",
+    "none": "Does Not Exist",
+    "oddDegree": "Odd Degree Vertices",
+    "currentEdge": "Current Edge",
+    "visited": "Visited Edges",
+    "remaining": "Remaining Edges",
+    "directed": "Directed",
+    "undirected": "Undirected",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "stepsDescription": "Watch Hierholzer's algorithm traverse edges and build the Euler path/circuit.",
+    "stepInit": "Initialize — prepare degree analysis",
+    "stepCheckDegrees": "Check degrees — determine Euler path/circuit existence",
+    "stepNoEuler": "No Euler path — conditions not met",
+    "stepStart": "Start traversal from vertex {node}",
+    "stepTraverse": "Traverse edge: {from} → {to}",
+    "stepStuck": "Stuck at vertex {node} — no unused edges",
+    "stepPop": "Add vertex {node} to circuit",
+    "stepDone": "Euler path/circuit complete!",
+    "guide": {
+      "title": "Euler Path Guide",
+      "whatIs": {
+        "title": "What is an Euler Path?",
+        "description": "A path visiting every edge exactly once. If it returns to the start, it's an Euler Circuit. Famous from the Königsberg Bridge Problem."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Generate a graph — Euler path/circuit existence is auto-detected",
+          "Run to see Hierholzer's algorithm find the path",
+          "Odd-degree vertices are highlighted for intuitive condition understanding",
+          "Toggle directed/undirected modes"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Existence check: undirected — 0 (circuit) or 2 (path) odd-degree vertices",
+          "Directed: all in-degree == out-degree (circuit), or exactly one ±1 difference (path)",
+          "Hierholzer: start from any vertex, traverse edges until stuck, add to circuit",
+          "Return to vertex with unused edges and extend"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Garbage collection/mail delivery route optimization (Chinese Postman Problem)",
+          "DNA sequencing using De Bruijn graphs",
+          "PCB circuit board test routing",
+          "Network equipment testing — check every link once"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Hamiltonian Path — visits every 'vertex' once (NP-complete vs Euler which is P)",
+          "Chinese Postman — minimizes edge duplication when Euler path doesn't exist",
+          "DFS — foundation for Euler path algorithms"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Practice counting degrees to determine Euler path/circuit existence",
+          "Focus on Hierholzer's circuit merging process",
+          "Model the Königsberg Bridge Problem as a graph"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Euler vs Hamiltonian path?",
+            "a": "Euler visits every edge once, Hamiltonian visits every vertex once. Euler is polynomial, Hamiltonian is NP-complete."
+          },
+          {
+            "q": "Disconnected graph?",
+            "a": "The subgraph with edges must be connected. Isolated vertices are ignored."
+          }
+        ]
+      }
+    }
+  },
+  "editDistanceVisualizer": {
+    "title": "Edit Distance Visualizer",
+    "description": "Learn minimum edit operations (insert, delete, replace) between two strings using a DP table",
+    "string1": "String A",
+    "string2": "String B",
+    "run": "Calculate",
+    "reset": "Reset",
+    "result": "Edit Distance",
+    "operations": "Operations",
+    "insert": "Insert",
+    "delete": "Delete",
+    "replace": "Replace",
+    "match": "Match",
+    "dpTable": "DP Table",
+    "currentCell": "Current Cell",
+    "backtrack": "Backtrack Path",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "stepsDescription": "Watch the DP table fill and backtrack to determine edit operations.",
+    "stepInit": "Initialize DP table — set base cases",
+    "stepMatch": "'{c1}' == '{c2}' → dp = {val} (free)",
+    "stepMismatch": "'{c1}' != '{c2}' → dp = {val} (min operation)",
+    "stepTraceStart": "Start backtracking from bottom-right",
+    "stepTraceMatch": "Match: '{c}' (diagonal move)",
+    "stepTraceReplace": "Replace: '{c1}' → '{c2}'",
+    "stepTraceDelete": "Delete: '{c}'",
+    "stepTraceInsert": "Insert: '{c}'",
+    "stepDone": "Done! Edit Distance = {dist}",
+    "guide": {
+      "title": "Edit Distance Guide",
+      "whatIs": {
+        "title": "What is Edit Distance?",
+        "description": "The minimum number of insert/delete/replace operations to transform one string into another. Also known as Levenshtein Distance, widely used for spell checking and similarity measurement."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter two strings and click Calculate",
+          "Watch the DP table fill step by step",
+          "Backtrack path shows actual edit operations",
+          "Try various string pairs"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "dp[i][j] = min cost to convert first i chars of A to first j chars of B",
+          "If A[i]==B[j]: dp[i][j] = dp[i-1][j-1] (free)",
+          "Else: dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) — delete, insert, replace",
+          "Time and space O(m×n)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Search engine 'Did you mean?' typo correction",
+          "Git diff text comparison algorithms",
+          "Bioinformatics — DNA/protein sequence alignment (Needleman-Wunsch)",
+          "NLP string similarity measurement"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "LCS — finds common subsequence; ED = m + n - 2×LCS",
+          "Damerau-Levenshtein — also allows transposition of adjacent characters",
+          "Hamming Distance — counts different positions in equal-length strings only"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Start with 3-4 character strings and fill the table by hand",
+          "Trace the backtrack path to understand each cell's choice",
+          "Verify the ED-LCS relationship directly"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Space optimization possible?",
+            "a": "Yes, keeping only the previous row gives O(min(m,n)) space, but backtracking is lost."
+          },
+          {
+            "q": "Different operation weights?",
+            "a": "Yes, assigning different costs for insert/delete/replace gives generalized edit distance."
+          }
+        ]
+      }
+    }
+  },
+  "coinChangeVisualizer": {
+    "title": "Coin Change Visualizer",
+    "description": "Learn how to find minimum coins for a target amount using dynamic programming",
+    "coins": "Coin Types",
+    "amount": "Target Amount",
+    "run": "Calculate",
+    "reset": "Reset",
+    "result": "Minimum Coins",
+    "impossible": "Impossible",
+    "dpArray": "DP Array",
+    "selectedCoins": "Selected Coins",
+    "currentAmount": "Current Amount",
+    "addCoin": "Add Coin",
+    "removeCoin": "Remove Coin",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "preset": "Preset"
+    },
+    "presets": {
+      "classic": "Classic (1,3,4)",
+      "standard": "US Coins",
+      "tricky": "Tricky (3,7,11)",
+      "korean": "Korean Coins"
+    },
+    "stats": {
+      "greedy": "Greedy"
+    },
+    "stepsGuide": {
+      "description": "Click on each step to jump to that point.",
+      "hint": "Press the run button to start."
+    },
+    "legend": {
+      "filled": "Computed",
+      "updated": "Updated",
+      "backtrack": "Backtrack",
+      "inf": "Impossible (INF)"
+    },
+    "guide": {
+      "title": "Coin Change Guide",
+      "whatIs": {
+        "title": "What is Coin Change?",
+        "description": "A classic DP problem: find the minimum number of coins to make a target amount. Greedy doesn't guarantee optimal solutions, so DP is needed."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Set available coin types and target amount",
+          "Run to watch the DP array fill",
+          "Backtrack to see which coins were selected",
+          "Change coin types for different scenarios"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "dp[i] = minimum coins to make amount i, dp[0] = 0",
+          "For each amount i: dp[i] = min(dp[i - coin] + 1) for each coin ≤ i",
+          "dp[amount] is the answer; ∞ means impossible",
+          "Time O(amount × coins), Space O(amount)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Vending machine/ATM change optimization",
+          "Payment system minimum bill/coin combination",
+          "Resource allocation problem modeling",
+          "Coding interview essential — top-down/bottom-up DP practice"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Knapsack — weight limit + value maximization; coin change is unbounded special case",
+          "Greedy change — optimal only for specific coin systems (1, 5, 10, 50...)",
+          "Coin combination count — counting total ways instead of minimum count"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Try coins [1,3,4] for amount 6 — greedy gives 3 (4+1+1), DP gives 2 (3+3)",
+          "Fill the dp array by hand and compare with visualization",
+          "Implement both top-down (memoization) and bottom-up approaches"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Can't greedy work?",
+            "a": "Only for specific coin systems (like Korean won). Generally DP is required."
+          },
+          {
+            "q": "Limited coin supply?",
+            "a": "Extends to Bounded Knapsack problem."
+          }
+        ]
+      }
+    }
+  },
+  "lisVisualizer": {
+    "title": "LIS (Longest Increasing Subsequence) Visualizer",
+    "description": "Learn how to find the longest increasing subsequence using DP and binary search",
+    "sequence": "Sequence",
+    "run": "Run",
+    "reset": "Reset",
+    "random": "Random Generate",
+    "length": "LIS Length",
+    "subsequence": "LIS",
+    "method": "Method",
+    "dpMethod": "DP O(n²)",
+    "binarySearchMethod": "Binary Search O(n log n)",
+    "dpArray": "DP Array",
+    "tailsArray": "Tails Array",
+    "currentElement": "Current Element",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "preset": "Preset"
+    },
+    "presets": {
+      "basic": "Basic",
+      "zigzag": "Zigzag",
+      "sorted": "Sorted",
+      "reverse": "Reverse"
+    },
+    "stepsGuide": {
+      "description": "Click on each step to jump to that point.",
+      "hint": "Press the run button to start."
+    },
+    "legend": {
+      "active": "Current Element",
+      "compare": "Compare Target",
+      "lis": "LIS Element",
+      "dpTails": "DP/Tails Array"
+    },
+    "guide": {
+      "title": "LIS Guide",
+      "whatIs": {
+        "title": "What is LIS?",
+        "description": "The longest subsequence maintaining original order with increasing values. Two approaches: O(n²) DP and O(n log n) binary search (patience sorting)."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter a sequence or generate randomly",
+          "Switch between DP and binary search methods",
+          "Watch DP array or Tails array updates",
+          "LIS elements are highlighted"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "DP: dp[i] = LIS length ending at arr[i], dp[i] = max(dp[j]+1) for j < i where arr[j] < arr[i]",
+          "Binary Search: maintain tails array; if new element > last tail, append; else replace at lower_bound",
+          "Binary search achieves O(n log n) for large inputs",
+          "Backtrack to reconstruct the actual LIS"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Git patience diff algorithm uses LIS-based matching",
+          "Network packet reordering",
+          "Genomics — gene sequence similarity analysis",
+          "Stock price analysis — longest rising period"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "LCS — common subsequence of two sequences; LIS is within one sequence",
+          "Edit Distance — related string DP problem to LCS/LIS",
+          "Patience Sorting — same idea as the binary search LIS solution"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Master the O(n²) DP first before moving to binary search",
+          "Think about why the tails array always stays sorted",
+          "Implement backtracking yourself"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is LIS unique?",
+            "a": "Length is unique, but multiple subsequences of that length may exist."
+          },
+          {
+            "q": "Non-decreasing instead of strictly increasing?",
+            "a": "Use upper_bound instead of lower_bound for non-decreasing (≤) LIS."
+          }
+        ]
+      }
+    }
+  },
+  "rabinKarpVisualizer": {
+    "title": "Rabin-Karp Visualizer",
+    "description": "Learn string pattern matching using rolling hash step by step",
+    "text": "Text",
+    "pattern": "Pattern",
+    "run": "Search",
+    "reset": "Reset",
+    "base": "Hash Base",
+    "modulo": "Modular",
+    "textHash": "Text Hash",
+    "patternHash": "Pattern Hash",
+    "match": "Match",
+    "hashCollision": "Hash Collision (False Positive)",
+    "found": "Pattern Found",
+    "notFound": "Pattern Not Found",
+    "comparisons": "Comparisons",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "preset": "Preset"
+    },
+    "stats": {
+      "matches": "Matches",
+      "falsePositives": "False Positives",
+      "hashValues": "Hash Values"
+    },
+    "stepsGuide": {
+      "description": "Click a step to jump to that point.",
+      "hint": "Press Search to start."
+    },
+    "guide": {
+      "title": "Rabin-Karp Guide",
+      "whatIs": {
+        "title": "What is Rabin-Karp?",
+        "description": "Uses rolling hash to compare substring hashes with the pattern hash in O(1), enabling efficient pattern matching. Especially powerful for multi-pattern search."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter text and pattern, then search",
+          "Watch hash computation at each position",
+          "Hash collisions (false positives) trigger actual character comparison",
+          "Change base and modular to see collision frequency changes"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Compute pattern hash",
+          "Slide window one position at a time, updating hash in O(1) using rolling hash",
+          "If hashes match, verify with actual character comparison (spurious hit prevention)",
+          "Average O(n+m), worst O(nm) but nearly linear with good hash function"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Plagiarism detection — searching multiple documents simultaneously",
+          "Virus scanner signature multi-pattern matching",
+          "Text editor find/replace functionality",
+          "Network IDS packet pattern matching"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "KMP — worst-case O(n+m) guaranteed for single pattern; Rabin-Karp excels at multi-pattern",
+          "Aho-Corasick — standard for simultaneous multi-pattern search, trie-based",
+          "Boyer-Moore — fastest single-pattern matching in practice, compares from right"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Understand rolling hash math (polynomial hash) first",
+          "Create examples that intentionally cause collisions",
+          "Compare comparison counts with KMP on the same input"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Better than KMP?",
+            "a": "For multi-pattern search, yes. For single patterns, KMP has better worst-case guarantees."
+          },
+          {
+            "q": "Too many hash collisions?",
+            "a": "Use larger modular or double hashing to reduce collisions."
+          }
+        ]
+      }
+    }
+  },
+  "suffixArrayVisualizer": {
+    "title": "Suffix Array Visualizer",
+    "description": "Learn how to sort all suffixes and analyze LCP (Longest Common Prefix) step by step",
+    "text": "String",
+    "build": "Build",
+    "search": "Pattern Search",
+    "pattern": "Pattern",
+    "reset": "Reset",
+    "suffixes": "Suffix List",
+    "sortedOrder": "Sorted Order",
+    "lcpArray": "LCP Array",
+    "found": "Pattern Found",
+    "notFound": "Pattern Not Found",
+    "position": "Position",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "controls": {
+      "preset": "Preset"
+    },
+    "stats": {
+      "phase": "Phase",
+      "buildPhase": "SA Build",
+      "lcpPhase": "LCP Compute",
+      "searchPhase": "Pattern Search",
+      "saSize": "SA Size",
+      "matches": "Matches"
+    },
+    "stepsGuide": {
+      "description": "Click a step to jump to that point.",
+      "hint": "Press Build to start."
+    },
+    "guide": {
+      "title": "Suffix Array Guide",
+      "whatIs": {
+        "title": "What is a Suffix Array?",
+        "description": "A sorted array of all suffix starting indices. More memory-efficient than suffix trees while solving equivalent problems."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter a string and build to create suffix array and LCP array",
+          "Watch suffixes being sorted",
+          "Search patterns using binary search",
+          "Analyze LCP array patterns"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Sort all suffix starting indices lexicographically",
+          "O(n log²n) or SA-IS O(n) algorithms for efficient construction",
+          "LCP array: common prefix length between adjacent suffixes, O(n) via Kasai's algorithm",
+          "Pattern search: binary search in O(m log n)"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Bioinformatics — genome repeat pattern search",
+          "Data compression (BWT/bzip2) core preprocessing",
+          "Full-text search index construction",
+          "String similarity/repeat analysis"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Suffix Tree — O(n) construction, more powerful but 20x+ memory",
+          "Trie — good for prefix search of multiple strings; suffix array better for single string",
+          "FM-index — suffix array + BWT based, compressed index for memory savings"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Start with short strings (5-8 chars) and manually list/sort suffixes",
+          "Practice finding repeated substrings using the LCP array",
+          "Trace the binary search pattern matching process by hand"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Better than suffix tree?",
+            "a": "Much better memory efficiency and practical. Functionally equivalent when combined with LCP array."
+          },
+          {
+            "q": "Construction time?",
+            "a": "SA-IS achieves O(n), but O(n log²n) approach is more intuitive."
+          }
+        ]
+      }
+    }
+  },
+  "huffmanCodingVisualizer": {
+    "title": "Huffman Coding Visualizer",
+    "description": "Learn the greedy algorithm for optimal prefix codes — the basis of data compression",
+    "text": "Input Text",
+    "encode": "Encode",
+    "decode": "Decode",
+    "reset": "Reset",
+    "frequency": "Frequency",
+    "codeTable": "Code Table",
+    "character": "Character",
+    "code": "Huffman Code",
+    "bits": "Bits",
+    "originalSize": "Original Size",
+    "compressedSize": "Compressed Size",
+    "ratio": "Compression Ratio",
+    "tree": "Huffman Tree",
+    "encoded": "Encoded Result",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "stepsGuide": {
+      "description": "Click on any step to jump to that point.",
+      "hint": "Press Encode to start."
+    },
+    "guide": {
+      "title": "Huffman Coding Guide",
+      "whatIs": {
+        "title": "What is Huffman Coding?",
+        "description": "A greedy algorithm generating optimal prefix codes based on character frequencies. Frequent characters get short codes, rare ones get long codes, minimizing total bits."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter text and character frequencies are auto-analyzed",
+          "Encode to watch Huffman tree construction step by step",
+          "Check each character's bit code in the code table",
+          "Compare compression ratios with different texts"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Count character frequencies and insert into priority queue (min-heap)",
+          "Extract two lowest-frequency nodes, merge into new parent",
+          "Repeat until one tree remains",
+          "Left=0, Right=1 determines each character's code"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "ZIP, GZIP compression core algorithm",
+          "JPEG, PNG image compression entropy coding stage",
+          "MP3/AAC audio compression",
+          "HTTP/2 header compression (HPACK) uses Huffman tables"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Arithmetic Coding — better compression than Huffman but more complex",
+          "LZW — dictionary-based compression, used in GIF format",
+          "Deflate — LZ77 + Huffman combination, core of ZIP/GZIP"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Start with skewed frequency text (e.g., 'aaaaabbc') for clear tree structure",
+          "Understand prefix codes — no code is a prefix of another",
+          "Compare compression ratio with fixed-length coding (ASCII)"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Always optimal compression?",
+            "a": "Optimal among prefix codes, but arithmetic coding achieves closer to theoretical limit."
+          },
+          {
+            "q": "How is decoding done?",
+            "a": "Read bits and traverse the Huffman tree. When a leaf is reached, output that character."
+          }
+        ]
+      }
+    }
+  },
+  "slidingWindowVisualizer": {
+    "title": "Sliding Window Visualizer",
+    "description": "Learn to efficiently solve subarray/substring problems by moving a fixed or variable-size window",
+    "array": "Array",
+    "windowSize": "Window Size",
+    "target": "Target",
+    "run": "Run",
+    "reset": "Reset",
+    "random": "Random Generate",
+    "mode": "Mode",
+    "fixedWindow": "Fixed Size",
+    "variableWindow": "Variable Size",
+    "maxSum": "Max Sum",
+    "minLength": "Min Length",
+    "currentWindow": "Current Window",
+    "currentSum": "Current Sum",
+    "bestResult": "Best Result",
+    "left": "Left Pointer",
+    "right": "Right Pointer",
+    "tabs": {
+      "steps": "Steps",
+      "code": "Code",
+      "guide": "Guide"
+    },
+    "stepsGuide": {
+      "description": "Click on any step to jump to that point.",
+      "hint": "Press Run to start."
+    },
+    "guide": {
+      "title": "Sliding Window Guide",
+      "whatIs": {
+        "title": "What is Sliding Window?",
+        "description": "A technique solving contiguous subarray/substring problems in O(n) by sliding a window across data. Two types: fixed-size and variable-size."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter array and set window size or target value",
+          "Fixed mode: find max sum window of size k",
+          "Variable mode: find minimum length window with sum ≥ target",
+          "Watch left/right pointer movements"
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "Fixed: slide window one position, subtract front element, add back element — O(n)",
+          "Variable: expand right to satisfy condition, shrink left to optimize",
+          "Key insight: reuse previous computation instead of recalculating from scratch",
+          "Closely related to two-pointer technique"
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Applications",
+        "items": [
+          "Network monitoring — average packet throughput over last N seconds",
+          "Stock analysis — moving average calculation",
+          "TCP flow control sliding window protocol",
+          "String processing — longest substring without repeats"
+        ]
+      },
+      "comparison": {
+        "title": "Similar Algorithms",
+        "items": [
+          "Two Pointers — generalization of sliding window, window may not be contiguous",
+          "Prefix Sum — O(1) range sum but not suitable for dynamic windows",
+          "Segment Tree — versatile range queries but sliding window is simpler and faster"
+        ]
+      },
+      "tips": {
+        "title": "Learning Tips",
+        "items": [
+          "Start with fixed-size max sum — most intuitive",
+          "For variable-size, clearly understand left/right pointer movement conditions",
+          "Practice with 'longest substring without repeats' for real-world application"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "vs Two Pointers?",
+            "a": "Sliding window is a special case of two pointers, always maintaining a contiguous range."
+          },
+          {
+            "q": "When to use?",
+            "a": "When finding max/min/specific condition over contiguous subarrays or substrings."
           }
         ]
       }

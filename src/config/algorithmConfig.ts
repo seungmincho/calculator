@@ -1,6 +1,6 @@
 // 알고리즘 시각화 섹션 설정
 
-export type AlgorithmCategory = 'collision' | 'search' | 'sort' | 'game-ai' | 'data-structure' | 'graph' | 'dp' | 'string' | 'geometry' | 'backtracking'
+export type AlgorithmCategory = 'collision' | 'search' | 'sort' | 'game-ai' | 'data-structure' | 'graph' | 'dp' | 'string' | 'geometry' | 'backtracking' | 'greedy' | 'technique'
 
 export interface AlgorithmInfo {
   id: string
@@ -61,6 +61,28 @@ export const algorithms: AlgorithmInfo[] = [
   { id: 'shell-sort', href: '/algorithm/shell-sort', category: 'sort', difficulty: 1, renderMode: '2d', icon: '🐚', labelKey: 'shellSort', status: 'ready' },
   // Search (comparison)
   { id: 'pathfinding-compare', href: '/algorithm/pathfinding-compare', category: 'search', difficulty: 1, renderMode: '2d', icon: '🏁', labelKey: 'pathfindingCompare', status: 'ready' },
+  // Data Structure (new)
+  { id: 'red-black-tree', href: '/algorithm/red-black-tree', category: 'data-structure', difficulty: 3, renderMode: '2d', icon: '🔴', labelKey: 'redBlackTree', status: 'ready' },
+  { id: 'b-tree', href: '/algorithm/b-tree', category: 'data-structure', difficulty: 3, renderMode: '2d', icon: '📁', labelKey: 'bTree', status: 'ready' },
+  { id: 'segment-tree', href: '/algorithm/segment-tree', category: 'data-structure', difficulty: 2, renderMode: '2d', icon: '📐', labelKey: 'segmentTree', status: 'ready' },
+  { id: 'fenwick-tree', href: '/algorithm/fenwick-tree', category: 'data-structure', difficulty: 2, renderMode: '2d', icon: '🧮', labelKey: 'fenwickTree', status: 'ready' },
+  { id: 'bloom-filter', href: '/algorithm/bloom-filter', category: 'data-structure', difficulty: 2, renderMode: '2d', icon: '🌸', labelKey: 'bloomFilter', status: 'ready' },
+  // Graph (new)
+  { id: 'prim', href: '/algorithm/prim', category: 'graph', difficulty: 2, renderMode: '2d', icon: '🌲', labelKey: 'prim', status: 'ready' },
+  { id: 'floyd-warshall', href: '/algorithm/floyd-warshall', category: 'graph', difficulty: 2, renderMode: '2d', icon: '🔄', labelKey: 'floydWarshall', status: 'ready' },
+  { id: 'tarjan-scc', href: '/algorithm/tarjan-scc', category: 'graph', difficulty: 3, renderMode: '2d', icon: '🔁', labelKey: 'tarjanScc', status: 'ready' },
+  { id: 'euler-path', href: '/algorithm/euler-path', category: 'graph', difficulty: 2, renderMode: '2d', icon: '✏️', labelKey: 'eulerPath', status: 'ready' },
+  // DP (new)
+  { id: 'edit-distance', href: '/algorithm/edit-distance', category: 'dp', difficulty: 2, renderMode: '2d', icon: '✂️', labelKey: 'editDistance', status: 'ready' },
+  { id: 'coin-change', href: '/algorithm/coin-change', category: 'dp', difficulty: 1, renderMode: '2d', icon: '🪙', labelKey: 'coinChange', status: 'ready' },
+  { id: 'lis', href: '/algorithm/lis', category: 'dp', difficulty: 2, renderMode: '2d', icon: '📈', labelKey: 'lis', status: 'ready' },
+  // String (new)
+  { id: 'rabin-karp', href: '/algorithm/rabin-karp', category: 'string', difficulty: 2, renderMode: '2d', icon: '🔑', labelKey: 'rabinKarp', status: 'ready' },
+  { id: 'suffix-array', href: '/algorithm/suffix-array', category: 'string', difficulty: 3, renderMode: '2d', icon: '📑', labelKey: 'suffixArray', status: 'ready' },
+  // Greedy
+  { id: 'huffman-coding', href: '/algorithm/huffman-coding', category: 'greedy', difficulty: 2, renderMode: '2d', icon: '🗜️', labelKey: 'huffmanCoding', status: 'ready' },
+  // Technique
+  { id: 'sliding-window', href: '/algorithm/sliding-window', category: 'technique', difficulty: 1, renderMode: '2d', icon: '🪟', labelKey: 'slidingWindow', status: 'ready' },
 ]
 
 export const categoryColors: Record<AlgorithmCategory, string> = {
@@ -74,6 +96,8 @@ export const categoryColors: Record<AlgorithmCategory, string> = {
   string: 'pink',
   geometry: 'indigo',
   backtracking: 'rose',
+  greedy: 'amber',
+  technique: 'sky',
 }
 
 export const categoryLabels: Record<AlgorithmCategory, string> = {
@@ -87,6 +111,8 @@ export const categoryLabels: Record<AlgorithmCategory, string> = {
   string: 'categories.string',
   geometry: 'categories.geometry',
   backtracking: 'categories.backtracking',
+  greedy: 'categories.greedy',
+  technique: 'categories.technique',
 }
 
 export const difficultyLabels = ['', '★☆☆', '★★☆', '★★★']
