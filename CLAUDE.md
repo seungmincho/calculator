@@ -73,7 +73,9 @@ src/app/
 src/
 ├── components/        # All UI components (100+ files)
 ├── config/
-│   └── menuConfig.ts  # Central menu configuration (4 categories)
+│   ├── menuConfig.ts  # Central menu configuration (5 categories)
+│   ├── algorithmConfig.ts  # 55 algorithm visualizers config
+│   └── csVisualizerConfig.ts  # 10 CS concept visualizers config
 ├── contexts/
 │   └── LanguageContext.tsx  # Client-side language state
 ├── hooks/             # Custom React hooks
