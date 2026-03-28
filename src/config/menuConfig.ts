@@ -202,6 +202,8 @@ export const menuConfig: MenuConfig = {
       { href: '/color-blindness-simulator', labelKey: 'footer.links.colorBlindnessSimulator', descriptionKey: 'toolsShowcase.tools.colorBlindnessSimulator.description', icon: '👁️', addedDate: '2026-03-21', subcategory: 'subcategory.otherTools' },
       { href: '/screen-compare', labelKey: 'footer.links.screenCompare', descriptionKey: 'toolsShowcase.tools.screenCompare.description', icon: '📱', addedDate: '2026-03-21', subcategory: 'subcategory.otherTools' },
       { href: '/algorithm', labelKey: 'footer.links.algorithmHub', descriptionKey: 'toolsShowcase.tools.algorithmHub.description', icon: '🧠', addedDate: '2026-03-26', subcategory: 'subcategory.education' },
+      { href: '/order-picker', labelKey: 'footer.links.orderPicker', descriptionKey: 'toolsShowcase.tools.orderPicker.description', icon: '🔀', addedDate: '2026-03-28', subcategory: 'subcategory.otherTools' },
+      { href: '/menu-roulette', labelKey: 'footer.links.menuRoulette', descriptionKey: 'toolsShowcase.tools.menuRoulette.description', icon: '🎰', addedDate: '2026-03-28', subcategory: 'subcategory.otherTools' },
     ],
   },
   media: {

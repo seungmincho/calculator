@@ -1685,6 +1685,8 @@
       "colorBlindnessSimulator": "Color Blindness Simulator",
       "screenCompare": "Screen Size Compare",
       "algorithmHub": "Algorithm Visualizer",
+      "orderPicker": "Order Picker",
+      "menuRoulette": "Menu Roulette",
       "housingSubscription": "Housing Subscription Score",
       "capitalGainsTax": "Capital Gains Tax",
       "militaryDischarge": "Military Discharge Calculator",
@@ -2392,6 +2394,18 @@
           {
             "q": "How does it differ from Didimddol Loan?",
             "a": "Didimddol has stricter income requirements but lower rates (2-3%). Bogeumjari has broader eligibility and higher loan limits. Compare both for your situation."
+          },
+          {
+            "q": "What are the eligibility requirements for first-time buyer (생애최초) type?",
+            "a": "Both you and your spouse must have no history of owning property. Even if you're currently a non-homeowner, any past ownership disqualifies you. If either spouse has ever owned property, you must apply under the general type."
+          },
+          {
+            "q": "What is the interest rate for first-time buyer Bogeumjari Loan?",
+            "a": "As of 2026, the first-time buyer type receives a 0.2%p rate discount on top of the base rate. For a 30-year term, the rate is approximately 4.05%. Combined with the newlywed discount (0.3%p), it can go as low as 3.75%."
+          },
+          {
+            "q": "What is the maximum loan amount for first-time buyer Bogeumjari Loan?",
+            "a": "The maximum loan limit for first-time buyers is 420 million KRW. LTV is also expanded to 80% (vs 70% for general), allowing more borrowing against the same property. For a 500M KRW property, up to 400M KRW (500M × 80%) is possible."
           }
         ]
       }
@@ -5423,6 +5437,14 @@
       "algorithmHub": {
         "title": "Algorithm Visualizer",
         "description": "Learn core algorithms like SAT collision detection through interactive visualization"
+      },
+      "orderPicker": {
+        "title": "Order Picker",
+        "description": "Free online tool to randomly and fairly determine participant order"
+      },
+      "menuRoulette": {
+        "title": "Menu Roulette",
+        "description": "Can't decide what to eat? Spin the roulette to pick your meal"
       },
       "housingSubscription": {
         "title": "Housing Subscription Score",
