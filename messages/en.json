@@ -1687,16 +1687,7 @@
       "algorithmHub": "Algorithm Visualizer",
       "orderPicker": "Order Picker",
       "menuRoulette": "Menu Roulette",
-      "gitVisualizer": "Git Visualizer",
-      "cpuScheduling": "CPU Scheduling Visualizer",
-      "memoryManagement": "Memory Management Visualizer",
-      "neuralNetwork": "Neural Network Visualizer",
-      "gradientDescent": "Gradient Descent Visualizer",
-      "kmeansClustering": "K-means Clustering",
-      "decisionTree": "Decision Tree",
-      "tcpHandshake": "TCP Handshake",
-      "dnsLookup": "DNS Lookup",
-      "regexEngine": "Regex Engine",
+      "csVisualizer": "CS Concept Visualizer",
       "housingSubscription": "Housing Subscription Score",
       "capitalGainsTax": "Capital Gains Tax",
       "militaryDischarge": "Military Discharge Calculator",
@@ -5456,45 +5447,9 @@
         "title": "Menu Roulette",
         "description": "Can't decide what to eat? Spin the roulette to pick your meal"
       },
-      "gitVisualizer": {
-        "title": "Git Visualizer",
-        "description": "Understand branch, merge, rebase, and cherry-pick through an interactive commit graph"
-      },
-      "cpuScheduling": {
-        "title": "CPU Scheduling Visualizer",
-        "description": "Compare FCFS, SJF, Round Robin and more CPU scheduling algorithms with Gantt charts"
-      },
-      "memoryManagement": {
-        "title": "Memory Management Visualizer",
-        "description": "Learn FIFO, LRU, LFU, and Optimal page replacement algorithms with frame table visualization"
-      },
-      "neuralNetwork": {
-        "title": "Neural Network Visualizer",
-        "description": "Visualize forward and backward propagation neuron by neuron to understand deep learning"
-      },
-      "gradientDescent": {
-        "title": "Gradient Descent Visualizer",
-        "description": "Interactive 2D/3D visualization of gradient descent finding the optimal point on loss surfaces"
-      },
-      "kmeansClustering": {
-        "title": "K-means Clustering",
-        "description": "Watch data points cluster into K groups step by step with interactive animation"
-      },
-      "decisionTree": {
-        "title": "Decision Tree",
-        "description": "Visualize how data is split to build a classification tree step by step"
-      },
-      "tcpHandshake": {
-        "title": "TCP Handshake",
-        "description": "Learn TCP 3-way Handshake SYN/ACK packet exchange through animation"
-      },
-      "dnsLookup": {
-        "title": "DNS Lookup",
-        "description": "Visualize how browsers resolve domain names to IP addresses through DNS"
-      },
-      "regexEngine": {
-        "title": "Regex Engine",
-        "description": "Step-by-step visualization of how regex engines match patterns using state machines"
+      "csVisualizer": {
+        "title": "CS Concept Visualizer",
+        "description": "Learn 10 core CS concepts interactively — Git, CPU, Network, ML and more"
       },
       "housingSubscription": {
         "title": "Housing Subscription Score",
@@ -34483,6 +34438,33 @@
           }
         ]
       }
+    }
+  },
+  "csVisualizerHub": {
+    "title": "CS Concept Visualizer",
+    "description": "Learn core computer science concepts through interactive visualizations — Git, CPU Scheduling, Networking, ML/AI and more",
+    "totalCount": "{count} visualizations total",
+    "filter": {
+      "all": "All"
+    },
+    "categories": {
+      "csBasics": "CS Basics",
+      "network": "Network",
+      "mlAi": "ML/AI",
+      "devTools": "Dev Tools"
+    },
+    "algorithmLink": "Also check out 55 Algorithm Visualizations",
+    "items": {
+      "gitVisualizer": { "title": "Git Visualizer", "description": "Understand branch, merge, rebase, cherry-pick through interactive commit graph" },
+      "cpuScheduling": { "title": "CPU Scheduling", "description": "Compare FCFS, SJF, Round Robin scheduling algorithms with Gantt charts" },
+      "memoryManagement": { "title": "Memory Management", "description": "Learn FIFO, LRU, LFU, Optimal page replacement with frame table" },
+      "tcpHandshake": { "title": "TCP Handshake", "description": "3-way Handshake SYN/ACK packet exchange animation" },
+      "dnsLookup": { "title": "DNS Lookup", "description": "Browser→Cache→Resolver→Root→TLD→Auth server flow visualization" },
+      "neuralNetwork": { "title": "Neural Network", "description": "Forward/backward propagation visualized neuron by neuron" },
+      "gradientDescent": { "title": "Gradient Descent", "description": "SGD/Momentum/Adam/RMSProp optimizer contour path comparison" },
+      "kmeansClustering": { "title": "K-means Clustering", "description": "Watch data points cluster into K groups step by step" },
+      "decisionTree": { "title": "Decision Tree", "description": "Build classification trees with entropy/gini step by step" },
+      "regexEngine": { "title": "Regex Engine", "description": "Pattern tokenization + character-by-character matching visualization" }
     }
   },
   "slidingWindowVisualizer": {

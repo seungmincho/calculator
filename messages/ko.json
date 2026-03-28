@@ -2217,16 +2217,7 @@
       "algorithmHub": "알고리즘 시각화",
       "orderPicker": "순서정하기",
       "menuRoulette": "메뉴 추천 룰렛",
-      "gitVisualizer": "Git 시각화",
-      "cpuScheduling": "CPU 스케줄링 시각화",
-      "memoryManagement": "메모리 관리 시각화",
-      "neuralNetwork": "신경망 시각화",
-      "gradientDescent": "경사하강법 시각화",
-      "kmeansClustering": "K-means 클러스터링",
-      "decisionTree": "의사결정 트리",
-      "tcpHandshake": "TCP 핸드셰이크",
-      "dnsLookup": "DNS 조회 과정",
-      "regexEngine": "정규표현식 엔진",
+      "csVisualizer": "CS 개념 시각화",
       "housingSubscription": "청약가점 계산기",
       "capitalGainsTax": "양도소득세 계산기",
       "militaryDischarge": "전역일 계산기",
@@ -5456,45 +5447,9 @@
         "title": "메뉴 추천 룰렛",
         "description": "오늘 뭐 먹지? 점심·저녁 메뉴를 룰렛 돌려서 결정하세요"
       },
-      "gitVisualizer": {
-        "title": "Git 시각화",
-        "description": "branch, merge, rebase, cherry-pick을 인터랙티브 커밋 그래프로 이해하세요"
-      },
-      "cpuScheduling": {
-        "title": "CPU 스케줄링 시각화",
-        "description": "FCFS, SJF, Round Robin 등 CPU 스케줄링 알고리즘을 간트 차트로 비교"
-      },
-      "memoryManagement": {
-        "title": "메모리 관리 시각화",
-        "description": "FIFO, LRU, LFU, Optimal 페이지 교체 알고리즘을 프레임 테이블로 학습"
-      },
-      "neuralNetwork": {
-        "title": "신경망 시각화",
-        "description": "순전파·역전파 과정을 뉴런 단위로 시각화하며 딥러닝 원리를 이해하세요"
-      },
-      "gradientDescent": {
-        "title": "경사하강법 시각화",
-        "description": "2D/3D 손실 함수 위에서 최적점을 찾아가는 경사하강법을 인터랙티브하게 학습"
-      },
-      "kmeansClustering": {
-        "title": "K-means 클러스터링",
-        "description": "점들이 K개 군집으로 모이는 과정을 단계별 애니메이션으로 학습하세요"
-      },
-      "decisionTree": {
-        "title": "의사결정 트리",
-        "description": "데이터를 분할하며 트리를 만드는 과정을 시각적으로 이해하세요"
-      },
-      "tcpHandshake": {
-        "title": "TCP 핸드셰이크",
-        "description": "TCP 3-way Handshake의 SYN/ACK 패킷 교환 과정을 애니메이션으로 학습"
-      },
-      "dnsLookup": {
-        "title": "DNS 조회 과정",
-        "description": "브라우저가 도메인 이름을 IP 주소로 변환하는 DNS 조회 과정을 시각화"
-      },
-      "regexEngine": {
-        "title": "정규표현식 엔진",
-        "description": "정규표현식이 문자열을 매칭하는 과정을 상태 머신으로 단계별 시각화"
+      "csVisualizer": {
+        "title": "CS 개념 시각화",
+        "description": "Git, CPU, 네트워크, ML 등 10개 CS 핵심 개념을 인터랙티브 시각화로 학습"
       },
       "housingSubscription": {
         "title": "청약가점 계산기",
@@ -34483,6 +34438,33 @@
           }
         ]
       }
+    }
+  },
+  "csVisualizerHub": {
+    "title": "CS 개념 시각화",
+    "description": "Git, CPU 스케줄링, 네트워크, ML/AI 등 컴퓨터과학 핵심 개념을 인터랙티브 시각화로 학습하세요",
+    "totalCount": "총 {count}개 시각화",
+    "filter": {
+      "all": "전체"
+    },
+    "categories": {
+      "csBasics": "CS 기초",
+      "network": "네트워크",
+      "mlAi": "ML/AI",
+      "devTools": "개발 도구"
+    },
+    "algorithmLink": "알고리즘 시각화 55개도 확인해보세요",
+    "items": {
+      "gitVisualizer": { "title": "Git 시각화", "description": "branch, merge, rebase, cherry-pick을 인터랙티브 커밋 그래프로 이해" },
+      "cpuScheduling": { "title": "CPU 스케줄링", "description": "FCFS, SJF, Round Robin 등 스케줄링 알고리즘을 간트 차트로 비교" },
+      "memoryManagement": { "title": "메모리 관리", "description": "FIFO, LRU, LFU, Optimal 페이지 교체를 프레임 테이블로 학습" },
+      "tcpHandshake": { "title": "TCP 핸드셰이크", "description": "3-way Handshake SYN/ACK 패킷 교환 과정 애니메이션" },
+      "dnsLookup": { "title": "DNS 조회", "description": "브라우저→캐시→리졸버→루트→TLD→권한서버 조회 흐름 시각화" },
+      "neuralNetwork": { "title": "신경망", "description": "순전파/역전파 과정을 뉴런 단위로 시각화하며 딥러닝 학습" },
+      "gradientDescent": { "title": "경사하강법", "description": "SGD/Momentum/Adam/RMSProp 옵티마이저 등고선 경로 비교" },
+      "kmeansClustering": { "title": "K-means 클러스터링", "description": "점들이 K개 군집으로 모이는 과정을 단계별 애니메이션" },
+      "decisionTree": { "title": "의사결정 트리", "description": "엔트로피/지니 기반 데이터 분할로 트리 생성 과정 학습" },
+      "regexEngine": { "title": "정규표현식 엔진", "description": "regex 패턴 토큰 분해 + 문자별 매칭 과정 시각화" }
     }
   },
   "slidingWindowVisualizer": {
