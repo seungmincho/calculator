@@ -207,6 +207,8 @@ export const menuConfig: MenuConfig = {
       { href: '/git-visualizer', labelKey: 'footer.links.gitVisualizer', descriptionKey: 'toolsShowcase.tools.gitVisualizer.description', icon: '🌿', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
       { href: '/cpu-scheduling', labelKey: 'footer.links.cpuScheduling', descriptionKey: 'toolsShowcase.tools.cpuScheduling.description', icon: '⚙️', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
       { href: '/memory-management', labelKey: 'footer.links.memoryManagement', descriptionKey: 'toolsShowcase.tools.memoryManagement.description', icon: '🧠', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
+      { href: '/neural-network', labelKey: 'footer.links.neuralNetwork', descriptionKey: 'toolsShowcase.tools.neuralNetwork.description', icon: '🤖', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
+      { href: '/gradient-descent', labelKey: 'footer.links.gradientDescent', descriptionKey: 'toolsShowcase.tools.gradientDescent.description', icon: '📉', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
     ],
   },
   media: {

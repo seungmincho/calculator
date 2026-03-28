@@ -1690,6 +1690,8 @@
       "gitVisualizer": "Git Visualizer",
       "cpuScheduling": "CPU Scheduling Visualizer",
       "memoryManagement": "Memory Management Visualizer",
+      "neuralNetwork": "Neural Network Visualizer",
+      "gradientDescent": "Gradient Descent Visualizer",
       "housingSubscription": "Housing Subscription Score",
       "capitalGainsTax": "Capital Gains Tax",
       "militaryDischarge": "Military Discharge Calculator",
@@ -5460,6 +5462,14 @@
       "memoryManagement": {
         "title": "Memory Management Visualizer",
         "description": "Learn FIFO, LRU, LFU, and Optimal page replacement algorithms with frame table visualization"
+      },
+      "neuralNetwork": {
+        "title": "Neural Network Visualizer",
+        "description": "Visualize forward and backward propagation neuron by neuron to understand deep learning"
+      },
+      "gradientDescent": {
+        "title": "Gradient Descent Visualizer",
+        "description": "Interactive 2D/3D visualization of gradient descent finding the optimal point on loss surfaces"
       },
       "housingSubscription": {
         "title": "Housing Subscription Score",

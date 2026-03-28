@@ -2220,6 +2220,8 @@
       "gitVisualizer": "Git 시각화",
       "cpuScheduling": "CPU 스케줄링 시각화",
       "memoryManagement": "메모리 관리 시각화",
+      "neuralNetwork": "신경망 시각화",
+      "gradientDescent": "경사하강법 시각화",
       "housingSubscription": "청약가점 계산기",
       "capitalGainsTax": "양도소득세 계산기",
       "militaryDischarge": "전역일 계산기",
@@ -5460,6 +5462,14 @@
       "memoryManagement": {
         "title": "메모리 관리 시각화",
         "description": "FIFO, LRU, LFU, Optimal 페이지 교체 알고리즘을 프레임 테이블로 학습"
+      },
+      "neuralNetwork": {
+        "title": "신경망 시각화",
+        "description": "순전파·역전파 과정을 뉴런 단위로 시각화하며 딥러닝 원리를 이해하세요"
+      },
+      "gradientDescent": {
+        "title": "경사하강법 시각화",
+        "description": "2D/3D 손실 함수 위에서 최적점을 찾아가는 경사하강법을 인터랙티브하게 학습"
       },
       "housingSubscription": {
         "title": "청약가점 계산기",
