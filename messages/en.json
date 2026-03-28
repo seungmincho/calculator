@@ -1687,6 +1687,9 @@
       "algorithmHub": "Algorithm Visualizer",
       "orderPicker": "Order Picker",
       "menuRoulette": "Menu Roulette",
+      "gitVisualizer": "Git Visualizer",
+      "cpuScheduling": "CPU Scheduling Visualizer",
+      "memoryManagement": "Memory Management Visualizer",
       "housingSubscription": "Housing Subscription Score",
       "capitalGainsTax": "Capital Gains Tax",
       "militaryDischarge": "Military Discharge Calculator",
@@ -5445,6 +5448,18 @@
       "menuRoulette": {
         "title": "Menu Roulette",
         "description": "Can't decide what to eat? Spin the roulette to pick your meal"
+      },
+      "gitVisualizer": {
+        "title": "Git Visualizer",
+        "description": "Understand branch, merge, rebase, and cherry-pick through an interactive commit graph"
+      },
+      "cpuScheduling": {
+        "title": "CPU Scheduling Visualizer",
+        "description": "Compare FCFS, SJF, Round Robin and more CPU scheduling algorithms with Gantt charts"
+      },
+      "memoryManagement": {
+        "title": "Memory Management Visualizer",
+        "description": "Learn FIFO, LRU, LFU, and Optimal page replacement algorithms with frame table visualization"
       },
       "housingSubscription": {
         "title": "Housing Subscription Score",

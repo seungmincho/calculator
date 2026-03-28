@@ -2217,6 +2217,9 @@
       "algorithmHub": "알고리즘 시각화",
       "orderPicker": "순서정하기",
       "menuRoulette": "메뉴 추천 룰렛",
+      "gitVisualizer": "Git 시각화",
+      "cpuScheduling": "CPU 스케줄링 시각화",
+      "memoryManagement": "메모리 관리 시각화",
       "housingSubscription": "청약가점 계산기",
       "capitalGainsTax": "양도소득세 계산기",
       "militaryDischarge": "전역일 계산기",
@@ -5445,6 +5448,18 @@
       "menuRoulette": {
         "title": "메뉴 추천 룰렛",
         "description": "오늘 뭐 먹지? 점심·저녁 메뉴를 룰렛 돌려서 결정하세요"
+      },
+      "gitVisualizer": {
+        "title": "Git 시각화",
+        "description": "branch, merge, rebase, cherry-pick을 인터랙티브 커밋 그래프로 이해하세요"
+      },
+      "cpuScheduling": {
+        "title": "CPU 스케줄링 시각화",
+        "description": "FCFS, SJF, Round Robin 등 CPU 스케줄링 알고리즘을 간트 차트로 비교"
+      },
+      "memoryManagement": {
+        "title": "메모리 관리 시각화",
+        "description": "FIFO, LRU, LFU, Optimal 페이지 교체 알고리즘을 프레임 테이블로 학습"
       },
       "housingSubscription": {
         "title": "청약가점 계산기",

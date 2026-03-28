@@ -204,6 +204,9 @@ export const menuConfig: MenuConfig = {
       { href: '/algorithm', labelKey: 'footer.links.algorithmHub', descriptionKey: 'toolsShowcase.tools.algorithmHub.description', icon: '🧠', addedDate: '2026-03-26', subcategory: 'subcategory.education' },
       { href: '/order-picker', labelKey: 'footer.links.orderPicker', descriptionKey: 'toolsShowcase.tools.orderPicker.description', icon: '🔀', addedDate: '2026-03-28', subcategory: 'subcategory.otherTools' },
       { href: '/menu-roulette', labelKey: 'footer.links.menuRoulette', descriptionKey: 'toolsShowcase.tools.menuRoulette.description', icon: '🎰', addedDate: '2026-03-28', subcategory: 'subcategory.otherTools' },
+      { href: '/git-visualizer', labelKey: 'footer.links.gitVisualizer', descriptionKey: 'toolsShowcase.tools.gitVisualizer.description', icon: '🌿', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
+      { href: '/cpu-scheduling', labelKey: 'footer.links.cpuScheduling', descriptionKey: 'toolsShowcase.tools.cpuScheduling.description', icon: '⚙️', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
+      { href: '/memory-management', labelKey: 'footer.links.memoryManagement', descriptionKey: 'toolsShowcase.tools.memoryManagement.description', icon: '🧠', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
     ],
   },
   media: {
