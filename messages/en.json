@@ -1692,6 +1692,11 @@
       "memoryManagement": "Memory Management Visualizer",
       "neuralNetwork": "Neural Network Visualizer",
       "gradientDescent": "Gradient Descent Visualizer",
+      "kmeansClustering": "K-means Clustering",
+      "decisionTree": "Decision Tree",
+      "tcpHandshake": "TCP Handshake",
+      "dnsLookup": "DNS Lookup",
+      "regexEngine": "Regex Engine",
       "housingSubscription": "Housing Subscription Score",
       "capitalGainsTax": "Capital Gains Tax",
       "militaryDischarge": "Military Discharge Calculator",
@@ -5470,6 +5475,26 @@
       "gradientDescent": {
         "title": "Gradient Descent Visualizer",
         "description": "Interactive 2D/3D visualization of gradient descent finding the optimal point on loss surfaces"
+      },
+      "kmeansClustering": {
+        "title": "K-means Clustering",
+        "description": "Watch data points cluster into K groups step by step with interactive animation"
+      },
+      "decisionTree": {
+        "title": "Decision Tree",
+        "description": "Visualize how data is split to build a classification tree step by step"
+      },
+      "tcpHandshake": {
+        "title": "TCP Handshake",
+        "description": "Learn TCP 3-way Handshake SYN/ACK packet exchange through animation"
+      },
+      "dnsLookup": {
+        "title": "DNS Lookup",
+        "description": "Visualize how browsers resolve domain names to IP addresses through DNS"
+      },
+      "regexEngine": {
+        "title": "Regex Engine",
+        "description": "Step-by-step visualization of how regex engines match patterns using state machines"
       },
       "housingSubscription": {
         "title": "Housing Subscription Score",

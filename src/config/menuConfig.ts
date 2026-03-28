@@ -209,6 +209,11 @@ export const menuConfig: MenuConfig = {
       { href: '/memory-management', labelKey: 'footer.links.memoryManagement', descriptionKey: 'toolsShowcase.tools.memoryManagement.description', icon: '🧠', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
       { href: '/neural-network', labelKey: 'footer.links.neuralNetwork', descriptionKey: 'toolsShowcase.tools.neuralNetwork.description', icon: '🤖', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
       { href: '/gradient-descent', labelKey: 'footer.links.gradientDescent', descriptionKey: 'toolsShowcase.tools.gradientDescent.description', icon: '📉', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
+      { href: '/kmeans-clustering', labelKey: 'footer.links.kmeansClustering', descriptionKey: 'toolsShowcase.tools.kmeansClustering.description', icon: '🎯', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
+      { href: '/decision-tree', labelKey: 'footer.links.decisionTree', descriptionKey: 'toolsShowcase.tools.decisionTree.description', icon: '🌳', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
+      { href: '/tcp-handshake', labelKey: 'footer.links.tcpHandshake', descriptionKey: 'toolsShowcase.tools.tcpHandshake.description', icon: '🤝', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
+      { href: '/dns-lookup', labelKey: 'footer.links.dnsLookup', descriptionKey: 'toolsShowcase.tools.dnsLookup.description', icon: '🔎', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
+      { href: '/regex-engine', labelKey: 'footer.links.regexEngine', descriptionKey: 'toolsShowcase.tools.regexEngine.description', icon: '⚡', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
     ],
   },
   media: {

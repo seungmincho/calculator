@@ -2222,6 +2222,11 @@
       "memoryManagement": "메모리 관리 시각화",
       "neuralNetwork": "신경망 시각화",
       "gradientDescent": "경사하강법 시각화",
+      "kmeansClustering": "K-means 클러스터링",
+      "decisionTree": "의사결정 트리",
+      "tcpHandshake": "TCP 핸드셰이크",
+      "dnsLookup": "DNS 조회 과정",
+      "regexEngine": "정규표현식 엔진",
       "housingSubscription": "청약가점 계산기",
       "capitalGainsTax": "양도소득세 계산기",
       "militaryDischarge": "전역일 계산기",
@@ -5470,6 +5475,26 @@
       "gradientDescent": {
         "title": "경사하강법 시각화",
         "description": "2D/3D 손실 함수 위에서 최적점을 찾아가는 경사하강법을 인터랙티브하게 학습"
+      },
+      "kmeansClustering": {
+        "title": "K-means 클러스터링",
+        "description": "점들이 K개 군집으로 모이는 과정을 단계별 애니메이션으로 학습하세요"
+      },
+      "decisionTree": {
+        "title": "의사결정 트리",
+        "description": "데이터를 분할하며 트리를 만드는 과정을 시각적으로 이해하세요"
+      },
+      "tcpHandshake": {
+        "title": "TCP 핸드셰이크",
+        "description": "TCP 3-way Handshake의 SYN/ACK 패킷 교환 과정을 애니메이션으로 학습"
+      },
+      "dnsLookup": {
+        "title": "DNS 조회 과정",
+        "description": "브라우저가 도메인 이름을 IP 주소로 변환하는 DNS 조회 과정을 시각화"
+      },
+      "regexEngine": {
+        "title": "정규표현식 엔진",
+        "description": "정규표현식이 문자열을 매칭하는 과정을 상태 머신으로 단계별 시각화"
       },
       "housingSubscription": {
         "title": "청약가점 계산기",
