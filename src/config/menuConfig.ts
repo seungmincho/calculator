@@ -112,6 +112,11 @@ export const menuConfig: MenuConfig = {
       { href: '/cagr-calculator', labelKey: 'footer.links.cagrCalculator', descriptionKey: 'toolsShowcase.tools.cagrCalculator.description', icon: '📈', addedDate: '2026-03-21', subcategory: 'subcategory.investSavings' },
       { href: '/tax-season', labelKey: 'footer.links.taxSeason', descriptionKey: 'toolsShowcase.tools.taxSeason.description', icon: '📋', addedDate: '2026-03-21', subcategory: 'subcategory.tax' },
       { href: '/bonus-calculator', labelKey: 'footer.links.bonusCalculator', descriptionKey: 'toolsShowcase.tools.bonusCalculator.description', icon: '🎯', addedDate: '2026-03-25', subcategory: 'subcategory.salaryWork' },
+      { href: '/government-subsidy', labelKey: 'footer.links.governmentSubsidy', descriptionKey: 'toolsShowcase.tools.governmentSubsidy.description', icon: '🏛️', addedDate: '2026-03-29', subcategory: 'subcategory.others' },
+      { href: '/youth-rent-subsidy', labelKey: 'footer.links.youthRentSubsidy', descriptionKey: 'toolsShowcase.tools.youthRentSubsidy.description', icon: '🏠', addedDate: '2026-03-29', subcategory: 'subcategory.others' },
+      { href: '/ev-subsidy', labelKey: 'footer.links.evSubsidy', descriptionKey: 'toolsShowcase.tools.evSubsidy.description', icon: '🔋', addedDate: '2026-03-29', subcategory: 'subcategory.livingCost' },
+      { href: '/child-benefit', labelKey: 'footer.links.childBenefit', descriptionKey: 'toolsShowcase.tools.childBenefit.description', icon: '👶', addedDate: '2026-03-29', subcategory: 'subcategory.others' },
+      { href: '/jeonse-checklist', labelKey: 'footer.links.jeonseChecklist', descriptionKey: 'toolsShowcase.tools.jeonseChecklist.description', icon: '🔍', addedDate: '2026-03-29', subcategory: 'subcategory.realEstate' },
     ],
   },
   tools: {
@@ -205,6 +210,7 @@ export const menuConfig: MenuConfig = {
       { href: '/order-picker', labelKey: 'footer.links.orderPicker', descriptionKey: 'toolsShowcase.tools.orderPicker.description', icon: '🔀', addedDate: '2026-03-28', subcategory: 'subcategory.otherTools' },
       { href: '/menu-roulette', labelKey: 'footer.links.menuRoulette', descriptionKey: 'toolsShowcase.tools.menuRoulette.description', icon: '🎰', addedDate: '2026-03-28', subcategory: 'subcategory.otherTools' },
       { href: '/cs-visualizer', labelKey: 'footer.links.csVisualizer', descriptionKey: 'toolsShowcase.tools.csVisualizer.description', icon: '🖥️', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
+      { href: '/cs-quiz', labelKey: 'footer.links.csQuiz', descriptionKey: 'toolsShowcase.tools.csQuiz.description', icon: '📝', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
     ],
   },
   media: {
@@ -229,6 +235,7 @@ export const menuConfig: MenuConfig = {
       { href: '/gif-maker', labelKey: 'footer.links.gifMaker', descriptionKey: 'toolsShowcase.tools.gifMaker.description', icon: '🎞️' },
       { href: '/background-remover', labelKey: 'footer.links.backgroundRemover', descriptionKey: 'toolsShowcase.tools.backgroundRemover.description', icon: '✂️' },
       { href: '/collage-maker', labelKey: 'footer.links.collageMaker', descriptionKey: 'toolsShowcase.tools.collageMaker.description', icon: '🖼️' },
+      { href: '/image-scraper', labelKey: 'footer.links.imageScraper', descriptionKey: 'toolsShowcase.tools.imageScraper.description', icon: '🕷️', addedDate: '2026-03-29' },
     ],
   },
   health: {

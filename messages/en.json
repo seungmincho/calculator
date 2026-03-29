@@ -1675,6 +1675,7 @@
       "gifMaker": "GIF Maker",
       "backgroundRemover": "Background Remover",
       "collageMaker": "Photo Collage",
+      "imageScraper": "Image Scraper",
       "fifteenPuzzle": "15 Puzzle",
       "flappyBird": "Flappy Bird",
       "hangman": "Hangman",
@@ -1688,6 +1689,7 @@
       "orderPicker": "Order Picker",
       "menuRoulette": "Menu Roulette",
       "csVisualizer": "CS Concept Visualizer",
+      "csQuiz": "CS Fundamentals Quiz",
       "housingSubscription": "Housing Subscription Score",
       "capitalGainsTax": "Capital Gains Tax",
       "militaryDischarge": "Military Discharge Calculator",
@@ -1726,7 +1728,12 @@
       "ovulationCalculator": "Ovulation Calculator",
       "csatGrade": "CSAT Grade Calculator",
       "enneagram": "Enneagram Test",
-      "bonusCalculator": "Bonus Calculator"
+      "bonusCalculator": "Bonus Calculator",
+      "governmentSubsidy": "Government Subsidy Calculator",
+      "youthRentSubsidy": "Youth Rent Subsidy Calculator",
+      "evSubsidy": "EV Subsidy Calculator",
+      "childBenefit": "Child Benefit Calculator",
+      "jeonseChecklist": "Jeonse Safety Checklist"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -5399,6 +5406,10 @@
         "title": "Photo Collage",
         "description": "Combine multiple photos into collage layouts"
       },
+      "imageScraper": {
+        "title": "Image Scraper",
+        "description": "Collect all images from a webpage and bulk download"
+      },
       "fifteenPuzzle": {
         "title": "15 Puzzle",
         "description": "Sliding tile puzzle - arrange numbers in order"
@@ -5450,6 +5461,10 @@
       "csVisualizer": {
         "title": "CS Concept Visualizer",
         "description": "Learn 10 core CS concepts interactively — Git, CPU, Network, ML and more"
+      },
+      "csQuiz": {
+        "title": "CS Fundamentals Quiz",
+        "description": "250 questions across 10 categories — DS, Algorithms, Network, OS, DB, Architecture, SE, Security, Linux, Web"
       },
       "housingSubscription": {
         "title": "Housing Subscription Score",
@@ -5606,6 +5621,26 @@
       "bonusCalculator": {
         "title": "Bonus Calculator",
         "description": "Performance bonus & incentive after-tax calculation, ratio simulation, tax analysis"
+      },
+      "governmentSubsidy": {
+        "title": "Government Subsidy Calculator",
+        "description": "Check eligibility for 10+ Korean government subsidies based on income & assets"
+      },
+      "youthRentSubsidy": {
+        "title": "Youth Rent Subsidy Calculator",
+        "description": "Youth rent subsidy eligibility check, estimated amount, application guide"
+      },
+      "evSubsidy": {
+        "title": "EV Subsidy Calculator",
+        "description": "Calculate national + local EV subsidies by vehicle model and region"
+      },
+      "childBenefit": {
+        "title": "Child Benefit Calculator",
+        "description": "Parent pay (0-1yr), child allowance (0-8yr), childcare allowance combined calculator"
+      },
+      "jeonseChecklist": {
+        "title": "Jeonse Safety Checklist",
+        "description": "20+ essential checks before signing a jeonse lease, risk score, safety guide"
       }
     }
   },
@@ -34455,16 +34490,46 @@
     },
     "algorithmLink": "Also check out 55 Algorithm Visualizations",
     "items": {
-      "gitVisualizer": { "title": "Git Visualizer", "description": "Understand branch, merge, rebase, cherry-pick through interactive commit graph" },
-      "cpuScheduling": { "title": "CPU Scheduling", "description": "Compare FCFS, SJF, Round Robin scheduling algorithms with Gantt charts" },
-      "memoryManagement": { "title": "Memory Management", "description": "Learn FIFO, LRU, LFU, Optimal page replacement with frame table" },
-      "tcpHandshake": { "title": "TCP Handshake", "description": "3-way Handshake SYN/ACK packet exchange animation" },
-      "dnsLookup": { "title": "DNS Lookup", "description": "Browser→Cache→Resolver→Root→TLD→Auth server flow visualization" },
-      "neuralNetwork": { "title": "Neural Network", "description": "Forward/backward propagation visualized neuron by neuron" },
-      "gradientDescent": { "title": "Gradient Descent", "description": "SGD/Momentum/Adam/RMSProp optimizer contour path comparison" },
-      "kmeansClustering": { "title": "K-means Clustering", "description": "Watch data points cluster into K groups step by step" },
-      "decisionTree": { "title": "Decision Tree", "description": "Build classification trees with entropy/gini step by step" },
-      "regexEngine": { "title": "Regex Engine", "description": "Pattern tokenization + character-by-character matching visualization" }
+      "gitVisualizer": {
+        "title": "Git Visualizer",
+        "description": "Understand branch, merge, rebase, cherry-pick through interactive commit graph"
+      },
+      "cpuScheduling": {
+        "title": "CPU Scheduling",
+        "description": "Compare FCFS, SJF, Round Robin scheduling algorithms with Gantt charts"
+      },
+      "memoryManagement": {
+        "title": "Memory Management",
+        "description": "Learn FIFO, LRU, LFU, Optimal page replacement with frame table"
+      },
+      "tcpHandshake": {
+        "title": "TCP Handshake",
+        "description": "3-way Handshake SYN/ACK packet exchange animation"
+      },
+      "dnsLookup": {
+        "title": "DNS Lookup",
+        "description": "Browser→Cache→Resolver→Root→TLD→Auth server flow visualization"
+      },
+      "neuralNetwork": {
+        "title": "Neural Network",
+        "description": "Forward/backward propagation visualized neuron by neuron"
+      },
+      "gradientDescent": {
+        "title": "Gradient Descent",
+        "description": "SGD/Momentum/Adam/RMSProp optimizer contour path comparison"
+      },
+      "kmeansClustering": {
+        "title": "K-means Clustering",
+        "description": "Watch data points cluster into K groups step by step"
+      },
+      "decisionTree": {
+        "title": "Decision Tree",
+        "description": "Build classification trees with entropy/gini step by step"
+      },
+      "regexEngine": {
+        "title": "Regex Engine",
+        "description": "Pattern tokenization + character-by-character matching visualization"
+      }
     }
   },
   "slidingWindowVisualizer": {
@@ -34556,6 +34621,832 @@
             "a": "When finding max/min/specific condition over contiguous subarrays or substrings."
           }
         ]
+      }
+    }
+  },
+  "governmentSubsidy": {
+    "title": "Government Subsidy Eligibility Calculator",
+    "description": "Enter your household info to check eligibility for 12+ Korean government subsidy programs at once.",
+    "householdSize": "Household Size",
+    "householdSizeUnit": "persons",
+    "monthlyIncome": "Monthly Household Income",
+    "monthlyIncomeDesc": "Total pre-tax earned income + business income + property income",
+    "totalAssets": "Total Assets",
+    "totalAssetsDesc": "Real estate + financial assets + vehicles combined",
+    "age": "Applicant Age",
+    "ageUnit": "years",
+    "housingType": "Housing Type",
+    "housingTypes": {
+      "jeonse": "Jeonse (lump-sum deposit)",
+      "monthly": "Monthly rent",
+      "owned": "Owned",
+      "etc": "Other (dormitory, etc.)"
+    },
+    "monthlyRent": "Monthly Rent",
+    "deposit": "Deposit",
+    "hasChildren": "Minor Children",
+    "childCount": "Number of Children",
+    "childCountUnit": "children",
+    "isSingleParent": "Single Parent Household",
+    "isDisabled": "Household Member with Disability",
+    "isElderly": "Household Member 65+",
+    "yes": "Yes",
+    "no": "No",
+    "calculate": "Check Eligibility",
+    "reset": "Reset",
+    "resultTitle": "Subsidy Eligibility Results",
+    "eligible": "Eligible",
+    "notEligible": "Not Eligible",
+    "borderline": "Borderline (Verify Required)",
+    "estimatedAmount": "Estimated Amount",
+    "perMonth": "/month",
+    "perYear": "/year",
+    "lumpSum": "lump sum",
+    "eligibilityCondition": "Eligibility Condition",
+    "incomeRequirement": "Income Requirement",
+    "assetRequirement": "Asset Requirement",
+    "ageRequirement": "Age Requirement",
+    "howToApply": "How to Apply",
+    "requiredDocs": "Required Documents",
+    "applicationPeriod": "Application Period",
+    "officialSite": "Official Website",
+    "medianIncomePercent": "vs Median Income",
+    "medianIncomeRef": "2026 Standard Median Income",
+    "summaryTitle": "Summary",
+    "summaryEligibleCount": "Eligible Programs",
+    "summaryTotalMonthly": "Est. Total Monthly Support",
+    "summaryTotalYearly": "Est. Total Yearly Support",
+    "programs": {
+      "basicLiving": "Basic Living Security (Livelihood)",
+      "basicLivingDesc": "Living cost support for households below 32% of median income",
+      "medicalAid": "Basic Living Security (Medical)",
+      "medicalAidDesc": "Medical cost support for households below 40% of median income",
+      "housingBenefit": "Basic Living Security (Housing)",
+      "housingBenefitDesc": "Rent/maintenance support for households below 48% of median income",
+      "educationBenefit": "Basic Living Security (Education)",
+      "educationBenefitDesc": "Education cost support for households below 50% of median income",
+      "childAllowance": "Child Tax Credit",
+      "childAllowanceDesc": "Credit for low-income households with children under 18",
+      "eitc": "Earned Income Tax Credit (EITC)",
+      "eitcDesc": "Tax credit for low-income workers and business owners",
+      "basicPension": "Basic Pension",
+      "basicPensionDesc": "Up to ₩334K/month for ages 65+ in bottom 70% income bracket",
+      "youthRent": "Youth Rent Subsidy",
+      "youthRentDesc": "Up to ₩200K/month for ages 19-34 without home ownership",
+      "singleParent": "Single Parent Child-Rearing Allowance",
+      "singleParentDesc": "₩200K+/month child-rearing support for single-parent families",
+      "youthSavings": "Youth Tomorrow Savings Account",
+      "youthSavingsDesc": "Government matching for low-income youth saving ₩100K/month",
+      "emergencyWelfare": "Emergency Welfare Support",
+      "emergencyWelfareDesc": "Emergency living/medical/housing support for crisis situations",
+      "disabledAllowance": "Disability Pension",
+      "disabledAllowanceDesc": "Up to ₩403K/month for persons with severe disabilities"
+    },
+    "disclaimer": "※ Results are for reference based on 2026 standards. Verify actual eligibility at your local community center or bokjiro.go.kr.",
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is the Government Subsidy Calculator?",
+        "description": "A tool that checks your eligibility for 12+ Korean government subsidy programs at once by entering household income, assets, and member information. Covers Basic Living Security, EITC, Child Tax Credit, Basic Pension, Youth Rent Subsidy, and more."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter household size, monthly income, and total assets",
+          "Select applicant age and housing type (jeonse/rent/owned)",
+          "Check applicable options: children, single parent, disability",
+          "Click 'Check Eligibility' to see results for 12+ programs with estimated amounts",
+          "Review application methods and official website links for each program"
+        ]
+      },
+      "tips": {
+        "title": "Useful Tips",
+        "items": [
+          "Income should be pre-tax (earned + business + property income)",
+          "Assets = real estate market value + financial assets + vehicle value",
+          "You can receive multiple subsidies simultaneously if eligible",
+          "For borderline results, visit your local community center for accurate assessment",
+          "Online applications available at bokjiro.go.kr"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What is median income?",
+            "a": "The income level at the exact middle when all households are ranked by income. The 2026 median income for a 4-person household is approximately ₩6.09M."
+          },
+          {
+            "q": "Can I receive multiple subsidies?",
+            "a": "Yes, since each program has different criteria, you can qualify for multiple programs. However, some programs restrict overlapping benefits."
+          },
+          {
+            "q": "How are assets calculated?",
+            "a": "Real estate (market value) + financial assets (savings, stocks) + vehicle value + other assets. Some debts may be deducted."
+          }
+        ]
+      }
+    }
+  },
+  "youthRentSubsidy": {
+    "title": "Youth Rent Subsidy Calculator",
+    "description": "Check your eligibility for Korea's Youth Rent Subsidy and estimate your support amount.",
+    "age": "Age",
+    "ageUnit": "years",
+    "birthYear": "Birth Year",
+    "birthMonth": "Birth Month",
+    "independentHousehold": "Independent Living",
+    "independentDesc": "Living at a separate address from parents",
+    "homeOwnership": "Home Ownership",
+    "noHome": "No home",
+    "hasHome": "Owns home",
+    "monthlyIncome": "Personal Monthly Income",
+    "monthlyIncomeDesc": "Total pre-tax earned + business income",
+    "householdIncome": "Parent Household Monthly Income",
+    "householdIncomeDesc": "Total monthly income of parent household",
+    "householdSize": "Parent Household Size",
+    "householdSizeUnit": "persons",
+    "personalAssets": "Personal Total Assets",
+    "personalAssetsDesc": "Real estate + financial assets + vehicle value",
+    "currentRent": "Current Monthly Rent",
+    "currentDeposit": "Current Deposit",
+    "housingType": "Housing Type",
+    "housingTypes": {
+      "officetel": "Officetel",
+      "oneRoom": "Studio/1BR",
+      "apartment": "Apartment/Villa",
+      "gosiwon": "Gosiwon/Dormitory",
+      "sharehouse": "Share House"
+    },
+    "yes": "Yes",
+    "no": "No",
+    "check": "Check Eligibility",
+    "reset": "Reset",
+    "resultTitle": "Youth Rent Subsidy Eligibility Result",
+    "eligible": "Eligible",
+    "notEligible": "Not Eligible",
+    "borderline": "Borderline (Verify Required)",
+    "estimatedMonthly": "Estimated Monthly Support",
+    "estimatedTotal": "Estimated Total Support (12 months)",
+    "maxSupport": "Max ₩200K/month",
+    "supportPeriod": "Support Period: Up to 12 months",
+    "checklistTitle": "Eligibility Checklist",
+    "conditions": {
+      "ageRange": "Age 19-34",
+      "independent": "Independent living (separate address from parents)",
+      "noHomeOwner": "No home ownership",
+      "incomeBelow": "Personal income below 60% of median",
+      "householdIncomeBelow": "Parent household income below 100% of median",
+      "assetBelow": "Personal assets below ₩122M",
+      "rentRange": "Rent and deposit within limits"
+    },
+    "pass": "Met",
+    "fail": "Not Met",
+    "applicationInfo": "Application Info",
+    "howToApply": "How to Apply",
+    "applyMethods": [
+      "Online at bokjiro.go.kr",
+      "Visit local community center (resident registration address)",
+      "Online at gov.kr"
+    ],
+    "requiredDocs": "Required Documents",
+    "docsList": [
+      "ID (resident registration card or driver's license)",
+      "Copy of lease agreement",
+      "Rent payment records (last 3 months)",
+      "Income certificate (from National Tax Service)",
+      "Resident registration transcript",
+      "Family relations certificate"
+    ],
+    "disclaimer": "※ Results are for reference based on 2026 standards. Verify actual eligibility at bokjiro.go.kr or your local community center.",
+    "medianIncomeRef": "2026 Standard Median Income",
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is the Youth Rent Subsidy?",
+        "description": "A Korean government program supporting ages 19-34 who live independently without home ownership, providing up to ₩200K/month for up to 12 months (total ₩2.4M). Both parent household income and personal income/assets are verified."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter your age and independent living status",
+          "Enter personal income/assets and parent household income",
+          "Enter current rent and deposit amounts",
+          "Click 'Check Eligibility' to see pass/fail for each of 7 conditions",
+          "Review any failed conditions to see if they can be resolved"
+        ]
+      },
+      "tips": {
+        "title": "Useful Tips",
+        "items": [
+          "If rent is below ₩200K, only the actual rent amount is supported",
+          "Deposit must be ₩50M or less and rent ₩700K or less",
+          "Living at the same address as parents does not count as independent",
+          "Income is calculated based on health insurance premiums",
+          "Results are typically notified within 1-2 months after application"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Can I reapply if I received it before?",
+            "a": "You can apply for the remaining period only. Total support cannot exceed 12 months."
+          },
+          {
+            "q": "Are gosiwon/dormitories eligible?",
+            "a": "Gosiwon with lease agreements are eligible, but school dormitories are generally excluded."
+          },
+          {
+            "q": "Why is parent income checked?",
+            "a": "To assess the youth's actual economic situation, parent household income is also verified. Parent income must be below 100% of median income."
+          }
+        ]
+      }
+    }
+  },
+  "evSubsidy": {
+    "title": "EV Subsidy Calculator",
+    "description": "Calculate national and local government subsidies for electric vehicle purchases by model and region.",
+    "vehicleInfo": "Vehicle Information",
+    "vehicleType": "Vehicle Type",
+    "typePassenger": "Sedan",
+    "typeSuv": "SUV",
+    "typeTruck": "Light Truck",
+    "typeVan": "Van",
+    "vehiclePrice": "Vehicle Price",
+    "unitMwan": "10k KRW",
+    "priceUnder55": "Under ₩55M",
+    "price5585": "₩55M~₩85M",
+    "priceOver85": "Over ₩85M",
+    "gateFullLabel": "(100% subsidy)",
+    "gate50Label": "(50% subsidy)",
+    "gate0Label": "(no subsidy)",
+    "drivingRange": "Driving Range per Charge",
+    "batteryCapacity": "Battery Capacity",
+    "region": "Registration Region",
+    "regionSeoul": "Seoul",
+    "regionBusan": "Busan",
+    "regionDaegu": "Daegu",
+    "regionIncheon": "Incheon",
+    "regionGwangju": "Gwangju",
+    "regionDaejeon": "Daejeon",
+    "regionUlsan": "Ulsan",
+    "regionSejong": "Sejong",
+    "regionGyeonggi": "Gyeonggi",
+    "regionGangwon": "Gangwon",
+    "regionChungbuk": "Chungbuk",
+    "regionChungnam": "Chungnam",
+    "regionJeonbuk": "Jeonbuk",
+    "regionJeonnam": "Jeonnam",
+    "regionGyeongbuk": "Gyeongbuk",
+    "regionGyeongnam": "Gyeongnam",
+    "regionJeju": "Jeju",
+    "calculate": "Calculate Subsidy",
+    "reset": "Reset",
+    "popularModels": "Quick Fill Popular Models",
+    "model_ioniq5": "Hyundai IONIQ 5",
+    "model_ioniq6": "Hyundai IONIQ 6",
+    "model_ev6": "Kia EV6",
+    "model_ev9": "Kia EV9",
+    "model_rayEv": "Kia Ray EV",
+    "model_model3": "Tesla Model 3",
+    "model_modelY": "Tesla Model Y",
+    "model_gv60": "Genesis GV60",
+    "subsidySummary": "Subsidy Calculation Result",
+    "nationalSubsidy": "National Subsidy",
+    "localSubsidy": "Local Subsidy",
+    "totalSubsidy": "Total Subsidy",
+    "finalPrice": "Final Purchase Price",
+    "performanceBreakdown": "Performance Score Breakdown",
+    "priceGate": "Price-based Subsidy Rate",
+    "rangeScore": "Driving Range Score",
+    "efficiencyScore": "Energy Efficiency Score",
+    "batteryScore": "Battery Capacity Score",
+    "overallPerformance": "Overall Performance Ratio",
+    "resultPlaceholder": "Enter vehicle info and click Calculate",
+    "regionComparisonTitle": "Regional Subsidy Comparison",
+    "selected": "selected",
+    "enterInfoFirst": "Please enter vehicle info first",
+    "modelsComparisonTitle": "Popular Model Subsidy Comparison",
+    "regionLabel": "Region",
+    "model": "Model",
+    "price": "Price",
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What are EV Subsidies?",
+        "description": "Government subsidies that cover part of the purchase price when buying an electric vehicle. In 2026, you can receive up to ₩6.8M nationally plus regional subsidies (₩3M~₩11M), varying by vehicle price, performance, and battery capacity."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select vehicle type (sedan/SUV/truck) and price range",
+          "Enter battery capacity and driving range (see vehicle specs)",
+          "Select registration region (local subsidies vary)",
+          "Click 'Calculate Subsidy' to see national + local total",
+          "Compare regional subsidies and popular model amounts"
+        ]
+      },
+      "tips": {
+        "title": "Useful Tips",
+        "items": [
+          "Vehicles under ₩55M get 100% subsidy rate, ₩55-85M get 50%",
+          "Vehicles over ₩85M are not eligible for subsidies",
+          "Jeju offers the highest local subsidies, Seoul the lowest",
+          "Apply early in the year as budgets are limited",
+          "Apply online at the Zero Emission Vehicle portal (ev.or.kr)"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Can I sell the car after receiving the subsidy?",
+            "a": "You must operate the vehicle for 2 years. Selling before 2 years requires returning the subsidy."
+          },
+          {
+            "q": "Can businesses apply?",
+            "a": "Yes, both individuals and businesses can apply, though some regions limit the number per business."
+          },
+          {
+            "q": "When do subsidies run out?",
+            "a": "Varies by region, but popular areas often exhaust budgets in the first half of the year. Check availability at the EV portal."
+          }
+        ]
+      }
+    }
+  },
+  "childBenefit": {
+    "title": "Child Benefit Calculator",
+    "description": "Calculate parent pay, child allowance, and childcare allowance based on your children's ages.",
+    "hero": {
+      "parentPay": "Parent Pay",
+      "parentPayAmount": "Up to ₩1M/month",
+      "parentPaySub": "For age 0 (2026 standard)",
+      "childAllowance": "Child Allowance",
+      "childAllowanceAmount": "₩100,000/month",
+      "childAllowanceSub": "All children aged 0–8",
+      "welcomeGrant": "First Meeting Voucher",
+      "welcomeGrantAmount": "₩2,000,000",
+      "welcomeGrantSub": "One-time voucher at birth"
+    },
+    "inputTitle": "Enter Child Information",
+    "childLabel": "Child {n}",
+    "removeChild": "Remove",
+    "birthDate": "Birth Month",
+    "selectYear": "Select year",
+    "year": "",
+    "selectMonth": "Select month",
+    "month": "",
+    "usesDaycare": "Attends Daycare",
+    "addChild": "Add Child",
+    "calculate": "Calculate Benefits",
+    "reset": "Reset",
+    "summaryTitle": "Monthly & Yearly Total",
+    "monthlyTotal": "Monthly Total",
+    "yearlyTotal": "Yearly Total",
+    "perMonth": "per month",
+    "perYear": "per year",
+    "detailTitle": "Breakdown by Child",
+    "parentPayLabel": "Parent Pay",
+    "childAllowanceLabel": "Child Allowance",
+    "childcareAllowanceLabel": "Childcare Allowance",
+    "monthSuffix": "{amount}/mo",
+    "daycareNote": "Daycare fee voucher: {amount}/month",
+    "applyTitle": "How to Apply",
+    "applyMethods": [
+      "Online at gov.kr",
+      "Visit local community center (주민센터)",
+      "Online at bokjiro.go.kr",
+      "Happy Birth One-Stop Service (apply all at birth registration)"
+    ],
+    "placeholder": "Enter child information and click Calculate",
+    "timelineTitle": "Age-Based Benefit Timeline",
+    "timelineSub": "Monthly benefits from birth to age 8 (home care, no daycare)",
+    "cumulativeTitle": "Estimated Total Benefits from Birth to Age 8 (incl. Welcome Voucher)",
+    "cumulativeSub": "Estimated cumulative total for home care (no daycare)",
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What are Parent Pay & Child Allowance?",
+        "description": "Cash benefits provided by the Korean government to families raising children. Includes Parent Pay (₩1M/month for age 0, ₩500K/month for age 1), Child Allowance (₩100K/month for ages 0-8), and Childcare Allowance (for home care). A ₩2M First Meeting Voucher is also available at birth."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter your child's date of birth or age",
+          "Add more children with the 'Add Child' button",
+          "Select daycare attendance (childcare allowance vs daycare fee)",
+          "Click 'Calculate Benefits' to see monthly and yearly amounts",
+          "Check the age timeline for total benefits from birth to age 8"
+        ]
+      },
+      "tips": {
+        "title": "Useful Tips",
+        "items": [
+          "Parent Pay and Childcare Allowance cannot be received together (difference only)",
+          "Child Allowance is universal — all families qualify regardless of income",
+          "Use the 'Happy Birth One-Stop Service' at birth registration for convenient batch application",
+          "Daycare attendees get fee support instead of childcare allowance",
+          "First Meeting Voucher must be used within 1 year of birth"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Can fathers receive parent pay?",
+            "a": "Yes, parent pay is based on the caregiver, so fathers who are the primary caregiver can receive it."
+          },
+          {
+            "q": "Do dual-income families qualify?",
+            "a": "Yes, parent pay is available to all families with children aged 0-1 regardless of income."
+          },
+          {
+            "q": "How long does child allowance last?",
+            "a": "Until the month before the child turns 8 (96 months), paid monthly."
+          }
+        ]
+      }
+    }
+  },
+  "jeonseChecklist": {
+    "title": "Jeonse Safety Checklist",
+    "description": "Check essential items before signing a jeonse lease and evaluate the risk level.",
+    "propertyInfo": "Property Info",
+    "addressLabel": "Property Address",
+    "addressPlaceholder": "e.g., 123 Gangnam-daero, Gangnam-gu, Seoul",
+    "depositLabel": "Jeonse Deposit",
+    "depositUnit": "10K KRW",
+    "contractDateLabel": "Expected Contract Date",
+    "riskScoreTitle": "Risk Score",
+    "scoreDetail": "Weight {earned} / {total}",
+    "contactsTitle": "Emergency Contacts",
+    "copiedLabel": "Copied!",
+    "shareLabel": "Share Result",
+    "printLabel": "Print",
+    "resetLabel": "Reset",
+    "dangerBannerTitle": "Serious risk factors detected",
+    "dangerBannerDesc": "Critical safety items are unchecked. Reconsider the contract and consult a professional.",
+    "checkedCount": "Items Checked",
+    "toggleAriaLabel": "Show item details",
+    "weightLabel": "Importance",
+    "stateChecked": "Checked",
+    "stateUnchecked": "Unchecked",
+    "stateNa": "N/A",
+    "checklistTitle": "Checklist",
+    "categories": {
+      "registry": "Registry Check",
+      "landlord": "Landlord Verification",
+      "property": "Property Condition",
+      "contract": "Contract Terms",
+      "insurance": "Safety Measures"
+    },
+    "items": {
+      "ownerMatch": "Registry owner matches contract signer",
+      "ownerMatchDesc": "If signed by proxy, verify power of attorney and seal certificate",
+      "noMortgage": "No mortgage liens or attachments",
+      "noMortgageDesc": "Risk increases if mortgage exceeds 60% of property value",
+      "noAuction": "No ongoing auction or seizure",
+      "noAuctionDesc": "Check at the Supreme Court auction information site",
+      "taxPaid": "Landlord has no tax delinquency",
+      "taxPaidDesc": "Request tax clearance certificate from landlord",
+      "landlordCredit": "Landlord credit status is good",
+      "landlordCreditDesc": "If hard to verify directly, check if landlord owns multiple properties",
+      "multiProperty": "Checked if landlord owns multiple properties",
+      "multiPropertyDesc": "Multiple jeonse listings by same owner is a warning sign",
+      "actualVisit": "On-site visit completed",
+      "actualVisitDesc": "Personally verify property condition, defects, leaks",
+      "buildingCondition": "Building condition is satisfactory",
+      "buildingConditionDesc": "Check construction date; be cautious with buildings over 20 years old",
+      "neighborhoodCheck": "Market price verified",
+      "neighborhoodCheckDesc": "Compare jeonse-to-sale ratio on KB Real Estate or official transaction data",
+      "gapRatio": "Jeonse-to-sale ratio below 80%",
+      "gapRatioDesc": "Ratio above 80% indicates risk of underwater jeonse",
+      "specialConditions": "Special terms documented",
+      "specialConditionsDesc": "Deposit return timing, restoration scope, early termination terms",
+      "moveInDate": "Move-in and balance dates are clear",
+      "moveInDateDesc": "Must register residence and get confirmation date on move-in day",
+      "realEstateAgent": "Licensed real estate agent verified",
+      "realEstateAgentDesc": "Verify agent registration on the national spatial information portal",
+      "depositInsurance": "Jeonse deposit insurance eligibility confirmed",
+      "depositInsuranceDesc": "Check HUG/SGI/HF deposit insurance eligibility (most important!)",
+      "moveInReport": "Planned to register residence + get confirmation date",
+      "moveInReportDesc": "Same-day registration + confirmation date = opposing power secured",
+      "priorityDeposit": "Priority deposit repayment plan",
+      "priorityDepositDesc": "Check small deposit priority limits (varies by region)"
+    },
+    "riskScore": "Risk Score",
+    "riskLevels": {
+      "safe": "Safe",
+      "caution": "Caution",
+      "warning": "Warning",
+      "danger": "Danger"
+    },
+    "riskSafeDesc": "Most safety conditions are met",
+    "riskCautionDesc": "Some items are unchecked. Additional verification needed",
+    "riskWarningDesc": "Risk factors detected. Professional consultation recommended",
+    "riskDangerDesc": "Serious risk factors present. Reconsider the contract",
+    "checked": "Checked",
+    "unchecked": "Unchecked",
+    "notApplicable": "N/A",
+    "totalItems": "Total Items",
+    "saveResult": "Save Result",
+    "shareResult": "Share Result",
+    "printResult": "Print",
+    "reset": "Reset",
+    "emergencyContacts": "Emergency Contacts",
+    "contacts": {
+      "hug": "HUG (Housing Guarantee)",
+      "hugDesc": "Deposit insurance consultation and enrollment",
+      "lh": "LH Corporation",
+      "lhDesc": "Public rental housing and jeonse loan consultation",
+      "police": "Police",
+      "policeDesc": "Jeonse fraud reporting and victim support",
+      "legalAid": "Korea Legal Aid Corp.",
+      "legalAidDesc": "Free legal consultation and litigation support"
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is the Jeonse Safety Checklist?",
+        "description": "A systematic tool to check 20+ essential items before signing a jeonse lease. Covers registry verification, landlord credit, jeonse-to-sale ratio, deposit insurance eligibility, and calculates a risk score to help ensure a safe jeonse contract."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter property address and jeonse deposit amount",
+          "Go through 5 categories (registry, landlord, property, contract, insurance)",
+          "Mark each item as checked, unchecked, or not applicable",
+          "Risk score is automatically calculated as you check items",
+          "Save or share results for professional consultation"
+        ]
+      },
+      "tips": {
+        "title": "Useful Tips",
+        "items": [
+          "Deposit insurance (HUG) eligibility is the most important safety measure",
+          "Jeonse-to-sale ratio over 80% indicates high underwater risk",
+          "Register residence and get confirmation date on move-in day for opposing power",
+          "Re-check the registry on contract signing day (same-day changes possible)",
+          "Direct private deals without licensed agents require extra caution"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is deposit insurance mandatory?",
+            "a": "Not legally required, but strongly recommended. If the landlord fails to return the deposit, the insurer pays instead. Choose from HUG, SGI, or HF."
+          },
+          {
+            "q": "What is underwater jeonse?",
+            "a": "When the jeonse deposit approaches or exceeds the property's sale value. If the property goes to auction, you risk not recovering your deposit."
+          },
+          {
+            "q": "What's the difference between residence registration and confirmation date?",
+            "a": "Residence registration reports your address to the government. Confirmation date is an official date stamp on your lease. Both must be done on move-in day to secure opposing power and priority repayment rights."
+          }
+        ]
+      }
+    }
+  },
+  "csQuiz": {
+    "title": "CS Fundamentals Quiz",
+    "description": "Test your CS knowledge across 5 core areas with problem-solving.",
+    "selectCategory": "Select Category",
+    "selectDifficulty": "Select Difficulty",
+    "categories": {
+      "all": "All",
+      "allDesc": "All questions across 10 areas",
+      "dataStructures": "Data Structures",
+      "dataStructuresDesc": "Arrays, Stacks, Queues, Trees, Hash Tables, etc.",
+      "algorithms": "Algorithms",
+      "algorithmsDesc": "Sorting, Searching, Time Complexity, Recursion, etc.",
+      "network": "Network",
+      "networkDesc": "TCP/UDP, HTTP, DNS, OSI 7 Layers, etc.",
+      "networking": "Network",
+      "os": "Operating Systems",
+      "osDesc": "Processes, Threads, Memory, Scheduling, etc.",
+      "database": "Database",
+      "databaseDesc": "SQL, Normalization, Indexing, Transactions, etc.",
+      "architecture": "Computer Architecture",
+      "architectureDesc": "CPU, Memory Hierarchy, Cache, Pipeline, etc.",
+      "softwareEngineering": "Software Engineering",
+      "softwareEngineeringDesc": "Design Patterns, SOLID, Agile, Testing, etc.",
+      "security": "Security",
+      "securityDesc": "Encryption, Authentication, OWASP, XSS/SQLi, etc.",
+      "linux": "Linux/System",
+      "linuxDesc": "Commands, Permissions, Shell Scripts, Process Mgmt, etc.",
+      "web": "Web Basics",
+      "webDesc": "HTML/CSS/JS, Browser Rendering, REST API, etc."
+    },
+    "categoryDescriptions": {
+      "dataStructures": "Arrays, Stacks, Queues, Trees, Hash Tables, etc.",
+      "algorithms": "Sorting, Searching, Time Complexity, Recursion, etc.",
+      "network": "TCP/UDP, HTTP, DNS, OSI 7 Layers, etc.",
+      "networking": "TCP/UDP, HTTP, DNS, OSI 7 Layers, etc.",
+      "os": "Processes, Threads, Memory, Scheduling, etc.",
+      "database": "SQL, Normalization, Indexing, Transactions, etc.",
+      "architecture": "CPU, Memory Hierarchy, Cache, Pipeline, etc.",
+      "softwareEngineering": "Design Patterns, SOLID, Agile, Testing, etc.",
+      "security": "Encryption, Authentication, OWASP, XSS/SQLi, etc.",
+      "linux": "Commands, Permissions, Shell Scripts, Process Mgmt, etc.",
+      "web": "HTML/CSS/JS, Browser Rendering, REST API, etc."
+    },
+    "difficulties": {
+      "beginner": "Beginner",
+      "beginnerDesc": "Basic concepts for CS beginners",
+      "intermediate": "Intermediate",
+      "intermediateDesc": "Interview-level questions",
+      "advanced": "Advanced",
+      "advancedDesc": "Deep concepts and applied problems"
+    },
+    "difficultyDescriptions": {
+      "beginner": "Basic concepts for CS beginners",
+      "intermediate": "Interview-level questions",
+      "advanced": "Deep concepts and applied problems"
+    },
+    "startQuiz": "Start Quiz",
+    "questionCount": "Questions",
+    "questionOf": "{current} / {total}",
+    "nextQuestion": "Next Question",
+    "prevQuestion": "Previous Question",
+    "submitQuiz": "View Results",
+    "correct": "Correct!",
+    "incorrect": "Incorrect",
+    "explanation": "Explanation",
+    "score": "Score",
+    "scoreResult": "{score} / {total}",
+    "percentage": "{percent}%",
+    "grade": "Grade",
+    "grades": {
+      "A": "A (90%+)",
+      "B": "B (80%+)",
+      "C": "C (70%+)",
+      "D": "D (60%+)",
+      "F": "F (Below 60%)"
+    },
+    "gradeMessages": {
+      "A": "Excellent! You have a solid CS foundation!",
+      "B": "Great job! A little more study and you'll be perfect.",
+      "C": "Not bad! Review the wrong answers and you'll improve quickly.",
+      "D": "You should review the fundamentals again.",
+      "F": "Still a long way to go. Keep studying!"
+    },
+    "resultTitle": "Quiz Results",
+    "wrongAnswers": "Review Wrong Answers",
+    "wrongAnswersDesc": "Review the questions you got wrong",
+    "noWrongAnswers": "Perfect score! No wrong answers!",
+    "yourAnswer": "Your Answer",
+    "correctAnswer": "Correct Answer",
+    "retryQuiz": "Retry Quiz",
+    "retryWrong": "Retry Wrong Only",
+    "changeCategory": "Change Category",
+    "shareResult": "Share Result",
+    "copied": "Copied!",
+    "timeSpent": "Time Spent",
+    "minutes": "min",
+    "seconds": "sec",
+    "progressLabel": "Progress",
+    "allCategories": "All",
+    "questionCountLabel": "{count} questions",
+    "answered": "Answered",
+    "unanswered": "Unanswered",
+    "questionsUnit": "questions",
+    "questionLabel": "Question",
+    "showResult": "View Results",
+    "correctLabel": "Correct",
+    "incorrectLabel": "Incorrect",
+    "unansweredLabel": "Unanswered",
+    "wrongReview": "Wrong Answers",
+    "perfectScore": "Perfect score! Congratulations!",
+    "retry": "Retry",
+    "otherCategory": "Other Category",
+    "share": "Share Result",
+    "time": "Time",
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is the CS Fundamentals Quiz?",
+        "description": "A problem-solving learning tool covering 5 core computer science areas: Data Structures, Algorithms, Network, Operating Systems, and Database. 125 total questions (25 per category) with 3 difficulty levels: Beginner, Intermediate, and Advanced."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select a category (Data Structures/Algorithms/Network/OS/DB)",
+          "Choose a difficulty level (Beginner/Intermediate/Advanced)",
+          "Answer multiple-choice questions in order",
+          "Each answer immediately shows the correct answer and explanation",
+          "After completing all questions, view your score, grade, and wrong answer review"
+        ]
+      },
+      "tips": {
+        "title": "Study Tips",
+        "items": [
+          "Start with Beginner to build a solid foundation",
+          "Carefully read explanations in the wrong answer review for better learning",
+          "Repeat the same category to identify and fix weak points",
+          "Focus on Intermediate and Advanced for interview preparation",
+          "Time yourself to build real-world test-taking skills"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "Are questions randomized?", "a": "Yes, questions are shuffled randomly each time even with the same category and difficulty." },
+          { "q": "Is this helpful for interviews?", "a": "Yes, Intermediate and Advanced questions cover concepts frequently asked in technical interviews." },
+          { "q": "Can I retry only wrong answers?", "a": "Yes, use the 'Retry Wrong Only' button on the results screen to retry only the questions you got wrong." }
+        ]
+      }
+    }
+  },
+  "imageScraper": {
+    "title": "Image Scraper",
+    "description": "Enter a webpage URL to automatically collect all images.",
+    "urlPlaceholder": "Enter a URL like https://example.com",
+    "scan": "Scan Images",
+    "scanning": "Scanning...",
+    "foundImages": "{count} images found",
+    "noImages": "No images found",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
+    "selected": "{count} selected",
+    "downloadZip": "Download ZIP",
+    "downloadMerged": "Merge Vertically",
+    "downloading": "Downloading...",
+    "merging": "Merging images...",
+    "filterMinSize": "Min size (px)",
+    "filterType": "File type",
+    "allTypes": "All",
+    "copyUrl": "Copy URL",
+    "openOriginal": "View Original",
+    "downloadSingle": "Download",
+    "imageSize": "{width} × {height}",
+    "unknownSize": "Size unknown",
+    "loadError": "Load failed",
+    "fetchError": "Could not fetch the page. Please check the URL.",
+    "corsError": "This page is restricted due to CORS policy.",
+    "mergedFilename": "merged-images.png",
+    "zipFilename": "images.zip",
+    "recentUrls": "Recent URLs",
+    "clearHistory": "Clear History",
+    "imageCount": "Images",
+    "fileSize": "File size",
+    "dimensions": "Size",
+    "mergeGap": "Image gap",
+    "mergeBackground": "Background",
+    "mergeWidth": "Output width",
+    "previewMerge": "Merge Preview",
+    "viewDeduped": "Deduplicated",
+    "viewGrouped": "Grouped",
+    "viewAll": "All",
+    "dedupRemoved": "{count} duplicates removed",
+    "quickSelect": "Quick select",
+    "sizeXL": "800px+",
+    "sizeLG": "500px+",
+    "sizeMD": "200px+",
+    "sortSizeDesc": "Largest first",
+    "sortSizeAsc": "Smallest first",
+    "sortGroup": "Group by path",
+    "sortOriginal": "Original order",
+    "shiftClickHint": "Shift+click for range select",
+    "mergeOrderTitle": "Merge Order",
+    "mergeOrderHint": "Drag to reorder. Use arrow buttons to move items.",
+    "mergeAndDownload": "Merge & Download",
+    "guide": {
+      "title": "Image Scraper Guide",
+      "guide": {
+        "whatIs": {
+          "title": "What is Image Scraper?",
+          "description": "A tool that automatically collects all images (img, picture, og:image, etc.) from a given webpage URL. You can download collected images individually, as a ZIP bundle, or merge selected images vertically into a single long image."
+        },
+        "howToUse": {
+          "title": "How to Use",
+          "items": [
+            "Enter the URL of the webpage you want to scrape",
+            "Click the 'Scan Images' button",
+            "Select the images you want from the results",
+            "Choose ZIP download or vertical merge"
+          ]
+        },
+        "tips": {
+          "title": "Tips",
+          "items": [
+            "Use the minimum size filter to remove icons and 1x1 tracking pixels.",
+            "Vertical merge is great for capturing webtoons or product detail pages.",
+            "Some sites may be restricted due to CORS policies."
+          ]
+        },
+        "faq": {
+          "title": "FAQ",
+          "items": [
+            { "q": "Does it work on all sites?", "a": "It works on most sites, but some may block access due to CORS policies or JavaScript rendering methods." },
+            { "q": "Can I download copyrighted images?", "a": "Technically possible, but using copyrighted images without permission may cause legal issues. Use only for personal archiving." },
+            { "q": "What is the max size for vertical merge?", "a": "Due to browser Canvas limitations, it supports up to approximately 16,384px in height. Images beyond this limit will be automatically cropped." }
+          ]
+        }
       }
     }
   }

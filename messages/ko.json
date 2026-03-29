@@ -2205,6 +2205,7 @@
       "gifMaker": "GIF 메이커",
       "backgroundRemover": "이미지 배경 제거",
       "collageMaker": "사진 콜라주",
+      "imageScraper": "이미지 스크래퍼",
       "fifteenPuzzle": "15퍼즐",
       "flappyBird": "플래피버드",
       "hangman": "단어 맞추기",
@@ -2218,6 +2219,7 @@
       "orderPicker": "순서정하기",
       "menuRoulette": "메뉴 추천 룰렛",
       "csVisualizer": "CS 개념 시각화",
+      "csQuiz": "CS 기초 퀴즈",
       "housingSubscription": "청약가점 계산기",
       "capitalGainsTax": "양도소득세 계산기",
       "militaryDischarge": "전역일 계산기",
@@ -2256,7 +2258,12 @@
       "ovulationCalculator": "배란일 계산기",
       "csatGrade": "수능 등급컷 계산기",
       "enneagram": "에니어그램 테스트",
-      "bonusCalculator": "성과급 계산기"
+      "bonusCalculator": "성과급 계산기",
+      "governmentSubsidy": "정부지원금 자격 계산기",
+      "youthRentSubsidy": "청년월세지원 계산기",
+      "evSubsidy": "전기차 보조금 계산기",
+      "childBenefit": "부모급여·아동수당 계산기",
+      "jeonseChecklist": "전세사기 체크리스트"
     },
     "copyright": "© 2025-2026 툴허브. All rights reserved."
   },
@@ -5399,6 +5406,10 @@
         "title": "사진 콜라주",
         "description": "여러 사진을 다양한 레이아웃으로 합쳐 콜라주 이미지 생성"
       },
+      "imageScraper": {
+        "title": "이미지 스크래퍼",
+        "description": "웹페이지의 모든 이미지를 수집하고 일괄 다운로드"
+      },
       "fifteenPuzzle": {
         "title": "15퍼즐",
         "description": "슬라이딩 타일 퍼즐 - 숫자를 순서대로 정렬하세요"
@@ -5450,6 +5461,10 @@
       "csVisualizer": {
         "title": "CS 개념 시각화",
         "description": "Git, CPU, 네트워크, ML 등 10개 CS 핵심 개념을 인터랙티브 시각화로 학습"
+      },
+      "csQuiz": {
+        "title": "CS 기초 퀴즈",
+        "description": "10개 분야 250문제로 CS 기본기 완성 — 자료구조·알고리즘·네트워크·OS·DB·컴퓨터구조·SW공학·보안·리눅스·웹"
       },
       "housingSubscription": {
         "title": "청약가점 계산기",
@@ -5606,6 +5621,26 @@
       "bonusCalculator": {
         "title": "성과급 계산기",
         "description": "성과급·인센티브 세후 실수령액 계산, 비율별 시뮬레이션, 세금 분석"
+      },
+      "governmentSubsidy": {
+        "title": "정부지원금 자격 계산기",
+        "description": "가구 소득·재산 입력으로 수급 가능한 정부지원금 10개+ 한번에 확인"
+      },
+      "youthRentSubsidy": {
+        "title": "청년월세지원 계산기",
+        "description": "청년월세 한시 특별지원 자격 판정, 예상 지원금액, 신청 절차 안내"
+      },
+      "evSubsidy": {
+        "title": "전기차 보조금 계산기",
+        "description": "전기차 국비·지방비 보조금 합산 계산, 차종별 보조금액, 지역별 차이 비교"
+      },
+      "childBenefit": {
+        "title": "부모급여·아동수당 계산기",
+        "description": "부모급여(0~1세), 아동수당(0~8세), 양육수당 통합 계산, 월별 수령액 시뮬레이션"
+      },
+      "jeonseChecklist": {
+        "title": "전세사기 체크리스트",
+        "description": "전세 계약 전 필수 확인 항목 20개+, 위험도 점수, 안전 가이드"
       }
     }
   },
@@ -34455,16 +34490,46 @@
     },
     "algorithmLink": "알고리즘 시각화 55개도 확인해보세요",
     "items": {
-      "gitVisualizer": { "title": "Git 시각화", "description": "branch, merge, rebase, cherry-pick을 인터랙티브 커밋 그래프로 이해" },
-      "cpuScheduling": { "title": "CPU 스케줄링", "description": "FCFS, SJF, Round Robin 등 스케줄링 알고리즘을 간트 차트로 비교" },
-      "memoryManagement": { "title": "메모리 관리", "description": "FIFO, LRU, LFU, Optimal 페이지 교체를 프레임 테이블로 학습" },
-      "tcpHandshake": { "title": "TCP 핸드셰이크", "description": "3-way Handshake SYN/ACK 패킷 교환 과정 애니메이션" },
-      "dnsLookup": { "title": "DNS 조회", "description": "브라우저→캐시→리졸버→루트→TLD→권한서버 조회 흐름 시각화" },
-      "neuralNetwork": { "title": "신경망", "description": "순전파/역전파 과정을 뉴런 단위로 시각화하며 딥러닝 학습" },
-      "gradientDescent": { "title": "경사하강법", "description": "SGD/Momentum/Adam/RMSProp 옵티마이저 등고선 경로 비교" },
-      "kmeansClustering": { "title": "K-means 클러스터링", "description": "점들이 K개 군집으로 모이는 과정을 단계별 애니메이션" },
-      "decisionTree": { "title": "의사결정 트리", "description": "엔트로피/지니 기반 데이터 분할로 트리 생성 과정 학습" },
-      "regexEngine": { "title": "정규표현식 엔진", "description": "regex 패턴 토큰 분해 + 문자별 매칭 과정 시각화" }
+      "gitVisualizer": {
+        "title": "Git 시각화",
+        "description": "branch, merge, rebase, cherry-pick을 인터랙티브 커밋 그래프로 이해"
+      },
+      "cpuScheduling": {
+        "title": "CPU 스케줄링",
+        "description": "FCFS, SJF, Round Robin 등 스케줄링 알고리즘을 간트 차트로 비교"
+      },
+      "memoryManagement": {
+        "title": "메모리 관리",
+        "description": "FIFO, LRU, LFU, Optimal 페이지 교체를 프레임 테이블로 학습"
+      },
+      "tcpHandshake": {
+        "title": "TCP 핸드셰이크",
+        "description": "3-way Handshake SYN/ACK 패킷 교환 과정 애니메이션"
+      },
+      "dnsLookup": {
+        "title": "DNS 조회",
+        "description": "브라우저→캐시→리졸버→루트→TLD→권한서버 조회 흐름 시각화"
+      },
+      "neuralNetwork": {
+        "title": "신경망",
+        "description": "순전파/역전파 과정을 뉴런 단위로 시각화하며 딥러닝 학습"
+      },
+      "gradientDescent": {
+        "title": "경사하강법",
+        "description": "SGD/Momentum/Adam/RMSProp 옵티마이저 등고선 경로 비교"
+      },
+      "kmeansClustering": {
+        "title": "K-means 클러스터링",
+        "description": "점들이 K개 군집으로 모이는 과정을 단계별 애니메이션"
+      },
+      "decisionTree": {
+        "title": "의사결정 트리",
+        "description": "엔트로피/지니 기반 데이터 분할로 트리 생성 과정 학습"
+      },
+      "regexEngine": {
+        "title": "정규표현식 엔진",
+        "description": "regex 패턴 토큰 분해 + 문자별 매칭 과정 시각화"
+      }
     }
   },
   "slidingWindowVisualizer": {
@@ -34556,6 +34621,832 @@
             "a": "연속 부분배열/부분문자열의 최대/최소/특정 조건을 만족하는 구간을 구하는 문제에 적합합니다."
           }
         ]
+      }
+    }
+  },
+  "governmentSubsidy": {
+    "title": "정부지원금 통합 자격 계산기",
+    "description": "가구 정보를 입력하면 수급 가능한 정부지원금을 한번에 확인할 수 있습니다.",
+    "householdSize": "가구원 수",
+    "householdSizeUnit": "명",
+    "monthlyIncome": "월 가구소득",
+    "monthlyIncomeDesc": "세전 근로소득 + 사업소득 + 재산소득 등 합계",
+    "totalAssets": "총 재산",
+    "totalAssetsDesc": "부동산 + 금융자산 + 자동차 등 합산",
+    "age": "신청자 나이",
+    "ageUnit": "세",
+    "housingType": "주거 형태",
+    "housingTypes": {
+      "jeonse": "전세",
+      "monthly": "월세",
+      "owned": "자가",
+      "etc": "기타(기숙사 등)"
+    },
+    "monthlyRent": "월세 금액",
+    "deposit": "보증금",
+    "hasChildren": "미성년 자녀 유무",
+    "childCount": "자녀 수",
+    "childCountUnit": "명",
+    "isSingleParent": "한부모 가정",
+    "isDisabled": "장애인 가구원 포함",
+    "isElderly": "65세 이상 가구원 포함",
+    "yes": "예",
+    "no": "아니오",
+    "calculate": "자격 확인하기",
+    "reset": "초기화",
+    "resultTitle": "지원금 자격 확인 결과",
+    "eligible": "수급 가능",
+    "notEligible": "해당 없음",
+    "borderline": "경계 (추가 확인 필요)",
+    "estimatedAmount": "예상 지원금액",
+    "perMonth": "월",
+    "perYear": "연",
+    "lumpSum": "일시금",
+    "eligibilityCondition": "자격 조건",
+    "incomeRequirement": "소득 기준",
+    "assetRequirement": "재산 기준",
+    "ageRequirement": "나이 기준",
+    "howToApply": "신청 방법",
+    "requiredDocs": "필요 서류",
+    "applicationPeriod": "신청 기간",
+    "officialSite": "공식 사이트",
+    "medianIncomePercent": "중위소득 대비",
+    "medianIncomeRef": "2026년 기준 중위소득",
+    "summaryTitle": "종합 요약",
+    "summaryEligibleCount": "수급 가능 프로그램",
+    "summaryTotalMonthly": "월 예상 총 지원금",
+    "summaryTotalYearly": "연 예상 총 지원금",
+    "programs": {
+      "basicLiving": "기초생활보장 생계급여",
+      "basicLivingDesc": "중위소득 32% 이하 가구에 생계비 지원",
+      "medicalAid": "기초생활보장 의료급여",
+      "medicalAidDesc": "중위소득 40% 이하 가구에 의료비 지원",
+      "housingBenefit": "기초생활보장 주거급여",
+      "housingBenefitDesc": "중위소득 48% 이하 가구에 임차료/수선비 지원",
+      "educationBenefit": "기초생활보장 교육급여",
+      "educationBenefitDesc": "중위소득 50% 이하 가구에 교육비 지원",
+      "childAllowance": "자녀장려금",
+      "childAllowanceDesc": "18세 미만 자녀가 있는 저소득 가구에 장려금 지원",
+      "eitc": "근로장려금 (EITC)",
+      "eitcDesc": "저소득 근로자·사업자에게 근로장려금 지원",
+      "basicPension": "기초연금",
+      "basicPensionDesc": "65세 이상 소득 하위 70%에 월 최대 33.4만원 지원",
+      "youthRent": "청년월세 한시 특별지원",
+      "youthRentDesc": "만 19~34세 무주택 청년에게 월 최대 20만원 지원",
+      "singleParent": "한부모가족 양육비",
+      "singleParentDesc": "한부모가족 자녀 양육비 월 20만원+ 지원",
+      "youthSavings": "청년내일저축계좌",
+      "youthSavingsDesc": "저소득 청년이 매월 10만원 저축 시 정부가 매칭 적립",
+      "emergencyWelfare": "긴급복지지원",
+      "emergencyWelfareDesc": "위기 상황 시 생계·의료·주거비 긴급 지원",
+      "disabledAllowance": "장애인연금",
+      "disabledAllowanceDesc": "중증장애인에게 월 최대 40.3만원 지원"
+    },
+    "disclaimer": "※ 본 결과는 2026년 기준 참고용이며, 실제 수급 여부는 관할 주민센터 또는 복지로에서 확인하세요.",
+    "guide": {
+      "title": "가이드",
+      "whatIs": {
+        "title": "정부지원금 통합 자격 계산기란?",
+        "description": "가구의 소득, 재산, 가구원 정보를 입력하면 수급 가능한 12개 이상의 정부지원금 프로그램을 한번에 확인할 수 있는 도구입니다. 기초생활보장(생계/의료/주거/교육), 근로·자녀장려금, 기초연금, 청년월세지원 등을 포괄합니다."
+      },
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "가구원 수, 월 소득, 총 재산을 입력합니다",
+          "신청자 나이, 주거 형태(전세/월세/자가)를 선택합니다",
+          "해당하는 경우 자녀 수, 한부모 여부, 장애 여부를 체크합니다",
+          "'자격 확인하기' 버튼을 클릭하면 12개+ 프로그램의 수급 가능 여부와 예상 금액이 표시됩니다",
+          "각 프로그램의 신청 방법과 공식 사이트 링크를 확인하세요"
+        ]
+      },
+      "tips": {
+        "title": "알아두면 좋은 팁",
+        "items": [
+          "소득은 세전 기준(근로소득 + 사업소득 + 재산소득)으로 입력하세요",
+          "재산은 부동산 시가 + 금융자산 + 자동차 시가의 합산입니다",
+          "여러 프로그램을 동시에 수급할 수 있으니 모든 결과를 확인하세요",
+          "경계(borderline) 판정 시 관할 주민센터에 직접 문의하면 정확합니다",
+          "복지로(bokjiro.go.kr)에서 온라인 신청이 가능합니다"
+        ]
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "items": [
+          {
+            "q": "중위소득이 뭔가요?",
+            "a": "전체 가구를 소득순으로 줄 세웠을 때 정확히 중간에 해당하는 소득입니다. 2026년 4인 가구 중위소득은 약 609만원입니다."
+          },
+          {
+            "q": "여러 지원금을 동시에 받을 수 있나요?",
+            "a": "네, 자격 조건이 다르므로 여러 프로그램을 동시 수급할 수 있습니다. 다만 일부 프로그램은 중복 수급이 제한될 수 있습니다."
+          },
+          {
+            "q": "재산 기준은 어떻게 산정하나요?",
+            "a": "부동산(시가 기준) + 금융자산(예금, 주식 등) + 자동차 시가 + 기타 재산을 합산합니다. 부채는 일부 차감됩니다."
+          }
+        ]
+      }
+    }
+  },
+  "youthRentSubsidy": {
+    "title": "청년월세 한시 특별지원 계산기",
+    "description": "청년월세 한시 특별지원 자격 여부와 예상 지원금을 확인하세요.",
+    "age": "만 나이",
+    "ageUnit": "세",
+    "birthYear": "출생연도",
+    "birthMonth": "출생월",
+    "independentHousehold": "독립 거주 여부",
+    "independentDesc": "부모와 별도 주소지에서 거주 중",
+    "homeOwnership": "주택 소유 여부",
+    "noHome": "무주택",
+    "hasHome": "주택 소유",
+    "monthlyIncome": "본인 월 소득",
+    "monthlyIncomeDesc": "세전 근로소득 + 사업소득 합계",
+    "householdIncome": "원가구(부모) 월 소득",
+    "householdIncomeDesc": "부모님 가구의 월 소득 합계",
+    "householdSize": "원가구 가구원 수",
+    "householdSizeUnit": "명",
+    "personalAssets": "본인 총 재산",
+    "personalAssetsDesc": "부동산 + 금융자산 + 자동차 시가 합계",
+    "currentRent": "현재 월세",
+    "currentDeposit": "현재 보증금",
+    "housingType": "주거 유형",
+    "housingTypes": {
+      "officetel": "오피스텔",
+      "oneRoom": "원룸/투룸",
+      "apartment": "아파트/빌라",
+      "gosiwon": "고시원/기숙사",
+      "sharehouse": "셰어하우스"
+    },
+    "yes": "예",
+    "no": "아니오",
+    "check": "자격 확인하기",
+    "reset": "초기화",
+    "resultTitle": "청년월세 지원 자격 확인 결과",
+    "eligible": "지원 대상",
+    "notEligible": "지원 대상 아님",
+    "borderline": "경계 (추가 확인 필요)",
+    "estimatedMonthly": "예상 월 지원금",
+    "estimatedTotal": "예상 총 지원금 (12개월)",
+    "maxSupport": "최대 월 20만원",
+    "supportPeriod": "지원 기간: 최대 12개월",
+    "checklistTitle": "자격 요건 체크리스트",
+    "conditions": {
+      "ageRange": "만 19~34세",
+      "independent": "독립 거주 (부모와 별도 주소지)",
+      "noHomeOwner": "무주택자",
+      "incomeBelow": "본인 소득 중위소득 60% 이하",
+      "householdIncomeBelow": "원가구 소득 중위소득 100% 이하",
+      "assetBelow": "본인 재산 1.22억원 이하",
+      "rentRange": "월세 및 보증금 기준 충족"
+    },
+    "pass": "충족",
+    "fail": "미충족",
+    "applicationInfo": "신청 안내",
+    "howToApply": "신청 방법",
+    "applyMethods": [
+      "복지로(bokjiro.go.kr) 온라인 신청",
+      "주민등록 주소지 관할 주민센터 방문 신청",
+      "정부24(gov.kr) 온라인 신청"
+    ],
+    "requiredDocs": "필요 서류",
+    "docsList": [
+      "신분증 (주민등록증 또는 운전면허증)",
+      "임대차계약서 사본",
+      "월세 이체 내역 (최근 3개월)",
+      "소득증명원 (국세청 발급)",
+      "주민등록등본",
+      "가족관계증명서"
+    ],
+    "disclaimer": "※ 본 결과는 2026년 기준 참고용이며, 실제 수급 여부는 복지로 또는 주민센터에서 확인하세요.",
+    "medianIncomeRef": "2026년 기준 중위소득",
+    "guide": {
+      "title": "가이드",
+      "whatIs": {
+        "title": "청년월세 한시 특별지원이란?",
+        "description": "만 19~34세 무주택 독립거주 청년에게 월 최대 20만원씩 최대 12개월(총 240만원)간 월세를 지원하는 정부 사업입니다. 부모 소득과 본인 소득·재산을 모두 확인하여 자격을 판정합니다."
+      },
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "만 나이와 독립 거주 여부를 입력합니다",
+          "본인 소득·재산과 부모 가구 소득을 입력합니다",
+          "현재 월세와 보증금을 입력합니다",
+          "'자격 확인하기' 버튼을 클릭하면 7개 조건별 충족 여부와 예상 지원금이 표시됩니다",
+          "미충족 조건이 있으면 해당 조건을 확인하고 보완할 수 있는지 검토하세요"
+        ]
+      },
+      "tips": {
+        "title": "알아두면 좋은 팁",
+        "items": [
+          "월세 20만원 미만이면 실제 월세 금액만큼만 지원됩니다",
+          "보증금 5천만원 이하 + 월세 70만원 이하가 주거비 기준입니다",
+          "부모와 같은 주소지면 독립거주로 인정되지 않습니다",
+          "소득은 건강보험료 기준으로 산정되므로 건보료 납부 확인서가 유용합니다",
+          "신청 후 약 1~2개월 내 결과가 통보됩니다"
+        ]
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "items": [
+          {
+            "q": "기존에 청년월세를 받았는데 다시 신청 가능한가요?",
+            "a": "이전 수급 이력이 있으면 잔여 기간만큼만 추가 지원받을 수 있습니다. 총 12개월을 초과할 수 없습니다."
+          },
+          {
+            "q": "고시원/기숙사도 지원 대상인가요?",
+            "a": "임대차계약서가 있는 고시원은 대상이지만, 학교 기숙사는 일반적으로 제외됩니다."
+          },
+          {
+            "q": "부모님 소득은 왜 확인하나요?",
+            "a": "청년의 실질적 경제 상황을 파악하기 위해 원가구(부모) 소득도 함께 확인합니다. 부모 소득이 중위소득 100% 이하여야 합니다."
+          }
+        ]
+      }
+    }
+  },
+  "evSubsidy": {
+    "title": "전기차 보조금 계산기",
+    "description": "전기차 구매 시 받을 수 있는 국비·지방비 보조금을 차종과 지역별로 계산합니다.",
+    "vehicleInfo": "차량 정보 입력",
+    "vehicleType": "차량 유형",
+    "typePassenger": "승용차",
+    "typeSuv": "SUV",
+    "typeTruck": "소형 화물차",
+    "typeVan": "승합차",
+    "vehiclePrice": "차량 가격",
+    "unitMwan": "만원",
+    "priceUnder55": "5,500만원 미만",
+    "price5585": "5,500~8,500만원",
+    "priceOver85": "8,500만원 이상",
+    "gateFullLabel": "(보조금 100%)",
+    "gate50Label": "(보조금 50%)",
+    "gate0Label": "(보조금 없음)",
+    "drivingRange": "1회 충전 주행거리",
+    "batteryCapacity": "배터리 용량",
+    "region": "등록 지역",
+    "regionSeoul": "서울",
+    "regionBusan": "부산",
+    "regionDaegu": "대구",
+    "regionIncheon": "인천",
+    "regionGwangju": "광주",
+    "regionDaejeon": "대전",
+    "regionUlsan": "울산",
+    "regionSejong": "세종",
+    "regionGyeonggi": "경기",
+    "regionGangwon": "강원",
+    "regionChungbuk": "충북",
+    "regionChungnam": "충남",
+    "regionJeonbuk": "전북",
+    "regionJeonnam": "전남",
+    "regionGyeongbuk": "경북",
+    "regionGyeongnam": "경남",
+    "regionJeju": "제주",
+    "calculate": "보조금 계산하기",
+    "reset": "초기화",
+    "popularModels": "인기 차종 빠른 입력",
+    "model_ioniq5": "현대 아이오닉5",
+    "model_ioniq6": "현대 아이오닉6",
+    "model_ev6": "기아 EV6",
+    "model_ev9": "기아 EV9",
+    "model_rayEv": "기아 레이 EV",
+    "model_model3": "테슬라 모델3",
+    "model_modelY": "테슬라 모델Y",
+    "model_gv60": "제네시스 GV60",
+    "subsidySummary": "보조금 계산 결과",
+    "nationalSubsidy": "국비 보조금",
+    "localSubsidy": "지방비 보조금",
+    "totalSubsidy": "총 보조금",
+    "finalPrice": "실 구매가격",
+    "performanceBreakdown": "성능 평가 상세",
+    "priceGate": "가격 기준 지급률",
+    "rangeScore": "주행거리 점수",
+    "efficiencyScore": "에너지 효율 점수",
+    "batteryScore": "배터리 용량 점수",
+    "overallPerformance": "종합 성능 비율",
+    "resultPlaceholder": "차량 정보를 입력하고 계산하기 버튼을 눌러주세요",
+    "regionComparisonTitle": "지역별 보조금 비교",
+    "selected": "선택됨",
+    "enterInfoFirst": "차량 정보를 먼저 입력해 주세요",
+    "modelsComparisonTitle": "인기 차종별 보조금 비교",
+    "regionLabel": "지역",
+    "model": "차종",
+    "price": "차량 가격",
+    "guide": {
+      "title": "가이드",
+      "whatIs": {
+        "title": "전기차 보조금이란?",
+        "description": "전기차 구매 시 정부(국비)와 지방자치단체(지방비)가 차량 가격의 일부를 지원하는 제도입니다. 2026년 기준 국비 최대 680만원 + 지역별 지방비(300~1,100만원)를 받을 수 있으며, 차량 가격·성능·배터리 용량에 따라 보조금이 달라집니다."
+      },
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "차량 유형(승용/SUV/화물)과 가격대를 선택합니다",
+          "배터리 용량과 주행거리를 입력합니다 (차량 스펙 참조)",
+          "등록할 지역을 선택합니다 (지방비가 지역마다 다름)",
+          "'보조금 계산하기'를 클릭하면 국비+지방비 총 보조금이 표시됩니다",
+          "지역별 비교와 인기 차종별 보조금도 확인하세요"
+        ]
+      },
+      "tips": {
+        "title": "알아두면 좋은 팁",
+        "items": [
+          "차량 가격 5,500만원 미만이면 보조금 100%, 5,500~8,500만원이면 50%만 지원됩니다",
+          "8,500만원 이상 차량은 보조금 대상이 아닙니다",
+          "제주도가 지방비 보조금이 가장 높고, 서울이 상대적으로 낮습니다",
+          "보조금 예산이 한정되어 있으므로 연초에 신청하는 것이 유리합니다",
+          "무공해차 통합누리집(ev.or.kr)에서 온라인 신청 가능합니다"
+        ]
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "items": [
+          {
+            "q": "보조금을 받으면 바로 팔 수 있나요?",
+            "a": "보조금을 받은 차량은 2년간 의무 운행해야 합니다. 2년 이내 매각 시 보조금을 반환해야 합니다."
+          },
+          {
+            "q": "법인도 보조금을 받을 수 있나요?",
+            "a": "네, 개인과 법인 모두 신청 가능합니다. 다만 법인은 지자체에 따라 대수 제한이 있을 수 있습니다."
+          },
+          {
+            "q": "보조금은 언제 소진되나요?",
+            "a": "지역마다 다르지만 인기 지역은 상반기에 소진되는 경우가 많습니다. 무공해차 통합누리집에서 잔여 현황을 확인하세요."
+          }
+        ]
+      }
+    }
+  },
+  "childBenefit": {
+    "title": "부모급여·아동수당 계산기",
+    "description": "자녀 나이에 따른 부모급여, 아동수당, 양육수당을 한번에 계산합니다.",
+    "hero": {
+      "parentPay": "부모급여",
+      "parentPayAmount": "월 최대 100만원",
+      "parentPaySub": "만 0세 기준 (2026년)",
+      "childAllowance": "아동수당",
+      "childAllowanceAmount": "월 10만원",
+      "childAllowanceSub": "만 0~8세 전 아동 지급",
+      "welcomeGrant": "첫만남이용권",
+      "welcomeGrantAmount": "200만원",
+      "welcomeGrantSub": "출생 시 1회 바우처"
+    },
+    "inputTitle": "자녀 정보 입력",
+    "childLabel": "{n}번째 자녀",
+    "removeChild": "삭제",
+    "birthDate": "생년월",
+    "selectYear": "년도 선택",
+    "year": "년",
+    "selectMonth": "월 선택",
+    "month": "월",
+    "usesDaycare": "어린이집 이용",
+    "addChild": "자녀 추가",
+    "calculate": "수당 계산하기",
+    "reset": "초기화",
+    "summaryTitle": "월·연 수령액 합계",
+    "monthlyTotal": "월 합계 수령액",
+    "yearlyTotal": "연 합계 수령액",
+    "perMonth": "매월",
+    "perYear": "연간",
+    "detailTitle": "자녀별 상세 내역",
+    "parentPayLabel": "부모급여",
+    "childAllowanceLabel": "아동수당",
+    "childcareAllowanceLabel": "양육수당",
+    "monthSuffix": "{amount}/월",
+    "daycareNote": "어린이집 보육료 {amount}/월 지원 (바우처)",
+    "applyTitle": "신청 안내",
+    "applyMethods": [
+      "정부24(gov.kr) 온라인 신청",
+      "주민센터 방문 신청",
+      "복지로(bokjiro.go.kr) 온라인 신청",
+      "행복출산 원스톱 서비스 (출생신고 시 일괄 신청)"
+    ],
+    "placeholder": "자녀 정보를 입력하고 계산 버튼을 눌러주세요",
+    "timelineTitle": "연령별 수당 타임라인",
+    "timelineSub": "어린이집 미이용 기준, 출생~만 8세까지 월 수령액",
+    "cumulativeTitle": "출생~만 8세 누적 총 수령액 (첫만남이용권 포함)",
+    "cumulativeSub": "어린이집 미이용 가정양육 기준 예상 누적액",
+    "guide": {
+      "title": "가이드",
+      "whatIs": {
+        "title": "부모급여·아동수당이란?",
+        "description": "자녀를 양육하는 가정에 정부가 지급하는 현금성 지원금입니다. 부모급여(만 0세 월 100만원, 만 1세 월 50만원), 아동수당(만 0~8세 월 10만원), 양육수당(어린이집 미이용 시)을 포함하며, 출생 시 첫만남이용권 200만원도 받을 수 있습니다."
+      },
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "자녀의 생년월일 또는 나이를 입력합니다",
+          "자녀가 여러 명이면 '자녀 추가' 버튼으로 추가합니다",
+          "어린이집 이용 여부를 선택합니다 (양육수당 vs 보육료)",
+          "'수당 계산하기'를 클릭하면 월·연 수령액이 표시됩니다",
+          "연령별 타임라인에서 출생~만 8세까지 받을 수 있는 총액을 확인하세요"
+        ]
+      },
+      "tips": {
+        "title": "알아두면 좋은 팁",
+        "items": [
+          "부모급여와 양육수당은 동시에 받을 수 없습니다 (차액만 지급)",
+          "아동수당은 소득 무관 모든 가정에 지급됩니다",
+          "출생신고 시 '행복출산 원스톱 서비스'로 한번에 신청하면 편리합니다",
+          "어린이집 이용 시 양육수당 대신 보육료 지원을 받습니다",
+          "첫만남이용권은 출생 후 1년 이내에 사용해야 합니다"
+        ]
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "items": [
+          {
+            "q": "부모급여는 아빠도 받을 수 있나요?",
+            "a": "네, 부모급여는 양육자 기준이므로 아빠가 양육하는 경우에도 받을 수 있습니다."
+          },
+          {
+            "q": "맞벌이도 부모급여를 받나요?",
+            "a": "네, 소득과 관계없이 만 0~1세 자녀가 있는 모든 가정이 대상입니다."
+          },
+          {
+            "q": "아동수당은 언제까지 받나요?",
+            "a": "만 8세(96개월) 생일 전 달까지 매월 지급됩니다."
+          }
+        ]
+      }
+    }
+  },
+  "jeonseChecklist": {
+    "title": "전세사기 체크리스트",
+    "description": "전세 계약 전 반드시 확인해야 할 항목들을 체크하고 위험도를 평가합니다.",
+    "propertyInfo": "물건 정보",
+    "addressLabel": "물건 주소",
+    "addressPlaceholder": "예: 서울시 강남구 역삼동 123-45",
+    "depositLabel": "전세보증금",
+    "depositUnit": "만원",
+    "contractDateLabel": "계약 예정일",
+    "riskScoreTitle": "위험도 점수",
+    "scoreDetail": "총 가중치 {earned} / {total}",
+    "contactsTitle": "긴급 연락처",
+    "copiedLabel": "복사됨!",
+    "shareLabel": "결과 공유",
+    "printLabel": "인쇄하기",
+    "resetLabel": "초기화",
+    "dangerBannerTitle": "심각한 위험 요소가 감지되었습니다",
+    "dangerBannerDesc": "핵심 안전 항목이 미확인 상태입니다. 계약을 재고하고 전문가 상담을 받으세요.",
+    "checkedCount": "확인 완료",
+    "toggleAriaLabel": "항목 상세 보기",
+    "weightLabel": "중요도",
+    "stateChecked": "확인 완료",
+    "stateUnchecked": "미확인",
+    "stateNa": "해당 없음",
+    "checklistTitle": "체크리스트",
+    "categories": {
+      "registry": "등기부등본 확인",
+      "landlord": "임대인 확인",
+      "property": "물건 상태 확인",
+      "contract": "계약 조건 확인",
+      "insurance": "안전장치 확인"
+    },
+    "items": {
+      "ownerMatch": "등기부등본 소유자와 계약자가 동일인",
+      "ownerMatchDesc": "대리인 계약 시 위임장·인감증명 필수 확인",
+      "noMortgage": "근저당·가압류 등 권리관계 깨끗",
+      "noMortgageDesc": "근저당 설정액이 집값의 60% 초과 시 위험",
+      "noAuction": "경매·압류 진행 중 아님",
+      "noAuctionDesc": "대법원 경매정보 사이트에서 확인",
+      "taxPaid": "임대인 세금 체납 없음",
+      "taxPaidDesc": "국세·지방세 완납증명서 요청",
+      "landlordCredit": "임대인 신용 상태 양호",
+      "landlordCreditDesc": "임대인에게 직접 확인 어려우면 여러 물건 보유 여부 체크",
+      "multiProperty": "임대인 다수 물건 소유 여부 확인",
+      "multiPropertyDesc": "동일인이 다수 물건을 전세로 내놓으면 위험 신호",
+      "actualVisit": "현장 방문 확인 완료",
+      "actualVisitDesc": "실제 물건 상태, 하자, 누수 등 직접 확인",
+      "buildingCondition": "건물 상태 양호 (노후도 확인)",
+      "buildingConditionDesc": "준공일 확인, 20년 이상 노후 건물은 주의",
+      "neighborhoodCheck": "주변 시세 확인",
+      "neighborhoodCheckDesc": "국토교통부 실거래가, KB부동산에서 시세 대비 전세가 비율 확인",
+      "gapRatio": "전세가율 80% 미만",
+      "gapRatioDesc": "전세가 ÷ 매매가 비율이 80% 이상이면 깡통전세 위험",
+      "specialConditions": "특약사항 명시",
+      "specialConditionsDesc": "보증금 반환 시기, 원상복구 범위, 중도해지 조건 등",
+      "moveInDate": "입주일·잔금일 명확",
+      "moveInDateDesc": "전입신고와 확정일자를 입주 당일 반드시 받아야 함",
+      "realEstateAgent": "공인중개사 정상 등록 확인",
+      "realEstateAgentDesc": "국가공간정보포털에서 중개사 등록 여부 확인",
+      "depositInsurance": "전세보증보험 가입 가능 여부",
+      "depositInsuranceDesc": "HUG·SGI·HF 전세보증보험 가입 가능 확인 (가장 중요!)",
+      "moveInReport": "전입신고 + 확정일자 계획",
+      "moveInReportDesc": "입주 당일 전입신고 + 확정일자 → 대항력 확보",
+      "priorityDeposit": "우선변제권 확보 계획",
+      "priorityDepositDesc": "소액보증금 우선변제 기준 확인 (지역별 상이)"
+    },
+    "riskScore": "위험도 점수",
+    "riskLevels": {
+      "safe": "안전",
+      "caution": "주의",
+      "warning": "경고",
+      "danger": "위험"
+    },
+    "riskSafeDesc": "대부분의 안전 조건을 충족합니다",
+    "riskCautionDesc": "일부 미확인 항목이 있습니다. 추가 확인이 필요합니다",
+    "riskWarningDesc": "위험 요소가 있습니다. 전문가 상담을 권장합니다",
+    "riskDangerDesc": "심각한 위험 요소가 있습니다. 계약을 재고하세요",
+    "checked": "확인 완료",
+    "unchecked": "미확인",
+    "notApplicable": "해당 없음",
+    "totalItems": "전체 항목",
+    "saveResult": "결과 저장",
+    "shareResult": "결과 공유",
+    "printResult": "인쇄하기",
+    "reset": "초기화",
+    "emergencyContacts": "긴급 연락처",
+    "contacts": {
+      "hug": "주택도시보증공사(HUG)",
+      "hugDesc": "전세보증보험 상담 및 가입",
+      "lh": "한국토지주택공사(LH)",
+      "lhDesc": "공공임대주택 및 전세자금 상담",
+      "police": "경찰청",
+      "policeDesc": "전세사기 신고 및 피해 접수",
+      "legalAid": "대한법률구조공단",
+      "legalAidDesc": "무료 법률 상담 및 소송 지원"
+    },
+    "guide": {
+      "title": "가이드",
+      "whatIs": {
+        "title": "전세사기 체크리스트란?",
+        "description": "전세 계약 전 반드시 확인해야 할 20개 이상의 핵심 항목을 체계적으로 점검하는 도구입니다. 등기부등본 확인, 임대인 신용, 전세가율, 보증보험 가입 가능 여부 등을 체크하고 위험도 점수를 산출하여 안전한 전세 계약을 도와줍니다."
+      },
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "물건 주소와 전세보증금을 입력합니다",
+          "5개 카테고리(등기부, 임대인, 물건, 계약, 안전장치)의 체크항목을 하나씩 확인합니다",
+          "확인 완료/미확인/해당 없음으로 표시합니다",
+          "모든 항목을 체크하면 위험도 점수가 자동 계산됩니다",
+          "결과를 저장하거나 공유하여 전문가와 상담 시 활용하세요"
+        ]
+      },
+      "tips": {
+        "title": "알아두면 좋은 팁",
+        "items": [
+          "전세보증보험(HUG) 가입 가능 여부가 가장 중요한 안전장치입니다",
+          "전세가율(전세가÷매매가)이 80% 이상이면 깡통전세 위험이 높습니다",
+          "입주 당일 반드시 전입신고 + 확정일자를 받아야 대항력이 생깁니다",
+          "등기부등본은 계약 당일 다시 한번 확인하세요 (당일 변경 가능)",
+          "공인중개사가 아닌 개인 직거래는 더욱 신중해야 합니다"
+        ]
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "items": [
+          {
+            "q": "전세보증보험은 꼭 가입해야 하나요?",
+            "a": "법적 의무는 아니지만, 임대인이 보증금을 반환하지 않을 때 보험사가 대신 지급하므로 가입을 강력히 권장합니다. HUG, SGI, HF 중 선택 가능합니다."
+          },
+          {
+            "q": "깡통전세란 무엇인가요?",
+            "a": "전세보증금이 매매가에 근접하거나 초과하는 상태입니다. 집이 경매에 넘어가면 보증금을 돌려받지 못할 위험이 높습니다."
+          },
+          {
+            "q": "확정일자와 전입신고의 차이는?",
+            "a": "전입신고는 주민센터에 거주지를 등록하는 것이고, 확정일자는 계약서에 공증 날짜를 받는 것입니다. 둘 다 입주 당일에 해야 대항력과 우선변제권을 확보할 수 있습니다."
+          }
+        ]
+      }
+    }
+  },
+  "csQuiz": {
+    "title": "CS 기초 퀴즈",
+    "description": "5개 분야의 CS 기초 지식을 문제 풀이로 학습하세요.",
+    "selectCategory": "카테고리 선택",
+    "selectDifficulty": "난이도 선택",
+    "categories": {
+      "all": "전체",
+      "allDesc": "10개 분야 전체 문제",
+      "dataStructures": "자료구조",
+      "dataStructuresDesc": "배열, 스택, 큐, 트리, 해시테이블 등",
+      "algorithms": "알고리즘",
+      "algorithmsDesc": "정렬, 탐색, 시간복잡도, 재귀 등",
+      "network": "네트워크",
+      "networkDesc": "TCP/UDP, HTTP, DNS, OSI 7계층 등",
+      "networking": "네트워크",
+      "os": "운영체제",
+      "osDesc": "프로세스, 스레드, 메모리, 스케줄링 등",
+      "database": "데이터베이스",
+      "databaseDesc": "SQL, 정규화, 인덱스, 트랜잭션 등",
+      "architecture": "컴퓨터구조",
+      "architectureDesc": "CPU, 메모리 계층, 캐시, 파이프라인 등",
+      "softwareEngineering": "소프트웨어공학",
+      "softwareEngineeringDesc": "디자인패턴, SOLID, 애자일, 테스트 등",
+      "security": "보안",
+      "securityDesc": "암호화, 인증, OWASP, XSS/SQL인젝션 등",
+      "linux": "리눅스/시스템",
+      "linuxDesc": "명령어, 권한, 쉘스크립트, 프로세스 관리 등",
+      "web": "웹 기초",
+      "webDesc": "HTML/CSS/JS, 브라우저 렌더링, REST API 등"
+    },
+    "categoryDescriptions": {
+      "dataStructures": "배열, 스택, 큐, 트리, 해시테이블 등",
+      "algorithms": "정렬, 탐색, 시간복잡도, 재귀 등",
+      "network": "TCP/UDP, HTTP, DNS, OSI 7계층 등",
+      "networking": "TCP/UDP, HTTP, DNS, OSI 7계층 등",
+      "os": "프로세스, 스레드, 메모리, 스케줄링 등",
+      "database": "SQL, 정규화, 인덱스, 트랜잭션 등",
+      "architecture": "CPU, 메모리 계층, 캐시, 파이프라인 등",
+      "softwareEngineering": "디자인패턴, SOLID, 애자일, 테스트 등",
+      "security": "암호화, 인증, OWASP, XSS/SQL인젝션 등",
+      "linux": "명령어, 권한, 쉘스크립트, 프로세스 관리 등",
+      "web": "HTML/CSS/JS, 브라우저 렌더링, REST API 등"
+    },
+    "difficulties": {
+      "beginner": "입문",
+      "beginnerDesc": "CS 입문자를 위한 기본 개념",
+      "intermediate": "중급",
+      "intermediateDesc": "면접 대비 수준의 문제",
+      "advanced": "심화",
+      "advancedDesc": "심화 개념과 응용 문제"
+    },
+    "difficultyDescriptions": {
+      "beginner": "CS 입문자를 위한 기본 개념",
+      "intermediate": "면접 대비 수준의 문제",
+      "advanced": "심화 개념과 응용 문제"
+    },
+    "startQuiz": "퀴즈 시작",
+    "questionCount": "문제",
+    "questionOf": "{current} / {total}",
+    "nextQuestion": "다음 문제",
+    "prevQuestion": "이전 문제",
+    "submitQuiz": "결과 확인",
+    "correct": "정답!",
+    "incorrect": "오답",
+    "explanation": "해설",
+    "score": "점수",
+    "scoreResult": "{score} / {total}",
+    "percentage": "{percent}%",
+    "grade": "등급",
+    "grades": {
+      "A": "A (90점 이상)",
+      "B": "B (80점 이상)",
+      "C": "C (70점 이상)",
+      "D": "D (60점 이상)",
+      "F": "F (60점 미만)"
+    },
+    "gradeMessages": {
+      "A": "훌륭합니다! CS 기초가 탄탄하네요!",
+      "B": "잘했습니다! 조금만 더 공부하면 완벽해요.",
+      "C": "괜찮아요! 틀린 문제를 복습하면 금방 늘어요.",
+      "D": "기초부터 다시 정리해보세요.",
+      "F": "아직 갈 길이 멀어요. 꾸준히 공부해봅시다!"
+    },
+    "resultTitle": "퀴즈 결과",
+    "wrongAnswers": "오답 노트",
+    "wrongAnswersDesc": "틀린 문제를 다시 확인하세요",
+    "noWrongAnswers": "모든 문제를 맞혔습니다!",
+    "yourAnswer": "내 답",
+    "correctAnswer": "정답",
+    "retryQuiz": "다시 풀기",
+    "retryWrong": "오답만 다시 풀기",
+    "changeCategory": "다른 카테고리",
+    "shareResult": "결과 공유",
+    "copied": "복사됨!",
+    "timeSpent": "소요 시간",
+    "minutes": "분",
+    "seconds": "초",
+    "progressLabel": "진행률",
+    "allCategories": "전체",
+    "questionCountLabel": "{count}문제",
+    "answered": "답변 완료",
+    "unanswered": "미답변",
+    "questionsUnit": "문제",
+    "questionLabel": "문제",
+    "showResult": "결과 보기",
+    "correctLabel": "정답",
+    "incorrectLabel": "오답",
+    "unansweredLabel": "미답변",
+    "wrongReview": "오답 확인",
+    "perfectScore": "만점입니다! 축하합니다!",
+    "retry": "다시 풀기",
+    "otherCategory": "다른 카테고리",
+    "share": "결과 공유",
+    "time": "소요 시간",
+    "guide": {
+      "title": "가이드",
+      "whatIs": {
+        "title": "CS 기초 퀴즈란?",
+        "description": "컴퓨터 과학의 5대 핵심 분야(자료구조, 알고리즘, 네트워크, 운영체제, 데이터베이스)를 문제 풀이 형식으로 학습하는 도구입니다. 각 분야별 25문제, 총 125문제로 구성되어 있으며, 입문/중급/심화 3단계 난이도를 제공합니다."
+      },
+      "howToUse": {
+        "title": "사용 방법",
+        "items": [
+          "카테고리(자료구조/알고리즘/네트워크/OS/DB)를 선택합니다",
+          "난이도(입문/중급/심화)를 선택합니다",
+          "4지선다 문제를 순서대로 풀어갑니다",
+          "문제를 풀면 즉시 정답과 해설이 표시됩니다",
+          "모든 문제를 풀면 점수, 등급, 오답 노트를 확인할 수 있습니다"
+        ]
+      },
+      "tips": {
+        "title": "학습 팁",
+        "items": [
+          "입문부터 시작하여 기초 개념을 확실히 잡으세요",
+          "오답 노트의 해설을 꼼꼼히 읽으면 학습 효과가 높아집니다",
+          "같은 카테고리를 반복 풀면서 약점을 보완하세요",
+          "면접 준비라면 중급·심화 문제에 집중하세요",
+          "시간을 측정하면서 풀면 실전 감각도 기를 수 있습니다"
+        ]
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "items": [
+          { "q": "문제는 랜덤으로 출제되나요?", "a": "네, 같은 카테고리·난이도를 선택해도 문제 순서가 매번 랜덤으로 섞입니다." },
+          { "q": "면접 준비에 도움이 되나요?", "a": "네, 중급·심화 문제는 실제 기술 면접에서 자주 나오는 개념을 다루고 있습니다." },
+          { "q": "오답만 다시 풀 수 있나요?", "a": "네, 결과 화면에서 '오답만 다시 풀기' 버튼으로 틀린 문제만 재도전할 수 있습니다." }
+        ]
+      }
+    }
+  },
+  "imageScraper": {
+    "title": "이미지 스크래퍼",
+    "description": "웹페이지 URL을 입력하면 모든 이미지를 자동으로 수집합니다.",
+    "urlPlaceholder": "https://example.com 형태의 URL을 입력하세요",
+    "scan": "이미지 스캔",
+    "scanning": "스캔 중...",
+    "foundImages": "{count}개 이미지 발견",
+    "noImages": "이미지를 찾을 수 없습니다",
+    "selectAll": "전체 선택",
+    "deselectAll": "전체 해제",
+    "selected": "{count}개 선택됨",
+    "downloadZip": "ZIP 다운로드",
+    "downloadMerged": "세로 이미지로 합치기",
+    "downloading": "다운로드 중...",
+    "merging": "이미지 합치는 중...",
+    "filterMinSize": "최소 크기 (px)",
+    "filterType": "파일 형식",
+    "allTypes": "전체",
+    "copyUrl": "URL 복사",
+    "openOriginal": "원본 보기",
+    "downloadSingle": "다운로드",
+    "imageSize": "{width} × {height}",
+    "unknownSize": "크기 미확인",
+    "loadError": "로딩 실패",
+    "fetchError": "페이지를 가져올 수 없습니다. URL을 확인해주세요.",
+    "corsError": "CORS 제한으로 접근할 수 없는 페이지입니다.",
+    "mergedFilename": "merged-images.png",
+    "zipFilename": "images.zip",
+    "recentUrls": "최근 URL",
+    "clearHistory": "기록 삭제",
+    "imageCount": "이미지",
+    "fileSize": "파일 크기",
+    "dimensions": "크기",
+    "mergeGap": "이미지 간격",
+    "mergeBackground": "배경색",
+    "mergeWidth": "출력 너비",
+    "previewMerge": "합치기 미리보기",
+    "viewDeduped": "중복 제거",
+    "viewGrouped": "그룹별",
+    "viewAll": "전체",
+    "dedupRemoved": "중복 {count}개 제거",
+    "quickSelect": "빠른 선택",
+    "sizeXL": "800px+",
+    "sizeLG": "500px+",
+    "sizeMD": "200px+",
+    "sortSizeDesc": "크기 큰 순",
+    "sortSizeAsc": "크기 작은 순",
+    "sortGroup": "구역별 정렬",
+    "sortOriginal": "원본 순서",
+    "shiftClickHint": "Shift+클릭으로 범위 선택 가능",
+    "mergeOrderTitle": "합치기 순서",
+    "mergeOrderHint": "드래그하여 순서를 변경하세요. 화살표 버튼으로도 이동 가능합니다.",
+    "mergeAndDownload": "합치기 다운로드",
+    "guide": {
+      "title": "이미지 스크래퍼 가이드",
+      "guide": {
+        "whatIs": {
+          "title": "이미지 스크래퍼란?",
+          "description": "웹페이지 URL을 입력하면 해당 페이지에 포함된 모든 이미지(img, picture, og:image 등)를 자동으로 수집하는 도구입니다. 수집된 이미지를 개별 또는 ZIP으로 일괄 다운로드하거나, 선택한 이미지들을 세로로 이어붙여 하나의 긴 이미지로 만들 수 있습니다."
+        },
+        "howToUse": {
+          "title": "사용 방법",
+          "items": [
+            "수집할 웹페이지의 URL을 입력합니다",
+            "'이미지 스캔' 버튼을 클릭합니다",
+            "수집된 이미지 중 원하는 것을 선택합니다",
+            "ZIP 다운로드 또는 세로 이미지 합치기를 선택합니다"
+          ]
+        },
+        "tips": {
+          "title": "활용 팁",
+          "items": [
+            "최소 크기 필터로 아이콘이나 1x1 추적 픽셀을 제거할 수 있습니다.",
+            "세로 이미지 합치기는 웹툰, 상품 상세 페이지 캡처에 유용합니다.",
+            "일부 사이트는 CORS 정책으로 접근이 제한될 수 있습니다."
+          ]
+        },
+        "faq": {
+          "title": "자주 묻는 질문",
+          "items": [
+            { "q": "모든 사이트에서 작동하나요?", "a": "대부분 작동하지만, 일부 사이트는 CORS 정책이나 JavaScript 렌더링 방식으로 인해 이미지를 수집하지 못할 수 있습니다." },
+            { "q": "저작권이 있는 이미지도 다운로드할 수 있나요?", "a": "기술적으로 가능하지만, 저작권이 있는 이미지를 허가 없이 사용하는 것은 법적 문제가 될 수 있습니다. 개인 보관 용도로만 사용하세요." },
+            { "q": "세로 이미지 합치기의 최대 크기는?", "a": "브라우저 Canvas 제한에 따라 최대 약 16,384px 높이까지 지원됩니다. 초과 시 자동으로 잘립니다." }
+          ]
+        }
       }
     }
   }

@@ -51,6 +51,20 @@ export type GameType =
   | 'picross'
   | 'mahjongSolitaire'
   | 'crossword'
+  | 'snake'
+  | 'game2048'
+  | 'memory'
+  | 'reactiontest'
+  | 'minesweeper'
+  | 'sudoku'
+  | 'tetris'
+  | 'numberbaseball'
+  | 'breakout'
+  | 'solitaire'
+  | '15puzzle'
+  | 'flappybird'
+  | 'hangman'
+  | 'pacman'
 
 const ALL_GAME_TYPES: GameType[] = [
   'omok',
@@ -65,6 +79,20 @@ const ALL_GAME_TYPES: GameType[] = [
   'picross',
   'mahjongSolitaire',
   'crossword',
+  'snake',
+  'game2048',
+  'memory',
+  'reactiontest',
+  'minesweeper',
+  'sudoku',
+  'tetris',
+  'numberbaseball',
+  'breakout',
+  'solitaire',
+  '15puzzle',
+  'flappybird',
+  'hangman',
+  'pacman',
 ]
 
 const STORAGE_KEY = 'game_achievements'
