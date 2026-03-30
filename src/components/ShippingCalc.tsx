@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Package, Truck, Calculator, Copy, Check, RotateCcw, BookOpen, Save, Store, AlertTriangle } from 'lucide-react'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from './CalculationHistory'
+import GuideSection from '@/components/GuideSection'
 
 type DestinationType = 'mainland' | 'jeju' | 'island'
 type CarrierCategoryType = 'standard' | 'cvs'
@@ -323,6 +324,34 @@ export default function ShippingCalc() {
 
   const availableResults = carrierResults.filter(r => r.price !== null)
   const cheapestPrice = availableResults[0]?.price ?? null
+
+  const updateURL = useCallback((params: Record<string, string>) => {
+    const url = new URL(window.location.href)
+    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v))
+    window.history.replaceState({}, '', url.toString())
+  }, [])
+
+  // Read URL params on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const w = params.get('weight')
+    const wi = params.get('width')
+    const h = params.get('height')
+    const d = params.get('depth')
+    const dest = params.get('destination')
+    const cat = params.get('category')
+    if (w) setWeight(w)
+    if (wi) setWidth(wi)
+    if (h) setHeight(h)
+    if (d) setDepth(d)
+    if (dest === 'mainland' || dest === 'jeju' || dest === 'island') setDestination(dest)
+    if (cat === 'standard' || cat === 'cvs') setCarrierCategory(cat)
+  }, [])
+
+  // Sync URL when key inputs change
+  useEffect(() => {
+    updateURL({ weight, width, height, depth, destination, category: carrierCategory })
+  }, [weight, width, height, depth, destination, carrierCategory, updateURL])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -710,6 +739,9 @@ export default function ShippingCalc() {
           * 2025~2026년 기준 개인 접수 요금(타권역). 동일권역은 약 1,000원 저렴. 제주·도서산간 추가요금 별도. CU는 2026년 4월 1일 요금 인상 예정. 최신 요금은 각 택배사 홈페이지에서 확인하세요.
         </p>
       </div>
+
+      {/* Guide Section */}
+      <GuideSection namespace="shippingCalc" />
 
       {/* Calculation History */}
       <CalculationHistory

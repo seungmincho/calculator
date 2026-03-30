@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: '컴퓨터 과학 5대 핵심 분야를 문제 풀이로 학습하세요.',
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/cs-quiz',
+    canonical: 'https://toolhub.ai.kr/cs-quiz/',
   },
 }
 

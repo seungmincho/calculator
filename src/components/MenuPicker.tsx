@@ -2,7 +2,8 @@
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
-import { RotateCcw, Search, Copy, Check, ChevronDown, ChevronUp, Shuffle, BookOpen, Trophy, Zap, Star, ArrowRight } from 'lucide-react'
+import { RotateCcw, Search, Copy, Check, Shuffle, Trophy, Zap, Star, ArrowRight } from 'lucide-react'
+import GuideSection from '@/components/GuideSection'
 
 // ── Food Database (350+ items, 12 categories) ──
 interface FoodItem {
@@ -304,7 +305,6 @@ export default function MenuPicker() {
   const [situation, setSituation] = useState<string>('any')
   const [history, setHistory] = useState<FoodItem[]>([])
   const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [showGuide, setShowGuide] = useState(false)
   const [favorites, setFavorites] = useState<string[]>(() => {
     if (typeof window === 'undefined') return []
     try {
@@ -370,6 +370,42 @@ export default function MenuPicker() {
   useEffect(() => {
     setWheelItems(pickWheelItems())
   }, [pickWheelItems])
+
+  // Read URL params on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const m = params.get('mode')
+    if (m && ['roulette', 'tournament', 'top3'].includes(m)) {
+      setMode(m as PickerMode)
+    }
+    const cats = params.get('categories')
+    if (cats) {
+      const parsed = cats.split(',').filter(c => ALL_CATEGORIES.includes(c))
+      if (parsed.length > 0) {
+        setSelectedCategories(new Set(parsed))
+        setSituation('any')
+      }
+    }
+  }, [])
+
+  // Update URL when mode changes
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('mode', mode)
+    window.history.replaceState({}, '', url)
+  }, [mode])
+
+  // Update URL when selectedCategories changes
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const cats = Array.from(selectedCategories).sort()
+    if (cats.length === ALL_CATEGORIES.length) {
+      url.searchParams.delete('categories')
+    } else {
+      url.searchParams.set('categories', cats.join(','))
+    }
+    window.history.replaceState({}, '', url)
+  }, [selectedCategories])
 
   // Responsive canvas size
   useEffect(() => {
@@ -1260,67 +1296,7 @@ export default function MenuPicker() {
         </div>
       )}
 
-      {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-        <button
-          onClick={() => setShowGuide(!showGuide)}
-          className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-          aria-expanded={showGuide}
-        >
-          <span className="flex items-center gap-2 font-semibold text-gray-900 dark:text-white">
-            <BookOpen className="w-5 h-5" />
-            {t('guide.title')}
-          </span>
-          {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-        </button>
-        {showGuide && (
-          <div className="px-4 pb-4 space-y-4">
-            <div>
-              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                {t('guide.section1.title')}
-              </h3>
-              <ul className="space-y-1">
-                {(t.raw('guide.section1.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                    <span className="text-orange-500 mt-0.5">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                {t('guide.section2.title')}
-              </h3>
-              <ul className="space-y-1">
-                {(t.raw('guide.section2.items') as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* FAQ */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('faqTitle')}</h2>
-        <div className="space-y-4">
-          {[1, 2, 3].map(i => (
-            <details key={i} className="group">
-              <summary className="cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">
-                {t(`faq.q${i}.question`)}
-              </summary>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 pl-4 border-l-2 border-orange-300 dark:border-orange-700">
-                {t(`faq.q${i}.answer`)}
-              </p>
-            </details>
-          ))}
-        </div>
-      </div>
+      <GuideSection namespace="menuPicker" />
     </div>
   )
 }

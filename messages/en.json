@@ -3382,7 +3382,49 @@
     "doubleFourForbidden": "Double four (4-4) is forbidden!",
     "overlineForbidden": "Overline (6+ in a row) is forbidden!",
     "forbiddenMove": "Forbidden move!",
-    "draw": "Draw!"
+    "draw": "Draw!",
+    "guide": {
+      "title": "Omok Guide",
+      "whatIs": {
+        "title": "What is Omok?",
+        "description": "Omok (Gomoku) is a strategy board game where two players take turns placing stones to be the first to line up 5 in a row — horizontally, vertically, or diagonally — on a 19×19 grid. Black plays first. Under Korean Renju rules, Black has forbidden moves: double-three (3-3), double-four (4-4), and overline (6+). The tool supports both AI and online P2P multiplayer."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "AI Game: Choose a difficulty (Easy/Normal/Hard) and click on the board to place your stone.",
+          "Online Game: Create a room or connect directly via Peer ID to play with a friend.",
+          "Hover over the board to preview stone placement. Click to confirm.",
+          "On mobile, tap to place stones. Keyboard navigation (arrow keys + Enter) is also supported."
+        ]
+      },
+      "tips": {
+        "title": "Strategy Tips",
+        "items": [
+          "Place your first stones near the center for both offensive and defensive advantages.",
+          "Create an open three (unblocked on both ends) — the opponent cannot block both sides at once.",
+          "Forbidden move rules (3-3/4-4/overline) only apply to Black, so White can attack freely.",
+          "Always block the opponent's three-in-a-row immediately — a four-in-a-row cannot be stopped."
+        ]
+      },
+      "faq": {
+        "title": "Frequently Asked Questions",
+        "items": [
+          {
+            "q": "What are forbidden moves?",
+            "a": "Restrictions that apply only to Black: double-three (creating two open threes simultaneously), double-four (creating two fours simultaneously), and overline (6 or more in a row) are forbidden."
+          },
+          {
+            "q": "How does online multiplayer work?",
+            "a": "Create a room to get a Peer ID, then share it with your opponent. The game connects via WebRTC P2P for real-time play with no server lag."
+          },
+          {
+            "q": "What's the difference between AI difficulties?",
+            "a": "Easy uses basic pattern recognition, Normal applies intermediate strategies, and Hard uses deep Minimax search with alpha-beta pruning. Start with Easy if you're a beginner."
+          }
+        ]
+      }
+    }
   },
   "othello": {
     "title": "Online Othello",
@@ -3926,6 +3968,15 @@
           "4. Generate the ladder and select a starting column to see the result."
         ]
       },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Higher complexity makes the game more exciting with more participants.",
+          "Use blind mode to hide results for a surprise reveal effect.",
+          "Share results via URL so others can verify the same ladder.",
+          "Use presets (lunch menu, duty assignment, etc.) for a quick start."
+        ]
+      },
       "faq": {
         "title": "Frequently Asked Questions",
         "items": [
@@ -4453,6 +4504,15 @@
             "q": "How is depreciation calculated?",
             "a": "Annual depreciation is calculated by dividing the vehicle's acquisition cost by its useful life (e.g., 5 years for passenger cars, 4 years for trucks), then applying the business-use ratio."
           }
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Keep a detailed mileage log for business vehicles to maximize tax deductions.",
+          "Use the real-time fuel price refresh feature for accurate current-rate calculations.",
+          "Adjust the depreciation coefficient (×1.0–1.5) to reflect your vehicle's age and condition.",
+          "Compare regional fuel prices to improve the accuracy of business trip expense reports."
         ]
       }
     },
@@ -20501,6 +20561,170 @@
           }
         ]
       }
+    }
+  },
+  "coinFlip": {
+    "title": "Coin Flip",
+    "description": "Fair coin flip! Heads or tails with 3D animation and statistics",
+    "headsLabel": "Heads",
+    "tailsLabel": "Tails",
+    "headsSymbol": "₩",
+    "tailsSymbol": "★",
+    "flipButton": "Flip!",
+    "flipping": "Flipping...",
+    "tapToFlip": "Tap the coin to flip",
+    "stats": "Statistics",
+    "total": "Total",
+    "reset": "Reset",
+    "history": "History",
+    "streak": "Streak",
+    "streakUnit": "x",
+    "bestOf": "Best of",
+    "rounds": "Rounds",
+    "bestOfMode": "Best of N",
+    "player1": "Player 1",
+    "player2": "Player 2",
+    "wins": "wins",
+    "winsLabel": "W",
+    "guide": {
+      "title": "Guide",
+      "whatIs": { "title": "What is Coin Flip?", "description": "A fair 50:50 random decision tool with 3D flip animation. Features streak tracking, statistics, and best-of-N match mode for various decision-making scenarios." },
+      "howToUse": { "title": "How to Use", "items": ["Click 'Flip' to toss the coin with a spinning animation.", "Consecutive flips automatically update the heads/tails statistics.", "Use best-of-N mode for two-player decisions.", "Check the history for previous results."] },
+      "tips": { "title": "Tips", "items": ["Great for quick binary decisions.", "Best-of-N mode increases decision reliability.", "Use statistics to demonstrate probability concepts."] },
+      "faq": { "title": "FAQ", "items": [{ "q": "Is it truly fair?", "a": "Yes, it uses Math.random() for a 50:50 probability. The more you flip, the closer the ratio converges to 50%." }, { "q": "Can the same side come up multiple times?", "a": "Yes, each flip is independent. Even after 10 heads in a row, the next flip is still 50:50." }] }
+    }
+  },
+  "diceRoller": {
+    "title": "Dice Roller",
+    "description": "Roll up to 10 dice at once. Auto-calculates sum, max, min, and average",
+    "rollButton": "Roll!",
+    "rolling": "Rolling...",
+    "diceCount": "Dice Count",
+    "diceSides": "Sides",
+    "diceResults": "Results",
+    "noRollYet": "Roll the dice to begin",
+    "total": "Total",
+    "max": "Max",
+    "min": "Min",
+    "average": "Average",
+    "history": "History",
+    "reset": "Reset",
+    "modifier": "Modifier",
+    "guide": {
+      "title": "Guide",
+      "whatIs": { "title": "What is Dice Roller?", "description": "An online dice tool for board games, TRPG, and probability learning. Roll up to 10 dice simultaneously with D4/D6/D8/D10/D12/D20 options and automatic sum/max/min/average calculation." },
+      "howToUse": { "title": "How to Use", "items": ["Set the number of dice (1-10) and sides (4/6/8/10/12/20).", "Click 'Roll' for animated results.", "Set a modifier (+/-) to automatically adjust the total.", "Check history and distribution for previous rolls."] },
+      "tips": { "title": "Tips", "items": ["D&D/TRPG: Use various dice combos like 4d6 for ability scores.", "Replaces physical dice for board games.", "Great for probability experiments in class."] },
+      "faq": { "title": "FAQ", "items": [{ "q": "Does it support D20?", "a": "Yes, it supports D4/D6/D8/D10/D12/D20 — all dice needed for TRPG." }, { "q": "What is a modifier?", "a": "A value added to or subtracted from the dice total. Useful for applying ability modifiers in TRPG." }] }
+    }
+  },
+  "teamDivider": {
+    "title": "Team Divider",
+    "description": "Fairly divide participants into teams. Random, balanced, and captain draft modes",
+    "participants": "Participants",
+    "bulkInput": "Bulk Input",
+    "bulkPlaceholder": "Enter names separated by commas or newlines",
+    "import": "Import",
+    "addPlaceholder": "Type name and press Enter",
+    "teamCount": "Team Count",
+    "teamLabel": "Team",
+    "memberUnit": "",
+    "divide": "Divide Teams!",
+    "dividing": "Dividing...",
+    "redivide": "Redivide",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "notEnough": "Need more participants than teams",
+    "empty": "Click Divide Teams to get started",
+    "draftTurn": "Team {team}'s turn to pick",
+    "mode": {
+      "label": "Distribution Mode",
+      "random": "Random",
+      "balanced": "Balanced",
+      "captain": "Captain Draft"
+    },
+    "presets": {
+      "label": "Presets",
+      "sports": { "label": "🏃 Sports", "names": ["Alex", "Jordan", "Taylor", "Morgan", "Casey", "Riley", "Sam", "Jamie", "Drew", "Quinn"] },
+      "study": { "label": "📚 Group Project", "names": ["Student A", "Student B", "Student C", "Student D", "Student E", "Student F"] },
+      "company": { "label": "🏢 Company Team", "names": ["Kim", "Lee", "Park", "Choi", "Jung", "Kang", "Jo", "Han"] },
+      "game": { "label": "🎮 Game Team", "names": ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"] }
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": { "title": "What is Team Divider?", "description": "A tool to fairly distribute participants into teams. Supports random, balanced (skill-based), and captain draft modes for sports, group projects, team-building events, and more." },
+      "howToUse": { "title": "How to Use", "items": ["Enter participant names (comma or line-break separated).", "Set the number of teams (2-8).", "Choose a distribution mode (Random/Balanced/Captain Draft).", "Click 'Divide Teams' to see results."] },
+      "tips": { "title": "Tips", "items": ["Captain draft mode is the fairest as each captain picks alternately.", "Copy results to share in group chats.", "Click 'Redivide' for a new random split."] },
+      "faq": { "title": "FAQ", "items": [{ "q": "Max participants?", "a": "No limit on participants, but team count must be less than participant count." }, { "q": "Uneven numbers?", "a": "Extra members are distributed to earlier teams. E.g., 7 people → 3 teams = 3/2/2." }] }
+    }
+  },
+  "lotteryDraw": {
+    "title": "Lottery Draw",
+    "description": "Win or lose! Set win ratio and draw lots one by one",
+    "win": "Winner! 🎉",
+    "lose": "No luck 💨",
+    "unrevealed": "Unrevealed",
+    "participants": "Participants",
+    "participantsOptional": "(optional)",
+    "participantsPlaceholder": "Enter one name per line",
+    "participantsHint": "Names will be shown on the lot cards",
+    "winCount": "Winners",
+    "totalCount": "Total",
+    "drawMode": "Draw Mode",
+    "mode": {
+      "oneByOne": "Draw One by One",
+      "allAtOnce": "Draw All at Once"
+    },
+    "remaining": "Remaining",
+    "remainingWins": "Remaining Wins",
+    "revealedWins": "Revealed Wins",
+    "revealAll": "Reveal All",
+    "startDraw": "Start Drawing!",
+    "reshuffle": "Reshuffle",
+    "backToSetup": "Back to Setup",
+    "results": "Results",
+    "lot": "Lot",
+    "guide": {
+      "title": "Guide",
+      "whatIs": { "title": "What is Lottery Draw?", "description": "A random drawing tool with customizable win/lose ratios. Perfect for penalty selection, gift raffles, and duty assignment. Draw one by one for suspense or all at once for quick results." },
+      "howToUse": { "title": "How to Use", "items": ["Set total lots and number of winners.", "Enter participant names (optional).", "Choose 'One by One' or 'All at Once' mode.", "Click each lot to reveal the result."] },
+      "tips": { "title": "Tips", "items": ["Set custom prizes for 1st/2nd/3rd place tiered prizes.", "One-by-one mode builds excitement at parties.", "Hide results then reveal all at once for a surprise."] },
+      "faq": { "title": "FAQ", "items": [{ "q": "Can a drawn lot come up again?", "a": "No, drawn lots are removed. Only remaining lots are available (without replacement)." }, { "q": "Can I customize the win ratio?", "a": "Yes, freely set total and winner count. E.g., 3 out of 10 = 30% chance." }] }
+    }
+  },
+  "yesNoDecider": {
+    "title": "Yes or No",
+    "description": "Decision helper! Ask a question and get a random answer",
+    "settings": "Settings",
+    "modeLabel": "Answer Mode",
+    "mode": {
+      "simple": "Yes / No",
+      "detailed": "Detailed"
+    },
+    "probabilityLabel": "YES Probability",
+    "probMin": "0%",
+    "probMax": "100%",
+    "answerLegend": "Answer Levels",
+    "placeholder": "Should I order takeout?",
+    "askButton": "Ask!",
+    "asking": "Thinking...",
+    "historyTitle": "Question History",
+    "reset": "Reset",
+    "answers": {
+      "strongYes": "Absolutely YES! 🔥",
+      "yes": "YES! 👍",
+      "leanYes": "Probably YES 🤔",
+      "maybe": "Maybe... 🤷",
+      "leanNo": "Probably NO 🤔",
+      "no": "NO! 👎",
+      "strongNo": "Absolutely NO! ❌"
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": { "title": "What is Yes or No?", "description": "A fun random answer tool for overcoming decision paralysis. Enter a question and get a Magic 8-ball style answer. Supports simple Yes/No to 7-level detailed responses with adjustable YES probability." },
+      "howToUse": { "title": "How to Use", "items": ["Enter your question (e.g., 'Should I exercise today?').", "Choose answer mode (Simple / Detailed).", "Click 'Ask' for an animated answer.", "Adjust YES probability with the slider (default 50%)."] },
+      "tips": { "title": "Tips", "items": ["Best for light everyday decisions, not life-changing ones.", "Detailed mode gives nuanced 7-level answers (Absolutely YES ~ Absolutely NO).", "Check history for all your previous questions and answers."] },
+      "faq": { "title": "FAQ", "items": [{ "q": "Same answer for same question?", "a": "No, each answer is randomly generated. The same question can get different answers each time." }, { "q": "Can I change the YES probability?", "a": "Yes, use the slider to set YES probability anywhere from 0% to 100%." }] }
     }
   },
   "breakoutGame": {

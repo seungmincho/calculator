@@ -6,6 +6,7 @@ import { GitBranch, Play, RefreshCw, Share2, Check, Save, Users, Target, Zap, Bo
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from 'next-intl'
+import GuideSection from '@/components/GuideSection'
 
 interface LadderLine {
   fromIndex: number
@@ -1695,36 +1696,7 @@ export default function LadderGame() {
         }
       `}</style>
 
-      {/* Guide */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">🎯 {t('guide.title')}</h3>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.usageTitle')}</h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-              <li>• {t('guide.usage.0')}</li>
-              <li>• {t('guide.usage.1')}</li>
-              <li>• {t('guide.usage.2')}</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.examplesTitle')}</h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-              <li>• {t('guide.examples.0')}</li>
-              <li>• {t('guide.examples.1')}</li>
-              <li>• {t('guide.examples.2')}</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('guide.tipsTitle')}</h4>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-              <li>• {t('guide.tips.0')}</li>
-              <li>• {t('guide.tips.1')}</li>
-              <li>• {t('guide.tips.2')}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <GuideSection namespace="ladder" />
     </div>
   )
 }

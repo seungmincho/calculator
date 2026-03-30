@@ -251,7 +251,13 @@ export default function CsQuiz() {
   const shareResult = useCallback(async () => {
     const catLabel = selectedCategory === 'all' ? t('categories.all') : t(`categories.${selectedCategory}`)
     const diffLabel = t(`difficulties.${selectedDifficulty}`)
-    const text = `[CS ${t('title')}] ${catLabel} · ${diffLabel}\n${t('score')}: ${correctCount}/${totalCount} (${percentage}%) — ${t('grade')}: ${grade}\n${t('time')}: ${formatTime(elapsed)}\nhttps://toolhub.ai.kr/cs-quiz/?cat=${selectedCategory}&diff=${selectedDifficulty}`
+    const text = `CS 기초 퀴즈 결과: ${correctCount}/${totalCount} (${percentage}%)\n${catLabel} | ${diffLabel}\nhttps://toolhub.ai.kr/cs-quiz/`
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'CS 퀴즈 결과', text })
+        return
+      } catch {}
+    }
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
@@ -260,7 +266,7 @@ export default function CsQuiz() {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     }
-  }, [selectedCategory, selectedDifficulty, correctCount, totalCount, percentage, grade, elapsed, t])
+  }, [selectedCategory, selectedDifficulty, correctCount, totalCount, percentage, t])
 
   // --- Wrong answer review toggle ---
   const [wrongReviewOpen, setWrongReviewOpen] = useState(true)
@@ -650,9 +656,9 @@ export default function CsQuiz() {
           </button>
           <button
             onClick={shareResult}
-            className="flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl px-4 py-3 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
           >
-            {copied ? <Check className="w-4 h-4 text-green-500" /> : <Share2 className="w-4 h-4" />}
+            {copied ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
             {copied ? t('copied') : t('share')}
           </button>
         </div>

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { Droplets, Copy, Check, RotateCcw, BookOpen } from 'lucide-react'
+import { Droplets, Copy, Check, RotateCcw } from 'lucide-react'
+import GuideSection from '@/components/GuideSection'
 
 interface WaterBillResult {
   basicFee: number
@@ -19,6 +20,24 @@ export default function WaterBillCalculator() {
   const [usage, setUsage] = useState<number>(15)
   const [householdSize, setHouseholdSize] = useState<number>(3)
   const [copiedId, setCopiedId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const u = params.get('usage')
+    const h = params.get('household')
+    if (u) setUsage(Number(u))
+    if (h) setHouseholdSize(Number(h))
+  }, [])
+
+  const updateURL = useCallback((params: Record<string, string>) => {
+    const url = new URL(window.location.href)
+    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v))
+    window.history.replaceState({}, '', url.toString())
+  }, [])
+
+  useEffect(() => {
+    updateURL({ usage: String(usage), household: String(householdSize) })
+  }, [usage, householdSize, updateURL])
 
   const calculateWaterBill = useCallback((usage: number): WaterBillResult => {
     const basicFee = 1080
@@ -341,45 +360,7 @@ export default function WaterBillCalculator() {
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
-          {t('guide.title')}
-        </h2>
-
-        <div className="space-y-6">
-          {/* Rate Structure */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-              {t('guide.structure.title')}
-            </h3>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-              {(t.raw('guide.structure.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Tips */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-              {t('guide.saving.title')}
-            </h3>
-            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-              {(t.raw('guide.saving.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
+      <GuideSection namespace="waterBill" />
     </div>
   )
 }

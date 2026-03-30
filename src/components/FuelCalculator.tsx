@@ -35,6 +35,7 @@ import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
 import { safeStorage, STORAGE_KEYS } from '@/utils/localStorage'
 import DatePicker from '@/components/ui/DatePicker'
+import GuideSection from '@/components/GuideSection'
 
 interface FuelCalculation {
   distance: number
@@ -1875,6 +1876,8 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
           </div>
         </div>
       )}
+
+      <GuideSection namespace="fuelCalculator" />
     </div>
   )
 }

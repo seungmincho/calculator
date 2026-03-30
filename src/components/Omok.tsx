@@ -8,6 +8,7 @@ import { usePeerConnection } from '@/hooks/usePeerConnection'
 import { GameRoom, OmokGameState, OmokMove, sendRoomHeartbeat, incrementGamesPlayed, getRoom } from '@/utils/webrtc'
 import { PeerMessage } from '@/utils/webrtc/peerManager'
 import GameLobby from './GameLobby'
+import GuideSection from '@/components/GuideSection'
 import GameInviteLink from './GameInviteLink'
 import OmokBoard from './OmokBoard'
 import { createInitialGameState, checkWinner, checkForbiddenMove } from '@/utils/gameRules/omokRules'
@@ -992,6 +993,8 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack, joinPeer
           </div>
         )}
       </div>
+
+      <GuideSection namespace="omok" />
 
       {/* 토스트 알림 */}
       {toasts.length > 0 && (

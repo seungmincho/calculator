@@ -5,9 +5,10 @@ import { useTranslations } from 'next-intl'
 import {
   Search, Download, Image as ImageIcon, Check, Copy,
   ExternalLink, ChevronDown, ChevronUp, Loader2,
-  FileArchive, Layers, Filter, X, BookOpen, Zap,
+  FileArchive, Layers, Filter, X, Zap,
   ArrowUpDown, ToggleLeft, ToggleRight
 } from 'lucide-react'
+import GuideSection from '@/components/GuideSection'
 
 interface ScrapedImage {
   src: string
@@ -225,7 +226,7 @@ export default function ImageScraper() {
   const [mergeBg, setMergeBg] = useState('#ffffff')
   const [mergeWidth, setMergeWidth] = useState(1200)
   const [showMergeOptions, setShowMergeOptions] = useState(false)
-  const [showGuide, setShowGuide] = useState(false)
+
   const [sortMode, setSortMode] = useState<SortMode>('size-desc')
   const [dedup, setDedup] = useState(true)
   const [lastClickIdx, setLastClickIdx] = useState<number | null>(null)
@@ -237,6 +238,9 @@ export default function ImageScraper() {
 
   useEffect(() => {
     setRecentUrls(getRecentUrls())
+    const params = new URLSearchParams(window.location.search)
+    const u = params.get('url')
+    if (u) setUrl(u)
   }, [])
 
   const handleScan = useCallback(async () => {
@@ -251,6 +255,10 @@ export default function ImageScraper() {
     setError('')
     setImages([])
     setLastClickIdx(null)
+
+    const pageUrl = new URL(window.location.href)
+    pageUrl.searchParams.set('url', targetUrl)
+    window.history.replaceState({}, '', pageUrl.toString())
 
     try {
       const resp = await fetch(`/api/fetch-page?url=${encodeURIComponent(targetUrl)}`)
@@ -1066,53 +1074,7 @@ export default function ImageScraper() {
       )}
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-        <button
-          onClick={() => setShowGuide(v => !v)}
-          className="w-full flex items-center justify-between p-6 text-left"
-        >
-          <div className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>
-          </div>
-          {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-        </button>
-        {showGuide && (
-          <div className="px-6 pb-6 space-y-6">
-            <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('guide.guide.whatIs.title')}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{t('guide.guide.whatIs.description')}</p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('guide.guide.howToUse.title')}</h3>
-              <ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                {(t.raw('guide.guide.howToUse.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('guide.guide.tips.title')}</h3>
-              <ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                {(t.raw('guide.guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('guide.guide.faq.title')}</h3>
-              <div className="space-y-3">
-                {(t.raw('guide.guide.faq.items') as Array<{q: string; a: string}>).map((item, i) => (
-                  <div key={i} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">{item.q}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.a}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+      <GuideSection namespace="imageScraper" />
     </div>
   )
 }

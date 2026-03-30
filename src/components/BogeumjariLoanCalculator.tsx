@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Home, Calculator, Share2, Check, Save, Info, AlertCircle, CheckCircle, Baby, Heart, Users, BarChart3, TrendingDown } from 'lucide-react';
+import { Home, Calculator, Share2, Check, Save, Info, AlertCircle, CheckCircle, Baby, Heart, Users, BarChart3, TrendingDown, Copy } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
@@ -298,6 +298,41 @@ const BogeumjariLoanCalculatorContent = () => {
     setShowSaveButton(false);
   };
 
+  const copyResult = useCallback(async () => {
+    if (!result) return;
+    const loanTypeLabels: Record<LoanType, string> = {
+      general: '일반', first: '생애최초', newlywed: '신혼부부', multichild: '다자녀',
+    };
+    const text = result.eligible
+      ? [
+          '보금자리론 계산 결과',
+          `대출 유형: ${loanTypeLabels[loanType]}`,
+          `대출한도: ${formatCurrency(result.maxLoanAmount)}`,
+          `금리: ${result.interestRate.toFixed(2)}%`,
+          `월 상환액: ${formatNumber(result.monthlyPayment)}원`,
+          `총 이자: ${formatCurrency(result.totalInterest)}`,
+          `총 상환액: ${formatCurrency(result.totalPayment)}`,
+          `DTI: ${result.dti.toFixed(1)}%`,
+        ].join('\n')
+      : `보금자리론 계산 결과\n대출 불가 — ${result.reason ?? '조건 미충족'}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-999999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    }
+  }, [result, loanType]); // formatNumber and formatCurrency are stable (no state deps)
+
   const handleLoadFromHistory = (historyId: string) => {
     const inputs = loadFromHistory(historyId) as Record<string, string> | null;
     if (!inputs) return;
@@ -517,9 +552,16 @@ const BogeumjariLoanCalculatorContent = () => {
                 ) : (
                   <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
                 )}
-                <h3 className="font-semibold text-gray-900 dark:text-white">
+                <h3 className="font-semibold text-gray-900 dark:text-white flex-1">
                   {result.eligible ? '대출 가능' : '대출 불가'}
                 </h3>
+                <button
+                  onClick={copyResult}
+                  className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                >
+                  {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {isCopied ? '복사됨' : '결과 복사'}
+                </button>
               </div>
 
               {result.eligible ? (
