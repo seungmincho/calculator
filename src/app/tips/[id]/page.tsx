@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import TipDetailClient from './TipDetailClient';
@@ -93,5 +94,9 @@ export default async function TipDetailPage({
     notFound();
   }
 
-  return <TipDetailClient tipId={resolvedParams.id} />;
+  return (
+    <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
+      <TipDetailClient tipId={resolvedParams.id} />
+    </Suspense>
+  );
 }
