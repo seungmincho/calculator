@@ -211,6 +211,13 @@ export const menuConfig: MenuConfig = {
       { href: '/menu-roulette', labelKey: 'footer.links.menuRoulette', descriptionKey: 'toolsShowcase.tools.menuRoulette.description', icon: '🎰', addedDate: '2026-03-28', subcategory: 'subcategory.otherTools' },
       { href: '/cs-visualizer', labelKey: 'footer.links.csVisualizer', descriptionKey: 'toolsShowcase.tools.csVisualizer.description', icon: '🖥️', addedDate: '2026-03-28', subcategory: 'subcategory.education' },
       { href: '/cs-quiz', labelKey: 'footer.links.csQuiz', descriptionKey: 'toolsShowcase.tools.csQuiz.description', icon: '📝', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
+      { href: '/cs-dictionary', labelKey: 'footer.links.csDictionary', descriptionKey: 'toolsShowcase.tools.csDictionary.description', icon: '📖', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
+      { href: '/cs-interview', labelKey: 'footer.links.csInterview', descriptionKey: 'toolsShowcase.tools.csInterview.description', icon: '🎯', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
+      { href: '/cs-hub', labelKey: 'footer.links.csHub', descriptionKey: 'toolsShowcase.tools.csHub.description', icon: '🎓', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
+      { href: '/dev-cheatsheet', labelKey: 'footer.links.devCheatsheet', descriptionKey: 'toolsShowcase.tools.devCheatsheet.description', icon: '📋', addedDate: '2026-03-29', subcategory: 'subcategory.devTools' },
+      { href: '/system-design', labelKey: 'footer.links.systemDesign', descriptionKey: 'toolsShowcase.tools.systemDesign.description', icon: '🏛️', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
+      { href: '/coding-patterns', labelKey: 'footer.links.codingPatterns', descriptionKey: 'toolsShowcase.tools.codingPatterns.description', icon: '🧩', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
+      { href: '/dev-roadmap', labelKey: 'footer.links.devRoadmap', descriptionKey: 'toolsShowcase.tools.devRoadmap.description', icon: '🗺️', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
     ],
   },
   media: {

@@ -1690,6 +1690,13 @@
       "menuRoulette": "Menu Roulette",
       "csVisualizer": "CS Concept Visualizer",
       "csQuiz": "CS Fundamentals Quiz",
+      "csDictionary": "CS Dictionary",
+      "csInterview": "CS Interview Prep",
+      "csHub": "CS Learning Hub",
+      "devCheatsheet": "Developer Cheatsheet",
+      "systemDesign": "System Design Interview",
+      "codingPatterns": "Coding Test Patterns",
+      "devRoadmap": "Developer Roadmap",
       "housingSubscription": "Housing Subscription Score",
       "capitalGainsTax": "Capital Gains Tax",
       "militaryDischarge": "Military Discharge Calculator",
@@ -5465,6 +5472,34 @@
       "csQuiz": {
         "title": "CS Fundamentals Quiz",
         "description": "250 questions across 10 categories — DS, Algorithms, Network, OS, DB, Architecture, SE, Security, Linux, Web"
+      },
+      "csDictionary": {
+        "title": "CS Dictionary",
+        "description": "200+ essential terms across 10 categories — search, bookmark, and track your CS learning progress"
+      },
+      "csInterview": {
+        "title": "CS Interview Prep",
+        "description": "100 questions across 10 categories — model answers, key points, and linked terms for perfect interview prep"
+      },
+      "csHub": {
+        "title": "CS Learning Hub",
+        "description": "Quiz, Dictionary, Interview, Algorithms, Visualizer — your unified CS learning dashboard"
+      },
+      "devCheatsheet": {
+        "title": "Developer Cheatsheet",
+        "description": "Git, Linux, Docker, SQL, Vim, HTTP — essential dev commands at a glance"
+      },
+      "systemDesign": {
+        "title": "System Design Interview",
+        "description": "From URL shortener to chat system — 10 design problems with architecture walkthroughs"
+      },
+      "codingPatterns": {
+        "title": "Coding Test Patterns",
+        "description": "15 core patterns — Two Pointers, Sliding Window, BFS/DFS and more with approach, complexity, and code examples"
+      },
+      "devRoadmap": {
+        "title": "Developer Roadmap",
+        "description": "Frontend, Backend, Fullstack, DevOps — step-by-step learning paths with recommended tech stacks"
       },
       "housingSubscription": {
         "title": "Housing Subscription Score",
@@ -35447,6 +35482,574 @@
             { "q": "What is the max size for vertical merge?", "a": "Due to browser Canvas limitations, it supports up to approximately 16,384px in height. Images beyond this limit will be automatically cropped." }
           ]
         }
+      }
+    }
+  },
+  "csDictionary": {
+    "title": "CS Dictionary",
+    "description": "Search and study 200+ essential computer science terms across 10 categories",
+    "search": {
+      "placeholder": "Search terms (Korean or English)",
+      "noResults": "No results found. Try a different keyword.",
+      "resultCount": "{count} results found"
+    },
+    "filter": {
+      "all": "All",
+      "category": "Category",
+      "difficulty": "Difficulty",
+      "status": "Status"
+    },
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "status": {
+      "all": "All",
+      "learned": "Learned",
+      "notLearned": "Not Learned",
+      "bookmarked": "Bookmarked"
+    },
+    "view": {
+      "list": "List View",
+      "card": "Card View"
+    },
+    "term": {
+      "definition": "Definition",
+      "description": "Description",
+      "example": "Example",
+      "relatedTerms": "Related Terms"
+    },
+    "stats": {
+      "total": "Total Terms",
+      "learned": "Learned",
+      "bookmarked": "Bookmarked",
+      "progress": "Progress"
+    },
+    "learning": {
+      "markLearned": "Mark as Learned",
+      "markNotLearned": "Unmark Learned"
+    },
+    "relatedTools": {
+      "title": "Related Study Tools",
+      "quiz": "CS Fundamentals Quiz",
+      "visualizer": "CS Concept Visualizer",
+      "algorithm": "Algorithm Visualizer"
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is the CS Dictionary?",
+        "description": "An online dictionary covering 200+ essential terms across 10 CS fields: Data Structures, Algorithms, Network, OS, Database, Architecture, Software Engineering, Security, Linux, and Web Development. Each term includes a one-line definition, detailed explanation, and real-world analogy for easy understanding."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Search for terms in Korean or English using the search bar",
+          "Use the 10 category buttons to filter by field of interest",
+          "Filter by difficulty level (Beginner/Intermediate/Advanced)",
+          "Check off learned terms with ✓ to track your progress",
+          "Bookmark important terms with ★ for later review",
+          "Click related term chips to navigate and learn connected concepts"
+        ]
+      },
+      "tips": {
+        "title": "Study Tips",
+        "items": [
+          "Start from beginner level to build a solid foundation before moving to intermediate and advanced",
+          "Follow related term links for connected learning to understand relationships between concepts",
+          "Use the learned checkmarks to study 10 terms per day consistently",
+          "Combine with the CS Quiz to verify your understanding for more effective learning"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "Can non-CS majors understand this?", "a": "Yes! Every term includes easy analogies and real-world examples. Start from beginner difficulty and work your way up." },
+          { "q": "Where is my progress saved?", "a": "Progress is saved in your browser's local storage. Your learning history is preserved when you revisit on the same browser." },
+          { "q": "How does it connect with the CS Quiz?", "a": "Learn concepts in the dictionary first, then test your understanding by taking quizzes in the same category." }
+        ]
+      }
+    }
+  },
+  "csInterview": {
+    "title": "CS Interview Prep",
+    "description": "Prepare for tech interviews with 100 questions and model answers across 10 CS categories",
+    "mode": {
+      "practice": "Practice",
+      "browse": "Browse All"
+    },
+    "search": {
+      "placeholder": "Search questions",
+      "noResults": "No results found."
+    },
+    "filter": {
+      "all": "All",
+      "category": "Category",
+      "difficulty": "Difficulty"
+    },
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "practice": {
+      "showAnswer": "Show Answer",
+      "hideAnswer": "Hide Answer",
+      "mastered": "Got It",
+      "needsReview": "Review Again",
+      "next": "Next",
+      "prev": "Previous",
+      "shuffle": "Shuffle",
+      "filter": {
+        "all": "All",
+        "review": "Needs Review",
+        "remaining": "Not Practiced"
+      }
+    },
+    "browse": {
+      "expandAll": "Expand All",
+      "collapseAll": "Collapse All"
+    },
+    "question": {
+      "answer": "Model Answer",
+      "keyPoints": "Key Points",
+      "followUp": "Follow-up Question",
+      "tip": "Interview Tip",
+      "relatedTerms": "Related Terms"
+    },
+    "stats": {
+      "total": "Total",
+      "mastered": "Mastered",
+      "needsReview": "Review",
+      "remaining": "Remaining",
+      "progress": "Progress"
+    },
+    "bookmark": {
+      "add": "Add Bookmark",
+      "remove": "Remove Bookmark"
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is CS Interview Prep?",
+        "description": "A tool to prepare for technical interviews at IT companies. It provides 100 frequently asked questions with model answers across 10 CS fields including Data Structures, Algorithms, Network, OS, and Database. Practice mode lets you rehearse answers and self-evaluate to identify weak areas."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "In practice mode, read the question and try answering it yourself first",
+          "Click 'Show Answer' to see the model answer and key points",
+          "Rate yourself: 'Got It' if confident, 'Review Again' if not",
+          "Use the 'Needs Review' filter to focus on weak questions",
+          "Click related terms to study concepts in the CS Dictionary"
+        ]
+      },
+      "tips": {
+        "title": "Interview Tips",
+        "items": [
+          "Lead with your conclusion, then add reasoning and examples",
+          "Naturally include key technical terms to demonstrate expertise",
+          "Adding real project experience gives depth to your answers",
+          "Preparing for follow-up questions shows strong fundamentals"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "Do junior developers need to know all this?", "a": "Beginner level is essential for juniors, intermediate for 1-3 years experience, and advanced for seniors. Start with difficulty matching your career level." },
+          { "q": "Should I memorize the answers word for word?", "a": "No. Understand the key points and practice explaining in your own words. Understanding beats memorization in interviews." },
+          { "q": "Which category should I start with?", "a": "Start with Data Structures and Algorithms, then Network and OS. Add DB, Security, or Web based on the position you're applying for." }
+        ]
+      }
+    }
+  },
+  "csHub": {
+    "badge": "CS Learning Platform",
+    "title": "CS Learning Hub",
+    "description": "Quiz, Dictionary, Interview, Algorithms, Visualizer — your all-in-one CS learning dashboard",
+    "progress": {
+      "overall": "Overall Progress",
+      "terms": "Terms Learned",
+      "interview": "Interview Mastered",
+      "algorithms": "Algorithms",
+      "quizQuestions": "Quiz Questions",
+      "notStarted": "Not Started"
+    },
+    "tools": {
+      "title": "Learning Tools",
+      "algorithm": {
+        "title": "Algorithm Visualizer",
+        "description": "Learn 55 algorithms through interactive animations",
+        "stats": "55 Algorithms"
+      },
+      "visualizer": {
+        "title": "CS Concept Visualizer",
+        "description": "Experience 10 core CS concepts like Git, CPU, and Network",
+        "stats": "10 Concepts"
+      },
+      "dictionary": {
+        "title": "CS Dictionary",
+        "description": "Search 200+ terms and track your learning progress",
+        "stats": "211 Terms"
+      },
+      "quiz": {
+        "title": "CS Quiz",
+        "description": "Test your skills with 251 questions across 10 categories",
+        "stats": "251 Questions"
+      },
+      "interview": {
+        "title": "Interview Prep",
+        "description": "Practice with 100 questions and model answers",
+        "stats": "100 Questions"
+      }
+    },
+    "cta": {
+      "start": "Get Started",
+      "continue": "Continue Learning"
+    },
+    "roadmap": {
+      "title": "Learning Roadmap",
+      "step1": { "title": "Learn Terms", "description": "Understand basics" },
+      "step2": { "title": "Visualize", "description": "Experience concepts" },
+      "step3": { "title": "Algorithms", "description": "Deep dive" },
+      "step4": { "title": "Take Quiz", "description": "Verify learning" },
+      "step5": { "title": "Interview", "description": "Practice" }
+    },
+    "categories": {
+      "title": "Resources by Category",
+      "description": "See available learning resources across 10 CS fields",
+      "totalResources": "{count} resources",
+      "terms": "Terms",
+      "quiz": "Quiz",
+      "interview": "Interview",
+      "algorithms": "Algorithms",
+      "dataStructures": "Data Structures",
+      "algorithmsCategory": "Algorithms",
+      "network": "Network",
+      "os": "Operating System",
+      "database": "Database",
+      "architecture": "Architecture",
+      "softwareEngineering": "Software Engineering",
+      "security": "Security",
+      "linux": "Linux",
+      "web": "Web Dev"
+    },
+    "quickStart": {
+      "title": "Start Learning Now",
+      "description": "From CS basics to interview prep — learn systematically",
+      "beginnerCta": "Beginner: Start with Terms",
+      "testCta": "Test Your Skills: Quiz"
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is CS Learning Hub?",
+        "description": "A unified learning platform that brings together 5 CS tools: Quiz, Dictionary, Interview Prep, Algorithm Visualizer, and CS Concept Visualizer. Track your progress and study systematically following the recommended learning path."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Follow the learning roadmap starting from the Dictionary",
+          "Track your progress on the dashboard",
+          "Identify weak areas and focus your study",
+          "Verify your learning with quizzes",
+          "Build interview confidence with practice"
+        ]
+      },
+      "tips": {
+        "title": "Study Tips",
+        "items": [
+          "Study 30 minutes daily to complete the entire curriculum in a month",
+          "Study multiple categories evenly rather than going deep in just one",
+          "Use visualization tools to intuitively understand abstract concepts",
+          "Preparing for follow-up questions significantly improves interview success"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "Where should I start?", "a": "Non-CS majors: Dictionary → Visualizer → Quiz. CS majors: Take a quiz to find weak areas, then focus study there." },
+          { "q": "Do I need to use all tools?", "a": "Choose based on your goal. For urgent interview prep, focus on Interview. For building foundations, prioritize Dictionary + Visualizer + Quiz." },
+          { "q": "Is my data safe?", "a": "All learning records are stored in your browser's local storage. Nothing is sent to any server." }
+        ]
+      }
+    }
+  },
+  "devCheatsheet": {
+    "title": "Developer Cheatsheet",
+    "description": "220 essential commands across Git, Linux, Docker, SQL and more",
+    "search": {
+      "placeholder": "Search commands",
+      "noResults": "No results found.",
+      "resultCount": "{count} results"
+    },
+    "filter": {
+      "all": "All",
+      "difficulty": "Difficulty",
+      "bookmarked": "Bookmarked"
+    },
+    "difficulty": {
+      "basic": "Basic",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "command": {
+      "copy": "Copy",
+      "copied": "Copied!",
+      "example": "Example",
+      "tags": "Tags"
+    },
+    "stats": {
+      "total": "Total Commands",
+      "bookmarked": "Bookmarked"
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is Developer Cheatsheet?",
+        "description": "A comprehensive reference tool with 220 essential commands across Git, Linux, Docker, SQL, Vim, HTTP Status Codes, CSS Flexbox/Grid, and Regex. Quickly search, copy, and bookmark the commands you need."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select a category tab at the top to browse by topic",
+          "Type in the search bar to filter commands in real-time",
+          "Click the copy button next to any command to copy to clipboard",
+          "Star frequently used commands for quick access",
+          "Click a command to see usage examples and tags"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Add this page to your browser bookmarks for quick terminal reference",
+          "Search works in both Korean and English",
+          "Use the difficulty filter to learn basic commands first"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "Does it work offline?", "a": "Yes, if installed as a PWA, cached content is available offline." },
+          { "q": "Where are bookmarks saved?", "a": "In your browser's local storage. They persist across visits on the same browser." }
+        ]
+      }
+    }
+  },
+  "systemDesign": {
+    "title": "System Design Interview",
+    "description": "10 classic system design problems with architecture walkthroughs",
+    "filter": {
+      "all": "All",
+      "category": "Category",
+      "difficulty": "Difficulty",
+      "noResults": "No problems match the criteria."
+    },
+    "difficulty": {
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "expert": "Expert"
+    },
+    "tab": {
+      "requirements": "Requirements",
+      "estimation": "Estimation",
+      "architecture": "Architecture",
+      "deepDive": "Deep Dive",
+      "scaleTradeoffs": "Scale & Tradeoffs"
+    },
+    "section": {
+      "functional": "Functional Requirements",
+      "nonFunctional": "Non-Functional Requirements",
+      "components": "Key Components",
+      "dataFlow": "Data Flow",
+      "scalability": "Scalability",
+      "tradeoffs": "Tradeoffs",
+      "interviewTips": "Interview Tips"
+    },
+    "practice": {
+      "start": "Start Practice",
+      "next": "Next Step",
+      "step": "Step",
+      "complete": "Practice Complete!",
+      "reset": "Restart"
+    },
+    "stats": {
+      "total": "Total",
+      "completed": "Completed",
+      "bookmarked": "Bookmarked"
+    },
+    "bookmark": {
+      "add": "Bookmark",
+      "remove": "Remove Bookmark"
+    },
+    "back": "Back to List",
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is System Design Interview?",
+        "description": "A technical interview format that evaluates your ability to design large-scale systems. You'll design architectures for real services like URL shorteners, chat systems, and news feeds, covering requirements analysis, estimation, component design, and scalability."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click a problem card to view the detailed walkthrough",
+          "Use practice mode to rehearse step-by-step answers",
+          "Study the 5 tabs in order: Requirements → Estimation → Architecture → Deep Dive → Scalability",
+          "Review ASCII diagrams to visualize the overall architecture",
+          "Check interview tips for what interviewers expect"
+        ]
+      },
+      "tips": {
+        "title": "Interview Tips",
+        "items": [
+          "Clarify requirements first — interviewers value this process",
+          "Back-of-envelope estimation is about logical thinking, not exact numbers",
+          "When explaining tradeoffs, clearly state WHY you chose one approach over another",
+          "If short on time, prioritize breadth over depth, but go deep when the interviewer probes"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "Should juniors prepare for system design?", "a": "Basic design sense helps even juniors. Start with intermediate level (URL Shortener, Rate Limiter, Notification System)." },
+          { "q": "How do you draw diagrams in real interviews?", "a": "Use a whiteboard or online tools like Excalidraw. Focus on key components and data flow." },
+          { "q": "How to allocate time in a 45-min interview?", "a": "Requirements 5min, Estimation 5min, High-level Design 15min, Deep Dive 15min, Q&A 5min." }
+        ]
+      }
+    }
+  },
+  "codingPatterns": {
+    "title": "Coding Test Patterns",
+    "description": "Master coding tests with 15 essential algorithm patterns",
+    "filter": {
+      "all": "All",
+      "category": "Category"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "section": {
+      "whenToUse": "When to Use",
+      "approach": "Approach",
+      "complexity": "Time/Space Complexity",
+      "pseudocode": "Pseudocode",
+      "examples": "Example Problems",
+      "mistakes": "Common Mistakes",
+      "relatedPatterns": "Related Patterns",
+      "tip": "Tip"
+    },
+    "stats": {
+      "total": "Total",
+      "studied": "Studied",
+      "progress": "Progress"
+    },
+    "learning": {
+      "markStudied": "Mark Studied",
+      "markNotStudied": "Unmark"
+    },
+    "time": "Time",
+    "space": "Space",
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What are Coding Test Patterns?",
+        "description": "A study tool covering 15 core algorithm patterns that repeatedly appear in coding interviews. Each pattern includes recognition signals, step-by-step approach, pseudocode, and classic problems."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Browse patterns by category or search",
+          "Learn the 'When to Use' signals first",
+          "Follow the step-by-step approach",
+          "Study the pseudocode and implement in your preferred language",
+          "Practice with the example problems"
+        ]
+      },
+      "tips": {
+        "title": "Study Tips",
+        "items": [
+          "Pattern recognition is the most important skill to develop",
+          "Start with easy patterns (Two Pointers, HashMap) to build confidence",
+          "One pattern per day — complete all 15 in just two weeks",
+          "Study related patterns together to improve problem classification"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "Are 15 patterns enough?", "a": "Yes, these 15 patterns cover the vast majority of coding test problems. Advanced problems often combine multiple patterns." },
+          { "q": "What order should I study?", "a": "Easy (Two Pointers, HashMap, Tree Traversal) → Medium (BFS/DFS, Binary Search, Sliding Window) → Hard (DP, Topological Sort)." }
+        ]
+      }
+    }
+  },
+  "devRoadmap": {
+    "title": "Developer Roadmap",
+    "description": "Explore 4 learning paths — Frontend, Backend, Fullstack, DevOps",
+    "track": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "fullstack": "Fullstack",
+      "devops": "DevOps"
+    },
+    "level": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "filter": {
+      "all": "All",
+      "essential": "Essential Only"
+    },
+    "stats": {
+      "total": "Total Skills",
+      "studied": "Studied",
+      "progress": "Progress",
+      "essentialProgress": "Essential Progress"
+    },
+    "skill": {
+      "studied": "Studied",
+      "notStudied": "Not Studied",
+      "resources": "Resources"
+    },
+    "legend": {
+      "essential": "Essential",
+      "optional": "Optional"
+    },
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is Developer Roadmap?",
+        "description": "A step-by-step learning guide for 4 developer tracks: Frontend, Backend, Fullstack, and DevOps. 120+ technologies are organized by difficulty with essential/optional labels for prioritization."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Choose a development track that interests you",
+          "Prioritize ★ essential skills first",
+          "Click any skill to see its description and resources",
+          "Check off skills as you learn them to track progress",
+          "Use difficulty filters to focus on your current level"
+        ]
+      },
+      "tips": {
+        "title": "Study Tips",
+        "items": [
+          "Essential skills alone are enough to start as a junior developer",
+          "Compare tracks to find the direction that suits you best",
+          "Complete one section fully before moving to the next",
+          "Hands-on projects are the best way to solidify learning"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "Which track should I choose?", "a": "UI/UX interest → Frontend. Server/data → Backend. Both → Fullstack. Infrastructure/automation → DevOps." },
+          { "q": "Do I need to learn everything?", "a": "No. Focus on ★ essential skills first, then add optional ones as needed." }
+        ]
       }
     }
   }
