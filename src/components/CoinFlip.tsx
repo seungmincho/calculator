@@ -75,7 +75,6 @@ export default function CoinFlip() {
       : result === 'tails'
       ? 'rotateY(180deg)'
       : 'rotateY(0deg)',
-    backfaceVisibility: 'hidden',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -85,7 +84,7 @@ export default function CoinFlip() {
     boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
     background:
       result === 'tails'
-        ? 'linear-gradient(135deg, #9ca3af, #d1d5db)'
+        ? 'linear-gradient(135deg, #6b7280, #9ca3af)'
         : 'linear-gradient(135deg, #f59e0b, #fbbf24)',
     userSelect: 'none',
   }

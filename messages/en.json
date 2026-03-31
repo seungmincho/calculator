@@ -4736,7 +4736,8 @@
     "title": "Tip of the Day",
     "showTips": "Show Tips",
     "prev": "Prev",
-    "next": "Next"
+    "next": "Next",
+    "closeTip": "Close tip"
   },
   "relatedTools": {
     "title": "Related Tools",
@@ -20591,6 +20592,9 @@
       "title": "Guide",
       "whatIs": { "title": "What is Coin Flip?", "description": "A fair 50:50 random decision tool with 3D flip animation. Features streak tracking, statistics, and best-of-N match mode for various decision-making scenarios." },
       "howToUse": { "title": "How to Use", "items": ["Click 'Flip' to toss the coin with a spinning animation.", "Consecutive flips automatically update the heads/tails statistics.", "Use best-of-N mode for two-player decisions.", "Check the history for previous results."] },
+      "howItWorks": { "title": "How It Works", "items": ["When you click the button, Math.random() generates a number between 0-1, determining heads or tails at the 0.5 threshold.", "CSS 3D transform (rotateY) renders the coin flip animation.", "Each result is recorded in history, with heads/tails ratio updated in real-time.", "In best-of-N mode, the winner is automatically determined when a majority is reached."] },
+      "realWorld": { "title": "Real-World Uses", "items": ["Choosing offense/defense before sports matches (soccer, cricket, etc.)", "Quick decisions among friends for bets or turn order", "Demonstrating the law of large numbers in probability classes", "Fast binary decisions when you can't make up your mind"] },
+      "comparison": { "title": "Compared to Other Tools", "items": ["Coin flip vs Dice: Coin for 2 choices, dice for 6+ options", "Coin flip vs Roulette: Roulette supports 3+ custom items for diverse selections", "Coin flip vs Lottery draw: Lottery allows adjustable win/lose ratios for unequal probabilities"] },
       "tips": { "title": "Tips", "items": ["Great for quick binary decisions.", "Best-of-N mode increases decision reliability.", "Use statistics to demonstrate probability concepts."] },
       "faq": { "title": "FAQ", "items": [{ "q": "Is it truly fair?", "a": "Yes, it uses Math.random() for a 50:50 probability. The more you flip, the closer the ratio converges to 50%." }, { "q": "Can the same side come up multiple times?", "a": "Yes, each flip is independent. Even after 10 heads in a row, the next flip is still 50:50." }] }
     }
