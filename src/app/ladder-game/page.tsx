@@ -3,8 +3,8 @@ import { Suspense } from 'react'
 import LadderGameTabs from './LadderGameTabs'
 
 export const metadata: Metadata = {
-  title: '사다리타기 · 돌림판 · 동전던지기 · 주사위 - 결정 도구 8종 | 툴허브',
-  description: '사다리타기, 돌림판, 순서뽑기, 동전던지기, 주사위, 팀나누기, 제비뽑기, Yes/No까지! 8가지 랜덤 결정 도구를 한 곳에서 무료로.',
+  title: '사다리타기 · 돌림판 · 가위바위보 · 벌칙룰렛 - 결정 도구 12종 | 툴허브',
+  description: '사다리타기, 돌림판, 가위바위보, 벌칙룰렛, 숫자뽑기, 타이머 등 12가지 랜덤 결정 도구를 한 곳에서 무료로.',
   keywords: [
     '사다리 타기',
     '사다리 게임',
@@ -25,12 +25,18 @@ export const metadata: Metadata = {
     '팀 분배',
     'Yes or No',
     '랜덤 뽑기',
-    '파티 게임'
+    '파티 게임',
+    '가위바위보',
+    '벌칙 룰렛',
+    '랜덤 숫자 뽑기',
+    '타이머',
+    '스톱워치',
+    '턴 타이머'
   ],
   authors: [{ name: '툴허브' }],
   openGraph: {
-    title: '결정 도구 8종 - 사다리·돌림판·동전·주사위·팀나누기 | 툴허브',
-    description: '사다리타기, 돌림판, 동전던지기, 주사위, 팀나누기, 제비뽑기, Yes/No 등 8가지 무료 결정 도구',
+    title: '결정 도구 12종 - 사다리·돌림판·가위바위보·벌칙룰렛 | 툴허브',
+    description: '사다리타기, 돌림판, 가위바위보, 벌칙룰렛, 숫자뽑기, 타이머 등 12가지 무료 결정 도구',
     type: 'website',
     url: 'https://toolhub.ai.kr/ladder-game',
     siteName: '툴허브',
@@ -46,8 +52,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '결정 도구 8종 - 사다리·돌림판·동전·주사위 | 툴허브',
-    description: '사다리타기, 돌림판, 동전던지기, 주사위, 팀나누기, 제비뽑기, Yes/No 등 8가지 무료 결정 도구',
+    title: '결정 도구 12종 - 사다리·돌림판·가위바위보·벌칙룰렛 | 툴허브',
+    description: '사다리타기, 돌림판, 가위바위보, 벌칙룰렛, 숫자뽑기, 타이머 등 12가지 무료 결정 도구',
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   alternates: {
@@ -70,8 +76,8 @@ export default function LadderGamePage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
-    name: '결정 도구 모음 8종 — 사다리·돌림판·동전·주사위·팀나누기·제비뽑기·Yes/No',
-    description: '사다리타기, 돌림판, 순서뽑기, 동전던지기, 주사위, 팀나누기, 제비뽑기, Yes/No — 온라인 결정 도구 8종 모음',
+    name: '결정 도구 모음 12종 — 사다리·돌림판·가위바위보·벌칙룰렛·숫자뽑기·타이머',
+    description: '사다리타기, 돌림판, 가위바위보, 벌칙룰렛, 숫자뽑기, 타이머 등 온라인 결정 도구 12종 모음',
     url: 'https://toolhub.ai.kr/ladder-game',
     genre: 'Party Game',
     gamePlatform: 'Web Browser',
@@ -122,8 +128,12 @@ export default function LadderGamePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 sm:py-12">
-        <div className="container mx-auto px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/50 to-purple-50/30 dark:from-gray-900 dark:via-indigo-950/30 dark:to-purple-950/20 py-8 sm:py-12 overflow-hidden">
+        {/* 배경 장식 — 글래스 효과용 컬러 블롭 */}
+        <div className="fixed top-20 left-10 w-72 h-72 bg-purple-300/20 dark:bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="fixed bottom-20 right-10 w-96 h-96 bg-indigo-300/20 dark:bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="fixed top-1/2 left-1/2 w-64 h-64 bg-pink-200/15 dark:bg-pink-600/8 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+        <div className="container mx-auto px-4 relative z-10">
           <Suspense fallback={<div className="text-center py-20 text-gray-400">Loading...</div>}>
             <LadderGameTabs />
           </Suspense>
@@ -131,46 +141,62 @@ export default function LadderGamePage() {
       </div>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
+        <div className="mt-12 border-t border-gray-200/50 dark:border-gray-700/50 pt-8">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            온라인 결정 도구 8종 모음
+            온라인 결정 도구 12종 모음
           </h2>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-            툴허브의 결정 도구 모음은 사다리타기, 돌림판, 순서뽑기, 동전던지기, 주사위, 팀나누기, 제비뽑기, Yes/No 총 8가지 방식을 제공합니다.
+            툴허브의 결정 도구 모음은 사다리타기, 돌림판, 순서뽑기, 동전던지기, 주사위, 팀나누기, 제비뽑기, Yes/No, 가위바위보, 숫자뽑기, 벌칙룰렛, 타이머 총 12가지 방식을 제공합니다.
             순서 정하기, 벌칙 정하기, 팀 나누기, 메뉴 고르기 등 다양한 상황에서 공정하고 재미있게 결정할 수 있습니다.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4">
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🪜 사다리 타기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">참가자와 결과를 1:1 매칭. 블라인드 모드, 시드 공유, 이미지 저장.</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4">
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🎯 돌림판</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">회전 룰렛으로 하나를 선택. 점심 메뉴, 벌칙 등에 최적.</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4">
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🔢 순서뽑기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">전체 참가자 순서를 한 번에 결정. 카드 공개 애니메이션.</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4">
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🪙 동전 던지기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">3D 회전 애니메이션. 통계, 연속기록, N판 M선승제.</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4">
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🎲 주사위</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">D4~D20, 최대 10개 동시. 보정값, TRPG 지원.</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4">
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">👥 팀 나누기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">랜덤/캡틴 드래프트. 운동, 조별과제, 회식 팀 분배.</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4">
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🎫 제비뽑기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">당첨/꽝 비율 설정. 한 명씩 뽑기, 커스텀 상품.</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4">
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">⚖️ Yes or No</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">매직 8볼 스타일. 7단계 답변, 확률 조정 가능.</p>
+            </div>
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">✊ 가위바위보</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">1:1, N판 M선승, 토너먼트. 전적 통계 및 히스토리.</p>
+            </div>
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🔢 숫자 뽑기</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">범위·개수 설정, 중복제거, 슬롯머신 애니메이션.</p>
+            </div>
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🍺 벌칙 룰렛</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">회식/MT/커플 프리셋. 커스텀 벌칙 추가 가능.</p>
+            </div>
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">⏱️ 타이머</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">카운트다운, 스톱워치, 턴 타이머. 프리셋 지원.</p>
             </div>
           </div>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">

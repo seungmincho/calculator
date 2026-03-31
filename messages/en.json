@@ -20697,6 +20697,64 @@
       "faq": { "title": "FAQ", "items": [{ "q": "Can a drawn lot come up again?", "a": "No, drawn lots are removed. Only remaining lots are available (without replacement)." }, { "q": "Can I customize the win ratio?", "a": "Yes, freely set total and winner count. E.g., 3 out of 10 = 30% chance." }] }
     }
   },
+  "randomNumberPicker": {
+    "title": "Random Number Picker",
+    "description": "Pick random numbers from any range",
+    "min": "Min",
+    "max": "Max",
+    "count": "Count",
+    "noDuplicates": "No Duplicates",
+    "draw": "Draw",
+    "drawing": "Drawing...",
+    "result": "Result",
+    "history": "Recent History",
+    "reset": "Reset",
+    "sortAsc": "Sort Asc",
+    "sortDesc": "Sort Desc",
+    "noSort": "No Sort",
+    "presets": "Quick Presets",
+    "presetLotto": "Lotto (1~45, 6 picks)",
+    "presetParking": "Parking (1~999, 1 pick)",
+    "presetClass": "Class No. (1~30, 1 pick)",
+    "copyResult": "Copy",
+    "copied": "Copied!",
+    "rangeError": "Min must be less than Max",
+    "countError": "Invalid count (range too small or exceeds 1~50)",
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is Random Number Picker?",
+        "description": "A tool that randomly selects numbers within a specified range. With the no-duplicates option, it ensures fair draws. Results are displayed dramatically with a slot-machine style animation."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Set the range using Min and Max values",
+          "Enter how many numbers to pick (1~50)",
+          "Choose whether to allow duplicates and a sort order",
+          "Click Draw to see results with a slot-machine animation",
+          "Use Quick Presets for Lotto, Parking, or Class number draws"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Lotto preset: picks 6 unique numbers from 1~45 to simulate lottery draws",
+          "Team assignment: pick numbers in the range of participant count",
+          "Allow duplicates mode: great for dice roll simulations",
+          "Use the Copy button to save results to clipboard and share",
+          "The last 10 draws are saved automatically in history"
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "What is the difference between no-duplicates and allow-duplicates?", "a": "No-duplicates ensures each number appears only once; an error occurs if the count exceeds the range. Allow-duplicates lets the same number appear multiple times." },
+          { "q": "Can I use this to generate lottery numbers?", "a": "Yes, the Lotto preset (1~45, 6 picks, no duplicates) generates fair random numbers. However, there is no way to improve actual winning odds." }
+        ]
+      }
+    }
+  },
   "yesNoDecider": {
     "title": "Yes or No",
     "description": "Decision helper! Ask a question and get a random answer",
@@ -36347,5 +36405,201 @@
     "total": "{count} total",
     "loadMore": "Load more",
     "loading": "Loading..."
+  },
+  "rockPaperScissors": {
+    "title": "Rock Paper Scissors",
+    "description": "1v1, best-of, and tournament modes!",
+    "mode1v1": "1v1",
+    "modeBestOf": "Best of N",
+    "modeTournament": "Tournament",
+    "rock": "Rock",
+    "paper": "Paper",
+    "scissors": "Scissors",
+    "win": "Win",
+    "lose": "Lose",
+    "draw": "Draw",
+    "yourChoice": "Your Choice",
+    "cpuChoice": "CPU Choice",
+    "result": "Result",
+    "round": "Round",
+    "score": "Score",
+    "history": "History",
+    "reset": "Reset",
+    "play": "Play",
+    "nextRound": "Next Round",
+    "bestOf3": "Best of 3",
+    "bestOf5": "Best of 5",
+    "bestOf7": "Best of 7",
+    "players": "Players",
+    "addPlayer": "Add",
+    "startTournament": "Start Tournament",
+    "winner": "Winner",
+    "bracket": "Bracket",
+    "semifinals": "Semifinals",
+    "finals": "Finals",
+    "stats": "Stats",
+    "winRate": "Win Rate",
+    "vsComputer": "vs Computer",
+    "chooseYourHand": "Choose rock, paper, or scissors!",
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is Rock Paper Scissors?",
+        "description": "A universally known decision game. Supports 1v1, best-of-N, and tournament modes with stats and history tracking."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select a mode (1v1 / Best of N / Tournament).",
+          "Click rock, paper, or scissors.",
+          "The result is shown with animation.",
+          "In tournament mode, register players and play matches."
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Use best-of mode to settle decisions fairly.",
+          "Tournament mode works great for group events.",
+          "Check your stats to analyze your patterns."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "How does the computer choose?", "a": "It's completely random. Previous results don't affect future choices." },
+          { "q": "How many players can join a tournament?", "a": "2 to 8 players can participate." }
+        ]
+      }
+    }
+  },
+  "penaltyRoulette": {
+    "title": "Penalty Roulette",
+    "description": "Spin the wheel! Whoever it lands on must perform the dare",
+    "spin": "Spin!",
+    "spinning": "Spinning...",
+    "result": "Items",
+    "category": "Category",
+    "custom": "Custom",
+    "addItem": "Add some items",
+    "removeItem": "Remove",
+    "catCompany": "Company Dinner",
+    "catMt": "Trip/MT",
+    "catCouple": "Couple",
+    "catLight": "Light",
+    "reroll": "Spin Again",
+    "reset": "Reset",
+    "intensity": "Intensity",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "penaltyIs": "Dare Selected!",
+    "ready": "Spin the roulette!",
+    "history": "Recent Results",
+    "addCustom": "Add Custom Items",
+    "placeholder": "Enter a new dare...",
+    "guide": {
+      "title": "Guide",
+      "whatIs": {
+        "title": "What is Penalty Roulette?",
+        "description": "A fun tool for fairly deciding dares at company dinners, trips, couples activities, or any gathering. Choose from category presets or add your own custom items."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select a category that matches your situation (Company Dinner / Trip / Couple / Light).",
+          "Use the 'Custom' tab to add your own dares.",
+          "Click 'Spin!' to start the roulette wheel.",
+          "The selected dare is displayed with a dramatic animation.",
+          "Click 'Spin Again' to re-roll."
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "In Custom mode, add player names or situation-specific dares freely.",
+          "Check the history panel to see previously selected dares.",
+          "At least 2 items are required to spin."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "Can I customize the items?", "a": "Yes! Switch to the 'Custom' category to freely add and remove any dare you like." },
+          { "q": "Is the result truly random?", "a": "Yes, each spin uses Math.random() to fairly select the winning segment." }
+        ]
+      }
+    }
+  },
+  "gameTimer": {
+    "title": "Timer & Stopwatch",
+    "description": "Countdown timer, stopwatch, and turn timer all in one place",
+    "countdown": "Timer",
+    "stopwatch": "Stopwatch",
+    "turnTimer": "Turn Timer",
+    "start": "Start",
+    "pause": "Pause",
+    "resume": "Resume",
+    "reset": "Reset",
+    "stop": "Stop",
+    "hours": "Hours",
+    "minutes": "Min",
+    "seconds": "Sec",
+    "preset1m": "1 min",
+    "preset3m": "3 min",
+    "preset5m": "5 min",
+    "preset10m": "10 min",
+    "preset15m": "15 min",
+    "preset30m": "30 min",
+    "preset1h": "1 hour",
+    "lap": "Lap",
+    "laps": "Laps",
+    "bestLap": "Best",
+    "worstLap": "Worst",
+    "timeUp": "Time's Up!",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "players": "Players",
+    "turnTime": "Turn Time",
+    "currentPlayer": "Current Player",
+    "nextPlayer": "Next Player",
+    "playerName": "Player Name",
+    "addPlayer": "Add",
+    "perTurn": "Per turn",
+    "guide": {
+      "title": "Usage Guide",
+      "whatIs": {
+        "title": "What is Timer & Stopwatch?",
+        "description": "A unified tool providing countdown timer, stopwatch, and turn timer modes. Perfect for board game time management, presentation timing, workout intervals, and more."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Select a mode from the tabs at the top: Timer, Stopwatch, or Turn Timer.",
+          "Timer: Set hours/minutes/seconds manually or tap a quick preset button, then press Start.",
+          "Stopwatch: Press Start then use the Lap button to record split times.",
+          "Turn Timer: Add players, set per-turn time, then press Start — it auto-advances to the next player.",
+          "Use the fullscreen button for a large display visible across the room."
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "A warning beep sounds when 5 or fewer seconds remain on a countdown.",
+          "The screen flashes and an alert sounds when the countdown finishes.",
+          "Best and worst lap splits are automatically highlighted in the stopwatch lap list.",
+          "Turn Timer supports up to 8 players with editable names.",
+          "Use fullscreen mode during games so everyone can see the timer at a glance."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          { "q": "Can I mute the timer sounds?", "a": "The alert sounds play automatically in the current version. You can mute them by silencing your device." },
+          { "q": "Are lap records saved?", "a": "Lap records are kept for the current session only. They are cleared when you press Reset." },
+          { "q": "Does the turn timer auto-advance to the next player?", "a": "Yes, when the turn time expires it automatically switches to the next player and plays an alert sound." }
+        ]
+      }
+    }
   }
 }
