@@ -1494,6 +1494,7 @@
     "title": "ToolHub",
     "description": "We provide various calculators needed in daily life.",
     "privacy": "Privacy Policy",
+    "inquiry": "Contact / Feedback",
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
@@ -36276,5 +36277,71 @@
         ]
       }
     }
+  },
+  "inquiry": {
+    "title": "Contact / Feedback",
+    "description": "Report bugs, request features, or share your suggestions.",
+    "category": {
+      "label": "Category",
+      "bug": "Bug Report",
+      "feature": "Feature Request",
+      "suggestion": "Suggestion",
+      "other": "Other"
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Brief summary (max 50 characters)",
+      "message": "Details",
+      "messagePlaceholder": "Please describe in detail (max 500 characters)",
+      "contact": "Contact (optional)",
+      "contactPlaceholder": "Email or contact info (if you want a reply)",
+      "charCount": "{current}/{max} chars",
+      "submit": "Submit",
+      "submitting": "Submitting..."
+    },
+    "success": {
+      "title": "Submitted!",
+      "message": "Thank you for your feedback. We'll review it promptly.",
+      "another": "Submit another"
+    },
+    "error": {
+      "titleRequired": "Please enter a title.",
+      "messageRequired": "Please enter a message.",
+      "tooSoon": "Please try again later. (Available in {minutes} min)",
+      "submitFailed": "Submission failed. Please try again later."
+    },
+    "rateLimit": "To prevent abuse, only 1 submission per hour is allowed.",
+    "pageInfo": "This inquiry is sent from the current page."
+  },
+  "adminFeedback": {
+    "title": "Inquiry Management",
+    "login": {
+      "title": "Admin Login",
+      "password": "Password",
+      "submit": "Login",
+      "error": "Incorrect password."
+    },
+    "filter": {
+      "all": "All",
+      "unread": "Unread",
+      "read": "Read"
+    },
+    "table": {
+      "category": "Category",
+      "title": "Title",
+      "message": "Message",
+      "contact": "Contact",
+      "date": "Date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "empty": "No inquiries found.",
+    "markRead": "Mark as read",
+    "markUnread": "Mark as unread",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "total": "{count} total",
+    "loadMore": "Load more",
+    "loading": "Loading..."
   }
 }

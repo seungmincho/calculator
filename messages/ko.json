@@ -2024,6 +2024,7 @@
     "title": "툴허브",
     "description": "일상에 필요한 다양한 계산기를 제공합니다.",
     "privacy": "개인정보처리방침",
+    "inquiry": "문의/건의",
     "calculators": "계산기",
     "tools": "도구",
     "links": {
@@ -36396,5 +36397,71 @@
         ]
       }
     }
+  },
+  "inquiry": {
+    "title": "문의 / 건의하기",
+    "description": "버그 신고, 기능 요청, 개선 제안 등 자유롭게 남겨주세요.",
+    "category": {
+      "label": "카테고리",
+      "bug": "버그 신고",
+      "feature": "기능 요청",
+      "suggestion": "건의사항",
+      "other": "기타"
+    },
+    "form": {
+      "title": "제목",
+      "titlePlaceholder": "간단히 요약해 주세요 (최대 50자)",
+      "message": "내용",
+      "messagePlaceholder": "자세히 설명해 주세요 (최대 500자)",
+      "contact": "연락처 (선택)",
+      "contactPlaceholder": "이메일 또는 연락처 (답변받으실 경우)",
+      "charCount": "{current}/{max}자",
+      "submit": "제출하기",
+      "submitting": "제출 중..."
+    },
+    "success": {
+      "title": "접수 완료!",
+      "message": "소중한 의견 감사합니다. 빠르게 검토하겠습니다.",
+      "another": "추가 문의하기"
+    },
+    "error": {
+      "titleRequired": "제목을 입력해 주세요.",
+      "messageRequired": "내용을 입력해 주세요.",
+      "tooSoon": "잠시 후 다시 시도해 주세요. ({minutes}분 후 가능)",
+      "submitFailed": "제출에 실패했습니다. 잠시 후 다시 시도해 주세요."
+    },
+    "rateLimit": "남용 방지를 위해 1시간에 1건만 접수 가능합니다.",
+    "pageInfo": "현재 페이지에서 보내는 문의입니다."
+  },
+  "adminFeedback": {
+    "title": "문의/건의 관리",
+    "login": {
+      "title": "관리자 로그인",
+      "password": "비밀번호",
+      "submit": "로그인",
+      "error": "비밀번호가 올바르지 않습니다."
+    },
+    "filter": {
+      "all": "전체",
+      "unread": "미확인",
+      "read": "확인됨"
+    },
+    "table": {
+      "category": "카테고리",
+      "title": "제목",
+      "message": "내용",
+      "contact": "연락처",
+      "date": "접수일",
+      "status": "상태",
+      "actions": "관리"
+    },
+    "empty": "접수된 문의가 없습니다.",
+    "markRead": "확인 처리",
+    "markUnread": "미확인으로",
+    "delete": "삭제",
+    "deleteConfirm": "정말 삭제하시겠습니까?",
+    "total": "총 {count}건",
+    "loadMore": "더 불러오기",
+    "loading": "불러오는 중..."
   }
 }

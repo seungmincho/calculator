@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Calculator } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { menuConfig, categoryKeys } from '@/config/menuConfig';
@@ -10,6 +11,7 @@ const FOOTER_TOOLS_PER_CATEGORY = 6;
 
 const Footer = () => {
   const t = useTranslations();
+  const pathname = usePathname();
 
   return (
     <footer className="bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-white mt-20">
@@ -65,6 +67,9 @@ const Footer = () => {
             </Link>
             <Link href="/games" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               {t('footer.links.gameHub')}
+            </Link>
+            <Link href={`/inquiry${pathname && pathname !== '/' ? `?from=${encodeURIComponent(pathname)}` : ''}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              {t('footer.inquiry')}
             </Link>
             <Link href="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               {t('footer.privacy')}
