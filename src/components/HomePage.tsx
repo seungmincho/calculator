@@ -15,20 +15,20 @@ import ToolAnalyticsDashboard from './ToolAnalyticsDashboard'
 
 /* ── Glass design tokens ── */
 const glass = {
-  card: 'bg-white/40 dark:bg-white/[0.06] backdrop-blur-xl border border-white/50 dark:border-white/[0.08] rounded-2xl',
-  cardHover: 'hover:bg-white/60 dark:hover:bg-white/[0.10] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:-translate-y-1',
-  cardInset: 'shadow-[inset_1px_1px_6px_rgba(255,255,255,0.25),inset_-1px_-1px_6px_rgba(255,255,255,0.08)]',
-  pill: 'bg-white/50 dark:bg-white/[0.06] backdrop-blur-lg border border-white/40 dark:border-white/[0.08] rounded-full',
-  pillActive: 'bg-white/70 dark:bg-white/[0.15] border-indigo-300/60 dark:border-indigo-400/30 shadow-[0_0_15px_rgba(99,102,241,0.15)]',
-  input: 'bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/50 dark:border-white/[0.10] rounded-2xl',
+  card: 'bg-white/70 dark:bg-white/[0.06] backdrop-blur-xl border border-gray-200/50 dark:border-white/[0.08] rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-none',
+  cardHover: 'hover:bg-white/90 dark:hover:bg-white/[0.10] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:-translate-y-1',
+  cardInset: 'shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-[inset_1px_1px_6px_rgba(255,255,255,0.25),inset_-1px_-1px_6px_rgba(255,255,255,0.08)]',
+  pill: 'bg-white/60 dark:bg-white/[0.06] backdrop-blur-lg border border-gray-200/40 dark:border-white/[0.08] rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:shadow-none',
+  pillActive: 'bg-white/90 dark:bg-white/[0.15] border-indigo-300/60 dark:border-indigo-400/30 shadow-[0_0_15px_rgba(99,102,241,0.15)]',
+  input: 'bg-white/60 dark:bg-white/[0.06] backdrop-blur-xl border border-gray-200/40 dark:border-white/[0.10] rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:shadow-none',
 } as const
 
 const categoryGlass: Record<CategoryKey, { gradient: string; glow: string }> = {
-  calculators: { gradient: 'from-blue-400/15 to-cyan-400/10 dark:from-blue-500/10 dark:to-cyan-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]' },
-  tools: { gradient: 'from-violet-400/15 to-purple-400/10 dark:from-violet-500/10 dark:to-purple-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]' },
-  media: { gradient: 'from-orange-400/15 to-amber-400/10 dark:from-orange-500/10 dark:to-amber-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(251,146,60,0.15)]' },
-  health: { gradient: 'from-emerald-400/15 to-green-400/10 dark:from-emerald-500/10 dark:to-green-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]' },
-  games: { gradient: 'from-pink-400/15 to-rose-400/10 dark:from-pink-500/10 dark:to-rose-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(236,72,153,0.15)]' },
+  calculators: { gradient: 'from-blue-400/20 to-cyan-400/15 dark:from-blue-500/10 dark:to-cyan-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]' },
+  tools: { gradient: 'from-violet-400/20 to-purple-400/15 dark:from-violet-500/10 dark:to-purple-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]' },
+  media: { gradient: 'from-orange-400/20 to-amber-400/15 dark:from-orange-500/10 dark:to-amber-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(251,146,60,0.15)]' },
+  health: { gradient: 'from-emerald-400/20 to-green-400/15 dark:from-emerald-500/10 dark:to-green-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]' },
+  games: { gradient: 'from-pink-400/20 to-rose-400/15 dark:from-pink-500/10 dark:to-rose-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(236,72,153,0.15)]' },
 }
 
 const categoryEmoji: Record<CategoryKey, string> = {
@@ -170,7 +170,7 @@ export default function HomePage() {
               style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.25), rgba(236,72,153,0.15), rgba(59,130,246,0.25))' }} />
             <button
               onClick={() => setIsSearchOpen(true)}
-              className={`relative w-full flex items-center gap-3 px-5 py-4 ${glass.input} cursor-text transition-all duration-300 group-hover:bg-white/70 dark:group-hover:bg-white/[0.10]`}
+              className={`relative w-full flex items-center gap-3 px-5 py-4 ${glass.input} cursor-text transition-all duration-300 group-hover:bg-white/80 dark:group-hover:bg-white/[0.10]`}
               style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.2), inset -1px -1px 6px rgba(255,255,255,0.05), 0 4px 24px rgba(0,0,0,0.04)' }}
             >
               <Search className="w-4 h-4 shrink-0 text-gray-400 dark:text-slate-500" />
@@ -346,7 +346,7 @@ export default function HomePage() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`group relative bg-amber-50/40 dark:bg-amber-500/[0.04] backdrop-blur-xl border border-amber-200/40 dark:border-amber-500/10 rounded-2xl p-4 transition-all duration-300 ${glass.cardHover}`}
+                  className={`group relative bg-amber-50/70 dark:bg-amber-500/[0.04] backdrop-blur-xl border border-amber-200/50 dark:border-amber-500/10 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.03)] dark:shadow-none transition-all duration-300 ${glass.cardHover}`}
                   style={{ boxShadow: 'inset 1px 1px 6px rgba(251,191,36,0.1), inset -1px -1px 6px rgba(251,191,36,0.03)' }}
                 >
                   <button
@@ -398,7 +398,7 @@ export default function HomePage() {
               className={`px-4 py-2 rounded-full text-sm font-medium backdrop-blur-lg border transition-all duration-300 ${
                 activeCategory === 'all'
                   ? `${glass.pillActive} text-indigo-700 dark:text-indigo-300`
-                  : 'bg-white/30 dark:bg-white/[0.04] border-white/30 dark:border-white/[0.06] text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/[0.08]'
+                  : 'bg-white/40 dark:bg-white/[0.04] border-gray-200/60 dark:border-white/[0.06] text-gray-600 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-white/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.03)] dark:shadow-none'
               }`}
             >
               {t('header.all')} ({totalTools})
@@ -410,7 +410,7 @@ export default function HomePage() {
                 className={`px-4 py-2 rounded-full text-sm font-medium backdrop-blur-lg border transition-all duration-300 ${
                   activeCategory === key
                     ? `${glass.pillActive} text-indigo-700 dark:text-indigo-300`
-                    : 'bg-white/30 dark:bg-white/[0.04] border-white/30 dark:border-white/[0.06] text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/[0.08]'
+                    : 'bg-white/40 dark:bg-white/[0.04] border-gray-200/60 dark:border-white/[0.06] text-gray-600 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-white/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.03)] dark:shadow-none'
                 }`}
               >
                 {categoryEmoji[key]} {t(menuConfig[key].titleKey)} ({menuConfig[key].items.length})
@@ -480,7 +480,7 @@ export default function HomePage() {
               { icon: WifiOff, key: 'homePage.features.offline', desc: 'homePage.features.offlineDesc', gradient: 'from-emerald-400/10 to-green-400/5' },
               { icon: Moon, key: 'homePage.features.darkMode', desc: 'homePage.features.darkModeDesc', gradient: 'from-violet-400/10 to-purple-400/5' },
             ].map((feat, i) => (
-              <div key={i} className={`relative overflow-hidden ${glass.card} ${glass.cardInset} p-6 text-center hover:bg-white/60 dark:hover:bg-white/[0.08] transition-all duration-300`}>
+              <div key={i} className={`relative overflow-hidden ${glass.card} ${glass.cardInset} p-6 text-center hover:bg-white/90 dark:hover:bg-white/[0.08] transition-all duration-300`}>
                 <div className={`absolute inset-0 bg-gradient-to-br ${feat.gradient} dark:opacity-50 rounded-2xl`} />
                 <div className="relative z-10">
                   <feat.icon className="w-8 h-8 mx-auto mb-3 text-indigo-600 dark:text-indigo-400" />

@@ -645,6 +645,22 @@ export default function NewTool() {
 체크박스:     accent-blue-600
 ```
 
+### Liquid Glass 디자인 패턴 (글래스모피즘)
+
+HomePage와 /ladder-game/에 적용된 글래스 디자인 시스템. 점진적으로 전체 페이지 확장 예정.
+
+```
+글래스 카드:     bg-white/40 dark:bg-white/[0.06] backdrop-blur-xl border border-white/50 dark:border-white/[0.08] rounded-2xl
+글래스 inset:    shadow-[inset_1px_1px_6px_rgba(255,255,255,0.25),inset_-1px_-1px_6px_rgba(255,255,255,0.08)]
+글래스 hover:    hover:bg-white/60 dark:hover:bg-white/[0.10] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1
+글래스 pill:     bg-white/50 dark:bg-white/[0.06] backdrop-blur-lg border border-white/40 dark:border-white/[0.08] rounded-full
+글래스 pill활성: bg-white/70 dark:bg-white/[0.15] border-indigo-300/60 shadow-[0_0_15px_rgba(99,102,241,0.15)]
+글래스 입력:     bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/50 dark:border-white/[0.10] rounded-2xl
+```
+
+**배경 필수**: 글래스 효과는 배경 color blob(radial-gradient, blur-3xl) 위에서만 살아남. 단색 배경에서는 효과 미미.
+**컴포넌트별 테마**: 각 도구는 고유 gradient wrapper 사용 (예: violet/fuchsia, cyan/blue, amber/orange, emerald/green).
+
 ### 번역 키 네이밍 규칙
 
 - camelCase: `buttonText`, `errorMessage`
