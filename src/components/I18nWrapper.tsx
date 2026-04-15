@@ -1,23 +1,20 @@
 'use client'
 
-import React from 'react'
+import React, { Suspense } from 'react'
 
 interface I18nWrapperProps {
   children: React.ReactNode
 }
 
 /**
- * I18nWrapper — now a simple passthrough.
+ * I18nWrapper — Suspense boundary passthrough.
  *
- * Previously used NextIntlClientProvider with async message loading,
- * which caused "Loading..." to appear before React hydration and
- * prevented Google from indexing page content.
- *
- * Translations are now loaded synchronously via src/lib/i18n.ts.
- * To restore multi-language support, add language context here.
+ * Translations are loaded synchronously via src/lib/i18n.ts (no Loading... flash).
+ * Suspense is kept here because Next.js 15 requires useSearchParams() to be
+ * wrapped in a Suspense boundary during static prerendering.
  */
 const I18nWrapper: React.FC<I18nWrapperProps> = ({ children }) => {
-  return <>{children}</>
+  return <Suspense fallback={null}>{children}</Suspense>
 }
 
 export default I18nWrapper

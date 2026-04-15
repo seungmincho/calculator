@@ -23,6 +23,9 @@ dependencies:
   '@supabase/supabase-js':
     specifier: ^2.89.0
     version: 2.99.3
+  '@tailwindcss/oxide-win32-x64-msvc':
+    specifier: 4.2.2
+    version: 4.2.2
   '@types/js-yaml':
     specifier: ^4.0.9
     version: 4.0.9
@@ -121,9 +124,6 @@ devDependencies:
   '@types/react-dom':
     specifier: ^19.2.3
     version: 19.2.3(@types/react@19.2.14)
-  baseline-browser-mapping:
-    specifier: ^2.10.19
-    version: 2.10.19
   eslint:
     specifier: ^9.39.1
     version: 9.39.4
@@ -1930,8 +1930,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
-    optional: true
 
   /@tailwindcss/oxide@4.2.2:
     resolution: {integrity: sha512-qEUA07+E5kehxYp9BVMpq9E8vnJuBHfJEC0vPC5e7iL/hw7HR61aDKoVoKzrG+QKp56vhNZe4qwkRmMC0zDLvg==}
