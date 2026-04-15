@@ -205,10 +205,10 @@ const Header = () => {
                 </button>
 
                 {openDropdown === key && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-white/70 dark:bg-gray-900/80 backdrop-blur-2xl rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)] border border-white/50 dark:border-white/[0.08] z-50 overflow-hidden">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-white/95 dark:bg-[#0d1117]/95 backdrop-blur-2xl rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.6)] border border-white/60 dark:border-white/[0.10] z-50 overflow-hidden">
                     <div className="flex">
                       {/* 왼쪽: 최근 사용 또는 추천 항목 */}
-                      <div className="w-[180px] bg-white/30 dark:bg-white/[0.03] p-3 border-r border-white/30 dark:border-white/[0.06]">
+                      <div className="w-[180px] bg-black/[0.03] dark:bg-white/[0.04] p-3 border-r border-black/[0.06] dark:border-white/[0.07]">
                         <div className="flex items-center gap-1.5 mb-3 px-1">
                           <Clock className="w-3.5 h-3.5 text-blue-500" />
                           <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
