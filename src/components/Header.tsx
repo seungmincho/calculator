@@ -181,7 +181,7 @@ const Header = () => {
     games: '🎮',
   };
 
-  return (
+  return (<>
     <header ref={headerRef} className="bg-white dark:bg-white/[0.04] backdrop-blur-xl border-b border-gray-200/40 dark:border-white/[0.06] sticky top-0 z-50 shadow-[0_1px_20px_rgba(0,0,0,0.05),0_1px_2px_rgba(0,0,0,0.03)] dark:shadow-[0_1px_12px_rgba(0,0,0,0.2)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -447,10 +447,10 @@ const Header = () => {
           </div>
         )}
       </div>
-      {/* Search Dialog */}
-      <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
-  );
+    {/* Search Dialog — header 밖에서 렌더 (backdrop-filter containing block 회피) */}
+    <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+  </>);
 };
 
 export default Header;
