@@ -114,6 +114,19 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
     }
   }, [isOpen])
 
+  // Global ESC handler — works even when focus is outside input
+  useEffect(() => {
+    if (!isOpen) return
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        onClose()
+      }
+    }
+    document.addEventListener('keydown', handleGlobalKeyDown)
+    return () => document.removeEventListener('keydown', handleGlobalKeyDown)
+  }, [isOpen, onClose])
+
   // Scroll selected item into view
   useEffect(() => {
     if (!listRef.current) return
@@ -170,23 +183,19 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   if (!isOpen) return null
 
   return (
-    <>
-      {/* Backdrop — z-[99]: 헤더(z-[100]) 아래, 콘텐츠 위 */}
-      <div
-        className="fixed inset-0 z-[99] bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
+    <div
+      className="fixed inset-0 z-[200] flex items-start justify-center pt-[15vh]"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={t('common.search')}
+    >
+      {/* Backdrop — 헤더(h-16) 아래부터 어둡게 */}
+      <div className="fixed inset-0 top-16 bg-black/50 backdrop-blur-sm" />
 
-      {/* Dialog wrapper — z-[101]: 헤더(z-[100]) 위 */}
-      <div
-        className="fixed inset-0 z-[101] flex items-start justify-center pt-[15vh] pointer-events-none"
-        role="dialog"
-        aria-modal="true"
-        aria-label={t('common.search')}
-      >
       {/* Dialog */}
       <div
-        className="pointer-events-auto relative w-full max-w-xl mx-4 bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-xl mx-4 bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input */}
@@ -388,7 +397,6 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           {query.trim() ? `${filteredItems.length} ${t('searchDialog.results')}` : ''}
         </span>
       </div>
-      </div>
-    </>
+    </div>
   )
 }
