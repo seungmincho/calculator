@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Calculator,
   Clock,
@@ -25,6 +25,7 @@ import {
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset } from '@/lib/glass'
 
 function useCountdown(targetDate: Date) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -132,7 +133,7 @@ export default function TaxSeason() {
         </p>
 
         {/* Countdown */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 max-w-lg mx-auto">
+        <div className={`${glassCard} ${glassInset} p-6 max-w-lg mx-auto`}>
           {isPast ? (
             <p className="text-gray-500 dark:text-gray-400 text-sm">{t('hero.deadlinePast')}</p>
           ) : (
@@ -277,7 +278,7 @@ export default function TaxSeason() {
             <Link
               key={href}
               href={href}
-              className="group bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:border-orange-400 dark:hover:border-orange-500 hover:shadow-md transition-all"
+              className={`group ${glassCard} ${glassInset} p-5 hover:border-orange-400 dark:hover:border-orange-500 hover:shadow-md transition-all`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
@@ -314,7 +315,7 @@ export default function TaxSeason() {
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -428,7 +429,7 @@ export default function TaxSeason() {
           ).map(({ icon, color, titleKey, descKey }) => (
             <div
               key={titleKey}
-              className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5"
+              className={`${glassCard} ${glassInset} p-5`}
             >
               <div className="flex items-start gap-3">
                 <div className={`flex-shrink-0 rounded-lg p-2 ${color}`}>{icon}</div>
@@ -457,7 +458,7 @@ export default function TaxSeason() {
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <ol className="relative border-l-2 border-orange-200 dark:border-orange-800 space-y-8 ml-3">
             {(
               [
@@ -539,7 +540,7 @@ export default function TaxSeason() {
           ).map(({ qKey, aKey }) => (
             <details
               key={qKey}
-              className="group bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+              className={`group ${glassCard} ${glassInset} overflow-hidden`}
             >
               <summary className="flex items-center justify-between cursor-pointer px-5 py-4 font-medium text-gray-900 dark:text-white text-sm hover:bg-gray-50 dark:hover:bg-gray-750/30 transition-colors list-none">
                 <span className="flex items-center gap-2">

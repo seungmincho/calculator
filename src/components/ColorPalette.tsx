@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Palette, Copy, Check, Shuffle, Save, Trash2, Download, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface HSL {
   h: number
@@ -344,7 +345,7 @@ export default function ColorPalette() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Base Color */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -366,7 +367,7 @@ export default function ColorPalette() {
                       setBaseColor(val)
                     }
                   }}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 uppercase"
+                  className={`${glassInput} flex-1 px-3 py-2 uppercase`}
                   placeholder="#3b82f6"
                 />
               </div>
@@ -389,7 +390,7 @@ export default function ColorPalette() {
               <select
                 value={harmony}
                 onChange={(e) => setHarmony(e.target.value as HarmonyRule)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-3 py-2`}
               >
                 <option value="complementary">{t('harmonies.complementary')}</option>
                 <option value="analogous">{t('harmonies.analogous')}</option>
@@ -450,7 +451,7 @@ export default function ColorPalette() {
 
           {/* Saved Palettes */}
           {savedPalettes.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6">
+            <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 {t('savedPalettes')}
               </h3>
@@ -490,7 +491,7 @@ export default function ColorPalette() {
 
         {/* Palette Display */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
               {t('palette')}
             </h2>
@@ -678,7 +679,7 @@ export default function ColorPalette() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

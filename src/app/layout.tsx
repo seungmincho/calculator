@@ -5,7 +5,6 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import DailyTips from '@/components/DailyTips'
-import ProgressBar from '@/components/ProgressBar'
 import ToolsShowcase from '@/components/ToolsShowcase'
 import Breadcrumb from '@/components/Breadcrumb'
 import ToolJsonLd from '@/components/ToolJsonLd'
@@ -188,7 +187,6 @@ export default function RootLayout({
         <LanguageProvider>
           <I18nWrapper>
             <SkipToContent />
-            <ProgressBar />
             <ToolTracker />
             <Header />
             {/* Breadcrumb Navigation */}

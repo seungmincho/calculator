@@ -25,9 +25,10 @@
  */
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Calculator, Plus, Trash2, BookOpen, BarChart3 } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface WeightedPair {
   id: number
@@ -255,7 +256,7 @@ export default function AverageCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left: Input */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* Weighted mode toggle */}
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -279,7 +280,7 @@ export default function AverageCalculator() {
                   onChange={e => setInputText(e.target.value)}
                   rows={8}
                   placeholder={t('inputPlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 resize-y text-sm font-mono"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 resize-y text-sm font-mono`}
                 />
                 <p className="text-xs text-gray-400 dark:text-gray-500">{t('inputHelp')}</p>
               </>
@@ -297,7 +298,7 @@ export default function AverageCalculator() {
                       value={pair.value}
                       onChange={e => updatePair(pair.id, 'value', e.target.value)}
                       placeholder="0"
-                      className="w-full px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500"
+                      className={`w-full px-2 py-1.5 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500`}
                     />
                     <input
                       type="number"
@@ -306,7 +307,7 @@ export default function AverageCalculator() {
                       placeholder="1"
                       min="0"
                       step="0.1"
-                      className="w-full px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500"
+                      className={`w-full px-2 py-1.5 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500`}
                     />
                     <button
                       onClick={() => removePair(pair.id)}
@@ -344,7 +345,7 @@ export default function AverageCalculator() {
             {averageCards.map(card => (
               <div
                 key={card.key}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-2"
+                className={`${glassCard} ${glassInset} p-5 space-y-2`}
               >
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -380,7 +381,7 @@ export default function AverageCalculator() {
 
           {/* Statistics table */}
           {stats && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-indigo-500" />
                 {t('statsTitle')}
@@ -416,7 +417,7 @@ export default function AverageCalculator() {
 
           {/* Empty state */}
           {!hasData && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
               <p className="text-gray-400 dark:text-gray-500 text-sm">{t('inputHelp')}</p>
             </div>
@@ -425,7 +426,7 @@ export default function AverageCalculator() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}

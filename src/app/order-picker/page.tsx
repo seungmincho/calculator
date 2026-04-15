@@ -190,7 +190,7 @@ export default function OrderPickerPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb />
 
-          <Suspense fallback={<div className="text-center py-20 text-gray-400">Loading...</div>}>
+          <Suspense fallback={null}>
             <I18nWrapper>
               <OrderPickerClient />
             </I18nWrapper>

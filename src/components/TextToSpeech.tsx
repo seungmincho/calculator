@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Volume2, Play, Pause, Square, BookOpen, MessageSquare } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Status = 'stopped' | 'speaking' | 'paused'
 
@@ -122,7 +123,7 @@ export default function TextToSpeech() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Volume2 className="w-5 h-5" />
               {t('voice')}
@@ -137,7 +138,7 @@ export default function TextToSpeech() {
                 <select
                   value={selectedVoice?.name || ''}
                   onChange={handleVoiceChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 >
                   {voices.map((voice) => (
                     <option key={voice.name} value={voice.name}>
@@ -219,7 +220,7 @@ export default function TextToSpeech() {
         {/* Text Input & Controls */}
         <div className="lg:col-span-2 space-y-6">
           {/* Text Input */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('textInput')}
             </label>
@@ -227,7 +228,7 @@ export default function TextToSpeech() {
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder={t('textPlaceholder')}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 min-h-[200px]"
+              className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 min-h-[200px]`}
             />
 
             {/* Info */}
@@ -240,7 +241,7 @@ export default function TextToSpeech() {
           </div>
 
           {/* Playback Controls */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={handlePlay}
@@ -281,7 +282,7 @@ export default function TextToSpeech() {
           </div>
 
           {/* Sample Presets */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <MessageSquare className="w-5 h-5" />
               {t('presets.title')}
@@ -311,7 +312,7 @@ export default function TextToSpeech() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

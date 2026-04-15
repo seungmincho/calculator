@@ -128,7 +128,7 @@ export default function ChmodCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <I18nWrapper>
-        <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
+        <Suspense fallback={null}>
           <ChmodCalculator />
         </Suspense>
         <div className="mt-8">

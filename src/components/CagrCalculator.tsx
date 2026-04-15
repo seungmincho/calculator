@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, RotateCcw, ChevronDown, ChevronUp, BarChart3, TrendingUp, Clock, GitCompareArrows, Link } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Mode = 'cagr' | 'future' | 'period'
 type CompoundFreq = 'yearly' | 'monthly' | 'daily'
@@ -405,7 +406,7 @@ export default function CagrCalculator() {
       value={value}
       onChange={e => onChange(formatComma(e.target.value))}
       placeholder={placeholder}
-      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-right"
+      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right`}
     />
   )
 
@@ -417,7 +418,7 @@ export default function CagrCalculator() {
         value={value}
         onChange={e => onChange(e.target.value.replace(/[^0-9.]/g, ''))}
         placeholder={placeholder}
-        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-right pr-10"
+        className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right pr-10`}
       />
       {suffix && (
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 text-sm">
@@ -575,7 +576,7 @@ export default function CagrCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left: Input Panel */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {compareMode ? t('compare.investmentA') : t('input.title')}
             </h2>
@@ -584,7 +585,7 @@ export default function CagrCalculator() {
 
           {/* Comparison Input B */}
           {compareMode && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-2 border-emerald-200 dark:border-emerald-800">
+            <div className={`${glassCard} ${glassInset} p-6 border-2 border-emerald-200 dark:border-emerald-800`}>
               <h2 className="text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-4">
                 {t('compare.investmentB')}
               </h2>
@@ -593,14 +594,14 @@ export default function CagrCalculator() {
           )}
 
           {/* Compound Frequency */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('input.compoundFreq')}
             </label>
             <select
               value={compoundFreq}
               onChange={e => setCompoundFreq(e.target.value as CompoundFreq)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
             >
               <option value="yearly">{t('input.yearly')}</option>
               <option value="monthly">{t('input.monthly')}</option>
@@ -716,7 +717,7 @@ export default function CagrCalculator() {
               </div>
             </div>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center">
+            <div className={`${glassCard} ${glassInset} p-8 text-center`}>
               <BarChart3 className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
               <p className="text-gray-500 dark:text-gray-400">{t('result.placeholder')}</p>
             </div>
@@ -724,7 +725,7 @@ export default function CagrCalculator() {
 
           {/* Comparison Result */}
           {compareMode && resultA && resultB && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <GitCompareArrows className="w-5 h-5" />
                 {t('compare.title')}
@@ -855,7 +856,7 @@ export default function CagrCalculator() {
 
           {/* Chart */}
           {chartData.length > 1 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('chart.title')}</h3>
               <div className="w-full" style={{ minHeight: '300px' }}>
                 <ResponsiveContainer width="100%" height={300}>
@@ -910,7 +911,7 @@ export default function CagrCalculator() {
 
           {/* Yearly Table */}
           {chartData.length > 1 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+            <div className={`${glassCard} ${glassInset} overflow-hidden`}>
               <button
                 onClick={() => setShowTable(!showTable)}
                 className="w-full flex items-center justify-between px-6 py-4 text-left"
@@ -968,7 +969,7 @@ export default function CagrCalculator() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between px-6 py-4 text-left"

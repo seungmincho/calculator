@@ -46,7 +46,7 @@
  */
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Calculator,
   ShoppingCart,
@@ -56,6 +56,7 @@ import {
   TrendingDown,
   Award,
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── 타입 정의 ──
 
@@ -213,7 +214,7 @@ export default function SalesCommissionCalculator() {
       </div>
 
       {/* 입력 영역 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
         {/* 판매가 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
@@ -227,7 +228,7 @@ export default function SalesCommissionCalculator() {
               value={sellingPrice}
               onChange={handleSellingPriceChange}
               placeholder={t('input.sellingPricePlaceholder')}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+              className={`${glassInput} px-3 py-2 pr-10`}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 dark:text-gray-500">
               {t('input.unit')}
@@ -248,7 +249,7 @@ export default function SalesCommissionCalculator() {
               value={shippingCost}
               onChange={handleShippingCostChange}
               placeholder={t('input.shippingCostPlaceholder')}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+              className={`${glassInput} px-3 py-2 pr-10`}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 dark:text-gray-500">
               {t('input.unit')}
@@ -265,7 +266,7 @@ export default function SalesCommissionCalculator() {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value as CategoryKey)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className={`${glassInput} px-3 py-2`}
           >
             {CATEGORY_KEYS.map((key) => (
               <option key={key} value={key}>
@@ -285,7 +286,7 @@ export default function SalesCommissionCalculator() {
             return (
               <div
                 key={r.platform}
-                className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 relative transition-all ${
+                className={`${glassCard} ${glassInset} p-5 relative transition-all ${
                   isBest ? 'ring-2 ring-blue-500' : ''
                 }`}
               >
@@ -344,14 +345,14 @@ export default function SalesCommissionCalculator() {
           })}
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center">
+        <div className={`${glassCard} ${glassInset} p-8 text-center`}>
           <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
           <p className="text-gray-500 dark:text-gray-400">{t('result.noInput')}</p>
         </div>
       )}
 
       {/* 전체 카테고리 비교 테이블 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <ShoppingCart className="w-5 h-5 text-blue-600" />
           {t('compare.title')}
@@ -444,7 +445,7 @@ export default function SalesCommissionCalculator() {
       </div>
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

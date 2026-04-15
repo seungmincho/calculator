@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import dynamic from 'next/dynamic'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Copy,
   Check,
@@ -575,7 +576,7 @@ export default function MyChart() {
       </div>
 
       {/* Data Input Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             <FileJson className="w-5 h-5" />
@@ -677,7 +678,7 @@ export default function MyChart() {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left: Config Panel */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <Settings className="w-5 h-5" />
                 {t('config.title')}
@@ -716,7 +717,7 @@ export default function MyChart() {
                 <select
                   value={config.xField}
                   onChange={(e) => updateConfig('xField', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                  className={`${glassInput} px-3 py-2 text-sm`}
                 >
                   <option value="">{t('config.selectField')}</option>
                   {parsedData.headers.map(h => (
@@ -775,7 +776,7 @@ export default function MyChart() {
                   <select
                     value={config.groupField}
                     onChange={(e) => updateConfig('groupField', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                    className={`${glassInput} px-3 py-2 text-sm`}
                   >
                     <option value="">{t('config.none')}</option>
                     {stringColumns.filter(h => h !== config.xField).map(h => (
@@ -795,7 +796,7 @@ export default function MyChart() {
                   value={config.title}
                   onChange={(e) => updateConfig('title', e.target.value)}
                   placeholder={t('config.chartTitlePlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                  className={`${glassInput} px-3 py-2 text-sm`}
                 />
               </div>
 
@@ -871,7 +872,7 @@ export default function MyChart() {
 
           {/* Right: Chart Preview */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 {t('preview.title')}
               </h2>
@@ -923,7 +924,7 @@ export default function MyChart() {
 
             {/* Data Preview Table */}
             {parsedData && parsedData.rows.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   {t('dataPreview.title')}
                 </h2>
@@ -975,7 +976,7 @@ export default function MyChart() {
 
       {/* Generated Code Section */}
       {echartsOption && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <Code className="w-5 h-5" />
             {t('codeOutput.title')}
@@ -1030,7 +1031,7 @@ export default function MyChart() {
       )}
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

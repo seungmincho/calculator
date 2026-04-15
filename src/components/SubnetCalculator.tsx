@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Globe, Copy, Check, BookOpen, AlertCircle, Layers, Search, Plus, Trash2 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── IP 유틸리티 함수 ──
 
@@ -315,7 +316,7 @@ export default function SubnetCalculator() {
         <div className="grid lg:grid-cols-3 gap-6">
           {/* 입력 패널 */}
           <div className="lg:col-span-1 space-y-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inputTitle')}</h2>
 
               <div>
@@ -387,7 +388,7 @@ export default function SubnetCalculator() {
                       max="32"
                       value={cidrInput}
                       onChange={e => setCidrInput(e.target.value)}
-                      className="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono"
+                      className={`${glassInput} w-20 px-3 py-2 text-sm font-mono`}
                     />
                     <input
                       type="range"
@@ -417,7 +418,7 @@ export default function SubnetCalculator() {
             </div>
 
             {/* CIDR 참고표 */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('cidrReference')}</h3>
               <div className="overflow-x-auto max-h-64 overflow-y-auto">
                 <table className="w-full text-xs" aria-label={t('cidrReference')}>
@@ -453,7 +454,7 @@ export default function SubnetCalculator() {
           <div className="lg:col-span-2 space-y-4">
             {result ? (
               <>
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result')}</h2>
                     <div className="flex items-center gap-2">
@@ -503,7 +504,7 @@ export default function SubnetCalculator() {
                 </div>
 
                 {showBinary && (
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <div className={`${glassCard} ${glassInset} p-6`}>
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('binaryRepresentation')}</h3>
                     <div className="space-y-2 font-mono text-xs">
                       <BinaryRow label={t('ipAddress')} binary={result.binaryIp} />
@@ -516,7 +517,7 @@ export default function SubnetCalculator() {
                 )}
               </>
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center text-gray-400 dark:text-gray-500">
+              <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
                 <Globe className="w-12 h-12 mx-auto mb-3 opacity-30" />
                 <p>{ipError || maskError || t('inputPrompt')}</p>
               </div>
@@ -529,7 +530,7 @@ export default function SubnetCalculator() {
       {activeTab === 'overlap' && (
         <div className="grid lg:grid-cols-2 gap-6">
           {/* 입력 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('overlapTitle')}</h2>
               <button
@@ -577,7 +578,7 @@ export default function SubnetCalculator() {
           </div>
 
           {/* 결과 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('overlapResult')}</h2>
 
             {/* 유효한 대역 목록 */}
@@ -635,7 +636,7 @@ export default function SubnetCalculator() {
           {/* 입력 */}
           <div className="space-y-4">
             {/* CIDR 대역 목록 */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('lookupCidrTitle')}</h2>
                 <button
@@ -658,7 +659,7 @@ export default function SubnetCalculator() {
                         setLookupCidrs(next)
                       }}
                       placeholder="10.0.0.0/8"
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono"
+                      className={`${glassInput} flex-1 px-3 py-2 text-sm font-mono`}
                     />
                     {lookupCidrs.length > 1 && (
                       <button
@@ -674,7 +675,7 @@ export default function SubnetCalculator() {
             </div>
 
             {/* IP 목록 입력 */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('lookupIpTitle')}</h2>
               <p className="text-xs text-gray-500 dark:text-gray-400">{t('lookupIpDesc')}</p>
               <textarea
@@ -682,13 +683,13 @@ export default function SubnetCalculator() {
                 onChange={e => setLookupIps(e.target.value)}
                 placeholder={"10.0.1.5\n172.16.5.100\n192.168.1.1"}
                 rows={8}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono resize-y"
+                className={`${glassInput} px-3 py-2 text-sm font-mono resize-y`}
               />
             </div>
           </div>
 
           {/* 결과 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('lookupResult')}</h2>
               {lookupResults.length > 0 && (
@@ -750,7 +751,7 @@ export default function SubnetCalculator() {
       )}
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

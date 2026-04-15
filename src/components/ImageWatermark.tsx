@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Download, RotateCcw, Upload, Type, Image as ImageIcon, BookOpen } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 type WatermarkType = 'text' | 'image'
 type Position = 'topLeft' | 'topCenter' | 'topRight' | 'middleLeft' | 'center' | 'middleRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight'
@@ -294,7 +295,7 @@ export default function ImageWatermark() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Controls Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* Image Upload */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -607,7 +608,7 @@ export default function ImageWatermark() {
 
         {/* Preview Panel */}
         <div className="lg:col-span-2" ref={containerRef}>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('preview')}</h2>
             {!sourceImage ? (
               <div className="flex flex-col items-center justify-center h-96 text-gray-400">
@@ -631,7 +632,7 @@ export default function ImageWatermark() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

@@ -7,8 +7,9 @@ import { Activity, Calculator, Target, Utensils, Zap, Share2, Check, Save, Trend
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface CalorieResult {
   bmr: number // 기초대사율
@@ -346,7 +347,7 @@ export default function CalorieCalculator() {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 폼 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-orange-600" />
             {t('input.title')}
@@ -599,7 +600,7 @@ export default function CalorieCalculator() {
               </div>
 
               {/* 상세 정보 */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                   {t('result.details')}
                 </h4>
@@ -627,7 +628,7 @@ export default function CalorieCalculator() {
 
               {/* 영양소 비율 도넛 차트 */}
               {macroChartOption && (
-                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
                     <Zap className="w-5 h-5 mr-2 text-yellow-500" />
                     {t('result.macroChartTitle')}
@@ -687,7 +688,7 @@ export default function CalorieCalculator() {
       </div>
 
       {/* 음식 칼로리 참고표 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+      <div className={`${glassCard} ${glassInset} p-8`}>
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
           <Utensils className="w-6 h-6 mr-2 text-green-600" />
           {t('foodCalories.title')}
@@ -762,7 +763,7 @@ export default function CalorieCalculator() {
       </div>
 
       {/* 운동 칼로리 소모표 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+      <div className={`${glassCard} ${glassInset} p-8`}>
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
           <Activity className="w-6 h-6 mr-2 text-red-500" />
           {t('exerciseCalories.title')}

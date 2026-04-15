@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Lightbulb, X } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { glassCard, glassInset } from '@/lib/glass';
+import { useTranslations } from '@/lib/i18n';
 
 interface Tip {
   id: number;
@@ -96,7 +97,7 @@ const DailyTips = () => {
 
   return (
     <div className="fixed bottom-20 md:bottom-4 right-4 z-40 max-w-sm">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         {/* 헤더 */}
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-3">
           <div className="flex items-center justify-between">

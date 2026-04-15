@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Plus, Trash2, ChevronDown, ChevronUp, Baby, Calculator, RefreshCw } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   BarChart,
   Bar,
@@ -273,7 +274,7 @@ export default function ChildBenefitCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* 입력 패널 */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="font-semibold text-gray-900 dark:text-white">{t('inputTitle')}</h2>
 
             <div className="space-y-4">
@@ -301,7 +302,7 @@ export default function ChildBenefitCalculator() {
                       <select
                         value={child.birthYear}
                         onChange={e => updateChild(child.id, 'birthYear', e.target.value)}
-                        className="flex-1 px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className={`${glassInput} px-2 py-2 text-sm`}
                       >
                         <option value="">{t('selectYear')}</option>
                         {yearOptions.map(y => (
@@ -311,7 +312,7 @@ export default function ChildBenefitCalculator() {
                       <select
                         value={child.birthMonth}
                         onChange={e => updateChild(child.id, 'birthMonth', e.target.value)}
-                        className="w-24 px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className={`${glassInput} w-24 px-2 py-2 text-sm`}
                       >
                         <option value="">{t('selectMonth')}</option>
                         {monthOptions.map(m => (
@@ -380,7 +381,7 @@ export default function ChildBenefitCalculator() {
           {calculated && results.length > 0 ? (
             <>
               {/* 월/연 합계 요약 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="font-semibold text-gray-900 dark:text-white mb-4">{t('summaryTitle')}</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 text-center">
@@ -401,7 +402,7 @@ export default function ChildBenefitCalculator() {
               </div>
 
               {/* 자녀별 상세 카드 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="font-semibold text-gray-900 dark:text-white mb-4">{t('detailTitle')}</h2>
                 <div className="space-y-4">
                   {results.map((r, i) => (
@@ -445,7 +446,7 @@ export default function ChildBenefitCalculator() {
               </div>
 
               {/* 신청 안내 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <button
                   onClick={() => setShowApply(v => !v)}
                   className="w-full flex items-center justify-between text-left"
@@ -472,14 +473,14 @@ export default function ChildBenefitCalculator() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-10 flex flex-col items-center justify-center text-center text-gray-400 dark:text-gray-500 min-h-48">
+            <div className={`${glassCard} ${glassInset} p-10 flex flex-col items-center justify-center text-center text-gray-400 dark:text-gray-500 min-h-48`}>
               <Baby className="w-12 h-12 mb-3 opacity-40" />
               <p className="text-sm">{t('placeholder')}</p>
             </div>
           )}
 
           {/* 연령별 타임라인 차트 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="font-semibold text-gray-900 dark:text-white mb-1">{t('timelineTitle')}</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">{t('timelineSub')}</p>
             <ResponsiveContainer width="100%" height={280}>

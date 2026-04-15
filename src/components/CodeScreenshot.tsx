@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Copy,
   Check,
@@ -14,6 +14,7 @@ import {
   Palette,
   Hash,
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 
@@ -663,7 +664,7 @@ export default function CodeScreenshot() {
         {/* Left Panel: Settings */}
         <div className="lg:col-span-2 space-y-6">
           {/* Theme Selector */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center gap-2 mb-4">
               <Palette className="w-5 h-5 text-blue-600" />
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -695,7 +696,7 @@ export default function CodeScreenshot() {
           </div>
 
           {/* Background Selector */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center gap-2 mb-4">
               <ImageIcon className="w-5 h-5 text-blue-600" />
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -759,7 +760,7 @@ export default function CodeScreenshot() {
                   type="text"
                   value={bgSolid}
                   onChange={(e) => setBgSolid(e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono"
+                  className={`${glassInput} flex-1 px-3 py-2 text-sm font-mono`}
                 />
               </div>
             )}
@@ -802,7 +803,7 @@ export default function CodeScreenshot() {
           </div>
 
           {/* Code Settings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center gap-2 mb-4">
               <Settings className="w-5 h-5 text-blue-600" />
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -826,7 +827,7 @@ export default function CodeScreenshot() {
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-3 py-2`}
               >
                 {LANGUAGES.map(lang => (
                   <option key={lang.value} value={lang.value}>{lang.label}</option>
@@ -886,7 +887,7 @@ export default function CodeScreenshot() {
                 value={windowTitle}
                 onChange={(e) => setWindowTitle(e.target.value)}
                 placeholder={t('windowTitle')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                className={`${glassInput} px-3 py-2 text-sm`}
               />
             </div>
 
@@ -900,7 +901,7 @@ export default function CodeScreenshot() {
                 value={watermark}
                 onChange={(e) => setWatermark(e.target.value)}
                 placeholder={t('watermarkPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                className={`${glassInput} px-3 py-2 text-sm`}
               />
             </div>
 
@@ -949,7 +950,7 @@ export default function CodeScreenshot() {
         {/* Right Panel: Code Input + Preview + Export */}
         <div className="lg:col-span-3 space-y-6">
           {/* Code Input */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center gap-2 mb-3">
               <Code className="w-5 h-5 text-blue-600" />
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -967,7 +968,7 @@ export default function CodeScreenshot() {
           </div>
 
           {/* Preview */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <ImageIcon className="w-5 h-5 text-blue-600" />
@@ -993,7 +994,7 @@ export default function CodeScreenshot() {
           </div>
 
           {/* Export Buttons */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className={`${glassCard} ${glassInset} p-5`}>
             <div className="flex items-center gap-2 mb-4">
               <Download className="w-5 h-5 text-blue-600" />
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -1047,7 +1048,7 @@ export default function CodeScreenshot() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="flex items-center gap-2 w-full text-left"

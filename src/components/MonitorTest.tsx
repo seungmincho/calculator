@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Monitor, Eye, Contrast, Type, Palette, Zap, Activity,
   Sun, Flame, RotateCcw, Square, CircleDot, Image, Move,
   Maximize, ChevronLeft, ChevronRight, BookOpen, Upload
 } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── 테스트 타입 정의 ──
 interface TestConfig {
@@ -789,7 +790,7 @@ export default function MonitorTest() {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* 설명 패널 */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <div className="flex items-center gap-2">
                 {tests[selectedTestIdx].icon}
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -835,7 +836,7 @@ export default function MonitorTest() {
 
           {/* 미리보기 */}
           <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">{t('preview')}</h3>
               <div
                 className="w-full rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 cursor-pointer relative"
@@ -885,7 +886,7 @@ export default function MonitorTest() {
             <button
               key={test.id}
               onClick={() => setActiveTest(test.id)}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 text-left hover:shadow-xl hover:scale-[1.02] transition-all group"
+              className={`${glassCard} ${glassInset} p-5 text-left hover:shadow-xl hover:scale-[1.02] transition-all group`}
             >
               <div className="flex items-center gap-3 mb-2">
                 <div className="p-2 bg-blue-100 dark:bg-blue-950 rounded-lg text-blue-600 dark:text-blue-400 group-hover:bg-blue-200 dark:group-hover:bg-blue-900 transition-colors">
@@ -904,7 +905,7 @@ export default function MonitorTest() {
       )}
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen size={20} />
           {t('guide.title')}

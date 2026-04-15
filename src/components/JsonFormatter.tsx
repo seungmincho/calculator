@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import dynamic from 'next/dynamic'
+import { glassCard, glassInset } from '@/lib/glass'
 import {
   FileJson,
   Check,
@@ -1313,7 +1314,7 @@ const JsonFormatter = () => {
       )}
 
       {/* Guide section */}
-      <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
         <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white text-center">
           {t('guide.title')}
         </h2>

@@ -2,8 +2,9 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { TrendingUp, Calculator, Copy, Check, BookOpen, RotateCcw, Link, GitCompare } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface YearlyData {
   year: number
@@ -292,7 +293,7 @@ export default function CompoundCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel: Inputs */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <Calculator className="w-5 h-5" />
@@ -316,7 +317,7 @@ export default function CompoundCalculator() {
                 type="number"
                 value={principal}
                 onChange={(e) => setPrincipal(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-3 py-2`}
                 min="0"
               />
             </div>
@@ -331,7 +332,7 @@ export default function CompoundCalculator() {
                   type="number"
                   value={annualRate}
                   onChange={(e) => setAnnualRate(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} px-3 py-2`}
                   min="0"
                   step="0.1"
                 />
@@ -349,13 +350,13 @@ export default function CompoundCalculator() {
                   type="number"
                   value={period}
                   onChange={(e) => setPeriod(Number(e.target.value))}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} flex-1 px-3 py-2`}
                   min="1"
                 />
                 <select
                   value={periodType}
                   onChange={(e) => setPeriodType(e.target.value as PeriodType)}
-                  className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} px-3 py-2`}
                 >
                   <option value="years">{t('periodUnit.years')}</option>
                   <option value="months">{t('periodUnit.months')}</option>
@@ -371,7 +372,7 @@ export default function CompoundCalculator() {
               <select
                 value={compoundFrequency}
                 onChange={(e) => setCompoundFrequency(e.target.value as CompoundFrequency)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-3 py-2`}
               >
                 <option value="yearly">{t('frequency.yearly')}</option>
                 <option value="semiannually">{t('frequency.semiannually')}</option>
@@ -390,7 +391,7 @@ export default function CompoundCalculator() {
                 type="number"
                 value={monthlyDeposit}
                 onChange={(e) => setMonthlyDeposit(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-3 py-2`}
                 min="0"
               />
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -400,7 +401,7 @@ export default function CompoundCalculator() {
           </div>
 
           {/* Guide Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6">
+          <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <BookOpen className="w-5 h-5" />
               {t('guide.title')}
@@ -496,7 +497,7 @@ export default function CompoundCalculator() {
           </div>
 
           {/* Simple vs Compound Comparison */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
               {t('comparison.title')}
@@ -525,7 +526,7 @@ export default function CompoundCalculator() {
 
           {/* Growth Chart — stacked bars */}
           {results.yearlyBreakdown.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 {t('result.growthChart')}
               </h2>
@@ -534,7 +535,7 @@ export default function CompoundCalculator() {
           )}
 
           {/* Scenario Comparison */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <GitCompare className="w-5 h-5" />
@@ -661,7 +662,7 @@ export default function CompoundCalculator() {
 
           {/* Yearly Breakdown Table */}
           {results.yearlyBreakdown.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 overflow-x-auto">
+            <div className={`${glassCard} ${glassInset} p-6 overflow-x-auto`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 {t('result.yearlyBreakdown')}
               </h2>

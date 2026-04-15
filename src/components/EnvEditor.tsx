@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Upload, Plus, Trash2, AlertTriangle, FileText, Table } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface EnvEntry {
   id: string
@@ -251,7 +252,7 @@ export default function EnvEditor() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
@@ -308,7 +309,7 @@ export default function EnvEditor() {
         <div className="lg:col-span-2 space-y-6">
           {/* Raw mode */}
           {viewMode === 'raw' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className="${glassCard} ${glassInset} p-6">
               <textarea
                 value={rawText}
                 onChange={e => handleRawChange(e.target.value)}
@@ -321,7 +322,7 @@ export default function EnvEditor() {
 
           {/* Table mode */}
           {viewMode === 'table' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className="${glassCard} ${glassInset} p-6">
               <div className="space-y-2">
                 {/* Header row */}
                 <div className="grid grid-cols-12 gap-2 px-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
@@ -411,7 +412,7 @@ export default function EnvEditor() {
           )}
 
           {/* Export section */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-semibold text-gray-900 dark:text-white">{t('export')}</h2>
               <button
@@ -447,7 +448,7 @@ export default function EnvEditor() {
         {/* Sidebar: stats + validation */}
         <div className="space-y-4">
           {/* Statistics */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className="${glassCard} ${glassInset} p-5">
             <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('statistics')}</h2>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -467,7 +468,7 @@ export default function EnvEditor() {
 
           {/* Validation */}
           {(duplicateKeys.size > 0 || invalidKeys.length > 0 || emptyValueKeys.length > 0) && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+            <div className="${glassCard} ${glassInset} p-5">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                 <AlertTriangle size={14} className="text-yellow-500" />
                 Warnings

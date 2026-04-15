@@ -6,6 +6,7 @@ import { Home, Calculator, TrendingUp, Share2, Check, Building, Save } from 'luc
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import GuideSection from '@/components/GuideSection';
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type CalculatorType = 'jeonse-loan' | 'mortgage-loan' | 'acquisition-tax' | 'property-tax' | 'capital-gains-tax';
 
@@ -1225,7 +1226,7 @@ const RealEstateCalculatorContent = () => {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 섹션 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
             {calculatorTypes[activeTab]} 정보 입력
           </h2>
@@ -1264,7 +1265,7 @@ const RealEstateCalculatorContent = () => {
         </div>
 
         {/* 결과 섹션 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">계산 결과</h2>
           
           {result ? (

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Plus,
   Trash2,
@@ -17,6 +17,7 @@ import {
   Calendar,
   Tag,
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -191,8 +192,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
   const [color, setColor] = useState<ColorLabel>(initial?.color ?? 'blue')
   const [dueDate, setDueDate] = useState(initial?.dueDate ?? '')
 
-  const inputCls =
-    'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
+  const inputCls = `${glassInput} px-3 py-2 text-sm`
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -203,7 +203,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md"
+        className={`${glassCard} ${glassInset} w-full max-w-md`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
@@ -314,8 +314,7 @@ interface ColModalProps {
 
 function ColModal({ t, initial, onSave, onClose }: ColModalProps) {
   const [title, setTitle] = useState(initial ?? '')
-  const inputCls =
-    'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
+  const inputCls = `${glassInput} px-3 py-2 text-sm`
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -326,7 +325,7 @@ function ColModal({ t, initial, onSave, onClose }: ColModalProps) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-sm"
+        className={`${glassCard} ${glassInset} w-full max-w-sm`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
@@ -763,7 +762,7 @@ export default function KanbanBoard() {
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
-            className="w-full pl-9 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+            className={`${glassInput} pl-9 pr-3 py-2 text-sm`}
             placeholder={t('searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -772,7 +771,7 @@ export default function KanbanBoard() {
         <div className="relative">
           <button
             onClick={() => setShowFilterMenu((v) => !v)}
-            className="flex items-center gap-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm hover:bg-gray-50 dark:hover:bg-gray-600 transition-all"
+            className={`${glassInput} flex items-center gap-2 px-3 py-2 text-sm hover:opacity-80 transition-all`}
           >
             <Filter size={15} />
             {filterPriority === 'all' ? t('allPriorities') : t(`priority${filterPriority.charAt(0).toUpperCase() + filterPriority.slice(1)}` as 'priorityHigh' | 'priorityMedium' | 'priorityLow')}
@@ -904,7 +903,7 @@ export default function KanbanBoard() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen size={20} className="text-blue-500" />
           {t('guide.title')}

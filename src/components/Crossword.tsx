@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Clock, Check, Eye, RotateCcw, ChevronRight, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
@@ -629,7 +630,7 @@ export default function Crossword() {
       </div>
 
       {/* Controls bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+      <div className={`${glassCard} ${glassInset} p-4`}>
         <div className="flex flex-wrap items-center gap-3">
           {/* Timer */}
           <div className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300">
@@ -643,7 +644,7 @@ export default function Crossword() {
           <select
             value={puzzleIndex}
             onChange={e => handleChangePuzzle(Number(e.target.value))}
-            className="px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            className={`${glassInput} px-2 py-1.5 text-sm`}
           >
             {PUZZLES.map((p, i) => (
               <option key={p.id} value={i}>
@@ -698,7 +699,7 @@ export default function Crossword() {
       <div className="grid lg:grid-cols-5 gap-6">
         {/* Grid */}
         <div className="lg:col-span-3">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+          <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
             {/* Active clue display */}
             {activeClue && (
               <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
@@ -835,7 +836,7 @@ export default function Crossword() {
         {/* Clues */}
         <div className="lg:col-span-2 space-y-4">
           {/* Across clues */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+          <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
             <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
               <ChevronRight className="w-5 h-5" />
               {t('across')}
@@ -870,7 +871,7 @@ export default function Crossword() {
 
           {/* Down clues */}
           {puzzle.clues.down.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+            <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
               <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                 <ChevronRight className="w-5 h-5 rotate-90" />
                 {t('down')}
@@ -912,7 +913,7 @@ export default function Crossword() {
           />
 
           {/* Guide */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+          <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
             <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
               <BookOpen className="w-5 h-5" />
               {t('guide.title')}

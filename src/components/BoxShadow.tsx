@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback, useMemo, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Copy,
   Check,
@@ -336,7 +337,7 @@ export default function BoxShadow() {
       </div>
 
       {/* Preview Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             <Eye className="w-5 h-5" />
@@ -369,7 +370,7 @@ export default function BoxShadow() {
       </div>
 
       {/* CSS Code Output */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {t('cssCode')}
@@ -462,7 +463,7 @@ export default function BoxShadow() {
         {/* Left panel: Preview settings */}
         <div className="lg:col-span-1 space-y-6">
           {/* Preview element settings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
               {t('previewSettings')}
             </h3>
@@ -488,7 +489,7 @@ export default function BoxShadow() {
                       setPreviewBg(val)
                     }
                   }}
-                  className="flex-1 px-3 py-2 text-sm font-mono border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className={`flex-1 px-3 py-2 text-sm font-mono ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                   maxLength={7}
                 />
               </div>
@@ -515,7 +516,7 @@ export default function BoxShadow() {
                       setElementBg(val)
                     }
                   }}
-                  className="flex-1 px-3 py-2 text-sm font-mono border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className={`flex-1 px-3 py-2 text-sm font-mono ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                   maxLength={7}
                 />
               </div>
@@ -583,7 +584,7 @@ export default function BoxShadow() {
           </div>
 
           {/* Tools */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
               {t('tools')}
             </h3>
@@ -608,7 +609,7 @@ export default function BoxShadow() {
 
         {/* Right panel: Shadow layers */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <Layers className="w-4 h-4" />
@@ -801,7 +802,7 @@ export default function BoxShadow() {
                                     updateLayer(layer.id, 'color', val)
                                   }
                                 }}
-                                className="flex-1 px-2 py-1.5 text-sm font-mono border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                className={`flex-1 px-2 py-1.5 text-sm font-mono ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                                 maxLength={7}
                               />
                             </div>
@@ -850,7 +851,7 @@ export default function BoxShadow() {
       </div>
 
       {/* Presets Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
           {t('presets')}
         </h2>
@@ -882,7 +883,7 @@ export default function BoxShadow() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

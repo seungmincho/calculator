@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { ArrowLeft, Share2, Check, Star, ChevronDown } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   MBTI_TYPES,
   mbtiProfiles,
@@ -156,7 +157,7 @@ export default function MbtiCompatibility() {
       {view === 'selection' && (
         <>
           {/* Type selector */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="grid sm:grid-cols-2 gap-6">
               {/* Type 1 */}
               <div>
@@ -167,7 +168,7 @@ export default function MbtiCompatibility() {
                   <select
                     value={type1}
                     onChange={e => setType1(e.target.value as MbtiType)}
-                    className="w-full appearance-none px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500 focus:border-transparent pr-10"
+                    className={`${glassInput} px-3 py-3 appearance-none pr-10`}
                   >
                     {MBTI_TYPES.map(type => {
                       const p = mbtiProfiles[type]
@@ -199,7 +200,7 @@ export default function MbtiCompatibility() {
                   <select
                     value={type2}
                     onChange={e => setType2(e.target.value as MbtiType)}
-                    className="w-full appearance-none px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500 focus:border-transparent pr-10"
+                    className={`${glassInput} px-3 py-3 appearance-none pr-10`}
                   >
                     {MBTI_TYPES.map(type => {
                       const p = mbtiProfiles[type]
@@ -247,7 +248,7 @@ export default function MbtiCompatibility() {
           </div>
 
           {/* 16×16 Matrix */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('matrix')}</h2>
@@ -335,7 +336,7 @@ export default function MbtiCompatibility() {
       {view === 'detail' && (
         <div className="space-y-6">
           {/* Detail header */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-start justify-between mb-4">
               <button
                 onClick={handleBack}
@@ -383,7 +384,7 @@ export default function MbtiCompatibility() {
           </div>
 
           {/* Perspective tabs */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center gap-2 mb-6">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('perspective')}:</span>
               <div className="flex rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
@@ -461,7 +462,7 @@ export default function MbtiCompatibility() {
           {/* Type profiles */}
           <div className="grid sm:grid-cols-2 gap-6">
             {[{ profile: profile1, type: type1 }, { profile: profile2, type: type2 }].map(({ profile, type }) => (
-              <div key={type} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div key={type} className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-3xl">{profile.emoji}</span>
                   <div>
@@ -490,7 +491,7 @@ export default function MbtiCompatibility() {
           </div>
 
           {/* Mini matrix for context + back to full matrix */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('matrix')}</h2>
               <button
@@ -569,7 +570,7 @@ export default function MbtiCompatibility() {
       </div>
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('guide.title')}</h2>
         <div className="grid sm:grid-cols-2 gap-6">
           {/* Rating levels */}

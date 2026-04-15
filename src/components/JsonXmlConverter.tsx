@@ -1,12 +1,12 @@
 'use client'
 
 import React, { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
-import { 
-  RefreshCw, 
-  Copy, 
-  Check, 
-  Download, 
+import { useTranslations } from '@/lib/i18n'
+import {
+  RefreshCw,
+  Copy,
+  Check,
+  Download,
   Upload,
   AlertTriangle,
   CheckCircle,
@@ -16,6 +16,7 @@ import {
   Braces,
   FileCode
 } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface ValidationResult {
   isValid: boolean
@@ -578,7 +579,7 @@ const JsonXmlConverter = () => {
       </div>
 
       {/* Developer Presets */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center space-x-2 mb-4">
           <Code className="w-5 h-5 text-purple-600" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -606,7 +607,7 @@ const JsonXmlConverter = () => {
       {/* Main Converter */}
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Input Panel */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
               {activeTab === 'json-to-xml' ? (
@@ -661,7 +662,7 @@ const JsonXmlConverter = () => {
         </div>
 
         {/* Output Panel */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
               {activeTab === 'json-to-xml' ? (
@@ -716,7 +717,7 @@ const JsonXmlConverter = () => {
       </div>
 
       {/* Conversion Options */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center space-x-2 mb-4">
           <Settings className="w-5 h-5 text-gray-600" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">

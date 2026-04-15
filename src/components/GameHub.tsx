@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter } from 'next/navigation'
 import {
   Gamepad2, Users, Monitor, RefreshCw,

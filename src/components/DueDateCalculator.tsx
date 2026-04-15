@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Calendar, Baby, Heart, Clock, BookOpen, TrendingUp, Stethoscope, Scale } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type CalcMethod = 'lmp' | 'ovulation'
 
@@ -170,7 +171,7 @@ export default function DueDateCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className="${glassCard} ${glassInset} p-6 space-y-6">
             <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
               <Calendar className="w-5 h-5" />
               <h2 className="text-lg font-semibold">{t('calcMethod')}</h2>
@@ -212,7 +213,7 @@ export default function DueDateCalculator() {
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
                 max={new Date().toISOString().split('T')[0]}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -237,7 +238,7 @@ export default function DueDateCalculator() {
 
         {/* Results Panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className="${glassCard} ${glassInset} p-6 space-y-6">
             {!calculated || !results ? (
               <div className="text-center py-12 text-gray-500 dark:text-gray-400">
                 <Baby className="w-16 h-16 mx-auto mb-4 opacity-50" />
@@ -321,7 +322,7 @@ export default function DueDateCalculator() {
 
       {/* Milestones Timeline */}
       {calculated && results && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="${glassCard} ${glassInset} p-6">
           <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-6">
             <Clock className="w-5 h-5" />
             <h2 className="text-lg font-semibold">{t('milestones.title')}</h2>
@@ -384,7 +385,7 @@ export default function DueDateCalculator() {
 
       {/* ── 1. Weekly Progress Bar ── */}
       {calculated && results && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="${glassCard} ${glassInset} p-6">
           <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 mb-6">
             <TrendingUp className="w-5 h-5" />
             <h2 className="text-lg font-semibold">{t('weeklyProgress.title')}</h2>
@@ -467,7 +468,7 @@ export default function DueDateCalculator() {
 
       {/* ── 2. Baby Size by Week ── */}
       {calculated && results && results.weeks >= 4 && babySizeWeek && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="${glassCard} ${glassInset} p-6">
           <div className="flex items-center gap-2 text-pink-500 dark:text-pink-400 mb-2">
             <Baby className="w-5 h-5" />
             <h2 className="text-lg font-semibold">{t('babySize.title')}</h2>
@@ -535,7 +536,7 @@ export default function DueDateCalculator() {
 
       {/* ── 3. Prenatal Checkup Schedule ── */}
       {calculated && results && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="${glassCard} ${glassInset} p-6">
           <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 mb-2">
             <Stethoscope className="w-5 h-5" />
             <h2 className="text-lg font-semibold">{t('prenatalSchedule.title')}</h2>
@@ -593,7 +594,7 @@ export default function DueDateCalculator() {
 
       {/* ── 4. Weight Gain Guide ── */}
       {calculated && results && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="${glassCard} ${glassInset} p-6">
           <div className="flex items-center gap-2 text-orange-500 dark:text-orange-400 mb-2">
             <Scale className="w-5 h-5" />
             <h2 className="text-lg font-semibold">{t('weightGain.title')}</h2>
@@ -613,7 +614,7 @@ export default function DueDateCalculator() {
                 placeholder={t('weightGain.heightPlaceholder')}
                 min="100"
                 max="220"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-400"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-orange-400"
               />
             </div>
             <div>
@@ -627,7 +628,7 @@ export default function DueDateCalculator() {
                 placeholder={t('weightGain.weightPlaceholder')}
                 min="30"
                 max="200"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-400"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-orange-400"
               />
             </div>
           </div>
@@ -709,7 +710,7 @@ export default function DueDateCalculator() {
       )}
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-6">
           <BookOpen className="w-5 h-5" />
           <h2 className="text-lg font-semibold">{t('guide.title')}</h2>

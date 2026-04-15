@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Upload, Download, Copy, Check, Image, Trash2, BookOpen, FileCode, Smartphone, Monitor, Globe, Crop, Pipette, RotateCcw } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface FaviconSize {
   width: number
@@ -570,7 +571,7 @@ export const metadata: Metadata = {
 
       {/* ═══ Image Editor — full-width section ═══ */}
       {sourceImage && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+        <div className="${glassCard} ${glassInset} p-6 space-y-4">
           {/* Toolbar row */}
           <div className="flex items-center justify-between flex-wrap gap-3">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('editor.title')}</h2>
@@ -726,7 +727,7 @@ export const metadata: Metadata = {
         {/* Left: Upload + Options */}
         <div className="lg:col-span-1 space-y-6">
           {/* Upload */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('upload.title')}</h2>
             <div
               onDrop={handleDrop}
@@ -767,7 +768,7 @@ export const metadata: Metadata = {
           </div>
 
           {/* Options */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className="${glassCard} ${glassInset} p-6 space-y-4">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('options.title')}</h2>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -784,7 +785,7 @@ export const metadata: Metadata = {
                   type="text"
                   value={backgroundColor}
                   onChange={(e) => setBackgroundColor(e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                  className="flex-1 px-3 py-2 ${glassInput} text-sm"
                 />
                 <button
                   onClick={() => setBackgroundColor('transparent')}
@@ -823,7 +824,7 @@ export const metadata: Metadata = {
         <div className="lg:col-span-2 space-y-6">
           {generatedFavicons.size > 0 ? (
             <>
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {t('result.title')} ({generatedFavicons.size} {t('result.files')})
@@ -890,7 +891,7 @@ export const metadata: Metadata = {
               </div>
 
               {/* HTML Code */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <FileCode className="w-5 h-5 text-blue-600" />
@@ -908,7 +909,7 @@ export const metadata: Metadata = {
               </div>
 
               {/* Next.js Code */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <FileCode className="w-5 h-5 text-purple-600" />
@@ -926,7 +927,7 @@ export const metadata: Metadata = {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className="${glassCard} ${glassInset} p-12 text-center">
               <Image className="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
               <p className="text-gray-500 dark:text-gray-400">{t('result.empty')}</p>
               <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('result.emptyHint')}</p>
@@ -936,7 +937,7 @@ export const metadata: Metadata = {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

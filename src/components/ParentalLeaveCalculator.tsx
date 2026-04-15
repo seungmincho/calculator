@@ -2,9 +2,10 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, Baby, Users, Clock, ChevronDown, ChevronUp, Share2, AlertTriangle, Info } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 interface MonthlyBenefit {
@@ -431,7 +432,7 @@ export default function ParentalLeaveCalculator() {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Settings Panel */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inputs.settings')}</h2>
 
               {/* Wage input */}
@@ -458,7 +459,7 @@ export default function ParentalLeaveCalculator() {
                     onChange={(e) => handleWageChange(e.target.value, setWage)}
                     placeholder={t('inputs.ordinaryWagePlaceholder')}
                     aria-label={t('inputs.ordinaryWage')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                     {t('inputs.won')}
@@ -481,7 +482,7 @@ export default function ParentalLeaveCalculator() {
                   value={leaveStart}
                   onChange={(e) => setLeaveStart(e.target.value)}
                   aria-label={t('inputs.leaveStartMonth')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
 
@@ -494,7 +495,7 @@ export default function ParentalLeaveCalculator() {
                   value={leaveDuration}
                   onChange={(e) => setLeaveDuration(parseInt(e.target.value))}
                   aria-label={t('inputs.leaveDuration')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 >
                   {durationOptions.map((n) => (
                     <option key={n} value={n}>
@@ -545,7 +546,7 @@ export default function ParentalLeaveCalculator() {
                       value={childBirth}
                       onChange={(e) => setChildBirth(e.target.value)}
                       aria-label={t('inputs.childBirthMonth')}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                     />
                   </div>
                   <div>
@@ -557,7 +558,7 @@ export default function ParentalLeaveCalculator() {
                       value={spouseLeaveStart}
                       onChange={(e) => setSpouseLeaveStart(e.target.value)}
                       aria-label={t('inputs.spouseLeaveStart')}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                     />
                   </div>
                   <div>
@@ -568,7 +569,7 @@ export default function ParentalLeaveCalculator() {
                       value={spouseLeaveDuration}
                       onChange={(e) => setSpouseLeaveDuration(parseInt(e.target.value))}
                       aria-label={t('inputs.spouseLeaveDuration')}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                     >
                       {durationOptions.map((n) => (
                         <option key={n} value={n}>
@@ -638,7 +639,7 @@ export default function ParentalLeaveCalculator() {
                 </div>
 
                 {/* Monthly Table */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('results.monthlyTable')}</h3>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm" aria-label={t('results.monthlyTable')}>
@@ -706,7 +707,7 @@ export default function ParentalLeaveCalculator() {
                 </div>
 
                 {/* Bar Chart */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('results.chartTitle')}</h3>
                   <div className="h-80" aria-label={t('results.chartTitle')}>
                     <ResponsiveContainer width="100%" height="100%">
@@ -724,7 +725,7 @@ export default function ParentalLeaveCalculator() {
                 </div>
               </>
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+              <div className={`${glassCard} ${glassInset} p-12 text-center`}>
                 <Baby className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                 <p className="text-gray-500 dark:text-gray-400">{t('results.placeholder')}</p>
               </div>
@@ -739,7 +740,7 @@ export default function ParentalLeaveCalculator() {
           {/* Couple Settings */}
           <div className="lg:col-span-1 space-y-4">
             {/* Father */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <span className="w-6 h-6 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full flex items-center justify-center text-xs font-bold">{t('couple.fatherShort')}</span>
                 {t('couple.fatherSection')}
@@ -754,7 +755,7 @@ export default function ParentalLeaveCalculator() {
                     onChange={(e) => handleWageChange(e.target.value, setFatherWage)}
                     placeholder={t('inputs.ordinaryWagePlaceholder')}
                     aria-label={t('inputs.fatherWage')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('inputs.won')}</span>
                 </div>
@@ -766,7 +767,7 @@ export default function ParentalLeaveCalculator() {
                   value={fatherStart}
                   onChange={(e) => setFatherStart(e.target.value)}
                   aria-label={t('inputs.fatherLeaveStart')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
               <div>
@@ -775,7 +776,7 @@ export default function ParentalLeaveCalculator() {
                   value={fatherDuration}
                   onChange={(e) => setFatherDuration(parseInt(e.target.value))}
                   aria-label={t('inputs.fatherLeaveDuration')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 >
                   {durationOptions.map((n) => (
                     <option key={n} value={n}>{n}{t('inputs.monthsLabel')}</option>
@@ -785,7 +786,7 @@ export default function ParentalLeaveCalculator() {
             </div>
 
             {/* Mother */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <span className="w-6 h-6 bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300 rounded-full flex items-center justify-center text-xs font-bold">{t('couple.motherShort')}</span>
                 {t('couple.motherSection')}
@@ -800,7 +801,7 @@ export default function ParentalLeaveCalculator() {
                     onChange={(e) => handleWageChange(e.target.value, setMotherWage)}
                     placeholder={t('inputs.ordinaryWagePlaceholder')}
                     aria-label={t('inputs.motherWage')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('inputs.won')}</span>
                 </div>
@@ -812,7 +813,7 @@ export default function ParentalLeaveCalculator() {
                   value={motherStart}
                   onChange={(e) => setMotherStart(e.target.value)}
                   aria-label={t('inputs.motherLeaveStart')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
               <div>
@@ -821,7 +822,7 @@ export default function ParentalLeaveCalculator() {
                   value={motherDuration}
                   onChange={(e) => setMotherDuration(parseInt(e.target.value))}
                   aria-label={t('inputs.motherLeaveDuration')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 >
                   {durationOptions.map((n) => (
                     <option key={n} value={n}>{n}{t('inputs.monthsLabel')}</option>
@@ -831,14 +832,14 @@ export default function ParentalLeaveCalculator() {
             </div>
 
             {/* Child birth */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inputs.childBirthMonth')}</h2>
               <input
                 type="month"
                 value={coupleChildBirth}
                 onChange={(e) => setCoupleChildBirth(e.target.value)}
                 aria-label={t('inputs.childBirthMonth')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
               <p className="text-xs text-gray-500 dark:text-gray-400">{t('couple.childBirthHint')}</p>
             </div>
@@ -849,7 +850,7 @@ export default function ParentalLeaveCalculator() {
             {coupleResult ? (
               <>
                 {/* Combined Summary */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('couple.summary')}</h3>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm" aria-label={t('couple.summary')}>
@@ -892,7 +893,7 @@ export default function ParentalLeaveCalculator() {
                 </div>
 
                 {/* Timeline */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('couple.timeline')}</h3>
                   <div className="overflow-x-auto">
                     <div className="min-w-[600px]">
@@ -962,7 +963,7 @@ export default function ParentalLeaveCalculator() {
                 </div>
 
                 {/* Couple Chart */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('couple.householdIncome')}</h3>
                   <div className="h-72" aria-label={t('couple.householdIncome')}>
                     <ResponsiveContainer width="100%" height="100%">
@@ -980,7 +981,7 @@ export default function ParentalLeaveCalculator() {
                 </div>
               </>
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+              <div className={`${glassCard} ${glassInset} p-12 text-center`}>
                 <Users className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                 <p className="text-gray-500 dark:text-gray-400">{t('couple.placeholder')}</p>
               </div>
@@ -990,7 +991,7 @@ export default function ParentalLeaveCalculator() {
       )}
 
       {/* Reduced Hours Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <div className={`${glassCard} ${glassInset}`}>
         <button
           onClick={() => setShowReducedHours(!showReducedHours)}
           className="w-full flex items-center justify-between px-6 py-4 text-left"
@@ -1019,7 +1020,7 @@ export default function ParentalLeaveCalculator() {
                   value={beforeHours}
                   onChange={(e) => setBeforeHours(parseInt(e.target.value))}
                   aria-label={t('reducedHours.beforeHours')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 >
                   {[40, 35, 30].map((h) => (
                     <option key={h} value={h}>{h}{t('reducedHours.hoursPerWeek')}</option>
@@ -1034,7 +1035,7 @@ export default function ParentalLeaveCalculator() {
                   value={afterHours}
                   onChange={(e) => setAfterHours(parseInt(e.target.value))}
                   aria-label={t('reducedHours.afterHours')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 >
                   {Array.from({ length: beforeHours - 14 }, (_, i) => 15 + i).map((h) => (
                     <option key={h} value={h}>{h}{t('reducedHours.hoursPerWeek')}</option>
@@ -1078,7 +1079,7 @@ export default function ParentalLeaveCalculator() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

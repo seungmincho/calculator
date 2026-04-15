@@ -45,7 +45,7 @@ export default function KanbanBoardPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={<div className="text-center">Loading...</div>}>
+          <Suspense fallback={null}>
             <I18nWrapper>
               <KanbanBoard />
               <div className="mt-8">

@@ -1,6 +1,6 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { solveRabinKarp, RABIN_KARP_PRESETS, type RabinKarpStep } from '@/utils/algorithm/rabinKarp'
 import RabinKarpCanvas2D from './RabinKarpCanvas2D'
 import VisualizerControls from '../VisualizerControls'

@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import { Calculator, AlertTriangle, CheckCircle, Info, Link, Check } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface CalcResult {
   transferProfit: number        // 양도차익
@@ -318,7 +319,7 @@ export default function CapitalGainsTax() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inputTitle')}</h2>
 
             {/* 양도가액 */}
@@ -332,7 +333,7 @@ export default function CapitalGainsTax() {
                 value={salePrice}
                 onChange={handleSalePrice}
                 placeholder={t('salePricePlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               />
             </div>
 
@@ -347,7 +348,7 @@ export default function CapitalGainsTax() {
                 value={acqPrice}
                 onChange={handleAcqPrice}
                 placeholder={t('acqPricePlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               />
             </div>
 
@@ -362,7 +363,7 @@ export default function CapitalGainsTax() {
                 value={expenses}
                 onChange={handleExpenses}
                 placeholder={t('expensesPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               />
               <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('expensesHint')}</p>
             </div>
@@ -375,7 +376,7 @@ export default function CapitalGainsTax() {
                   type="date"
                   value={acqDate}
                   onChange={e => setAcqDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
                 />
               </div>
               <div>
@@ -384,7 +385,7 @@ export default function CapitalGainsTax() {
                   type="date"
                   value={saleDate}
                   onChange={e => setSaleDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
                 />
               </div>
             </div>
@@ -423,7 +424,7 @@ export default function CapitalGainsTax() {
                 <select
                   value={houseCount}
                   onChange={e => setHouseCount(e.target.value as '1' | '2' | '3plus')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 >
                   <option value="1">{t('houseCount1')}</option>
                   <option value="2">{t('houseCount2')}</option>
@@ -456,7 +457,7 @@ export default function CapitalGainsTax() {
                   value={residenceYears}
                   onChange={e => setResidenceYears(e.target.value)}
                   placeholder="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
             )}
@@ -527,7 +528,7 @@ export default function CapitalGainsTax() {
               </div>
 
               {/* 단계별 계산 상세 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('breakdownTitle')}</h3>
                 <div className="space-y-0 divide-y divide-gray-100 dark:divide-gray-700">
                   {[
@@ -597,7 +598,7 @@ export default function CapitalGainsTax() {
 
               {/* 장기보유특별공제 시각화 */}
               {result.lthdRate > 0 && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">{t('lthdVisualTitle')}</h3>
                   <div className="flex items-center gap-3">
                     <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
@@ -639,7 +640,7 @@ export default function CapitalGainsTax() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 flex flex-col items-center justify-center text-center">
+            <div className={`${glassCard} ${glassInset} p-12 flex flex-col items-center justify-center text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4" />
               <p className="text-gray-500 dark:text-gray-400">{t('emptyState')}</p>
             </div>
@@ -648,7 +649,7 @@ export default function CapitalGainsTax() {
       </div>
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <Info className="w-5 h-5 text-blue-500" />
           {t('guideTitle')}

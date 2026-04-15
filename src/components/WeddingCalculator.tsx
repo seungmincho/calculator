@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Copy, Check, BookOpen, ChevronDown, ChevronUp, Plus, Trash2,
   RotateCcw, FileDown, Heart, Users, PieChart as PieChartIcon,
@@ -13,6 +13,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid
 } from 'recharts'
 import jsPDF from 'jspdf'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ──────────────────────────────────────────────
 // Types
@@ -504,7 +505,7 @@ export default function WeddingCalculator() {
         value={raw}
         disabled={disabled}
         placeholder={placeholder || '0'}
-        className={className || 'w-full px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-right text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent'}
+        className={className || 'w-full px-2 py-1.5 ${glassInput} text-right text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent'}
         onChange={(e) => {
           const digits = e.target.value.replace(/[^0-9]/g, '')
           const num = parseInt(digits, 10) || 0
@@ -571,7 +572,7 @@ export default function WeddingCalculator() {
       </div>
 
       {/* Region toggle */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+      <div className={`${glassCard} ${glassInset} p-4`}>
         <div className="flex items-center gap-4">
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('region.label')}:</span>
           <div className="flex rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
@@ -600,7 +601,7 @@ export default function WeddingCalculator() {
       </div>
 
       {/* Tab navigation */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <div className="flex border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
           {TABS.map(tab => (
             <button
@@ -685,7 +686,7 @@ export default function WeddingCalculator() {
                                   <CommaInput
                                     value={item.budget}
                                     onChange={(v) => updateItem(item.id, 'budget', v)}
-                                    className="w-24 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-right text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className={`w-24 px-2 py-1.5 ${glassInput} text-right text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                                   />
                                   <span className="text-xs text-gray-400">{t('guestUnit')}</span>
                                 </div>
@@ -736,7 +737,7 @@ export default function WeddingCalculator() {
                                   value={item.note}
                                   onChange={(e) => updateItem(item.id, 'note', e.target.value)}
                                   placeholder={t('fields.memo')}
-                                  className="w-full px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                  className={`w-full px-2 py-1.5 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                                   disabled={!item.included}
                                 />
                               </div>
@@ -1239,7 +1240,7 @@ export default function WeddingCalculator() {
       </div>
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen size={20} />
           {t('guide.title')}

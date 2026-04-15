@@ -1,7 +1,9 @@
 'use client'
 
+import { glassCard, glassInset } from '@/lib/glass'
+
 import React, { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { 
   Shield, 
   Key, 
@@ -248,7 +250,7 @@ const JwtDecoder = () => {
 
       <div className="space-y-8">
         {/* Input Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white flex items-center">
             <Key className="w-6 h-6 mr-2" />
             {t('input.title')}
@@ -322,7 +324,7 @@ const JwtDecoder = () => {
         {decodedParts && (
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Header */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <div className={`${glassCard} ${glassInset} p-8`}>
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
                   <Shield className="w-5 h-5 mr-2" />
@@ -352,7 +354,7 @@ const JwtDecoder = () => {
             </div>
 
             {/* Payload */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <div className={`${glassCard} ${glassInset} p-8`}>
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
                   <FileText className="w-5 h-5 mr-2" />
@@ -404,7 +406,7 @@ const JwtDecoder = () => {
             </div>
 
             {/* Signature */}
-            <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <div className={`lg:col-span-2 ${glassCard} ${glassInset} p-8`}>
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
                   <Key className="w-5 h-5 mr-2" />
@@ -432,7 +434,7 @@ const JwtDecoder = () => {
         )}
 
         {/* Guide Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-8 text-gray-900 dark:text-white text-center">{t('guide.title')}</h2>
           
           <div className="grid md:grid-cols-3 gap-8">

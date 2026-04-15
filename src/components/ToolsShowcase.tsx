@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Wrench, Star, ChevronDown } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 import { menuConfig, categoryKeys, isNewTool, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
 
@@ -103,7 +104,7 @@ export default function ToolsShowcase() {
       <Link
         key={item.href}
         href={item.href}
-        className="group relative bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200 hover:-translate-y-1"
+        className={`${glassCard} ${glassInset} group relative p-4 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200 hover:-translate-y-1`}
       >
         {renderFavoriteButton(item.href)}
         <div className="flex items-center space-x-3">

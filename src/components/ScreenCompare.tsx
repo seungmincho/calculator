@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Plus, Trash2, Monitor, Smartphone, Tablet, Laptop } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Device Database ──────────────────────────────────────────────────────────
 
@@ -242,7 +243,7 @@ export default function ScreenCompare() {
               <select
                 value={selId ?? ''}
                 onChange={e => setSlotDevice(idx, e.target.value || null)}
-                className="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-2 py-2 text-sm`}
               >
                 <option value="">{t('selectDevice')}</option>
                 {filteredDevices.map(d => (
@@ -346,7 +347,7 @@ export default function ScreenCompare() {
       </div>
 
       {/* Visual comparison */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">{t('visualTitle')}</h2>
         <div className="flex flex-wrap items-end justify-center gap-8 min-h-[220px]">
           {selectedDevices.map((dev, idx) => {
@@ -389,7 +390,7 @@ export default function ScreenCompare() {
 
       {/* Specs table */}
       {selectedDevices.some(Boolean) && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 overflow-x-auto">
+        <div className={`${glassCard} ${glassInset} p-6 overflow-x-auto`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('specsTitle')}</h2>
           <table className="w-full text-sm">
             <thead>

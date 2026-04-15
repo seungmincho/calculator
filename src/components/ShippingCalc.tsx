@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Package, Truck, Calculator, Copy, Check, RotateCcw, BookOpen, Save, Store, AlertTriangle } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from './CalculationHistory'
 import GuideSection from '@/components/GuideSection'
@@ -380,7 +381,7 @@ export default function ShippingCalc() {
     setDestination('mainland'); setCarrierCategory('standard')
   }
 
-  const inputCls = "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+  const inputCls = `${glassInput} px-3 py-2`
 
   return (
     <div className="space-y-8">
@@ -397,7 +398,7 @@ export default function ShippingCalc() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* ── Input Panel ── */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
 
             {/* Weight */}
             <div>
@@ -520,7 +521,7 @@ export default function ShippingCalc() {
         <div className="lg:col-span-2 space-y-6">
 
           {/* Weight Summary */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Calculator className="w-5 h-5 text-blue-600" />
               무게 계산
@@ -554,7 +555,7 @@ export default function ShippingCalc() {
           </div>
 
           {/* Carrier Rates */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               {carrierCategory === 'standard'
                 ? <Truck className="w-5 h-5 text-blue-600" />
@@ -666,7 +667,7 @@ export default function ShippingCalc() {
       </div>
 
       {/* ── Guide Section ── */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-blue-600" />
           {t('guide.title')}

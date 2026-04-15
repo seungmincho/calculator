@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Upload, Copy, Check, Droplet, Eye, RotateCcw } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface ColorInfo {
   hex: string
@@ -370,7 +371,7 @@ export default function ColorExtractor() {
 
       {/* Upload Section - show only when no image */}
       {!image && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div
             className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors ${
               isDragging
@@ -405,7 +406,7 @@ export default function ColorExtractor() {
       {image && (
         <>
           {/* Canvas - full width */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="mb-3 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
               <Eye className="w-4 h-4" />
               <span>{t('clickToExtract')}</span>
@@ -447,7 +448,7 @@ export default function ColorExtractor() {
           <div className="grid lg:grid-cols-3 gap-6">
             {/* Picked Color */}
             <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+              <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <Droplet className="w-5 h-5" />
                   {t('pickedColor')}
@@ -490,7 +491,7 @@ export default function ColorExtractor() {
 
             {/* Palette - dominant colors */}
             <div className="lg:col-span-2">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('palette')}</h2>
                   <div className="flex gap-2">
@@ -564,7 +565,7 @@ export default function ColorExtractor() {
 
       {/* History */}
       {history.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('history')}</h2>
           <div className="grid grid-cols-5 md:grid-cols-10 gap-3">
             {history.map((swatch) => (
@@ -588,7 +589,7 @@ export default function ColorExtractor() {
       )}
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
           {t('guide.title')}
         </h2>

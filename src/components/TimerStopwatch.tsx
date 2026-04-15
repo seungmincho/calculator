@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Timer, Clock, Coffee, Play, Pause, Square, RotateCcw, SkipForward, Flag } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Mode = 'stopwatch' | 'timer' | 'pomodoro'
 type PomodoroPhase = 'work' | 'shortBreak' | 'longBreak'
@@ -328,7 +329,7 @@ export default function TimerStopwatch() {
       {/* Stopwatch Mode */}
       {mode === 'stopwatch' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+          <div className={`${glassCard} ${glassInset} p-8`}>
             {/* Time Display */}
             <div className="text-center mb-8">
               <div className="text-6xl font-mono font-bold text-gray-900 dark:text-white">
@@ -375,7 +376,7 @@ export default function TimerStopwatch() {
 
           {/* Laps Table */}
           {laps.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                 {t('stopwatch.laps')}
               </h2>
@@ -419,7 +420,7 @@ export default function TimerStopwatch() {
       {/* Timer Mode */}
       {mode === 'timer' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+          <div className={`${glassCard} ${glassInset} p-8`}>
             {/* Input Section */}
             {!timerRunning && timerRemaining === 0 && (
               <div className="mb-6">
@@ -434,7 +435,7 @@ export default function TimerStopwatch() {
                       max="23"
                       value={timerHours}
                       onChange={(e) => setTimerHours(Math.max(0, Math.min(23, parseInt(e.target.value) || 0)))}
-                      className="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center focus:ring-2 focus:ring-blue-500"
+                      className={`w-20 px-3 py-2 ${glassInput} text-center focus:ring-2 focus:ring-blue-500`}
                     />
                   </div>
                   <div className="flex flex-col items-center">
@@ -447,7 +448,7 @@ export default function TimerStopwatch() {
                       max="59"
                       value={timerMinutes}
                       onChange={(e) => setTimerMinutes(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
-                      className="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center focus:ring-2 focus:ring-blue-500"
+                      className={`w-20 px-3 py-2 ${glassInput} text-center focus:ring-2 focus:ring-blue-500`}
                     />
                   </div>
                   <div className="flex flex-col items-center">
@@ -460,7 +461,7 @@ export default function TimerStopwatch() {
                       max="59"
                       value={timerSeconds}
                       onChange={(e) => setTimerSeconds(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
-                      className="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center focus:ring-2 focus:ring-blue-500"
+                      className={`w-20 px-3 py-2 ${glassInput} text-center focus:ring-2 focus:ring-blue-500`}
                     />
                   </div>
                 </div>
@@ -536,7 +537,7 @@ export default function TimerStopwatch() {
         <div className="space-y-6">
           {/* Settings */}
           {!pomodoroRunning && pomodoroPhase === 'work' && pomodoroRemaining === pomodoroWorkDuration * 60 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 설정
               </h2>
@@ -555,7 +556,7 @@ export default function TimerStopwatch() {
                       setPomodoroWorkDuration(val)
                       setPomodoroRemaining(val * 60)
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
                 <div>
@@ -568,7 +569,7 @@ export default function TimerStopwatch() {
                     max="30"
                     value={pomodoroShortBreak}
                     onChange={(e) => setPomodoroShortBreak(Math.max(1, Math.min(30, parseInt(e.target.value) || 5)))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
                 <div>
@@ -581,7 +582,7 @@ export default function TimerStopwatch() {
                     max="60"
                     value={pomodoroLongBreak}
                     onChange={(e) => setPomodoroLongBreak(Math.max(1, Math.min(60, parseInt(e.target.value) || 15)))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
                 <div>
@@ -594,7 +595,7 @@ export default function TimerStopwatch() {
                     max="10"
                     value={pomodoroSessionsBeforeLongBreak}
                     onChange={(e) => setPomodoroSessionsBeforeLongBreak(Math.max(1, Math.min(10, parseInt(e.target.value) || 4)))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
               </div>
@@ -602,7 +603,7 @@ export default function TimerStopwatch() {
           )}
 
           {/* Pomodoro Display */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+          <div className={`${glassCard} ${glassInset} p-8`}>
             {/* Phase and Session Info */}
             <div className="text-center mb-6">
               <div className={`text-2xl font-bold mb-2 ${getPomodoroPhaseColor(pomodoroPhase)}`}>
@@ -688,7 +689,7 @@ export default function TimerStopwatch() {
       )}
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <Timer className="w-6 h-6" />
           {t('guide.title')}

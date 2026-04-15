@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, Search, Columns, Type, X, AlignLeft, AlignCenter, AlignRight } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface Font {
   name: string
@@ -169,7 +170,7 @@ background-color: ${bgColor};`
       </div>
 
       {/* Sample Text Input */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           <Type className="inline w-4 h-4 mr-1" />
           {t('sampleText')}
@@ -177,7 +178,7 @@ background-color: ${bgColor};`
         <textarea
           value={sampleText}
           onChange={(e) => setSampleText(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 resize-none"
+          className="w-full px-4 py-3 ${glassInput} focus:ring-2 focus:ring-blue-500 resize-none"
           rows={2}
           placeholder={t('defaultText')}
         />
@@ -188,7 +189,7 @@ background-color: ${bgColor};`
         {/* Left Panel: Controls */}
         <div className="lg:col-span-1 space-y-6">
           {/* Font Settings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className="${glassCard} ${glassInset} p-6 space-y-4">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               설정
             </h2>
@@ -341,7 +342,7 @@ background-color: ${bgColor};`
           </div>
 
           {/* Category Filter */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
               {t('category')}
             </h3>
@@ -363,7 +364,7 @@ background-color: ${bgColor};`
           </div>
 
           {/* Search */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
@@ -371,7 +372,7 @@ background-color: ${bgColor};`
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('search')}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -413,7 +414,7 @@ background-color: ${bgColor};`
 
         {/* Right Panel: Font List or Compare View */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             {compareList.length === 0 ? (
               /* Font List */
               <>
@@ -513,7 +514,7 @@ background-color: ${bgColor};`
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

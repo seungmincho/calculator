@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { Play, Pause, RotateCcw, ChevronDown, ChevronUp, BookOpen, MousePointer } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Loss Functions ──
 type LossFn = (x: number, y: number) => number
@@ -472,7 +473,7 @@ export default function GradientDescentVisualizer() {
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Controls */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-gray-900 dark:text-white text-sm">설정</h2>
 
             {/* Loss function */}
@@ -563,7 +564,7 @@ export default function GradientDescentVisualizer() {
 
           {/* Legend (comparison mode) */}
           {comparison && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <h3 className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">범례</h3>
               <div className="space-y-1.5">
                 {OPTIMIZERS.map(o => {
@@ -588,7 +589,7 @@ export default function GradientDescentVisualizer() {
 
         {/* Canvas */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <canvas
               ref={canvasRef}
               onClick={handleCanvasClick}
@@ -600,7 +601,7 @@ export default function GradientDescentVisualizer() {
 
         {/* Stats */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-gray-900 dark:text-white text-sm">통계</h2>
             {primaryState && (
               <>
@@ -680,7 +681,7 @@ export default function GradientDescentVisualizer() {
           </div>
 
           {/* Start point display */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">시작점</div>
             <div className="flex gap-2">
               <div className="flex-1">
@@ -705,7 +706,7 @@ export default function GradientDescentVisualizer() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setGuideOpen(!guideOpen)}
           className="w-full flex items-center justify-between text-left"

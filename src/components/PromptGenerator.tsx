@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Copy,
   Check,
@@ -454,7 +455,7 @@ export default function PromptGenerator() {
         <select
           value={textSettings.role}
           onChange={e => updateText('role', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+          className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
         >
           {ROLES.map(r => (
             <option key={r} value={r}>{t(`text.roles.${r}`)}</option>
@@ -472,7 +473,7 @@ export default function PromptGenerator() {
           value={textSettings.task}
           onChange={e => updateText('task', e.target.value)}
           placeholder={t('text.taskPlaceholder')}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+          className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
         />
       </div>
 
@@ -486,7 +487,7 @@ export default function PromptGenerator() {
           onChange={e => updateText('context', e.target.value)}
           placeholder={t('text.contextPlaceholder')}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 resize-y"
+          className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 resize-y`}
         />
       </div>
 
@@ -498,7 +499,7 @@ export default function PromptGenerator() {
         <select
           value={textSettings.outputFormat}
           onChange={e => updateText('outputFormat', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+          className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
         >
           {OUTPUT_FORMATS.map(f => (
             <option key={f} value={f}>{t(`text.outputFormats.${f}`)}</option>
@@ -585,7 +586,7 @@ export default function PromptGenerator() {
                 onChange={e => updateText('customInstruction', e.target.value)}
                 placeholder={t('text.advanced.customInstructionPlaceholder')}
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 resize-y"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 resize-y`}
               />
             </div>
           </div>
@@ -608,7 +609,7 @@ export default function PromptGenerator() {
           value={imageSettings.subject}
           onChange={e => updateImage('subject', e.target.value)}
           placeholder={t('image.subjectPlaceholder')}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+          className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
         />
       </div>
 
@@ -692,7 +693,7 @@ export default function PromptGenerator() {
           onChange={e => updateImage('negativePrompt', e.target.value)}
           placeholder={t('image.negativePromptPlaceholder')}
           rows={2}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 resize-y"
+          className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 resize-y`}
         />
       </div>
     </div>
@@ -743,7 +744,7 @@ export default function PromptGenerator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left: Settings */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('settings.title')}
@@ -764,7 +765,7 @@ export default function PromptGenerator() {
         {/* Right: Preview + Templates */}
         <div className="lg:col-span-1 space-y-6">
           {/* Prompt Preview */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('output.preview')}
@@ -808,7 +809,7 @@ export default function PromptGenerator() {
           </div>
 
           {/* Templates */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
               {t('templates.title')}
             </h2>
@@ -831,7 +832,7 @@ export default function PromptGenerator() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen size={20} />
           {t('guide.title')}

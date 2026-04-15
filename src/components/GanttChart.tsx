@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import dynamic from 'next/dynamic'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Copy,
   Check,
@@ -408,7 +409,7 @@ export default function GanttChart() {
       </div>
 
       {/* Task Input Form */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {editingId ? t('actions.editTask') : t('actions.addTask')}
@@ -433,7 +434,7 @@ export default function GanttChart() {
               value={taskName}
               onChange={e => setTaskName(e.target.value)}
               placeholder={t('task.namePlaceholder')}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+              className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
               onKeyDown={e => { if (e.key === 'Enter') addOrUpdateTask() }}
             />
           </div>
@@ -447,7 +448,7 @@ export default function GanttChart() {
               type="date"
               value={startDate}
               onChange={e => setStartDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+              className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
             />
           </div>
 
@@ -460,7 +461,7 @@ export default function GanttChart() {
               type="date"
               value={endDate}
               onChange={e => setEndDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+              className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
             />
           </div>
 
@@ -495,7 +496,7 @@ export default function GanttChart() {
               onFocus={() => setShowCategoryDropdown(true)}
               onBlur={() => setTimeout(() => setShowCategoryDropdown(false), 150)}
               placeholder={t('task.categoryPlaceholder')}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+              className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
               onKeyDown={e => { if (e.key === 'Enter') addOrUpdateTask() }}
             />
             {showCategoryDropdown && filteredCategories.length > 0 && (
@@ -550,7 +551,7 @@ export default function GanttChart() {
 
       {/* Overall progress + category legend */}
       {tasks.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="${glassCard} ${glassInset} p-6">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
               {t('stats.overallProgress')}: {overallProgress}%
@@ -582,7 +583,7 @@ export default function GanttChart() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Task List */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('taskList.title')}
             </h2>
@@ -661,7 +662,7 @@ export default function GanttChart() {
 
         {/* Gantt Chart */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('chart.title')}
             </h2>
@@ -724,7 +725,7 @@ export default function GanttChart() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}

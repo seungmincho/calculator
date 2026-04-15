@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { Car, Moon, Sun, BookOpen, MapPin, Link, Check, BarChart2 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Region = 'seoul' | 'gyeonggi' | 'busan' | 'other'
 type TaxiType = 'regular' | 'deluxe' | 'jumbo'
@@ -167,7 +168,7 @@ export default function TaxiFare() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Distance Input + Slider */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -183,7 +184,7 @@ export default function TaxiFare() {
                   step="0.1"
                   min="0"
                   max="50"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className={`${glassInput} px-3 py-2`}
                 />
                 <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">km</span>
               </div>
@@ -216,7 +217,7 @@ export default function TaxiFare() {
                 placeholder={t('timePlaceholder')}
                 step="1"
                 min="0"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className={`${glassInput} px-3 py-2`}
               />
             </div>
 
@@ -228,7 +229,7 @@ export default function TaxiFare() {
               <select
                 value={region}
                 onChange={(e) => setRegion(e.target.value as Region)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className={`${glassInput} px-3 py-2`}
               >
                 <option value="seoul">{t('regions.seoul')}</option>
                 <option value="gyeonggi">{t('regions.gyeonggi')}</option>
@@ -327,7 +328,7 @@ export default function TaxiFare() {
         {/* Result Panel */}
         <div className="lg:col-span-2 space-y-6">
           {/* Fare Breakdown */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
               <Car className="w-5 h-5 mr-2" />
               {t('result.title')}
@@ -384,7 +385,7 @@ export default function TaxiFare() {
           </div>
 
           {/* Fare Comparison Chart */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
               <BarChart2 className="w-5 h-5 mr-2" />
               {t('comparison.title')}
@@ -464,7 +465,7 @@ export default function TaxiFare() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
           <BookOpen className="w-5 h-5 mr-2" />
           {t('guide.title')}

@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Gamepad2, Users } from 'lucide-react'
 import Tetris from './Tetris'
 import TetrisMultiplayer from './TetrisMultiplayer'
+import { glassCard, glassInset } from '@/lib/glass'
 
 type Mode = 'solo' | 'multi'
 
@@ -36,7 +37,7 @@ export default function TetrisPageClient() {
     <div className="space-y-6">
       {/* Mode selector */}
       <div className="flex justify-center">
-        <div className="inline-flex bg-white dark:bg-gray-800 rounded-xl shadow-lg p-1 gap-1">
+        <div className={`inline-flex ${glassCard} ${glassInset} p-1 gap-1`}>
           <button
             onClick={() => handleModeChange('solo')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all text-sm ${

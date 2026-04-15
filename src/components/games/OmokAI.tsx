@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3, AlertCircle, X, Undo2 } from 'lucide-react'
 import OmokBoardComponent from '@/components/OmokBoard'
 import GameConfetti from '@/components/GameConfetti'

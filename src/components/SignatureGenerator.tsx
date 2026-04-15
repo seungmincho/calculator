@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Pen, Eraser, Download, Undo2, Copy, Check, BookOpen } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface Point {
   x: number
@@ -256,7 +257,7 @@ export default function SignatureGenerator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               서명 설정
             </h2>
@@ -370,7 +371,7 @@ export default function SignatureGenerator() {
 
         {/* Canvas Panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('canvas')}
             </h2>
@@ -402,7 +403,7 @@ export default function SignatureGenerator() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-3 mb-6">
           <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">

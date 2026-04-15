@@ -3,7 +3,8 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Home, Heart, Users, Calculator, Share2, Check, Save, Info, AlertCircle, CheckCircle } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { glassCard, glassInset } from '@/lib/glass';
+import { useTranslations } from '@/lib/i18n';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import GuideSection from '@/components/GuideSection';
@@ -334,7 +335,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* 입력 폼 */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+          <div className={`${glassCard} ${glassInset} p-8`}>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
               <Calculator className="w-6 h-6 mr-2" />
               지원금 계산하기
@@ -476,7 +477,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
         <div className="space-y-6">
           {/* 계산 결과 */}
           {result && (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center">
                 {result.eligible ? (
                   <CheckCircle className="w-6 h-6 mr-2 text-green-500" />
@@ -541,7 +542,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
 
           {/* 액션 버튼들 */}
           {result && (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="space-y-3">
                 <button
                   onClick={handleShare}

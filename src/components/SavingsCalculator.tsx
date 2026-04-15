@@ -3,9 +3,10 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Target, BarChart3, Calculator, Share2, Check, Save } from 'lucide-react';
+import { glassCard, glassInset, glassInput } from '@/lib/glass';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/lib/i18n';
 import GuideSection from '@/components/GuideSection';
 
 type SavingsType = 'regular' | 'free' | 'target' | 'compound';
@@ -524,7 +525,7 @@ const SavingsCalculatorContent = () => {
       {activeTab === 'calculator' && (
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Input Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+          <div className={`${glassCard} ${glassInset} p-8`}>
             <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">적금 정보 입력</h2>
             
             <div className="space-y-6">
@@ -648,7 +649,7 @@ const SavingsCalculatorContent = () => {
           <div className="lg:col-span-2 space-y-6">
             {results.length > 0 ? (
               results.map((result) => (
-                <div key={result.type} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+                <div key={result.type} className={`${glassCard} ${glassInset} p-8`}>
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                       {savingsTypes[result.type]}
@@ -757,7 +758,7 @@ const SavingsCalculatorContent = () => {
                 </div>
               ))
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+              <div className={`${glassCard} ${glassInset} p-8`}>
                 <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500">
                   <Calculator className="w-16 h-16 mb-4" />
                   <p>적금 정보와 상품 유형을 선택하시면 계산 결과가 나타납니다</p>
@@ -770,7 +771,7 @@ const SavingsCalculatorContent = () => {
 
       {activeTab === 'goal' && (
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+          <div className={`${glassCard} ${glassInset} p-8`}>
             <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white flex items-center">
               <Target className="w-6 h-6 mr-2" />
               목표 금액 달성 계획
@@ -831,7 +832,7 @@ const SavingsCalculatorContent = () => {
         <div className="space-y-8">
           {results.length > 1 ? (
             <>
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+              <div className={`${glassCard} ${glassInset} p-8`}>
                 <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white flex items-center">
                   <BarChart3 className="w-6 h-6 mr-2" />
                   적금 상품 비교
@@ -888,7 +889,7 @@ const SavingsCalculatorContent = () => {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+              <div className={`${glassCard} ${glassInset} p-8`}>
                 <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">💡 상품별 특징</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
@@ -911,7 +912,7 @@ const SavingsCalculatorContent = () => {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <div className={`${glassCard} ${glassInset} p-8`}>
               <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500">
                 <BarChart3 className="w-16 h-16 mb-4" />
                 <p>2개 이상의 적금 상품을 선택하시면 비교 분석을 제공합니다</p>
@@ -922,7 +923,7 @@ const SavingsCalculatorContent = () => {
       )}
 
       {/* 적금 상품 설명 */}
-      <div className="mt-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
         <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">📚 적금 상품 안내</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-4">
@@ -957,7 +958,7 @@ const SavingsCalculatorContent = () => {
       </div>
 
       {/* 저축 팁 */}
-      <div className="mt-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+      <div className={`mt-8 ${glassCard} ${glassInset} p-8`}>
         <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">💡 오늘의 저축 팁</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-emerald-50 dark:bg-emerald-900/30 rounded-lg p-6">

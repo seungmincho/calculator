@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useCallback, useMemo, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Calculator, RotateCcw, Copy, Check, ChevronDown, ChevronUp, TrendingUp, AlertTriangle } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
@@ -389,7 +390,7 @@ function BonusCalculatorContent() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* ── Input Panel (1/3) ── */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5 sticky top-24">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5 sticky top-24`}>
             {/* Annual salary */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -401,7 +402,7 @@ function BonusCalculatorContent() {
                 value={salary}
                 onChange={e => setSalary(formatInputValue(e.target.value))}
                 placeholder={t('annualSalaryPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-right"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right`}
               />
             </div>
 
@@ -413,7 +414,7 @@ function BonusCalculatorContent() {
               <select
                 value={bonusType}
                 onChange={e => setBonusType(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 {['ps', 'pi', 'management', 'individual', 'custom'].map(key => (
                   <option key={key} value={key}>{t(`bonusTypes.${key}`)}</option>
@@ -489,7 +490,7 @@ function BonusCalculatorContent() {
                   value={bonusAmount}
                   onChange={e => setBonusAmount(formatInputValue(e.target.value))}
                   placeholder={t('bonusAmountPlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-right"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right`}
                 />
               </div>
             )}
@@ -503,7 +504,7 @@ function BonusCalculatorContent() {
                 <select
                   value={dependents}
                   onChange={e => setDependents(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
                     <option key={n} value={n}>{n}</option>
@@ -517,7 +518,7 @@ function BonusCalculatorContent() {
                 <select
                   value={children}
                   onChange={e => setChildren(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 >
                   {[0, 1, 2, 3, 4, 5].map(n => (
                     <option key={n} value={n}>{n}</option>
@@ -537,7 +538,7 @@ function BonusCalculatorContent() {
                 value={nonTaxable}
                 onChange={e => setNonTaxable(formatInputValue(e.target.value))}
                 placeholder={t('nonTaxablePlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-right"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right`}
               />
             </div>
 
@@ -564,7 +565,7 @@ function BonusCalculatorContent() {
         {/* ── Result Panel (2/3) ── */}
         <div className="lg:col-span-2 space-y-6">
           {!hasResult ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400 text-lg">{t('description')}</p>
             </div>
@@ -614,7 +615,7 @@ function BonusCalculatorContent() {
 
                   {/* Before / After comparison cards */}
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+                    <div className={`${glassCard} ${glassInset} p-5`}>
                       <p className="text-sm text-gray-500 dark:text-gray-400">{t('result.salaryOnly')}</p>
                       <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">
                         {formatNumber(salaryOnlyResult.netAnnual)}{t('chart.won')}
@@ -623,7 +624,7 @@ function BonusCalculatorContent() {
                         {t('result.totalAnnual')}: {formatNumber(salaryOnlyResult.gross)}{t('chart.won')}
                       </p>
                     </div>
-                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+                    <div className={`${glassCard} ${glassInset} p-5`}>
                       <p className="text-sm text-gray-500 dark:text-gray-400">{t('result.withBonus')}</p>
                       <p className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-1">
                         {formatNumber(withBonusResult.netAnnual)}{t('chart.won')}
@@ -638,7 +639,7 @@ function BonusCalculatorContent() {
                   </div>
 
                   {/* Deduction breakdown */}
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <div className={`${glassCard} ${glassInset} p-6`}>
                     <button
                       onClick={() => setShowDetail(!showDetail)}
                       className="w-full flex items-center justify-between text-left"
@@ -705,7 +706,7 @@ function BonusCalculatorContent() {
               {/* Tab 1: Simulation */}
               {activeTab === 1 && simulationData.length > 0 && (
                 <div className="space-y-6">
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <div className={`${glassCard} ${glassInset} p-6`}>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
                       {t('simulation.title')}
                     </h3>
@@ -760,7 +761,7 @@ function BonusCalculatorContent() {
                   </div>
 
                   {/* Bar chart */}
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <div className={`${glassCard} ${glassInset} p-6`}>
                     <ReactECharts option={simulationChartOption} style={{ height: 320 }} />
                   </div>
                 </div>
@@ -769,7 +770,7 @@ function BonusCalculatorContent() {
               {/* Tab 2: Tax Analysis */}
               {activeTab === 2 && salaryOnlyResult && withBonusResult && bonusDeductions && (
                 <div className="space-y-6">
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <div className={`${glassCard} ${glassInset} p-6`}>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
                       {t('taxAnalysis.title')}
                     </h3>
@@ -882,7 +883,7 @@ function BonusCalculatorContent() {
                   </div>
 
                   {/* Pie chart */}
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <div className={`${glassCard} ${glassInset} p-6`}>
                     <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
                       {t('chart.deductionBreakdown')}
                     </h3>

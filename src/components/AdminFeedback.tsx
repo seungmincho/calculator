@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useState, useEffect, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Lock, Eye, EyeOff, Trash2, Filter, ChevronDown, ChevronUp, Inbox, Clock, LogOut } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface Inquiry {
   id: string
@@ -244,7 +245,7 @@ export default function AdminFeedback() {
   if (!isAuthenticated) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 w-full max-w-md">
+        <div className={`${glassCard} ${glassInset} p-8 w-full max-w-md`}>
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
               <Lock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -259,7 +260,7 @@ export default function AdminFeedback() {
                 value={passwordInput}
                 onChange={e => setPasswordInput(e.target.value)}
                 placeholder={t('login.password')}
-                className="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className={`${glassInput} px-3 py-2 pr-10`}
                 autoFocus
               />
               <button
@@ -313,7 +314,7 @@ export default function AdminFeedback() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 flex flex-col sm:flex-row gap-4">
+      <div className={`${glassCard} ${glassInset} p-4 flex flex-col sm:flex-row gap-4`}>
         <div className="flex gap-1 p-1 bg-gray-100 dark:bg-gray-700 rounded-lg">
           {(['all', 'unread', 'read'] as FilterTab[]).map(tab => (
             <button
@@ -335,7 +336,7 @@ export default function AdminFeedback() {
           <select
             value={categoryFilter}
             onChange={e => setCategoryFilter(e.target.value as CategoryFilter)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+            className={`${glassInput} px-3 py-2 text-sm`}
           >
             <option value="all">{t('filter.all')}</option>
             {['bug', 'feature', 'suggestion', 'other'].map(cat => (
@@ -354,7 +355,7 @@ export default function AdminFeedback() {
 
       {/* Empty */}
       {!isLoading && !loadError && inquiries.length === 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+        <div className={`${glassCard} ${glassInset} p-12 text-center`}>
           <Inbox className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
           <p className="text-gray-500 dark:text-gray-400">{t('empty')}</p>
         </div>
@@ -362,7 +363,7 @@ export default function AdminFeedback() {
 
       {/* Desktop table */}
       {inquiries.length > 0 && (
-        <div className="hidden md:block bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className={`hidden md:block ${glassCard} ${glassInset} overflow-hidden`}>
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-700">
@@ -454,7 +455,7 @@ export default function AdminFeedback() {
           {inquiries.map(inquiry => (
             <div
               key={inquiry.id}
-              className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 ${
+              className={`${glassCard} ${glassInset} p-4 ${
                 !inquiry.is_read ? 'ring-1 ring-blue-200 dark:ring-blue-800' : ''
               }`}
             >
@@ -534,7 +535,7 @@ export default function AdminFeedback() {
       {/* Delete confirmation modal */}
       {confirmDeleteId && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 w-full max-w-sm">
+          <div className={`${glassCard} ${glassInset} p-6 w-full max-w-sm`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('delete')}</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('deleteConfirm')}</p>
             <div className="flex gap-3">

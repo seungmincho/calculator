@@ -111,8 +111,9 @@
  */
 
 import { useState, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Calculator,
   Plus,
@@ -561,8 +562,8 @@ export default function DsrCalculator() {
     { value: 'nonCapital', label: t('newLoan.locations.nonCapital') },
   ]
 
-  const inputClass = 'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
-  const selectClass = 'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
+  const inputClass = 'w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
+  const selectClass = 'w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
   const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
 
   return (
@@ -582,7 +583,7 @@ export default function DsrCalculator() {
         <div className="lg:col-span-2 space-y-6">
 
           {/* 소득 정보 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('income.title')}
             </h2>
@@ -603,7 +604,7 @@ export default function DsrCalculator() {
           </div>
 
           {/* 신규 대출 정보 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('newLoan.title')}
             </h2>
@@ -719,7 +720,7 @@ export default function DsrCalculator() {
           </div>
 
           {/* 기존 대출 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('existing.title')}
@@ -863,7 +864,7 @@ export default function DsrCalculator() {
           {result ? (
             <>
               {/* DSR 게이지 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   {t('result.title')}
                 </h2>
@@ -900,7 +901,7 @@ export default function DsrCalculator() {
               </div>
 
               {/* 연간 원리금 내역 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   {t('result.annualRepaymentTitle')}
                 </h2>
@@ -930,7 +931,7 @@ export default function DsrCalculator() {
               </div>
 
               {/* 대출한도 역산 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-green-600" />
                   {t('limit.title')}
@@ -958,7 +959,7 @@ export default function DsrCalculator() {
               </div>
 
               {/* 스트레스 DSR */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                   <Shield className="w-5 h-5 text-purple-600" />
                   {t('stress.title')}
@@ -1002,7 +1003,7 @@ export default function DsrCalculator() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className="${glassCard} ${glassInset} p-12 text-center">
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-400 dark:text-gray-500">{t('description')}</p>
             </div>
@@ -1011,7 +1012,7 @@ export default function DsrCalculator() {
       </div>
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3, Undo2, RotateCw } from 'lucide-react'
 import ChessBoardComponent from '@/components/ChessBoard'
 import GameConfetti from '@/components/GameConfetti'

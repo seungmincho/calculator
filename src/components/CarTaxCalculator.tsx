@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react'
 import { Car, Calculator, Percent, Receipt, DollarSign, AlertCircle, Share2, Check, Save } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter, useSearchParams } from 'next/navigation'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface CarTaxResult {
   acquisitionTax: number // 취득세
@@ -416,7 +417,7 @@ export default function CarTaxCalculator() {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 폼 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-green-600" />
             차량 정보 입력
@@ -807,7 +808,7 @@ export default function CarTaxCalculator() {
               </div>
 
               {/* 차량 정보 요약 */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                   차량 정보 요약
                 </h4>

@@ -6,6 +6,7 @@ import { ArrowUpDown, Globe, TrendingUp, Calculator, Share2, Check, RefreshCw, S
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import GuideSection from '@/components/GuideSection';
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface ExchangeRate {
   [key: string]: number;

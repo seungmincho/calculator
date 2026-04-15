@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   ArrowLeftRight,
   Copy,
@@ -16,6 +16,7 @@ import {
   FileText,
 } from 'lucide-react'
 import yaml from 'js-yaml'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Direction = 'yaml-to-json' | 'json-to-yaml'
 
@@ -246,7 +247,7 @@ export default function YamlJsonConverter() {
       </div>
 
       {/* 방향 선택 + 옵션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+      <div className={`${glassCard} ${glassInset} p-4`}>
         <div className="flex flex-wrap items-center gap-3">
           {/* 방향 토글 */}
           <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
@@ -311,7 +312,7 @@ export default function YamlJsonConverter() {
               <select
                 value={indent}
                 onChange={e => setIndent(Number(e.target.value))}
-                className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-2 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 <option value={2}>2 {t('spaces')}</option>
                 <option value={4}>4 {t('spaces')}</option>
@@ -335,7 +336,7 @@ export default function YamlJsonConverter() {
                 <select
                   value={flowLevel}
                   onChange={e => setFlowLevel(Number(e.target.value))}
-                  className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-2 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 >
                   <option value={-1}>{t('blockStyle')}</option>
                   <option value={0}>{t('flowStyle')}</option>
@@ -351,7 +352,7 @@ export default function YamlJsonConverter() {
       {/* 입력/출력 영역 */}
       <div className="grid lg:grid-cols-2 gap-4">
         {/* 입력 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <FileText className="w-4 h-4 text-gray-500 dark:text-gray-400" />
@@ -392,7 +393,7 @@ export default function YamlJsonConverter() {
         </div>
 
         {/* 출력 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <FileText className="w-4 h-4 text-gray-500 dark:text-gray-400" />
@@ -464,7 +465,7 @@ export default function YamlJsonConverter() {
       )}
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

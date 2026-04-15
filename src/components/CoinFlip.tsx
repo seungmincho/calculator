@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { RotateCcw } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 import GuideSection from '@/components/GuideSection'
 
 type Side = 'heads' | 'tails'
@@ -97,7 +98,7 @@ export default function CoinFlip() {
       </div>
 
       {/* Coin + Flip Button */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col items-center gap-6">
+      <div className={`${glassCard} ${glassInset} p-6 flex flex-col items-center gap-6`}>
         <div style={{ perspective: 1000 }}>
           <div
             key={flipKey}
@@ -132,7 +133,7 @@ export default function CoinFlip() {
       </div>
 
       {/* Best-of-N Mode */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <div className="flex items-center justify-between flex-wrap gap-2">
           <span className="font-semibold text-gray-900 dark:text-white">{t('bestOfMode')}</span>
           <button
@@ -189,7 +190,7 @@ export default function CoinFlip() {
 
       {/* Statistics */}
       {total > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
           <h2 className="font-semibold text-gray-900 dark:text-white">{t('stats')}</h2>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
@@ -230,7 +231,7 @@ export default function CoinFlip() {
 
       {/* History */}
       {history.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
           <h2 className="font-semibold text-gray-900 dark:text-white">{t('history')}</h2>
           <div className="flex flex-wrap gap-2">
             {[...history].reverse().map((h, i) => (

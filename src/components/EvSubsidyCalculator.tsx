@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Zap, MapPin, Car, RotateCcw, Calculator, ChevronDown, ChevronUp, TrendingDown } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── 2026 Local subsidy data (만원) ──────────────────────────────────────────
 const LOCAL_SUBSIDY: Record<string, { passenger: number; suv: number; truck: number }> = {
@@ -288,7 +289,7 @@ export default function EvSubsidyCalculator() {
   ]
 
   const inputClass =
-    'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition'
+    'w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition'
 
   return (
     <div className="space-y-8">
@@ -309,7 +310,7 @@ export default function EvSubsidyCalculator() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Left: Inputs */}
         <div className="lg:col-span-1 space-y-5">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className="${glassCard} ${glassInset} p-6 space-y-5">
             <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Car className="w-4 h-4 text-green-500" />
               {t('vehicleInfo')}
@@ -457,7 +458,7 @@ export default function EvSubsidyCalculator() {
           </div>
 
           {/* Popular models quick-fill */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
               {t('popularModels')}
             </h2>
@@ -513,7 +514,7 @@ export default function EvSubsidyCalculator() {
               </div>
 
               {/* Performance breakdown */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
                   {t('performanceBreakdown')}
                 </h2>
@@ -565,14 +566,14 @@ export default function EvSubsidyCalculator() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-10 flex flex-col items-center justify-center text-center min-h-48">
+            <div className="${glassCard} ${glassInset} p-10 flex flex-col items-center justify-center text-center min-h-48">
               <Zap className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-3" />
               <p className="text-gray-400 dark:text-gray-500 text-sm">{t('resultPlaceholder')}</p>
             </div>
           )}
 
           {/* Region comparison table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className="${glassCard} ${glassInset} overflow-hidden">
             <button
               onClick={() => setShowRegionTable((v) => !v)}
               className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition"
@@ -644,7 +645,7 @@ export default function EvSubsidyCalculator() {
           </div>
 
           {/* Popular models comparison */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className="${glassCard} ${glassInset} overflow-hidden">
             <button
               onClick={() => setShowModelsTable((v) => !v)}
               className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition"

@@ -13,6 +13,7 @@ import {
   Shuffle,
   Eye,
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface DecisionToolsProps {
   initialTab?: 'roulette' | 'order'
@@ -453,7 +454,7 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
         <div className="grid lg:grid-cols-5 gap-6">
           {/* Left: items + presets */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
               <div className="flex items-center justify-between">
                 <h2 className="font-semibold text-gray-900 dark:text-white">항목 설정</h2>
                 <span className="text-xs text-gray-400">{rouletteItems.length}/12</span>
@@ -507,7 +508,7 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
                   placeholder="항목 추가..."
                   maxLength={20}
                   disabled={rouletteItems.length >= 12}
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                  className={`${glassInput} flex-1 px-3 py-2 text-sm disabled:opacity-50`}
                 />
                 <button
                   onClick={addRouletteItem}
@@ -521,7 +522,7 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
 
             {/* History */}
             {spinHistory.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+              <div className={`${glassCard} ${glassInset} p-5`}>
                 <button
                   onClick={() => setShowHistory(v => !v)}
                   className="flex items-center justify-between w-full text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -545,7 +546,7 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
 
           {/* Right: wheel + result */}
           <div className="lg:col-span-3 space-y-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+            <div className={`${glassCard} ${glassInset} p-5`}>
               {/* Wheel container */}
               <div ref={wheelContainerRef} className="relative flex flex-col items-center gap-4">
                 {/* Pointer arrow */}
@@ -613,7 +614,7 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
         <div className="grid lg:grid-cols-5 gap-6">
           {/* Left: participants */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
               <h2 className="font-semibold text-gray-900 dark:text-white">참가자 목록</h2>
 
               <ul className="space-y-2 max-h-72 overflow-y-auto">
@@ -645,7 +646,7 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
                   onKeyDown={e => e.key === 'Enter' && addOrderItem()}
                   placeholder="참가자 추가..."
                   maxLength={20}
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} flex-1 px-3 py-2 text-sm`}
                 />
                 <button
                   onClick={addOrderItem}
@@ -681,7 +682,7 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
 
           {/* Right: result cards */}
           <div className="lg:col-span-3">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+            <div className={`${glassCard} ${glassInset} p-5`}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold text-gray-900 dark:text-white">
                   순서 결과

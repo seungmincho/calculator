@@ -43,8 +43,9 @@
 
 import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Calculator, CheckCircle, XCircle, AlertTriangle, BookOpen, Building2, GraduationCap, Heart, Landmark } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── 대출 유형 ──
 type LoanType = 'general' | 'youth' | 'newlywed' | 'bank'
@@ -395,7 +396,7 @@ function JeonseLoanCalculatorContent() {
         {/* ──────── 입력 패널 ──────── */}
         <div className="space-y-6">
           {/* 대출 유형 선택 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('loanType.title')}
             </h2>
@@ -430,7 +431,7 @@ function JeonseLoanCalculatorContent() {
           </div>
 
           {/* 기본 정보 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* 전세보증금 */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -587,7 +588,7 @@ function JeonseLoanCalculatorContent() {
           </div>
 
           {/* 상환 방식 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t('repayment.title')}
             </h2>
@@ -658,7 +659,7 @@ function JeonseLoanCalculatorContent() {
               </div>
 
               {/* 월 상환액 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                   {repayment === 'bullet' ? t('result.monthlyInterest') : t('result.monthlyPayment')}
                 </h3>
@@ -671,7 +672,7 @@ function JeonseLoanCalculatorContent() {
               </div>
 
               {/* 대출 한도 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+              <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   {t('result.loanLimit')}
                 </h3>
@@ -703,7 +704,7 @@ function JeonseLoanCalculatorContent() {
               </div>
 
               {/* 총 이자 + 보증료 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+              <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500 dark:text-gray-400">{t('result.totalInterest')}</span>
                   <span className="text-lg font-bold text-gray-900 dark:text-white">
@@ -722,7 +723,7 @@ function JeonseLoanCalculatorContent() {
               </div>
 
               {/* 자격 요건 체크 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   {t('result.eligibility')}
                 </h3>
@@ -774,7 +775,7 @@ function JeonseLoanCalculatorContent() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400">{t('result.noResult')}</p>
               <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('result.calculate')}</p>
@@ -791,7 +792,7 @@ function JeonseLoanCalculatorContent() {
       </div>
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

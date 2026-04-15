@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Trophy, RotateCcw, Undo2, Lightbulb, Volume2, VolumeX, Play } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 
@@ -1702,7 +1703,7 @@ export default function Solitaire() {
       </div>
 
       {/* Stats bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+      <div className={`${glassCard} ${glassInset} p-4`}>
         <div className="flex flex-wrap items-center gap-4 justify-between">
           <div className="flex flex-wrap items-center gap-4 text-sm">
             <div className="flex items-center gap-1.5">
@@ -1774,7 +1775,7 @@ export default function Solitaire() {
       </div>
 
       {/* Game canvas */}
-      <div ref={containerRef} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 overflow-hidden">
+      <div ref={containerRef} className={`${glassCard} ${glassInset} p-3 overflow-hidden`}>
         <canvas
           ref={canvasRef}
           className="mx-auto cursor-pointer rounded-lg"
@@ -1820,7 +1821,7 @@ export default function Solitaire() {
       />
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
           {t('guide')}
         </h2>

@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Search, X, ArrowRight, TrendingUp, Clock } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 import { getAllRecentTools } from '@/utils/recentTools'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter } from 'next/navigation'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
 import { recordToolUsage } from '@/utils/recentTools'
@@ -182,7 +183,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
 
       {/* Dialog */}
       <div
-        className="relative w-full max-w-xl mx-4 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+        className={`relative w-full max-w-xl mx-4 ${glassCard} ${glassInset} overflow-hidden`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input */}

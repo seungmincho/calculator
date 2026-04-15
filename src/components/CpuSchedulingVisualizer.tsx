@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Play, Pause, RotateCcw, Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 interface Process {
@@ -519,7 +520,7 @@ export default function CpuSchedulingVisualizer() {
     )
   }
 
-  const inputCls = 'w-full px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-violet-500 focus:outline-none'
+  const inputCls = `${glassInput} px-2 py-1.5 text-sm`
 
   return (
     <div className="space-y-6">
@@ -535,7 +536,7 @@ export default function CpuSchedulingVisualizer() {
         {/* Left Panel */}
         <div className="lg:col-span-1 space-y-4">
           {/* Presets */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">프리셋</h3>
             <div className="grid grid-cols-2 gap-2">
               {PRESETS.map((pr, i) => (
@@ -548,7 +549,7 @@ export default function CpuSchedulingVisualizer() {
           </div>
 
           {/* Process Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">프로세스</h3>
               <button onClick={addProcess} disabled={processes.length >= 8}
@@ -591,7 +592,7 @@ export default function CpuSchedulingVisualizer() {
           </div>
 
           {/* Algorithm Settings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-3">
+          <div className={`${glassCard} ${glassInset} p-4 space-y-3`}>
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={compareMode}
                 onChange={e => setCompareMode(e.target.checked)}
@@ -642,7 +643,7 @@ export default function CpuSchedulingVisualizer() {
         {/* Main Area */}
         <div className="lg:col-span-2 space-y-4">
           {/* Gantt Chart */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">간트 차트</h3>
               {results.length > 0 && (
@@ -679,7 +680,7 @@ export default function CpuSchedulingVisualizer() {
 
           {/* Statistics */}
           {results.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">통계</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
@@ -725,7 +726,7 @@ export default function CpuSchedulingVisualizer() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button onClick={() => setGuideOpen(!guideOpen)}
           className="flex items-center justify-between w-full text-left">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">CPU 스케줄링 가이드</h2>

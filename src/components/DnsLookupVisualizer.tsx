@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Play,
   Pause,
@@ -720,7 +721,7 @@ export default function DnsLookupVisualizer() {
         {/* Left panel: settings */}
         <div className="lg:col-span-1 space-y-4">
           {/* Domain input */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className="${glassCard} ${glassInset} p-5 space-y-4">
             <h2 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Server className="w-4 h-4" /> 조회 설정
             </h2>
@@ -733,7 +734,7 @@ export default function DnsLookupVisualizer() {
                 type="text"
                 value={domain}
                 onChange={(e) => setDomain(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 text-sm"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-indigo-500 text-sm"
                 placeholder="www.example.com"
               />
             </div>
@@ -785,7 +786,7 @@ export default function DnsLookupVisualizer() {
                 <select
                   value={cacheHitAt}
                   onChange={(e) => setCacheHitAt(e.target.value as 'browserCache' | 'osCache')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                  className="w-full px-3 py-2 ${glassInput} text-sm"
                 >
                   <option value="browserCache">브라우저 캐시</option>
                   <option value="osCache">OS 캐시</option>
@@ -804,7 +805,7 @@ export default function DnsLookupVisualizer() {
           </div>
 
           {/* Presets */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-3">
+          <div className="${glassCard} ${glassInset} p-5 space-y-3">
             <h2 className="font-semibold text-gray-900 dark:text-white text-sm">프리셋</h2>
             {PRESETS.map((preset) => (
               <button
@@ -824,7 +825,7 @@ export default function DnsLookupVisualizer() {
 
           {/* Stats */}
           {isStarted && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+            <div className="${glassCard} ${glassInset} p-5">
               <h2 className="font-semibold text-gray-900 dark:text-white text-sm mb-3 flex items-center gap-2">
                 <Database className="w-4 h-4" /> 통계
               </h2>
@@ -855,7 +856,7 @@ export default function DnsLookupVisualizer() {
         {/* Right panel: canvas + step detail */}
         <div className="lg:col-span-2 space-y-4">
           {/* Canvas */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 overflow-hidden">
+          <div className="${glassCard} ${glassInset} p-4 overflow-hidden">
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-semibold text-gray-900 dark:text-white text-sm">
                 DNS 조회 흐름
@@ -912,7 +913,7 @@ export default function DnsLookupVisualizer() {
 
           {/* Step detail panel */}
           {currentStepData && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+            <div className="${glassCard} ${glassInset} p-5">
               <div className="flex items-start gap-3">
                 <div
                   className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
@@ -968,7 +969,7 @@ export default function DnsLookupVisualizer() {
 
           {/* Step timeline */}
           {isStarted && steps.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+            <div className="${glassCard} ${glassInset} p-5">
               <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-3">
                 전체 단계
               </h3>
@@ -1011,7 +1012,7 @@ export default function DnsLookupVisualizer() {
       </div>
 
       {/* DNS Record Types reference */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <Info className="w-5 h-5 text-indigo-500" />
           DNS 레코드 타입
@@ -1070,7 +1071,7 @@ export default function DnsLookupVisualizer() {
       </div>
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className="${glassCard} ${glassInset} overflow-hidden">
         <button
           onClick={() => setGuideOpen((v) => !v)}
           className="w-full px-6 py-4 flex items-center justify-between text-left"

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Trophy, RotateCcw, Pause, Play, Gamepad2 } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
@@ -737,7 +738,7 @@ export default function Tetris() {
         {/* Left panel: Hold + Stats (desktop) */}
         <div className="hidden lg:flex flex-col gap-4 w-36">
           {/* Hold */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3">
+          <div className={`${glassCard} ${glassInset} p-3`}>
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">{t('hold')}</p>
             <div className="h-16 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg">
               {holdPiece ? (
@@ -752,7 +753,7 @@ export default function Tetris() {
           </div>
 
           {/* Score */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 space-y-3">
+          <div className={`${glassCard} ${glassInset} p-3 space-y-3`}>
             <div>
               <p className="text-xs text-gray-500 dark:text-gray-400">{t('score')}</p>
               <p className="text-lg font-bold text-blue-600 dark:text-blue-400">{score.toLocaleString()}</p>
@@ -878,7 +879,7 @@ export default function Tetris() {
         {/* Right panel: Next pieces */}
         <div className="hidden lg:flex flex-col gap-4 w-36">
           {/* Next */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3">
+          <div className={`${glassCard} ${glassInset} p-3`}>
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">{t('next')}</p>
             <div className="space-y-2">
               {(gameState !== 'idle' ? nextPieces : []).map((type, i) => (
@@ -893,7 +894,7 @@ export default function Tetris() {
           </div>
 
           {/* Controls */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3">
+          <div className={`${glassCard} ${glassInset} p-3`}>
             <div className="flex gap-2">
               {gameState === 'playing' ? (
                 <button
@@ -925,14 +926,14 @@ export default function Tetris() {
           {/* Stats + Hold row */}
           <div className="flex gap-3">
             {/* Hold */}
-            <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3">
+            <div className={`flex-1 ${glassCard} ${glassInset} p-3`}>
               <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{t('hold')}</p>
               <div className="h-12 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg">
                 {holdPiece && <MiniPiece type={holdPiece} />}
               </div>
             </div>
             {/* Next */}
-            <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3">
+            <div className={`flex-1 ${glassCard} ${glassInset} p-3`}>
               <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{t('next')}</p>
               <div className="flex gap-1">
                 {(gameState !== 'idle' ? nextPieces.slice(0, 2) : [null, null]).map((type, i) => (
@@ -952,7 +953,7 @@ export default function Tetris() {
               { label: t('lines'), value: lines, color: 'text-green-600 dark:text-green-400' },
               { label: t('bestScore'), value: bestScore.toLocaleString(), color: 'text-yellow-600 dark:text-yellow-400' },
             ].map(({ label, value, color }) => (
-              <div key={label} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2 text-center">
+              <div key={label} className={`${glassCard} ${glassInset} p-2 text-center`}>
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{label}</p>
                 <p className={`text-sm font-bold ${color}`}>{value}</p>
               </div>
@@ -989,7 +990,7 @@ export default function Tetris() {
       />
 
       {/* Controls guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('guide.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           {/* Keyboard controls */}

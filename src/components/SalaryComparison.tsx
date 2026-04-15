@@ -2,8 +2,9 @@
 
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { ArrowLeftRight, Plus, Trash2, Copy, Check, TrendingUp, TrendingDown, Minus, RotateCcw, BookOpen, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── 2025년 한국 급여 계산 로직 (SalaryCalculator와 동일 기준) ──
 
@@ -362,7 +363,7 @@ export default function SalaryComparison() {
                   <select
                     value={scenario.salaryType}
                     onChange={e => updateScenario(scenario.id, 'salaryType', e.target.value)}
-                    className="w-16 px-1.5 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} w-16 px-1.5 py-2 text-xs`}
                   >
                     <option value="annual">{t('annual')}</option>
                     <option value="monthly">{t('monthly')}</option>
@@ -374,7 +375,7 @@ export default function SalaryComparison() {
                       value={scenario.salary ? parseInt(scenario.salary).toLocaleString('ko-KR') : ''}
                       onChange={e => updateScenario(scenario.id, 'salary', e.target.value)}
                       placeholder={scenario.salaryType === 'annual' ? t('annualPlaceholder') : t('monthlyPlaceholder')}
-                      className="w-full px-3 py-2 pr-6 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                      className={`${glassInput} px-3 py-2 pr-6 text-sm`}
                     />
                     <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">원</span>
                   </div>
@@ -392,7 +393,7 @@ export default function SalaryComparison() {
                     inputMode="numeric"
                     value={scenario.nonTaxable ? parseInt(scenario.nonTaxable).toLocaleString('ko-KR') : ''}
                     onChange={e => updateScenario(scenario.id, 'nonTaxable', e.target.value)}
-                    className="w-full px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                    className={`${glassInput} px-3 py-2 pr-8 text-sm`}
                   />
                   <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">{t('wonPerMonth')}</span>
                 </div>
@@ -407,7 +408,7 @@ export default function SalaryComparison() {
                   <select
                     value={scenario.dependents}
                     onChange={e => updateScenario(scenario.id, 'dependents', e.target.value)}
-                    className="w-full px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                    className={`${glassInput} px-2 py-2 text-sm`}
                   >
                     {Array.from({ length: 10 }, (_, i) => i + 1).map(n => (
                       <option key={n} value={n}>{n}{t('person')}</option>
@@ -421,7 +422,7 @@ export default function SalaryComparison() {
                   <select
                     value={scenario.children}
                     onChange={e => updateScenario(scenario.id, 'children', e.target.value)}
-                    className="w-full px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                    className={`${glassInput} px-2 py-2 text-sm`}
                   >
                     {Array.from({ length: 6 }, (_, i) => i).map(n => (
                       <option key={n} value={n}>{n}{t('person')}</option>
@@ -448,7 +449,7 @@ export default function SalaryComparison() {
 
       {/* 비교 결과 테이블 */}
       {hasResults && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t('comparisonResult')}
@@ -534,7 +535,7 @@ export default function SalaryComparison() {
 
       {/* 시각적 비교 차트 (CSS 기반) */}
       {hasResults && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('visualComparison')}</h2>
 
           {/* 월 실수령액 비교 바 */}
@@ -626,7 +627,7 @@ export default function SalaryComparison() {
       )}
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

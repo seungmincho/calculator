@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Trophy, X } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface NameInputModalProps {
   isOpen: boolean
@@ -54,7 +55,7 @@ export default function NameInputModal({
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-in fade-in zoom-in-95 duration-200">
+      <div className={`relative ${glassCard} ${glassInset} max-w-sm w-full p-6 animate-in fade-in zoom-in-95 duration-200`}>
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
@@ -98,7 +99,7 @@ export default function NameInputModal({
             onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit() }}
             maxLength={20}
             placeholder={t('namePlaceholder')}
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow text-center text-lg font-medium"
+            className={`${glassInput} px-4 py-3 text-center text-lg font-medium`}
           />
 
           <button

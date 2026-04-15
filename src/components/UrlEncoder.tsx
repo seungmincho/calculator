@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, ArrowRightLeft, Trash2, Link, Unlink } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 type Mode = 'encode' | 'decode'
 
@@ -165,7 +166,7 @@ export default function UrlEncoder() {
       {/* Main Content */}
       <div className="grid md:grid-cols-2 gap-4">
         {/* Input */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 overflow-hidden`}>
           <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {mode === 'encode' ? t('input.text') : t('input.encoded')}
@@ -181,7 +182,7 @@ export default function UrlEncoder() {
         </div>
 
         {/* Output */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 overflow-hidden`}>
           <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {mode === 'encode' ? t('output.encoded') : t('output.text')}
@@ -233,7 +234,7 @@ export default function UrlEncoder() {
 
       {/* Parsed URL Info */}
       {parsedUrl && (
-        <div className="mt-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+        <div className={`mt-6 ${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6`}>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             {t('urlAnalysis.title')}
           </h3>
@@ -275,7 +276,7 @@ export default function UrlEncoder() {
       )}
 
       {/* Guide */}
-      <div className="mt-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+      <div className={`mt-8 ${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {t('guide.title')}
         </h2>

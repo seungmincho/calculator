@@ -2,8 +2,9 @@
 
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Receipt, Copy, Check, RotateCcw, BookOpen, Calculator, Plus, Trash2, Link, List } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type CalculationMode = 'fromSupply' | 'fromTotal' | 'fromVat'
 
@@ -233,7 +234,7 @@ export default function VatCalculator() {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Panel: Settings */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
               {/* Mode Tabs */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
@@ -270,7 +271,7 @@ export default function VatCalculator() {
                     value={inputAmount}
                     onChange={(e) => handleAmountChange(e.target.value)}
                     placeholder={t('enterAmount')}
-                    className="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`w-full pl-8 pr-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
               </div>
@@ -352,7 +353,7 @@ export default function VatCalculator() {
             {/* Pie Chart + Invoice */}
             <div className="grid md:grid-cols-2 gap-6">
               {/* CSS Pie Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
                   {t('pieChartTitle')}
                 </h3>
@@ -399,7 +400,7 @@ export default function VatCalculator() {
               </div>
 
               {/* Tax Invoice Preview */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <Receipt className="w-5 h-5" />
@@ -445,7 +446,7 @@ export default function VatCalculator() {
       {/* ── BATCH MODE ── */}
       {activeTab === 'batch' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('batchMode')}
@@ -478,7 +479,7 @@ export default function VatCalculator() {
                       value={item.name}
                       onChange={(e) => updateBatchItem(item.id, 'name', e.target.value)}
                       placeholder={`${t('batchItemName')} ${idx + 1}`}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
                     />
                   </div>
                   <div className="col-span-3">
@@ -489,7 +490,7 @@ export default function VatCalculator() {
                         value={item.amount}
                         onChange={(e) => updateBatchItem(item.id, 'amount', e.target.value)}
                         placeholder="0"
-                        className="w-full pl-6 pr-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                        className={`w-full pl-6 pr-2 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
                       />
                     </div>
                   </div>
@@ -547,7 +548,7 @@ export default function VatCalculator() {
       )}
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

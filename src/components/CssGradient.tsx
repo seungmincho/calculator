@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Copy,
   Check,
@@ -17,6 +17,7 @@ import {
   ChevronUp,
   RotateCcw,
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 
@@ -370,7 +371,7 @@ export default function CssGradient() {
         </div>
 
         {/* Preview Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t('preview')}
@@ -402,7 +403,7 @@ export default function CssGradient() {
         </div>
 
         {/* CSS Code Output */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t('cssCode')}
@@ -495,7 +496,7 @@ export default function CssGradient() {
           {/* Left panel: settings */}
           <div className="lg:col-span-1 space-y-6">
             {/* Gradient type */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
                 {t('gradientType')}
               </h3>
@@ -630,7 +631,7 @@ export default function CssGradient() {
             </div>
 
             {/* Tools: repeating + utility buttons */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
                 {t('tools')}
               </h3>
@@ -673,7 +674,7 @@ export default function CssGradient() {
 
           {/* Right panel: color stops */}
           <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
                   {t('colors')}
@@ -730,7 +731,7 @@ export default function CssGradient() {
                           updateColorStop(stop.id, 'color', val)
                         }
                       }}
-                      className="w-24 px-2 py-1.5 text-sm font-mono border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none flex-shrink-0"
+                      className={`${glassInput} w-24 px-2 py-1.5 text-sm font-mono flex-shrink-0`}
                       maxLength={7}
                     />
                     {/* Position slider */}
@@ -765,7 +766,7 @@ export default function CssGradient() {
         </div>
 
         {/* Presets Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {t('presets')}
           </h2>
@@ -797,7 +798,7 @@ export default function CssGradient() {
         </div>
 
         {/* Guide Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             {t('guide.title')}

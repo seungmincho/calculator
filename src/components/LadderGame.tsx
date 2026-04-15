@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { GitBranch, Play, RefreshCw, Share2, Check, Save, Users, Target, Zap, BookMarked, Camera, ChevronDown, ChevronUp } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import GuideSection from '@/components/GuideSection'
 
 interface LadderLine {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Search, Download, Image as ImageIcon, Check, Copy,
   ExternalLink, ChevronDown, ChevronUp, Loader2,
@@ -9,6 +9,7 @@ import {
   ArrowUpDown, ToggleLeft, ToggleRight
 } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface ScrapedImage {
   src: string
@@ -605,7 +606,7 @@ export default function ImageScraper() {
   const renderImageCard = (img: ScrapedImage, displayIdx: number) => (
     <div
       key={img.src}
-      className={`group relative bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border-2 transition-colors cursor-pointer ${
+      className={`group relative ${glassCard} ${glassInset} overflow-hidden border-2 transition-colors cursor-pointer ${
         img.selected ? 'border-blue-500' : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'
       }`}
       onClick={e => toggleSelect(img.src, displayIdx, e.shiftKey)}
@@ -701,7 +702,7 @@ export default function ImageScraper() {
       </div>
 
       {/* URL Input */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex gap-3">
           <div className="relative flex-1">
             <input
@@ -773,7 +774,7 @@ export default function ImageScraper() {
       {processedImages.length > 0 && (
         <>
           {/* Toolbar */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-4 space-y-4`}>
             {/* Row 1: Count, Select, Dedup toggle */}
             <div className="flex flex-wrap items-center gap-3">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -956,7 +957,7 @@ export default function ImageScraper() {
 
           {/* Merge Order Panel */}
           {showMergePanel && mergeOrder.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <Layers className="w-4 h-4 text-purple-500" />

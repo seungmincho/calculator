@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import dynamic from 'next/dynamic'
 
 const GameHub = dynamic(() => import('@/components/GameHub'), { ssr: false })

@@ -1,6 +1,6 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   runMinimax,
   type MinimaxNode,

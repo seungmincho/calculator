@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Copy,
   Check,
@@ -564,14 +565,14 @@ export default function ApiTester() {
             value={pair.key}
             onChange={(e) => updatePair(setter, pair.id, 'key', e.target.value)}
             placeholder={keyPlaceholder}
-            className="flex-1 min-w-0 px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
           />
           <input
             type="text"
             value={pair.value}
             onChange={(e) => updatePair(setter, pair.id, 'value', e.target.value)}
             placeholder={valuePlaceholder}
-            className="flex-1 min-w-0 px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
           />
           <button
             onClick={() => removePair(setter, pair.id)}
@@ -648,7 +649,7 @@ export default function ApiTester() {
 
       {/* Environment Variables Panel */}
       {showEnv && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+        <div className={`${glassCard} ${glassInset} p-4`}>
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Settings size={16} />
@@ -667,14 +668,14 @@ export default function ApiTester() {
                   value={v.key}
                   onChange={(e) => updateEnvVar(v.id, 'key', e.target.value)}
                   placeholder={t('envKeyPlaceholder')}
-                  className="flex-1 min-w-0 px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono"
+                  className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono`}
                 />
                 <input
                   type="text"
                   value={v.value}
                   onChange={(e) => updateEnvVar(v.id, 'value', e.target.value)}
                   placeholder={t('envValuePlaceholder')}
-                  className="flex-1 min-w-0 px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono"
+                  className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono`}
                 />
                 <button
                   onClick={() => removeEnvVar(v.id)}
@@ -697,7 +698,7 @@ export default function ApiTester() {
 
       {/* History Panel */}
       {showHistory && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+        <div className={`${glassCard} ${glassInset} p-4`}>
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <History size={16} />
@@ -747,7 +748,7 @@ export default function ApiTester() {
       )}
 
       {/* URL Bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+      <div className={`${glassCard} ${glassInset} p-4`}>
         <div className="flex items-center gap-2">
           {/* Method selector */}
           <div className="relative">
@@ -780,7 +781,7 @@ export default function ApiTester() {
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && !loading) sendRequest() }}
             placeholder={t('urlPlaceholder')}
-            className="flex-1 min-w-0 px-4 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono"
+            className={`flex-1 min-w-0 px-4 py-2.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono`}
           />
 
           {/* Send / Cancel button */}
@@ -813,7 +814,7 @@ export default function ApiTester() {
       {/* Main content area */}
       <div className="grid lg:grid-cols-1 gap-6">
         {/* Request section */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           {/* Request tabs */}
           <div className="flex border-b border-gray-200 dark:border-gray-700 px-4">
             {requestTabs.map((tab) => (
@@ -882,7 +883,7 @@ export default function ApiTester() {
                   <select
                     value={auth.type}
                     onChange={(e) => setAuth(prev => ({ ...prev, type: e.target.value as AuthType }))}
-                    className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    className={`px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                   >
                     <option value="none">{t('authNone')}</option>
                     <option value="basic">{t('authBasic')}</option>
@@ -899,7 +900,7 @@ export default function ApiTester() {
                         value={auth.basicUsername}
                         onChange={(e) => setAuth(prev => ({ ...prev, basicUsername: e.target.value }))}
                         placeholder={t('usernamePlaceholder')}
-                        className="w-full max-w-sm px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className={`w-full max-w-sm px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                       />
                     </div>
                     <div>
@@ -909,7 +910,7 @@ export default function ApiTester() {
                         value={auth.basicPassword}
                         onChange={(e) => setAuth(prev => ({ ...prev, basicPassword: e.target.value }))}
                         placeholder={t('passwordPlaceholder')}
-                        className="w-full max-w-sm px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className={`w-full max-w-sm px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                       />
                     </div>
                   </div>
@@ -923,7 +924,7 @@ export default function ApiTester() {
                       value={auth.bearerToken}
                       onChange={(e) => setAuth(prev => ({ ...prev, bearerToken: e.target.value }))}
                       placeholder={t('bearerTokenPlaceholder')}
-                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono"
+                      className={`w-full px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono`}
                     />
                   </div>
                 )}
@@ -934,7 +935,7 @@ export default function ApiTester() {
 
         {/* Response section */}
         {(response || loading || error) && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className={`${glassCard} ${glassInset} overflow-hidden`}>
             {/* Status bar */}
             {loading && (
               <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-950">
@@ -1111,7 +1112,7 @@ export default function ApiTester() {
 
         {/* Code Gen - also available before sending */}
         {!response && !loading && !error && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className={`${glassCard} ${glassInset} overflow-hidden`}>
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <Code size={16} />
@@ -1152,7 +1153,7 @@ export default function ApiTester() {
       </div>
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen size={20} />
           {t('guide.title')}

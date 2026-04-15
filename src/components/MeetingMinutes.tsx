@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Plus, Trash2, Copy, Check, FileText, Download, Printer,
   Users, Calendar, ChevronDown, ChevronUp, Save, FolderOpen,
   Clock, MapPin, User, MessageSquare, CheckSquare, Lightbulb
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -417,7 +418,7 @@ export default function MeetingMinutes() {
     try { localStorage.setItem(LS_SLOTS_KEY, JSON.stringify(updated)) } catch { /* noop */ }
   }
 
-  const inputClass = 'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
+  const inputClass = `${glassInput} px-3 py-2 text-sm`
   const smallInputClass = 'px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
 
   const statusColors: Record<ActionStatus, string> = {
@@ -431,7 +432,7 @@ export default function MeetingMinutes() {
   return (
     <div className="space-y-6 print:space-y-4">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 print:shadow-none">
+      <div className={`${glassCard} ${glassInset} p-6 print:shadow-none`}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
@@ -459,7 +460,7 @@ export default function MeetingMinutes() {
       </div>
 
       {/* Toolbar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 print:hidden">
+      <div className={`${glassCard} ${glassInset} p-4 print:hidden`}>
         <div className="flex flex-wrap gap-2 items-center">
           {/* Templates */}
           <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">{t('template')}:</span>
@@ -537,7 +538,7 @@ export default function MeetingMinutes() {
       {activeTab === 'edit' ? (
         <>
           {/* Meeting Info */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <SectionHeader icon={<Calendar className="w-5 h-5" />} title={t('meetingInfo')} />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
@@ -571,7 +572,7 @@ export default function MeetingMinutes() {
           </div>
 
           {/* Attendees */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <SectionHeader icon={<Users className="w-5 h-5" />} title={t('attendees')} />
             <div className="space-y-2 mb-3">
               {data.attendees.map((a, idx) => (
@@ -594,7 +595,7 @@ export default function MeetingMinutes() {
           </div>
 
           {/* Agenda */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <SectionHeader icon={<FileText className="w-5 h-5" />} title={t('agenda')} />
             <div className="space-y-3 mb-3">
               {data.agenda.map((a, idx) => (
@@ -615,7 +616,7 @@ export default function MeetingMinutes() {
           </div>
 
           {/* Discussion */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <SectionHeader icon={<MessageSquare className="w-5 h-5" />} title={t('discussion')} />
             <div className="space-y-2 mb-3">
               {data.discussions.map((d, idx) => (
@@ -633,13 +634,13 @@ export default function MeetingMinutes() {
           </div>
 
           {/* Decisions */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <SectionHeader icon={<Lightbulb className="w-5 h-5" />} title={t('decisions')} />
             <textarea className={`${inputClass} resize-none`} rows={4} placeholder={t('decisionsPlaceholder')} value={data.decisions} onChange={e => update('decisions', e.target.value)} />
           </div>
 
           {/* Action Items */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <SectionHeader icon={<CheckSquare className="w-5 h-5" />} title={t('actionItems')} />
             <div className="space-y-2 mb-3">
               {data.actions.map((a, idx) => (
@@ -663,7 +664,7 @@ export default function MeetingMinutes() {
           </div>
 
           {/* Next meeting + extra notes */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <SectionHeader icon={<Clock className="w-5 h-5" />} title={t('nextMeeting')} />
             <input className={inputClass} value={data.nextMeeting} onChange={e => update('nextMeeting', e.target.value)} placeholder={t('nextMeetingPlaceholder')} />
             <div className="mt-4">
@@ -674,7 +675,7 @@ export default function MeetingMinutes() {
         </>
       ) : (
         /* Preview pane */
-        <div ref={printRef} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 print:shadow-none print:p-0">
+        <div ref={printRef} className={`${glassCard} ${glassInset} p-8 print:shadow-none print:p-0`}>
           <div className="max-w-3xl mx-auto space-y-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white border-b-2 border-blue-600 pb-2">{data.title || t('untitled')}</h1>
@@ -784,7 +785,7 @@ export default function MeetingMinutes() {
       )}
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 print:hidden">
+      <div className={`${glassCard} ${glassInset} p-6 print:hidden`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('guide.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           {(t.raw('guide.sections') as { title: string; items: string[] }[]).map((section, i) => (

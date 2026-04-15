@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Copy,
   Check,
@@ -604,7 +605,7 @@ export default function FlexboxGrid() {
         {/* Left: Container Properties */}
         <div className="lg:col-span-1 space-y-6">
           {/* Container settings card */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className="${glassCard} ${glassInset} p-6 space-y-5">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
                 {t('container')}
@@ -848,7 +849,7 @@ export default function FlexboxGrid() {
         {/* Right: Preview + Code */}
         <div className="lg:col-span-2 space-y-6">
           {/* Preview */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('preview')}</h2>
               <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-0.5">
@@ -924,7 +925,7 @@ export default function FlexboxGrid() {
           </div>
 
           {/* CSS code output */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className="${glassCard} ${glassInset} p-6 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('cssCode')}</h2>
               <button
@@ -947,7 +948,7 @@ export default function FlexboxGrid() {
       </div>
 
       {/* Children settings */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className="${glassCard} ${glassInset} p-6 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('children')}</h2>
           <button
@@ -1007,7 +1008,7 @@ export default function FlexboxGrid() {
                             max={10}
                             value={child.flexGrow}
                             onChange={(e) => updateFlexChild(child.id, 'flexGrow', Number(e.target.value))}
-                            className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full px-2 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
                           />
                         </div>
                         {/* flex-shrink */}
@@ -1019,7 +1020,7 @@ export default function FlexboxGrid() {
                             max={10}
                             value={child.flexShrink}
                             onChange={(e) => updateFlexChild(child.id, 'flexShrink', Number(e.target.value))}
-                            className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full px-2 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
                           />
                         </div>
                         {/* flex-basis */}
@@ -1030,7 +1031,7 @@ export default function FlexboxGrid() {
                             value={child.flexBasis}
                             onChange={(e) => updateFlexChild(child.id, 'flexBasis', e.target.value)}
                             placeholder="auto"
-                            className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full px-2 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
                           />
                         </div>
                         {/* order */}
@@ -1042,7 +1043,7 @@ export default function FlexboxGrid() {
                             max={10}
                             value={child.order}
                             onChange={(e) => updateFlexChild(child.id, 'order', Number(e.target.value))}
-                            className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full px-2 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
                           />
                         </div>
                         {/* align-self */}
@@ -1107,7 +1108,7 @@ export default function FlexboxGrid() {
                             max={gridColumns.length}
                             value={child.colSpan}
                             onChange={(e) => updateGridChild(child.id, 'colSpan', Number(e.target.value))}
-                            className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full px-2 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
                           />
                         </div>
                         {/* grid-row span */}
@@ -1119,7 +1120,7 @@ export default function FlexboxGrid() {
                             max={6}
                             value={child.rowSpan}
                             onChange={(e) => updateGridChild(child.id, 'rowSpan', Number(e.target.value))}
-                            className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full px-2 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
                           />
                         </div>
                       </div>
@@ -1131,7 +1132,7 @@ export default function FlexboxGrid() {
       </div>
 
       {/* Presets */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className="${glassCard} ${glassInset} p-6 space-y-4">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('presets')}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {presets.map((preset) => (
@@ -1150,7 +1151,7 @@ export default function FlexboxGrid() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+      <div className="${glassCard} ${glassInset} p-6 space-y-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

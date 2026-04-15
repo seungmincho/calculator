@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   History,
   Trash2,
@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { historyStorage, CalculationHistory } from '@/utils/localStorage'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Tool metadata map ──────────────────────────────────────────────────────────
 const TOOL_META: Record<
@@ -184,7 +185,7 @@ export default function AllCalculationHistory() {
   if (!mounted) {
     return (
       <div className="space-y-6">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-pulse">
+        <div className={`${glassCard} ${glassInset} p-6 animate-pulse`}>
           <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4" />
           <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
         </div>
@@ -216,7 +217,7 @@ export default function AllCalculationHistory() {
 
       {/* Controls */}
       {histories.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+        <div className={`${glassCard} ${glassInset} p-4`}>
           <div className="flex flex-col sm:flex-row gap-3">
             {/* Search */}
             <div className="relative flex-1">
@@ -226,7 +227,7 @@ export default function AllCalculationHistory() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t('searchPlaceholder')}
-                className="w-full pl-9 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className={`w-full pl-9 pr-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none`}
               />
               {search && (
                 <button
@@ -244,7 +245,7 @@ export default function AllCalculationHistory() {
               <select
                 value={filterTool}
                 onChange={(e) => setFilterTool(e.target.value)}
-                className="pl-9 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none appearance-none cursor-pointer min-w-[160px]"
+                className={`pl-9 pr-8 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 outline-none appearance-none cursor-pointer min-w-[160px]`}
               >
                 <option value="all">{t('filterAll')}</option>
                 {toolTypes.map((type) => (
@@ -262,7 +263,7 @@ export default function AllCalculationHistory() {
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as SortKey)}
-                className="pl-9 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none appearance-none cursor-pointer min-w-[160px]"
+                className={`pl-9 pr-8 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 outline-none appearance-none cursor-pointer min-w-[160px]`}
               >
                 <option value="date-desc">{t('sortNewest')}</option>
                 <option value="date-asc">{t('sortOldest')}</option>
@@ -281,7 +282,7 @@ export default function AllCalculationHistory() {
 
       {/* Empty state */}
       {histories.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+        <div className={`${glassCard} ${glassInset} p-12 text-center`}>
           <Clock className="w-16 h-16 text-gray-200 dark:text-gray-600 mx-auto mb-4" />
           <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
             {t('emptyTitle')}
@@ -299,7 +300,7 @@ export default function AllCalculationHistory() {
         </div>
       ) : displayed.length === 0 ? (
         /* No results after filter/search */
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-10 text-center">
+        <div className={`${glassCard} ${glassInset} p-10 text-center`}>
           <Search className="w-12 h-12 text-gray-200 dark:text-gray-600 mx-auto mb-3" />
           <p className="text-gray-500 dark:text-gray-400">{t('noResults')}</p>
           <button
@@ -402,7 +403,7 @@ export default function AllCalculationHistory() {
       {/* Clear all confirmation modal */}
       {confirmClearAll && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-sm w-full p-6">
+          <div className={`${glassCard} ${glassInset} max-w-sm w-full p-6`}>
             <div className="flex items-center gap-3 mb-3">
               <div className="p-2 rounded-full bg-red-100 dark:bg-red-900/30">
                 <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />

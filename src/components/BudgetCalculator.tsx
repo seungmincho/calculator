@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import dynamic from 'next/dynamic'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Check,
   Save,
@@ -433,7 +434,7 @@ export default function BudgetCalculator() {
         {/* Left Column: Income + Expenses */}
         <div className="lg:col-span-1 space-y-6">
           {/* Income Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Wallet className="w-5 h-5 text-blue-500" />
               {t('income.title')}
@@ -451,7 +452,7 @@ export default function BudgetCalculator() {
                       value={income[field] === 0 ? '' : formatWon(income[field])}
                       onChange={(e) => handleIncomeChange(field, e.target.value)}
                       placeholder="0"
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-8 text-right"
+                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-8 text-right`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm pointer-events-none">
                       {t('currency')}
@@ -473,7 +474,7 @@ export default function BudgetCalculator() {
           </div>
 
           {/* Actions */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={handleReset}
@@ -513,7 +514,7 @@ export default function BudgetCalculator() {
                 value={presetName}
                 onChange={(e) => setPresetName(e.target.value)}
                 placeholder={t('preset.placeholder')}
-                className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`flex-1 px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
               <button
                 onClick={handleSavePreset}
@@ -558,7 +559,7 @@ export default function BudgetCalculator() {
         {/* Right Column: Expense Grid + Summary */}
         <div className="lg:col-span-2 space-y-6">
           {/* Expense Categories */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('expenses.title')}
             </h2>
@@ -607,7 +608,7 @@ export default function BudgetCalculator() {
                         value={expense.amount === 0 ? '' : formatWon(expense.amount)}
                         onChange={(e) => handleExpenseChange(expense.id, e.target.value)}
                         placeholder="0"
-                        className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-8 text-right"
+                        className={`w-full px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 pr-8 text-right`}
                       />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-xs pointer-events-none">
                         {t('currency')}
@@ -655,7 +656,7 @@ export default function BudgetCalculator() {
           {/* Summary Section */}
           <div className="grid sm:grid-cols-2 gap-6">
             {/* Donut Chart */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
                 {t('chart.title')}
               </h3>
@@ -704,7 +705,7 @@ export default function BudgetCalculator() {
             {/* Income vs Expense + Stats */}
             <div className="space-y-6">
               {/* Summary Card */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
                   {t('summary.title')}
                 </h3>
@@ -806,7 +807,7 @@ export default function BudgetCalculator() {
               </div>
 
               {/* Category Bars */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
                   {t('chart.categoryBars')}
                 </h3>
@@ -843,7 +844,7 @@ export default function BudgetCalculator() {
           </div>
 
           {/* 50/30/20 Rule */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
               {t('rule.title')}
             </h3>
@@ -986,7 +987,7 @@ export default function BudgetCalculator() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="flex items-center gap-2 w-full text-left"

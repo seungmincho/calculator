@@ -68,7 +68,7 @@
  */
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import {
   Calculator,
@@ -83,6 +83,7 @@ import {
   ShoppingCart,
   ArrowRightLeft
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── 타입 정의 ──
 
@@ -403,7 +404,7 @@ export default function MarginCalculator() {
         {/* ── 입력 패널 (1/3) ── */}
         <div className="lg:col-span-1 space-y-4">
           {/* 모드 토글 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <div className="flex rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
               <button
                 onClick={() => setMode('calculate')}
@@ -466,7 +467,7 @@ export default function MarginCalculator() {
               <select
                 value={platformKey}
                 onChange={(e) => setPlatformKey(e.target.value as PlatformKey)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                className={`${glassInput} px-3 py-2 text-sm`}
               >
                 {PLATFORMS.map((p) => (
                   <option key={p.key} value={p.key}>
@@ -522,7 +523,7 @@ export default function MarginCalculator() {
               <select
                 value={taxType}
                 onChange={(e) => setTaxType(e.target.value as TaxType)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                className={`${glassInput} px-3 py-2 text-sm`}
               >
                 <option value="general">{t('taxType.general')}</option>
                 <option value="simplified">{t('taxType.simplified')}</option>
@@ -583,7 +584,7 @@ export default function MarginCalculator() {
               )}
 
               {/* 비용 구성 분석 (스택 바) */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   {t('costBreakdown.title')}
                 </h2>
@@ -615,7 +616,7 @@ export default function MarginCalculator() {
               </div>
 
               {/* 상세 내역 테이블 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   {t('detail.title')}
                 </h2>
@@ -703,7 +704,7 @@ export default function MarginCalculator() {
               </div>
 
               {/* 월간 시뮬레이션 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   {t('monthly.title')}
                 </h2>
@@ -741,7 +742,7 @@ export default function MarginCalculator() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
               <p className="text-gray-400 dark:text-gray-500">
                 {mode === 'calculate' ? t('input.sellingPrice') : t('input.costPrice')}
@@ -754,7 +755,7 @@ export default function MarginCalculator() {
       </div>
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
@@ -794,7 +795,7 @@ function InputField({ label, value, onChange, unit, icon }: InputFieldProps) {
           value={value === 0 ? '' : formatInputValue(value)}
           onChange={onChange}
           placeholder="0"
-          className="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm text-right"
+          className={`${glassInput} px-3 py-2 pr-10 text-sm text-right`}
         />
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 dark:text-gray-500">
           {unit}
@@ -821,7 +822,7 @@ function MetricCard({ icon, label, value, sublabel, positive, neutral }: MetricC
       : 'text-red-500 dark:text-red-400'
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+    <div className={`${glassCard} ${glassInset} p-4`}>
       <div className="flex items-center gap-2 mb-2">
         <span className="text-gray-400 dark:text-gray-500">{icon}</span>
         <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { TrendingUp, TrendingDown, Calculator, Share2, Check, Save, BarChart3 } from 'lucide-react';
+import { glassCard, glassInset, glassInput } from '@/lib/glass';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import GuideSection from '@/components/GuideSection';
@@ -194,7 +195,7 @@ const StockCalculatorContent = () => {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Input Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">투자 정보 입력</h2>
           
           <div className="space-y-6">
@@ -243,7 +244,7 @@ const StockCalculatorContent = () => {
                   value={shares}
                   onChange={handleSharesChange}
                   placeholder="100"
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className={`${glassInput} px-4 py-3`}
                 />
                 <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">주</span>
               </div>
@@ -262,7 +263,7 @@ const StockCalculatorContent = () => {
         </div>
 
         {/* Result Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">계산 결과</h2>
           
           {result ? (
@@ -355,7 +356,7 @@ const StockCalculatorContent = () => {
       </div>
 
       {/* Tips Section */}
-      <div className="mt-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
         <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">💡 주식 투자 팁</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">

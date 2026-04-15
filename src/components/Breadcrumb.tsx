@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronRight, Home } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { menuConfig, categoryKeys, type CategoryKey } from '@/config/menuConfig'
 
 export default function Breadcrumb() {

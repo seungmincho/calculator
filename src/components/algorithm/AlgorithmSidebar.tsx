@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 import { algorithms, categoryColors, categoryLabels, difficultyLabels, type AlgorithmCategory } from '@/config/algorithmConfig'

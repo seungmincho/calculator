@@ -1,6 +1,6 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { solveKnapsack, KNAPSACK_PRESETS, type KnapsackItem, type KnapsackStep } from '@/utils/algorithm/knapsack'
 import KnapsackCanvas2D from './KnapsackCanvas2D'
 import VisualizerControls from '../VisualizerControls'

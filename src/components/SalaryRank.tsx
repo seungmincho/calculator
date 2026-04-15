@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Check, Link, RotateCcw, BookOpen, ChevronDown, ChevronUp, Download, Share2, Trophy, Users, TrendingUp, BarChart3, Loader2, AlertCircle } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts'
 import { submitSalarySurvey, getCommunityStats, getCommunityRank, type CommunityStats, type CommunityRank } from '@/utils/salarySurvey'
 
@@ -383,7 +384,7 @@ export default function SalaryRank() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Input Panel */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* Annual salary */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('annualSalary')}</label>
@@ -394,7 +395,7 @@ export default function SalaryRank() {
                   onChange={e => setSalaryInput(e.target.value.replace(/,/g, '').replace(/[^\d]/g, ''))}
                   onKeyDown={handleKeyDown}
                   placeholder={t('salaryPlaceholder')}
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-lg font-bold focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} px-4 py-3 pr-12 text-lg font-bold`}
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">{t('won')}</span>
               </div>
@@ -452,7 +453,7 @@ export default function SalaryRank() {
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('industry')}</label>
               <select value={industry} onChange={e => setIndustry(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm">
+                className={`${glassInput} px-3 py-2 text-sm`}>
                 <option value="">{t('industryAll')}</option>
                 {INDUSTRIES.map(i => (
                   <option key={i} value={i}>{t(`industries.${i}`)}</option>
@@ -483,7 +484,7 @@ export default function SalaryRank() {
         {/* Result Panel */}
         <div className="lg:col-span-2 space-y-4" ref={resultRef}>
           {!result ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-16 text-center">
+            <div className={`${glassCard} ${glassInset} p-16 text-center`}>
               <Trophy className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
               <p className="text-gray-400 dark:text-gray-500 text-lg">{t('enterSalary')}</p>
             </div>
@@ -519,7 +520,7 @@ export default function SalaryRank() {
               {/* Detailed comparison cards */}
               <div className="grid sm:grid-cols-3 gap-3">
                 {result.byAge && (
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+                  <div className={`${glassCard} ${glassInset} p-4`}>
                     <div className="flex items-center gap-2 mb-3">
                       <Users className="w-4 h-4 text-blue-500" />
                       <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('ageComparison')}</p>
@@ -532,7 +533,7 @@ export default function SalaryRank() {
                   </div>
                 )}
                 {result.byGender && (
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+                  <div className={`${glassCard} ${glassInset} p-4`}>
                     <div className="flex items-center gap-2 mb-3">
                       <TrendingUp className="w-4 h-4 text-purple-500" />
                       <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('genderComparison')}</p>
@@ -545,7 +546,7 @@ export default function SalaryRank() {
                   </div>
                 )}
                 {result.byIndustry && (
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+                  <div className={`${glassCard} ${glassInset} p-4`}>
                     <div className="flex items-center gap-2 mb-3">
                       <BarChart3 className="w-4 h-4 text-green-500" />
                       <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('industryComparison')}</p>
@@ -560,7 +561,7 @@ export default function SalaryRank() {
               </div>
 
               {/* Distribution chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
                   <BarChart3 className="w-4 h-4" /> {t('distributionChart')}
                 </h3>
@@ -620,7 +621,7 @@ export default function SalaryRank() {
 
               {/* Community Stats */}
               {communityStats && communityStats.totalCount >= 5 && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
                     <Users className="w-4 h-4 text-indigo-500" /> {t('community.title')}
                     <span className="text-xs font-normal text-gray-400 dark:text-gray-500">({t('community.realtime')})</span>
@@ -724,7 +725,7 @@ export default function SalaryRank() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           aria-expanded={showGuide}>
@@ -752,7 +753,7 @@ export default function SalaryRank() {
       </div>
 
       {/* FAQ */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('faqTitle')}</h2>
         <div className="space-y-4">
           {[1, 2, 3].map(i => (

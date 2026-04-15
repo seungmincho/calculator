@@ -3,8 +3,9 @@
 import { useMemo } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { menuConfig, categoryKeys, type CategoryKey, type MenuItem } from '@/config/menuConfig'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // Deterministic shuffle based on pathname (consistent per page, different across pages)
 function seededShuffle<T>(arr: T[], seed: string): T[] {
@@ -68,7 +69,7 @@ export default function RelatedTools() {
     <Link
       key={item.href}
       href={item.href}
-      className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all group"
+      className={`flex items-center gap-3 p-3 ${glassCard} hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all group`}
     >
       <span className="text-2xl flex-shrink-0">{item.icon}</span>
       <div className="min-w-0">

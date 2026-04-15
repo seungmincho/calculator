@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import { Utensils, Search, Plus, Trash2, Copy, Check, BookOpen, X, Link } from 'lucide-react'
 import dynamic from 'next/dynamic'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
@@ -278,7 +279,7 @@ export default function NutritionCalculator() {
       </div>
 
       {/* 카테고리 필터 + 검색 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-3">
+      <div className={`${glassCard} ${glassInset} p-4 space-y-3`}>
         <div className="flex flex-wrap gap-2">
           {CATEGORIES.map(cat => (
             <button
@@ -301,7 +302,7 @@ export default function NutritionCalculator() {
             placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-9 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+            className={`w-full pl-9 pr-9 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
           />
           {searchQuery && (
             <button
@@ -319,7 +320,7 @@ export default function NutritionCalculator() {
         {/* 음식 목록 */}
         <div className="lg:col-span-2 space-y-4">
           {/* 음식 그리드 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
               {t('foodDatabase')} <span className="text-sm font-normal text-gray-400">({filteredFoods.length})</span>
             </h2>
@@ -376,13 +377,13 @@ export default function NutritionCalculator() {
           {/* 차트 */}
           {totals && (
             <div className="grid sm:grid-cols-2 gap-4">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+              <div className={`${glassCard} ${glassInset} p-4`}>
                 <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('chart.macroRatio')}</h3>
                 {donutOption && (
                   <ReactECharts option={donutOption} style={{ height: 220 }} />
                 )}
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+              <div className={`${glassCard} ${glassInset} p-4`}>
                 <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('chart.dailyPct')}</h3>
                 {barOption && (
                   <ReactECharts option={barOption} style={{ height: 220 }} />
@@ -395,7 +396,7 @@ export default function NutritionCalculator() {
         {/* 식단 패널 */}
         <div className="lg:col-span-1 space-y-4">
           {/* 식단 목록 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-base font-semibold text-gray-900 dark:text-white">
                 {t('mealList')} <span className="text-sm font-normal text-gray-400">({mealEntries.length})</span>
@@ -470,7 +471,7 @@ export default function NutritionCalculator() {
 
           {/* 합계 요약 */}
           {totals && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-base font-semibold text-gray-900 dark:text-white">{t('summary.title')}</h2>
                 <button
@@ -527,7 +528,7 @@ export default function NutritionCalculator() {
       </div>
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

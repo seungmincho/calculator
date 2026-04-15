@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   CheckCircle,
   XCircle,
@@ -20,6 +20,7 @@ import {
   Check,
 } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // 2026년 중위소득 (월)
 const MEDIAN_INCOME_2026: Record<number, number> = {
@@ -288,7 +289,7 @@ export default function YouthRentSubsidyCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel - Input Form */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5 sticky top-24">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5 sticky top-24`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Search className="w-5 h-5 text-blue-600" />
               {t('inputTitle')}
@@ -305,7 +306,7 @@ export default function YouthRentSubsidyCalculator() {
                 max={50}
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('ageHint')}</p>
             </div>
@@ -376,7 +377,7 @@ export default function YouthRentSubsidyCalculator() {
                   value={ownIncome}
                   onChange={(e) => setOwnIncome(formatNumber(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('manwon')}</span>
               </div>
@@ -390,7 +391,7 @@ export default function YouthRentSubsidyCalculator() {
               <select
                 value={householdSize}
                 onChange={(e) => setHouseholdSize(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 {[1, 2, 3, 4, 5, 6].map((n) => (
                   <option key={n} value={n}>{t('householdSizeOption', { n })}</option>
@@ -410,7 +411,7 @@ export default function YouthRentSubsidyCalculator() {
                   value={parentIncome}
                   onChange={(e) => setParentIncome(formatNumber(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('manwon')}</span>
               </div>
@@ -428,7 +429,7 @@ export default function YouthRentSubsidyCalculator() {
                   value={asset}
                   onChange={(e) => setAsset(formatNumber(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('manwon')}</span>
               </div>
@@ -446,7 +447,7 @@ export default function YouthRentSubsidyCalculator() {
                   value={rent}
                   onChange={(e) => setRent(formatNumber(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('manwon')}</span>
               </div>
@@ -464,7 +465,7 @@ export default function YouthRentSubsidyCalculator() {
                   value={deposit}
                   onChange={(e) => setDeposit(formatNumber(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('manwon')}</span>
               </div>
@@ -478,7 +479,7 @@ export default function YouthRentSubsidyCalculator() {
               <select
                 value={housingType}
                 onChange={(e) => setHousingType(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 {housingTypes.map((ht) => (
                   <option key={ht.value} value={ht.value}>{ht.label}</option>
@@ -509,7 +510,7 @@ export default function YouthRentSubsidyCalculator() {
         {/* Right Panel - Results */}
         <div className="lg:col-span-2 space-y-6">
           {!result ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center">
+            <div className={`${glassCard} ${glassInset} p-8 text-center`}>
               <div className="w-16 h-16 mx-auto bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center mb-4">
                 <Home className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
               </div>
@@ -551,7 +552,7 @@ export default function YouthRentSubsidyCalculator() {
 
               {/* Expected Support */}
               {result.eligible && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                     <DollarSign className="w-5 h-5 text-emerald-600" />
                     {t('supportTitle')}
@@ -600,7 +601,7 @@ export default function YouthRentSubsidyCalculator() {
               )}
 
               {/* 7-item Checklist */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-blue-600" />
                   {t('checklistTitle')}
@@ -639,7 +640,7 @@ export default function YouthRentSubsidyCalculator() {
               </div>
 
               {/* 신청 안내 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+              <div className={`${glassCard} ${glassInset} overflow-hidden`}>
                 <button
                   onClick={() => setShowApplyInfo(!showApplyInfo)}
                   className="w-full flex items-center justify-between p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
@@ -683,7 +684,7 @@ export default function YouthRentSubsidyCalculator() {
               </div>
 
               {/* 중위소득 참고표 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <Users className="w-5 h-5 text-blue-600" />
                   {t('medianTableTitle')}

@@ -2,8 +2,9 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Truck, Home, MapPin, Building2, Wrench, Calendar, Calculator, BookOpen, CheckSquare, Square, RotateCcw, Copy, Check, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 type MovingType = 'regular' | 'full' | 'semi'
@@ -404,7 +405,7 @@ export default function MovingCost() {
         <div className="lg:col-span-2 space-y-6">
 
           {/* 1. Home Size */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Home className="w-5 h-5" />
               {t('sizeLabel')}
@@ -438,7 +439,7 @@ export default function MovingCost() {
                   value={sizeValue}
                   onChange={(e) => setSizeValue(e.target.value)}
                   min="1"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} px-3 py-2`}
                 />
               </div>
               <div className="flex gap-1">
@@ -472,7 +473,7 @@ export default function MovingCost() {
           </div>
 
           {/* 2. Moving Type */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Truck className="w-5 h-5" />
               {t('movingTypeLabel')}
@@ -500,7 +501,7 @@ export default function MovingCost() {
           </div>
 
           {/* 3. Distance */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <MapPin className="w-5 h-5" />
               {t('distanceLabel')}
@@ -527,7 +528,7 @@ export default function MovingCost() {
                   value={customKm}
                   onChange={(e) => setCustomKm(e.target.value)}
                   min="0"
-                  className="w-32 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} w-32 px-3 py-2`}
                 />
                 <span className="text-sm text-gray-500 dark:text-gray-400">km</span>
               </div>
@@ -535,7 +536,7 @@ export default function MovingCost() {
           </div>
 
           {/* 4. Floor Info */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Building2 className="w-5 h-5" />
               {t('floorLabel')}
@@ -551,7 +552,7 @@ export default function MovingCost() {
                     onChange={(e) => setCurrentFloor(prev => ({ ...prev, floor: parseInt(e.target.value) || 1 }))}
                     min="1"
                     max="50"
-                    className="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} w-20 px-3 py-2`}
                   />
                   <span className="text-sm text-gray-500 dark:text-gray-400">{t('floor')}</span>
                 </div>
@@ -575,7 +576,7 @@ export default function MovingCost() {
                     onChange={(e) => setNewFloor(prev => ({ ...prev, floor: parseInt(e.target.value) || 1 }))}
                     min="1"
                     max="50"
-                    className="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} w-20 px-3 py-2`}
                   />
                   <span className="text-sm text-gray-500 dark:text-gray-400">{t('floor')}</span>
                 </div>
@@ -603,7 +604,7 @@ export default function MovingCost() {
           </div>
 
           {/* 5. Extra Services */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Wrench className="w-5 h-5" />
               {t('extrasLabel')}
@@ -620,7 +621,7 @@ export default function MovingCost() {
                   onChange={(e) => setExtras(prev => ({ ...prev, acUnits: Math.max(0, parseInt(e.target.value) || 0) }))}
                   min="0"
                   max="10"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} px-3 py-2`}
                 />
               </div>
               {/* Piano */}
@@ -631,7 +632,7 @@ export default function MovingCost() {
                 <select
                   value={extras.pianoType}
                   onChange={(e) => setExtras(prev => ({ ...prev, pianoType: e.target.value as 'none' | 'upright' | 'grand' }))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} px-3 py-2`}
                 >
                   <option value="none">{t('extras.pianoNone')}</option>
                   <option value="upright">{t('extras.pianoUpright')}</option>
@@ -649,7 +650,7 @@ export default function MovingCost() {
                   onChange={(e) => setExtras(prev => ({ ...prev, largeAppliances: Math.max(0, parseInt(e.target.value) || 0) }))}
                   min="0"
                   max="20"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} px-3 py-2`}
                 />
               </div>
               {/* Storage Days */}
@@ -662,7 +663,7 @@ export default function MovingCost() {
                   value={extras.storageDays}
                   onChange={(e) => setExtras(prev => ({ ...prev, storageDays: Math.max(0, parseInt(e.target.value) || 0) }))}
                   min="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} px-3 py-2`}
                 />
               </div>
             </div>
@@ -690,7 +691,7 @@ export default function MovingCost() {
           </div>
 
           {/* 6. Moving Date */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Calendar className="w-5 h-5" />
               {t('dateLabel')}
@@ -699,7 +700,7 @@ export default function MovingCost() {
               type="date"
               value={movingDate}
               onChange={(e) => setMovingDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              className={`${glassInput} px-3 py-2`}
             />
             {dateInfo && (
               <div className="flex flex-wrap gap-2">
@@ -747,7 +748,7 @@ export default function MovingCost() {
 
         {/* Right: Result Panel */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sticky top-24">
+          <div className={`${glassCard} ${glassInset} p-6 sticky top-24`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
               <Calculator className="w-5 h-5" />
               {t('result.title')}
@@ -808,7 +809,7 @@ export default function MovingCost() {
       </div>
 
       {/* Checklist */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowChecklist(!showChecklist)}
           className="w-full flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white"
@@ -851,7 +852,7 @@ export default function MovingCost() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

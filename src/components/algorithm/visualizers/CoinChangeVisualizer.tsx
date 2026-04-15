@@ -1,6 +1,6 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { solveCoinChange, COIN_PRESETS, type CoinChangeStep } from '@/utils/algorithm/coinChange'
 import CoinChangeCanvas2D from './CoinChangeCanvas2D'
 import VisualizerControls from '../VisualizerControls'

@@ -1,5 +1,5 @@
 'use client'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Play, Pause, RotateCcw, SkipForward, SkipBack } from 'lucide-react'
 
 interface VisualizerControlsProps {

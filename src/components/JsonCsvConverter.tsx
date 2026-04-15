@@ -1,7 +1,9 @@
 'use client'
 
+import { glassCard, glassInset } from '@/lib/glass'
+
 import React, { useState, useRef, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { 
   FileText, 
   Upload, 
@@ -488,7 +490,7 @@ const JsonCsvConverter = () => {
       {/* 상하 구조 고정 레이아웃 */}
       <div className="space-y-8">
         {/* 입력 섹션 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <div className="grid lg:grid-cols-2 gap-8">
             {/* 입력 영역 */}
             <div>
@@ -653,7 +655,7 @@ const JsonCsvConverter = () => {
         </div>
 
         {/* Results Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('result.title')}</h2>
             
@@ -928,7 +930,7 @@ const JsonCsvConverter = () => {
       </div>
 
       {/* Features Section */}
-      <div className="mt-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
         <h2 className="text-2xl font-semibold mb-8 text-gray-900 dark:text-white text-center">{t('features.title')}</h2>
         
         <div className="grid md:grid-cols-3 gap-8">

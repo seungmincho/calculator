@@ -2,8 +2,9 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, Building2, Home, Users, BarChart3, ChevronDown, ChevronUp, AlertTriangle, CheckCircle2, XCircle, Info, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 // ── Constants: 2025 rates ──
@@ -434,7 +435,7 @@ export default function HealthInsuranceCalculator() {
           onChange={(e) => onChange(formatInputValue(e.target.value))}
           placeholder={placeholder || '0'}
           aria-label={ariaLabel || label}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-right pr-8"
+          className={`w-full px-3 py-2 ${glassInput} px-3 py-2 text-right pr-8`}
         />
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">{t('unit.won')}</span>
       </div>
@@ -512,7 +513,7 @@ export default function HealthInsuranceCalculator() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Settings */}
             <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+              <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('tabs.workplace')}</h2>
 
                 <NumberInput
@@ -550,7 +551,7 @@ export default function HealthInsuranceCalculator() {
             <div className="lg:col-span-2">
               {workplaceResult ? (
                 <div className="space-y-4">
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <div className={`${glassCard} ${glassInset} p-6`}>
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                         {t('insurance.healthInsurance')} ({t('insurance.rate2025')})
@@ -638,7 +639,7 @@ export default function HealthInsuranceCalculator() {
                   </div>
 
                   {/* Annual projection */}
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <div className={`${glassCard} ${glassInset} p-6`}>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('workplace.annualProjection')}</h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
@@ -661,7 +662,7 @@ export default function HealthInsuranceCalculator() {
                   </div>
                 </div>
               ) : (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center text-gray-400 dark:text-gray-500">
+                <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
                   {t('placeholder.enterSalary')}
                 </div>
               )}
@@ -674,7 +675,7 @@ export default function HealthInsuranceCalculator() {
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1 space-y-4">
               {/* Income section */}
-              <fieldset className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+              <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
                 <legend className="text-lg font-semibold text-gray-900 dark:text-white">{t('regional.incomeSection')}</legend>
                 <NumberInput value={rgBusinessIncome} onChange={setRgBusinessIncome} label={t('regional.businessIncome')} />
                 <NumberInput value={rgEmploymentIncome} onChange={setRgEmploymentIncome} label={t('regional.employmentIncome')} />
@@ -684,7 +685,7 @@ export default function HealthInsuranceCalculator() {
               </fieldset>
 
               {/* Property section */}
-              <fieldset className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+              <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
                 <legend className="text-lg font-semibold text-gray-900 dark:text-white">{t('regional.propertySection')}</legend>
                 <NumberInput value={rgPropertyTaxBase} onChange={setRgPropertyTaxBase} label={t('regional.propertyTaxBase')} />
                 <NumberInput value={rgDeposit} onChange={setRgDeposit} label={t('regional.deposit')} />
@@ -693,7 +694,7 @@ export default function HealthInsuranceCalculator() {
 
             <div className="lg:col-span-2">
               {regionalResult ? (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+                <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('regional.result')}</h3>
 
                   {/* Income premium */}
@@ -756,7 +757,7 @@ export default function HealthInsuranceCalculator() {
                   )}
                 </div>
               ) : (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center text-gray-400 dark:text-gray-500">
+                <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
                   {t('placeholder.enterIncome')}
                 </div>
               )}
@@ -768,7 +769,7 @@ export default function HealthInsuranceCalculator() {
         {activeTab === 'dependent' && (
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+              <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('tabs.dependent')}</h2>
 
                 <div>
@@ -776,7 +777,7 @@ export default function HealthInsuranceCalculator() {
                   <select
                     value={dpRelationship}
                     onChange={(e) => setDpRelationship(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} px-3 py-2`}
                   >
                     {(['spouse', 'parent', 'child', 'sibling', 'grandparent', 'grandchild'] as const).map(rel => (
                       <option key={rel} value={rel}>{t(`dependent.relationships.${rel}`)}</option>
@@ -820,7 +821,7 @@ export default function HealthInsuranceCalculator() {
 
             <div className="lg:col-span-2">
               {dependentResult ? (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6" role="status" aria-live="polite">
+                <div className={`${glassCard} ${glassInset} p-6`} role="status" aria-live="polite">
                   {/* Result header */}
                   <div className={`flex items-center gap-3 mb-6 p-4 rounded-xl ${
                     dependentResult.eligible
@@ -893,7 +894,7 @@ export default function HealthInsuranceCalculator() {
                   )}
                 </div>
               ) : (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center text-gray-400 dark:text-gray-500">
+                <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
                   {t('placeholder.enterDependentInfo')}
                 </div>
               )}
@@ -906,7 +907,7 @@ export default function HealthInsuranceCalculator() {
           <div className="space-y-8">
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Regional (freelancer) inputs */}
-              <fieldset className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+              <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
                 <legend className="text-lg font-semibold text-gray-900 dark:text-white">{t('comparison.freelancer')}</legend>
                 <NumberInput value={cmpBusinessIncome} onChange={setCmpBusinessIncome} label={t('regional.businessIncome')} />
                 <NumberInput value={cmpEmploymentIncome} onChange={setCmpEmploymentIncome} label={t('regional.employmentIncome')} />
@@ -918,7 +919,7 @@ export default function HealthInsuranceCalculator() {
               </fieldset>
 
               {/* Workplace (incorporated CEO) inputs */}
-              <fieldset className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+              <fieldset className={`${glassCard} ${glassInset} p-6 space-y-3`}>
                 <legend className="text-lg font-semibold text-gray-900 dark:text-white">{t('comparison.incorporated')}</legend>
                 <NumberInput value={cmpCeoSalary} onChange={setCmpCeoSalary} label={t('comparison.ceoSalary')} placeholder="4,000,000" />
                 <NumberInput value={cmpNonTaxable} onChange={setCmpNonTaxable} label={t('workplace.nonTaxable')} />
@@ -933,7 +934,7 @@ export default function HealthInsuranceCalculator() {
             {comparisonResult ? (
               <div className="space-y-6">
                 {/* Comparison table */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 overflow-x-auto">
+                <div className={`${glassCard} ${glassInset} p-6 overflow-x-auto`}>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('comparison.result')}</h3>
                   <table className="w-full text-sm">
                     <thead>
@@ -1009,7 +1010,7 @@ export default function HealthInsuranceCalculator() {
                 </div>
 
                 {/* Chart */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('comparison.chartTitle')}</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart
@@ -1056,7 +1057,7 @@ export default function HealthInsuranceCalculator() {
                 </div>
               </div>
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center text-gray-400 dark:text-gray-500">
+              <div className={`${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500`}>
                 {t('placeholder.enterComparison')}
               </div>
             )}
@@ -1065,7 +1066,7 @@ export default function HealthInsuranceCalculator() {
       </div>
 
       {/* ═══════════════ Guide Section ═══════════════ */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <div className={`${glassCard} ${glassInset}`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between p-6 text-left"

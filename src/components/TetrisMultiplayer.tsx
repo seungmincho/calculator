@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   ArrowLeft, Trophy, RefreshCw, Users, Copy, Check, Send,
   MessageCircle, AlertCircle, X, Flag, Zap
@@ -12,6 +12,7 @@ import { usePeerConnection } from '@/hooks/usePeerConnection'
 import { GameRoom, sendRoomHeartbeat, incrementGamesPlayed, getRoom } from '@/utils/webrtc'
 import { PeerMessage } from '@/utils/webrtc/peerManager'
 import GameLobby from './GameLobby'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type TetrominoType = 'I' | 'O' | 'T' | 'S' | 'Z' | 'J' | 'L'
@@ -1266,7 +1267,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
           gameTitle={`${t('title')} - ${t('multi.title')}`}
           gameDescription={t('multi.description')}
         />
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             {t('multi.directConnect')}
           </h3>
@@ -1288,7 +1289,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
   if (gamePhase === 'waiting' && isHostRef.current && !isConnected) {
     return (
       <div className="max-w-2xl mx-auto text-center">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <div className="animate-pulse mb-6">
             <Users className="w-16 h-16 mx-auto text-indigo-500" />
           </div>
@@ -1326,7 +1327,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
   if (gamePhase === 'waiting' && !isHostRef.current && !isConnected) {
     return (
       <div className="max-w-2xl mx-auto text-center">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <div className="animate-spin mb-6">
             <RefreshCw className="w-16 h-16 mx-auto text-indigo-500" />
           </div>
@@ -1404,7 +1405,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
       )}
 
       {/* Player info bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3">
+      <div className={`${glassCard} ${glassInset} p-3`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -1437,14 +1438,14 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
         <div className="flex gap-2 items-start">
           {/* Hold + Stats */}
           <div className="hidden lg:flex flex-col gap-2 w-28">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-2">
+            <div className={`${glassCard} ${glassInset} p-2`}>
               <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{t('hold')}</p>
               <div className="h-14 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded">
                 {holdPiece && <MiniPiece type={holdPiece} />}
               </div>
               {!canHold && holdPiece && <p className="text-xs text-gray-400 text-center mt-1">{t('holdUsed')}</p>}
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-2 space-y-2">
+            <div className={`${glassCard} ${glassInset} p-2 space-y-2`}>
               <div>
                 <p className="text-xs text-gray-500 dark:text-gray-400">{t('score')}</p>
                 <p className="text-sm font-bold text-blue-600 dark:text-blue-400">{score.toLocaleString()}</p>
@@ -1459,7 +1460,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
               </div>
             </div>
             {/* Next pieces */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-2">
+            <div className={`${glassCard} ${glassInset} p-2`}>
               <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">{t('next')}</p>
               <div className="space-y-1">
                 {nextPieces.map((type, i) => (
@@ -1486,7 +1487,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
         {/* Center: Attack log + stats (desktop) */}
         <div className="hidden lg:flex flex-col gap-3 w-48 self-center">
           {/* Attack log */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3">
+          <div className={`${glassCard} ${glassInset} p-3`}>
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
               <Zap className="w-3 h-3" />
               {t('multi.attackLog')}
@@ -1524,7 +1525,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
           />
           {/* Opponent stats (desktop) */}
           <div className="hidden lg:flex flex-col gap-2 w-24">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-2 space-y-2">
+            <div className={`${glassCard} ${glassInset} p-2 space-y-2`}>
               <div>
                 <p className="text-xs text-gray-500 dark:text-gray-400">{t('score')}</p>
                 <p className="text-sm font-bold text-blue-600 dark:text-blue-400">{opponentScore.toLocaleString()}</p>
@@ -1545,13 +1546,13 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
       {/* Mobile: Stats row */}
       <div className="lg:hidden space-y-2">
         <div className="flex gap-2">
-          <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow p-2">
+          <div className={`flex-1 ${glassCard} ${glassInset} p-2`}>
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">{t('hold')}</p>
             <div className="h-10 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded">
               {holdPiece && <MiniPiece type={holdPiece} />}
             </div>
           </div>
-          <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow p-2">
+          <div className={`flex-1 ${glassCard} ${glassInset} p-2`}>
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">{t('next')}</p>
             <div className="flex gap-1">
               {nextPieces.slice(0, 2).map((type, i) => (
@@ -1568,7 +1569,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
             { label: t('level'), value: level, color: 'text-purple-600 dark:text-purple-400' },
             { label: t('lines'), value: lines, color: 'text-green-600 dark:text-green-400' },
           ].map(({ label, value, color }) => (
-            <div key={label} className="bg-white dark:bg-gray-800 rounded-lg shadow p-2 text-center">
+            <div key={label} className={`${glassCard} ${glassInset} p-2 text-center`}>
               <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
               <p className={`text-sm font-bold ${color}`}>{value}</p>
             </div>
@@ -1602,7 +1603,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
 
       {/* Chat panel */}
       {showChat && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="p-3 border-b border-gray-200 dark:border-gray-700">
             <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 text-sm">
               <MessageCircle className="w-4 h-4" />
@@ -1629,7 +1630,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
                 onChange={(e) => setChatInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendChat() } }}
                 placeholder={t('multi.typeMessage')}
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className={`flex-1 px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
                 maxLength={200}
               />
               <button

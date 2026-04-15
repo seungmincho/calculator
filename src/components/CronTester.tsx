@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { 
   Clock, 
   Play, 
@@ -16,6 +16,7 @@ import {
   Zap,
   Timer
 } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface CronExpression {
   minute: string
@@ -422,7 +423,7 @@ const CronTester = () => {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Input Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center space-x-2">
               <Settings className="w-5 h-5 text-blue-600" />
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -518,7 +519,7 @@ const CronTester = () => {
         {/* Results Panel */}
         <div className="lg:col-span-2 space-y-6">
           {/* Description */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <Info className="w-5 h-5 text-green-600" />
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -535,7 +536,7 @@ const CronTester = () => {
           </div>
 
           {/* Next Executions */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <Calendar className="w-5 h-5 text-purple-600" />
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">

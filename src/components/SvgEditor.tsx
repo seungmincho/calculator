@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Copy,
   Check,
@@ -22,6 +22,7 @@ import {
   BarChart3,
   Replace,
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 
@@ -535,7 +536,7 @@ export default function SvgEditor() {
       {svgCode && activeTab === 'editor' && (
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Left: Code Editor */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className={`${glassCard} ${glassInset} overflow-hidden`}>
             <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-2">
                 <FileCode className="w-4 h-4 text-gray-500 dark:text-gray-400" />
@@ -595,7 +596,7 @@ export default function SvgEditor() {
           {/* Right: Preview + Stats */}
           <div className="space-y-4">
             {/* Preview */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+            <div className={`${glassCard} ${glassInset} overflow-hidden`}>
               <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-2">
                   <Eye className="w-4 h-4 text-gray-500 dark:text-gray-400" />
@@ -644,7 +645,7 @@ export default function SvgEditor() {
             </div>
 
             {/* Stats */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <div className="flex items-center gap-2 mb-3">
                 <BarChart3 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('statistics')}</span>
@@ -702,7 +703,7 @@ export default function SvgEditor() {
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Left: Options */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('optimizeOptions')}</h2>
               {(Object.keys(optOptions) as (keyof OptimizationOptions)[]).map((key) => (
                 <label key={key} className="flex items-center gap-3 cursor-pointer">
@@ -734,7 +735,7 @@ export default function SvgEditor() {
                     value={newWidth}
                     onChange={(e) => setNewWidth(e.target.value)}
                     placeholder="e.g. 200, 100%"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`${glassInput} px-3 py-2 text-sm`}
                   />
                 </div>
                 <div>
@@ -744,7 +745,7 @@ export default function SvgEditor() {
                     value={newHeight}
                     onChange={(e) => setNewHeight(e.target.value)}
                     placeholder="e.g. 200, 100%"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`${glassInput} px-3 py-2 text-sm`}
                   />
                 </div>
                 <div>
@@ -754,7 +755,7 @@ export default function SvgEditor() {
                     value={newViewBox}
                     onChange={(e) => setNewViewBox(e.target.value)}
                     placeholder="e.g. 0 0 100 100"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`${glassInput} px-3 py-2 text-sm`}
                   />
                 </div>
                 <button
@@ -774,7 +775,7 @@ export default function SvgEditor() {
             {optimizedCode ? (
               <>
                 {/* Before / After Sizes */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+                <div className={`${glassCard} ${glassInset} p-4`}>
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-xs text-gray-500 dark:text-gray-400">{t('stats.originalSize')}</div>
@@ -792,7 +793,7 @@ export default function SvgEditor() {
                 </div>
 
                 {/* Optimized Code */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <div className={`${glassCard} ${glassInset} overflow-hidden`}>
                   <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('optimizedCode')}</span>
                     <div className="flex items-center gap-2">
@@ -821,7 +822,7 @@ export default function SvgEditor() {
                 </div>
               </>
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+              <div className={`${glassCard} ${glassInset} p-12 text-center`}>
                 <Settings className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
                 <p className="text-gray-500 dark:text-gray-400">{t('optimizeHint')}</p>
               </div>
@@ -834,7 +835,7 @@ export default function SvgEditor() {
       {svgCode && activeTab === 'export' && (
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('exportSettings')}</h2>
 
               {/* Format */}
@@ -922,7 +923,7 @@ export default function SvgEditor() {
 
           {/* Preview */}
           <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+            <div className={`${glassCard} ${glassInset} overflow-hidden`}>
               <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('exportPreview')}</span>
                 {exportFormat !== 'svg' && (
@@ -950,7 +951,7 @@ export default function SvgEditor() {
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Left: Color Replace */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('colorReplace')}</h2>
 
               <div>
@@ -961,7 +962,7 @@ export default function SvgEditor() {
                     value={findColor}
                     onChange={(e) => setFindColor(e.target.value)}
                     placeholder="#ff0000"
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`${glassInput} flex-1 px-3 py-2 text-sm`}
                   />
                   <input
                     type="color"
@@ -980,7 +981,7 @@ export default function SvgEditor() {
                     value={replaceColor}
                     onChange={(e) => setReplaceColor(e.target.value)}
                     placeholder="#00ff00"
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`${glassInput} flex-1 px-3 py-2 text-sm`}
                   />
                   <input
                     type="color"
@@ -1004,7 +1005,7 @@ export default function SvgEditor() {
 
           {/* Right: Detected Colors */}
           <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('detectedColors')}</h2>
               {colors.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -1036,7 +1037,7 @@ export default function SvgEditor() {
       )}
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

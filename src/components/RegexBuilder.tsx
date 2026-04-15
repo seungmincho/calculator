@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Flag = 'g' | 'i' | 'm' | 's' | 'u'
 
@@ -302,7 +303,7 @@ export default function RegexBuilder() {
       </div>
 
       {/* Pattern input + flags */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <div className="flex flex-col sm:flex-row gap-3 items-start">
           <div className="flex-1 min-w-0">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('pattern')}</label>
@@ -357,7 +358,7 @@ export default function RegexBuilder() {
 
       {/* Test area + results */}
       <div className="grid lg:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
           <h2 className="font-semibold text-gray-900 dark:text-white">{t('testText')}</h2>
           <textarea
             value={testText}
@@ -404,7 +405,7 @@ export default function RegexBuilder() {
         </div>
 
         {/* Match results table */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="font-semibold text-gray-900 dark:text-white mb-4">{t('matches')}</h2>
           {matches.length === 0 ? (
             <div className="text-sm text-gray-400 dark:text-gray-500 text-center py-12">{t('noMatch')}</div>
@@ -440,7 +441,7 @@ export default function RegexBuilder() {
       </div>
 
       {/* Common patterns */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="font-semibold text-gray-900 dark:text-white mb-4">{t('commonPatterns')}</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {COMMON_PATTERNS.map(({ labelKey, pattern: p }) => (

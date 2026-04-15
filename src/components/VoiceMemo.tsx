@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset } from '@/lib/glass'
 import {
   Mic,
   MicOff,
@@ -454,7 +455,7 @@ export default function VoiceMemo() {
       </div>
 
       {/* Recording controls */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8">
+      <div className={`${glassCard} ${glassInset} p-6 sm:p-8`}>
         {/* Waveform canvas */}
         {recordingState !== 'idle' && (
           <div className="mb-6">
@@ -550,7 +551,7 @@ export default function VoiceMemo() {
       </div>
 
       {/* Recordings list */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {t('recordingName')} ({recordings.length})
         </h2>
@@ -705,7 +706,7 @@ export default function VoiceMemo() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect, DragEvent, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Download, Upload, Languages, BookOpen, RotateCcw, RotateCw, FileText } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface WordWithConfidence {
   text: string
@@ -292,7 +293,7 @@ export default function ImageOcr() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* Upload Area */}
             <div>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
@@ -421,7 +422,7 @@ export default function ImageOcr() {
 
         {/* Results Panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* Results Header */}
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -516,7 +517,7 @@ export default function ImageOcr() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

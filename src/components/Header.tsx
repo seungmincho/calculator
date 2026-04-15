@@ -6,7 +6,7 @@ import { Calculator, Menu, X, ChevronDown, Clock, Grid3X3, Search } from 'lucide
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
 import SearchDialog from './SearchDialog';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/lib/i18n';
 import { menuConfig, categoryKeys, CategoryKey } from '@/config/menuConfig';
 import { getRecentToolsByCategory, recordToolUsage } from '@/utils/recentTools';
 

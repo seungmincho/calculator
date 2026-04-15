@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Palette, RefreshCw } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface ColorValues {
   hex: string
@@ -201,7 +202,7 @@ export default function ColorConverter() {
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Color Preview & Picker */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {t('preview.title')}
@@ -256,7 +257,7 @@ export default function ColorConverter() {
         </div>
 
         {/* Color Values */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {t('values.title')}
@@ -350,7 +351,7 @@ export default function ColorConverter() {
       {colorValues && (
         <div className="mt-6 grid md:grid-cols-2 gap-6">
           {/* RGB Sliders */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">RGB</h3>
             <div className="space-y-4">
               {(['r', 'g', 'b'] as const).map((c) => (
@@ -375,7 +376,7 @@ export default function ColorConverter() {
           </div>
 
           {/* HSL Sliders */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">HSL</h3>
             <div className="space-y-4">
               <div className="flex items-center gap-4">
@@ -427,7 +428,7 @@ export default function ColorConverter() {
       )}
 
       {/* Guide */}
-      <div className="mt-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+      <div className={`mt-6 ${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {t('guide.title')}
         </h2>

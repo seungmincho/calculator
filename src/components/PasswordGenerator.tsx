@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Copy,
   Check,
@@ -17,6 +17,7 @@ import {
   AlertCircle,
 } from 'lucide-react'
 import { WORD_LIST } from '@/utils/wordlist'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 
@@ -396,7 +397,7 @@ export default function PasswordGenerator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center space-x-2">
               <Settings className="w-5 h-5 text-blue-600" />
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -501,7 +502,7 @@ export default function PasswordGenerator() {
                         setPasswordSettings((prev) => ({ ...prev, customSpecialChars: e.target.value }))
                       }
                       placeholder={t('settings.customSpecialCharsPlaceholder')}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                      className={`w-full px-3 py-2 ${glassInput} focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm`}
                     />
                   </div>
                 )}
@@ -542,7 +543,7 @@ export default function PasswordGenerator() {
                         count: Math.max(1, Math.min(10, parseInt(e.target.value) || 1)),
                       }))
                     }
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
               </>
@@ -579,7 +580,7 @@ export default function PasswordGenerator() {
                     onChange={(e) =>
                       setPassphraseSettings((prev) => ({ ...prev, separator: e.target.value as SeparatorType }))
                     }
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   >
                     <option value="hyphen">{t('settings.separators.hyphen')}</option>
                     <option value="space">{t('settings.separators.space')}</option>
@@ -619,7 +620,7 @@ export default function PasswordGenerator() {
                         count: Math.max(1, Math.min(10, parseInt(e.target.value) || 1)),
                       }))
                     }
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
               </>
@@ -646,7 +647,7 @@ export default function PasswordGenerator() {
 
         {/* Results Panel */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             {/* Results Header */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-2">
@@ -736,7 +737,7 @@ export default function PasswordGenerator() {
           </div>
 
           {/* History Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className={`${glassCard} ${glassInset} overflow-hidden`}>
             <button
               onClick={() => setShowHistory((prev) => !prev)}
               className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
@@ -814,7 +815,7 @@ export default function PasswordGenerator() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center space-x-2 mb-6">
           <Info className="w-5 h-5 text-orange-600" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">

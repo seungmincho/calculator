@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Trash2, Upload, Hash, RefreshCw } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface HashResult {
   algorithm: string
@@ -129,7 +130,7 @@ export default function HashGenerator() {
       </div>
 
       {/* Input Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+      <div className={`${glassCard} ${glassInset} overflow-hidden mb-6`}>
         <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {t('input.label')}
@@ -190,7 +191,7 @@ export default function HashGenerator() {
 
       {/* Results */}
       {results.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+        <div className={`${glassCard} ${glassInset} overflow-hidden mb-6`}>
           <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {t('results.title')}
@@ -230,7 +231,7 @@ export default function HashGenerator() {
       )}
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {t('guide.title')}
         </h2>

@@ -95,7 +95,7 @@ export default async function TipDetailPage({
   }
 
   return (
-    <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
+    <Suspense fallback={null}>
       <TipDetailClient tipId={resolvedParams.id} />
     </Suspense>
   );

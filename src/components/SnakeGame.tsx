@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Trophy, RotateCcw, Pause, Play, Gamepad2, BookOpen, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import { useGameAchievements } from '@/hooks/useGameAchievements'

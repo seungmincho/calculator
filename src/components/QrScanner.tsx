@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Camera, Image as ImageIcon, Copy, Check, ExternalLink, Trash2, ScanLine, BookOpen, QrCode } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // Type declaration for BarcodeDetector API
 declare class BarcodeDetector {
@@ -375,7 +376,7 @@ export default function QrScanner() {
       </div>
 
       {/* Scanner Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         {activeTab === 'camera' ? (
           <div className="space-y-4">
             {/* Camera Preview */}
@@ -476,7 +477,7 @@ export default function QrScanner() {
 
       {/* Scan Result */}
       {scanResult !== null && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             {t('result')}
           </h2>
@@ -560,7 +561,7 @@ export default function QrScanner() {
 
       {/* History */}
       {history.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               {t('history')}
@@ -612,7 +613,7 @@ export default function QrScanner() {
       )}
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
           <BookOpen className="w-5 h-5 mr-2" />
           {t('guide.title')}

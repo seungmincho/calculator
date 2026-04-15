@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { Globe, Plus, X, Clock, BookOpen, Sun, Moon, Link, Check, Users } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface City {
   id: string
@@ -372,7 +373,7 @@ export default function WorldClock() {
       </div>
 
       {/* Add City */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <Plus className="w-5 h-5" />
           {t('addCity')}
@@ -381,7 +382,7 @@ export default function WorldClock() {
           <select
             value={selectedCityToAdd}
             onChange={(e) => setSelectedCityToAdd(e.target.value)}
-            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
           >
             <option value="">{t('selectCity')}</option>
             {availableCities.map(city => (
@@ -426,7 +427,7 @@ export default function WorldClock() {
           return (
             <div
               key={city.id}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 relative"
+              className={`${glassCard} ${glassInset} p-6 relative`}
             >
               {/* Remove Button */}
               <button
@@ -485,7 +486,7 @@ export default function WorldClock() {
       </div>
 
       {/* Meeting Planner */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setShowMeetingPlanner(v => !v)}
           className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -514,7 +515,7 @@ export default function WorldClock() {
                 <select
                   value={meetingStart}
                   onChange={e => setMeetingStart(Number(e.target.value))}
-                  className="px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500"
+                  className={`px-2 py-1.5 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500`}
                 >
                   {Array.from({ length: 24 }, (_, i) => (
                     <option key={i} value={i}>{String(i).padStart(2, '0')}:00</option>
@@ -528,7 +529,7 @@ export default function WorldClock() {
                 <select
                   value={meetingEnd}
                   onChange={e => setMeetingEnd(Number(e.target.value))}
-                  className="px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500"
+                  className={`px-2 py-1.5 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500`}
                 >
                   {Array.from({ length: 24 }, (_, i) => (
                     <option key={i} value={i + 1}>{String(i + 1).padStart(2, '0')}:00</option>
@@ -628,7 +629,7 @@ export default function WorldClock() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

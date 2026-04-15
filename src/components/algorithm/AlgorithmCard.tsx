@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import Link from 'next/link'
 import { type AlgorithmInfo, categoryColors, categoryLabels, difficultyLabels } from '@/config/algorithmConfig'
 

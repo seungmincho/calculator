@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { BookOpen, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface GuideSectionProps {
   namespace: string
@@ -101,7 +102,7 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
   if (!hasContent) return null
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+    <div className={`${glassCard} ${glassInset} p-6`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between"

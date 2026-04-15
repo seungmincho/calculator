@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react'
 import { Copy, Check, Clock } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -368,7 +369,7 @@ function FieldSelector({ fieldKey, label, min, max, state, onChange }: FieldSele
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-3">
+    <div className={`${glassCard} ${glassInset} p-4 space-y-3`}>
       <div className="flex items-center justify-between">
         <span className="font-semibold text-gray-900 dark:text-white text-sm">{label}</span>
         <span className="text-xs font-mono bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded">
@@ -491,7 +492,7 @@ export default function CrontabGenerator() {
       </div>
 
       {/* Expression display */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="flex-1 font-mono text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 tracking-widest bg-blue-50 dark:bg-blue-950 rounded-lg px-4 py-3 break-all">
             {expression}
@@ -528,7 +529,7 @@ export default function CrontabGenerator() {
       {/* Bottom row: presets + next times */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Presets */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">프리셋</h2>
           <div className="grid grid-cols-2 gap-2">
             {PRESETS.map(p => (
@@ -549,7 +550,7 @@ export default function CrontabGenerator() {
         </div>
 
         {/* Next execution times */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <Clock className="w-4 h-4" />
             다음 5회 실행 시간

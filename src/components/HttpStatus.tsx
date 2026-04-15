@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Search, Copy, Check, ChevronDown, ChevronUp, BookOpen } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -572,7 +573,7 @@ export default function HttpStatus() {
             return (
               <div
                 key={status.code}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
+                className={`${glassCard} ${glassInset} overflow-hidden`}
               >
                 {/* Card header (always visible) */}
                 <div className="flex items-start gap-4 p-4">
@@ -686,7 +687,7 @@ export default function HttpStatus() {
       )}
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-8">
+      <div className={`${glassCard} ${glassInset} p-6 mt-8`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guideTitle')}

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Upload, Download, RefreshCw, Pipette, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface RGBColor {
   r: number
@@ -303,7 +304,7 @@ export default function BackgroundRemover() {
       {imageSrc && (
         <>
           {/* Controls bar */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-4 space-y-4`}>
             <div className="flex flex-wrap gap-3 items-center">
               {/* Pick color button */}
               <button
@@ -423,7 +424,7 @@ export default function BackgroundRemover() {
           {/* Canvas preview: side by side */}
           <div className="grid md:grid-cols-2 gap-4">
             {/* Original */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-2">
+            <div className={`${glassCard} ${glassInset} p-4 space-y-2`}>
               <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('original')}</h2>
               <div
                 className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-700 max-h-96"
@@ -447,7 +448,7 @@ export default function BackgroundRemover() {
             </div>
 
             {/* Result */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-2">
+            <div className={`${glassCard} ${glassInset} p-4 space-y-2`}>
               <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('result')}</h2>
               <div
                 className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-700 max-h-96 relative"
@@ -480,7 +481,7 @@ export default function BackgroundRemover() {
       )}
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <div className={`${glassCard} ${glassInset}`}>
         <button
           onClick={() => setShowGuide(prev => !prev)}
           className="w-full flex items-center justify-between p-6 text-left"

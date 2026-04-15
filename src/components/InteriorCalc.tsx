@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface Room {
   id: string
@@ -253,7 +254,7 @@ export default function InteriorCalc() {
         {/* Left: Material Settings */}
         <div className="lg:col-span-1 space-y-6">
           {/* Paint */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>🎨</span> {t('paintCalc')}
             </h2>
@@ -295,7 +296,7 @@ export default function InteriorCalc() {
           </div>
 
           {/* Wallpaper */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>📜</span> {t('wallpaperCalc')}
             </h2>
@@ -338,7 +339,7 @@ export default function InteriorCalc() {
           </div>
 
           {/* Tile */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>🟦</span> {t('tileCalc')}
             </h2>
@@ -401,7 +402,7 @@ export default function InteriorCalc() {
             const result = results.find((r) => r.id === room.id)
             const isExpanded = expandedRooms.has(room.id)
             return (
-              <div key={room.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+              <div key={room.id} className={`${glassCard} ${glassInset} overflow-hidden`}>
                 {/* Room header */}
                 <div
                   className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-750 select-none"
@@ -661,7 +662,7 @@ export default function InteriorCalc() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('guideTitle')}</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <div>

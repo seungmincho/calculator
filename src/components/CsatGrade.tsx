@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   GraduationCap,
   Copy,
@@ -13,6 +13,7 @@ import {
   Award,
   TrendingUp,
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 
@@ -374,7 +375,7 @@ export default function CsatGrade() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Input Section */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Award className="w-5 h-5 text-blue-600" />
               {t('subject')}
@@ -396,7 +397,7 @@ export default function CsatGrade() {
                 onChange={(e) =>
                   handleSubjectChange(e.target.value as SubjectKey)
                 }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-3 py-2`}
               >
                 {SUBJECTS.map((s) => (
                   <option key={s.key} value={s.key}>
@@ -421,7 +422,7 @@ export default function CsatGrade() {
                   if (e.key === 'Enter') handleCalculate()
                 }}
                 placeholder={`0 ~ ${subject.maxScore}`}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-3 py-2`}
               />
             </div>
 
@@ -481,7 +482,7 @@ export default function CsatGrade() {
           {result ? (
             <>
               {/* Grade result card */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-blue-600" />
                   {t('result')}
@@ -621,7 +622,7 @@ export default function CsatGrade() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <GraduationCap className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400">
                 {t('description')}
@@ -630,7 +631,7 @@ export default function CsatGrade() {
           )}
 
           {/* Grade cutoff table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+          <div className={`${glassCard} ${glassInset}`}>
             <button
               onClick={() => setShowTable(!showTable)}
               className="w-full flex items-center justify-between p-6 text-left"
@@ -737,7 +738,7 @@ export default function CsatGrade() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <div className={`${glassCard} ${glassInset}`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between p-6 text-left"

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { Play, Pause, RotateCcw, SkipForward, BookOpen, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -511,7 +512,7 @@ export default function TcpHandshakeVisualizer() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Canvas */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className={`${glassCard} ${glassInset} overflow-hidden`}>
             <canvas
               ref={canvasRef}
               className="w-full"
@@ -520,7 +521,7 @@ export default function TcpHandshakeVisualizer() {
           </div>
 
           {/* Controls */}
-          <div className="mt-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`mt-4 ${glassCard} ${glassInset} p-4`}>
             <div className="flex flex-wrap items-center gap-3">
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
@@ -578,7 +579,7 @@ export default function TcpHandshakeVisualizer() {
         {/* Side Panel */}
         <div className="lg:col-span-1 space-y-4">
           {/* Current Step Description */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className={`${glassCard} ${glassInset} p-5`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
               현재 단계
             </h3>
@@ -617,7 +618,7 @@ export default function TcpHandshakeVisualizer() {
           </div>
 
           {/* Packet Legend */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className={`${glassCard} ${glassInset} p-5`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
               패킷 유형
             </h3>
@@ -635,7 +636,7 @@ export default function TcpHandshakeVisualizer() {
           </div>
 
           {/* State Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className={`${glassCard} ${glassInset} p-5`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
               연결 상태 표
             </h3>
@@ -667,7 +668,7 @@ export default function TcpHandshakeVisualizer() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setGuideOpen(!guideOpen)}
           className="w-full flex items-center justify-between text-left"

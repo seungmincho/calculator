@@ -3,9 +3,10 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Calculator, BarChart3, CompassIcon, Share2, Check, Save } from 'lucide-react';
+import { glassCard, glassInset } from '@/lib/glass';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/lib/i18n';
 import GuideSection from '@/components/GuideSection';
 
 type LoanType = 'equal-payment' | 'equal-principal' | 'interest-only' | 'balloon';
@@ -454,7 +455,7 @@ const LoanCalculatorContent = () => {
       {activeTab === 'calculator' && (
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Input Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+          <div className={`${glassCard} ${glassInset} p-8`}>
             <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">대출 정보 입력</h2>
             
             <div className="space-y-6">
@@ -531,7 +532,7 @@ const LoanCalculatorContent = () => {
           <div className="lg:col-span-2 space-y-6">
             {results.length > 0 ? (
               results.map((result) => (
-                <div key={result.type} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+                <div key={result.type} className={`${glassCard} ${glassInset} p-8`}>
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                       {loanTypes[result.type]}
@@ -624,7 +625,7 @@ const LoanCalculatorContent = () => {
                 </div>
               ))
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+              <div className={`${glassCard} ${glassInset} p-8`}>
                 <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500">
                   <Calculator className="w-16 h-16 mb-4" />
                   <p>대출 정보와 상환 방식을 선택하시면 계산 결과가 나타납니다</p>
@@ -640,7 +641,7 @@ const LoanCalculatorContent = () => {
           {results.length > 1 ? (
             <>
               {/* 비교 차트 */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+              <div className={`${glassCard} ${glassInset} p-8`}>
                 <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white flex items-center">
                   <BarChart3 className="w-6 h-6 mr-2" />
                   상환 방식 비교
@@ -698,7 +699,7 @@ const LoanCalculatorContent = () => {
               </div>
 
               {/* 추천 */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+              <div className={`${glassCard} ${glassInset} p-8`}>
                 <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">💡 추천</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
@@ -721,7 +722,7 @@ const LoanCalculatorContent = () => {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <div className={`${glassCard} ${glassInset} p-8`}>
               <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500">
                 <CompassIcon className="w-16 h-16 mb-4" />
                 <p>2개 이상의 상환 방식을 선택하시면 비교 분석을 제공합니다</p>

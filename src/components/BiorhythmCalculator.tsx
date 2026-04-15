@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Calendar, Heart, Brain, Dumbbell, Users, ChevronLeft, ChevronRight, BookOpen, AlertTriangle, Info } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer, ReferenceLine
@@ -306,7 +307,7 @@ export default function BiorhythmCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Input Panel */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Calendar className="w-5 h-5 text-blue-600" />
               {t('inputTitle')}
@@ -321,7 +322,7 @@ export default function BiorhythmCalculator() {
                 type="date"
                 value={birthDate}
                 onChange={e => setBirthDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 max={targetDate}
               />
             </div>
@@ -335,7 +336,7 @@ export default function BiorhythmCalculator() {
                 type="date"
                 value={targetDate}
                 onChange={e => setTargetDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
             </div>
 
@@ -347,7 +348,7 @@ export default function BiorhythmCalculator() {
               <select
                 value={period}
                 onChange={e => setPeriod(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 {periodOptions.map(p => (
                   <option key={p} value={p}>{t('periodDays', { days: p })}</option>
@@ -366,7 +367,7 @@ export default function BiorhythmCalculator() {
           </div>
 
           {/* Compatibility toggle */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <Users className="w-5 h-5 text-purple-600" />
@@ -389,7 +390,7 @@ export default function BiorhythmCalculator() {
                   type="date"
                   value={birthDate2}
                   onChange={e => setBirthDate2(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   max={targetDate}
                 />
               </div>
@@ -400,14 +401,14 @@ export default function BiorhythmCalculator() {
         {/* Results Panel */}
         <div className="lg:col-span-2 space-y-6">
           {!birth ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calendar className="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
               <p className="text-gray-500 dark:text-gray-400">{t('emptyState')}</p>
             </div>
           ) : (
             <>
               {/* Today's Biorhythm Card */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+              <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('todayTitle')}</h2>
                   <div className="text-right">
@@ -422,7 +423,7 @@ export default function BiorhythmCalculator() {
               </div>
 
               {/* Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('chartTitle')}</h2>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
@@ -460,7 +461,7 @@ export default function BiorhythmCalculator() {
 
               {/* Compatibility Scores */}
               {showCompatibility && compatibility && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                     <Users className="w-5 h-5 text-purple-600" />
                     {t('compatibility.resultTitle')}
@@ -484,7 +485,7 @@ export default function BiorhythmCalculator() {
               )}
 
               {/* Calendar View */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('calendarTitle')}</h2>
                   <div className="flex items-center gap-2">
@@ -548,7 +549,7 @@ export default function BiorhythmCalculator() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

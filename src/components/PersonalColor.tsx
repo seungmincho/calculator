@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Palette,
   Copy,
@@ -492,7 +493,7 @@ export default function PersonalColor() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8">
+        <div className={`${glassCard} ${glassInset} p-6 sm:p-8`}>
           {/* Progress bar */}
           <div className="mb-8">
             <div className="flex justify-between items-center mb-2">
@@ -615,7 +616,7 @@ export default function PersonalColor() {
         </div>
 
         {/* Score Breakdown */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             {t('resultTitle')}
           </h3>
@@ -660,7 +661,7 @@ export default function PersonalColor() {
         {/* Best & Worst Colors */}
         <div className="grid sm:grid-cols-2 gap-6">
           {/* Best Colors */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-yellow-500" />
               {t('bestColors')}
@@ -681,7 +682,7 @@ export default function PersonalColor() {
           </div>
 
           {/* Worst Colors */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('worstColors')}
             </h3>
@@ -710,7 +711,7 @@ export default function PersonalColor() {
 
         {/* Celebrity & Fashion Tips */}
         <div className="grid sm:grid-cols-2 gap-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
               {t('celebrities')}
             </h3>
@@ -718,7 +719,7 @@ export default function PersonalColor() {
               {t(`types.${result}.celebrities`)}
             </p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
               {t('fashionTips')}
             </h3>
@@ -795,7 +796,7 @@ function GuideSection({
   const tipsItems = t.raw('guide.tips.items') as string[]
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+    <div className={`${glassCard} ${glassInset} overflow-hidden`}>
       <button
         onClick={() => setGuideOpen(!guideOpen)}
         className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"

@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import { Calendar, Sun, BookOpen, Clock, Copy, Check, Share2, AlertTriangle, ChevronDown } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type CalcBasis = 'joinDate' | 'fiscalYear'
 
@@ -316,7 +317,7 @@ export default function AnnualLeave() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-4">
               <Calendar className="w-5 h-5" />
               <h2 className="text-lg font-semibold">{t('title')}</h2>
@@ -364,7 +365,7 @@ export default function AnnualLeave() {
                 value={joinDate}
                 onChange={(e) => setJoinDate(e.target.value)}
                 max={today.toISOString().split('T')[0]}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
             </div>
 
@@ -379,7 +380,7 @@ export default function AnnualLeave() {
                 onChange={(e) => setUsedLeaves(Math.max(0, parseInt(e.target.value) || 0))}
                 min="0"
                 placeholder={t('usedLeavesPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
             </div>
 
@@ -395,7 +396,7 @@ export default function AnnualLeave() {
                   onChange={(e) => setDailyWage(Math.max(0, parseInt(e.target.value) || 0))}
                   min="0"
                   placeholder={t('dailyWagePlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
               </div>
@@ -419,7 +420,7 @@ export default function AnnualLeave() {
           {calculateLeave ? (
             <>
               {/* Main Results */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-6">
                   <Sun className="w-5 h-5" />
                   <h2 className="text-lg font-semibold">{t('result.title')}</h2>
@@ -500,7 +501,7 @@ export default function AnnualLeave() {
 
               {/* Timeline Visualization */}
               {timelineData && timelineData.workedYears >= 0.5 && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-4">
                     <Clock className="w-5 h-5" />
                     <h2 className="text-lg font-semibold">{t('timeline.title')}</h2>
@@ -552,7 +553,7 @@ export default function AnnualLeave() {
               )}
 
               {/* Breakdown Table */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-4">
                   <Clock className="w-5 h-5" />
                   <h2 className="text-lg font-semibold">{t('breakdown.title')}</h2>
@@ -596,7 +597,7 @@ export default function AnnualLeave() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Sun className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400">{t('description')}</p>
             </div>
@@ -605,7 +606,7 @@ export default function AnnualLeave() {
       </div>
 
       {/* Leave Promotion Notice */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setPromotionOpen(!promotionOpen)}
           className="w-full flex items-center justify-between text-left"
@@ -640,7 +641,7 @@ export default function AnnualLeave() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-6">
           <BookOpen className="w-5 h-5" />
           <h2 className="text-xl font-semibold">{t('guide.title')}</h2>

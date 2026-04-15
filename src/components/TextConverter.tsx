@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Trash2, Type, ArrowRight } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 type ConversionType =
   | 'uppercase'
@@ -177,7 +178,7 @@ export default function TextConverter() {
       </div>
 
       {/* Conversion Options */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+      <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6 mb-6`}>
         {categories.map((category) => (
           <div key={category} className="mb-4 last:mb-0">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
@@ -205,7 +206,7 @@ export default function TextConverter() {
       {/* Input/Output */}
       <div className="grid md:grid-cols-2 gap-4 mb-6">
         {/* Input */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 overflow-hidden`}>
           <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {t('input.label')}
@@ -229,7 +230,7 @@ export default function TextConverter() {
         </div>
 
         {/* Output */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 overflow-hidden`}>
           <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -260,7 +261,7 @@ export default function TextConverter() {
 
       {/* Quick Examples */}
       {input && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6 mb-6`}>
           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
             {t('preview.title')}
           </h3>
@@ -286,7 +287,7 @@ export default function TextConverter() {
       )}
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+      <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {t('guide.title')}
         </h2>

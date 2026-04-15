@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Terminal, ChevronDown, BookOpen, Zap } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Command data (hardcoded) ─────────────────────────────────────────────────
 
@@ -498,7 +499,7 @@ export default function LinuxCommand() {
       </div>
 
       {/* Command Selector */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 border border-gray-200 dark:border-gray-700">
+      <div className={`${glassCard} ${glassInset} p-5`}>
         <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('selectCommand')}</h2>
         <div className="flex flex-wrap gap-2">
           {(['file', 'text', 'system'] as const).map(cat => (

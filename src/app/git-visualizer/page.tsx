@@ -101,7 +101,7 @@ export default function GitVisualizerPage() {
 
           <Suspense
             fallback={
-              <div className="text-center py-20 text-gray-400">Loading...</div>
+              <div />
             }
           >
             <I18nWrapper>

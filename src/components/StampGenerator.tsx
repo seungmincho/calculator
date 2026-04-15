@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Download, Copy, Check, RotateCcw } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type StampShape = 'circle' | 'square' | 'oval'
 type StampStyle = 'traditional' | 'modern-blue' | 'black' | 'custom'
@@ -225,7 +226,7 @@ export default function StampGenerator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
 
             {/* Name Input */}
             <div>
@@ -238,7 +239,7 @@ export default function StampGenerator() {
                 onChange={e => update('text', e.target.value.slice(0, 4))}
                 placeholder={t('placeholderText')}
                 maxLength={4}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`${glassInput} px-3 py-2`}
               />
               <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{config.text.length}/4</p>
             </div>
@@ -400,7 +401,7 @@ export default function StampGenerator() {
 
         {/* Preview & Download Panel */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('previewTitle')}</h2>
 
             {/* Canvas Preview */}
@@ -474,7 +475,7 @@ export default function StampGenerator() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('guideTitle')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>

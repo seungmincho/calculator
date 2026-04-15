@@ -1,6 +1,6 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { type AABB, testAABB, testAABBStep, type AABBResult } from '@/utils/algorithm/aabb'
 import AABBCanvas2D from './AABBCanvas2D'
 import VisualizerControls from '../VisualizerControls'

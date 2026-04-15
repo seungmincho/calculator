@@ -26,8 +26,9 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Cpu, Monitor, HardDrive, Zap, Calculator, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type LoadType = 'gaming' | 'normal' | 'idle' | 'custom'
 type TariffType = 'progressive' | 'custom'
@@ -218,7 +219,7 @@ export default function PcElectricityCalculator() {
         {/* Left: Inputs */}
         <div className="lg:col-span-2 space-y-6">
           {/* Components */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Cpu className="w-5 h-5 text-blue-500" />
               {t('components.cpu')}
@@ -390,7 +391,7 @@ export default function PcElectricityCalculator() {
           </div>
 
           {/* Usage Pattern */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Calculator className="w-5 h-5 text-green-500" />
               {t('usage.title')}
@@ -507,7 +508,7 @@ export default function PcElectricityCalculator() {
         {/* Right: Results */}
         <div className="lg:col-span-1 space-y-6">
           {/* Result cards */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Zap className="w-5 h-5 text-yellow-500" />
               {t('result.title')}
@@ -537,7 +538,7 @@ export default function PcElectricityCalculator() {
           </div>
 
           {/* Component ratio bar */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <HardDrive className="w-4 h-4 text-purple-500" />
               {t('ratio.title')}
@@ -574,7 +575,7 @@ export default function PcElectricityCalculator() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}

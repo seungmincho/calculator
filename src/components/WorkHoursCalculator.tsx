@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { Clock, Calculator, DollarSign, Users, Share2, Check, Save, Zap, TrendingUp, Shield, CalendarRange, CalendarDays, RefreshCw, Info } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import CustomDatePicker from './CustomDatePicker'
 import CustomTimePicker from './CustomTimePicker'
 

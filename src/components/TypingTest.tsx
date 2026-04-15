@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Keyboard, Play, RotateCcw, Square, Trophy, Clock, BookOpen, Trash2 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Language = 'korean' | 'english'
 type Difficulty = 'easy' | 'medium' | 'hard'
@@ -294,7 +295,7 @@ export default function TypingTest() {
       </div>
 
       {/* Settings Bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="space-y-4">
           {/* Language Selection */}
           <div>
@@ -418,7 +419,7 @@ export default function TypingTest() {
       </div>
 
       {/* Typing Area */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         {/* Timer and Live Stats */}
         <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-6">
@@ -476,7 +477,7 @@ export default function TypingTest() {
             onChange={handleInputChange}
             disabled={!isRunning}
             placeholder={isRunning ? "텍스트를 입력하세요" : "시작 버튼을 눌러주세요"}
-            className="w-full h-32 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            className={`w-full h-32 px-4 py-3 ${glassInput} font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
             spellCheck={false}
             autoComplete="off"
             autoCorrect="off"
@@ -487,7 +488,7 @@ export default function TypingTest() {
 
       {/* Results Modal */}
       {showResults && results && (
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 rounded-xl shadow-lg p-8 border-2 border-blue-300 dark:border-blue-700">
+        <div className="relative rounded-xl shadow-lg p-8 border-2 border-blue-300 dark:border-blue-700">
           <div className="text-center mb-6">
             <Trophy className="w-16 h-16 mx-auto mb-4 text-yellow-500" />
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -535,7 +536,7 @@ export default function TypingTest() {
 
       {/* History Section */}
       {history.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               {t('history')}
@@ -628,7 +629,7 @@ export default function TypingTest() {
       )}
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

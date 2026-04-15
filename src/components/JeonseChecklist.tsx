@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Shield,
   AlertTriangle,
@@ -20,6 +20,7 @@ import {
   MinusCircle,
 } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -327,7 +328,7 @@ function CategorySection({ category, states, onChange, t }: CategorySectionProps
   }
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 border-l-4 ${catBg[category.key] ?? 'border-l-blue-500'}`}>
+    <div className={`${glassCard} ${glassInset} border-l-4 ${catBg[category.key] ?? 'border-l-blue-500'}`}>
       <button
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center justify-between p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset rounded-xl"
@@ -507,7 +508,7 @@ export default function JeonseChecklist() {
       </div>
 
       {/* Property Info */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('propertyInfo')}</h2>
         <div className="grid sm:grid-cols-3 gap-4">
           <div className="sm:col-span-1">
@@ -552,7 +553,7 @@ export default function JeonseChecklist() {
       </div>
 
       {/* Risk Score Dashboard */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('riskScoreTitle')}</h2>
         <ScoreGauge
           score={score}

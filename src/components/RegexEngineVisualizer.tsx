@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { Play, Pause, SkipForward, RotateCcw, Copy, Check, ChevronDown, ChevronUp, Zap, BookOpen, Code } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 
@@ -478,7 +479,7 @@ export default function RegexEngineVisualizer() {
       </div>
 
       {/* Input Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         {/* Pattern input */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -545,7 +546,7 @@ export default function RegexEngineVisualizer() {
             value={testStr}
             onChange={(e) => { setTestStr(e.target.value); setCurrentStep(-1); setIsPlaying(false) }}
             rows={3}
-            className="w-full px-3 py-2.5 font-mono text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none resize-y"
+            className={`w-full px-3 py-2.5 font-mono text-sm ${glassInput} focus:ring-2 focus:ring-orange-500 focus:outline-none resize-y`}
             placeholder="매칭할 텍스트를 입력하세요..."
             spellCheck={false}
           />
@@ -610,7 +611,7 @@ export default function RegexEngineVisualizer() {
         {/* Left: Token breakdown + String visualization */}
         <div className="lg:col-span-2 space-y-6">
           {/* Pattern Token Breakdown */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Code size={18} /> 패턴 토큰 분석
             </h2>
@@ -656,7 +657,7 @@ export default function RegexEngineVisualizer() {
           </div>
 
           {/* String Visualization */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Zap size={18} /> 문자열 매칭 시각화
             </h2>
@@ -711,7 +712,7 @@ export default function RegexEngineVisualizer() {
         {/* Right: Match Results */}
         <div className="space-y-6">
           {/* Match results */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               매칭 결과
             </h2>
@@ -756,7 +757,7 @@ export default function RegexEngineVisualizer() {
           </div>
 
           {/* Quick regex snippet */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">JavaScript 코드</h2>
             <div className="relative">
               <pre className="bg-gray-900 dark:bg-gray-950 text-gray-100 rounded-lg p-3 text-xs font-mono overflow-x-auto">
@@ -778,7 +779,7 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setGuideOpen(!guideOpen)}
           className="w-full flex items-center justify-between px-6 py-4 text-left"

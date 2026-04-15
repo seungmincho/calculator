@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { RotateCcw } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type AnswerKey = 'strongYes' | 'yes' | 'leanYes' | 'maybe' | 'leanNo' | 'no' | 'strongNo'
 
@@ -100,7 +101,7 @@ export default function YesNoDecider() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="font-semibold text-gray-900 dark:text-white">{t('settings')}</h2>
 
             {/* Mode toggle */}
@@ -166,7 +167,7 @@ export default function YesNoDecider() {
 
         {/* Orb + Question input */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             {/* Question input */}
             <div className="flex gap-3 mb-8">
               <input
@@ -175,7 +176,7 @@ export default function YesNoDecider() {
                 onChange={e => setQuestion(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={t('placeholder')}
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
               />
               <button
                 onClick={askQuestion}
@@ -227,7 +228,7 @@ export default function YesNoDecider() {
 
           {/* History */}
           {history.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold text-gray-900 dark:text-white">{t('historyTitle')}</h2>
                 <button

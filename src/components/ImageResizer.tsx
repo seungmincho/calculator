@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import { glassCard, glassInset } from '@/lib/glass';
 
 import React, { useState, useRef, useCallback } from 'react';
 import { Upload, Download, RotateCcw, Maximize, Image as ImageIcon, Info, Settings, X } from 'lucide-react';
@@ -235,7 +237,7 @@ const ImageResizer = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Upload Section */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
                 <Upload className="w-5 h-5 inline mr-2" />
                 이미지 업로드
@@ -297,7 +299,7 @@ const ImageResizer = () => {
 
             {/* Presets */}
             {originalImage && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 mt-6">
+              <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
                 <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
                   <Settings className="w-5 h-5 inline mr-2" />
                   사전 설정
@@ -325,7 +327,7 @@ const ImageResizer = () => {
           {/* Settings Section */}
           <div className="lg:col-span-1">
             {originalImage && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
                   리사이즈 설정
                 </h2>
@@ -443,7 +445,7 @@ const ImageResizer = () => {
           {/* Result Section */}
           <div className="lg:col-span-1">
             {resizedImageUrl && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
                   결과 미리보기
                 </h2>
@@ -480,7 +482,7 @@ const ImageResizer = () => {
         </div>
 
         {/* Info Section */}
-        <div className="mt-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">이미지 리사이저 사용법</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">

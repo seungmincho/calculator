@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { ChevronLeft, ChevronRight, Share2, Copy, Check, Download, ExternalLink, RotateCcw } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 import { testQuestions, calculateResult, mbtiProfiles, type MbtiType, type TestResult } from '@/data/mbtiData'
 
 type Screen = 'intro' | 'test' | 'result'
@@ -253,7 +254,7 @@ export default function MbtiTest() {
         </div>
 
         {/* Guide sections */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>
 
           <div className="grid sm:grid-cols-3 gap-5">
@@ -320,7 +321,7 @@ export default function MbtiTest() {
     return (
       <div className="space-y-5">
         {/* Progress header */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+        <div className={`${glassCard} ${glassInset} p-5`}>
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
               {t('question')} {currentQ + 1}{t('of')}{totalQuestions}
@@ -345,7 +346,7 @@ export default function MbtiTest() {
 
         {/* Question card */}
         <div
-          className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8 transition-all duration-180 ${
+          className={`${glassCard} ${glassInset} p-6 sm:p-8 transition-all duration-180 ${
             isAnimating
               ? animDir === 'forward'
                 ? 'opacity-0 translate-x-4'
@@ -447,7 +448,7 @@ export default function MbtiTest() {
         </div>
 
         {/* Question dots preview */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+        <div className={`${glassCard} ${glassInset} p-4`}>
           <div className="flex flex-wrap gap-1.5 justify-center">
             {testQuestions.map((q, i) => (
               <button
@@ -505,7 +506,7 @@ export default function MbtiTest() {
         </div>
 
         {/* Axis distribution */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">{t('typeDistribution')}</h2>
           <div className="space-y-4">
             {axes.map(({ axis, left, right, leftPct, rightPct, dominant }) => (
@@ -537,7 +538,7 @@ export default function MbtiTest() {
         </div>
 
         {/* Traits, strengths, weaknesses */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
           {/* Traits */}
           <div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('personality')}</h2>
@@ -583,18 +584,18 @@ export default function MbtiTest() {
 
         {/* Communication & love style */}
         <div className="grid sm:grid-cols-2 gap-5">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">{t('communicationStyle')}</h2>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{profile.communicationStyle}</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">{t('loveStyle')}</h2>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{profile.loveStyle}</p>
           </div>
         </div>
 
         {/* Careers */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('careers')}</h2>
           <div className="flex flex-wrap gap-2">
             {profile.careers.map(career => (
@@ -609,7 +610,7 @@ export default function MbtiTest() {
         </div>
 
         {/* Famous people */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('famousPeople')}</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
@@ -636,7 +637,7 @@ export default function MbtiTest() {
         </div>
 
         {/* Share section */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('shareResult')}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {/* Copy link */}

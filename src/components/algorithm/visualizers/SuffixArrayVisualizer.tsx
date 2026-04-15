@@ -1,6 +1,6 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { buildSuffixArray, SUFFIX_ARRAY_PRESETS, type SuffixArrayStep } from '@/utils/algorithm/suffixArray'
 import SuffixArrayCanvas2D from './SuffixArrayCanvas2D'
 import VisualizerControls from '../VisualizerControls'

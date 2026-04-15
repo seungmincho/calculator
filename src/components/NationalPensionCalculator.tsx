@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Copy, Check, Link, RotateCcw, BookOpen, ChevronDown, ChevronUp, Calculator, TrendingUp, Clock, AlertTriangle } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Constants ──
 const A_VALUE = 2_861_091 // 2024년 전체 가입자 평균소득월액
@@ -265,7 +266,7 @@ export default function NationalPensionCalculator() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* ── Left: Input Panel ── */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* 출생연도 */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -274,7 +275,7 @@ export default function NationalPensionCalculator() {
               <select
                 value={birthYear}
                 onChange={(e) => setBirthYear(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 {birthYearOptions.map(y => (
                   <option key={y} value={y}>{y}{t('year')}</option>
@@ -295,7 +296,7 @@ export default function NationalPensionCalculator() {
                   value={contributionYears}
                   onChange={(e) => setContributionYears(Math.max(1, Math.min(40, Number(e.target.value) || 1)))}
                   onKeyDown={handleKeyDown}
-                  className="w-full px-3 py-2 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm">
                   {t('yearUnit')}
@@ -324,7 +325,7 @@ export default function NationalPensionCalculator() {
                   }}
                   onKeyDown={handleKeyDown}
                   placeholder="3,000,000"
-                  className="w-full px-3 py-2 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm">
                   {t('won')}
@@ -374,7 +375,7 @@ export default function NationalPensionCalculator() {
         {/* ── Right: Result Panel ── */}
         <div className="lg:col-span-2 space-y-6">
           {!result && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <TrendingUp className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-400 dark:text-gray-500 text-lg">{t('enterToCalculate')}</p>
             </div>
@@ -385,7 +386,7 @@ export default function NationalPensionCalculator() {
               {/* 3가지 수령 방식 비교 카드 */}
               <div className="grid sm:grid-cols-3 gap-4">
                 {/* 조기수령 */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <div className={`${glassCard} ${glassInset} overflow-hidden`}>
                   <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3">
                     <div className="flex items-center gap-2 text-white">
                       <Clock className="w-5 h-5" />
@@ -419,7 +420,7 @@ export default function NationalPensionCalculator() {
                 </div>
 
                 {/* 정상수령 */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden ring-2 ring-blue-500">
+                <div className={`${glassCard} ${glassInset} overflow-hidden ring-2 ring-blue-500`}>
                   <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-3">
                     <div className="flex items-center gap-2 text-white">
                       <TrendingUp className="w-5 h-5" />
@@ -454,7 +455,7 @@ export default function NationalPensionCalculator() {
                 </div>
 
                 {/* 연기수령 */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <div className={`${glassCard} ${glassInset} overflow-hidden`}>
                   <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3">
                     <div className="flex items-center gap-2 text-white">
                       <TrendingUp className="w-5 h-5" />
@@ -489,7 +490,7 @@ export default function NationalPensionCalculator() {
               </div>
 
               {/* 총 수령액 비교 (BarChart) */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
                   {t('totalComparison')}
                 </h2>
@@ -524,7 +525,7 @@ export default function NationalPensionCalculator() {
               </div>
 
               {/* 누적 수령액 시뮬레이션 (LineChart) */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
                   {t('cumulativeChart')}
                 </h2>
@@ -585,7 +586,7 @@ export default function NationalPensionCalculator() {
               </div>
 
               {/* 계산 상세 정보 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                   {t('calculationDetails')}
                 </h2>
@@ -625,7 +626,7 @@ export default function NationalPensionCalculator() {
       </div>
 
       {/* ── Guide Section ── */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <div className={`${glassCard} ${glassInset}`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between p-6"
@@ -687,7 +688,7 @@ export default function NationalPensionCalculator() {
       </div>
 
       {/* ── FAQ Section ── */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <div className={`${glassCard} ${glassInset}`}>
         <button
           onClick={() => setShowFaq(!showFaq)}
           className="w-full flex items-center justify-between p-6"

@@ -2,8 +2,9 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Calendar, TrendingUp, Star, Info, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Branch = 'army' | 'marines' | 'navy' | 'airForce' | 'socialService' | 'conscriptedPolice' | 'industrialTechnician' | 'researchAgent' | 'katusa'
 
@@ -234,7 +235,7 @@ export default function MilitaryDischarge() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left: Input */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* Enlistment Date */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -244,7 +245,7 @@ export default function MilitaryDischarge() {
                 type="date"
                 value={enlistmentDate}
                 onChange={e => setEnlistmentDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className={`${glassInput} px-3 py-2`}
               />
             </div>
 
@@ -256,7 +257,7 @@ export default function MilitaryDischarge() {
               <select
                 value={branch}
                 onChange={e => setBranch(e.target.value as Branch)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className={`${glassInput} px-3 py-2`}
               >
                 {branches.map(b => (
                   <option key={b} value={b}>
@@ -278,7 +279,7 @@ export default function MilitaryDischarge() {
                 value={earlyDays}
                 onChange={e => setEarlyDays(e.target.value)}
                 placeholder={t('earlyDaysPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder-gray-400"
+                className={`${glassInput} px-3 py-2 placeholder-gray-400`}
               />
             </div>
 
@@ -297,7 +298,7 @@ export default function MilitaryDischarge() {
           {result ? (
             <>
               {/* Discharge date + D-Day */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   {/* Discharge date */}
                   <div>
@@ -377,7 +378,7 @@ export default function MilitaryDischarge() {
 
               {/* Milestones (army/marines/katusa) */}
               {milestones && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <div className="flex items-center gap-2 mb-4">
                     <Star className="w-4 h-4 text-yellow-500" />
                     <h2 className="font-semibold text-gray-900 dark:text-white">{t('milestones')}</h2>
@@ -435,7 +436,7 @@ export default function MilitaryDischarge() {
 
               {/* Fun facts */}
               {funFacts && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <div className="flex items-center gap-2 mb-4">
                     <TrendingUp className="w-4 h-4 text-indigo-500" />
                     <h2 className="font-semibold text-gray-900 dark:text-white">{t('funFacts')}</h2>
@@ -455,7 +456,7 @@ export default function MilitaryDischarge() {
               )}
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 flex flex-col items-center justify-center text-center">
+            <div className={`${glassCard} ${glassInset} p-12 flex flex-col items-center justify-center text-center`}>
               <Calendar className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4" />
               <p className="text-gray-500 dark:text-gray-400">{t('description')}</p>
             </div>
@@ -464,7 +465,7 @@ export default function MilitaryDischarge() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-2 mb-4">
           <Info className="w-4 h-4 text-blue-500" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guideTitle')}</h2>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Search, Star, Check, ChevronDown, ChevronUp, Code, Clock,
   Database, AlertTriangle, Lightbulb, BookOpen, Zap,

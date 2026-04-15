@@ -91,7 +91,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Suspense fallback={<div className="text-center py-20">Loading...</div>}>
+      <Suspense fallback={null}>
         <I18nWrapper>
           <HomePage />
         </I18nWrapper>

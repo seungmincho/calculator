@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Upload, Image as ImageIcon, Square, Paintbrush, Undo, RotateCcw, Download } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 type Mode = 'rectangle' | 'brush'
 type EffectType = 'mosaic' | 'blur'
@@ -438,7 +439,7 @@ export default function ImageMosaic() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Controls */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Upload */}
             {!image && (
               <div>
@@ -643,7 +644,7 @@ export default function ImageMosaic() {
 
         {/* Canvas */}
         <div className="lg:col-span-2" ref={containerRef}>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             {!image ? (
               <div className="flex flex-col items-center justify-center h-96 text-gray-400">
                 <ImageIcon className="w-24 h-24 mb-4" />
@@ -677,7 +678,7 @@ export default function ImageMosaic() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <ImageIcon className="w-5 h-5" />
           {t('guide.title')}

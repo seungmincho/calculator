@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
 
 const categoryToAppCategory: Record<string, string> = {

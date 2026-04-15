@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Zap, RotateCcw, Trash2, BookOpen, Timer, TrendingUp, Trophy, Users, Target, Play } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type GameState = 'idle' | 'waiting' | 'ready' | 'result' | 'tooEarly' | 'sessionComplete'
 
@@ -206,7 +207,7 @@ export default function ReactionTest() {
 
       {/* Round Progress Bar (visible during session) */}
       {sessionAttempts.length > 0 && gameState !== 'sessionComplete' && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+        <div className={`${glassCard} ${glassInset} p-4`}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
               {t('roundProgress', { current: Math.min(currentRound, MAX_ROUNDS), total: MAX_ROUNDS })}
@@ -387,7 +388,7 @@ export default function ReactionTest() {
       {/* Stats Section */}
       {allAttempts.length > 0 && gameState !== 'sessionComplete' && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6">
+          <div className={`${glassCard} ${glassInset} p-4 md:p-6`}>
             <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
               <Target className="w-4 h-4" />
               <span className="text-xs font-medium">{t('currentRound')}</span>
@@ -397,7 +398,7 @@ export default function ReactionTest() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6">
+          <div className={`${glassCard} ${glassInset} p-4 md:p-6`}>
             <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
               <Timer className="w-4 h-4" />
               <span className="text-xs font-medium">{t('totalAttempts')}</span>
@@ -407,7 +408,7 @@ export default function ReactionTest() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6">
+          <div className={`${glassCard} ${glassInset} p-4 md:p-6`}>
             <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
               <TrendingUp className="w-4 h-4" />
               <span className="text-xs font-medium">{t('sessionAvg')}</span>
@@ -417,7 +418,7 @@ export default function ReactionTest() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6">
+          <div className={`${glassCard} ${glassInset} p-4 md:p-6`}>
             <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
               <Trophy className="w-4 h-4" />
               <span className="text-xs font-medium">{t('allTimeBest')}</span>
@@ -431,7 +432,7 @@ export default function ReactionTest() {
 
       {/* History Section */}
       {allAttempts.length > 0 && gameState !== 'sessionComplete' && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               {t('history')}
@@ -492,7 +493,7 @@ export default function ReactionTest() {
       />
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

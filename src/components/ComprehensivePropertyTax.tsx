@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Calculator, Plus, Trash2, RotateCcw, ChevronDown, ChevronUp, Info, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Utilities ──
 
@@ -292,7 +293,7 @@ export default function ComprehensivePropertyTax() {
         {/* ── Left: Input Panel ── */}
         <div className="lg:col-span-1 space-y-4">
           {/* Taxpayer Type */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t('taxpayerType.label')}
             </h2>
@@ -322,7 +323,7 @@ export default function ComprehensivePropertyTax() {
                   <select
                     value={elderlyType}
                     onChange={e => setElderlyType(e.target.value as ElderlyType)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   >
                     {elderlyOptions.map(opt => (
                       <option key={opt.value} value={opt.value}>
@@ -338,7 +339,7 @@ export default function ComprehensivePropertyTax() {
                   <select
                     value={holdingPeriod}
                     onChange={e => setHoldingPeriod(e.target.value as HoldingPeriod)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   >
                     {holdingOptions.map(opt => (
                       <option key={opt.value} value={opt.value}>
@@ -352,7 +353,7 @@ export default function ComprehensivePropertyTax() {
           </div>
 
           {/* Property List */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t('property.label')}
             </h2>
@@ -369,7 +370,7 @@ export default function ComprehensivePropertyTax() {
                       value={prop.price}
                       onChange={e => updatePropertyPrice(prop.id, e.target.value)}
                       placeholder={t('property.pricePlaceholder')}
-                      className="w-full px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-right"
+                      className={`${glassInput} px-3 py-2 pr-8 text-right`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
                       {t('units.won')}
@@ -412,7 +413,7 @@ export default function ComprehensivePropertyTax() {
           </div>
 
           {/* Previous Year Tax */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-2">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-2`}>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               {t('prevYearTax.label')}
             </label>
@@ -423,7 +424,7 @@ export default function ComprehensivePropertyTax() {
                 value={prevYearTax}
                 onChange={e => setPrevYearTax(formatInput(e.target.value))}
                 placeholder={t('prevYearTax.placeholder')}
-                className="w-full px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-right"
+                className={`${glassInput} px-3 py-2 pr-8 text-right`}
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
                 {t('units.won')}
@@ -465,7 +466,7 @@ export default function ComprehensivePropertyTax() {
 
           {/* No input placeholder */}
           {!result && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calculator className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-400 dark:text-gray-500">{t('result.placeholder')}</p>
             </div>
@@ -497,7 +498,7 @@ export default function ComprehensivePropertyTax() {
               </div>
 
               {/* Step-by-step Breakdown */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+              <div className={`${glassCard} ${glassInset} overflow-hidden`}>
                 <button
                   onClick={() => setShowSteps(!showSteps)}
                   className="w-full flex items-center justify-between p-6 text-left"
@@ -603,7 +604,7 @@ export default function ComprehensivePropertyTax() {
               </div>
 
               {/* Tax Rate Table */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+              <div className={`${glassCard} ${glassInset} overflow-hidden`}>
                 <button
                   onClick={() => setShowRateTable(!showRateTable)}
                   className="w-full flex items-center justify-between p-6 text-left"
@@ -669,7 +670,7 @@ export default function ComprehensivePropertyTax() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

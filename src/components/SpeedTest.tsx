@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Wifi, Clock, Activity, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface TestResult {
   downloadSpeed: number | null
@@ -305,7 +306,7 @@ export default function SpeedTest() {
       </div>
 
       {/* Gauge + Controls */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex flex-col items-center gap-6">
           {/* Gauge */}
           <div className="w-full max-w-xs">
@@ -394,7 +395,7 @@ export default function SpeedTest() {
 
       {/* History */}
       {history.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-4">
             <Activity className="w-5 h-5 text-blue-500" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('history')}</h2>
@@ -433,7 +434,7 @@ export default function SpeedTest() {
       )}
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
           onClick={() => setGuideOpen(v => !v)}

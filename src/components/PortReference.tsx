@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Search, Copy, Check, Shield, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Port Data (hardcoded, not from translations) ──────────────────────────────
 
@@ -248,7 +249,7 @@ export default function PortReference() {
 
       {/* Port list */}
       {filtered.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12 text-center">
+        <div className={`${glassCard} ${glassInset} p-12 text-center`}>
           <p className="text-gray-400 dark:text-gray-500">{t('noResults')}</p>
         </div>
       ) : (
@@ -256,7 +257,7 @@ export default function PortReference() {
           {filtered.map((entry) => (
             <div
               key={`${entry.port}-${entry.service}`}
-              className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow p-4"
+              className={`${glassCard} ${glassInset} hover:shadow-md transition-shadow p-4`}
             >
               <div className="flex items-start gap-3">
                 {/* Port number */}
@@ -311,7 +312,7 @@ export default function PortReference() {
       )}
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setGuideOpen((v) => !v)}
           className="w-full flex items-center justify-between px-6 py-4 text-left"

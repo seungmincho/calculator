@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import { Flame, Copy, Check, BookOpen, Plus, Trash2, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // MET (Metabolic Equivalent of Task) values for common activities
 // Source: Compendium of Physical Activities (2024)
@@ -206,7 +207,7 @@ export default function ExerciseCalorie() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className="${glassCard} ${glassInset} p-6 space-y-4">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inputTitle')}</h2>
 
             <div>
@@ -218,7 +219,7 @@ export default function ExerciseCalorie() {
                   max="300"
                   value={weight}
                   onChange={e => setWeight(e.target.value)}
-                  className="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                  className="w-full px-3 py-2 pr-10 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">kg</span>
               </div>
@@ -226,7 +227,7 @@ export default function ExerciseCalorie() {
           </div>
 
           {/* 운동 항목 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+          <div className="${glassCard} ${glassInset} p-6 space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('exercises')}</h2>
               <button
@@ -256,7 +257,7 @@ export default function ExerciseCalorie() {
                 <select
                   value={entry.activityId}
                   onChange={e => updateEntry(entry.id, 'activityId', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                  className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
                 >
                   {CATEGORIES.map(cat => (
                     <optgroup key={cat} label={t(`categories.${cat}`)}>
@@ -278,7 +279,7 @@ export default function ExerciseCalorie() {
                       max="600"
                       value={entry.duration}
                       onChange={e => updateEntry(entry.id, 'duration', parseInt(e.target.value, 10) || 0)}
-                      className="w-24 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                      className="w-24 px-3 py-1.5 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                     <span className="text-sm text-gray-500 dark:text-gray-400">{t('minutes')}</span>
                     <div className="flex gap-1 ml-auto">
@@ -304,7 +305,7 @@ export default function ExerciseCalorie() {
           {results ? (
             <>
               {/* 총 결과 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result')}</h2>
                   <button
@@ -369,13 +370,13 @@ export default function ExerciseCalorie() {
               </div>
 
               {/* MET 참고 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{t('metInfo')}</h3>
                 <p className="text-xs text-gray-500 dark:text-gray-400">{t('metDescription')}</p>
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center text-gray-400 dark:text-gray-500">
+            <div className="${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500">
               <Flame className="w-12 h-12 mx-auto mb-3 opacity-30" />
               <p>{t('inputPrompt')}</p>
             </div>
@@ -384,7 +385,7 @@ export default function ExerciseCalorie() {
       </div>
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

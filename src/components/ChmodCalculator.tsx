@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Terminal, Shield, BookOpen, Zap } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type PermissionSet = {
   read: boolean
@@ -176,7 +177,7 @@ export default function ChmodCalculator() {
       </div>
 
       {/* Presets */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
           <Zap className="w-4 h-4 text-yellow-500" />
           {t('presets')}
@@ -202,7 +203,7 @@ export default function ChmodCalculator() {
       {/* Main grid */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Permission Grid */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('permGrid')}</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -253,7 +254,7 @@ export default function ChmodCalculator() {
         {/* Result Panel */}
         <div className="space-y-4">
           {/* Octal Display */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">{t('octal')}</h2>
             <div className="flex items-center gap-3">
               <input
@@ -301,7 +302,7 @@ export default function ChmodCalculator() {
       </div>
 
       {/* Filename input */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <label className="block text-base font-semibold text-gray-900 dark:text-white mb-3">
           {t('filenameLabel')}
         </label>
@@ -310,12 +311,12 @@ export default function ChmodCalculator() {
           value={filename}
           onChange={e => setFilename(e.target.value || 'filename')}
           placeholder="filename"
-          className="w-full max-w-sm px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+          className={`${glassInput} max-w-sm px-3 py-2 font-mono text-sm`}
         />
       </div>
 
       {/* Commands */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
           <Terminal className="w-4 h-4 text-green-500" />
           {t('commands')}
@@ -367,7 +368,7 @@ export default function ChmodCalculator() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}

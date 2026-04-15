@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Type, Copy, Trash2, Check, FileText, Hash, AlignLeft, MessageSquare, Rows3 } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface TextStats {
   characters: number
@@ -130,7 +131,7 @@ export default function CharacterCounter() {
       </div>
 
       {/* Textarea */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+      <div className={`${glassCard} ${glassInset} overflow-hidden mb-6`}>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -180,7 +181,7 @@ export default function CharacterCounter() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {t('guide.title')}
         </h2>

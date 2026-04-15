@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { History, Trash2, Download, Clock, X } from 'lucide-react';
 import { CalculationHistory as HistoryType } from '@/utils/localStorage';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass';
 
 interface CalculationHistoryProps {
   histories: HistoryType[];
@@ -55,7 +56,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+      <div className={`${glassCard} ${glassInset} max-w-2xl w-full max-h-[80vh] overflow-hidden`}>
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-2">

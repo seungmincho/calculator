@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Radio, Copy, Check, Volume2, VolumeX, BookOpen, Trash2 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 const MORSE_MAP: Record<string, string> = {
   'A': '·─', 'B': '─···', 'C': '─·─·', 'D': '─··', 'E': '·',
@@ -205,7 +206,7 @@ export default function MorseCode() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Input Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* Mode Selection */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -246,7 +247,7 @@ export default function MorseCode() {
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
                   placeholder={t('textPlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white min-h-[120px] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={`${glassInput} px-3 py-2 min-h-[120px]`}
                 />
               </div>
             ) : (
@@ -258,7 +259,7 @@ export default function MorseCode() {
                   value={morseInput}
                   onChange={(e) => setMorseInput(e.target.value)}
                   placeholder={t('morsePlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white min-h-[120px] focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono"
+                  className={`${glassInput} px-3 py-2 min-h-[120px] font-mono`}
                 />
               </div>
             )}
@@ -300,7 +301,7 @@ export default function MorseCode() {
 
         {/* Result Panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('result')}
@@ -350,7 +351,7 @@ export default function MorseCode() {
           </div>
 
           {/* Reference Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6">
+          <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('referenceTable')}
             </h2>
@@ -393,7 +394,7 @@ export default function MorseCode() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

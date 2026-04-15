@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Upload, Trash2, BookOpen, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── 모델 데이터 ──
 interface LlmModel {
@@ -189,14 +190,14 @@ export default function LlmTokenCalculator() {
         {/* 왼쪽: 입력 + 설정 */}
         <div className="lg:col-span-1 space-y-6">
           {/* 모델 선택 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               {t('selectedModel')}
             </label>
             <select
               value={selectedModelId}
               onChange={(e) => setSelectedModelId(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              className={`${glassInput} px-3 py-2`}
             >
               {PROVIDERS.map(provider => (
                 <optgroup key={provider} label={provider}>
@@ -225,7 +226,7 @@ export default function LlmTokenCalculator() {
           </div>
 
           {/* 출력 토큰 + 환율 설정 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {t('outputTokensLabel')}
@@ -235,7 +236,7 @@ export default function LlmTokenCalculator() {
                 value={outputTokenCount}
                 onChange={(e) => setOutputTokenCount(Math.max(0, parseInt(e.target.value) || 0))}
                 placeholder={t('outputTokensPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-3 py-2`}
               />
             </div>
             <div>
@@ -246,14 +247,14 @@ export default function LlmTokenCalculator() {
                 type="number"
                 value={exchangeRate}
                 onChange={(e) => setExchangeRate(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-3 py-2`}
               />
             </div>
           </div>
 
           {/* 결과 카드 */}
           {text.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('estimatedCost')}</h2>
 
               {/* 토큰 수 */}
@@ -333,7 +334,7 @@ export default function LlmTokenCalculator() {
         {/* 오른쪽: 텍스트 입력 + 비교 테이블 */}
         <div className="lg:col-span-2 space-y-6">
           {/* 텍스트 입력 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {t('inputLabel')}
@@ -377,7 +378,7 @@ export default function LlmTokenCalculator() {
                 onChange={(e) => setText(e.target.value)}
                 placeholder={t('inputPlaceholder')}
                 rows={16}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono text-sm resize-y"
+                className={`${glassInput} px-4 py-3 font-mono text-sm resize-y`}
               />
               {!text && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -394,7 +395,7 @@ export default function LlmTokenCalculator() {
           </div>
 
           {/* 모델 비교 테이블 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('modelComparison')}</h2>
               <div className="flex gap-1">
@@ -483,7 +484,7 @@ export default function LlmTokenCalculator() {
       </div>
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="flex items-center justify-between w-full text-left"

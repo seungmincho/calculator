@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Play, Pause, RotateCcw, Settings, Volume2, VolumeX, Bell, BellOff,
   SkipForward, Plus, Trash2, Check, ChevronDown, ChevronUp, X
@@ -571,7 +572,7 @@ export default function PomodoroTimer() {
   if (!mounted) {
     return (
       <div className="space-y-8">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 flex flex-col items-center">
+        <div className={`${glassCard} ${glassInset} p-8 flex flex-col items-center`}>
           <div className="w-56 h-56 rounded-full bg-gray-100 dark:bg-gray-700 animate-pulse" />
         </div>
       </div>
@@ -651,7 +652,7 @@ export default function PomodoroTimer() {
       </div>
 
       {/* Main Timer Card */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 flex flex-col items-center gap-6">
+      <div className={`${glassCard} ${glassInset} p-8 flex flex-col items-center gap-6`}>
         {/* Active task display */}
         {activeTask && !activeTask.completed && (
           <div className={`text-sm font-medium ${colors.text} flex items-center gap-2`}>
@@ -751,7 +752,7 @@ export default function PomodoroTimer() {
       </div>
 
       {/* Task Management */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowTasks(v => !v)}
           className="flex items-center justify-between w-full text-left"
@@ -770,7 +771,7 @@ export default function PomodoroTimer() {
                 onChange={e => setNewTaskText(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && addTask()}
                 placeholder={t('taskPlaceholder')}
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 text-sm"
+                className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-red-500 text-sm`}
               />
               <button
                 onClick={addTask}
@@ -837,7 +838,7 @@ export default function PomodoroTimer() {
       </div>
 
       {/* Statistics */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('statsTitle')}</h2>
 
         {/* Today + session stats */}
@@ -896,7 +897,7 @@ export default function PomodoroTimer() {
       {showSettings && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowSettings(false)}>
           <div
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md p-6 space-y-5 max-h-[90vh] overflow-y-auto"
+            className={`${glassCard} ${glassInset} w-full max-w-md p-6 space-y-5 max-h-[90vh] overflow-y-auto`}
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
@@ -1072,7 +1073,7 @@ export default function PomodoroTimer() {
       )}
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('guideTitle')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>

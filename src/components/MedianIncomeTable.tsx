@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Users, TrendingUp, Info, ChevronRight, Calculator, Building2, Heart, GraduationCap, Home, Stethoscope, Wallet, Baby, Briefcase, AlertCircle } from 'lucide-react';
 import GuideSection from '@/components/GuideSection';
+import { glassCard, glassInset, glassInput } from '@/lib/glass';
 
 // 중위소득 데이터 (월/원) - [1인, 2인, 3인, 4인, 5인, 6인 가구]
 const medianIncomeData: Record<string, number[]> = {
@@ -221,7 +222,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
   const result = showResult ? determineEligibility() : null;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-8">
+    <div className={`${glassCard} ${glassInset} overflow-hidden mb-8`}>
       <div className="p-6 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
@@ -255,7 +256,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                 <select
                   value={householdSize}
                   onChange={(e) => setHouseholdSize(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className={`${glassInput} px-3 py-2`}
                 >
                   {[1, 2, 3, 4, 5, 6].map((n) => (
                     <option key={n} value={n}>{n}인 가구</option>
@@ -269,7 +270,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                 <select
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className={`${glassInput} px-3 py-2`}
                 >
                   {Object.keys(basicPropertyAmount).map((r) => (
                     <option key={r} value={r}>{r}</option>
@@ -293,7 +294,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   value={monthlyIncome}
                   onChange={(e) => setMonthlyIncome(formatInput(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-right"
+                  className={`${glassInput} px-3 py-2 text-right`}
                 />
               </div>
               <div>
@@ -305,7 +306,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   value={workIncome}
                   onChange={(e) => setWorkIncome(formatInput(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-right"
+                  className={`${glassInput} px-3 py-2 text-right`}
                 />
               </div>
             </div>
@@ -325,7 +326,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   value={generalProperty}
                   onChange={(e) => setGeneralProperty(formatInput(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-right"
+                  className={`${glassInput} px-3 py-2 text-right`}
                 />
               </div>
               <div>
@@ -337,7 +338,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   value={financialProperty}
                   onChange={(e) => setFinancialProperty(formatInput(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-right"
+                  className={`${glassInput} px-3 py-2 text-right`}
                 />
               </div>
               <div>
@@ -349,7 +350,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   value={carValue}
                   onChange={(e) => setCarValue(formatInput(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-right"
+                  className={`${glassInput} px-3 py-2 text-right`}
                 />
               </div>
               <div>
@@ -361,7 +362,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   value={debt}
                   onChange={(e) => setDebt(formatInput(e.target.value))}
                   placeholder="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-right"
+                  className={`${glassInput} px-3 py-2 text-right`}
                 />
               </div>
             </div>
@@ -507,7 +508,7 @@ const MedianIncomeTable = () => {
   const showCustomRow = customPercentageNum > 0 && customPercentageNum <= 500;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-6">
@@ -541,7 +542,7 @@ const MedianIncomeTable = () => {
         </div>
 
         {/* 100% 기준 중위소득 카드 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-6 mb-8">
+        <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
               <Calculator className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -566,7 +567,7 @@ const MedianIncomeTable = () => {
         </div>
 
         {/* 사용자 정의 비율 계산기 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-6 mb-8">
+        <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
               <Calculator className="w-5 h-5 text-purple-600 dark:text-purple-400" />
@@ -609,7 +610,7 @@ const MedianIncomeTable = () => {
         </div>
 
         {/* 비율별 중위소득 테이블 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-8">
+        <div className={`${glassCard} ${glassInset} overflow-hidden mb-8`}>
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
@@ -803,7 +804,7 @@ const MedianIncomeTable = () => {
         </div>
 
         {/* 기초생활수급자 급여기준 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-8">
+        <div className={`${glassCard} ${glassInset} overflow-hidden mb-8`}>
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
@@ -855,7 +856,7 @@ const MedianIncomeTable = () => {
         </div>
 
         {/* 지자체형 생계급여 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-8">
+        <div className={`${glassCard} ${glassInset} overflow-hidden mb-8`}>
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
@@ -913,7 +914,7 @@ const MedianIncomeTable = () => {
         />
 
         {/* 연도별 중위소득 비교 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
               <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />

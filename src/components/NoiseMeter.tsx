@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Mic, MicOff, BookOpen, AlertCircle, Smartphone, RotateCcw } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── 소음 수준 기준 (dB) ──
 interface NoiseLevel {
@@ -179,7 +180,7 @@ export default function NoiseMeter() {
       </div>
 
       {/* 메인 측정 영역 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+      <div className={`${glassCard} ${glassInset} p-8`}>
         {/* dB 디스플레이 */}
         <div className="text-center mb-8">
           <div className="relative inline-block">
@@ -263,17 +264,17 @@ export default function NoiseMeter() {
       {/* 통계 카드 */}
       {isRecording && (
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center">
+          <div className={`${glassCard} ${glassInset} p-4 text-center`}>
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('maxDb')}</p>
             <p className="text-2xl font-bold text-red-600 dark:text-red-400">{maxDb}</p>
             <p className="text-xs text-gray-400">dB</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center">
+          <div className={`${glassCard} ${glassInset} p-4 text-center`}>
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('avgDb')}</p>
             <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{avgDb}</p>
             <p className="text-xs text-gray-400">dB</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center">
+          <div className={`${glassCard} ${glassInset} p-4 text-center`}>
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('minDb')}</p>
             <p className="text-2xl font-bold text-green-600 dark:text-green-400">{minDb > 900 ? 0 : minDb}</p>
             <p className="text-xs text-gray-400">dB</p>
@@ -283,7 +284,7 @@ export default function NoiseMeter() {
 
       {/* 히스토리 그래프 (CSS only) */}
       {history.length > 1 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('historyGraph')}</h3>
           <div className="flex items-end gap-px h-24">
             {history.map((db, i) => {
@@ -307,7 +308,7 @@ export default function NoiseMeter() {
       )}
 
       {/* 소음 수준 참고표 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('referenceTable')}</h3>
         <div className="space-y-2">
           {NOISE_LEVELS.map((lvl, i) => (
@@ -329,7 +330,7 @@ export default function NoiseMeter() {
       </div>
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

@@ -22,9 +22,10 @@
  */
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Calculator, RotateCcw, Award, BarChart3, BookOpen, Info } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 /** 9등급제 누적비율 상한 */
 const GRADE_CUTOFFS = [4, 11, 23, 40, 60, 77, 89, 96, 100] as const
@@ -162,7 +163,7 @@ export default function GradeCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left: Input */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className="${glassCard} ${glassInset} p-6 space-y-5">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Calculator className="w-5 h-5 text-blue-600" />
               {t('input.title')}
@@ -179,7 +180,7 @@ export default function GradeCalculator() {
                 onChange={(e) => setScore(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={t('input.scorePlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
@@ -195,7 +196,7 @@ export default function GradeCalculator() {
                 onKeyDown={handleKeyDown}
                 placeholder={t('input.rankPlaceholder')}
                 min="1"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                 <Info className="w-3 h-3 inline mr-1" />
@@ -215,7 +216,7 @@ export default function GradeCalculator() {
                 onKeyDown={handleKeyDown}
                 placeholder={t('input.totalStudentsPlaceholder')}
                 min="1"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
@@ -250,7 +251,7 @@ export default function GradeCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {/* Result card */}
           {result && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+            <div className="${glassCard} ${glassInset} p-6 space-y-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-blue-600" />
                 {t('result.title')}
@@ -323,7 +324,7 @@ export default function GradeCalculator() {
           )}
 
           {/* Grade table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-blue-600" />
               {t('table.title')}
@@ -382,7 +383,7 @@ export default function GradeCalculator() {
       </div>
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

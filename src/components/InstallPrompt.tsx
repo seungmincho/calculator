@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Download, X, Smartphone } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;

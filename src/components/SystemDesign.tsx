@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   ArrowLeft, Star, BookMarked, ChevronDown, ChevronUp,
   Play, CheckCircle, Target, Layers, Server, Zap,

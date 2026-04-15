@@ -2,8 +2,9 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { TrendingUp, Calculator, BarChart3, ArrowUpRight, ArrowDownRight, RefreshCw, BookOpen, Link, Check } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import dynamic from 'next/dynamic'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
@@ -409,7 +410,7 @@ export default function InvestmentCalculator() {
       </div>
 
       {/* Investment Type Tabs */}
-      <div className="flex gap-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2">
+      <div className={`flex gap-2 ${glassCard} ${glassInset} p-2`}>
         {(['lumpSum', 'dca', 'comparison'] as InvestmentType[]).map((type) => (
           <button
             key={type}
@@ -433,7 +434,7 @@ export default function InvestmentCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Calculator className="w-5 h-5 text-blue-600" />
               {t('investmentType')}
@@ -450,7 +451,7 @@ export default function InvestmentCalculator() {
                   inputMode="numeric"
                   value={initialAmount}
                   onChange={(e) => setInitialAmount(formatInputNumber(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-8"
+                  className={`w-full px-3 py-2 ${glassInput} px-3 py-2 pr-8`}
                   placeholder="10,000,000"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
@@ -469,7 +470,7 @@ export default function InvestmentCalculator() {
                     inputMode="numeric"
                     value={monthlyContribution}
                     onChange={(e) => setMonthlyContribution(formatInputNumber(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-8"
+                    className={`w-full px-3 py-2 ${glassInput} px-3 py-2 pr-8`}
                     placeholder="500,000"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
@@ -488,7 +489,7 @@ export default function InvestmentCalculator() {
                   inputMode="decimal"
                   value={annualReturn}
                   onChange={(e) => setAnnualReturn(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-8"
+                  className={`w-full px-3 py-2 ${glassInput} px-3 py-2 pr-8`}
                   placeholder="7"
                   step="0.1"
                   min="0"
@@ -509,7 +510,7 @@ export default function InvestmentCalculator() {
                   inputMode="numeric"
                   value={investmentPeriod}
                   onChange={(e) => setInvestmentPeriod(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-12"
+                  className={`w-full px-3 py-2 ${glassInput} px-3 py-2 pr-12`}
                   placeholder="10"
                   min="1"
                   max="50"
@@ -529,7 +530,7 @@ export default function InvestmentCalculator() {
                   inputMode="decimal"
                   value={inflationRate}
                   onChange={(e) => setInflationRate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-8"
+                  className={`w-full px-3 py-2 ${glassInput} px-3 py-2 pr-8`}
                   placeholder="3"
                   step="0.1"
                   min="0"
@@ -573,12 +574,12 @@ export default function InvestmentCalculator() {
           {/* Single Result */}
           {result && (
             <>
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 {renderResultCard(result)}
               </div>
 
               {/* Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <BarChart3 className="w-5 h-5 text-blue-600" />
                   {t('chartTitle')}
@@ -587,7 +588,7 @@ export default function InvestmentCalculator() {
               </div>
 
               {/* Yearly Table */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <BarChart3 className="w-5 h-5 text-indigo-600" />
@@ -635,7 +636,7 @@ export default function InvestmentCalculator() {
           {/* Comparison Results */}
           {comparisonResult && (
             <>
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+              <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <BarChart3 className="w-5 h-5 text-blue-600" />
                   {t('vs.title')}
@@ -675,7 +676,7 @@ export default function InvestmentCalculator() {
               </div>
 
               {/* Comparison Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <BarChart3 className="w-5 h-5 text-blue-600" />
                   {t('chartTitle')}
@@ -687,7 +688,7 @@ export default function InvestmentCalculator() {
 
           {/* No result placeholder */}
           {!result && !comparisonResult && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <TrendingUp className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400">{t('noResult')}</p>
             </div>
@@ -696,7 +697,7 @@ export default function InvestmentCalculator() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

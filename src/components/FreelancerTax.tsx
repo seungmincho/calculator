@@ -2,8 +2,9 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Calculator, Copy, Check, BookOpen, AlertCircle, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── 2025년 종합소득세 세율 (8단계) ──
 const INCOME_BRACKETS = [
@@ -243,7 +244,7 @@ export default function FreelancerTax() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className="${glassCard} ${glassInset} p-6 space-y-4">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('inputTitle')}</h2>
 
             <NumInput label={t('annualRevenue')} value={annualRevenue} onChange={setAnnualRevenue} placeholder="50,000,000" />
@@ -253,7 +254,7 @@ export default function FreelancerTax() {
               <select
                 value={industry}
                 onChange={e => setIndustry(e.target.value as IndustryCode)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
               >
                 <option value="it">{t('industries.it')}</option>
                 <option value="design">{t('industries.design')}</option>
@@ -297,7 +298,7 @@ export default function FreelancerTax() {
                   <select
                     value={dependents}
                     onChange={e => setDependents(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
                   >
                     {Array.from({ length: 10 }, (_, i) => i + 1).map(n => (
                       <option key={n} value={n}>{n}{t('person')}</option>
@@ -313,7 +314,7 @@ export default function FreelancerTax() {
           </div>
 
           {/* 업종별 경비율 참고표 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('rateReference')}</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs" aria-label={t('rateReference')}>
@@ -343,7 +344,7 @@ export default function FreelancerTax() {
           {result ? (
             <>
               {/* 핵심 결과 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result')}</h2>
                   <button
@@ -418,7 +419,7 @@ export default function FreelancerTax() {
               </div>
 
               {/* 세율표 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="${glassCard} ${glassInset} p-6">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('rateTable')}</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm" aria-label={t('rateTable')}>
@@ -451,7 +452,7 @@ export default function FreelancerTax() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center text-gray-400 dark:text-gray-500">
+            <div className="${glassCard} ${glassInset} p-12 text-center text-gray-400 dark:text-gray-500">
               <Calculator className="w-12 h-12 mx-auto mb-3 opacity-30" />
               <p>{t('inputPrompt')}</p>
             </div>
@@ -460,7 +461,7 @@ export default function FreelancerTax() {
       </div>
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"
@@ -526,7 +527,7 @@ function NumInput({ label, value, onChange, placeholder, hint }: {
           value={(() => { const d = value.replace(/[^0-9]/g, ''); if (!d) return ''; const n = parseInt(d, 10); return isNaN(n) ? '' : n.toLocaleString('ko-KR') })()}
           onChange={e => onChange(e.target.value.replace(/[^0-9]/g, ''))}
           placeholder={placeholder}
-          className="w-full px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+          className="w-full px-3 py-2 pr-8 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
         />
         <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">원</span>
       </div>

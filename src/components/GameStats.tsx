@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Trophy, TrendingUp, Users, Gamepad2,
   Calendar, Clock, BarChart3, PieChart,

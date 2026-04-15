@@ -16,6 +16,7 @@ import {
   Shrink
 } from 'lucide-react';
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 const SqlFormatter = () => {
   const [input, setInput] = useState('');
@@ -465,7 +466,7 @@ const SqlFormatter = () => {
       </div>
 
       {/* 컨트롤 패널 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
+      <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
         <div className="flex flex-wrap items-center justify-between gap-4">
           {/* 모드 선택 */}
           <div className="flex items-center space-x-2">
@@ -566,7 +567,7 @@ const SqlFormatter = () => {
                 <select
                   value={indentSize}
                   onChange={(e) => setIndentSize(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={`${glassInput} px-3 py-2`}
                 >
                   <option value={2}>2 스페이스</option>
                   <option value={4}>4 스페이스</option>
@@ -581,7 +582,7 @@ const SqlFormatter = () => {
                 <select
                   value={sqlDialect}
                   onChange={(e) => setSqlDialect(e.target.value as 'standard' | 'mysql' | 'postgresql' | 'mssql' | 'oracle')}
-                  className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={`${glassInput} px-3 py-2`}
                 >
                   <option value="standard">표준 SQL</option>
                   <option value="mysql">MySQL</option>
@@ -609,7 +610,7 @@ const SqlFormatter = () => {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 영역 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">SQL 입력</h2>
           </div>
@@ -619,7 +620,7 @@ const SqlFormatter = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="SQL 쿼리를 입력하세요..."
-              className={`w-full ${isFullscreen ? 'h-[calc(100vh-300px)]' : 'h-96'} p-4 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none font-mono text-sm`}
+              className={`${glassInput} w-full ${isFullscreen ? 'h-[calc(100vh-300px)]' : 'h-96'} p-4 resize-none font-mono text-sm`}
               spellCheck={false}
             />
             
@@ -638,7 +639,7 @@ const SqlFormatter = () => {
         </div>
 
         {/* 출력 영역 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {mode === 'format' ? '포맷팅 결과' : mode === 'minify' ? '압축 결과' : '분석 결과'}
@@ -655,7 +656,7 @@ const SqlFormatter = () => {
                     ref={outputRef}
                     value={output}
                     readOnly
-                    className={`w-full ${isFullscreen ? 'h-[calc(100vh-500px)]' : 'h-48'} p-4 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg resize-none font-mono text-sm`}
+                    className={`${glassInput} w-full ${isFullscreen ? 'h-[calc(100vh-500px)]' : 'h-48'} p-4 resize-none font-mono text-sm`}
                   />
                 </div>
 
@@ -707,7 +708,7 @@ const SqlFormatter = () => {
                 value={output}
                 readOnly
                 placeholder="포맷팅된 SQL이 여기에 표시됩니다..."
-                className={`w-full ${isFullscreen ? 'h-[calc(100vh-300px)]' : 'h-96'} p-4 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg resize-none font-mono text-sm`}
+                className={`${glassInput} w-full ${isFullscreen ? 'h-[calc(100vh-300px)]' : 'h-96'} p-4 resize-none font-mono text-sm`}
               />
             )}
           </div>

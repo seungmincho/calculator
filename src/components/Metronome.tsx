@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Play, Square, Minus, Plus, BookOpen, Smartphone } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Common tempo markings ──
 const TEMPO_PRESETS = [
@@ -207,7 +208,7 @@ export default function Metronome() {
       </div>
 
       {/* Main display */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+      <div className={`${glassCard} ${glassInset} p-8`}>
         {/* BPM display */}
         <div className="text-center mb-6">
           <p className="text-7xl sm:text-8xl font-bold text-gray-900 dark:text-white tabular-nums">
@@ -309,7 +310,7 @@ export default function Metronome() {
       </div>
 
       {/* Settings */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('settings')}</h3>
 
         {/* Time signature */}
@@ -370,7 +371,7 @@ export default function Metronome() {
       </div>
 
       {/* Tempo presets */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('presets')}</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {TEMPO_PRESETS.map(preset => (
@@ -391,7 +392,7 @@ export default function Metronome() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

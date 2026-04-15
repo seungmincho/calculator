@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Monitor,
   Video,
@@ -16,6 +16,7 @@ import {
   BookOpen,
   Settings,
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 
@@ -318,7 +319,7 @@ export default function ScreenRecorder() {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center">
+        <div className={`${glassCard} ${glassInset} p-8 text-center`}>
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
             {t('notSupported')}
@@ -359,7 +360,7 @@ export default function ScreenRecorder() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Settings className="w-5 h-5" />
               {t('settings')}
@@ -376,7 +377,7 @@ export default function ScreenRecorder() {
                   setConfig((prev) => ({ ...prev, quality: e.target.value as Quality }))
                 }
                 disabled={isActive}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className={`${glassInput} px-3 py-2 disabled:opacity-50`}
               >
                 <option value="high">{t('qualityHigh')} (1080p)</option>
                 <option value="medium">{t('qualityMedium')} (720p)</option>
@@ -398,7 +399,7 @@ export default function ScreenRecorder() {
                   }))
                 }
                 disabled={isActive}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className={`${glassInput} px-3 py-2 disabled:opacity-50`}
               >
                 <option value={30}>{t('fps30')}</option>
                 <option value={60}>{t('fps60')}</option>
@@ -426,7 +427,7 @@ export default function ScreenRecorder() {
                   }))
                 }
                 disabled={isActive}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className={`${glassInput} px-3 py-2 disabled:opacity-50`}
               >
                 <option value="none">{t('audioNone')}</option>
                 <option value="system">{t('audioSystem')}</option>
@@ -461,7 +462,7 @@ export default function ScreenRecorder() {
 
         {/* Main panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             {/* Idle state */}
             {isIdle && (
               <div className="flex flex-col items-center justify-center py-16 space-y-6">
@@ -610,7 +611,7 @@ export default function ScreenRecorder() {
       </div>
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setGuideOpen(!guideOpen)}
           className="w-full flex items-center justify-between text-left"

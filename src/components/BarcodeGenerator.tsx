@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useState, useCallback, useRef, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import JsBarcode from 'jsbarcode'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { 
   BarChart3, 
   Copy, 
@@ -302,7 +303,7 @@ const BarcodeGenerator = () => {
       </div>
 
       {/* Barcode Presets */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center space-x-2 mb-4">
           <Smartphone className="w-5 h-5 text-purple-600" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -331,7 +332,7 @@ const BarcodeGenerator = () => {
         {/* Input Panel */}
         <div className="space-y-6">
           {/* Barcode Data Input */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <BarChart3 className="w-5 h-5 text-blue-600" />
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -395,7 +396,7 @@ const BarcodeGenerator = () => {
           </div>
 
           {/* Options Panel */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <Settings className="w-5 h-5 text-green-600" />
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -508,7 +509,7 @@ const BarcodeGenerator = () => {
         </div>
 
         {/* Result Panel */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-2">
               <BarChart3 className="w-5 h-5 text-purple-600" />
@@ -648,7 +649,7 @@ const BarcodeGenerator = () => {
       </div>
 
       {/* Usage Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+      <div className={`${glassCard} ${glassInset} p-8`}>
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <FileText className="w-8 h-8 text-indigo-600" />

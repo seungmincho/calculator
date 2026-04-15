@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, RotateCcw, Hash } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface ConversionState {
   decimal: string
@@ -154,7 +155,7 @@ export default function BaseConverter() {
       {/* Conversion Cards */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Decimal */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-3">
             <Hash className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -168,7 +169,7 @@ export default function BaseConverter() {
               value={values.decimal}
               onChange={(e) => handleInputChange('decimal', e.target.value)}
               placeholder="0"
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono"
+              className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 font-mono`}
             />
             <button
               onClick={() => copyToClipboard(values.decimal, 'decimal')}
@@ -181,7 +182,7 @@ export default function BaseConverter() {
         </div>
 
         {/* Binary */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-3">
             <Hash className="w-5 h-5 text-green-600 dark:text-green-400" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -195,7 +196,7 @@ export default function BaseConverter() {
               value={values.binary}
               onChange={(e) => handleInputChange('binary', e.target.value)}
               placeholder="0"
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono"
+              className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 font-mono`}
             />
             <button
               onClick={() => copyToClipboard(values.binary, 'binary')}
@@ -208,7 +209,7 @@ export default function BaseConverter() {
         </div>
 
         {/* Octal */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-3">
             <Hash className="w-5 h-5 text-purple-600 dark:text-purple-400" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -222,7 +223,7 @@ export default function BaseConverter() {
               value={values.octal}
               onChange={(e) => handleInputChange('octal', e.target.value)}
               placeholder="0"
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono"
+              className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 font-mono`}
             />
             <button
               onClick={() => copyToClipboard(values.octal, 'octal')}
@@ -235,7 +236,7 @@ export default function BaseConverter() {
         </div>
 
         {/* Hexadecimal */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-3">
             <Hash className="w-5 h-5 text-orange-600 dark:text-orange-400" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -249,7 +250,7 @@ export default function BaseConverter() {
               value={values.hex}
               onChange={(e) => handleInputChange('hex', e.target.value)}
               placeholder="0"
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono"
+              className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 font-mono`}
             />
             <button
               onClick={() => copyToClipboard(values.hex, 'hex')}
@@ -264,7 +265,7 @@ export default function BaseConverter() {
 
       {/* Bit Visualization */}
       {values.decimal && parseInput(values.decimal, 10) !== null && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {t('bitVisualization')}
           </h2>
@@ -295,7 +296,7 @@ export default function BaseConverter() {
       )}
 
       {/* Common Values */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {t('commonValues')}
         </h2>
@@ -347,7 +348,7 @@ export default function BaseConverter() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

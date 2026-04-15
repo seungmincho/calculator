@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Plus,
   Trash2,
@@ -20,6 +20,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -636,7 +637,7 @@ export default function InvoiceGenerator() {
         /* ── Edit mode ────────────────────────────────────────────────────── */
         <div className="space-y-6">
           {/* Invoice meta */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <SectionHeader icon={FileText} title={t('section.invoiceInfo')} />
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
@@ -677,18 +678,18 @@ export default function InvoiceGenerator() {
 
           {/* Sender / Recipient */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <SectionHeader icon={Building2} title={t('section.sender')} />
               <CompanyForm label={t('sender')} data={invoice.sender} onChange={updateSender} t={t} />
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <SectionHeader icon={User} title={t('section.recipient')} />
               <CompanyForm label={t('recipient')} data={invoice.recipient} onChange={updateRecipient} t={t} />
             </div>
           </div>
 
           {/* Items */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <SectionHeader icon={Package} title={t('section.items')} />
 
             {/* Table header */}
@@ -809,7 +810,7 @@ export default function InvoiceGenerator() {
           </div>
 
           {/* Notes */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <SectionHeader icon={StickyNote} title={t('section.notes')} />
             <textarea
               className={textareaClass}
@@ -823,7 +824,7 @@ export default function InvoiceGenerator() {
       )}
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           className="flex items-center justify-between w-full text-left"
           onClick={() => setGuideOpen((o) => !o)}

@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import { Home, Copy, Check, RotateCcw, BookOpen, ArrowLeftRight, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type ConversionMode = 'jeonseToWolse' | 'wolseToJeonse'
 
@@ -158,7 +159,7 @@ export default function RentConverter() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel - Settings */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Home className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -227,7 +228,7 @@ export default function RentConverter() {
                       type="number"
                       value={jeonseDeposit}
                       onChange={(e) => setJeonseDeposit(Number(e.target.value))}
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                      className={`${glassInput} pl-8 pr-3 py-2`}
                       min="0"
                       step="10000000"
                     />
@@ -250,7 +251,7 @@ export default function RentConverter() {
                       type="number"
                       value={wolseDeposit}
                       onChange={(e) => setWolseDeposit(Number(e.target.value))}
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                      className={`${glassInput} pl-8 pr-3 py-2`}
                       min="0"
                       step="10000000"
                     />
@@ -269,7 +270,7 @@ export default function RentConverter() {
                     type="number"
                     value={conversionRate}
                     onChange={(e) => setConversionRate(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                     min="0"
                     max="20"
                     step="0.1"
@@ -294,7 +295,7 @@ export default function RentConverter() {
                       type="number"
                       value={reverseWolseDeposit}
                       onChange={(e) => setReverseWolseDeposit(Number(e.target.value))}
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                      className={`${glassInput} pl-8 pr-3 py-2`}
                       min="0"
                       step="10000000"
                     />
@@ -317,7 +318,7 @@ export default function RentConverter() {
                       type="number"
                       value={monthlyRent}
                       onChange={(e) => setMonthlyRent(Number(e.target.value))}
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                      className={`${glassInput} pl-8 pr-3 py-2`}
                       min="0"
                       step="10000"
                     />
@@ -336,7 +337,7 @@ export default function RentConverter() {
                     type="number"
                     value={reverseConversionRate}
                     onChange={(e) => setReverseConversionRate(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                     min="0"
                     max="20"
                     step="0.1"
@@ -498,7 +499,7 @@ export default function RentConverter() {
           </div>
 
           {/* Formula Display */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center gap-2 mb-4">
               <ArrowLeftRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -528,7 +529,7 @@ export default function RentConverter() {
           </div>
 
           {/* Conversion Rate Comparison Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('rateComparisonTable.title')}
             </h3>
@@ -605,7 +606,7 @@ export default function RentConverter() {
           </div>
 
           {/* Comparison Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               전세 vs 월세 비교
             </h3>
@@ -681,7 +682,7 @@ export default function RentConverter() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-2 mb-6">
           <BookOpen className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">

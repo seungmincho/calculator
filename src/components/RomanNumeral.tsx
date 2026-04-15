@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Hash, Copy, Check, RotateCcw, BookOpen, ArrowLeftRight } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type ConversionMode = 'toRoman' | 'toArabic'
 
@@ -145,7 +146,7 @@ export default function RomanNumeral() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel: Settings */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Mode Tabs */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -196,9 +197,7 @@ export default function RomanNumeral() {
                   value={inputValue}
                   onChange={(e) => handleInputChange(e.target.value)}
                   placeholder={mode === 'toRoman' ? '1~3999 사이의 숫자 입력' : '로마 숫자 입력 (예: XIV)'}
-                  className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 ${
-                    mode === 'toArabic' ? 'font-serif uppercase' : ''
-                  }`}
+                  className={`${glassInput} px-3 py-2 ${mode === 'toArabic' ? 'font-serif uppercase' : ''}`}
                 />
                 {inputValue && (
                   <button
@@ -256,7 +255,7 @@ export default function RomanNumeral() {
 
         {/* Right Panel: Results */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               {t('result')}
             </h2>
@@ -334,7 +333,7 @@ export default function RomanNumeral() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

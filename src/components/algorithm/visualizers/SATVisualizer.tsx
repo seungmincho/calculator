@@ -1,6 +1,6 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { type Polygon, createRegularPolygon } from '@/utils/algorithm/geometry'
 import { testSAT, testSATStep, type SATResult } from '@/utils/algorithm/sat'
 import dynamic from 'next/dynamic'

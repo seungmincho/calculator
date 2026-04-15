@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Users, Shuffle, Plus, Trash2 } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 const TEAM_COLORS = ['#EF4444', '#3B82F6', '#22C55E', '#F59E0B', '#8B5CF6', '#EC4899', '#14B8A6', '#F97316']
 const TEAM_BG = [
@@ -148,7 +149,7 @@ export default function TeamDivider() {
         {/* Left panel */}
         <div className="lg:col-span-1 space-y-4">
           {/* Presets */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">{t('presets.label')}</p>
             <div className="flex flex-wrap gap-2">
               {presets.map(preset => (
@@ -164,7 +165,7 @@ export default function TeamDivider() {
           </div>
 
           {/* Participant list */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-3">
+          <div className={`${glassCard} ${glassInset} p-4 space-y-3`}>
             <div className="flex items-center justify-between">
               <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                 <Users className="inline w-4 h-4 mr-1" />
@@ -185,7 +186,7 @@ export default function TeamDivider() {
                   onChange={e => setBulkText(e.target.value)}
                   placeholder={t('bulkPlaceholder')}
                   rows={4}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none focus:ring-2 focus:ring-blue-500 outline-none"
+                  className={`${glassInput} px-3 py-2 text-sm resize-none`}
                 />
                 <button
                   onClick={handleBulkImport}
@@ -202,7 +203,7 @@ export default function TeamDivider() {
                 onChange={e => setNewName(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleAddName()}
                 placeholder={t('addPlaceholder')}
-                className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                className={`${glassInput} flex-1 px-3 py-2 text-sm`}
               />
               <button
                 onClick={handleAddName}
@@ -228,7 +229,7 @@ export default function TeamDivider() {
           </div>
 
           {/* Settings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-4 space-y-4`}>
             <div>
               <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('teamCount')}</p>
               <div className="flex gap-2 flex-wrap">
@@ -288,7 +289,7 @@ export default function TeamDivider() {
         <div className="lg:col-span-2 space-y-4">
           {/* Captain draft pool */}
           {isDrafting && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                 {t('draftTurn', { team: currentCaptainTeam + 1 })}
               </p>
@@ -364,7 +365,7 @@ export default function TeamDivider() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 flex flex-col items-center justify-center text-center">
+            <div className={`${glassCard} ${glassInset} p-12 flex flex-col items-center justify-center text-center`}>
               <Users className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4" />
               <p className="text-gray-500 dark:text-gray-400">{t('empty')}</p>
             </div>

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, Shield, ShieldCheck, ShieldX, Trash2 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface VerificationResult {
   isValid: boolean
@@ -170,7 +171,7 @@ export default function BusinessNumber() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Input Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {t('inputLabel')}
@@ -181,7 +182,7 @@ export default function BusinessNumber() {
                 onChange={handleInputChange}
                 placeholder={t('inputPlaceholder')}
                 maxLength={12}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono text-lg"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 font-mono text-lg`}
               />
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 {t('digitCount')}: {digits.length}/10
@@ -208,7 +209,7 @@ export default function BusinessNumber() {
 
           {/* Recent Verifications */}
           {history.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6">
+            <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   {t('recentVerifications')}
@@ -255,7 +256,7 @@ export default function BusinessNumber() {
         {/* Result Panel */}
         <div className="lg:col-span-2">
           {result ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${
                 result.isValid
                   ? 'bg-green-50 dark:bg-green-950 border-2 border-green-200 dark:border-green-800'
@@ -334,7 +335,7 @@ export default function BusinessNumber() {
               </div>
             </div>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="text-center py-12">
                 <Shield className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                 <p className="text-gray-500 dark:text-gray-400">
@@ -347,7 +348,7 @@ export default function BusinessNumber() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

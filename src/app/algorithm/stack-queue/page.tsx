@@ -54,7 +54,7 @@ export default function StackQueuePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
+      <Suspense fallback={null}>
         <I18nWrapper>
           <AlgorithmLayout>
             <Breadcrumb />

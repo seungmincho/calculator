@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset } from '@/lib/glass'
 import {
   Upload, RotateCcw, Maximize2, Camera, Play, Pause, Grid3X3, Box,
   RefreshCw, Square, Film, Layers, Download, Settings, Printer, FileType,
@@ -1182,7 +1183,7 @@ export default function Viewer3D() {
         {/* Sidebar */}
         <div className="space-y-4">
           {/* Tab Navigation */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className={`${glassCard} ${glassInset} overflow-hidden`}>
             <div className="flex border-b border-gray-200 dark:border-gray-700">
               <button
                 onClick={() => setActiveTab('viewer')}

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Eye, ChevronLeft, ChevronRight, SkipForward, RotateCcw, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface TestPlate {
   number: number
@@ -183,7 +184,7 @@ export default function ColorBlindTest() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-2 mb-6">
             <Eye className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -263,7 +264,7 @@ export default function ColorBlindTest() {
           </button>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
             <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             {t('guide.title')}
@@ -302,7 +303,7 @@ export default function ColorBlindTest() {
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <Eye className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -334,7 +335,7 @@ export default function ColorBlindTest() {
               value={currentAnswer}
               onChange={(e) => setCurrentAnswer(e.target.value)}
               placeholder={t('answerPlaceholder')}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-center text-2xl font-semibold"
+              className={`${glassInput} px-4 py-3 text-center text-2xl font-semibold`}
               autoFocus
             />
           </div>
@@ -377,7 +378,7 @@ export default function ColorBlindTest() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           {t('guide.title')}

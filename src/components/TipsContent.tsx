@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, Calendar, Tag, TrendingUp } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { glassCard, glassInset } from '@/lib/glass';
+import { useTranslations } from '@/lib/i18n';
 
 interface Tip {
   id: number;
@@ -76,7 +77,7 @@ export default function TipsContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
         <div className="text-center mb-12">
@@ -147,7 +148,7 @@ export default function TipsContent() {
               href={`/tips/${tip.id}`}
               className="block group"
             >
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 border border-gray-200 dark:border-gray-700 group-hover:border-blue-300 dark:group-hover:border-blue-600">
+              <div className={`${glassCard} ${glassInset} transition-all duration-300 p-6 group-hover:border-blue-300 dark:group-hover:border-blue-600`}>
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
                     <span className="text-2xl">{getCategoryIcon(tip.category)}</span>

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Briefcase, Calendar, TrendingUp, Calculator, Share2, Check, Save } from 'lucide-react';
+import { glassCard, glassInset, glassInput } from '@/lib/glass';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import GuideSection from '@/components/GuideSection';
@@ -264,7 +265,7 @@ const RetirementCalculatorContent = () => {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Input Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">퇴직금 정보 입력</h2>
           
           <div className="space-y-6">
@@ -278,7 +279,7 @@ const RetirementCalculatorContent = () => {
                   value={avgSalary}
                   onChange={handleSalaryChange}
                   placeholder="예: 50,000,000"
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className={`${glassInput} px-4 py-3`}
                 />
                 <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
               </div>
@@ -298,7 +299,7 @@ const RetirementCalculatorContent = () => {
                     value={workYears}
                     onChange={handleYearsChange}
                     placeholder="0"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className={`${glassInput} px-4 py-3`}
                   />
                   <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">년</span>
                 </div>
@@ -314,7 +315,7 @@ const RetirementCalculatorContent = () => {
                     value={workMonths}
                     onChange={handleMonthsChange}
                     placeholder="0"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className={`${glassInput} px-4 py-3`}
                   />
                   <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">개월</span>
                 </div>
@@ -337,7 +338,7 @@ const RetirementCalculatorContent = () => {
         </div>
 
         {/* Result Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">계산 결과</h2>
           
           {result ? (

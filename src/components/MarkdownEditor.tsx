@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Markdown-to-HTML converter (no external libraries) ──────────────────────
 
@@ -474,7 +475,7 @@ export default function MarkdownEditor() {
       }
     >
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mb-3 flex flex-wrap items-center gap-3">
+      <div className={`${glassCard} ${glassInset} p-4 mb-3 flex flex-wrap items-center gap-3`}>
         <div className="flex-1 min-w-0">
           <h1 className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
             {t('title')}
@@ -536,7 +537,7 @@ export default function MarkdownEditor() {
 
       {/* ── Toolbar ────────────────────────────────────────────────────────── */}
       {(viewMode === 'split' || viewMode === 'editor') && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg px-4 py-3 mb-3">
+        <div className={`${glassCard} ${glassInset} px-4 py-3 mb-3`}>
           <div className="flex flex-wrap gap-1.5 items-center">
             {/* Bold */}
             <button
@@ -694,7 +695,7 @@ export default function MarkdownEditor() {
       <div className={`flex gap-3 ${isFullscreen ? 'flex-1 overflow-hidden' : ''}`}>
         {/* TOC sidebar */}
         {showToc && (
-          <div className="w-56 flex-shrink-0 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col hidden lg:flex">
+          <div className={`w-56 flex-shrink-0 ${glassCard} ${glassInset} overflow-hidden flex flex-col hidden lg:flex`}>
             <div className="bg-gray-50 dark:bg-gray-700 px-4 py-2.5 border-b border-gray-200 dark:border-gray-600">
               <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('toc')}</span>
             </div>
@@ -734,7 +735,7 @@ export default function MarkdownEditor() {
         {/* Editor */}
         {(viewMode === 'split' || viewMode === 'editor') && (
           <div
-            className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col ${
+            className={`${glassCard} ${glassInset} overflow-hidden flex flex-col ${
               viewMode === 'split' ? 'flex-1' : 'w-full'
             } ${isFullscreen ? 'overflow-hidden' : ''}`}
           >
@@ -760,7 +761,7 @@ export default function MarkdownEditor() {
         {/* Preview */}
         {(viewMode === 'split' || viewMode === 'preview') && (
           <div
-            className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col ${
+            className={`${glassCard} ${glassInset} overflow-hidden flex flex-col ${
               viewMode === 'split' ? 'flex-1' : 'w-full'
             } ${isFullscreen ? 'overflow-hidden' : ''}`}
           >
@@ -781,7 +782,7 @@ export default function MarkdownEditor() {
       </div>
 
       {/* ── Status bar + export ─────────────────────────────────────────────── */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg px-4 py-3 mt-3 flex flex-wrap items-center justify-between gap-3">
+      <div className={`${glassCard} ${glassInset} px-4 py-3 mt-3 flex flex-wrap items-center justify-between gap-3`}>
         {/* Counts */}
         <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
           <span>{t('wordCount')}: <span className="font-medium text-gray-700 dark:text-gray-300">{wordCount.toLocaleString()}</span></span>

@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Search, Plus, Trash2, Copy, Check, BookOpen, Link,
   ChevronLeft, ChevronRight, Calendar, Download, Upload,
   UtensilsCrossed, X
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer, ReferenceLine, AreaChart, Area
@@ -394,7 +395,7 @@ export default function MealDiary() {
       </div>
 
       {/* Date navigator + daily summary */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-6">
           <button onClick={() => navigateDate(-1)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
             <ChevronLeft className="w-5 h-5 text-gray-700 dark:text-gray-300" />
@@ -449,7 +450,7 @@ export default function MealDiary() {
       </div>
 
       {/* Meal tabs + entries */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         {/* Tabs */}
         <div className="flex gap-2 mb-6 overflow-x-auto">
           {MEAL_TYPES.map(mt => (
@@ -480,7 +481,7 @@ export default function MealDiary() {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder={t('searchFood')}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 text-sm"
+              className={`${glassInput} pl-10 pr-4 py-2 text-sm`}
             />
           </div>
         </div>
@@ -518,13 +519,13 @@ export default function MealDiary() {
                 value={manualName}
                 onChange={e => setManualName(e.target.value)}
                 placeholder={t('customFood')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                className={`${glassInput} px-3 py-2 text-sm`}
               />
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <input type="number" value={manualCal} onChange={e => setManualCal(e.target.value)} placeholder={`${t('cal')} (kcal)`} className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm" />
-                <input type="number" value={manualProtein} onChange={e => setManualProtein(e.target.value)} placeholder={`${t('protein')} (g)`} className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm" />
-                <input type="number" value={manualFat} onChange={e => setManualFat(e.target.value)} placeholder={`${t('fat')} (g)`} className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm" />
-                <input type="number" value={manualCarbs} onChange={e => setManualCarbs(e.target.value)} placeholder={`${t('carbs')} (g)`} className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm" />
+                <input type="number" value={manualCal} onChange={e => setManualCal(e.target.value)} placeholder={`${t('cal')} (kcal)`} className={`${glassInput} px-3 py-2 text-sm`} />
+                <input type="number" value={manualProtein} onChange={e => setManualProtein(e.target.value)} placeholder={`${t('protein')} (g)`} className={`${glassInput} px-3 py-2 text-sm`} />
+                <input type="number" value={manualFat} onChange={e => setManualFat(e.target.value)} placeholder={`${t('fat')} (g)`} className={`${glassInput} px-3 py-2 text-sm`} />
+                <input type="number" value={manualCarbs} onChange={e => setManualCarbs(e.target.value)} placeholder={`${t('carbs')} (g)`} className={`${glassInput} px-3 py-2 text-sm`} />
               </div>
               <div className="flex gap-2">
                 <button onClick={addManualEntry} className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-green-700 hover:to-emerald-700">
@@ -579,13 +580,13 @@ export default function MealDiary() {
             onChange={e => updateNote(e.target.value)}
             placeholder={t('notePlaceholder')}
             rows={2}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm resize-none focus:ring-2 focus:ring-green-500"
+            className={`${glassInput} px-3 py-2 text-sm resize-none`}
           />
         </div>
       </div>
 
       {/* Trend charts */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('trendTitle')}</h2>
           <div className="flex gap-2">
@@ -648,7 +649,7 @@ export default function MealDiary() {
       </div>
 
       {/* CSV Import/Export + Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex flex-wrap gap-3 mb-4">
           <button onClick={exportCsv} className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2 text-sm">
             <Download className="w-4 h-4" />

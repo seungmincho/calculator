@@ -2,8 +2,9 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Heart, Trash2, BookOpen, Activity, Link, Check } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface BloodPressureRecord {
   id: string
@@ -174,7 +175,7 @@ export default function BloodPressure() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Input Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Activity className="w-5 h-5" />
               {t('record')}
@@ -190,7 +191,7 @@ export default function BloodPressure() {
                 value={systolic}
                 onChange={(e) => setSystolic(e.target.value)}
                 placeholder={t('systolicPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
             </div>
 
@@ -204,7 +205,7 @@ export default function BloodPressure() {
                 value={diastolic}
                 onChange={(e) => setDiastolic(e.target.value)}
                 placeholder={t('diastolicPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
             </div>
 
@@ -218,7 +219,7 @@ export default function BloodPressure() {
                 value={pulse}
                 onChange={(e) => setPulse(e.target.value)}
                 placeholder={t('pulsePlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
             </div>
 
@@ -232,7 +233,7 @@ export default function BloodPressure() {
                 onChange={(e) => setMemo(e.target.value)}
                 placeholder={t('memoPlaceholder')}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 resize-none"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 resize-none`}
               />
             </div>
 
@@ -258,7 +259,7 @@ export default function BloodPressure() {
         <div className="lg:col-span-2 space-y-6">
           {/* Current Classification */}
           {systolic && diastolic && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 {t('classification.title')}
               </h2>
@@ -276,7 +277,7 @@ export default function BloodPressure() {
           )}
 
           {/* Classification Reference Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('classification.title')}
             </h2>
@@ -307,7 +308,7 @@ export default function BloodPressure() {
       </div>
 
       {/* History */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {t('history.title')}
@@ -388,7 +389,7 @@ export default function BloodPressure() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

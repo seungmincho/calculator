@@ -2,8 +2,9 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, Cake, Calendar, Star, Clock, RotateCcw, GraduationCap, ChevronDown, ChevronUp, Users, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface SchoolInfo {
   elementaryEntryYear: number
@@ -327,7 +328,7 @@ export default function AgeCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Cake className="w-5 h-5 text-pink-500" />
               {t('birthDate')}
@@ -475,7 +476,7 @@ export default function AgeCalculator() {
               </div>
 
               {/* 상세 정보 그리드 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <Clock className="w-5 h-5 text-blue-500" />
                   {t('result.title')}
@@ -585,7 +586,7 @@ export default function AgeCalculator() {
               </div>
 
               {/* 학년 정보 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <GraduationCap className="w-5 h-5 text-indigo-500" />
                   {t('school.title')}
@@ -637,7 +638,7 @@ export default function AgeCalculator() {
               </div>
 
               {/* 인생 타임라인 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <Calendar className="w-5 h-5 text-emerald-500" />
@@ -752,7 +753,7 @@ export default function AgeCalculator() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="text-center py-16">
                 <Cake className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
                 <p className="text-gray-400 dark:text-gray-500 text-sm">
@@ -765,7 +766,7 @@ export default function AgeCalculator() {
       </div>
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

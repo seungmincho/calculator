@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Globe, Copy, Check, RefreshCw, MapPin, Wifi, BookOpen, Server } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface IPData {
   ip: string
@@ -153,7 +154,7 @@ export default function IpChecker() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex flex-col items-center gap-4 py-8">
             <Globe className="w-12 h-12 text-red-600" />
             <p className="text-red-600 dark:text-red-400 text-center">{error}</p>
@@ -192,7 +193,7 @@ export default function IpChecker() {
       {/* Main Cards Grid */}
       <div className="grid lg:grid-cols-3 gap-6">
         {/* IP Address Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-3 mb-4">
             <div className="bg-blue-100 dark:bg-blue-900 rounded-lg p-3">
               <Globe className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -246,7 +247,7 @@ export default function IpChecker() {
         </div>
 
         {/* Location Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-3 mb-4">
             <div className="bg-green-100 dark:bg-green-900 rounded-lg p-3">
               <MapPin className="w-6 h-6 text-green-600 dark:text-green-400" />
@@ -359,7 +360,7 @@ export default function IpChecker() {
         </div>
 
         {/* Network Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-3 mb-4">
             <div className="bg-purple-100 dark:bg-purple-900 rounded-lg p-3">
               <Wifi className="w-6 h-6 text-purple-600 dark:text-purple-400" />
@@ -451,7 +452,7 @@ export default function IpChecker() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-blue-600" />
           {t('guide.title')}

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Heart, Copy, Check, Download, Share2, RefreshCw, BookOpen, ChevronDown } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Korean character decomposition constants ──
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
@@ -336,7 +337,7 @@ export default function NameCompatibility() {
 
       {/* Main Card */}
       <div className="max-w-xl mx-auto">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
 
           {/* Input Phase */}
           {phase === 'input' && (
@@ -352,7 +353,7 @@ export default function NameCompatibility() {
                     onChange={(e) => setName1(e.target.value)}
                     placeholder={t('name1Placeholder')}
                     maxLength={5}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500 text-center text-lg"
+                    className={`${glassInput} px-3 py-2 text-center text-lg`}
                   />
                 </div>
                 <div>
@@ -365,7 +366,7 @@ export default function NameCompatibility() {
                     onChange={(e) => setName2(e.target.value)}
                     placeholder={t('name2Placeholder')}
                     maxLength={5}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500 text-center text-lg"
+                    className={`${glassInput} px-3 py-2 text-center text-lg`}
                     onKeyDown={(e) => { if (e.key === 'Enter') calculate() }}
                   />
                 </div>
@@ -548,7 +549,7 @@ export default function NameCompatibility() {
 
       {/* Guide Section */}
       <div className="max-w-xl mx-auto">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <button
             onClick={() => setGuideOpen(!guideOpen)}
             className="w-full flex items-center justify-between p-6 text-left"

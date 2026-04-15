@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Play, Pause, RotateCcw, Plus, Minus,
   Maximize, Minimize, Volume2, VolumeX,
@@ -287,7 +288,7 @@ export default function PresentationTimer() {
 
       {/* Settings Panel */}
       {showSettings && !isFullscreen && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             <Settings size={18} />
             {t('settings')}
@@ -303,7 +304,7 @@ export default function PresentationTimer() {
                 max={180}
                 value={config.totalMinutes}
                 onChange={e => setConfig(prev => ({ ...prev, totalMinutes: Math.max(1, Number(e.target.value) || 1) }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               />
             </div>
             <div>
@@ -316,7 +317,7 @@ export default function PresentationTimer() {
                 max={config.totalMinutes}
                 value={config.warningMinutes}
                 onChange={e => setConfig(prev => ({ ...prev, warningMinutes: Math.max(0, Math.min(prev.totalMinutes, Number(e.target.value) || 0)) }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-yellow-500`}
               />
             </div>
             <div>
@@ -329,7 +330,7 @@ export default function PresentationTimer() {
                 max={config.warningMinutes}
                 value={config.dangerMinutes}
                 onChange={e => setConfig(prev => ({ ...prev, dangerMinutes: Math.max(0, Math.min(prev.warningMinutes, Number(e.target.value) || 0)) }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-red-500`}
               />
             </div>
           </div>
@@ -338,7 +339,7 @@ export default function PresentationTimer() {
 
       {/* Presets */}
       {!isFullscreen && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
             <Clock size={16} />
             {t('presets')}
@@ -499,7 +500,7 @@ export default function PresentationTimer() {
 
       {/* Guide - hidden in fullscreen */}
       {!isFullscreen && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
             <BookOpen size={20} />
             {t('guide.title')}

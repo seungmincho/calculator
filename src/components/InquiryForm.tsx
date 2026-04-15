@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   MessageSquare,
   Bug,
@@ -13,6 +13,7 @@ import {
   AlertCircle,
   ExternalLink,
 } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 import { getSupabase } from '@/utils/webrtc/supabaseClient'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
 
@@ -162,7 +163,7 @@ export default function InquiryForm() {
 
   if (success) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col items-center justify-center gap-4 min-h-[300px]">
+      <div className={`${glassCard} ${glassInset} p-6 flex flex-col items-center justify-center gap-4 min-h-[300px]`}>
         <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 animate-bounce">
           <CheckCircle className="w-9 h-9 text-green-600 dark:text-green-400" />
         </div>
@@ -185,7 +186,7 @@ export default function InquiryForm() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+    <div className={`${glassCard} ${glassInset} p-6`}>
       <div className="mb-6">
         <h1 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
           <MessageSquare className="w-5 h-5 text-blue-500" />

@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Car,
   Fuel,
@@ -333,7 +334,7 @@ export default function CarMaintenance() {
         {/* ── Left: Input Panel ── */}
         <div className="lg:col-span-1 space-y-6">
           {/* Vehicle Info */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Car className="w-5 h-5 text-blue-500" />
               {t('vehicleInfo')}
@@ -347,7 +348,7 @@ export default function CarMaintenance() {
               <select
                 value={vehicleType}
                 onChange={e => handleVehicleTypeChange(e.target.value as VehicleType)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 <option value="light">{t('vehicleTypes.light')}</option>
                 <option value="small">{t('vehicleTypes.small')}</option>
@@ -369,7 +370,7 @@ export default function CarMaintenance() {
                     type="number"
                     value={displacement || ''}
                     onChange={e => setDisplacement(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
                     placeholder="1998"
                     min={0}
                     max={8000}
@@ -387,7 +388,7 @@ export default function CarMaintenance() {
               <select
                 value={modelYear}
                 onChange={e => setModelYear(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 {yearOptions.map(y => (
                   <option key={y} value={y}>{y}{t('year')} ({CURRENT_YEAR - y}{t('yearsOld')})</option>
@@ -403,7 +404,7 @@ export default function CarMaintenance() {
               <select
                 value={fuelType}
                 onChange={e => handleFuelTypeChange(e.target.value as FuelType)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 <option value="gasoline">{t('fuelTypes.gasoline')}</option>
                 <option value="diesel">{t('fuelTypes.diesel')}</option>
@@ -440,7 +441,7 @@ export default function CarMaintenance() {
                   value={efficiency || ''}
                   onChange={e => setEfficiency(Number(e.target.value))}
                   disabled={!useCustomEfficiency}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-16 disabled:opacity-60"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-16 disabled:opacity-60`}
                   placeholder="11"
                   min={0}
                   step={0.1}
@@ -453,7 +454,7 @@ export default function CarMaintenance() {
           </div>
 
           {/* Driving & Costs */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Fuel className="w-5 h-5 text-amber-500" />
               {t('drivingCosts')}
@@ -469,7 +470,7 @@ export default function CarMaintenance() {
                   type="number"
                   value={annualKm || ''}
                   onChange={e => setAnnualKm(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
                   placeholder="15000"
                   min={0}
                 />
@@ -502,7 +503,7 @@ export default function CarMaintenance() {
                   type="number"
                   value={fuelPrice || ''}
                   onChange={e => setFuelPrice(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
                   min={0}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
@@ -519,7 +520,7 @@ export default function CarMaintenance() {
                   type="number"
                   value={monthlyParking || ''}
                   onChange={e => setMonthlyParking(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
                   placeholder="100000"
                   min={0}
                 />
@@ -538,7 +539,7 @@ export default function CarMaintenance() {
                     type="number"
                     value={carWashFrequency || ''}
                     onChange={e => setCarWashFrequency(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-12"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-12`}
                     min={0}
                     max={30}
                   />
@@ -554,7 +555,7 @@ export default function CarMaintenance() {
                     type="number"
                     value={carWashCost || ''}
                     onChange={e => setCarWashCost(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
                     min={0}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">{t('won')}</span>
@@ -572,7 +573,7 @@ export default function CarMaintenance() {
                   type="number"
                   value={monthlyToll || ''}
                   onChange={e => setMonthlyToll(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-10"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-10`}
                   placeholder="30000"
                   min={0}
                 />
@@ -621,7 +622,7 @@ export default function CarMaintenance() {
               </div>
 
               {/* Cost Breakdown + Pie Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('costBreakdown')}</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Pie Chart */}
@@ -684,7 +685,7 @@ export default function CarMaintenance() {
               </div>
 
               {/* Monthly Breakdown */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('monthlyBreakdown')}</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
@@ -753,7 +754,7 @@ export default function CarMaintenance() {
               </div>
 
               {/* Maintenance Schedule */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <button
                   onClick={() => setShowSchedule(!showSchedule)}
                   className="w-full flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white"
@@ -794,7 +795,7 @@ export default function CarMaintenance() {
             </>
           ) : (
             /* Placeholder before calculation */
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 flex flex-col items-center justify-center text-center min-h-[400px]">
+            <div className={`${glassCard} ${glassInset} p-12 flex flex-col items-center justify-center text-center min-h-[400px]`}>
               <Car className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
               <h3 className="text-lg font-semibold text-gray-500 dark:text-gray-400 mb-2">{t('placeholderTitle')}</h3>
               <p className="text-sm text-gray-400 dark:text-gray-500 max-w-sm">{t('placeholderDescription')}</p>
@@ -804,7 +805,7 @@ export default function CarMaintenance() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef, DragEvent } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Image as ImageIcon, Upload, Download, RefreshCw, BookOpen } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 type OutputFormat = 'jpeg' | 'png' | 'webp'
 
@@ -161,7 +162,7 @@ export default function ImageConverter() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('uploadLabel')}
             </h2>
@@ -258,7 +259,7 @@ export default function ImageConverter() {
 
         {/* Results Panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('preview')}
@@ -362,7 +363,7 @@ export default function ImageConverter() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

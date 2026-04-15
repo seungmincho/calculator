@@ -1,10 +1,11 @@
 'use client'
 
 import React, { useState, useCallback, useRef, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import GuideSection from '@/components/GuideSection'
 import QRCode from 'qrcode'
-import { 
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import {
   QrCode, 
   Download, 
   Copy, 
@@ -375,7 +376,7 @@ const QrGenerator = () => {
         {/* Settings Panel */}
         <div className="lg:col-span-1 space-y-6">
           {/* QR Data Type */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <QrCode className="w-5 h-5 text-blue-600" />
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -656,7 +657,7 @@ const QrGenerator = () => {
           </div>
 
           {/* Logo Upload */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <ImageIcon className="w-5 h-5 text-purple-600" />
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -736,7 +737,7 @@ const QrGenerator = () => {
           </div>
 
           {/* Style Settings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center space-x-2 mb-4">
               <Palette className="w-5 h-5 text-green-600" />
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -818,7 +819,7 @@ const QrGenerator = () => {
 
         {/* QR Code Display */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                 {t('result.title')}

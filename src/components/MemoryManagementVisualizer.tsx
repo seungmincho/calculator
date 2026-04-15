@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { Play, Pause, SkipForward, RotateCcw, BarChart3, BookOpen, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 type Algorithm = 'FIFO' | 'LRU' | 'LFU' | 'Optimal'
@@ -422,7 +423,7 @@ export default function MemoryManagementVisualizer() {
       </div>
 
       {/* Controls */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
         <div className="grid sm:grid-cols-2 gap-4">
           {/* Page reference string */}
           <div className="sm:col-span-2">
@@ -431,7 +432,7 @@ export default function MemoryManagementVisualizer() {
               type="text"
               value={pageStr}
               onChange={e => setPageStr(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+              className={`${glassInput} px-3 py-2 font-mono text-sm`}
               placeholder="7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1"
             />
           </div>
@@ -442,7 +443,7 @@ export default function MemoryManagementVisualizer() {
             <select
               value={frameCount}
               onChange={e => setFrameCount(Number(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              className={`${glassInput} px-3 py-2`}
             >
               {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>{n}개</option>)}
             </select>
@@ -455,7 +456,7 @@ export default function MemoryManagementVisualizer() {
               value={algorithm}
               onChange={e => { setAlgorithm(e.target.value as Algorithm); setCompareMode(false) }}
               disabled={compareMode}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+              className={`${glassInput} px-3 py-2 disabled:opacity-50`}
             >
               {(['FIFO', 'LRU', 'LFU', 'Optimal'] as Algorithm[]).map(a => (
                 <option key={a} value={a}>{ALGO_NAMES[a]}</option>
@@ -557,7 +558,7 @@ export default function MemoryManagementVisualizer() {
             const r = results[algo]
             if (!r) return null
             return (
-              <div key={algo} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 overflow-hidden">
+              <div key={algo} className={`${glassCard} ${glassInset} p-4 overflow-hidden`}>
                 <FrameTable
                   pages={pages}
                   result={r}
@@ -573,7 +574,7 @@ export default function MemoryManagementVisualizer() {
 
       {/* Comparison summary */}
       {results && compareMode && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+        <div className={`${glassCard} ${glassInset} p-5`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
             알고리즘 비교 요약
@@ -626,7 +627,7 @@ export default function MemoryManagementVisualizer() {
 
       {/* Single algorithm stats */}
       {results && !compareMode && results[algorithm] && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+        <div className={`${glassCard} ${glassInset} p-5`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">통계</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="text-center">
@@ -660,7 +661,7 @@ export default function MemoryManagementVisualizer() {
       )}
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setGuideOpen(!guideOpen)}
           className="w-full flex items-center justify-between p-5 text-left"

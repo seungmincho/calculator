@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, ChangeEvent } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Shield, AlertCircle, CheckCircle, Copy, Check, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface ValidationResult {
   isValid: boolean
@@ -138,7 +139,7 @@ export default function ResidentNumber() {
         </p>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <div>
           <label htmlFor="resident-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {t('inputLabel')}
@@ -149,7 +150,7 @@ export default function ResidentNumber() {
             value={input}
             onChange={handleInputChange}
             placeholder={t('inputPlaceholder')}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className={`${glassInput} px-3 py-2`}
             maxLength={14}
           />
         </div>
@@ -240,7 +241,7 @@ export default function ResidentNumber() {
         </div>
       )}
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

@@ -25,9 +25,10 @@
 // guide.tips.title, guide.tips.items (string[])
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import { Calculator, Building, Info, BookOpen, Copy, Check, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── 유틸 ──
 
@@ -290,7 +291,7 @@ export default function AcquisitionTaxCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* ── 입력 패널 ── */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Calculator className="w-5 h-5" />
               {t('propertyType.label')}
@@ -329,7 +330,7 @@ export default function AcquisitionTaxCalculator() {
                 value={price}
                 onChange={(e) => setPrice(formatInput(e.target.value))}
                 placeholder={t('price.placeholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`${glassInput} px-3 py-2`}
               />
               {priceNum > 0 && (
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -350,7 +351,7 @@ export default function AcquisitionTaxCalculator() {
                     value={area}
                     onChange={(e) => setArea(e.target.value)}
                     placeholder={t('area.placeholder')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12"
+                    className={`${glassInput} px-3 py-2 pr-12`}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                     {t('units.sqm')}
@@ -375,7 +376,7 @@ export default function AcquisitionTaxCalculator() {
                   <select
                     value={houseCount}
                     onChange={(e) => setHouseCount(e.target.value as HouseCount)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   >
                     <option value="1">{t('houseCount.one')}</option>
                     <option value="2">{t('houseCount.two')}</option>
@@ -455,7 +456,7 @@ export default function AcquisitionTaxCalculator() {
           {result ? (
             <>
               {/* 총 세금 요약 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {t('result.title')}
@@ -532,7 +533,7 @@ export default function AcquisitionTaxCalculator() {
               </div>
 
               {/* 단계별 내역 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   {t('breakdown.title')}
                 </h2>
@@ -591,7 +592,7 @@ export default function AcquisitionTaxCalculator() {
               </div>
 
               {/* 세율 참고표 */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   {t('rateTable.title')}
                 </h2>
@@ -629,7 +630,7 @@ export default function AcquisitionTaxCalculator() {
             </>
           ) : (
             /* 결과 없을 때 안내 */
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Building className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400">{t('noResult')}</p>
             </div>
@@ -646,7 +647,7 @@ export default function AcquisitionTaxCalculator() {
       </div>
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, RotateCcw, BookOpen, Type } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Mode = 'chosung' | 'decompose' | 'compose'
 
@@ -183,7 +184,7 @@ export default function KoreanSyllable() {
       </div>
 
       {/* Mode Tabs */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2">
+      <div className={`${glassCard} ${glassInset} p-2`}>
         <div className="grid grid-cols-3 gap-2">
           <button
             onClick={() => setMode('chosung')}
@@ -222,7 +223,7 @@ export default function KoreanSyllable() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel: Input */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <label className="block text-sm font-medium text-gray-900 dark:text-white">
                 <Type className="w-4 h-4 inline mr-2" />
@@ -242,7 +243,7 @@ export default function KoreanSyllable() {
                 onChange={(e) => setComposeInput(e.target.value)}
                 placeholder="ㅎㅏㄴㄱㅡㄹ"
                 rows={6}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono"
+                className={`${glassInput} px-3 py-2 font-mono`}
               />
             ) : (
               <textarea
@@ -250,7 +251,7 @@ export default function KoreanSyllable() {
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder={t('placeholder')}
                 rows={6}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                className={`${glassInput} px-3 py-2`}
               />
             )}
 
@@ -290,7 +291,7 @@ export default function KoreanSyllable() {
 
         {/* Right Panel: Result */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                 {t('result')}
@@ -404,7 +405,7 @@ export default function KoreanSyllable() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import { Trash2, Download, RotateCcw, AlertTriangle, TrendingUp, Link, Check } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface BloodSugarRecord {
   id: string
@@ -294,7 +295,7 @@ export default function BloodSugar() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Input Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('addRecord')}</h2>
 
             {/* Value */}
@@ -310,7 +311,7 @@ export default function BloodSugar() {
                 value={valueInput}
                 onChange={e => setValueInput(e.target.value)}
                 placeholder={t('valuePlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-red-500 focus:border-transparent`}
                 onKeyDown={e => { if (e.key === 'Enter') handleSubmit() }}
               />
             </div>
@@ -347,7 +348,7 @@ export default function BloodSugar() {
                   type="date"
                   value={date}
                   onChange={e => setDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm`}
                 />
               </div>
               <div>
@@ -358,7 +359,7 @@ export default function BloodSugar() {
                   type="time"
                   value={time}
                   onChange={e => setTime(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm`}
                 />
               </div>
             </div>
@@ -374,7 +375,7 @@ export default function BloodSugar() {
                 onChange={e => setNote(e.target.value)}
                 placeholder={t('notePlaceholder')}
                 maxLength={100}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm`}
               />
             </div>
 
@@ -402,7 +403,7 @@ export default function BloodSugar() {
           </div>
 
           {/* Statistics Panel */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 mt-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-red-500" />
@@ -447,7 +448,7 @@ export default function BloodSugar() {
 
         {/* History Panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('history')}</h2>
               <div className="flex gap-2">
@@ -534,7 +535,7 @@ export default function BloodSugar() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{t('guideTitle')}</h2>
         <div className="grid md:grid-cols-3 gap-6">
           {/* Fasting guide */}

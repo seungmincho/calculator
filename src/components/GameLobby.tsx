@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Users, Plus, RefreshCw, Clock, AlertCircle, Play, Globe, Lock, Gamepad2, BarChart3, Calendar } from 'lucide-react'
 import { GameRoom, RoomStats, MonthlyStats } from '@/utils/webrtc'
 

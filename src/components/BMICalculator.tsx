@@ -5,8 +5,9 @@ import dynamic from 'next/dynamic'
 import { Activity, Calculator, Heart, Scale, TrendingUp, Share2, Check, Save } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
@@ -326,7 +327,7 @@ export default function BMICalculator() {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 폼 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-pink-600" />
             {t('input.title')}
@@ -484,12 +485,12 @@ export default function BMICalculator() {
               </div>
 
               {/* BMI 게이지 차트 */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <ReactECharts option={bmiGaugeOption} style={{ height: '280px' }} />
               </div>
 
               {/* BMI 단계별 설명 */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                   {t('classification.title')}
                 </h4>
@@ -584,7 +585,7 @@ export default function BMICalculator() {
       {/* BMI 관련 추가 콘텐츠 */}
       <div className="grid md:grid-cols-2 gap-8">
         {/* BMI 계산기 활용법 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-pink-600" />
             {t('usage.title')}
@@ -621,7 +622,7 @@ export default function BMICalculator() {
         </div>
 
         {/* 체중 관리 팁 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <Heart className="w-6 h-6 mr-2 text-red-500" />
             {t('healthTips.title')}
@@ -648,7 +649,7 @@ export default function BMICalculator() {
       </div>
 
       {/* BMI와 질병 위험도 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+      <div className={`${glassCard} ${glassInset} p-8`}>
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
           <TrendingUp className="w-6 h-6 mr-2 text-yellow-600" />
           BMI와 건강 위험도

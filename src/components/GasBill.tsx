@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import { Flame, MapPin, Thermometer, BookOpen, Copy, Check, Share2, Home, ChevronDown, Zap, Droplets } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Region = 'seoul' | 'gyeonggi' | 'incheon' | 'busan' | 'daegu' | 'gwangju' | 'daejeon' | 'ulsan' | 'sejong' | 'gangwon' | 'chungbuk' | 'chungnam' | 'jeonbuk' | 'jeonnam' | 'gyeongbuk' | 'gyeongnam' | 'jeju'
 type Season = 'spring' | 'summer' | 'autumn' | 'winter'
@@ -287,7 +288,7 @@ export default function GasBill() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className="${glassCard} ${glassInset} p-6 space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <Flame className="inline-block w-4 h-4 mr-1" />
@@ -298,7 +299,7 @@ export default function GasBill() {
                 value={usage || ''}
                 onChange={(e) => handleUsageChange(parseFloat(e.target.value) || 0)}
                 placeholder={t('usagePlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
 
@@ -310,7 +311,7 @@ export default function GasBill() {
               <select
                 value={region}
                 onChange={(e) => handleRegionChange(e.target.value as Region)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
               >
                 {regions.map((r) => (
                   <option key={r} value={r}>{t(`regions.${r}`)}</option>
@@ -358,7 +359,7 @@ export default function GasBill() {
           </div>
 
           {/* Boiler Simulation Toggle */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className="${glassCard} ${glassInset} overflow-hidden">
             <button
               onClick={() => setShowBoilerSim(!showBoilerSim)}
               className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -380,7 +381,7 @@ export default function GasBill() {
                       type="number"
                       value={houseSize}
                       onChange={(e) => setHouseSize(parseFloat(e.target.value) || 0)}
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      className="flex-1 px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     />
                     <span className="text-sm text-gray-500 dark:text-gray-400">{t('boilerSim.pyeong')}</span>
                   </div>
@@ -393,7 +394,7 @@ export default function GasBill() {
                   <select
                     value={insulation}
                     onChange={(e) => setInsulation(e.target.value as Insulation)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    className="w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   >
                     <option value="good">{t('boilerSim.insulationGood')}</option>
                     <option value="average">{t('boilerSim.insulationAverage')}</option>
@@ -438,7 +439,7 @@ export default function GasBill() {
 
         {/* Result Panel */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             {result ? (
               <div className="space-y-6">
                 <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-3">
@@ -553,7 +554,7 @@ export default function GasBill() {
           </div>
 
           {/* Monthly Cost Chart */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('monthlyChart.title')}
             </h3>
@@ -588,7 +589,7 @@ export default function GasBill() {
       </div>
 
       {/* Utility Consolidation */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className="${glassCard} ${glassInset} overflow-hidden">
         <button
           onClick={() => setShowUtility(!showUtility)}
           className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -624,7 +625,7 @@ export default function GasBill() {
                   value={electricityBill || ''}
                   onChange={(e) => setElectricityBill(parseFloat(e.target.value) || 0)}
                   placeholder={t('utility.enterAmount')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
 
@@ -638,7 +639,7 @@ export default function GasBill() {
                   value={waterBill || ''}
                   onChange={(e) => setWaterBill(parseFloat(e.target.value) || 0)}
                   placeholder={t('utility.enterAmount')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
 
@@ -651,7 +652,7 @@ export default function GasBill() {
                   value={internetBill || ''}
                   onChange={(e) => setInternetBill(parseFloat(e.target.value) || 0)}
                   placeholder={t('utility.enterAmount')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -673,7 +674,7 @@ export default function GasBill() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

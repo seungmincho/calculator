@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Clock, Globe, Copy, Check, Calendar, Timer, ArrowRightLeft } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/lib/i18n';
 import GuideSection from '@/components/GuideSection';
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 const TimeConverter = () => {
   const t = useTranslations('timeConverter');
@@ -317,7 +318,7 @@ const TimeConverter = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {getCurrentTimeInTimezones().map((tz) => (
-              <div key={tz.value} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+              <div key={tz.value} className={`${glassCard} ${glassInset}-md p-4`}>
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-semibold text-gray-900 dark:text-white">{tz.label}</div>
@@ -430,7 +431,7 @@ const TimeConverter = () => {
               </div>
             </div>
             {activeTab === 'converter' && (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset}-lg p-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <ArrowRightLeft className="h-5 w-5" />
                   {t('timezoneConversion')}
@@ -445,7 +446,7 @@ const TimeConverter = () => {
                     type="datetime-local"
                     value={selectedDateTime.toISOString().slice(0, 16)}
                     onChange={(e) => setSelectedDateTime(new Date(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className={`w-full px-3 py-2 ${glassInput}`}
                   />
                 </div>
 
@@ -457,7 +458,7 @@ const TimeConverter = () => {
                   <select
                     value={sourceTimezone}
                     onChange={(e) => setSourceTimezone(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className={`w-full px-3 py-2 ${glassInput}`}
                   >
                     {timezones.map((tz) => (
                       <option key={tz.value} value={tz.value}>
@@ -475,7 +476,7 @@ const TimeConverter = () => {
                   <select
                     value={targetTimezone}
                     onChange={(e) => setTargetTimezone(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className={`w-full px-3 py-2 ${glassInput}`}
                   >
                     {timezones.map((tz) => (
                       <option key={tz.value} value={tz.value}>
@@ -506,7 +507,7 @@ const TimeConverter = () => {
             )}
 
             {activeTab === 'unix' && (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset}-lg p-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <Timer className="h-5 w-5" />
                   {t('unixTimestamp')} {t('timezoneConversion')}
@@ -521,7 +522,7 @@ const TimeConverter = () => {
                     value={unixTimestamp}
                     onChange={(e) => setUnixTimestamp(e.target.value)}
                     placeholder="1640995200"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className={`w-full px-3 py-2 ${glassInput}`}
                   />
                 </div>
 
@@ -575,7 +576,7 @@ const TimeConverter = () => {
             )}
 
             {activeTab === 'relative' && (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset}-lg p-6`}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
                   {t('relativeTime')} {tc('calculate')}
@@ -589,7 +590,7 @@ const TimeConverter = () => {
                     type="datetime-local"
                     value={selectedDateTime.toISOString().slice(0, 16)}
                     onChange={(e) => setSelectedDateTime(new Date(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className={`w-full px-3 py-2 ${glassInput}`}
                   />
                 </div>
 
@@ -616,7 +617,7 @@ const TimeConverter = () => {
           {/* 유용한 정보 및 도구 */}
           <div className="space-y-6">
             {/* 개발자 도구 */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset}-lg p-6`}>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 🛠️ {t('developerTools')}
               </h3>
@@ -755,7 +756,7 @@ const TimeConverter = () => {
             </div>
 
             {/* 티케팅 도구 */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset}-lg p-6`}>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 🎫 {t('ticketingTools')}
               </h3>
@@ -797,7 +798,7 @@ const TimeConverter = () => {
             </div>
 
             {/* 유용한 팁 */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset}-lg p-6`}>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 💡 {t('timeConversionTips')}
               </h3>
@@ -822,7 +823,7 @@ const TimeConverter = () => {
             </div>
 
             {/* 자주 사용하는 시간대 */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset}-lg p-6`}>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 🌍 {t('commonTimeConversions')}
               </h3>

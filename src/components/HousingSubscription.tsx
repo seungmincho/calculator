@@ -2,8 +2,9 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Info, RotateCcw, ChevronDown, ChevronUp, Link, Check } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Scoring tables ──────────────────────────────────────────────
 
@@ -307,8 +308,7 @@ export default function HousingSubscription() {
     setSubMonthsDirect('')
   }, [])
 
-  const inputClass =
-    'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
+  const inputClass = `${glassInput} px-3 py-2 text-sm`
   const modeBtn = (active: boolean) =>
     `px-3 py-1 text-xs rounded-md font-medium transition-colors ${
       active
@@ -350,7 +350,7 @@ export default function HousingSubscription() {
         <div className="lg:col-span-1 space-y-6">
 
           {/* A. 무주택기간 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <div className="flex items-center gap-2">
               <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-bold">A</span>
               <h2 className="font-semibold text-gray-900 dark:text-white text-sm">{t('sectionA')}</h2>
@@ -399,7 +399,7 @@ export default function HousingSubscription() {
           </div>
 
           {/* B. 부양가족 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <div className="flex items-center gap-2">
               <span className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 text-xs font-bold">B</span>
               <h2 className="font-semibold text-gray-900 dark:text-white text-sm">{t('sectionB')}</h2>
@@ -433,7 +433,7 @@ export default function HousingSubscription() {
           </div>
 
           {/* C. 청약통장 가입기간 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <div className="flex items-center gap-2">
               <span className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 text-xs font-bold">C</span>
               <h2 className="font-semibold text-gray-900 dark:text-white text-sm">{t('sectionC')}</h2>
@@ -468,7 +468,7 @@ export default function HousingSubscription() {
         <div className="lg:col-span-2 space-y-6">
 
           {/* Total score card */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">{t('resultTitle')}</h2>
 
             <div className="flex flex-col sm:flex-row items-center gap-8">
@@ -508,7 +508,7 @@ export default function HousingSubscription() {
           </div>
 
           {/* Score detail table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-4">{t('detailTableTitle')}</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -555,7 +555,7 @@ export default function HousingSubscription() {
       </div>
 
       {/* Guide accordion */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setGuideOpen(o => !o)}
           className="w-full flex items-center justify-between px-6 py-4 text-left"

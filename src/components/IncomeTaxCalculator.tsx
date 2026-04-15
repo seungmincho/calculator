@@ -62,8 +62,9 @@
 
 import { useState, useCallback, useMemo, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Calculator, FileText, Settings, BarChart3, AlertTriangle, Info, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // --- Occupation data ---
 interface OccupationInfo {
@@ -444,10 +445,10 @@ function IncomeTaxContent() {
     { key: 'result', labelKey: 'tabResult', icon: <BarChart3 className="w-4 h-4" /> },
   ]
 
-  const inputClass = 'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+  const inputClass = `${glassInput} px-3 py-2`
   const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
-  const cardClass = 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6'
-  const selectClass = 'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500'
+  const cardClass = `${glassCard} ${glassInset} p-6`
+  const selectClass = `${glassInput} px-3 py-2`
 
   return (
     <div className="space-y-6">

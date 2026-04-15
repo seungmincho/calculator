@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect, useMemo, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import Link from 'next/link'
 import { X, BarChart3, Trophy, Eye } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 import { getAllPopularTools } from '@/utils/toolAnalytics'
 import { menuConfig, categoryKeys, type CategoryKey, type MenuItem } from '@/config/menuConfig'
 
@@ -162,7 +163,7 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
         role="dialog"
         aria-modal="true"
         aria-labelledby="analytics-title"
-        className="relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+        className={`${glassCard} ${glassInset} relative w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Smartphone, BookOpen, AlertCircle, Lock, Unlock } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface Orientation {
   beta: number   // front-back tilt (-180 to 180)
@@ -315,7 +316,7 @@ export default function SpiritLevel() {
       </div>
 
       {/* Main display */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex flex-col items-center">
           {/* Canvas */}
           <canvas
@@ -412,7 +413,7 @@ export default function SpiritLevel() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

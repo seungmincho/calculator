@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef, DragEvent } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   FileUp,
   FilePlus,
@@ -17,6 +17,7 @@ import {
   Loader2,
 } from 'lucide-react'
 import { PDFDocument, degrees } from 'pdf-lib'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type TabId = 'merge' | 'split' | 'rotate' | 'imageToPdf'
 
@@ -484,7 +485,7 @@ export default function PdfTools() {
 
           {/* File list */}
           {mergeFiles.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-2">
+            <div className={`${glassCard} ${glassInset} p-4 space-y-2`}>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{t('merge.reorderHint')}</p>
               {mergeFiles.map((pf, index) => (
                 <div
@@ -558,7 +559,7 @@ export default function PdfTools() {
           </div>
 
           {splitFile && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-900 dark:text-white truncate">{splitFile.name}</p>
@@ -627,7 +628,7 @@ export default function PdfTools() {
                     value={splitRange}
                     onChange={(e) => setSplitRange(e.target.value)}
                     placeholder="1-3, 5, 7-9"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                   />
                   <p className="text-xs text-gray-400 mt-1">{t('split.rangeHint')}</p>
                 </div>
@@ -670,7 +671,7 @@ export default function PdfTools() {
           </div>
 
           {rotateFile && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-900 dark:text-white truncate">{rotateFile.name}</p>
@@ -775,7 +776,7 @@ export default function PdfTools() {
           </div>
 
           {imageFiles.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               {/* Page size */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -802,14 +803,14 @@ export default function PdfTools() {
                       type="number"
                       value={customWidth}
                       onChange={(e) => setCustomWidth(e.target.value)}
-                      className="w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+                      className={`w-24 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm`}
                     />
                     <span className="text-gray-500">×</span>
                     <input
                       type="number"
                       value={customHeight}
                       onChange={(e) => setCustomHeight(e.target.value)}
-                      className="w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+                      className={`w-24 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm`}
                     />
                     <span className="text-xs text-gray-400">mm</span>
                   </div>
@@ -862,7 +863,7 @@ export default function PdfTools() {
       )}
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

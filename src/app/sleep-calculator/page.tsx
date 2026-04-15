@@ -92,7 +92,7 @@ export default function SleepCalculatorPage() {
       />
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
+          <Suspense fallback={null}>
             <I18nWrapper>
               <SleepCalculator />
               <div className="mt-8">

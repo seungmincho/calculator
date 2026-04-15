@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   FileText,
   Plus,
@@ -224,7 +225,7 @@ export default function Notepad() {
           <div
             className={`${
               sidebarOpen ? 'block' : 'hidden'
-            } lg:block bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-4`}
+            } lg:block ${glassCard} ${glassInset} p-4 space-y-4`}
           >
             {/* New Note Button */}
             <button
@@ -287,7 +288,7 @@ export default function Notepad() {
         {/* Editor */}
         <div className="lg:col-span-3">
           {activeNote ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col h-[700px]">
+            <div className={`${glassCard} ${glassInset} p-6 flex flex-col h-[700px]`}>
               {/* Title Input */}
               <input
                 type="text"
@@ -306,7 +307,7 @@ export default function Notepad() {
                 onChange={(e) =>
                   updateNote(activeNote.id, { content: e.target.value })
                 }
-                className="flex-1 w-full h-full min-h-[400px] px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 resize-none"
+                className={`flex-1 w-full h-full min-h-[400px] px-4 py-3 ${glassInput} focus:ring-2 focus:ring-blue-500 resize-none`}
                 placeholder="내용을 입력하세요..."
               />
 
@@ -339,7 +340,7 @@ export default function Notepad() {
               </div>
             </div>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 h-[700px] flex items-center justify-center">
+            <div className={`${glassCard} ${glassInset} p-12 h-[700px] flex items-center justify-center`}>
               <div className="text-center text-gray-500 dark:text-gray-400">
                 <FileText className="w-16 h-16 mx-auto mb-4 opacity-50" />
                 <p className="text-lg">{t('noNotes')}</p>
@@ -351,7 +352,7 @@ export default function Notepad() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

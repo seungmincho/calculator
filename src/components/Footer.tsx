@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Calculator } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/lib/i18n';
 import { menuConfig, categoryKeys } from '@/config/menuConfig';
 
 // Each category shows top N popular tools in footer for SEO internal linking

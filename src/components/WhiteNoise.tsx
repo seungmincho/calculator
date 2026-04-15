@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Play, Square, BookOpen, Volume2, Moon, Timer } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Noise types ──
 type NoiseType = 'white' | 'pink' | 'brown' | 'rain' | 'wind' | 'wave'
@@ -220,7 +221,7 @@ export default function WhiteNoise() {
       </div>
 
       {/* Main control */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+      <div className={`${glassCard} ${glassInset} p-8`}>
         {/* Play button */}
         <div className="flex justify-center mb-8">
           <button
@@ -310,7 +311,7 @@ export default function WhiteNoise() {
       </div>
 
       {/* Noise descriptions */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('aboutNoise')}</h3>
         <div className="grid sm:grid-cols-2 gap-3">
           {NOISE_TYPES.map(type => (
@@ -326,7 +327,7 @@ export default function WhiteNoise() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

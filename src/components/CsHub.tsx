@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import Link from 'next/link'
 import {
   BookOpen, Brain, Code, Target, GraduationCap,

@@ -93,7 +93,7 @@ export default function JwtDecoderPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={null}>
         <I18nWrapper>
           <JwtDecoder />
           <div className="mt-8">

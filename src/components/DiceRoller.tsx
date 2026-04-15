@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { RotateCcw, Plus, Minus } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 import GuideSection from '@/components/GuideSection'
 
 const DICE_SIDES = [4, 6, 8, 10, 12, 20]
@@ -113,7 +114,7 @@ export default function DiceRoller() {
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Controls */}
           <div className="lg:col-span-1 space-y-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
               {/* Dice count */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -204,7 +205,7 @@ export default function DiceRoller() {
           {/* Results */}
           <div className="lg:col-span-2 space-y-4">
             {/* Dice faces */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">{t('diceResults')}</h2>
               {results.length === 0 ? (
                 <div className="flex items-center justify-center h-20 text-gray-400 dark:text-gray-500 text-sm">
@@ -245,7 +246,7 @@ export default function DiceRoller() {
 
             {/* History */}
             {history.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">{t('history')}</h2>
                 <div className="space-y-2">
                   {history.map((h, i) => (

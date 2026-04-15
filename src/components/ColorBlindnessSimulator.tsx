@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Upload, Camera, Download, Info, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 import GuideSection from '@/components/GuideSection'
 
 // ── CVD Transformation Matrices ──────────────────────────────────────────────
@@ -523,7 +524,7 @@ export default function ColorBlindnessSimulator() {
       </div>
 
       {/* Type Selector */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4">
+      <div className={`${glassCard} ${glassInset} p-4`}>
         <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('typeSelector')}</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {CVD_TYPES.map((type) => {
@@ -562,7 +563,7 @@ export default function ColorBlindnessSimulator() {
 
           {/* Side-by-side on mobile, slider on desktop */}
           <div className="space-y-4 lg:hidden">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+            <div className={`${glassCard} ${glassInset} overflow-hidden`}>
               <div className="px-4 py-2 bg-gray-50 dark:bg-gray-700 text-xs font-semibold text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-600">
                 {t('original')}
               </div>
@@ -572,7 +573,7 @@ export default function ColorBlindnessSimulator() {
                 style={{ maxHeight: '320px', objectFit: 'contain' }}
               />
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+            <div className={`${glassCard} ${glassInset} overflow-hidden`}>
               <div className="px-4 py-2 bg-blue-50 dark:bg-blue-950 text-xs font-semibold text-blue-700 dark:text-blue-300 border-b border-blue-200 dark:border-blue-800">
                 {t('simulated')} — {t(`types.${selectedType}.name`)}
               </div>
@@ -658,7 +659,7 @@ export default function ColorBlindnessSimulator() {
       )}
 
       {/* Info Panel */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setShowInfo(!showInfo)}
           className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"

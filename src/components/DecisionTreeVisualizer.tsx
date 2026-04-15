@@ -5,6 +5,7 @@ import {
   TreeDeciduous, Play, SkipForward, RotateCcw, ChevronDown, ChevronUp,
   Plus, Trash2, BookOpen, BarChart3, Table2,
 } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 type Row = Record<string, string>
@@ -738,7 +739,7 @@ export default function DecisionTreeVisualizer() {
         {/* ── Left Panel: Controls ── */}
         <div className="lg:col-span-1 space-y-4">
           {/* Preset selector */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-gray-900 dark:text-white">데이터셋</h2>
             <div className="grid grid-cols-1 gap-2">
               {PRESETS.map((p, i) => (
@@ -755,7 +756,7 @@ export default function DecisionTreeVisualizer() {
           </div>
 
           {/* Split criterion & max depth */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-gray-900 dark:text-white">설정</h2>
             <div>
               <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">분할 기준</label>
@@ -786,7 +787,7 @@ export default function DecisionTreeVisualizer() {
           </div>
 
           {/* Action buttons */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-3">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
             <button onClick={handleBuild}
               className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg px-4 py-3 font-medium hover:from-green-700 hover:to-emerald-700 transition-colors">
               <Play className="w-4 h-4" /> 트리 생성
@@ -806,7 +807,7 @@ export default function DecisionTreeVisualizer() {
 
           {/* Stats */}
           {stats && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+            <div className={`${glassCard} ${glassInset} p-5`}>
               <h2 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                 <BarChart3 className="w-4 h-4" /> 통계
               </h2>
@@ -835,7 +836,7 @@ export default function DecisionTreeVisualizer() {
         {/* ── Right Panel: Canvas + Table ── */}
         <div className="lg:col-span-2 space-y-4">
           {/* Tree Canvas */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4" ref={containerRef}>
+          <div className={`${glassCard} ${glassInset} p-4`} ref={containerRef}>
             <h2 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
               <TreeDeciduous className="w-4 h-4" /> 트리 시각화
             </h2>
@@ -866,7 +867,7 @@ export default function DecisionTreeVisualizer() {
           </div>
 
           {/* Data Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <button onClick={() => setShowTable(!showTable)}
               className="flex items-center gap-2 w-full text-left font-semibold text-gray-900 dark:text-white mb-2">
               <Table2 className="w-4 h-4" />
@@ -927,7 +928,7 @@ export default function DecisionTreeVisualizer() {
       </div>
 
       {/* ── Guide Section ── */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button onClick={() => setShowGuide(!showGuide)}
           className="flex items-center gap-2 w-full text-left">
           <BookOpen className="w-5 h-5 text-green-600" />

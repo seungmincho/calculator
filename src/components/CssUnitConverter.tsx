@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, ChevronDown, ChevronUp, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type CssUnit = 'px' | 'rem' | 'em' | 'vw' | 'vh' | '%' | 'pt' | 'cm' | 'mm' | 'in'
 
@@ -159,7 +160,7 @@ export default function CssUnitConverter() {
         {/* Left: Input + Settings */}
         <div className="lg:col-span-1 space-y-4">
           {/* Input card */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {t('inputLabel')}
@@ -169,7 +170,7 @@ export default function CssUnitConverter() {
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
                 placeholder={t('inputPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg font-mono"
+                className={`${glassInput} px-3 py-2 text-lg font-mono`}
                 aria-label={t('inputLabel')}
               />
             </div>
@@ -198,7 +199,7 @@ export default function CssUnitConverter() {
           </div>
 
           {/* Settings card */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white">{t('settingsTitle')}</h2>
 
             <div>
@@ -210,7 +211,7 @@ export default function CssUnitConverter() {
                   onBlur={e => handleSettingChange('rootFontSize', e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleSettingChange('rootFontSize', (e.target as HTMLInputElement).value)}
                   min="1"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                  className={`${glassInput} px-3 py-2 text-sm`}
                   aria-label={t('rootFontSize')}
                 />
                 <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">px</span>
@@ -226,7 +227,7 @@ export default function CssUnitConverter() {
                   onBlur={e => handleSettingChange('parentFontSize', e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleSettingChange('parentFontSize', (e.target as HTMLInputElement).value)}
                   min="1"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                  className={`${glassInput} px-3 py-2 text-sm`}
                   aria-label={t('parentFontSize')}
                 />
                 <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">px</span>
@@ -242,7 +243,7 @@ export default function CssUnitConverter() {
                   onBlur={e => handleSettingChange('viewportWidth', e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleSettingChange('viewportWidth', (e.target as HTMLInputElement).value)}
                   min="1"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                  className={`${glassInput} px-3 py-2 text-sm`}
                   aria-label={t('viewportWidth')}
                 />
                 <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">px</span>
@@ -258,7 +259,7 @@ export default function CssUnitConverter() {
                   onBlur={e => handleSettingChange('viewportHeight', e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleSettingChange('viewportHeight', (e.target as HTMLInputElement).value)}
                   min="1"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                  className={`${glassInput} px-3 py-2 text-sm`}
                   aria-label={t('viewportHeight')}
                 />
                 <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">px</span>
@@ -269,7 +270,7 @@ export default function CssUnitConverter() {
 
         {/* Right: Results */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('resultsTitle')}</h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {conversions.map(({ unit, value, formatted }) => {
@@ -319,7 +320,7 @@ export default function CssUnitConverter() {
       </div>
 
       {/* Quick Reference Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{t('quickRefTitle')}</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('quickRefDesc')}</p>
         <div className="overflow-x-auto">
@@ -349,7 +350,7 @@ export default function CssUnitConverter() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(prev => !prev)}
           className="w-full flex items-center justify-between text-left"

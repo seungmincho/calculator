@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Upload, Download, Trash2, RefreshCw, X, ImageIcon } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -333,7 +334,7 @@ export default function CollageMaker() {
 
           {/* Uploaded images */}
           {images.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+            <div className={`${glassCard} ${glassInset} p-5`}>
               <h2 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                 <ImageIcon className="h-4 w-4" />
                 {t('uploadImages')} ({images.length})
@@ -361,7 +362,7 @@ export default function CollageMaker() {
           )}
 
           {/* Layout selection */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+          <div className={`${glassCard} ${glassInset} p-5`}>
             <h2 className="font-semibold text-gray-900 dark:text-white mb-3">{t('layout')}</h2>
             <div className="grid grid-cols-3 gap-2">
               {layoutIds.map(id => (
@@ -388,7 +389,7 @@ export default function CollageMaker() {
           </div>
 
           {/* Settings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
 
             {/* Spacing */}
             <div>
@@ -484,7 +485,7 @@ export default function CollageMaker() {
 
         {/* Right: canvas preview */}
         <div className="lg:col-span-3">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 sticky top-4">
+          <div className={`${glassCard} ${glassInset} p-5 sticky top-4`}>
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-semibold text-gray-900 dark:text-white">{t('preview')}</h2>
               {isRendering && (
@@ -511,7 +512,7 @@ export default function CollageMaker() {
       </div>
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
           {t('guide.title')}
         </h2>

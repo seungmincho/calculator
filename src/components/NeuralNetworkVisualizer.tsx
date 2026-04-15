@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { RotateCcw, Play, ArrowRight, ArrowLeft, Zap, ChevronDown, ChevronUp } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 type ActivationFn = 'sigmoid' | 'relu' | 'tanh'
@@ -514,7 +515,7 @@ export default function NeuralNetworkVisualizer() {
         {/* Controls Panel */}
         <div className="lg:col-span-1 space-y-4">
           {/* Presets */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">프리셋</h3>
             <div className="space-y-2">
               {PRESETS.map((p) => (
@@ -530,7 +531,7 @@ export default function NeuralNetworkVisualizer() {
           </div>
 
           {/* Architecture */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">네트워크 구조</h3>
             <div className="space-y-3">
               <div>
@@ -583,7 +584,7 @@ export default function NeuralNetworkVisualizer() {
           </div>
 
           {/* Activation & LR */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">하이퍼파라미터</h3>
             <div className="space-y-3">
               <div>
@@ -591,7 +592,7 @@ export default function NeuralNetworkVisualizer() {
                 <select
                   value={activation}
                   onChange={e => setActivation(e.target.value as ActivationFn)}
-                  className="w-full mt-1 px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className={`w-full mt-1 px-2 py-1.5 text-sm ${glassInput}`}
                 >
                   <option value="sigmoid">Sigmoid</option>
                   <option value="relu">ReLU</option>
@@ -608,7 +609,7 @@ export default function NeuralNetworkVisualizer() {
           </div>
 
           {/* Inputs & Targets */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">입출력 값</h3>
             <div className="space-y-2">
               {inputs.map((v, i) => (
@@ -642,7 +643,7 @@ export default function NeuralNetworkVisualizer() {
           </div>
 
           {/* Action Buttons */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 space-y-2">
+          <div className={`${glassCard} ${glassInset} p-4 space-y-2`}>
             <button onClick={runForward}
               className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors">
               <ArrowRight size={16} /> 순전파
@@ -665,7 +666,7 @@ export default function NeuralNetworkVisualizer() {
         {/* Main Canvas + Training Info */}
         <div className="lg:col-span-3 space-y-4">
           {/* Canvas */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">네트워크 구조</h3>
               <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
@@ -692,15 +693,15 @@ export default function NeuralNetworkVisualizer() {
 
           {/* Training Info */}
           <div className="grid sm:grid-cols-3 gap-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <div className="text-xs text-gray-500 dark:text-gray-400">에포크</div>
               <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{epoch}</div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <div className="text-xs text-gray-500 dark:text-gray-400">손실 (MSE)</div>
               <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{loss.toFixed(6)}</div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <div className="text-xs text-gray-500 dark:text-gray-400">출력</div>
               <div className="text-lg font-bold text-gray-900 dark:text-white mt-1">
                 [{network.activations[network.layers.length - 1].map(v => v.toFixed(4)).join(', ')}]
@@ -710,14 +711,14 @@ export default function NeuralNetworkVisualizer() {
 
           {/* Loss Chart */}
           {lossHistory.length >= 2 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">손실 추이</h3>
               {renderLossChart()}
             </div>
           )}
 
           {/* Weight Matrix (collapsible) */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+          <div className={`${glassCard} ${glassInset}`}>
             <button
               onClick={() => setShowWeights(!showWeights)}
               className="w-full flex items-center justify-between p-4 text-sm font-semibold text-gray-900 dark:text-white"
@@ -758,7 +759,7 @@ export default function NeuralNetworkVisualizer() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">가이드</h2>
 
         <div>

@@ -118,7 +118,7 @@ export default function FancyTextPage() {
       />
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={<div className="text-center text-gray-500 py-20">Loading...</div>}>
+          <Suspense fallback={null}>
             <I18nWrapper>
               <FancyText />
               <div className="mt-8">

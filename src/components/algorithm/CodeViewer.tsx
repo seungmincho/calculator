@@ -1,7 +1,7 @@
 'use client'
 import { useState, useCallback } from 'react'
 import { Copy, Check } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 
 interface CodeViewerProps {
   code: string

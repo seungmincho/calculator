@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, Dice1, Shuffle, Users, RotateCcw } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Mode = 'number' | 'list' | 'team'
 
@@ -248,7 +249,7 @@ export default function RandomPicker() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t(`${mode}.title`)}
             </h2>
@@ -265,7 +266,7 @@ export default function RandomPicker() {
                       type="number"
                       value={minNumber}
                       onChange={(e) => setMinNumber(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                     />
                   </div>
                   <div>
@@ -276,7 +277,7 @@ export default function RandomPicker() {
                       type="number"
                       value={maxNumber}
                       onChange={(e) => setMaxNumber(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                     />
                   </div>
                 </div>
@@ -289,7 +290,7 @@ export default function RandomPicker() {
                     value={numberCount}
                     onChange={(e) => setNumberCount(e.target.value)}
                     min="1"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
                 </div>
                 <div className="flex items-center gap-2">
@@ -319,7 +320,7 @@ export default function RandomPicker() {
                     onChange={(e) => setListInput(e.target.value)}
                     placeholder={t('list.placeholder')}
                     rows={8}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
                   />
                   <p className="text-xs text-gray-400 mt-1">
                     {listInput.split('\n').filter(item => item.trim() !== '').length}개 항목
@@ -334,7 +335,7 @@ export default function RandomPicker() {
                     value={listCount}
                     onChange={(e) => setListCount(e.target.value)}
                     min="1"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
                 </div>
               </div>
@@ -352,7 +353,7 @@ export default function RandomPicker() {
                     onChange={(e) => setTeamInput(e.target.value)}
                     placeholder={t('team.placeholder')}
                     rows={8}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
                   />
                   <p className="text-xs text-gray-400 mt-1">
                     {teamInput.split('\n').filter(p => p.trim() !== '').length}명
@@ -367,7 +368,7 @@ export default function RandomPicker() {
                     value={teamCount}
                     onChange={(e) => setTeamCount(e.target.value)}
                     min="2"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
                 </div>
               </div>
@@ -396,7 +397,7 @@ export default function RandomPicker() {
 
         {/* 결과 패널 */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('common.result')}</h2>
 
             {/* Number mode result */}
@@ -557,7 +558,7 @@ export default function RandomPicker() {
       </div>
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

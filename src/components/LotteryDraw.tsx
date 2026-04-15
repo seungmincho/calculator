@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { RotateCcw, Play, Shuffle } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import GuideSection from '@/components/GuideSection'
 
 interface Lot {
@@ -104,7 +105,7 @@ export default function LotteryDraw() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6 max-w-lg mx-auto">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-6 max-w-lg mx-auto`}>
           {/* Total count */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -177,7 +178,7 @@ export default function LotteryDraw() {
               onChange={(e) => setParticipantInput(e.target.value)}
               placeholder={t('participantsPlaceholder')}
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 resize-none"
+              className={`${glassInput} px-3 py-2 text-sm resize-none`}
             />
             <p className="text-xs text-gray-400 mt-1">{t('participantsHint')}</p>
           </div>
@@ -224,7 +225,7 @@ export default function LotteryDraw() {
       </div>
 
       {/* Status bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 flex flex-wrap gap-4 items-center justify-between">
+      <div className={`${glassCard} ${glassInset} p-4 flex flex-wrap gap-4 items-center justify-between`}>
         <div className="flex gap-6 text-sm">
           <span className="text-gray-500 dark:text-gray-400">
             {t('remaining')}: <strong className="text-gray-900 dark:text-white">{remainingLots}</strong>
@@ -303,7 +304,7 @@ export default function LotteryDraw() {
 
       {/* Results summary after all revealed */}
       {allRevealed && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('results')}</h2>
           <div className="space-y-2">
             {revealOrder.map((lotId, orderIdx) => {

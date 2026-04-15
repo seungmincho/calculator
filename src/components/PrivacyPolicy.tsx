@@ -1,12 +1,13 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 export default function PrivacyPolicy() {
   const t = useTranslations('privacy')
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-10">
+    <div className={`${glassCard} ${glassInset} p-6 md:p-10`}>
       <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">
         {t('title')}
       </h1>

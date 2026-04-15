@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 import { Activity, Calculator, Target, Users, Share2, Check, Save } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface BodyFatResult {
   bodyFatPercentage: number // 체지방률 (%)
@@ -385,7 +386,7 @@ export default function BodyFatCalculator() {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 폼 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <Calculator className="w-6 h-6 mr-2 text-purple-600" />
             {t('input.title')}
@@ -631,7 +632,7 @@ export default function BodyFatCalculator() {
               </div>
 
               {/* 체지방률 분류표 */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                   {t('classification.title')}
                 </h4>
@@ -743,7 +744,7 @@ export default function BodyFatCalculator() {
       </div>
 
       {/* 측정 방법 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+      <div className={`${glassCard} ${glassInset} p-8`}>
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
           <Activity className="w-6 h-6 mr-2 text-green-600" />
           {t('measurementGuide.title')}

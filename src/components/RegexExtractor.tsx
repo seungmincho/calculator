@@ -3,9 +3,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Search, Replace, Filter, Copy, Download, Upload, RefreshCw, Zap, Eye, EyeOff, AlertCircle, CheckCircle, Share2, Save, Trash2, FileText, Code, Mail, Globe, Hash, Calendar, Lightbulb, Target, BookOpen, Wand2, HelpCircle } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface RegexResult {
   operation: 'grep' | 'replace' | 'extract'
@@ -586,7 +587,7 @@ export default function RegexExtractor() {
 
       {/* 정규식 가이드 */}
       {showGuide && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
+        <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
               <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
@@ -646,7 +647,7 @@ export default function RegexExtractor() {
 
       {/* 패턴 빌더 */}
       {showPatternBuilder && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
+        <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
               <Target className="w-5 h-5 mr-2 text-purple-600" />
@@ -696,7 +697,7 @@ export default function RegexExtractor() {
         {/* 입력 패널 */}
         <div className="space-y-6">
           {/* 작업 유형 선택 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center">
               <Zap className="w-5 h-5 mr-2 text-blue-600" />
               {t('operation.title')}
@@ -729,7 +730,7 @@ export default function RegexExtractor() {
           </div>
 
           {/* 정규식 패턴 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('pattern.title')}
@@ -838,7 +839,7 @@ export default function RegexExtractor() {
 
           {/* 프리셋 패턴 */}
           {showPresets && (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   {t('presets.title')}
@@ -893,7 +894,7 @@ export default function RegexExtractor() {
           )}
 
           {/* 입력 텍스트 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('input.title')}
@@ -946,7 +947,7 @@ export default function RegexExtractor() {
         <div className="space-y-6">
           {/* 매치 정보 */}
           {pattern && (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
                   {isValid ? (
@@ -1008,7 +1009,7 @@ export default function RegexExtractor() {
           )}
 
           {/* 결과 출력 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('results.title')}

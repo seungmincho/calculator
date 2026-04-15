@@ -1,8 +1,9 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Trophy, Medal, Crown, RefreshCw } from 'lucide-react'
 import type { UseLeaderboardReturn } from '@/hooks/useLeaderboard'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface LeaderboardPanelProps {
   leaderboard: UseLeaderboardReturn
@@ -31,7 +32,7 @@ export default function LeaderboardPanel({ leaderboard, className = '' }: Leader
   }
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 ${className}`}>
+    <div className={`${glassCard} ${glassInset} p-6 ${className}`}>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
           <Trophy className="w-5 h-5 text-yellow-500" />

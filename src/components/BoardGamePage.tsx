@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Monitor, Users, Zap, ArrowLeft, ChevronRight, Gamepad2 } from 'lucide-react'
 import Link from 'next/link'
 

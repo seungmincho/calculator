@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, ClipboardList } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Unicode conversion maps ──────────────────────────────────────────────────
 
@@ -361,7 +362,7 @@ export default function FancyText() {
       </div>
 
       {/* Input area */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+      <div className="${glassCard} ${glassInset} p-6 space-y-4">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           {t('inputLabel')}
         </label>
@@ -370,7 +371,7 @@ export default function FancyText() {
           onChange={(e) => setInput(e.target.value)}
           placeholder={t('inputPlaceholder')}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+          className="w-full px-3 py-2 ${glassInput} placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
           aria-label={t('inputLabel')}
         />
         <p className="text-xs text-gray-400 dark:text-gray-500">{t('asciiNote')}</p>
@@ -400,7 +401,7 @@ export default function FancyText() {
 
       {/* Results grid */}
       {results.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+        <div className="${glassCard} ${glassInset} p-12 text-center">
           <p className="text-gray-400 dark:text-gray-500 text-lg">{t('noInput')}</p>
         </div>
       ) : (
@@ -408,7 +409,7 @@ export default function FancyText() {
           {results.map((r) => (
             <div
               key={r.key}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 flex flex-col gap-3 group"
+              className="${glassCard} ${glassInset} p-5 flex flex-col gap-3 group"
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">
@@ -445,7 +446,7 @@ export default function FancyText() {
       )}
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+      <div className="${glassCard} ${glassInset} p-6 space-y-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           {t('guide.title')}
         </h2>

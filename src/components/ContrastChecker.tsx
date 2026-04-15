@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Palette, ArrowLeftRight, Shuffle, Check, X, Copy, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── WCAG Contrast Algorithm ──
 
@@ -293,7 +294,7 @@ export default function ContrastChecker() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left: Color pickers */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* Foreground */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -316,7 +317,7 @@ export default function ContrastChecker() {
                   onChange={e => handleFgInputChange(e.target.value)}
                   placeholder="#000000"
                   maxLength={7}
-                  className="flex-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                  className={`${glassInput} flex-1 px-3 py-2 font-mono text-sm`}
                   aria-label={t('foreground')}
                 />
                 <button
@@ -369,7 +370,7 @@ export default function ContrastChecker() {
                   onChange={e => handleBgInputChange(e.target.value)}
                   placeholder="#FFFFFF"
                   maxLength={7}
-                  className="flex-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                  className={`${glassInput} flex-1 px-3 py-2 font-mono text-sm`}
                   aria-label={t('background')}
                 />
                 <button
@@ -400,7 +401,7 @@ export default function ContrastChecker() {
         {/* Right: Results */}
         <div className="lg:col-span-2 space-y-4">
           {/* Contrast ratio card */}
-          <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-2 ${gradeBg}`}>
+          <div className={`${glassCard} ${glassInset} p-6 border-2 ${gradeBg}`}>
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('contrastRatio')}</p>
@@ -429,7 +430,7 @@ export default function ContrastChecker() {
           </div>
 
           {/* WCAG grade table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
               {t('wcagGrades')}
             </h2>
@@ -489,7 +490,7 @@ export default function ContrastChecker() {
           </div>
 
           {/* Text preview */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
               {t('preview.title')}
             </h2>
@@ -508,7 +509,7 @@ export default function ContrastChecker() {
 
           {/* Suggestions */}
           {(!wcag.normalAA || !wcag.normalAAA) && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
                 {t('suggestion')}
               </h2>
@@ -584,7 +585,7 @@ export default function ContrastChecker() {
       </div>
 
       {/* Preset pairs */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
           {t('presets')}
         </h2>
@@ -623,7 +624,7 @@ export default function ContrastChecker() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           {t('guide.title')}

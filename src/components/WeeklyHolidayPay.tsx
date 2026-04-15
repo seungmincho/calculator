@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { Copy, Check, BookOpen, AlertTriangle, Info, Link, Sparkles, Loader2, X } from 'lucide-react'
 import { useChromeAI } from '@/hooks/useChromeAI'
 import dynamic from 'next/dynamic'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
@@ -232,7 +233,7 @@ function WeeklyHolidayPayInner() {
 
         {/* 입력 패널 */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('input.title')}</h2>
 
             {/* 시급 */}
@@ -246,7 +247,7 @@ function WeeklyHolidayPayInner() {
                   min={0}
                   value={hourlyWage}
                   onChange={e => setHourlyWage(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-8"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-8`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 text-sm">원</span>
               </div>
@@ -309,7 +310,7 @@ function WeeklyHolidayPayInner() {
                   step={0.001}
                   value={weeksPerMonth}
                   onChange={e => setWeeksPerMonth(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 text-sm">{t('input.weeksUnit')}</span>
               </div>
@@ -343,7 +344,7 @@ function WeeklyHolidayPayInner() {
           )}
 
           {/* 결과 카드 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result.title')}</h2>
               <button
@@ -520,7 +521,7 @@ function WeeklyHolidayPayInner() {
 
           {/* 도넛 차트 */}
           {result.eligible && result.weeklyTotal > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">{t('result.chartTitle')}</h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
                 {t('result.baseRatio')}: {result.baseRatio.toFixed(1)}% &nbsp;|&nbsp;
@@ -533,7 +534,7 @@ function WeeklyHolidayPayInner() {
       </div>
 
       {/* 시나리오 비교 테이블 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">{t('scenario.title')}</h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('scenario.description')}</p>
         <div className="overflow-x-auto">
@@ -605,7 +606,7 @@ function WeeklyHolidayPayInner() {
       </div>
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-2 mb-6">
           <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('guide.title')}</h2>

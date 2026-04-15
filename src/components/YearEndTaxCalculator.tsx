@@ -140,9 +140,10 @@
 
 import { useState, useCallback, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Calculator, Share2, Check, ChevronRight, RotateCcw, BookOpen, AlertTriangle } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ────────────────────────────────────────
 // Types
@@ -762,7 +763,7 @@ function YearEndTaxCalculatorContent() {
           value={value}
           onChange={(e) => onChange(fmtInput(e.target.value))}
           placeholder={placeholder || '0'}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 pr-8"
+          className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 pr-8`}
         />
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">{t('won')}</span>
       </div>
@@ -833,7 +834,7 @@ function YearEndTaxCalculatorContent() {
       </div>
 
       {/* Tab content */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
 
         {/* ── Basic info tab ── */}
         {activeTab === 'basic' && (
@@ -866,7 +867,7 @@ function YearEndTaxCalculatorContent() {
                   max="20"
                   value={dependentCount}
                   onChange={(e) => setDependentCount(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
               <MoneyInput label={t('prepaidTax')} desc={t('prepaidTaxDesc')} value={prepaidTax} onChange={setPrepaidTax} />
@@ -918,7 +919,7 @@ function YearEndTaxCalculatorContent() {
                   max="10"
                   value={childCount}
                   onChange={(e) => setChildCount(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
             </div>
@@ -956,7 +957,7 @@ function YearEndTaxCalculatorContent() {
                     <select
                       value={educationChildLevel}
                       onChange={(e) => setEducationChildLevel(e.target.value as 'elementary' | 'university')}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500"
+                      className={`w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500`}
                     >
                       <option value="elementary">{t('educationLevelElementary')}</option>
                       <option value="university">{t('educationLevelUniversity')}</option>

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Play, Square, ChevronDown, ChevronUp, Wind } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface BreathingPattern {
   id: string
@@ -191,7 +192,7 @@ export default function BreathingExercise() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings panel */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white">{t('selectPattern')}</h2>
 
             {PATTERNS.map(pattern => (
@@ -215,7 +216,7 @@ export default function BreathingExercise() {
           </div>
 
           {/* Session stats */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">{t('sessionStats')}</h2>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
@@ -232,7 +233,7 @@ export default function BreathingExercise() {
 
         {/* Animation panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col items-center">
+          <div className={`${glassCard} ${glassInset} p-6 flex flex-col items-center`}>
             {/* SVG circle animation */}
             <div className="relative flex items-center justify-center" style={{ width: 280, height: 280 }}>
               <svg width="280" height="280" viewBox="0 0 280 280">
@@ -377,7 +378,7 @@ export default function BreathingExercise() {
       </div>
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           className="flex items-center justify-between w-full text-left"
           onClick={() => setGuideOpen(o => !o)}

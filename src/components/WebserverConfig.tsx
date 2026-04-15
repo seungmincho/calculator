@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Download, RotateCcw, BookOpen, ChevronDown, ChevronUp, Server, Zap, FileSearch, Upload, ArrowRight } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── 타입 ──
 
@@ -792,7 +793,7 @@ export default function WebserverConfig() {
       {viewMode === 'analyze' && (
         <div className="grid lg:grid-cols-2 gap-6">
           {/* 입력 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('analyzeTitle')}</h2>
               {analysisResult && (
@@ -822,12 +823,12 @@ export default function WebserverConfig() {
               }}
               placeholder={t('analyzePlaceholder')}
               rows={20}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-mono text-sm resize-y"
+              className={`w-full px-4 py-3 ${glassInput} focus:ring-2 focus:ring-blue-500 font-mono text-sm resize-y`}
             />
           </div>
 
           {/* 분석 결과 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('analyzeResult')}</h2>
 
             {analysisResult ? (
@@ -923,7 +924,7 @@ export default function WebserverConfig() {
         {/* 왼쪽: 설정 패널 (2/5) */}
         <div className="lg:col-span-2 space-y-4">
           {/* 서버 타입 + 시나리오 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {/* 서버 타입 */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('serverType')}</label>
@@ -972,7 +973,7 @@ export default function WebserverConfig() {
                 value={options.domain}
                 onChange={e => updateOption('domain', e.target.value)}
                 placeholder={t('domainPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm font-mono`}
               />
             </div>
 
@@ -985,7 +986,7 @@ export default function WebserverConfig() {
                   value={options.backendHost}
                   onChange={e => updateOption('backendHost', e.target.value)}
                   placeholder={t('backendHostPlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm font-mono`}
                 />
               </div>
             )}
@@ -999,7 +1000,7 @@ export default function WebserverConfig() {
                   value={options.staticRoot}
                   onChange={e => updateOption('staticRoot', e.target.value)}
                   placeholder={t('staticRootPlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm font-mono"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm font-mono`}
                 />
               </div>
             )}
@@ -1018,7 +1019,7 @@ export default function WebserverConfig() {
                         next[i] = e.target.value
                         updateOption('upstreamServers', next)
                       }}
-                      className="flex-1 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm font-mono"
+                      className={`flex-1 px-3 py-1.5 ${glassInput} text-sm font-mono`}
                     />
                     {options.upstreamServers.length > 2 && (
                       <button
@@ -1037,7 +1038,7 @@ export default function WebserverConfig() {
           </div>
 
           {/* 옵션 토글 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
             <ToggleRow label={t('enableSsl')} checked={options.enableSsl} onChange={v => updateOption('enableSsl', v)} />
             {options.enableSsl && <ToggleRow label={t('enableHttp2')} checked={options.enableHttp2} onChange={v => updateOption('enableHttp2', v)} />}
             <ToggleRow label={t('enableGzip')} checked={options.enableGzip} onChange={v => updateOption('enableGzip', v)} />
@@ -1089,13 +1090,13 @@ export default function WebserverConfig() {
                 onChange={e => updateOption('customDirective', e.target.value)}
                 placeholder={t('customDirectivePlaceholder')}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-xs font-mono resize-y"
+                className={`w-full px-3 py-2 ${glassInput} text-xs font-mono resize-y`}
               />
             </div>
           </div>
 
           {/* 베스트 프리셋 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Zap className="w-4 h-4 text-yellow-500" />
               {t('presetLabel')}
@@ -1117,7 +1118,7 @@ export default function WebserverConfig() {
 
         {/* 오른쪽: 생성된 설정 (3/5) */}
         <div className="lg:col-span-3">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sticky top-4">
+          <div className={`${glassCard} ${glassInset} p-6 sticky top-4`}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('generatedConfig')} — {options.serverType === 'nginx' ? 'Nginx' : 'Caddy'}
@@ -1155,7 +1156,7 @@ export default function WebserverConfig() {
       </div>}
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="flex items-center justify-between w-full text-left"

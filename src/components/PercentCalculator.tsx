@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, Percent, ArrowRightLeft, TrendingUp, PlusCircle, Trash2, RotateCcw } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Mode = 'basicPercent' | 'whatPercent' | 'change' | 'addSubtract'
 
@@ -186,7 +187,7 @@ export default function PercentCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* 입력 패널 */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t(`${mode}.title`)}
             </h2>
@@ -206,7 +207,7 @@ export default function PercentCalculator() {
                     value={basicValue}
                     onChange={(e) => setBasicValue(e.target.value)}
                     placeholder={t('common.placeholder')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
                 </div>
                 <div>
@@ -219,7 +220,7 @@ export default function PercentCalculator() {
                       value={basicPercent}
                       onChange={(e) => setBasicPercent(e.target.value)}
                       placeholder={t('common.placeholder')}
-                      className="w-full px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={`w-full px-3 py-2 pr-8 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">%</span>
                   </div>
@@ -239,7 +240,7 @@ export default function PercentCalculator() {
                     value={partValue}
                     onChange={(e) => setPartValue(e.target.value)}
                     placeholder={t('common.placeholder')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
                 </div>
                 <div>
@@ -251,7 +252,7 @@ export default function PercentCalculator() {
                     value={wholeValue}
                     onChange={(e) => setWholeValue(e.target.value)}
                     placeholder={t('common.placeholder')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
                 </div>
               </div>
@@ -269,7 +270,7 @@ export default function PercentCalculator() {
                     value={fromValue}
                     onChange={(e) => setFromValue(e.target.value)}
                     placeholder={t('common.placeholder')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
                 </div>
                 <div>
@@ -281,7 +282,7 @@ export default function PercentCalculator() {
                     value={toValue}
                     onChange={(e) => setToValue(e.target.value)}
                     placeholder={t('common.placeholder')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
                 </div>
               </div>
@@ -299,7 +300,7 @@ export default function PercentCalculator() {
                     value={addSubValue}
                     onChange={(e) => setAddSubValue(e.target.value)}
                     placeholder={t('common.placeholder')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
                 </div>
                 <div>
@@ -312,7 +313,7 @@ export default function PercentCalculator() {
                       value={addSubPercent}
                       onChange={(e) => setAddSubPercent(e.target.value)}
                       placeholder={t('common.placeholder')}
-                      className="w-full px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={`w-full px-3 py-2 pr-8 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">%</span>
                   </div>
@@ -401,7 +402,7 @@ export default function PercentCalculator() {
         {/* 결과 패널 */}
         <div className="lg:col-span-2 space-y-6">
           {/* 실시간 결과 */}
-          <div ref={resultRef} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div ref={resultRef} className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('common.result')}</h2>
 
             {/* 기본 퍼센트 결과 */}
@@ -653,7 +654,7 @@ export default function PercentCalculator() {
 
           {/* 계산 기록 */}
           {history.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('common.history')}</h2>
                 <button
@@ -700,7 +701,7 @@ export default function PercentCalculator() {
       </div>
 
       {/* 가이드 섹션 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

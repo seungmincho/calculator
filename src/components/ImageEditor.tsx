@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import { glassCard, glassInset } from '@/lib/glass';
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Upload, Download, RotateCw, RotateCcw, Square, Type, Palette, Sliders, Undo, Redo, Maximize, X, Save, Image as ImageIcon } from 'lucide-react';
@@ -630,7 +632,7 @@ const ImageEditor = () => {
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Upload Section */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
                 <Upload className="w-5 h-5 inline mr-2" />
                 이미지 업로드
@@ -692,7 +694,7 @@ const ImageEditor = () => {
 
             {/* Tools */}
             {originalImage && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 mt-6">
+              <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
                 <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
                   편집 도구
                 </h3>
@@ -838,7 +840,7 @@ const ImageEditor = () => {
           {/* Preview Section */}
           <div className="lg:col-span-2">
             {originalImage && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                     편집 미리보기
@@ -895,7 +897,7 @@ const ImageEditor = () => {
           {/* Settings Section */}
           <div className="lg:col-span-1">
             {originalImage && currentTool === 'filter' && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
                   필터 설정
                 </h2>
@@ -1013,7 +1015,7 @@ const ImageEditor = () => {
 
             {/* Result */}
             {editedImageUrl && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 mt-6">
+              <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
                 <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
                   편집 결과
                 </h2>
@@ -1041,7 +1043,7 @@ const ImageEditor = () => {
         </div>
 
         {/* Info Section */}
-        <div className="mt-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">이미지 편집기 사용법</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">

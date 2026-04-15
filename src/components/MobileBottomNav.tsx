@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Home, Star, Clock, Search, X } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { usePathname, useRouter } from 'next/navigation'
 import { getFavorites } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'

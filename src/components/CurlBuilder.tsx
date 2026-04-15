@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Copy,
   Check,
@@ -17,6 +17,7 @@ import {
   Code,
   ArrowRightLeft,
 } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 
@@ -1215,14 +1216,14 @@ export default function CurlBuilder() {
             value={row.key}
             onChange={e => updateFn(i, 'key', e.target.value)}
             placeholder={keyPlaceholder}
-            className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className={`${glassInput} flex-1 min-w-0 px-2 py-1.5 text-sm`}
           />
           <input
             type="text"
             value={row.value}
             onChange={e => updateFn(i, 'value', e.target.value)}
             placeholder={valuePlaceholder}
-            className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className={`${glassInput} flex-1 min-w-0 px-2 py-1.5 text-sm`}
           />
           <button
             onClick={() => removeFn(i)}
@@ -1309,7 +1310,7 @@ export default function CurlBuilder() {
       {/* Main content */}
       {activeTab === 'parse' ? (
         /* ── Parse Mode ── */
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+        <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('parse.title')}</h2>
 
           {/* Example dropdown */}
@@ -1324,7 +1325,7 @@ export default function CurlBuilder() {
                   setParseError('')
                 }
               }}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500"
+              className={`${glassInput} px-3 py-2 text-sm`}
               defaultValue=""
             >
               <option value="" disabled>-- {t('parse.examples')} --</option>
@@ -1338,7 +1339,7 @@ export default function CurlBuilder() {
             value={parseInput}
             onChange={e => { setParseInput(e.target.value); setParseError('') }}
             placeholder={t('parse.placeholder')}
-            className="w-full h-48 px-3 py-2 font-mono text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 resize-y"
+            className={`${glassInput} h-48 px-3 py-2 font-mono text-sm resize-y`}
           />
 
           {parseError && (
@@ -1372,7 +1373,7 @@ export default function CurlBuilder() {
           {/* Left: Form */}
           <div className="space-y-4">
             {/* Method & URL */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
                 {t('request.method')} & {t('request.url')}
               </h3>
@@ -1380,7 +1381,7 @@ export default function CurlBuilder() {
                 <select
                   value={config.method}
                   onChange={e => setConfig(prev => ({ ...prev, method: e.target.value }))}
-                  className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-medium text-sm focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} px-3 py-2 font-medium text-sm`}
                 >
                   {HTTP_METHODS.map(m => (
                     <option key={m} value={m}>{m}</option>
@@ -1407,7 +1408,7 @@ export default function CurlBuilder() {
             </div>
 
             {/* Query Params */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
                 {t('request.queryParams')}
               </h3>
@@ -1418,7 +1419,7 @@ export default function CurlBuilder() {
             </div>
 
             {/* Headers */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
                   {t('request.headers')}
@@ -1447,7 +1448,7 @@ export default function CurlBuilder() {
             </div>
 
             {/* Authentication (accordion) */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+            <div className={`${glassCard} ${glassInset} overflow-hidden`}>
               <button
                 onClick={() => setShowAuth(!showAuth)}
                 className="w-full flex items-center justify-between p-6 text-left"
@@ -1486,7 +1487,7 @@ export default function CurlBuilder() {
                       value={config.auth.token || ''}
                       onChange={e => setConfig(prev => ({ ...prev, auth: { ...prev.auth, token: e.target.value } }))}
                       placeholder={t('auth.token')}
-                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                      className={`${glassInput} px-3 py-2 text-sm`}
                     />
                   )}
 
@@ -1497,14 +1498,14 @@ export default function CurlBuilder() {
                         value={config.auth.username || ''}
                         onChange={e => setConfig(prev => ({ ...prev, auth: { ...prev.auth, username: e.target.value } }))}
                         placeholder={t('auth.username')}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        className={`${glassInput} px-3 py-2 text-sm`}
                       />
                       <input
                         type="password"
                         value={config.auth.password || ''}
                         onChange={e => setConfig(prev => ({ ...prev, auth: { ...prev.auth, password: e.target.value } }))}
                         placeholder={t('auth.password')}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        className={`${glassInput} px-3 py-2 text-sm`}
                       />
                     </div>
                   )}
@@ -1516,14 +1517,14 @@ export default function CurlBuilder() {
                         value={config.auth.headerName || 'X-API-Key'}
                         onChange={e => setConfig(prev => ({ ...prev, auth: { ...prev.auth, headerName: e.target.value } }))}
                         placeholder={t('auth.headerName')}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        className={`${glassInput} px-3 py-2 text-sm`}
                       />
                       <input
                         type="text"
                         value={config.auth.apiKeyValue || ''}
                         onChange={e => setConfig(prev => ({ ...prev, auth: { ...prev.auth, apiKeyValue: e.target.value } }))}
                         placeholder={t('auth.apiKeyValue')}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        className={`${glassInput} px-3 py-2 text-sm`}
                       />
                     </div>
                   )}
@@ -1533,7 +1534,7 @@ export default function CurlBuilder() {
 
             {/* Body (for POST/PUT/PATCH) */}
             {showBodySection && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+              <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
                 <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
                   {t('request.body')}
                 </h3>
@@ -1559,7 +1560,7 @@ export default function CurlBuilder() {
                     value={config.body.content || ''}
                     onChange={e => setConfig(prev => ({ ...prev, body: { ...prev.body, content: e.target.value } }))}
                     placeholder='{"key": "value"}'
-                    className="w-full h-40 px-3 py-2 font-mono text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 resize-y"
+                    className={`${glassInput} h-40 px-3 py-2 font-mono text-sm resize-y`}
                   />
                 )}
 
@@ -1572,14 +1573,14 @@ export default function CurlBuilder() {
                           value={field.key}
                           onChange={e => updateBodyField(i, 'key', e.target.value)}
                           placeholder={t('params.key')}
-                          className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                          className={`${glassInput} flex-1 min-w-0 px-2 py-1.5 text-sm`}
                         />
                         <input
                           type="text"
                           value={field.value}
                           onChange={e => updateBodyField(i, 'value', e.target.value)}
                           placeholder={t('params.value')}
-                          className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                          className={`${glassInput} flex-1 min-w-0 px-2 py-1.5 text-sm`}
                         />
                         <label className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">
                           <input
@@ -1617,14 +1618,14 @@ export default function CurlBuilder() {
                           value={field.key}
                           onChange={e => updateBodyField(i, 'key', e.target.value)}
                           placeholder={t('params.key')}
-                          className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                          className={`${glassInput} flex-1 min-w-0 px-2 py-1.5 text-sm`}
                         />
                         <input
                           type="text"
                           value={field.value}
                           onChange={e => updateBodyField(i, 'value', e.target.value)}
                           placeholder={t('params.value')}
-                          className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                          className={`${glassInput} flex-1 min-w-0 px-2 py-1.5 text-sm`}
                         />
                         <button
                           onClick={() => removeBodyField(i)}
@@ -1647,7 +1648,7 @@ export default function CurlBuilder() {
             )}
 
             {/* Options (accordion) */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+            <div className={`${glassCard} ${glassInset} overflow-hidden`}>
               <button
                 onClick={() => setShowOptions(!showOptions)}
                 className="w-full flex items-center justify-between p-6 text-left"
@@ -1692,7 +1693,7 @@ export default function CurlBuilder() {
                       }))}
                       placeholder="30"
                       min={1}
-                      className="w-24 px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                      className={`${glassInput} w-24 px-2 py-1.5 text-sm`}
                     />
                   </div>
                 </div>
@@ -1721,7 +1722,7 @@ export default function CurlBuilder() {
 
           {/* Right: Output */}
           <div className="space-y-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4 lg:sticky lg:top-4">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-4 lg:sticky lg:top-4`}>
               {/* Export format pills */}
               <div className="flex gap-1 flex-wrap">
                 {exportFormats.map(f => (
@@ -1790,7 +1791,7 @@ export default function CurlBuilder() {
       )}
 
       {/* History */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setShowHistory(!showHistory)}
           className="w-full flex items-center justify-between p-6 text-left"
@@ -1838,7 +1839,7 @@ export default function CurlBuilder() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between p-6 text-left"

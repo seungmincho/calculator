@@ -5,6 +5,7 @@ import {
   Play, Pause, SkipForward, RotateCcw, Shuffle, BookOpen,
   ChevronDown, ChevronUp, MousePointer, Target, Info,
 } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface Point {
@@ -530,7 +531,7 @@ export default function KmeansClusteringVisualizer() {
         {/* ── Left: Controls ── */}
         <div className="lg:col-span-1 space-y-4">
           {/* K slider */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
               <Target className="w-4 h-4" /> 설정
             </h2>
@@ -577,7 +578,7 @@ export default function KmeansClusteringVisualizer() {
           </div>
 
           {/* Data presets */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-3">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
             <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
               <Shuffle className="w-4 h-4" /> 데이터 생성
             </h2>
@@ -603,7 +604,7 @@ export default function KmeansClusteringVisualizer() {
           </div>
 
           {/* Run controls */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-3">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
             <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
               실행
             </h2>
@@ -635,7 +636,7 @@ export default function KmeansClusteringVisualizer() {
           </div>
 
           {/* Stats */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 space-y-3">
+          <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
             <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
               <Info className="w-4 h-4" /> 통계
             </h2>
@@ -705,7 +706,7 @@ export default function KmeansClusteringVisualizer() {
 
         {/* ── Right: Canvas ── */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <div className="relative overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
               <canvas
                 ref={canvasRef}
@@ -746,7 +747,7 @@ export default function KmeansClusteringVisualizer() {
           </div>
 
           {/* Step explanation */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 mt-4">
+          <div className={`${glassCard} ${glassInset} p-5 mt-4`}>
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">알고리즘 단계</h3>
             <div className="flex gap-2 flex-wrap">
               {([
@@ -775,7 +776,7 @@ export default function KmeansClusteringVisualizer() {
       </div>
 
       {/* ── Guide Section ── */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <div className={`${glassCard} ${glassInset}`}>
         <button
           onClick={() => setGuideOpen(o => !o)}
           className="w-full flex items-center justify-between p-6 text-left"

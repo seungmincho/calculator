@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { DollarSign, Clock, TrendingUp, BookOpen, ArrowRightLeft, Link, Check } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type InputType = 'hourly' | 'daily' | 'monthly' | 'yearly'
 
@@ -198,7 +199,7 @@ function HourlyWageInner() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center gap-2 mb-4">
               <ArrowRightLeft className="w-5 h-5 text-blue-600" />
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -245,7 +246,7 @@ function HourlyWageInner() {
                     }
                   }}
                   placeholder={t('amountPlaceholder')}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`${glassInput} pl-10 pr-3 py-2`}
                 />
               </div>
             </div>
@@ -272,7 +273,7 @@ function HourlyWageInner() {
                     min="1"
                     max="24"
                     step="0.5"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   />
                   <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {t('hours')}
@@ -295,7 +296,7 @@ function HourlyWageInner() {
                     min="1"
                     max="7"
                     step="0.5"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   />
                   <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {t('days')}
@@ -318,7 +319,7 @@ function HourlyWageInner() {
                     min="1"
                     max="31"
                     step="0.01"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   />
                   <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {t('days')}
@@ -341,7 +342,7 @@ function HourlyWageInner() {
 
         {/* Results Panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
               {t('result.title')}
             </h2>
@@ -631,7 +632,7 @@ function HourlyWageInner() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center gap-2 mb-6">
           <BookOpen className="w-5 h-5 text-blue-600" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">

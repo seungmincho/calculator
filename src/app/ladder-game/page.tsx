@@ -134,7 +134,7 @@ export default function LadderGamePage() {
         <div className="fixed bottom-20 right-10 w-96 h-96 bg-indigo-300/24 dark:bg-indigo-500/14 rounded-full blur-3xl pointer-events-none" />
         <div className="fixed top-1/2 left-1/2 w-64 h-64 bg-cyan-200/18 dark:bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
         <div className="container mx-auto px-4 relative z-10">
-          <Suspense fallback={<div className="text-center py-20 text-gray-400">Loading...</div>}>
+          <Suspense fallback={null}>
             <LadderGameTabs />
           </Suspense>
         </div>

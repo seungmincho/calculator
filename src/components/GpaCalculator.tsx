@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { GraduationCap, Plus, Trash2, BookOpen, RotateCcw, ChevronDown, ChevronUp, Link, Check, Target } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface Course {
   id: string
@@ -275,7 +276,7 @@ export default function GpaCalculator() {
         {/* Left Panel: Settings & Guide */}
         <div className="lg:col-span-1 space-y-6">
           {/* Scale Selection */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('scale')}
             </h2>
@@ -311,7 +312,7 @@ export default function GpaCalculator() {
           </div>
 
           {/* Target GPA Reverse Calculator */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
               <Target className="w-5 h-5 text-indigo-500" />
               {t('reverse.title')}
@@ -338,7 +339,7 @@ export default function GpaCalculator() {
                   min={0}
                   max={maxScale}
                   step={0.01}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
               <div>
@@ -351,7 +352,7 @@ export default function GpaCalculator() {
                   onChange={e => setRemainingCredits(e.target.value)}
                   placeholder="예: 30"
                   min={1}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
@@ -428,7 +429,7 @@ export default function GpaCalculator() {
             {semesters.map((semester, semesterIdx) => {
               const semesterStats = calculateSemesterGPA(semester.courses)
               return (
-                <div key={semester.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <div key={semester.id} className="${glassCard} ${glassInset} overflow-hidden">
                   {/* Semester Header */}
                   <div
                     className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 cursor-pointer"
@@ -485,7 +486,7 @@ export default function GpaCalculator() {
                                 updateCourse(semester.id, course.id, 'name', e.target.value)
                               }
                               placeholder="예: 자료구조론"
-                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                           </div>
                           <div className="col-span-3">
@@ -494,7 +495,7 @@ export default function GpaCalculator() {
                               onChange={(e) =>
                                 updateCourse(semester.id, course.id, 'credits', Number(e.target.value))
                               }
-                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                               <option value={1}>1</option>
                               <option value={2}>2</option>
@@ -507,7 +508,7 @@ export default function GpaCalculator() {
                               onChange={(e) =>
                                 updateCourse(semester.id, course.id, 'grade', e.target.value)
                               }
-                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full px-3 py-2 ${glassInput} text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                               <option value="">성적 선택</option>
                               {gradeOptions.map(grade => (
@@ -557,7 +558,7 @@ export default function GpaCalculator() {
       </div>
 
       {/* Comprehensive Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

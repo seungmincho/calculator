@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from 'next/navigation'
 import { Moon, Sun, Calendar, ArrowRightLeft, Copy, Check, BookOpen, RotateCcw, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // Lunar calendar data for years 1900-2100
 // Each entry encodes: leap month info + month lengths for that lunar year
@@ -340,7 +341,7 @@ export default function LunarConverter() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Settings Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Mode Toggle */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -395,7 +396,7 @@ export default function LunarConverter() {
                   <select
                     value={solarYear}
                     onChange={(e) => setSolarYear(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   >
                     {Array.from({ length: 201 }, (_, i) => 1900 + i).map(year => (
                       <option key={year} value={year}>{year}</option>
@@ -415,7 +416,7 @@ export default function LunarConverter() {
                       const maxDay = getDaysInMonth(solarYear, newMonth, false)
                       if (solarDay > maxDay) setSolarDay(maxDay)
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   >
                     {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
                       <option key={month} value={month}>{month}</option>
@@ -430,7 +431,7 @@ export default function LunarConverter() {
                   <select
                     value={solarDay}
                     onChange={(e) => setSolarDay(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   >
                     {Array.from({ length: getDaysInMonth(solarYear, solarMonth, false) }, (_, i) => i + 1).map(day => (
                       <option key={day} value={day}>{day}</option>
@@ -452,7 +453,7 @@ export default function LunarConverter() {
                   <select
                     value={lunarYear}
                     onChange={(e) => setLunarYear(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   >
                     {Array.from({ length: 201 }, (_, i) => 1900 + i).map(year => (
                       <option key={year} value={year}>{year}</option>
@@ -476,7 +477,7 @@ export default function LunarConverter() {
                         setIsLeap(false)
                       }
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   >
                     {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
                       <option key={month} value={month}>{month}</option>
@@ -491,7 +492,7 @@ export default function LunarConverter() {
                   <select
                     value={lunarDay}
                     onChange={(e) => setLunarDay(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   >
                     {Array.from({ length: getDaysInMonth(lunarYear, lunarMonth, true) }, (_, i) => i + 1).map(day => (
                       <option key={day} value={day}>{day}</option>
@@ -549,7 +550,7 @@ export default function LunarConverter() {
 
         {/* Result Panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
               <Calendar className="w-5 h-5" />
               {t('result.title')}
@@ -655,7 +656,7 @@ export default function LunarConverter() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

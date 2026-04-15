@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Monitor, Globe, Smartphone, Copy, Check, RefreshCw, BookOpen } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 interface ScreenData {
   screenWidth: number
@@ -255,7 +256,7 @@ Device Type: ${deviceData.deviceType}
       {/* Info Grid */}
       <div className="grid md:grid-cols-3 gap-6">
         {/* Screen Info */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-blue-100 dark:bg-blue-950 rounded-lg">
               <Monitor className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -304,7 +305,7 @@ Device Type: ${deviceData.deviceType}
         </div>
 
         {/* Browser Info */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-green-100 dark:bg-green-950 rounded-lg">
               <Globe className="w-5 h-5 text-green-600 dark:text-green-400" />
@@ -367,7 +368,7 @@ Device Type: ${deviceData.deviceType}
         </div>
 
         {/* Device Info */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-purple-100 dark:bg-purple-950 rounded-lg">
               <Smartphone className="w-5 h-5 text-purple-600 dark:text-purple-400" />
@@ -412,7 +413,7 @@ Device Type: ${deviceData.deviceType}
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Upload, Download, Image as ImageIcon, Trash2, Settings, RefreshCw, BookOpen, Check } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 // ── Types ──
 
@@ -363,7 +364,7 @@ export default function ImageCompressor() {
         {/* Left: Settings panel */}
         <div className="lg:col-span-1 space-y-6">
           {/* Upload area */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div
               className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
                 isDragging
@@ -400,7 +401,7 @@ export default function ImageCompressor() {
           </div>
 
           {/* Compression settings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Settings size={18} />
               {t('settings')}
@@ -525,7 +526,7 @@ export default function ImageCompressor() {
 
           {/* Summary stats */}
           {images.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-3">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('summary')}</h3>
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
@@ -557,7 +558,7 @@ export default function ImageCompressor() {
 
         {/* Right: Image list */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             {images.length === 0 ? (
               <div className="text-center py-16">
                 <ImageIcon className="mx-auto mb-4 text-gray-300 dark:text-gray-600" size={64} />
@@ -711,7 +712,7 @@ export default function ImageCompressor() {
       </div>
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen size={20} />
           {t('guide.title')}

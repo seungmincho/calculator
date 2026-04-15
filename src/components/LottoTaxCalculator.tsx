@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Copy, Check, Link, RotateCcw, BookOpen, ChevronDown, ChevronUp, TrendingUp, Trophy, Banknote } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
 
 const THRESHOLD = 300_000_000 // 3억원
@@ -242,7 +243,7 @@ export default function LottoTaxCalculator() {
         {/* Left: Input Panel */}
         <div className="lg:col-span-1 space-y-4">
           {/* Prize Input */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {t('prizeAmount')}
@@ -257,7 +258,7 @@ export default function LottoTaxCalculator() {
                   }}
                   onKeyDown={handleKeyDown}
                   placeholder={t('prizeAmountPlaceholder')}
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-lg font-bold focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={`${glassInput} px-4 py-3 pr-12 text-lg font-bold`}
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm">
                   {t('won')}
@@ -308,7 +309,7 @@ export default function LottoTaxCalculator() {
           </div>
 
           {/* Rank presets */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-1.5">
               <Trophy className="w-4 h-4 text-yellow-500" />
               {t('rankPresets')}
@@ -335,14 +336,14 @@ export default function LottoTaxCalculator() {
         {/* Right: Result Panel */}
         <div className="lg:col-span-2 space-y-4">
           {!result ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-16 text-center text-gray-400 dark:text-gray-500">
+            <div className={`${glassCard} ${glassInset} p-16 text-center text-gray-400 dark:text-gray-500`}>
               <Banknote className="w-16 h-16 mx-auto mb-4 opacity-30" />
               <p>{t('prizeAmountPlaceholder')}</p>
             </div>
           ) : (
             <>
               {/* Main result card */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+              <div className={`${glassCard} ${glassInset} overflow-hidden`}>
                 <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3">
                   <h2 className="text-white font-semibold">{t('result')}</h2>
                 </div>
@@ -482,7 +483,7 @@ export default function LottoTaxCalculator() {
           )}
 
           {/* Comparison table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className={`${glassCard} ${glassInset} overflow-hidden`}>
             <button
               onClick={() => setShowComparison(!showComparison)}
               className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -545,7 +546,7 @@ export default function LottoTaxCalculator() {
       </div>
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -579,7 +580,7 @@ export default function LottoTaxCalculator() {
       </div>
 
       {/* FAQ */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('faqTitle')}</h2>
         <div className="space-y-4">
           {[1, 2, 3].map(i => (

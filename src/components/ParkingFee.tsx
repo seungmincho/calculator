@@ -2,8 +2,9 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Car, Clock, Settings, BookOpen, Calculator, RotateCcw, Link, Check } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface FeeSettings {
   baseFee: number
@@ -177,7 +178,7 @@ export default function ParkingFee() {
         {/* Left: Settings Panel */}
         <div className="lg:col-span-1 space-y-6">
           {/* Parking Type */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Car className="w-5 h-5" />
               {t('parkingType')}
@@ -200,7 +201,7 @@ export default function ParkingFee() {
           </div>
 
           {/* Time Input */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Clock className="w-5 h-5" />
               {t('duration')}
@@ -241,7 +242,7 @@ export default function ParkingFee() {
                     min="0"
                     value={manualHours}
                     onChange={(e) => setManualHours(Math.max(0, parseInt(e.target.value) || 0))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
                 <div>
@@ -254,7 +255,7 @@ export default function ParkingFee() {
                     max="59"
                     value={manualMinutes}
                     onChange={(e) => setManualMinutes(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
               </div>
@@ -268,7 +269,7 @@ export default function ParkingFee() {
                     type="datetime-local"
                     value={startTime}
                     onChange={(e) => setStartTime(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
                 <div>
@@ -279,7 +280,7 @@ export default function ParkingFee() {
                     type="datetime-local"
                     value={endTime}
                     onChange={(e) => setEndTime(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
               </div>
@@ -299,7 +300,7 @@ export default function ParkingFee() {
         {/* Right: Fee Settings & Result */}
         <div className="lg:col-span-2 space-y-6">
           {/* Presets */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('presets.title')}
             </h2>
@@ -326,7 +327,7 @@ export default function ParkingFee() {
           </div>
 
           {/* Fee Settings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Settings className="w-5 h-5" />
               {t('settings.title')}
@@ -342,7 +343,7 @@ export default function ParkingFee() {
                   step="100"
                   value={settings.baseFee}
                   onChange={(e) => updateSetting('baseFee', parseInt(e.target.value) || 0)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
               <div>
@@ -354,7 +355,7 @@ export default function ParkingFee() {
                   min="1"
                   value={settings.baseMinutes}
                   onChange={(e) => updateSetting('baseMinutes', parseInt(e.target.value) || 1)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
               <div>
@@ -367,7 +368,7 @@ export default function ParkingFee() {
                   step="100"
                   value={settings.additionalFee}
                   onChange={(e) => updateSetting('additionalFee', parseInt(e.target.value) || 0)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
               <div>
@@ -379,7 +380,7 @@ export default function ParkingFee() {
                   min="1"
                   value={settings.additionalMinutes}
                   onChange={(e) => updateSetting('additionalMinutes', parseInt(e.target.value) || 1)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
               <div>
@@ -391,7 +392,7 @@ export default function ParkingFee() {
                   min="0"
                   value={settings.freeMinutes}
                   onChange={(e) => updateSetting('freeMinutes', parseInt(e.target.value) || 0)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
               <div>
@@ -405,7 +406,7 @@ export default function ParkingFee() {
                   value={settings.dailyMax}
                   onChange={(e) => updateSetting('dailyMax', parseInt(e.target.value) || 0)}
                   placeholder="0 = 제한 없음"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
             </div>
@@ -473,7 +474,7 @@ export default function ParkingFee() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

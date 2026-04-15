@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Droplets, Copy, Check, RotateCcw } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface WaterBillResult {
   basicFee: number
@@ -158,7 +159,7 @@ export default function WaterBillCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel - Inputs */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Usage Slider */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -179,7 +180,7 @@ export default function WaterBillCalculator() {
                   max="1000"
                   value={usage}
                   onChange={(e) => setUsage(Math.max(0, Number(e.target.value)))}
-                  className="w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center focus:ring-2 focus:ring-blue-500"
+                  className={`w-20 px-3 py-2 ${glassInput} text-center focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -268,7 +269,7 @@ export default function WaterBillCalculator() {
           {/* Breakdown Cards */}
           <div className="grid md:grid-cols-2 gap-4">
             {/* Basic Fee */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                 {t('basicFee')}
               </p>
@@ -278,7 +279,7 @@ export default function WaterBillCalculator() {
             </div>
 
             {/* Usage Fee */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                 {t('usageFee')}
               </p>
@@ -288,7 +289,7 @@ export default function WaterBillCalculator() {
             </div>
 
             {/* Sewage Fee */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                 {t('sewageFee')}
               </p>
@@ -298,7 +299,7 @@ export default function WaterBillCalculator() {
             </div>
 
             {/* Water Quality Fee */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                 {t('waterQualityFee')}
               </p>
@@ -308,7 +309,7 @@ export default function WaterBillCalculator() {
             </div>
 
             {/* VAT */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                 {t('vat')}
               </p>
@@ -318,7 +319,7 @@ export default function WaterBillCalculator() {
             </div>
 
             {/* Subtotal */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`${glassCard} ${glassInset} p-4`}>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                 {t('totalBeforeVat')}
               </p>
@@ -329,7 +330,7 @@ export default function WaterBillCalculator() {
           </div>
 
           {/* Tier Visualization */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('tierInfo')}
             </h3>

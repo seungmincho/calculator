@@ -17,8 +17,9 @@
  */
 
 import { useState, useMemo, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, ArrowRightLeft, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type ConvertMode = '45to43' | '43to45' | 'percentToGpa' | 'gpaToPercent'
 
@@ -231,7 +232,7 @@ export default function GpaConverter() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* 좌: 입력 패널 */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+          <div className="${glassCard} ${glassInset} p-6 space-y-5">
             {/* 모드 선택 */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -292,7 +293,7 @@ export default function GpaConverter() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder={t('input.placeholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
               <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                 {t('input.maxLabel')}: {mode === 'gpaToPercent' ? gpaToPercentBase : maxGpa}
@@ -304,7 +305,7 @@ export default function GpaConverter() {
         {/* 우: 결과 + 참고표 */}
         <div className="lg:col-span-2 space-y-6">
           {/* 변환 결과 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('result.title')}
             </h2>
@@ -409,7 +410,7 @@ export default function GpaConverter() {
           </div>
 
           {/* 등급 참고표 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="${glassCard} ${glassInset} p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('table.title')}
             </h2>
@@ -440,7 +441,7 @@ export default function GpaConverter() {
       </div>
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className="${glassCard} ${glassInset} p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

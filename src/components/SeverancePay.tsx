@@ -2,8 +2,9 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Briefcase, Calendar, DollarSign, BookOpen, Copy, Check, Share2, TrendingUp, ChevronDown } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 const SIMULATION_YEARS = [1, 3, 5, 10, 15, 20]
 
@@ -179,7 +180,7 @@ export default function SeverancePay() {
     }
   }, [result, t, copyLink])
 
-  const inputClass = "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+  const inputClass = `${glassInput} px-3 py-2`
 
   return (
     <div className="space-y-8">
@@ -196,7 +197,7 @@ export default function SeverancePay() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Input Panel */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Calendar className="w-5 h-5" />
               {t('inputInfo')}
@@ -257,7 +258,7 @@ export default function SeverancePay() {
 
         {/* Result Panel */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <DollarSign className="w-5 h-5" />
@@ -378,7 +379,7 @@ export default function SeverancePay() {
 
       {/* Simulation Section */}
       {(parseFloat(monthlyPay) || 0) > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />
             {t('simulation.title')}
@@ -431,7 +432,7 @@ export default function SeverancePay() {
       )}
 
       {/* IRP / DC / DB Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowIrpGuide(!showIrpGuide)}
           className="w-full flex items-center justify-between text-left"
@@ -508,7 +509,7 @@ export default function SeverancePay() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

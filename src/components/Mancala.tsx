@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { ArrowLeft, Trophy, RefreshCw, Flag, Users, Copy, Check, Send, MessageCircle, AlertCircle, X, ChevronDown, ChevronUp } from 'lucide-react'
 import { useGameRoom } from '@/hooks/useGameRoom'
 import { usePeerConnection } from '@/hooks/usePeerConnection'

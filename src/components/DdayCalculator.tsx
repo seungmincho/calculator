@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import {
   Calendar,
   ArrowRightLeft,
@@ -23,6 +23,7 @@ import {
   getPresetDates,
   type KoreanHoliday,
 } from '@/utils/koreanHolidays'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type DdayMode = 'dday' | 'diff' | 'add'
 type AddDirection = 'add' | 'subtract'
@@ -321,7 +322,7 @@ const DdayCalculator = () => {
       </div>
 
       {/* Mode Tabs */}
-      <div className="flex gap-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2">
+      <div className={`flex gap-2 ${glassCard} ${glassInset} p-2`}>
         {modeButtons.map(({ key, icon: Icon }) => (
           <button
             key={key}
@@ -342,7 +343,7 @@ const DdayCalculator = () => {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel - Settings */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Clock className="w-5 h-5 text-blue-600" />
               {mode === 'dday' && t('modes.dday')}
@@ -361,7 +362,7 @@ const DdayCalculator = () => {
                     type="date"
                     value={targetDate}
                     onChange={(e) => setTargetDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   />
                 </div>
                 <div>
@@ -373,7 +374,7 @@ const DdayCalculator = () => {
                     value={eventName}
                     onChange={(e) => setEventName(e.target.value)}
                     placeholder={t('dday.eventNamePlaceholder')}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   />
                 </div>
                 <button
@@ -396,7 +397,7 @@ const DdayCalculator = () => {
                     type="date"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   />
                 </div>
                 <button
@@ -414,7 +415,7 @@ const DdayCalculator = () => {
                     type="date"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   />
                 </div>
               </>
@@ -431,7 +432,7 @@ const DdayCalculator = () => {
                     type="date"
                     value={baseDate}
                     onChange={(e) => setBaseDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   />
                 </div>
                 <div className="flex gap-2">
@@ -467,7 +468,7 @@ const DdayCalculator = () => {
                     min={1}
                     value={addValue}
                     onChange={(e) => setAddValue(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   />
                 </div>
                 <div>
@@ -477,7 +478,7 @@ const DdayCalculator = () => {
                   <select
                     value={addUnit}
                     onChange={(e) => setAddUnit(e.target.value as AddUnit)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className={`${glassInput} px-3 py-2`}
                   >
                     {(['days', 'weeks', 'months', 'years'] as const).map((u) => (
                       <option key={u} value={u}>{t(`add.units.${u}`)}</option>
@@ -531,7 +532,7 @@ const DdayCalculator = () => {
         <div className="lg:col-span-2">
           {/* D-Day / Diff Result */}
           {(mode === 'dday' || mode === 'diff') && ddayResult && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('result.title')}</h2>
 
               {/* Big D-Day Display */}
@@ -629,7 +630,7 @@ const DdayCalculator = () => {
 
           {/* Add Mode Result */}
           {mode === 'add' && addResult && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+            <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('add.resultDate')}</h2>
 
               <div className="text-center py-6">
@@ -674,7 +675,7 @@ const DdayCalculator = () => {
           {((mode === 'dday' && !targetDate) ||
             (mode === 'diff' && (!startDate || !endDate)) ||
             (mode === 'add' && !addResult)) && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Calendar className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400">
                 {mode === 'dday' && t('dday.targetDate')}
@@ -687,7 +688,7 @@ const DdayCalculator = () => {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

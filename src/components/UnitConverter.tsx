@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, ArrowRightLeft, Ruler } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 type Category = 'length' | 'weight' | 'temperature' | 'area' | 'volume' | 'data' | 'css'
 
@@ -157,7 +158,7 @@ export default function UnitConverter() {
       </div>
 
       {/* Converter */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+      <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6 mb-6`}>
         <div className="grid md:grid-cols-[1fr,auto,1fr] gap-4 items-end">
           {/* From */}
           <div>
@@ -230,7 +231,7 @@ export default function UnitConverter() {
 
       {/* Quick Conversions */}
       {inputValue && !isNaN(parseFloat(inputValue)) && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+        <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6 mb-6`}>
           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
             {t('quickConversions')}
           </h3>
@@ -255,7 +256,7 @@ export default function UnitConverter() {
       )}
 
       {/* Guide */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+      <div className={`${glassCard} ${glassInset} border border-gray-200 dark:border-gray-700 p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {t('guide.title')}
         </h2>

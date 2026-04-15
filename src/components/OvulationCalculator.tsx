@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Calendar,
   Heart,
@@ -238,7 +239,7 @@ export default function OvulationCalculator() {
     while (cells.length % 7 !== 0) cells.push(null)
 
     return (
-      <div key={`${year}-${month}`} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+      <div key={`${year}-${month}`} className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
         <h3 className="text-lg font-bold text-gray-900 dark:text-white text-center mb-4">
           {year}. {monthNames[month]}
         </h3>
@@ -289,7 +290,7 @@ export default function OvulationCalculator() {
       </div>
 
       {/* Input Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-5">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
         {/* Last period date */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -300,7 +301,7 @@ export default function OvulationCalculator() {
             type="date"
             value={lastPeriod}
             onChange={(e) => setLastPeriod(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500"
+            className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-pink-500`}
           />
         </div>
 
@@ -326,7 +327,7 @@ export default function OvulationCalculator() {
                 const v = parseInt(e.target.value, 10)
                 if (v >= 21 && v <= 45) setCycleLength(v)
               }}
-              className="w-20 text-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500"
+              className={`w-20 text-center px-3 py-2 ${glassInput} focus:ring-2 focus:ring-pink-500`}
             />
             <button
               onClick={() => setCycleLength(Math.min(45, cycleLength + 1))}
@@ -361,7 +362,7 @@ export default function OvulationCalculator() {
                 const v = parseInt(e.target.value, 10)
                 if (v >= 3 && v <= 7) setPeriodLength(v)
               }}
-              className="w-20 text-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-500"
+              className={`w-20 text-center px-3 py-2 ${glassInput} focus:ring-2 focus:ring-pink-500`}
             />
             <button
               onClick={() => setPeriodLength(Math.min(7, periodLength + 1))}
@@ -500,7 +501,7 @@ export default function OvulationCalculator() {
             </div>
 
             {/* Legend */}
-            <div className="mt-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+            <div className={`mt-4 ${glassCard} ${glassInset} p-4`}>
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                 {t('legend')}
               </h3>
@@ -528,7 +529,7 @@ export default function OvulationCalculator() {
       )}
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setGuideOpen(!guideOpen)}
           className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"

@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { Share2, Copy, Check, X } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 
 interface GameResultShareProps {
   gameName: string

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Hash, Copy, Check, RotateCcw, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 export default function NumberToKorean() {
   const t = useTranslations('numberToKorean')
@@ -170,7 +171,7 @@ export default function NumberToKorean() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel - Input */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {t('inputNumber')}
@@ -180,7 +181,7 @@ export default function NumberToKorean() {
                 value={inputValue}
                 onChange={handleInputChange}
                 placeholder={t('placeholder')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-lg"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-lg`}
                 maxLength={16}
               />
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -219,7 +220,7 @@ export default function NumberToKorean() {
 
         {/* Right Panel - Results */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Formatted Number Display */}
             <div className="text-center pb-6 border-b border-gray-200 dark:border-gray-700">
               <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
@@ -312,7 +313,7 @@ export default function NumberToKorean() {
       </div>
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6" />
           {t('guide.title')}

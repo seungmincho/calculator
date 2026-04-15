@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { RotateCcw, Search, Copy, Check, Shuffle, Trophy, Zap, Star, ArrowRight } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 

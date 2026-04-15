@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic'
 import { Receipt, Building2, TrendingUp, Calculator, Share2, Check, Save } from 'lucide-react';
+import { glassCard, glassInset, glassInput } from '@/lib/glass';
 import GuideSection from '@/components/GuideSection'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
@@ -480,7 +481,7 @@ const TaxCalculatorContent = () => {
                   value={annualIncome}
                   onChange={(e) => handleNumberInput(e.target.value, setAnnualIncome, 'income')}
                   placeholder="예: 50,000,000"
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className={`${glassInput} px-4 py-3`}
                 />
                 <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
               </div>
@@ -496,7 +497,7 @@ const TaxCalculatorContent = () => {
                   setDependents(e.target.value);
                   updateURL({ dependents: e.target.value, tab: activeTab });
                 }}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                className={`${glassInput} px-4 py-3`}
               >
                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
                   <option key={num} value={num}>{num}명</option>
@@ -515,7 +516,7 @@ const TaxCalculatorContent = () => {
                     value={medicalExpenses}
                     onChange={(e) => handleNumberInput(e.target.value, setMedicalExpenses, 'medical')}
                     placeholder="0"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className={`${glassInput} px-4 py-3`}
                   />
                   <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
                 </div>
@@ -531,7 +532,7 @@ const TaxCalculatorContent = () => {
                     value={educationExpenses}
                     onChange={(e) => handleNumberInput(e.target.value, setEducationExpenses, 'education')}
                     placeholder="0"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className={`${glassInput} px-4 py-3`}
                   />
                   <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
                 </div>
@@ -553,7 +554,7 @@ const TaxCalculatorContent = () => {
                   value={saleAmount}
                   onChange={(e) => handleNumberInput(e.target.value, setSaleAmount, 'sale')}
                   placeholder="예: 10,000,000"
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className={`${glassInput} px-4 py-3`}
                 />
                 <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
               </div>
@@ -569,7 +570,7 @@ const TaxCalculatorContent = () => {
                   setVatRate(e.target.value);
                   updateURL({ rate: e.target.value, tab: activeTab });
                 }}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                className={`${glassInput} px-4 py-3`}
               >
                 <option value="10">10% (일반세율)</option>
                 <option value="0">0% (면세)</option>
@@ -592,7 +593,7 @@ const TaxCalculatorContent = () => {
                     value={salePrice}
                     onChange={(e) => handleNumberInput(e.target.value, setSalePrice, 'sellPrice')}
                     placeholder="예: 800,000,000"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className={`${glassInput} px-4 py-3`}
                   />
                   <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
                 </div>
@@ -608,7 +609,7 @@ const TaxCalculatorContent = () => {
                     value={purchasePrice}
                     onChange={(e) => handleNumberInput(e.target.value, setPurchasePrice, 'buyPrice')}
                     placeholder="예: 500,000,000"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className={`${glassInput} px-4 py-3`}
                   />
                   <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">원</span>
                 </div>
@@ -632,7 +633,7 @@ const TaxCalculatorContent = () => {
                       }
                     }}
                     placeholder="5"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                    className={`${glassInput} px-4 py-3`}
                   />
                   <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">년</span>
                 </div>
@@ -649,7 +650,7 @@ const TaxCalculatorContent = () => {
                     setPropertyType(value);
                     updateURL({ propertyType: value, tab: activeTab });
                   }}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className={`${glassInput} px-4 py-3`}
                 >
                   <option value="general">일반주택</option>
                   <option value="luxury">고급주택</option>
@@ -706,7 +707,7 @@ const TaxCalculatorContent = () => {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 섹션 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
             {taxTypes[activeTab]} 정보 입력
           </h2>
@@ -745,7 +746,7 @@ const TaxCalculatorContent = () => {
         </div>
 
         {/* 결과 섹션 */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">계산 결과</h2>
           
           {result ? (

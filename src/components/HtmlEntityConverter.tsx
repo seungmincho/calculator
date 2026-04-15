@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Code2, Copy, Check, BookOpen, ArrowRightLeft, Search } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
 
 type Mode = 'encode' | 'decode'
 
@@ -192,7 +193,7 @@ export default function HtmlEntityConverter() {
 
       {/* 인코딩 옵션 */}
       {mode === 'encode' && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+        <div className={`${glassCard} ${glassInset} p-4`}>
           <div className="flex flex-wrap items-center gap-4">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('format')}:</span>
             {(['named', 'decimal', 'hex'] as const).map(opt => (
@@ -225,7 +226,7 @@ export default function HtmlEntityConverter() {
       {/* 입출력 영역 */}
       <div className="grid lg:grid-cols-2 gap-4">
         {/* 입력 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
               {mode === 'encode' ? t('inputText') : t('inputEncoded')}
@@ -253,7 +254,7 @@ export default function HtmlEntityConverter() {
         </div>
 
         {/* 출력 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 relative">
+        <div className={`${glassCard} ${glassInset} p-6 relative`}>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
               {mode === 'encode' ? t('outputEncoded') : t('outputText')}
@@ -292,7 +293,7 @@ export default function HtmlEntityConverter() {
       </div>
 
       {/* 엔티티 참고 테이블 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('referenceTable')}</h2>
           <div className="relative">
@@ -354,7 +355,7 @@ export default function HtmlEntityConverter() {
       </div>
 
       {/* 가이드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowGuide(!showGuide)}
           className="w-full flex items-center justify-between"

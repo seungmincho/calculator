@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, Download, ArrowRightLeft, Plus, Trash2, Calendar, TrendingDown, BarChart3, Link } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Types ──
 type RepaymentType = 'equalPayment' | 'equalPrincipal' | 'bullet'
@@ -352,7 +353,7 @@ export default function LoanSchedule() {
     grace: string, setGrace: (v: string) => void,
     showExtra?: boolean,
   ) => (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+    <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
       {label && <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{label}</h2>}
 
       {/* Loan Amount */}
@@ -363,13 +364,13 @@ export default function LoanSchedule() {
             type="number"
             value={amt}
             onChange={e => setAmt(e.target.value)}
-            className="flex-1 min-w-0 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className={`${glassInput} flex-1 min-w-0 px-3 py-2`}
             min="0"
           />
           <select
             value={aUnit}
             onChange={e => setAUnit(e.target.value as AmountUnit)}
-            className="shrink-0 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className={`${glassInput} shrink-0 px-3 py-2`}
           >
             <option value="won">{t('unitWon')}</option>
             <option value="manwon">{t('unitManwon')}</option>
@@ -392,7 +393,7 @@ export default function LoanSchedule() {
             step="0.1"
             min="0"
             max="100"
-            className="w-full px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className={`${glassInput} px-3 py-2 pr-8`}
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">%</span>
         </div>
@@ -407,12 +408,12 @@ export default function LoanSchedule() {
             value={term}
             onChange={e => setTerm(e.target.value)}
             min="1"
-            className="flex-1 min-w-0 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className={`${glassInput} flex-1 min-w-0 px-3 py-2`}
           />
           <select
             value={tUnit}
             onChange={e => setTUnit(e.target.value as TermUnit)}
-            className="shrink-0 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className={`${glassInput} shrink-0 px-3 py-2`}
           >
             <option value="years">{t('unitYears')}</option>
             <option value="months">{t('unitMonths')}</option>
@@ -426,7 +427,7 @@ export default function LoanSchedule() {
         <select
           value={rType}
           onChange={e => setRType(e.target.value as RepaymentType)}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+          className={`${glassInput} px-3 py-2`}
         >
           <option value="equalPayment">{t('typeEqualPayment')}</option>
           <option value="equalPrincipal">{t('typeEqualPrincipal')}</option>
@@ -443,7 +444,7 @@ export default function LoanSchedule() {
             value={grace}
             onChange={e => setGrace(e.target.value)}
             min="0"
-            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className={`${glassInput} flex-1 px-3 py-2`}
           />
           <span className="text-sm text-gray-500 dark:text-gray-400">{t('monthsLabel')}</span>
         </div>
@@ -459,7 +460,7 @@ export default function LoanSchedule() {
               value={extraMonthlyStr}
               onChange={e => setExtraMonthlyStr(e.target.value)}
               min="0"
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              className={`${glassInput} flex-1 px-3 py-2`}
             />
             <span className="text-sm text-gray-500 dark:text-gray-400">{t('unitManwon')}</span>
           </div>
@@ -522,7 +523,7 @@ export default function LoanSchedule() {
           )}
 
           {/* Start Date (shared) */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6">
+          <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               <Calendar className="w-4 h-4 inline mr-1" />
               {t('startDate')}
@@ -531,7 +532,7 @@ export default function LoanSchedule() {
               type="date"
               value={startDate}
               onChange={e => setStartDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              className={`${glassInput} px-3 py-2`}
             />
           </div>
         </div>
@@ -557,19 +558,19 @@ export default function LoanSchedule() {
           <div className="lg:col-span-2 space-y-6">
             {/* Summary Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+              <div className={`${glassCard} ${glassInset} p-4`}>
                 <p className="text-xs text-gray-500 dark:text-gray-400">{t('totalPayment')}</p>
                 <p className="text-lg font-bold text-gray-900 dark:text-white mt-1">{formatWon(result.totalPayment)}<span className="text-xs font-normal">{t('wonUnit')}</span></p>
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+              <div className={`${glassCard} ${glassInset} p-4`}>
                 <p className="text-xs text-gray-500 dark:text-gray-400">{t('totalInterest')}</p>
                 <p className="text-lg font-bold text-red-600 dark:text-red-400 mt-1">{formatWon(result.totalInterest)}<span className="text-xs font-normal">{t('wonUnit')}</span></p>
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+              <div className={`${glassCard} ${glassInset} p-4`}>
                 <p className="text-xs text-gray-500 dark:text-gray-400">{t('interestRatio')}</p>
                 <p className="text-lg font-bold text-orange-600 dark:text-orange-400 mt-1">{result.interestRatio.toFixed(1)}%</p>
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+              <div className={`${glassCard} ${glassInset} p-4`}>
                 <p className="text-xs text-gray-500 dark:text-gray-400">{t('avgMonthly')}</p>
                 <p className="text-lg font-bold text-blue-600 dark:text-blue-400 mt-1">{formatWon(result.avgMonthlyPayment)}<span className="text-xs font-normal">{t('wonUnit')}</span></p>
               </div>
@@ -626,7 +627,7 @@ export default function LoanSchedule() {
 
             {/* Schedule Table */}
             {activeTab === 'schedule' && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+              <div className={`${glassCard} ${glassInset} overflow-hidden`}>
                 <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                   <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('scheduleTitle')}</h3>
                   <div className="flex gap-2">
@@ -707,7 +708,7 @@ export default function LoanSchedule() {
 
             {/* Chart View */}
             {activeTab === 'chart' && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+              <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
                 {/* Principal vs Interest per period */}
                 <div>
                   <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('chartPrincipalInterest')}</h3>
@@ -833,7 +834,7 @@ export default function LoanSchedule() {
           </div>
 
           {/* Difference highlight */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('compareDiff')}</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
               <div>
@@ -861,7 +862,7 @@ export default function LoanSchedule() {
       )}
 
       {/* Guide Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

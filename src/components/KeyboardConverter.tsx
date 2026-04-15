@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, ArrowUpDown, RotateCcw, BookOpen } from 'lucide-react'
+import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Korean keyboard mapping tables ──
 
@@ -350,7 +351,7 @@ export default function KeyboardConverter() {
       </div>
 
       {/* Main converter card */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
         {/* Mode toggle */}
         <div className="flex items-center justify-center gap-4">
           <button
@@ -390,7 +391,7 @@ export default function KeyboardConverter() {
             onChange={(e) => setInput(e.target.value)}
             placeholder={t('inputPlaceholder')}
             rows={5}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-base"
+            className={`${glassInput} px-3 py-2 resize-none text-base`}
           />
         </div>
 
@@ -455,7 +456,7 @@ export default function KeyboardConverter() {
       </div>
 
       {/* Examples */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {t('examples')}
         </h2>
@@ -481,7 +482,7 @@ export default function KeyboardConverter() {
       </div>
 
       {/* Guide section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
