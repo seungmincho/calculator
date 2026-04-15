@@ -16,6 +16,9 @@ const SalaryCalculatorContent = () => {
   const searchParams = useSearchParams();
   const t = useTranslations('salary');
   const tc = useTranslations('common');
+  const glassCard = 'bg-white/60 dark:bg-white/[0.10] backdrop-blur-2xl border border-white/65 dark:border-white/[0.14] rounded-[28px] shadow-[0_24px_80px_rgba(59,130,246,0.12)] dark:shadow-[0_24px_80px_rgba(2,6,23,0.52),0_0_0_1px_rgba(255,255,255,0.04)]'
+  const glassInset = 'shadow-[inset_1px_1px_10px_rgba(255,255,255,0.30),inset_0_-1px_10px_rgba(255,255,255,0.10)] dark:shadow-[inset_1px_1px_0_rgba(255,255,255,0.14),inset_0_1px_18px_rgba(255,255,255,0.06),inset_0_-12px_24px_rgba(0,0,0,0.22)]'
+  const glassInput = 'w-full rounded-2xl border border-white/55 dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.08] backdrop-blur-xl text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-blue-400/50 transition-all'
   const [salary, setSalary] = useState('');
   const [salaryType, setSalaryType] = useState<'annual' | 'monthly'>('annual');
   const [nonTaxableAmount, setNonTaxableAmount] = useState('0');
@@ -383,7 +386,7 @@ const SalaryCalculatorContent = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">{t('title')}</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             {t('description')}
           </p>
@@ -400,7 +403,7 @@ const SalaryCalculatorContent = () => {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Input Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">{t('input.salaryType')}</h2>
           
           <div className="space-y-6">
@@ -409,31 +412,20 @@ const SalaryCalculatorContent = () => {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 {t('input.salaryType')}
               </label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={salaryType === 'annual'}
-                    onChange={() => {
-                      setSalaryType('annual');
-                      updateURL({ type: 'annual' });
-                    }}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-300">{t('input.annual')}</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={salaryType === 'monthly'}
-                    onChange={() => {
-                      setSalaryType('monthly');
-                      updateURL({ type: 'monthly' });
-                    }}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-300">{t('input.monthly')}</span>
-                </label>
+              <div className="flex p-1 rounded-2xl bg-white/40 dark:bg-white/[0.06] border border-white/50 dark:border-white/[0.10] backdrop-blur-lg">
+                {(['annual', 'monthly'] as const).map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => { setSalaryType(type); updateURL({ type }); }}
+                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                      salaryType === type
+                        ? 'bg-white dark:bg-white/[0.20] text-indigo-700 dark:text-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.4)]'
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                    }`}
+                  >
+                    {t(`input.${type}`)}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -448,7 +440,7 @@ const SalaryCalculatorContent = () => {
                   value={salary}
                   onChange={handleSalaryInputChange}
                   placeholder={salaryType === 'annual' ? t('input.salaryPlaceholderAnnual') : t('input.salaryPlaceholderMonthly')}
-                  className="w-full px-4 py-4 text-lg font-semibold text-gray-900 dark:text-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className={`${glassInput} px-4 py-4 text-lg font-semibold pr-14`}
                 />
                 <span className="absolute right-4 top-4 text-gray-600 font-medium">{t('input.currency')}</span>
               </div>
@@ -465,7 +457,7 @@ const SalaryCalculatorContent = () => {
                   value={nonTaxableAmount}
                   onChange={handleNonTaxableChange}
                   placeholder={t('input.nonTaxablePlaceholder')}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className={`${glassInput} px-4 py-3 pr-14`}
                 />
                 <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">{t('input.currency')}</span>
               </div>
@@ -486,7 +478,7 @@ const SalaryCalculatorContent = () => {
                     setDependents(e.target.value);
                     updateURL({ dependents: e.target.value });
                   }}
-                  className="w-full px-3 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className={`${glassInput} px-3 py-3`}
                 >
                   {[1,2,3,4,5,6,7,8,9,10].map(num => (
                     <option key={num} value={num}>{num}명</option>
@@ -504,7 +496,7 @@ const SalaryCalculatorContent = () => {
                     setChildrenUnder20(e.target.value);
                     updateURL({ children: e.target.value });
                   }}
-                  className="w-full px-3 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className={`${glassInput} px-3 py-3`}
                 >
                   {[0,1,2,3,4,5].map(num => (
                     <option key={num} value={num}>{num}명</option>
@@ -513,117 +505,115 @@ const SalaryCalculatorContent = () => {
               </div>
             </div>
 
-            {/* 상여금 설정 */}
-            <div className="border-t pt-6">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                상여금 설정 (선택사항)
-              </h3>
-              <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-3 mb-3">
-                <p className="text-xs text-amber-800 dark:text-amber-200">
-                  💡 <strong>상여금은 연봉을 분할 지급하는 방식입니다</strong><br/>
-                  예: 연봉 3000만원 + 상여 800% = 3000만원을 20회(12+8)로 나누어 지급
-                </p>
-              </div>
-              <div className="space-y-3">
+            {/* 고급 설정 (접이식) */}
+            <details className="group rounded-2xl border border-white/45 dark:border-white/[0.10] bg-white/40 dark:bg-white/[0.05] backdrop-blur-xl overflow-hidden">
+              <summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-semibold text-gray-700 dark:text-gray-300 select-none list-none">
+                <span>⚙️ 고급 설정 <span className="font-normal text-gray-400 dark:text-gray-500">(상여금 · 성과급 · 경력)</span></span>
+                <span className="text-gray-400 transition-transform duration-200 group-open:rotate-45 text-lg leading-none">+</span>
+              </summary>
+              <div className="border-t border-white/40 dark:border-white/[0.08] px-5 py-5 space-y-5">
+                {/* 상여금 설정 */}
                 <div>
-                  <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">상여금 비율</label>
+                  <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">상여금 설정</h3>
+                  <div className="bg-amber-50/80 dark:bg-amber-900/20 rounded-xl p-3 mb-3 border border-amber-200/40 dark:border-amber-700/20">
+                    <p className="text-xs text-amber-800 dark:text-amber-200">
+                      💡 <strong>상여금은 연봉을 분할 지급하는 방식입니다</strong><br/>
+                      예: 연봉 3000만원 + 상여 800% = 3000만원을 20회(12+8)로 나누어 지급
+                    </p>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1.5">상여금 비율</label>
+                      <select
+                        value={bonusPercentage}
+                        onChange={(e) => setBonusPercentage(e.target.value)}
+                        className={`${glassInput} px-3 py-2`}
+                      >
+                        <option value="0">상여금 없음 (연봉÷12개월)</option>
+                        <option value="100">100% (연봉÷14회)</option>
+                        <option value="200">200% (연봉÷16회)</option>
+                        <option value="300">300% (연봉÷18회)</option>
+                        <option value="400">400% (연봉÷20회)</option>
+                        <option value="600">600% (연봉÷24회)</option>
+                        <option value="800">800% (연봉÷28회)</option>
+                      </select>
+                    </div>
+                    {bonusPercentage !== '0' && (
+                      <div>
+                        <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1.5">상여금 지급 월</label>
+                        <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                          {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                            <button
+                              key={month}
+                              onClick={() => {
+                                if (bonusMonths.includes(month)) {
+                                  setBonusMonths(bonusMonths.filter(m => m !== month));
+                                } else {
+                                  setBonusMonths([...bonusMonths, month]);
+                                }
+                              }}
+                              className={`py-1.5 px-2 text-xs rounded-xl transition-all font-medium ${
+                                bonusMonths.includes(month)
+                                  ? 'bg-blue-500 text-white shadow-[0_2px_8px_rgba(59,130,246,0.4)]'
+                                  : 'bg-white/50 dark:bg-white/[0.07] border border-white/50 dark:border-white/[0.10] text-gray-700 dark:text-gray-300 hover:bg-white/70 dark:hover:bg-white/[0.12]'
+                              }`}
+                            >
+                              {month}월
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* 성과급 설정 */}
+                <div className="border-t border-white/30 dark:border-white/[0.06] pt-5">
+                  <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">성과급 설정</h3>
+                  <div className="bg-green-50/80 dark:bg-green-900/20 rounded-xl p-3 mb-3 border border-green-200/40 dark:border-green-700/20">
+                    <p className="text-xs text-green-800 dark:text-green-200">
+                      💡 <strong>성과급은 연봉에 추가로 지급되는 금액입니다</strong><br/>
+                      예: 연봉 3000만원 + 성과급 200% = 3000만원 + (3000만원의 200%)
+                    </p>
+                  </div>
+                  <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1.5">성과급 비율</label>
                   <select
-                    value={bonusPercentage}
-                    onChange={(e) => setBonusPercentage(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                    value={performanceBonus}
+                    onChange={(e) => setPerformanceBonus(e.target.value)}
+                    className={`${glassInput} px-3 py-2`}
                   >
-                    <option value="0">상여금 없음 (연봉÷12개월)</option>
-                    <option value="100">100% (연봉÷14회)</option>
-                    <option value="200">200% (연봉÷16회)</option>
-                    <option value="300">300% (연봉÷18회)</option>
-                    <option value="400">400% (연봉÷20회)</option>
-                    <option value="600">600% (연봉÷24회)</option>
-                    <option value="800">800% (연봉÷28회)</option>
+                    <option value="0">성과급 없음</option>
+                    <option value="50">50% (연봉의 50%)</option>
+                    <option value="100">100% (연봉의 100%)</option>
+                    <option value="150">150% (연봉의 150%)</option>
+                    <option value="200">200% (연봉의 200%)</option>
+                    <option value="300">300% (연봉의 300%)</option>
+                  </select>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">성과급은 회사 실적에 따라 변동될 수 있습니다</p>
+                </div>
+
+                {/* 경력 정보 */}
+                <div className="border-t border-white/30 dark:border-white/[0.06] pt-5">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">경력 (연차)</label>
+                  <select
+                    value={experienceYears}
+                    onChange={(e) => setExperienceYears(e.target.value)}
+                    className={`${glassInput} px-3 py-3`}
+                  >
+                    <option value="0">신입</option>
+                    <option value="1">1-2년</option>
+                    <option value="3">3-4년</option>
+                    <option value="5">5-7년</option>
+                    <option value="8">8-10년</option>
+                    <option value="10">10년 이상</option>
                   </select>
                 </div>
-                
-                {bonusPercentage !== '0' && (
-                  <div>
-                    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">상여금 지급 월</label>
-                    <div className="grid grid-cols-6 gap-2">
-                      {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
-                        <button
-                          key={month}
-                          onClick={() => {
-                            if (bonusMonths.includes(month)) {
-                              setBonusMonths(bonusMonths.filter(m => m !== month));
-                            } else {
-                              setBonusMonths([...bonusMonths, month]);
-                            }
-                          }}
-                          className={`py-1 px-2 text-sm rounded-md transition-colors ${
-                            bonusMonths.includes(month)
-                              ? 'bg-blue-500 text-white'
-                              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                          }`}
-                        >
-                          {month}월
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
-            </div>
+            </details>
 
-            {/* 성과급 설정 */}
-            <div className="border-t pt-6">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                성과급 설정 (선택사항)
-              </h3>
-              <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-3 mb-3">
-                <p className="text-xs text-green-800 dark:text-green-200">
-                  💡 <strong>성과급은 연봉에 추가로 지급되는 금액입니다</strong><br/>
-                  예: 연봉 3000만원 + 성과급 200% = 3000만원 + (3000만원의 200%)
-                </p>
-              </div>
-              <div>
-                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">성과급 비율</label>
-                <select
-                  value={performanceBonus}
-                  onChange={(e) => setPerformanceBonus(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
-                >
-                  <option value="0">성과급 없음</option>
-                  <option value="50">50% (연봉의 50%)</option>
-                  <option value="100">100% (연봉의 100%)</option>
-                  <option value="150">150% (연봉의 150%)</option>
-                  <option value="200">200% (연봉의 200%)</option>
-                  <option value="300">300% (연봉의 300%)</option>
-                </select>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  성과급은 회사 실적에 따라 변동될 수 있습니다
-                </p>
-              </div>
-            </div>
-
-            {/* 경력 정보 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                경력 (연차)
-              </label>
-              <select
-                value={experienceYears}
-                onChange={(e) => setExperienceYears(e.target.value)}
-                className="w-full px-3 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
-              >
-                <option value="0">신입</option>
-                <option value="1">1-2년</option>
-                <option value="3">3-4년</option>
-                <option value="5">5-7년</option>
-                <option value="8">8-10년</option>
-                <option value="10">10년 이상</option>
-              </select>
-            </div>
-
-            <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
-              <h3 className="font-medium text-blue-900 dark:text-blue-200 mb-2">💡 {t('calculation.basis')}</h3>
-              <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">
+            <div className="bg-white/40 dark:bg-white/[0.05] border border-white/30 dark:border-white/[0.08] rounded-2xl p-4">
+              <h3 className="font-medium text-gray-700 dark:text-gray-300 mb-2">💡 {t('calculation.basis')}</h3>
+              <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                 {Array.from({ length: 6 }, (_, index) => (
                   <li key={index}>• {t(`calculation.points.${index}`)}</li>
                 ))}
@@ -633,53 +623,60 @@ const SalaryCalculatorContent = () => {
         </div>
 
         {/* Result Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">{tc('result')}</h2>
           
           {result ? (
             <div className="space-y-6">
               {/* Main Results */}
-              <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-blue-100">{t('result.monthlyTakeHome')}</span>
-                  <TrendingUp className="w-5 h-5" />
-                </div>
-                <div className="text-3xl font-bold mb-2 text-white">
-                  {formatNumber(result.netMonthly)}원
-                </div>
-                <div className="text-blue-100 text-lg font-medium">
-                  {t('result.annualTakeHome')} {formatNumber(result.netAnnual)}{t('input.currency')}
-                </div>
-                <div className="text-blue-100 text-sm mt-2">
-                  {t('result.effectiveTaxRate')}: {result.taxInfo?.effectiveTaxRate.toFixed(1)}%
-                </div>
-                <div className="flex space-x-2 mt-4">
-                  <button
-                    onClick={handleShare}
-                    className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
-                  >
-                    {isCopied ? (
-                      <>
-                        <Check className="w-4 h-4" />
-                        <span>{tc('copied')}</span>
-                      </>
-                    ) : (
-                      <>
-                        <Share2 className="w-4 h-4" />
-                        <span>{t('result.shareResult')}</span>
-                      </>
-                    )}
-                  </button>
-                  
-                  {showSaveButton && (
+              <div className="relative overflow-hidden bg-gradient-to-br from-slate-800/90 to-slate-900/92 dark:from-black/60 dark:to-slate-900/55 backdrop-blur-2xl border border-white/[0.15] dark:border-white/[0.10] rounded-2xl p-6 sm:p-8 shadow-[0_8px_40px_rgba(15,23,42,0.25)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.5),inset_1px_1px_0_rgba(255,255,255,0.06)]">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/[0.08] via-transparent to-blue-500/[0.05] pointer-events-none rounded-2xl" />
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent" />
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-4 mb-1">
+                    <p className="text-gray-400 text-sm">{t('result.monthlyTakeHome')}</p>
+                    <TrendingUp className="w-5 h-5 shrink-0 text-emerald-400" />
+                  </div>
+                  <div className="text-4xl sm:text-5xl font-bold tracking-tight text-white mt-1 mb-5">
+                    {formatNumber(result.netMonthly)}<span className="text-2xl sm:text-3xl ml-1 font-semibold text-gray-400">원</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 mb-5">
+                    <div className="rounded-2xl bg-white/[0.06] border border-white/[0.08] px-4 py-3">
+                      <div className="text-xs text-gray-400 mb-1">{t('result.annualTakeHome')}</div>
+                      <div className="text-base font-semibold text-white">{formatNumber(result.netAnnual)}원</div>
+                    </div>
+                    <div className="rounded-2xl bg-white/[0.06] border border-white/[0.08] px-4 py-3">
+                      <div className="text-xs text-gray-400 mb-1">{t('result.effectiveTaxRate')}</div>
+                      <div className="text-base font-semibold text-emerald-400">{result.taxInfo?.effectiveTaxRate.toFixed(1)}%</div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
                     <button
-                      onClick={handleSaveCalculation}
-                      className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
+                      onClick={handleShare}
+                      className="inline-flex items-center gap-2 bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.10] px-4 py-2 rounded-xl text-gray-300 hover:text-white text-sm transition-colors"
                     >
-                      <Save className="w-4 h-4" />
-                      <span>{tc('save')}</span>
+                      {isCopied ? (
+                        <>
+                          <Check className="w-4 h-4" />
+                          <span>{tc('copied')}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Share2 className="w-4 h-4" />
+                          <span>{t('result.shareResult')}</span>
+                        </>
+                      )}
                     </button>
-                  )}
+                    {showSaveButton && (
+                      <button
+                        onClick={handleSaveCalculation}
+                        className="inline-flex items-center gap-2 bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.10] px-4 py-2 rounded-xl text-gray-300 hover:text-white text-sm transition-colors"
+                      >
+                        <Save className="w-4 h-4" />
+                        <span>{tc('save')}</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -687,7 +684,7 @@ const SalaryCalculatorContent = () => {
               {result.taxInfo && (
                 <div className="space-y-3">
                   <h3 className="font-semibold text-gray-900 dark:text-white">{t('result.taxInfo')}</h3>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-2 text-sm">
+                  <div className="bg-white/50 dark:bg-white/[0.06] backdrop-blur-md border border-white/40 dark:border-white/[0.08] rounded-2xl p-4 space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">{t('result.grossSalary')}</span>
                       <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.gross)}{t('input.currency')}</span>
@@ -729,31 +726,31 @@ const SalaryCalculatorContent = () => {
                 <h3 className="font-semibold text-gray-900 dark:text-white">{t('result.deductionBreakdown')}</h3>
                 
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
                     <span className="text-gray-600 dark:text-gray-400">{t('result.nationalPension')} (4.5%)</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
                     <span className="text-gray-600 dark:text-gray-400">{t('result.healthInsurance')} (3.545%)</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.healthInsurance)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
                     <span className="text-gray-600 dark:text-gray-400">{t('result.longTermCare')} (12.95%)</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.longTermCare)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
                     <span className="text-gray-600 dark:text-gray-400">{t('result.employmentInsurance')} (0.9%)</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.employmentInsurance)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
                     <span className="text-gray-600 dark:text-gray-400">{t('result.incomeTax')}</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.incomeTax)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
                     <span className="text-gray-600 dark:text-gray-400">{t('result.localIncomeTax')} (10%)</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.localIncomeTax)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-3 border-t-2 border-gray-200 dark:border-gray-600 font-bold">
+                  <div className="flex justify-between py-3 border-t-2 border-gray-200/80 dark:border-white/[0.10] font-bold">
                     <span className="text-gray-900 dark:text-white">{t('result.totalDeduction')}</span>
                     <span className="text-red-600 dark:text-red-400 font-bold">{formatNumber(result.deductions.total)}{t('input.currency')}</span>
                   </div>
@@ -788,18 +785,18 @@ const SalaryCalculatorContent = () => {
       </div>
 
       {/* Tips Section */}
-      <div className="mt-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
         <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">💡 {t('tips.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
-            <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">{t('tips.yearEndTax.title')}</h3>
-            <p className="text-green-800 dark:text-green-300 text-sm">
+          <div className="bg-white/40 dark:bg-white/[0.06] backdrop-blur-md border-l-4 border-emerald-400/70 border border-white/30 dark:border-white/[0.08] rounded-2xl p-6">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('tips.yearEndTax.title')}</h3>
+            <p className="text-gray-600 dark:text-gray-300 text-sm">
               {t('tips.yearEndTax.content')}
             </p>
           </div>
-          <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-6">
-            <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">{t('tips.taxSaving.title')}</h3>
-            <p className="text-amber-800 dark:text-amber-300 text-sm">
+          <div className="bg-white/40 dark:bg-white/[0.06] backdrop-blur-md border-l-4 border-amber-400/70 border border-white/30 dark:border-white/[0.08] rounded-2xl p-6">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('tips.taxSaving.title')}</h3>
+            <p className="text-gray-600 dark:text-gray-300 text-sm">
               {t('tips.taxSaving.content')}
             </p>
           </div>
@@ -807,7 +804,7 @@ const SalaryCalculatorContent = () => {
       </div>
 
       {/* 연봉별 실수령액 표 섹션 */}
-      <div className="mt-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
         <div className="flex justify-between items-center mb-6">
           <div>
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('table.title')}</h2>
@@ -815,7 +812,7 @@ const SalaryCalculatorContent = () => {
           </div>
           <button
             onClick={() => setShowTable(!showTable)}
-            className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white transition-colors"
+            className="inline-flex items-center gap-2 bg-white/40 dark:bg-white/[0.08] hover:bg-white/60 dark:hover:bg-white/[0.14] border border-white/40 dark:border-white/[0.12] px-4 py-2 rounded-xl text-gray-700 dark:text-gray-300 text-sm font-medium transition-colors backdrop-blur-sm"
           >
             <Table className="w-4 h-4" />
             <span>{showTable ? t('table.hideTable') : t('table.showTable')}</span>
@@ -826,7 +823,7 @@ const SalaryCalculatorContent = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
+                <tr className="border-b border-white/30 dark:border-white/[0.10]">
                   <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-white">{t('table.headers.salary')}</th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">{t('table.headers.annualTakeHome')}</th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">{t('table.headers.monthlyTakeHome')}</th>
@@ -836,7 +833,7 @@ const SalaryCalculatorContent = () => {
               </thead>
               <tbody>
                 {generateSalaryTable().map((row, index) => (
-                  <tr key={row.grossAnnual} className={`border-b border-gray-100 dark:border-gray-700 ${index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800' : 'bg-white dark:bg-gray-900'} hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors`}>
+                  <tr key={row.grossAnnual} className={`border-b border-white/20 dark:border-white/[0.05] ${index % 2 === 0 ? 'bg-white/20 dark:bg-white/[0.03]' : ''} hover:bg-white/40 dark:hover:bg-white/[0.07] transition-colors`}>
                     <td className="py-3 px-4 font-medium text-gray-900 dark:text-white">
                       {formatNumber(row.grossAnnual)}{t('input.currency')}
                     </td>
@@ -860,12 +857,12 @@ const SalaryCalculatorContent = () => {
         )}
 
         {showTable && (
-          <div className="mt-6 bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-2">
+          <div className="mt-6 bg-white/40 dark:bg-white/[0.05] border border-white/30 dark:border-white/[0.08] p-4 rounded-2xl">
+            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               <Calculator className="w-4 h-4 inline mr-1" />
               {t('table.usage.title')}
             </h3>
-            <ul className="text-sm text-amber-700 dark:text-amber-300 space-y-1">
+            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
               {Array.from({ length: 4 }, (_, index) => (
                 <li key={index}>• {t(`table.usage.points.${index}`)}</li>
               ))}
@@ -876,12 +873,12 @@ const SalaryCalculatorContent = () => {
 
       {/* 시각화 차트 섹션 */}
       {result && (
-        <div className="mt-12">
+        <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">📊 상세 분석 차트</h2>
             <button
               onClick={() => setShowCharts(!showCharts)}
-              className="inline-flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg text-white transition-colors"
+              className="inline-flex items-center gap-2 bg-white/40 dark:bg-white/[0.08] hover:bg-white/60 dark:hover:bg-white/[0.14] border border-white/40 dark:border-white/[0.12] px-4 py-2 rounded-xl text-gray-700 dark:text-gray-300 text-sm font-medium transition-colors backdrop-blur-sm"
             >
               <BarChart3 className="w-4 h-4" />
               <span>{showCharts ? '차트 숨기기' : '차트 보기'}</span>
@@ -891,7 +888,7 @@ const SalaryCalculatorContent = () => {
           {showCharts && (
             <div className="space-y-8">
               {/* 월별 실수령액 차트 */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+              <div className="bg-white/40 dark:bg-white/[0.06] backdrop-blur-md border border-white/30 dark:border-white/[0.08] rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
                   <LineChart className="w-6 h-6 mr-2 text-blue-600" />
                   월별 실수령액 변화 (상여금 포함)
@@ -913,27 +910,27 @@ const SalaryCalculatorContent = () => {
                   ]
                 }} style={{ height: '300px' }} />
                 <div className="mt-4 space-y-2">
-                  <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
-                    <p className="text-sm text-blue-800 dark:text-blue-200">
+                  <div className="p-3 bg-white/40 dark:bg-white/[0.06] border border-blue-200/40 dark:border-blue-400/20 rounded-xl">
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
                       <strong>📊 상여금 지급 방식:</strong> 연봉 {formatNumber(result.gross)}원을 {12 + parseInt(bonusPercentage)/100}회로 분할
                     </p>
                     {bonusMonths.length > 0 && (
-                      <p className="text-sm text-blue-600 dark:text-blue-300 mt-1">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                         상여금 지급월: {bonusMonths.sort((a, b) => a - b).join(', ')}월 
                         (월 {(parseInt(bonusPercentage)/100/bonusMonths.length).toFixed(1)}회분씩)
                       </p>
                     )}
-                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       기본 월급: {formatNumber(Math.floor(result.gross / (12 + parseInt(bonusPercentage)/100)))}원/회
                     </p>
                   </div>
                   
                   {parseInt(performanceBonus) > 0 && (
-                    <div className="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-lg">
-                      <p className="text-sm text-amber-800 dark:text-amber-200">
+                    <div className="p-3 bg-white/40 dark:bg-white/[0.06] border border-amber-200/40 dark:border-amber-400/20 rounded-xl">
+                      <p className="text-sm text-gray-700 dark:text-gray-300">
                         <strong>🎯 성과급:</strong> 연봉의 {performanceBonus}% = {formatNumber(Math.floor(result.gross * (parseInt(performanceBonus) / 100)))}원 (12월 지급)
                       </p>
-                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         성과급은 회사 실적에 따라 변동될 수 있습니다
                       </p>
                     </div>
@@ -942,7 +939,7 @@ const SalaryCalculatorContent = () => {
               </div>
 
               {/* 경력별 연봉 비교 */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+              <div className="bg-white/40 dark:bg-white/[0.06] backdrop-blur-md border border-white/30 dark:border-white/[0.08] rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
                   <BarChart3 className="w-6 h-6 mr-2 text-green-600" />
                   경력별 평균 연봉 비교
@@ -972,8 +969,8 @@ const SalaryCalculatorContent = () => {
                   }]
                 }} style={{ height: '300px' }} />
                 {result && (
-                  <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
-                    <p className="text-sm text-blue-800 dark:text-blue-300">
+                  <div className="mt-4 p-4 bg-white/40 dark:bg-white/[0.06] border border-blue-200/40 dark:border-blue-400/20 rounded-xl">
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
                       현재 연봉: {formatNumber(result.gross)}원 | 
                       선택한 경력: {
                         experienceYears === '0' ? '신입' :
@@ -988,7 +985,7 @@ const SalaryCalculatorContent = () => {
               </div>
 
               {/* 세금 구성 차트 */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+              <div className="bg-white/40 dark:bg-white/[0.06] backdrop-blur-md border border-white/30 dark:border-white/[0.08] rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
                   <PieChart className="w-6 h-6 mr-2 text-purple-600" />
                   공제항목별 구성
@@ -1022,7 +1019,7 @@ const SalaryCalculatorContent = () => {
                         </div>
                       </div>
                     ))}
-                    <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <div className="pt-3 border-t border-white/30 dark:border-white/[0.08]">
                       <div className="flex items-center justify-between">
                         <span className="font-semibold text-gray-900 dark:text-white">총 공제액</span>
                         <span className="font-bold text-red-600 dark:text-red-400">
@@ -1039,7 +1036,7 @@ const SalaryCalculatorContent = () => {
       )}
 
       {/* 상세 가이드 섹션 */}
-      <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
         <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white text-center">🚀 {t('guide.title')}</h2>
         <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
           {t('guide.subtitle')}
@@ -1047,10 +1044,10 @@ const SalaryCalculatorContent = () => {
         
         {/* 핵심 기능 소개 */}
         <div className="grid md:grid-cols-3 gap-8 mb-12">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+          <div className="bg-white/40 dark:bg-white/[0.07] backdrop-blur-xl border border-blue-200/40 dark:border-blue-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)]">
             <div className="flex items-center mb-4">
-              <div className="bg-blue-600 p-3 rounded-full mr-3">
-                <Calculator className="w-6 h-6 text-white" />
+              <div className="bg-blue-500/15 dark:bg-blue-500/20 p-3 rounded-full mr-3">
+                <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="text-xl font-bold text-blue-900 dark:text-blue-200">💎 {t('guide.features.accurate.title')}</h3>
             </div>
@@ -1058,25 +1055,25 @@ const SalaryCalculatorContent = () => {
               {t('guide.features.accurate.description')}
             </p>
             <div className="space-y-3">
-              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+              <div className="bg-white/50 dark:bg-white/[0.06] border border-white/40 dark:border-white/[0.08] p-3 rounded-xl">
                 <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">📋 {t('guide.features.accurate.points.0.title')}</h4>
                 <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.0.content')}</p>
               </div>
-              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+              <div className="bg-white/50 dark:bg-white/[0.06] border border-white/40 dark:border-white/[0.08] p-3 rounded-xl">
                 <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">💰 {t('guide.features.accurate.points.1.title')}</h4>
                 <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.1.content')}</p>
               </div>
-              <div className="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-lg">
+              <div className="bg-white/50 dark:bg-white/[0.06] border border-white/40 dark:border-white/[0.08] p-3 rounded-xl">
                 <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">🏷️ {t('guide.features.accurate.points.2.title')}</h4>
                 <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.features.accurate.points.2.content')}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+          <div className="bg-white/40 dark:bg-white/[0.07] backdrop-blur-xl border border-emerald-200/40 dark:border-emerald-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(16,185,129,0.15)]">
             <div className="flex items-center mb-4">
-              <div className="bg-green-600 p-3 rounded-full mr-3">
-                <TrendingUp className="w-6 h-6 text-white" />
+              <div className="bg-emerald-500/15 dark:bg-emerald-500/20 p-3 rounded-full mr-3">
+                <TrendingUp className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
               </div>
               <h3 className="text-xl font-bold text-green-900 dark:text-green-200">📊 {t('guide.features.smart.title')}</h3>
             </div>
@@ -1087,7 +1084,7 @@ const SalaryCalculatorContent = () => {
               {[0, 1, 2].map((index) => {
                 const icons = ['📊', '💡', '📋'];
                 return (
-                  <div key={index} className="bg-green-100 dark:bg-green-800/50 p-3 rounded-lg">
+                  <div key={index} className="bg-white/50 dark:bg-white/[0.06] border border-white/40 dark:border-white/[0.08] p-3 rounded-xl">
                     <h4 className="font-semibold text-green-900 dark:text-green-200 mb-1 flex items-center">
                       <span className="mr-2">{icons[index]}</span>
                       {t(`guide.features.smart.points.${index}.title`)}
@@ -1099,10 +1096,10 @@ const SalaryCalculatorContent = () => {
             </div>
           </div>
           
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-xl p-8 transform hover:scale-105 transition-transform">
+          <div className="bg-white/40 dark:bg-white/[0.07] backdrop-blur-xl border border-purple-200/40 dark:border-purple-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)]">
             <div className="flex items-center mb-4">
-              <div className="bg-purple-600 p-3 rounded-full mr-3">
-                <DollarSign className="w-6 h-6 text-white" />
+              <div className="bg-purple-500/15 dark:bg-purple-500/20 p-3 rounded-full mr-3">
+                <DollarSign className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
               <h3 className="text-xl font-bold text-purple-900 dark:text-purple-200">⚡ {t('guide.features.practical.title')}</h3>
             </div>
@@ -1113,7 +1110,7 @@ const SalaryCalculatorContent = () => {
               {[0, 1, 2].map((index) => {
                 const icons = ['📱', '🔗', '💻'];
                 return (
-                  <div key={index} className="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-lg">
+                  <div key={index} className="bg-white/50 dark:bg-white/[0.06] border border-white/40 dark:border-white/[0.08] p-3 rounded-xl">
                     <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-1 flex items-center">
                       <span className="mr-2">{icons[index]}</span>
                       {t(`guide.features.practical.points.${index}.title`)}
@@ -1127,14 +1124,14 @@ const SalaryCalculatorContent = () => {
         </div>
 
         {/* 4대보험 완전정복 */}
-        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/30 rounded-2xl p-8 mb-12">
+        <div className="bg-white/30 dark:bg-white/[0.05] backdrop-blur-md border border-white/30 dark:border-white/[0.08] rounded-2xl p-8 mb-12">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{t('insurance.title')}</h3>
           <p className="text-center text-gray-600 dark:text-gray-300 mb-8">{t('insurance.description')}</p>
           
           <div className="grid lg:grid-cols-2 gap-8">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+            <div className="bg-white/50 dark:bg-white/[0.07] backdrop-blur-md border border-white/40 dark:border-white/[0.10] p-6 rounded-2xl">
               <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4 flex items-center">
-                <span className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full mr-3">🏥</span>
+                <span className="bg-blue-500/10 dark:bg-blue-500/15 p-2 rounded-full mr-3">🏥</span>
                 {t('insurance.health.title')}
               </h4>
               <div className="space-y-4">
@@ -1159,9 +1156,9 @@ const SalaryCalculatorContent = () => {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+            <div className="bg-white/50 dark:bg-white/[0.07] backdrop-blur-md border border-white/40 dark:border-white/[0.10] p-6 rounded-2xl">
               <h4 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
-                <span className="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">👴</span>
+                <span className="bg-purple-500/10 dark:bg-purple-500/15 p-2 rounded-full mr-3">👴</span>
                 {t('insurance.pension.title')}
               </h4>
               <div className="space-y-4">
@@ -1189,13 +1186,13 @@ const SalaryCalculatorContent = () => {
         </div>
 
         {/* 소득세 누진세율 상세 설명 */}
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-8 mb-12">
+        <div className="rounded-2xl p-2 mb-12">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{t('taxBracket.title')}</h3>
           <p className="text-center text-gray-600 dark:text-gray-300 mb-8">{t('taxBracket.description')}</p>
           
-          <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+          <div className="overflow-x-auto bg-white/30 dark:bg-white/[0.04] backdrop-blur-sm border border-white/30 dark:border-white/[0.08] rounded-xl">
             <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-gray-700">
+              <thead className="border-b border-white/30 dark:border-white/[0.10]">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">{t('taxBracket.headers.bracket')}</th>
                   <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white">{t('taxBracket.headers.rate')}</th>
@@ -1203,38 +1200,38 @@ const SalaryCalculatorContent = () => {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">{t('taxBracket.headers.salaryRange')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <tbody className="divide-y divide-white/20 dark:divide-white/[0.06]">
+                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
                   <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">1,400만원 이하</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-green-600">6%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">-</td>
                   <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">~3,000만원</td>
                 </tr>
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
                   <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">1,400~5,000만원</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-blue-600">15%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">126만원</td>
                   <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">3,000~7,000만원</td>
                 </tr>
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
                   <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">5,000~8,800만원</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-purple-600">24%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">576만원</td>
                   <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">7,000~1억원</td>
                 </tr>
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
                   <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">8,800만원~1.5억원</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-orange-600">35%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">1,544만원</td>
                   <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">1억~2억원</td>
                 </tr>
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
                   <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">1.5억~3억원</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-red-600">38%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">1,994만원</td>
                   <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">2억~4억원</td>
                 </tr>
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <tr className="hover:bg-white/30 dark:hover:bg-white/[0.05] transition-colors">
                   <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">3억원 초과</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-red-700">40%+</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">다양</td>
@@ -1244,31 +1241,31 @@ const SalaryCalculatorContent = () => {
             </table>
           </div>
           
-          <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/30 rounded-lg">
-            <h5 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">💡 {t('taxBracket.understanding.title')}</h5>
-            <div className="mb-3 p-3 bg-amber-100 dark:bg-amber-800/50 rounded-lg">
-              <h6 className="font-semibold text-amber-900 dark:text-amber-200 mb-1">{t('taxBracket.understanding.keyPoint.title')}</h6>
-              <p className="text-sm text-amber-800 dark:text-amber-300">{t('taxBracket.understanding.keyPoint.description')}</p>
+          <div className="mt-6 p-4 bg-white/40 dark:bg-white/[0.05] border border-white/30 dark:border-white/[0.08] rounded-2xl">
+            <h5 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">💡 {t('taxBracket.understanding.title')}</h5>
+            <div className="mb-3 pb-3 border-b border-white/20 dark:border-white/[0.06]">
+              <h6 className="font-semibold text-gray-700 dark:text-gray-300 mb-1">{t('taxBracket.understanding.keyPoint.title')}</h6>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{t('taxBracket.understanding.keyPoint.description')}</p>
             </div>
-            <div className="bg-amber-100 dark:bg-amber-800/50 rounded-lg p-3">
-              <h6 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">{t('taxBracket.understanding.example.title')}</h6>
-              <div className="text-sm text-amber-800 dark:text-amber-300 space-y-1">
+            <div>
+              <h6 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('taxBracket.understanding.example.title')}</h6>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                 {[0, 1, 2, 3].map((index) => (
                   <p key={index}>• {t(`taxBracket.understanding.example.details.${index}`)}</p>
                 ))}
               </div>
-              <p className="text-xs text-amber-700 dark:text-amber-400 mt-2 italic">{t('taxBracket.understanding.note')}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-2 italic">{t('taxBracket.understanding.note')}</p>
             </div>
           </div>
         </div>
 
         {/* 절세 전략 가이드 */}
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl p-8 mb-12">
+        <div className="rounded-2xl p-2 mb-12">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">💰 {t('taxStrategy.title')}</h3>
           <div className="grid lg:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+            <div className="bg-white/50 dark:bg-white/[0.07] backdrop-blur-md border border-white/40 dark:border-white/[0.10] p-6 rounded-2xl">
               <div className="text-center mb-4">
-                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                <div className="bg-emerald-500/10 dark:bg-emerald-500/15 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
                   <span className="text-2xl">💼</span>
                 </div>
                 <h4 className="text-xl font-bold text-gray-900 dark:text-white">{t('taxStrategy.incomeDeduction.title')}</h4>
@@ -1289,9 +1286,9 @@ const SalaryCalculatorContent = () => {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+            <div className="bg-white/50 dark:bg-white/[0.07] backdrop-blur-md border border-white/40 dark:border-white/[0.10] p-6 rounded-2xl">
               <div className="text-center mb-4">
-                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                <div className="bg-blue-500/10 dark:bg-blue-500/15 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
                   <span className="text-2xl">💊</span>
                 </div>
                 <h4 className="text-xl font-bold text-gray-900 dark:text-white">{t('taxStrategy.taxCredit.title')}</h4>
@@ -1312,9 +1309,9 @@ const SalaryCalculatorContent = () => {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+            <div className="bg-white/50 dark:bg-white/[0.07] backdrop-blur-md border border-white/40 dark:border-white/[0.10] p-6 rounded-2xl">
               <div className="text-center mb-4">
-                <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                <div className="bg-purple-500/10 dark:bg-purple-500/15 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
                   <span className="text-2xl">🏦</span>
                 </div>
                 <h4 className="text-xl font-bold text-gray-900 dark:text-white">{t('taxStrategy.pension.title')}</h4>
@@ -1338,16 +1335,16 @@ const SalaryCalculatorContent = () => {
         </div>
 
         {/* 연말정산 준비 가이드 */}
-        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-2xl p-8">
+        <div className="rounded-2xl p-2">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">📋 {t('yearEndTax.title')}</h3>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
               <h4 className="text-lg font-semibold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center">
-                <span className="bg-indigo-100 dark:bg-indigo-900 p-2 rounded-full mr-2">📅</span>
+                <span className="bg-indigo-500/10 p-2 rounded-full mr-2">📅</span>
                 {t('yearEndTax.schedule.title')}
               </h4>
               <div className="space-y-4">
-                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <div className="border-b border-white/20 dark:border-white/[0.06] pb-4">
                   <h5 className="font-semibold text-indigo-600 mb-2">🗓️ {t('yearEndTax.schedule.timeline.title')}</h5>
                   <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                     {[0, 1, 2, 3].map((index) => (
@@ -1355,7 +1352,7 @@ const SalaryCalculatorContent = () => {
                     ))}
                   </div>
                 </div>
-                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <div className="border-b border-white/20 dark:border-white/[0.06] pb-4">
                   <h5 className="font-semibold text-indigo-600 mb-2">📄 {t('yearEndTax.schedule.documents.title')}</h5>
                   <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                     {[0, 1, 2, 3].map((index) => (
@@ -1367,11 +1364,11 @@ const SalaryCalculatorContent = () => {
             </div>
             <div>
               <h4 className="text-lg font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
-                <span className="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-2">💡</span>
+                <span className="bg-purple-500/10 p-2 rounded-full mr-2">💡</span>
                 {t('yearEndTax.tips.title')}
               </h4>
               <div className="space-y-4">
-                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <div className="border-b border-white/20 dark:border-white/[0.06] pb-4">
                   <h5 className="font-semibold text-purple-600 mb-2">✅ {t('yearEndTax.tips.receiptManagement.title')}</h5>
                   <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                     {[0, 1, 2, 3].map((index) => (
@@ -1379,7 +1376,7 @@ const SalaryCalculatorContent = () => {
                     ))}
                   </div>
                 </div>
-                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <div className="border-b border-white/20 dark:border-white/[0.06] pb-4">
                   <h5 className="font-semibold text-purple-600 mb-2">⚡ {t('yearEndTax.tips.taxSavingProducts.title')}</h5>
                   <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                     {[0, 1, 2, 3].map((index) => (

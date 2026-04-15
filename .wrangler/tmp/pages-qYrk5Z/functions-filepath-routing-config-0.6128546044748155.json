@@ -1,0 +1,69 @@
+{
+  "routes": [
+    {
+      "routePath": "/api/admin-inquiry",
+      "mountPath": "/api",
+      "method": "DELETE",
+      "module": [
+        "api/admin-inquiry.ts:onRequestDelete"
+      ]
+    },
+    {
+      "routePath": "/api/admin-inquiry",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/admin-inquiry.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/admin-inquiry",
+      "mountPath": "/api",
+      "method": "OPTIONS",
+      "module": [
+        "api/admin-inquiry.ts:onRequestOptions"
+      ]
+    },
+    {
+      "routePath": "/api/admin-inquiry",
+      "mountPath": "/api",
+      "method": "PATCH",
+      "module": [
+        "api/admin-inquiry.ts:onRequestPatch"
+      ]
+    },
+    {
+      "routePath": "/api/fetch-page",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/fetch-page.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/fuel-prices",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/fuel-prices.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/fuel-prices-collect",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/fuel-prices-collect.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/proxy-image",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/proxy-image.ts:onRequestGet"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}

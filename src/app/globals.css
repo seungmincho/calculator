@@ -413,6 +413,15 @@ body {
   scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
 }
 
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* NProgress 커스터마이징 */
 #nprogress {
   pointer-events: none;

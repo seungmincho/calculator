@@ -15618,7 +15618,8 @@
     },
     "allTools": {
       "title": "All Tools",
-      "filterPlaceholder": "Filter by tool name..."
+      "filterPlaceholder": "Filter by tool name...",
+      "viewAll": "View all"
     },
     "recentlyViewed": {
       "title": "Recently Used"

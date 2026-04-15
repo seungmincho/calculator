@@ -92,8 +92,10 @@ export default function FuelCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 py-8">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_24%),radial-gradient(circle_at_top_right,rgba(59,130,246,0.16),transparent_22%),linear-gradient(135deg,rgba(236,253,245,0.96),rgba(239,246,255,0.92),rgba(240,249,255,0.9))] dark:bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_top_right,rgba(59,130,246,0.14),transparent_22%),linear-gradient(135deg,rgba(3,7,18,0.98),rgba(15,23,42,0.96),rgba(6,78,59,0.92))] py-8 overflow-hidden">
+        <div className="fixed top-20 left-10 w-72 h-72 bg-emerald-300/18 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="fixed bottom-20 right-10 w-80 h-80 bg-sky-300/18 dark:bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <Suspense fallback={<div className="text-center text-gray-900 dark:text-white">Loading...</div>}>
             <I18nWrapper>
               <FuelCalculator />

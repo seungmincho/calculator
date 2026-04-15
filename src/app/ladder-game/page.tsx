@@ -128,11 +128,11 @@ export default function LadderGamePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/50 to-purple-50/30 dark:from-gray-900 dark:via-indigo-950/30 dark:to-purple-950/20 py-8 sm:py-12 overflow-hidden">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(129,140,248,0.22),transparent_28%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.16),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(34,197,94,0.12),transparent_24%),linear-gradient(135deg,rgba(248,250,252,0.94),rgba(238,242,255,0.9),rgba(245,243,255,0.86))] dark:bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_28%),radial-gradient(circle_at_top_right,rgba(217,70,239,0.14),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.10),transparent_24%),linear-gradient(135deg,rgba(3,7,18,0.98),rgba(15,23,42,0.96),rgba(30,27,75,0.94))] py-8 sm:py-12 overflow-hidden">
         {/* 배경 장식 — 글래스 효과용 컬러 블롭 */}
-        <div className="fixed top-20 left-10 w-72 h-72 bg-purple-300/20 dark:bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="fixed bottom-20 right-10 w-96 h-96 bg-indigo-300/20 dark:bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="fixed top-1/2 left-1/2 w-64 h-64 bg-pink-200/15 dark:bg-pink-600/8 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+        <div className="fixed top-20 left-10 w-72 h-72 bg-fuchsia-300/24 dark:bg-fuchsia-500/12 rounded-full blur-3xl pointer-events-none" />
+        <div className="fixed bottom-20 right-10 w-96 h-96 bg-indigo-300/24 dark:bg-indigo-500/14 rounded-full blur-3xl pointer-events-none" />
+        <div className="fixed top-1/2 left-1/2 w-64 h-64 bg-cyan-200/18 dark:bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
         <div className="container mx-auto px-4 relative z-10">
           <Suspense fallback={<div className="text-center py-20 text-gray-400">Loading...</div>}>
             <LadderGameTabs />
@@ -150,51 +150,51 @@ export default function LadderGamePage() {
             순서 정하기, 벌칙 정하기, 팀 나누기, 메뉴 고르기 등 다양한 상황에서 공정하고 재미있게 결정할 수 있습니다.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🪜 사다리 타기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">참가자와 결과를 1:1 매칭. 블라인드 모드, 시드 공유, 이미지 저장.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🎯 돌림판</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">회전 룰렛으로 하나를 선택. 점심 메뉴, 벌칙 등에 최적.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🔢 순서뽑기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">전체 참가자 순서를 한 번에 결정. 카드 공개 애니메이션.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🪙 동전 던지기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">3D 회전 애니메이션. 통계, 연속기록, N판 M선승제.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🎲 주사위</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">D4~D20, 최대 10개 동시. 보정값, TRPG 지원.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">👥 팀 나누기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">랜덤/캡틴 드래프트. 운동, 조별과제, 회식 팀 분배.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🎫 제비뽑기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">당첨/꽝 비율 설정. 한 명씩 뽑기, 커스텀 상품.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">⚖️ Yes or No</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">매직 8볼 스타일. 7단계 답변, 확률 조정 가능.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">✊ 가위바위보</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">1:1, N판 M선승, 토너먼트. 전적 통계 및 히스토리.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🔢 숫자 뽑기</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">범위·개수 설정, 중복제거, 슬롯머신 애니메이션.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">🍺 벌칙 룰렛</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">회식/MT/커플 프리셋. 커스텀 벌칙 추가 가능.</p>
             </div>
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 dark:border-white/5">
+            <div className="bg-white/48 dark:bg-white/[0.05] backdrop-blur-xl rounded-xl p-4 border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_6px_rgba(255,255,255,0.20),0_12px_30px_rgba(99,102,241,0.08)]">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">⏱️ 타이머</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">카운트다운, 스톱워치, 턴 타이머. 프리셋 지원.</p>
             </div>

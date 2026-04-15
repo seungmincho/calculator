@@ -82,8 +82,10 @@ export default function MenuPickerPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-900 dark:to-gray-800 py-8">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(251,146,60,0.22),transparent_24%),radial-gradient(circle_at_top_right,rgba(244,63,94,0.14),transparent_20%),linear-gradient(135deg,rgba(255,247,237,0.96),rgba(254,242,242,0.92),rgba(255,251,235,0.9))] dark:bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,0.18),transparent_24%),radial-gradient(circle_at_top_right,rgba(225,29,72,0.14),transparent_20%),linear-gradient(135deg,rgba(17,24,39,0.98),rgba(31,41,55,0.96),rgba(69,26,3,0.94))] py-8 overflow-hidden">
+        <div className="fixed top-16 left-8 w-64 h-64 bg-orange-300/20 dark:bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="fixed bottom-16 right-8 w-80 h-80 bg-rose-300/18 dark:bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <I18nWrapper>
               <MenuPicker />

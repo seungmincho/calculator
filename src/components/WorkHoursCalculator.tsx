@@ -328,6 +328,9 @@ export default function WorkHoursCalculator() {
     'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200',
     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200',
   ]
+  const glassCard = 'bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/55 dark:border-white/[0.08] rounded-2xl shadow-[0_18px_50px_rgba(59,130,246,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
+  const glassInset = 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.24),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]'
+  const glassSoft = 'bg-white/44 dark:bg-white/[0.05] backdrop-blur-lg border border-white/50 dark:border-white/[0.08]'
 
   // ─── 결과 패널 ─────────────────────────────────────────
   const ResultPanel = () => result ? (
@@ -364,7 +367,7 @@ export default function WorkHoursCalculator() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-5">
+      <div className={`${glassCard} ${glassInset} p-5`}>
         <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-3">{t('result.breakdown')}</h4>
         <div className="divide-y divide-gray-100 dark:divide-gray-700">
           <div className="flex justify-between py-2">
@@ -409,7 +412,7 @@ export default function WorkHoursCalculator() {
       </div>
     </>
   ) : (
-    <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-10 text-center flex flex-col items-center gap-3">
+    <div className={`${glassSoft} rounded-2xl p-10 text-center flex flex-col items-center gap-3`}>
       <Clock className="w-12 h-12 text-gray-300 dark:text-gray-600" />
       <p className="text-sm text-gray-500 dark:text-gray-400">{t('placeholder')}</p>
     </div>
@@ -439,7 +442,7 @@ export default function WorkHoursCalculator() {
       </div>
 
       {/* 탭 */}
-      <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-xl p-1 w-fit">
+      <div className="flex gap-1 bg-white/45 dark:bg-white/[0.05] backdrop-blur-lg border border-white/50 dark:border-white/[0.08] rounded-xl p-1 w-fit">
         {(['daily', 'conversion'] as TabType[]).map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
             className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
@@ -452,7 +455,7 @@ export default function WorkHoursCalculator() {
       {/* ═══ 탭 1: 근무일 계산 ═══ */}
       {activeTab === 'daily' && (
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             {/* 시급 + 소정근로시간 */}
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -622,7 +625,7 @@ export default function WorkHoursCalculator() {
       {/* ═══ 탭 2: 시급 환산 ═══ */}
       {activeTab === 'conversion' && (
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-green-600" />{t('conversion.title')}
             </h2>
@@ -675,7 +678,7 @@ export default function WorkHoursCalculator() {
 
           {convResult && (
             <div className="space-y-4">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-5">
+              <div className={`${glassCard} ${glassInset} p-5`}>
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <TrendingUp className="w-4 h-4 text-green-600" />{t('conversion.wageTable')}
                 </h3>
@@ -695,7 +698,7 @@ export default function WorkHoursCalculator() {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-5">
+              <div className={`${glassCard} ${glassInset} p-5`}>
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <Shield className="w-4 h-4 text-blue-600" />{t('conversion.insuranceTitle')}
                 </h3>
@@ -731,7 +734,7 @@ export default function WorkHoursCalculator() {
       )}
 
       {/* ═══ 2026 최저임금 ═══ */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-5 flex items-center gap-2">
           <Users className="w-5 h-5 text-green-600" />{t('minimumWage.title')}
         </h3>
@@ -751,7 +754,7 @@ export default function WorkHoursCalculator() {
       </div>
 
       {/* ═══ 근로기준법 가이드 ═══ */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6">
+      <div className="bg-gradient-to-br from-blue-100/60 to-indigo-50/60 dark:from-blue-500/[0.08] dark:to-indigo-500/[0.08] backdrop-blur-xl border border-white/55 dark:border-white/[0.08] rounded-2xl p-6 shadow-[0_18px_50px_rgba(99,102,241,0.10)]">
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-5">💼 {t('guide.title')}</h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
@@ -770,7 +773,7 @@ export default function WorkHoursCalculator() {
       </div>
 
       {/* ═══ 근로자 권리 ═══ */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-5">⚖️ {t('rights.title')}</h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div>

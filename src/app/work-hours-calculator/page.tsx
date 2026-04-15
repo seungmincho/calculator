@@ -110,8 +110,10 @@ export default function WorkHoursCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-          <div className="container mx-auto px-4">
+        <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_24%),radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_20%),linear-gradient(135deg,rgba(248,250,252,0.96),rgba(239,246,255,0.92),rgba(238,242,255,0.9))] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_24%),radial-gradient(circle_at_top_right,rgba(99,102,241,0.12),transparent_20%),linear-gradient(135deg,rgba(3,7,18,0.98),rgba(15,23,42,0.96),rgba(30,41,59,0.94))] py-12 overflow-hidden">
+          <div className="fixed top-16 left-8 w-64 h-64 bg-blue-300/18 dark:bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="fixed bottom-20 right-8 w-80 h-80 bg-indigo-300/16 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="container mx-auto px-4 relative z-10">
             <WorkHoursCalculator />
           </div>
         </div>

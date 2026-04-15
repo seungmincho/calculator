@@ -155,7 +155,24 @@ export default function SalaryCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
-        <SalaryCalculator />
+        <div className="min-h-screen py-8 relative">
+          {/* ── Fixed background layer ── */}
+          <div className="fixed inset-0 -z-10">
+            {/* Light mode base */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50/60 to-slate-50 dark:hidden" />
+            {/* Dark mode base — flat dark navy, NO purple */}
+            <div className="absolute inset-0 hidden dark:block" style={{ background: 'linear-gradient(160deg, #080d1a 0%, #0c1120 50%, #0a0f1c 100%)' }} />
+            {/* Color blobs — 5개, 뷰포트 전체 커버 */}
+            <div className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none opacity-50 dark:opacity-70" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.30) 0%, transparent 70%)' }} />
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none opacity-40 dark:opacity-55" style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 70%)' }} />
+            <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none opacity-30 dark:opacity-40" style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.22) 0%, transparent 70%)' }} />
+            <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none opacity-35 dark:opacity-50" style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.20) 0%, transparent 70%)' }} />
+            <div className="absolute bottom-0 right-0 w-[450px] h-[450px] rounded-full blur-3xl pointer-events-none opacity-40 dark:opacity-55" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)' }} />
+          </div>
+          <div className="relative z-10">
+            <SalaryCalculator />
+          </div>
+        </div>
         <div className="mt-8">
 
           <RelatedTools />

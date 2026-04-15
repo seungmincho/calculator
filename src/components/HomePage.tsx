@@ -15,20 +15,20 @@ import ToolAnalyticsDashboard from './ToolAnalyticsDashboard'
 
 /* ── Glass design tokens ── */
 const glass = {
-  card: 'bg-white/70 dark:bg-white/[0.06] backdrop-blur-xl border border-gray-200/50 dark:border-white/[0.08] rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-none',
-  cardHover: 'hover:bg-white/90 dark:hover:bg-white/[0.10] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:-translate-y-1',
-  cardInset: 'shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-[inset_1px_1px_6px_rgba(255,255,255,0.25),inset_-1px_-1px_6px_rgba(255,255,255,0.08)]',
-  pill: 'bg-white/60 dark:bg-white/[0.06] backdrop-blur-lg border border-gray-200/40 dark:border-white/[0.08] rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:shadow-none',
-  pillActive: 'bg-white/90 dark:bg-white/[0.15] border-indigo-300/60 dark:border-indigo-400/30 shadow-[0_0_15px_rgba(99,102,241,0.15)]',
-  input: 'bg-white/60 dark:bg-white/[0.06] backdrop-blur-xl border border-gray-200/40 dark:border-white/[0.10] rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:shadow-none',
+  card: 'bg-white/70 dark:bg-white/[0.09] backdrop-blur-xl border border-gray-200/50 dark:border-white/[0.13] rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_16px_rgba(0,0,0,0.5)]',
+  cardHover: 'hover:bg-white/90 dark:hover:bg-white/[0.15] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_40px_rgba(0,0,0,0.6)] hover:-translate-y-1',
+  cardInset: 'shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-[inset_1px_1px_8px_rgba(255,255,255,0.14),inset_-1px_-1px_4px_rgba(255,255,255,0.05)]',
+  pill: 'bg-white/60 dark:bg-white/[0.09] backdrop-blur-lg border border-gray-200/40 dark:border-white/[0.13] rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:shadow-none',
+  pillActive: 'bg-white/90 dark:bg-white/[0.22] border-indigo-300/60 dark:border-indigo-400/50 shadow-[0_0_20px_rgba(99,102,241,0.25)]',
+  input: 'bg-white/60 dark:bg-white/[0.09] backdrop-blur-xl border border-gray-200/40 dark:border-white/[0.13] rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:shadow-none',
 } as const
 
 const categoryGlass: Record<CategoryKey, { gradient: string; glow: string }> = {
-  calculators: { gradient: 'from-blue-400/20 to-cyan-400/15 dark:from-blue-500/10 dark:to-cyan-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]' },
-  tools: { gradient: 'from-violet-400/20 to-purple-400/15 dark:from-violet-500/10 dark:to-purple-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]' },
-  media: { gradient: 'from-orange-400/20 to-amber-400/15 dark:from-orange-500/10 dark:to-amber-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(251,146,60,0.15)]' },
-  health: { gradient: 'from-emerald-400/20 to-green-400/15 dark:from-emerald-500/10 dark:to-green-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]' },
-  games: { gradient: 'from-pink-400/20 to-rose-400/15 dark:from-pink-500/10 dark:to-rose-500/5', glow: 'group-hover:shadow-[0_0_30px_rgba(236,72,153,0.15)]' },
+  calculators: { gradient: 'from-blue-400/20 to-cyan-400/15 dark:from-blue-500/30 dark:to-cyan-500/20', glow: 'group-hover:shadow-[0_0_30px_rgba(59,130,246,0.30)]' },
+  tools: { gradient: 'from-violet-400/20 to-purple-400/15 dark:from-violet-500/30 dark:to-purple-500/20', glow: 'group-hover:shadow-[0_0_30px_rgba(139,92,246,0.30)]' },
+  media: { gradient: 'from-orange-400/20 to-amber-400/15 dark:from-orange-500/30 dark:to-amber-500/20', glow: 'group-hover:shadow-[0_0_30px_rgba(251,146,60,0.30)]' },
+  health: { gradient: 'from-emerald-400/20 to-green-400/15 dark:from-emerald-500/30 dark:to-green-500/20', glow: 'group-hover:shadow-[0_0_30px_rgba(16,185,129,0.30)]' },
+  games: { gradient: 'from-pink-400/20 to-rose-400/15 dark:from-pink-500/30 dark:to-rose-500/20', glow: 'group-hover:shadow-[0_0_30px_rgba(236,72,153,0.30)]' },
 }
 
 const categoryEmoji: Record<CategoryKey, string> = {
@@ -130,10 +130,11 @@ export default function HomePage() {
         {/* Dark mode base */}
         <div className="absolute inset-0 hidden dark:block" style={{ background: 'linear-gradient(160deg, #0a0f1e 0%, #0d1117 40%, #0f1623 100%)' }} />
         {/* Floating color blobs */}
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] rounded-full opacity-60 dark:opacity-40" style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)' }} />
-        <div className="absolute top-[20%] right-0 w-[500px] h-[500px] rounded-full opacity-50 dark:opacity-30" style={{ background: 'radial-gradient(circle, rgba(236,72,153,0.10) 0%, transparent 70%)' }} />
-        <div className="absolute bottom-[10%] left-[20%] w-[400px] h-[400px] rounded-full opacity-50 dark:opacity-30" style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.10) 0%, transparent 70%)' }} />
-        <div className="absolute bottom-0 right-[10%] w-[500px] h-[500px] rounded-full opacity-40 dark:opacity-25" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%)' }} />
+        <div className="absolute top-0 left-0 w-[700px] h-[700px] rounded-full opacity-60 dark:opacity-80" style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.20) 0%, transparent 70%)' }} />
+        <div className="absolute top-[20%] right-0 w-[600px] h-[600px] rounded-full opacity-50 dark:opacity-70" style={{ background: 'radial-gradient(circle, rgba(236,72,153,0.18) 0%, transparent 70%)' }} />
+        <div className="absolute bottom-[10%] left-[20%] w-[500px] h-[500px] rounded-full opacity-50 dark:opacity-65" style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.16) 0%, transparent 70%)' }} />
+        <div className="absolute bottom-0 right-[10%] w-[600px] h-[600px] rounded-full opacity-40 dark:opacity-60" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)' }} />
+        <div className="absolute top-[50%] left-[40%] w-[400px] h-[400px] rounded-full opacity-0 dark:opacity-40" style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.14) 0%, transparent 70%)' }} />
         {/* Dot grid texture */}
         <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
       </div>
@@ -398,7 +399,7 @@ export default function HomePage() {
               className={`px-4 py-2 rounded-full text-sm font-medium backdrop-blur-lg border transition-all duration-300 ${
                 activeCategory === 'all'
                   ? `${glass.pillActive} text-indigo-700 dark:text-indigo-300`
-                  : 'bg-white/40 dark:bg-white/[0.04] border-gray-200/60 dark:border-white/[0.06] text-gray-600 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-white/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.03)] dark:shadow-none'
+                  : 'bg-white/40 dark:bg-white/[0.07] border-gray-200/60 dark:border-white/[0.10] text-gray-600 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-white/[0.13] shadow-[0_1px_3px_rgba(0,0,0,0.03)] dark:shadow-none'
               }`}
             >
               {t('header.all')} ({totalTools})
@@ -406,11 +407,11 @@ export default function HomePage() {
             {categoryKeys.map(key => (
               <button
                 key={key}
-                onClick={() => setActiveCategory(key)}
+                onClick={() => { setActiveCategory(key); if (activeCategory === 'all') document.getElementById('tools-grid')?.scrollIntoView({ behavior: 'smooth' }) }}
                 className={`px-4 py-2 rounded-full text-sm font-medium backdrop-blur-lg border transition-all duration-300 ${
                   activeCategory === key
                     ? `${glass.pillActive} text-indigo-700 dark:text-indigo-300`
-                    : 'bg-white/40 dark:bg-white/[0.04] border-gray-200/60 dark:border-white/[0.06] text-gray-600 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-white/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.03)] dark:shadow-none'
+                    : 'bg-white/40 dark:bg-white/[0.07] border-gray-200/60 dark:border-white/[0.10] text-gray-600 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-white/[0.13] shadow-[0_1px_3px_rgba(0,0,0,0.03)] dark:shadow-none'
                 }`}
               >
                 {categoryEmoji[key]} {t(menuConfig[key].titleKey)} ({menuConfig[key].items.length})
@@ -418,55 +419,129 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Tools Grid — Glass cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredTools.map(item => {
-              const isFav = favorites.includes(item.href)
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`group relative ${glass.card} ${glass.cardInset} p-4 transition-all duration-300 ${glass.cardHover}`}
-                >
-                  <button
-                    onClick={(e) => handleToggleFavorite(e, item.href)}
-                    className={`absolute top-2 right-2 p-1 rounded-full transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 ${
-                      isFav
-                        ? 'opacity-100 text-yellow-500 hover:text-yellow-600'
-                        : 'text-gray-300 dark:text-gray-600 hover:text-yellow-400'
-                    }`}
-                    aria-label={isFav ? t('favorites.remove') : t('favorites.add')}
-                  >
-                    <Star className={`w-4 h-4 ${isFav ? 'fill-current' : ''}`} />
-                  </button>
-                  <div className="flex items-center space-x-3">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-indigo-400/10 dark:bg-indigo-400/10 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-indigo-200/20 dark:border-indigo-500/10 group-hover:bg-indigo-400/15 transition-colors">
-                        {item.icon}
+          {/* Category Sliders (all + no search) or Grid (filtered) */}
+          {activeCategory === 'all' && !searchQuery ? (
+            <div className="space-y-12">
+              {categoryKeys.map(catKey => {
+                const cg = categoryGlass[catKey]
+                const catTools = menuConfig[catKey].items
+                const sliderTools = catTools.slice(0, 10)
+                const remaining = catTools.length - sliderTools.length
+                return (
+                  <div key={catKey}>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl">{categoryEmoji[catKey]}</span>
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t(menuConfig[catKey].titleKey)}</h3>
+                        <span className="text-sm text-gray-400 dark:text-gray-500">({catTools.length})</span>
                       </div>
+                      <button
+                        onClick={() => setActiveCategory(catKey)}
+                        className={`${glass.pill} flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:bg-white/70 dark:hover:bg-white/[0.15] transition-colors`}
+                      >
+                        {t('homePage.allTools.viewAll')} <ArrowRight className="w-3 h-3" />
+                      </button>
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                        {t(item.labelKey)}
-                        {isNewTool(item) && (
-                          <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full leading-none">
-                            NEW
-                          </span>
-                        )}
-                      </h3>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">{t(item.descriptionKey)}</p>
+                    <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide -mx-4 px-4">
+                      {sliderTools.map(item => {
+                        const isFav = favorites.includes(item.href)
+                        return (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`group relative snap-start shrink-0 w-[148px] sm:w-[164px] ${glass.card} p-4 transition-all duration-200 ${glass.cardHover}`}
+                          >
+                            <div className={`absolute inset-0 bg-gradient-to-br ${cg.gradient} rounded-2xl`} />
+                            <div className="relative z-10">
+                              <div className="text-2xl mb-2.5">{item.icon}</div>
+                              <div className="text-xs font-medium text-gray-900 dark:text-white leading-snug line-clamp-2">
+                                {t(item.labelKey)}
+                                {isNewTool(item) && (
+                                  <span className="ml-1 inline-flex items-center px-1 py-0.5 text-[9px] font-bold bg-red-500 text-white rounded-full leading-none">N</span>
+                                )}
+                              </div>
+                              <div className="text-[10px] text-gray-500 dark:text-gray-400 mt-1 truncate">{t(item.descriptionKey)}</div>
+                            </div>
+                            <button
+                              onClick={(e) => handleToggleFavorite(e, item.href)}
+                              className={`absolute top-2 right-2 p-0.5 rounded-full transition-all opacity-0 group-hover:opacity-100 ${
+                                isFav ? 'opacity-100 text-yellow-500' : 'text-gray-300 dark:text-gray-600 hover:text-yellow-400'
+                              }`}
+                              aria-label={isFav ? t('favorites.remove') : t('favorites.add')}
+                            >
+                              <Star className={`w-3.5 h-3.5 ${isFav ? 'fill-current' : ''}`} />
+                            </button>
+                          </Link>
+                        )
+                      })}
+                      {remaining > 0 && (
+                        <button
+                          onClick={() => setActiveCategory(catKey)}
+                          className={`snap-start shrink-0 w-[120px] ${glass.card} p-4 flex flex-col items-center justify-center gap-2.5 text-indigo-600 dark:text-indigo-400 transition-all ${glass.cardHover}`}
+                        >
+                          <div className="w-10 h-10 rounded-full bg-indigo-400/10 dark:bg-indigo-400/20 flex items-center justify-center border border-indigo-200/30 dark:border-indigo-400/25">
+                            <ArrowRight className="w-4 h-4" />
+                          </div>
+                          <span className="text-xs font-medium text-center">+{remaining}<br />더보기</span>
+                        </button>
+                      )}
                     </div>
                   </div>
-                </Link>
-              )
-            })}
-          </div>
-
-          {filteredTools.length === 0 && (
-            <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-              <Search className="w-12 h-12 mx-auto mb-4 opacity-30" />
-              <p>{t('searchDialog.noResults')}</p>
+                )
+              })}
             </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filteredTools.map(item => {
+                  const isFav = favorites.includes(item.href)
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`group relative ${glass.card} ${glass.cardInset} p-4 transition-all duration-300 ${glass.cardHover}`}
+                    >
+                      <button
+                        onClick={(e) => handleToggleFavorite(e, item.href)}
+                        className={`absolute top-2 right-2 p-1 rounded-full transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 ${
+                          isFav
+                            ? 'opacity-100 text-yellow-500 hover:text-yellow-600'
+                            : 'text-gray-300 dark:text-gray-600 hover:text-yellow-400'
+                        }`}
+                        aria-label={isFav ? t('favorites.remove') : t('favorites.add')}
+                      >
+                        <Star className={`w-4 h-4 ${isFav ? 'fill-current' : ''}`} />
+                      </button>
+                      <div className="flex items-center space-x-3">
+                        <div className="flex-shrink-0">
+                          <div className="w-10 h-10 bg-indigo-400/10 dark:bg-indigo-400/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-indigo-200/20 dark:border-indigo-500/15 group-hover:bg-indigo-400/20 transition-colors">
+                            {item.icon}
+                          </div>
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                            {t(item.labelKey)}
+                            {isNewTool(item) && (
+                              <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full leading-none">
+                                NEW
+                              </span>
+                            )}
+                          </h3>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">{t(item.descriptionKey)}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+
+              {filteredTools.length === 0 && (
+                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                  <Search className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                  <p>{t('searchDialog.noResults')}</p>
+                </div>
+              )}
+            </>
           )}
         </section>
 

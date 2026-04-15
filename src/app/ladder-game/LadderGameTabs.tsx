@@ -57,15 +57,14 @@ export default function LadderGameTabs() {
   return (
     <div className="relative">
       {/* 글로벌 배경 그라데이션 */}
-      <div className="absolute inset-0 -top-8 -mx-4 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-pink-500/10 dark:from-indigo-900/20 dark:via-purple-900/10 dark:to-pink-900/20 rounded-3xl pointer-events-none" />
+      <div className="absolute inset-0 -top-8 -mx-4 bg-gradient-to-br from-indigo-500/12 via-fuchsia-400/8 to-cyan-400/10 dark:from-indigo-900/28 dark:via-fuchsia-900/16 dark:to-cyan-900/18 rounded-[2rem] pointer-events-none blur-sm" />
 
       <div className="relative z-10">
       {/* 탭 바 — Liquid Glass */}
       <div className="flex justify-center mb-6">
-        <div className="w-full overflow-x-auto scrollbar-hide">
+        <div className="w-full overflow-x-auto scrollbar-hide px-1">
           <div
-            className="inline-flex rounded-2xl p-1.5 gap-1 min-w-max mx-auto bg-white/30 dark:bg-gray-800/40 backdrop-blur-xl border border-white/30 dark:border-white/10"
-            style={{ boxShadow: 'inset 2px 2px 10px rgba(255,255,255,0.15), inset -2px -2px 10px rgba(255,255,255,0.05), 0 8px 32px rgba(0,0,0,0.08)' }}
+            className="inline-flex rounded-[1.4rem] p-1.5 gap-1 min-w-max mx-auto bg-white/38 dark:bg-white/[0.06] backdrop-blur-xl border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_8px_rgba(255,255,255,0.26),inset_-1px_-1px_8px_rgba(255,255,255,0.08),0_16px_40px_rgba(79,70,229,0.12)]"
           >
             {TABS.map((tab) => (
               <button
@@ -73,10 +72,10 @@ export default function LadderGameTabs() {
                 onClick={() => handleTabChange(tab.id)}
                 className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'bg-white/40 dark:bg-white/15 backdrop-blur-xl text-indigo-700 dark:text-indigo-300 border border-white/40 dark:border-white/20'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-white/20 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-gray-200'
+                    ? 'bg-white/62 dark:bg-white/[0.14] backdrop-blur-xl text-indigo-700 dark:text-indigo-300 border border-white/55 dark:border-white/[0.14] shadow-[0_0_20px_rgba(99,102,241,0.18)]'
+                    : 'text-gray-700 dark:text-gray-400 hover:bg-white/28 dark:hover:bg-white/[0.06] hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
-                style={activeTab === tab.id ? { boxShadow: '0 0 15px rgba(99,102,241,0.2), inset 1px 1px 5px rgba(255,255,255,0.2)' } : undefined}
+                style={activeTab === tab.id ? { boxShadow: '0 0 20px rgba(99,102,241,0.16), inset 1px 1px 5px rgba(255,255,255,0.2)' } : undefined}
               >
                 <span>{tab.icon}</span>
                 <span>{tab.label}</span>

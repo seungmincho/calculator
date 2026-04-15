@@ -791,6 +791,8 @@ export default function MenuPicker() {
   const getCategoryLabelSafe = useCallback((cat: string): string => {
     return getCategoryLabel(cat)
   }, [getCategoryLabel])
+  const glassCard = 'bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/55 dark:border-white/[0.08] rounded-xl shadow-[0_18px_50px_rgba(249,115,22,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
+  const glassInset = 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.24),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]'
 
   return (
     <div className="space-y-6">
@@ -804,7 +806,7 @@ export default function MenuPicker() {
 
       {/* Mode Selector */}
       <div className="flex justify-center">
-        <div className="inline-flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1 gap-1">
+        <div className="inline-flex bg-white/45 dark:bg-white/[0.05] backdrop-blur-lg border border-white/50 dark:border-white/[0.08] rounded-xl p-1 gap-1">
           <button
             onClick={() => setMode('roulette')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -842,7 +844,7 @@ export default function MenuPicker() {
       </div>
 
       {/* Situation Chips */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+      <div className={`${glassCard} ${glassInset} p-4`}>
         <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
           {t('situation')}
         </p>
@@ -864,7 +866,7 @@ export default function MenuPicker() {
       </div>
 
       {/* Category Filter */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+      <div className={`${glassCard} ${glassInset} p-4`}>
         <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
           {t('categories')}
         </p>
@@ -891,7 +893,7 @@ export default function MenuPicker() {
 
       {/* Favorites */}
       {favorites.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+        <div className={`${glassCard} ${glassInset} p-4`}>
           <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
             {`⭐ ${t('favorites')}`}
           </p>
@@ -972,7 +974,7 @@ export default function MenuPicker() {
       {mode === 'tournament' && (
         <div className="space-y-4">
           {tournamentPhase === 'setup' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center space-y-5">
+            <div className={`${glassCard} ${glassInset} p-6 text-center space-y-5`}>
               <div>
                 <Trophy className="w-12 h-12 mx-auto text-purple-500 mb-3" />
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('modeTournament')}</h2>
@@ -1033,7 +1035,7 @@ export default function MenuPicker() {
                       key={side}
                       onClick={() => pickTournamentWinner(side)}
                       disabled={!!tournamentPicked}
-                      className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-8 transition-all duration-500 flex flex-col items-center gap-3 ${
+                      className={`relative bg-white/58 dark:bg-white/[0.07] backdrop-blur-xl border border-white/60 dark:border-white/[0.08] rounded-2xl shadow-[0_18px_50px_rgba(168,85,247,0.10)] p-6 sm:p-8 transition-all duration-500 flex flex-col items-center gap-3 ${
                         isPicked
                           ? 'ring-4 ring-purple-500 scale-105 shadow-xl shadow-purple-200 dark:shadow-purple-900/30'
                           : isOther
@@ -1068,7 +1070,7 @@ export default function MenuPicker() {
               </div>
 
               {/* Progress bar */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 -mt-8">
+              <div className={`${glassCard} ${glassInset} p-4 -mt-8`}>
                 <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-2">
                   <span>{t('progress')}</span>
                   <span>{Math.round((currentMatchup.matchNumber / currentMatchup.totalMatches) * 100)}%</span>
@@ -1181,7 +1183,7 @@ export default function MenuPicker() {
                 return (
                   <div
                     key={`${item.name}-${idx}`}
-                    className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-500 ${
+                      className={`relative bg-white/58 dark:bg-white/[0.07] backdrop-blur-xl border border-white/60 dark:border-white/[0.08] rounded-2xl shadow-[0_18px_50px_rgba(245,158,11,0.10)] overflow-hidden transition-all duration-500 ${
                       isSelected
                         ? 'ring-4 ring-amber-400 shadow-xl shadow-amber-200 dark:shadow-amber-900/30 scale-105'
                         : isUnselected
@@ -1274,7 +1276,7 @@ export default function MenuPicker() {
 
       {/* History */}
       {history.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
+        <div className={`${glassCard} ${glassInset} p-4`}>
           <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wider">
             {t('history')}
           </p>
@@ -1327,7 +1329,7 @@ function ResultCard({
 }) {
   return (
     <div
-      className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-500 ${
+      className={`bg-white/58 dark:bg-white/[0.07] backdrop-blur-xl border border-white/60 dark:border-white/[0.08] rounded-xl shadow-[0_18px_50px_rgba(249,115,22,0.10)] overflow-hidden transition-all duration-500 ${
         show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}
     >

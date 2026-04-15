@@ -103,6 +103,8 @@ interface DrivingLogEntry {
 const FuelCalculator = () => {
   const t = useTranslations('fuelCalculator')
   const tc = useTranslations('common')
+  const glassCard = 'bg-white/52 dark:bg-white/[0.06] backdrop-blur-xl border border-white/55 dark:border-white/[0.08] rounded-xl shadow-[0_18px_50px_rgba(16,185,129,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
+  const glassInset = 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.24),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]'
   const searchParams = useSearchParams()
   const [linkCopied, setLinkCopied] = useState(false)
 
@@ -778,7 +780,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
           {/* 입력 패널 */}
           <div className="lg:col-span-1 space-y-6">
             {/* 주행 정보 */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center space-x-2 mb-4">
                 <MapPin className="w-5 h-5 text-blue-600" />
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -805,7 +807,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
             </div>
 
             {/* 차량 정보 */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-2">
                   <Car className="w-5 h-5 text-green-600" />
@@ -911,7 +913,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
             </div>
 
             {/* 유가 정보 (지역/날짜/가격) */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-2">
                   <Fuel className="w-5 h-5 text-orange-600" />
@@ -1109,7 +1111,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
             </div>
 
             {/* 감가비 계수 설정 */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center space-x-2 mb-4">
                 <Wrench className="w-5 h-5 text-purple-600" />
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -1167,7 +1169,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
             {calculation ? (
               <>
                 {/* 계산 결과 */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className={`${glassCard} ${glassInset} p-6`}>
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-2">
                       <Calculator className="w-5 h-5 text-purple-600" />
@@ -1299,7 +1301,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                 {/* 비용 구성 파이차트 + 연료별 비교 */}
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* 비용 구성 */}
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <div className={`${glassCard} ${glassInset} p-6`}>
                     <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                       <BarChart3 className="w-4 h-4 text-blue-500" />
                       비용 구성
@@ -1330,7 +1332,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   </div>
 
                   {/* 연료별 비교 */}
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <div className={`${glassCard} ${glassInset} p-6`}>
                     <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                       <Fuel className="w-4 h-4 text-green-500" />
                       연료별 비용 비교
@@ -1372,7 +1374,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                 </div>
               </>
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center">
+              <div className={`${glassCard} ${glassInset} p-12 text-center`}>
                 <Car className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-gray-500 dark:text-gray-400">
                   {t('placeholder')}
@@ -1397,7 +1399,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
       {activeTab === 'drivingLog' && (
         <div className="space-y-6">
           {/* Add Entry Form */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
               {t('drivingLog.addEntry')}
             </h2>
@@ -1481,7 +1483,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
           </div>
 
           {/* Log Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                 {t('drivingLog.title')}

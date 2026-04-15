@@ -166,8 +166,12 @@ export default function BogeumjariLoanPage() {
           </div>
         </div>
       }>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-          <BogeumjariLoanCalculator />
+        <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.16),transparent_24%),radial-gradient(circle_at_top_right,rgba(16,185,129,0.12),transparent_20%),linear-gradient(135deg,rgba(248,250,252,0.96),rgba(239,246,255,0.92),rgba(236,253,245,0.9))] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_24%),radial-gradient(circle_at_top_right,rgba(16,185,129,0.10),transparent_20%),linear-gradient(135deg,rgba(2,6,23,0.98),rgba(15,23,42,0.96),rgba(6,78,59,0.92))] py-8 overflow-hidden">
+          <div className="fixed top-16 left-8 w-64 h-64 bg-blue-300/18 dark:bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="fixed bottom-16 right-10 w-80 h-80 bg-emerald-300/16 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative z-10">
+            <BogeumjariLoanCalculator />
+          </div>
         </div>
       </Suspense>
 
