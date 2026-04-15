@@ -170,19 +170,23 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   if (!isOpen) return null
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh]"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={t('common.search')}
-    >
-      {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
+    <>
+      {/* Backdrop — z-[99]: 헤더(z-[100]) 아래, 콘텐츠 위 */}
+      <div
+        className="fixed inset-0 z-[99] bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      />
 
+      {/* Dialog wrapper — z-[101]: 헤더(z-[100]) 위 */}
+      <div
+        className="fixed inset-0 z-[101] flex items-start justify-center pt-[15vh] pointer-events-none"
+        role="dialog"
+        aria-modal="true"
+        aria-label={t('common.search')}
+      >
       {/* Dialog */}
       <div
-        className="relative w-full max-w-xl mx-4 bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+        className="pointer-events-auto relative w-full max-w-xl mx-4 bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input */}
@@ -384,6 +388,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           {query.trim() ? `${filteredItems.length} ${t('searchDialog.results')}` : ''}
         </span>
       </div>
-    </div>
+      </div>
+    </>
   )
 }
