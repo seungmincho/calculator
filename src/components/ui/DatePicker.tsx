@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { format, subMonths, addMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay, isAfter } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
 
 interface DatePickerProps {
   value: string // YYYY-MM-DD or ''
@@ -107,7 +106,7 @@ export default function DatePicker({ value, onChange, maxDate, minDate, placehol
 
       {/* 캘린더 팝오버 */}
       {isOpen && (
-        <div className={`${glassCard} ${glassInset} absolute z-50 mt-1 p-3 w-[280px]`}>
+        <div className="absolute z-50 mt-1 p-3 w-[280px] bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-white/10 rounded-2xl shadow-xl">
           {/* 월 네비게이션 */}
           <div className="flex items-center justify-between mb-3">
             <button

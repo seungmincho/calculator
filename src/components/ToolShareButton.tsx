@@ -4,7 +4,6 @@ import { useState, useCallback, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from '@/lib/i18n'
 import { Share2, Link as LinkIcon, Check, X as XIcon } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
 
 export default function ToolShareButton() {
@@ -96,7 +95,7 @@ export default function ToolShareButton() {
       {/* Share menu popup */}
       {isOpen && (
         <div
-          className={`${glassCard} ${glassInset} absolute bottom-14 right-0 p-3 min-w-[180px] animate-in fade-in slide-in-from-bottom-2`}
+          className="absolute bottom-14 right-0 p-3 min-w-[180px] bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-white/10 rounded-2xl shadow-xl animate-in fade-in slide-in-from-bottom-2"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 px-2">
