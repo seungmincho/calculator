@@ -214,7 +214,7 @@ export default function DutchPay() {
       {/* Main Content */}
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-1">
-          <div className="${glassCard} ${glassInset} p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             {mode === 'equal' ? (
               <>
                 {/* Equal Split Input */}
@@ -227,7 +227,7 @@ export default function DutchPay() {
                     value={totalAmount}
                     onChange={(e) => setTotalAmount(e.target.value)}
                     placeholder="0"
-                    className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
                 <div>
@@ -240,7 +240,7 @@ export default function DutchPay() {
                     onChange={(e) => setNumberOfPeople(e.target.value)}
                     placeholder="0"
                     min="1"
-                    className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
               </>
@@ -268,7 +268,7 @@ export default function DutchPay() {
                         value={participant.name}
                         onChange={(e) => updateParticipant(participant.id, 'name', e.target.value)}
                         placeholder={t('name')}
-                        className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                        className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                       />
                       <div className="grid grid-cols-2 gap-2">
                         <div>
@@ -280,7 +280,7 @@ export default function DutchPay() {
                             value={participant.paid || ''}
                             onChange={(e) => updateParticipant(participant.id, 'paid', parseFloat(e.target.value) || 0)}
                             placeholder="0"
-                            className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                            className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                           />
                         </div>
                         <div>
@@ -292,7 +292,7 @@ export default function DutchPay() {
                             value={participant.consumed || ''}
                             onChange={(e) => updateParticipant(participant.id, 'consumed', parseFloat(e.target.value) || 0)}
                             placeholder="0"
-                            className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                            className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                           />
                         </div>
                       </div>
@@ -319,7 +319,7 @@ export default function DutchPay() {
         </div>
 
         <div className="lg:col-span-2">
-          <div className="${glassCard} ${glassInset} p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                 {t('result')}
@@ -392,7 +392,7 @@ export default function DutchPay() {
       </div>
 
       {/* Guide Section */}
-      <div className="${glassCard} ${glassInset} p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
           <BookOpen className="w-6 h-6 mr-2 text-blue-600 dark:text-blue-400" />
           {t('guide.title')}

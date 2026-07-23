@@ -220,7 +220,7 @@ export default function DiscountCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel - Settings */}
         <div className="lg:col-span-1">
-          <div className="${glassCard} ${glassInset} p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Mode Tabs */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -278,7 +278,7 @@ export default function DiscountCalculator() {
                 type="number"
                 value={originalPrice}
                 onChange={(e) => setOriginalPrice(Math.max(0, Number(e.target.value)))}
-                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 min="0"
               />
             </div>
@@ -295,7 +295,7 @@ export default function DiscountCalculator() {
                       type="number"
                       value={discountRate}
                       onChange={(e) => setDiscountRate(Math.min(100, Math.max(0, Number(e.target.value))))}
-                      className="flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                      className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                       min="0"
                       max="100"
                       step="0.1"
@@ -339,7 +339,7 @@ export default function DiscountCalculator() {
                   type="number"
                   value={finalPrice}
                   onChange={(e) => setFinalPrice(Math.max(0, Number(e.target.value)))}
-                  className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   min="0"
                 />
               </div>
@@ -354,7 +354,7 @@ export default function DiscountCalculator() {
                   type="number"
                   value={discountAmount}
                   onChange={(e) => setDiscountAmount(Math.max(0, Number(e.target.value)))}
-                  className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   min="0"
                 />
               </div>
@@ -390,7 +390,7 @@ export default function DiscountCalculator() {
           </div>
 
           {/* Multi Discount Section */}
-          <div className="mt-6 ${glassCard} ${glassInset} p-6">
+          <div className={`mt-6 ${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('multiDiscount')}
             </h3>
@@ -408,7 +408,7 @@ export default function DiscountCalculator() {
                     type="number"
                     value={discount.rate}
                     onChange={(e) => updateMultiDiscountRate(discount.id, Number(e.target.value))}
-                    className="flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                    className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                     min="0"
                     max="100"
                     step="0.1"
@@ -469,7 +469,7 @@ export default function DiscountCalculator() {
 
         {/* Right Panel - Results */}
         <div className="lg:col-span-2">
-          <div className="${glassCard} ${glassInset} p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {/* Result Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Original Price */}
@@ -641,7 +641,7 @@ export default function DiscountCalculator() {
       </div>
 
       {/* Guide Section */}
-      <div className="${glassCard} ${glassInset} p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

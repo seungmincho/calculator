@@ -641,7 +641,7 @@ export default function EmailTemplate() {
         {/* Left panel: settings */}
         <div className="lg:col-span-1 space-y-6">
           {/* Tone & Language */}
-          <div className="${glassCard} ${glassInset} p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h3 className="text-base font-semibold text-gray-900 dark:text-white">{t('settings')}</h3>
 
             {/* Tone */}
@@ -697,7 +697,7 @@ export default function EmailTemplate() {
           </div>
 
           {/* Input fields */}
-          <div className="${glassCard} ${glassInset} p-6 space-y-4">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold text-gray-900 dark:text-white">{t('fieldsTitle')}</h3>
               <button
@@ -723,7 +723,7 @@ export default function EmailTemplate() {
                     onChange={e => updateField(fieldKey, e.target.value)}
                     rows={3}
                     placeholder={t(`placeholders.${fieldKey}`)}
-                    className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm resize-none"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm resize-none`}
                   />
                 ) : (
                   <input
@@ -731,7 +731,7 @@ export default function EmailTemplate() {
                     value={fields[fieldKey]}
                     onChange={e => updateField(fieldKey, e.target.value)}
                     placeholder={t(`placeholders.${fieldKey}`)}
-                    className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
+                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
                   />
                 )}
               </div>
@@ -741,7 +741,7 @@ export default function EmailTemplate() {
 
         {/* Right panel: preview */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="${glassCard} ${glassInset} p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <FileText className="w-5 h-5 text-blue-600" />
@@ -810,7 +810,7 @@ export default function EmailTemplate() {
       </div>
 
       {/* Guide section */}
-      <div className="${glassCard} ${glassInset} p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}

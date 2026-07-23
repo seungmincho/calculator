@@ -509,7 +509,7 @@ export default function GifMaker() {
 
       {/* Frame strip */}
       {frames.length > 0 && (
-        <div className="${glassCard} ${glassInset} p-4">
+        <div className={`${glassCard} ${glassInset} p-4`}>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
               {t('frames')} ({frames.length})
@@ -581,7 +581,7 @@ export default function GifMaker() {
 
       {/* Settings */}
       {frames.length > 0 && (
-        <div className="${glassCard} ${glassInset} p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Frame delay */}
             <div>
@@ -614,7 +614,7 @@ export default function GifMaker() {
                 max={800}
                 value={outputWidth}
                 onChange={(e) => { setOutputWidth(Math.max(50, Math.min(800, Number(e.target.value)))); setDownloadUrl(null) }}
-                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 outline-none"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 outline-none`}
               />
             </div>
 
@@ -669,7 +669,7 @@ export default function GifMaker() {
 
       {/* Canvas preview */}
       {frames.length > 0 && (
-        <div className="${glassCard} ${glassInset} p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('preview')}</h2>
             <button
@@ -746,7 +746,7 @@ export default function GifMaker() {
       )}
 
       {/* Guide */}
-      <div className="${glassCard} ${glassInset} p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
           {t('guide.title')}
         </h2>

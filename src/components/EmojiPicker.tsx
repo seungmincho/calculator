@@ -403,7 +403,7 @@ export default function EmojiPicker() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={t('searchPlaceholder')}
-          className="w-full pl-10 pr-4 py-3 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className={`w-full pl-10 pr-4 py-3 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
         />
       </div>
 
@@ -427,7 +427,7 @@ export default function EmojiPicker() {
       </div>
 
       {/* Emoji Grid */}
-      <div className="${glassCard} ${glassInset} p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         {/* Counter */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -496,7 +496,7 @@ export default function EmojiPicker() {
       </div>
 
       {/* Guide Section */}
-      <div className="${glassCard} ${glassInset} p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}

@@ -310,7 +310,7 @@ export default function EvSubsidyCalculator() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Left: Inputs */}
         <div className="lg:col-span-1 space-y-5">
-          <div className="${glassCard} ${glassInset} p-6 space-y-5">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Car className="w-4 h-4 text-green-500" />
               {t('vehicleInfo')}
@@ -458,7 +458,7 @@ export default function EvSubsidyCalculator() {
           </div>
 
           {/* Popular models quick-fill */}
-          <div className="${glassCard} ${glassInset} p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
               {t('popularModels')}
             </h2>
@@ -514,7 +514,7 @@ export default function EvSubsidyCalculator() {
               </div>
 
               {/* Performance breakdown */}
-              <div className="${glassCard} ${glassInset} p-6">
+              <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
                   {t('performanceBreakdown')}
                 </h2>
@@ -566,14 +566,14 @@ export default function EvSubsidyCalculator() {
               </div>
             </>
           ) : (
-            <div className="${glassCard} ${glassInset} p-10 flex flex-col items-center justify-center text-center min-h-48">
+            <div className={`${glassCard} ${glassInset} p-10 flex flex-col items-center justify-center text-center min-h-48`}>
               <Zap className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-3" />
               <p className="text-gray-400 dark:text-gray-500 text-sm">{t('resultPlaceholder')}</p>
             </div>
           )}
 
           {/* Region comparison table */}
-          <div className="${glassCard} ${glassInset} overflow-hidden">
+          <div className={`${glassCard} ${glassInset} overflow-hidden`}>
             <button
               onClick={() => setShowRegionTable((v) => !v)}
               className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition"
@@ -645,7 +645,7 @@ export default function EvSubsidyCalculator() {
           </div>
 
           {/* Popular models comparison */}
-          <div className="${glassCard} ${glassInset} overflow-hidden">
+          <div className={`${glassCard} ${glassInset} overflow-hidden`}>
             <button
               onClick={() => setShowModelsTable((v) => !v)}
               className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition"

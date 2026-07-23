@@ -491,7 +491,7 @@ export default function Enneagram() {
         </div>
 
         {/* Question Card */}
-        <div className="${glassCard} ${glassInset} p-8">
+        <div className={`${glassCard} ${glassInset} p-8`}>
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-8 text-center leading-relaxed">
             {q.text}
           </p>
@@ -565,7 +565,7 @@ export default function Enneagram() {
       {/* Radar + Scores Grid */}
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Radar Chart */}
-        <div className="${glassCard} ${glassInset} p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-center">유형별 점수 분포</h3>
           <div className="flex justify-center">
             <canvas ref={radarRef} style={{ width: 380, height: 380 }} />
@@ -573,7 +573,7 @@ export default function Enneagram() {
         </div>
 
         {/* Score Bars */}
-        <div className="${glassCard} ${glassInset} p-6">
+        <div className={`${glassCard} ${glassInset} p-6`}>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">유형별 점수</h3>
           <div className="space-y-3">
             {TYPES.map((t, i) => {
@@ -608,7 +608,7 @@ export default function Enneagram() {
       </div>
 
       {/* Type Detail */}
-      <div className="${glassCard} ${glassInset} p-6 space-y-6">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
           Type {primaryType} {primaryInfo.name} 상세 분석
         </h3>
@@ -664,7 +664,7 @@ export default function Enneagram() {
       </div>
 
       {/* Share Section */}
-      <div className="${glassCard} ${glassInset} p-6 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">결과 공유</h3>
         <canvas ref={shareCardRef} className="hidden" />
         <div className="flex flex-wrap gap-3">

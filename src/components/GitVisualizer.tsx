@@ -700,7 +700,7 @@ export default function GitVisualizer() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Canvas area (2/3) */}
         <div className="lg:col-span-2">
-          <div className="${glassCard} ${glassInset} p-4 overflow-x-auto">
+          <div className={`${glassCard} ${glassInset} p-4 overflow-x-auto`}>
             <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
               <GitCommit className="w-4 h-4" /> 커밋 그래프
             </h2>
@@ -713,7 +713,7 @@ export default function GitVisualizer() {
         {/* Sidebar (1/3) */}
         <div className="space-y-4">
           {/* Command input */}
-          <div className="${glassCard} ${glassInset} p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
               <Terminal className="w-4 h-4" /> 명령어 입력
             </h3>
@@ -724,7 +724,7 @@ export default function GitVisualizer() {
                 onChange={e => setCommandInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="예: commit 버그 수정"
-                className="flex-1 px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-emerald-500 focus:outline-none font-mono"
+                className={`flex-1 px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-emerald-500 focus:outline-none font-mono`}
               />
               <button
                 onClick={() => executeCommand(commandInput)}
@@ -753,7 +753,7 @@ export default function GitVisualizer() {
           </div>
 
           {/* Branch list */}
-          <div className="${glassCard} ${glassInset} p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
               <GitBranch className="w-4 h-4" /> 브랜치 ({branchList.length})
             </h3>
@@ -779,7 +779,7 @@ export default function GitVisualizer() {
           </div>
 
           {/* Operation log */}
-          <div className="${glassCard} ${glassInset} p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
               <GitMerge className="w-4 h-4" /> 실행 로그
             </h3>
@@ -805,7 +805,7 @@ export default function GitVisualizer() {
           </div>
 
           {/* Commit log */}
-          <div className="${glassCard} ${glassInset} p-4">
+          <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
               커밋 목록 ({commitList.length})
             </h3>
@@ -831,7 +831,7 @@ export default function GitVisualizer() {
       </div>
 
       {/* Guide section */}
-      <div className="${glassCard} ${glassInset} overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setShowGuide(g => !g)}
           className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"

@@ -692,7 +692,7 @@ export default function GovernmentSubsidyCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left: Input Panel */}
         <div className="lg:col-span-1">
-          <div className="${glassCard} ${glassInset} p-6 space-y-4 sticky top-24">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-4 sticky top-24`}>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <Calculator className="w-5 h-5 text-blue-500" />
               {t('input.title')}
@@ -706,7 +706,7 @@ export default function GovernmentSubsidyCalculator() {
               <select
                 value={input.householdSize}
                 onChange={e => updateInput('householdSize', parseInt(e.target.value))}
-                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
               >
                 {[1, 2, 3, 4, 5, 6].map(n => (
                   <option key={n} value={n}>{t('input.persons', { count: n })}</option>
@@ -724,7 +724,7 @@ export default function GovernmentSubsidyCalculator() {
                   type="text"
                   value={formatNumber(input.monthlyIncome)}
                   onChange={e => updateInput('monthlyIncome', parseNumberInput(e.target.value))}
-                  className="w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.manwon')}</span>
               </div>
@@ -740,7 +740,7 @@ export default function GovernmentSubsidyCalculator() {
                   type="text"
                   value={formatNumber(input.totalAssets)}
                   onChange={e => updateInput('totalAssets', parseNumberInput(e.target.value))}
-                  className="w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.manwon')}</span>
               </div>
@@ -758,7 +758,7 @@ export default function GovernmentSubsidyCalculator() {
                   max={120}
                   value={input.age}
                   onChange={e => updateInput('age', parseInt(e.target.value) || 0)}
-                  className="w-full px-3 py-2 pr-10 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                  className={`w-full px-3 py-2 pr-10 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.years')}</span>
               </div>
@@ -798,7 +798,7 @@ export default function GovernmentSubsidyCalculator() {
                       type="text"
                       value={formatNumber(input.monthlyRent)}
                       onChange={e => updateInput('monthlyRent', parseNumberInput(e.target.value))}
-                      className="w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                      className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.manwon')}</span>
                   </div>
@@ -812,7 +812,7 @@ export default function GovernmentSubsidyCalculator() {
                       type="text"
                       value={formatNumber(input.deposit)}
                       onChange={e => updateInput('deposit', parseNumberInput(e.target.value))}
-                      className="w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                      className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.manwon')}</span>
                   </div>
@@ -830,7 +830,7 @@ export default function GovernmentSubsidyCalculator() {
                     type="text"
                     value={formatNumber(input.deposit)}
                     onChange={e => updateInput('deposit', parseNumberInput(e.target.value))}
-                    className="w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 pr-12 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">{t('input.manwon')}</span>
                 </div>
@@ -868,7 +868,7 @@ export default function GovernmentSubsidyCalculator() {
                     max={10}
                     value={input.childrenCount}
                     onChange={e => updateInput('childrenCount', parseInt(e.target.value) || 1)}
-                    className="w-20 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                    className={`w-20 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
               )}
@@ -928,7 +928,7 @@ export default function GovernmentSubsidyCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {/* Summary Card */}
           {summary && (
-            <div className="${glassCard} ${glassInset} p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                   {t('result.summaryTitle')}
@@ -967,7 +967,7 @@ export default function GovernmentSubsidyCalculator() {
 
           {/* Median Income Visualization */}
           {results && (
-            <div className="${glassCard} ${glassInset} p-6">
+            <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 {t('result.medianComparison')}
               </h3>
@@ -1105,7 +1105,7 @@ export default function GovernmentSubsidyCalculator() {
 
           {/* Empty state */}
           {!results && (
-            <div className="${glassCard} ${glassInset} p-12 text-center">
+            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
               <Shield className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400 mb-2">
                 {t('result.emptyTitle')}

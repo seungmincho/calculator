@@ -277,7 +277,7 @@ export default function ElectricityCalculator() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Panel - Settings */}
         <div className="lg:col-span-1">
-          <div className="${glassCard} ${glassInset} p-6 space-y-6">
+          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <Zap className="w-5 h-5 text-yellow-500" />
@@ -302,7 +302,7 @@ export default function ElectricityCalculator() {
                   type="number"
                   value={usage}
                   onChange={(e) => setUsage(Math.max(0, Math.min(1000, Number(e.target.value))))}
-                  className="w-24 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500"
+                  className={`w-24 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   min="0"
                   max="1000"
                 />
@@ -457,7 +457,7 @@ export default function ElectricityCalculator() {
           </div>
 
           {/* Tier Visualization */}
-          <div className="${glassCard} ${glassInset} p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {t('tiers.title')}
             </h3>
@@ -524,7 +524,7 @@ export default function ElectricityCalculator() {
           </div>
 
           {/* Detailed Breakdown */}
-          <div className="${glassCard} ${glassInset} p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               상세 내역
             </h3>
@@ -605,7 +605,7 @@ export default function ElectricityCalculator() {
           </div>
 
           {/* Saving Tips */}
-          <div className="${glassCard} ${glassInset} p-6">
+          <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Lightbulb className="w-5 h-5 text-yellow-500" />
               {t('savingTips.title')}
@@ -623,7 +623,7 @@ export default function ElectricityCalculator() {
       </div>
 
       {/* Appliance Simulator */}
-      <div className="${glassCard} ${glassInset} overflow-hidden">
+      <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         <button
           onClick={() => setApplianceOpen(prev => !prev)}
           className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -686,7 +686,7 @@ export default function ElectricityCalculator() {
                               type="number"
                               value={a.hours}
                               onChange={e => setApplianceHoursDirectly(a.id, Number(e.target.value))}
-                              className="w-14 text-center px-2 py-1 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm"
+                              className={`w-14 text-center px-2 py-1 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm`}
                               min="0"
                               max="24"
                             />
@@ -736,7 +736,7 @@ export default function ElectricityCalculator() {
       </div>
 
       {/* Guide Section */}
-      <div className="${glassCard} ${glassInset} p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-blue-600" />
           {t('guide.title')}
