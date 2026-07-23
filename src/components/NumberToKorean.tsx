@@ -5,133 +5,137 @@ import { useTranslations } from '@/lib/i18n'
 import { Hash, Copy, Check, RotateCcw, BookOpen } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
+// ── Korean / Chinese numerals ────────────────────────────────────────────────
+const KO_DIGITS = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
+const KO_SMALL = ['', '십', '백', '천']
+const KO_LARGE = ['', '만', '억', '조', '경'] // 4-digit groups: 10^0,10^4,10^8,10^12,10^16
+
+const CN_DIGITS = ['', '壹', '貳', '參', '四', '五', '六', '七', '八', '九']
+const CN_SMALL = ['', '拾', '百', '千']
+const CN_LARGE = ['', '萬', '億', '兆', '京']
+
+// ── English numerals ─────────────────────────────────────────────────────────
+const EN_ONES = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
+const EN_TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+const EN_SCALES = ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion']
+
+// Convert a ≤4-digit group to Korean/Chinese (string-safe, no big-number arithmetic)
+function group4(num: number, digits: string[], small: string[]): string {
+  let result = ''
+  const th = Math.floor(num / 1000)
+  const hu = Math.floor((num % 1000) / 100)
+  const te = Math.floor((num % 100) / 10)
+  const on = num % 10
+  if (th > 0) result += digits[th] + small[3]
+  if (hu > 0) result += digits[hu] + small[2]
+  if (te > 0) result += digits[te] + small[1]
+  if (on > 0) result += digits[on]
+  return result
+}
+
+// Split a numeric string into groups of `size` from the right
+function groupsOf(numStr: string, size: number): string[] {
+  const s = numStr.replace(/^0+/, '')
+  if (!s) return []
+  const out: string[] = []
+  for (let i = s.length; i > 0; i -= size) out.unshift(s.slice(Math.max(0, i - size), i))
+  return out
+}
+
+function toKorean(numStr: string, digits: string[], small: string[], large: string[], spacing: boolean): string {
+  const groups = groupsOf(numStr, 4)
+  if (!groups.length) return ''
+  const parts: string[] = []
+  groups.forEach((g, idx) => {
+    const gv = parseInt(g, 10) // g ≤ 4 digits → always safe
+    if (gv > 0) {
+      const largeIdx = groups.length - 1 - idx
+      parts.push(group4(gv, digits, small) + (large[largeIdx] ?? ''))
+    }
+  })
+  return parts.join(spacing ? ' ' : '')
+}
+
+function group3English(n: number): string {
+  let r = ''
+  const h = Math.floor(n / 100)
+  const rest = n % 100
+  if (h) r += EN_ONES[h] + ' hundred' + (rest ? ' ' : '')
+  if (rest) {
+    if (rest < 20) r += EN_ONES[rest]
+    else r += EN_TENS[Math.floor(rest / 10)] + (rest % 10 ? '-' + EN_ONES[rest % 10] : '')
+  }
+  return r
+}
+
+function toEnglish(numStr: string): string {
+  const groups = groupsOf(numStr, 3)
+  if (!groups.length) return ''
+  const parts: string[] = []
+  groups.forEach((g, idx) => {
+    const gv = parseInt(g, 10)
+    if (gv > 0) {
+      const scaleIdx = groups.length - 1 - idx
+      if (scaleIdx >= EN_SCALES.length) return
+      parts.push(group3English(gv) + (EN_SCALES[scaleIdx] ? ' ' + EN_SCALES[scaleIdx] : ''))
+    }
+  })
+  const joined = parts.join(' ')
+  return joined ? joined.charAt(0).toUpperCase() + joined.slice(1) : ''
+}
+
+// Insert thousands separators without parseInt (precision-safe for 20 digits)
+function commafy(numStr: string): string {
+  const s = numStr.replace(/^0+/, '') || '0'
+  return s.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
 export default function NumberToKorean() {
   const t = useTranslations('numberToKorean')
   const [inputValue, setInputValue] = useState<string>('')
+  const [spacing, setSpacing] = useState(false)
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
-  // Korean number system constants
-  const koreanDigits = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
-  const koreanSmallUnits = ['', '십', '백', '천']
-  const koreanLargeUnits = ['', '만', '억', '조', '경']
+  const hasValue = inputValue !== '' && inputValue !== '0' && /[1-9]/.test(inputValue)
 
-  const chineseDigits = ['', '壹', '貳', '參', '四', '五', '六', '七', '八', '九']
-  const chineseSmallUnits = ['', '拾', '百', '千']
-  const chineseLargeUnits = ['', '萬', '億', '兆', '京']
-
-  // Convert 4-digit group to Korean
-  const convertGroupToKorean = useCallback((num: number, digits: string[], smallUnits: string[]): string => {
-    if (num === 0) return ''
-
-    let result = ''
-    const thousands = Math.floor(num / 1000)
-    const hundreds = Math.floor((num % 1000) / 100)
-    const tens = Math.floor((num % 100) / 10)
-    const ones = num % 10
-
-    if (thousands > 0) {
-      result += digits[thousands] + smallUnits[3]
-    }
-    if (hundreds > 0) {
-      result += digits[hundreds] + smallUnits[2]
-    }
-    if (tens > 0) {
-      result += digits[tens] + smallUnits[1]
-    }
-    if (ones > 0) {
-      result += digits[ones]
-    }
-
-    return result
-  }, [])
-
-  // Main conversion function
-  const convertToKorean = useCallback((numStr: string, digits: string[], smallUnits: string[], largeUnits: string[]): string => {
-    if (!numStr || numStr === '0') return ''
-
-    const num = parseInt(numStr, 10)
-    if (isNaN(num) || num === 0) return ''
-
-    let result = ''
-    let unitIndex = 0
-    let tempNum = num
-
-    while (tempNum > 0) {
-      const group = tempNum % 10000
-      if (group > 0) {
-        const groupText = convertGroupToKorean(group, digits, smallUnits)
-        result = groupText + largeUnits[unitIndex] + result
-      }
-      tempNum = Math.floor(tempNum / 10000)
-      unitIndex++
-    }
-
-    return result
-  }, [convertGroupToKorean])
-
-  // Format number with commas
-  const formatNumber = useCallback((num: string): string => {
-    if (!num) return '0'
-    const number = parseInt(num, 10)
-    if (isNaN(number)) return '0'
-    return number.toLocaleString('ko-KR')
-  }, [])
-
-  // Conversion results
-  const koreanFormal = useMemo(() => {
-    if (!inputValue || inputValue === '0') return ''
-    const korean = convertToKorean(inputValue, koreanDigits, koreanSmallUnits, koreanLargeUnits)
-    return korean ? `금 ${korean}원정` : ''
-  }, [inputValue, convertToKorean, koreanDigits, koreanSmallUnits, koreanLargeUnits])
-
-  const koreanReading = useMemo(() => {
-    if (!inputValue || inputValue === '0') return ''
-    return convertToKorean(inputValue, koreanDigits, koreanSmallUnits, koreanLargeUnits)
-  }, [inputValue, convertToKorean, koreanDigits, koreanSmallUnits, koreanLargeUnits])
-
+  const formattedNumber = useMemo(() => commafy(inputValue), [inputValue])
+  const koreanReading = useMemo(() => (hasValue ? toKorean(inputValue, KO_DIGITS, KO_SMALL, KO_LARGE, spacing) : ''), [inputValue, spacing, hasValue])
+  const koreanFormal = useMemo(() => (koreanReading ? `금 ${koreanReading}원정` : ''), [koreanReading])
   const chineseFormat = useMemo(() => {
-    if (!inputValue || inputValue === '0') return ''
-    const chinese = convertToKorean(inputValue, chineseDigits, chineseSmallUnits, chineseLargeUnits)
-    return chinese ? `金 ${chinese}圓整` : ''
-  }, [inputValue, convertToKorean, chineseDigits, chineseSmallUnits, chineseLargeUnits])
+    if (!hasValue) return ''
+    const cn = toKorean(inputValue, CN_DIGITS, CN_SMALL, CN_LARGE, false)
+    return cn ? `金 ${cn}圓整` : ''
+  }, [inputValue, hasValue])
+  const englishFormat = useMemo(() => (hasValue ? toEnglish(inputValue) : ''), [inputValue, hasValue])
 
-  const formattedNumber = useMemo(() => formatNumber(inputValue), [inputValue, formatNumber])
-
-  // Handle input change
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '')
-
-    // Max 16 digits (9,999,999,999,999,999)
-    if (value.length > 16) return
-
+    if (value.length > 20) return
     setInputValue(value)
   }, [])
 
-  // Handle quick amount buttons
   const handleQuickAmount = useCallback((amount: number) => {
     setInputValue(amount.toString())
   }, [])
 
-  // Reset
   const handleReset = useCallback(() => {
     setInputValue('')
     setCopiedId(null)
   }, [])
 
-  // Copy to clipboard
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text)
       } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
+        const ta = document.createElement('textarea')
+        ta.value = text
+        ta.style.position = 'fixed'
+        ta.style.left = '-999999px'
+        document.body.appendChild(ta)
+        ta.select()
         document.execCommand('copy')
-        document.body.removeChild(textarea)
+        document.body.removeChild(ta)
       }
       setCopiedId(id)
       setTimeout(() => setCopiedId(null), 2000)
@@ -143,17 +147,18 @@ export default function NumberToKorean() {
 
   const quickAmounts = [
     { label: '1만', value: 10000 },
-    { label: '5만', value: 50000 },
     { label: '10만', value: 100000 },
-    { label: '50만', value: 500000 },
     { label: '100만', value: 1000000 },
-    { label: '500만', value: 5000000 },
     { label: '1000만', value: 10000000 },
-    { label: '5000만', value: 50000000 },
     { label: '1억', value: 100000000 },
-    { label: '5억', value: 500000000 },
     { label: '10억', value: 1000000000 },
-    { label: '50억', value: 5000000000 },
+  ]
+
+  const cards: { id: string; label: string; value: string; accent: string; border: string }[] = [
+    { id: 'formal', label: t('koreanFormal'), value: koreanFormal, accent: 'text-blue-700 dark:text-blue-300', border: 'border-blue-500 bg-blue-50 dark:bg-blue-950' },
+    { id: 'reading', label: t('koreanInformal'), value: koreanReading, accent: 'text-green-700 dark:text-green-300', border: 'border-green-500 bg-green-50 dark:bg-green-950' },
+    { id: 'english', label: t('englishNum'), value: englishFormat, accent: 'text-indigo-700 dark:text-indigo-300', border: 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950' },
+    { id: 'chinese', label: t('chineseNum'), value: chineseFormat, accent: 'text-orange-700 dark:text-orange-300', border: 'border-orange-500 bg-orange-50 dark:bg-orange-950' },
   ]
 
   return (
@@ -169,31 +174,32 @@ export default function NumberToKorean() {
 
       {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Panel - Input */}
+        {/* Left Panel */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {t('inputNumber')}
-              </label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('inputNumber')}</label>
               <input
                 type="text"
+                inputMode="numeric"
                 value={inputValue}
                 onChange={handleInputChange}
                 placeholder={t('placeholder')}
                 className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-lg`}
-                maxLength={16}
+                maxLength={20}
               />
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {t('maxNumber')}
-              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('maxNumber')}</p>
             </div>
+
+            {/* Spacing toggle */}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked={spacing} onChange={(e) => setSpacing(e.target.checked)} className="w-4 h-4 accent-blue-600" />
+              <span className="text-sm text-gray-700 dark:text-gray-300">{t('spacing')}</span>
+            </label>
 
             {/* Quick Amount Buttons */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {t('quickAmounts')}
-              </label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('quickAmounts')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {quickAmounts.map((item) => (
                   <button
@@ -207,7 +213,6 @@ export default function NumberToKorean() {
               </div>
             </div>
 
-            {/* Reset Button */}
             <button
               onClick={handleReset}
               className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
@@ -218,96 +223,35 @@ export default function NumberToKorean() {
           </div>
         </div>
 
-        {/* Right Panel - Results */}
+        {/* Right Panel */}
         <div className="lg:col-span-2">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            {/* Formatted Number Display */}
-            <div className="text-center pb-6 border-b border-gray-200 dark:border-gray-700">
-              <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                숫자 표기
-              </div>
-              <div className="text-4xl font-bold text-gray-900 dark:text-white">
-                {formattedNumber}
-              </div>
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
+            {/* Number display */}
+            <div className="text-center pb-5 border-b border-gray-200 dark:border-gray-700">
+              <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">{t('numberDisplay')}</div>
+              <div className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white break-all">{formattedNumber}</div>
             </div>
 
-            {/* Korean Formal */}
-            <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 border-l-4 border-blue-500">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">
-                    {t('koreanFormal')}
+            {cards.map((card) => (
+              <div key={card.id} className={`rounded-xl p-4 border-l-4 ${card.border}`}>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className={`text-sm font-medium mb-2 ${card.accent}`}>{card.label}</div>
+                    <div className="text-xl font-medium text-gray-900 dark:text-white break-words">
+                      {card.value || t('inputPrompt')}
+                    </div>
                   </div>
-                  <div className="text-xl font-medium text-gray-900 dark:text-white break-words">
-                    {koreanFormal || '숫자를 입력하세요'}
-                  </div>
+                  <button
+                    onClick={() => card.value && copyToClipboard(card.value, card.id)}
+                    disabled={!card.value}
+                    className="flex-shrink-0 p-2 hover:bg-white/60 dark:hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    title={t('copy')}
+                  >
+                    {copiedId === card.id ? <Check className="w-5 h-5 text-green-600 dark:text-green-400" /> : <Copy className={`w-5 h-5 ${card.accent}`} />}
+                  </button>
                 </div>
-                <button
-                  onClick={() => koreanFormal && copyToClipboard(koreanFormal, 'formal')}
-                  disabled={!koreanFormal}
-                  className="flex-shrink-0 p-2 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  title={t('copy')}
-                >
-                  {copiedId === 'formal' ? (
-                    <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
-                  ) : (
-                    <Copy className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  )}
-                </button>
               </div>
-            </div>
-
-            {/* Korean Reading */}
-            <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 border-l-4 border-green-500">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-green-700 dark:text-green-300 mb-2">
-                    {t('koreanInformal')}
-                  </div>
-                  <div className="text-xl font-medium text-gray-900 dark:text-white break-words">
-                    {koreanReading || '숫자를 입력하세요'}
-                  </div>
-                </div>
-                <button
-                  onClick={() => koreanReading && copyToClipboard(koreanReading, 'reading')}
-                  disabled={!koreanReading}
-                  className="flex-shrink-0 p-2 hover:bg-green-100 dark:hover:bg-green-900 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  title={t('copy')}
-                >
-                  {copiedId === 'reading' ? (
-                    <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
-                  ) : (
-                    <Copy className="w-5 h-5 text-green-600 dark:text-green-400" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Chinese Characters */}
-            <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-4 border-l-4 border-orange-500">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-orange-700 dark:text-orange-300 mb-2">
-                    {t('chineseNum')}
-                  </div>
-                  <div className="text-xl font-medium text-gray-900 dark:text-white break-words">
-                    {chineseFormat || '숫자를 입력하세요'}
-                  </div>
-                </div>
-                <button
-                  onClick={() => chineseFormat && copyToClipboard(chineseFormat, 'chinese')}
-                  disabled={!chineseFormat}
-                  className="flex-shrink-0 p-2 hover:bg-orange-100 dark:hover:bg-orange-900 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  title={t('copy')}
-                >
-                  {copiedId === 'chinese' ? (
-                    <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
-                  ) : (
-                    <Copy className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                  )}
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
@@ -320,9 +264,7 @@ export default function NumberToKorean() {
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
-              {t('guide.usage.title')}
-            </h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('guide.usage.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.usage.items') as string[]).map((item, index) => (
                 <li key={index} className="text-sm text-gray-600 dark:text-gray-300 flex gap-2">
@@ -333,9 +275,7 @@ export default function NumberToKorean() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
-              {t('guide.rules.title')}
-            </h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('guide.rules.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.rules.items') as string[]).map((item, index) => (
                 <li key={index} className="text-sm text-gray-600 dark:text-gray-300 flex gap-2">

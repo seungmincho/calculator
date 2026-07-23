@@ -12,11 +12,14 @@ import {
   ChevronUp,
   Shuffle,
   Eye,
+  Download,
 } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface DecisionToolsProps {
   initialTab?: 'roulette' | 'order'
+  /** 단일 도구 모드: 탭 전환기를 숨기고 initialTab 도구만 노출 (전용 랜딩 페이지용) */
+  single?: boolean
 }
 
 const WHEEL_COLORS = [
@@ -30,10 +33,21 @@ const WHEEL_COLORS = [
   '#F59E0B', // amber
 ]
 
-const PRESETS = {
-  점심메뉴: ['짜장면', '짬뽕', '냉면', '비빔밥', '삼겹살', '라멘', '초밥', '피자'],
+const PRESETS: Record<string, string[]> = {
+  저녁메뉴: ['삼겹살', '치킨', '피자', '파스타', '초밥', '국밥', '찜닭', '부대찌개', '마라탕', '쌀국수', '족발', '보쌈'],
+  점심메뉴: ['김치찌개', '제육볶음', '돈까스', '비빔밥', '냉면', '라멘', '짜장면', '짬뽕', '우동', '덮밥', '샐러드', '김밥'],
+  한식: ['된장찌개', '불고기', '비빔밥', '삼계탕', '순두부찌개', '갈비탕', '제육볶음', '냉면'],
+  중식: ['짜장면', '짬뽕', '탕수육', '볶음밥', '마파두부', '깐풍기', '유린기', '양장피'],
+  일식: ['초밥', '라멘', '우동', '돈카츠', '규동', '텐동', '가츠동', '소바'],
+  양식: ['피자', '파스타', '스테이크', '리조또', '버거', '오므라이스', '그라탱', '샐러드'],
+  분식: ['떡볶이', '순대', '튀김', '라면', '김밥', '만두', '어묵', '쫄면'],
+  야식배달: ['치킨', '피자', '족발', '보쌈', '곱창', '마라탕', '떡볶이', '햄버거'],
+  카페: ['아메리카노', '카페라떼', '케이크', '와플', '빙수', '마카롱', '스무디', '쿠키'],
   벌칙: ['노래 한 곡', '춤 한 번', '커피 사기', '청소당번', '발표하기', '간식 사기'],
-  순서: ['1번', '2번', '3번', '4번', '5번', '6번'],
+}
+
+const PRESET_EMOJI: Record<string, string> = {
+  저녁메뉴: '🌙', 점심메뉴: '🍱', 한식: '🍚', 중식: '🥡', 일식: '🍣', 양식: '🍕', 분식: '🌭', 야식배달: '🍗', 카페: '☕', 벌칙: '😈',
 }
 
 const DEFAULT_PARTICIPANTS = ['참가자 1', '참가자 2', '참가자 3', '참가자 4']
@@ -53,7 +67,7 @@ interface Confetti {
   alpha: number
 }
 
-export default function DecisionTools({ initialTab = 'roulette' }: DecisionToolsProps) {
+export default function DecisionTools({ initialTab = 'roulette', single = false }: DecisionToolsProps) {
   const searchParams = useSearchParams()
 
   // -- shared participants state --
@@ -85,6 +99,7 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
   const [spinHistory, setSpinHistory] = useState<string[]>([])
   const [showHistory, setShowHistory] = useState(false)
   const [rouletteCopied, setRouletteCopied] = useState(false)
+  const [wheelSaved, setWheelSaved] = useState(false)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const angleRef = useRef(0)
@@ -327,6 +342,32 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
     setTimeout(() => setRouletteCopied(false), 2000)
   }
 
+  const saveWheelImage = () => {
+    if (!spinResult) return
+    const W = 600, H = 340
+    const canvas = document.createElement('canvas')
+    canvas.width = W; canvas.height = H
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    const grad = ctx.createLinearGradient(0, 0, 0, H)
+    grad.addColorStop(0, '#1e1b4b'); grad.addColorStop(1, '#312e81')
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H)
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.fillStyle = '#c7d2fe'; ctx.font = '22px system-ui, sans-serif'
+    ctx.fillText('🎡 오늘의 선택', W / 2, 70)
+    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 54px system-ui, sans-serif'
+    const label = spinResult.length > 10 ? spinResult.slice(0, 10) + '…' : spinResult
+    ctx.fillText(label, W / 2, H / 2 + 10)
+    ctx.fillStyle = '#818cf8'; ctx.font = '15px system-ui, sans-serif'
+    ctx.fillText('toolhub.ai.kr · 메뉴 룰렛', W / 2, H - 38)
+    const link = document.createElement('a')
+    link.download = `roulette-${spinResult}.png`
+    link.href = canvas.toDataURL('image/png')
+    link.click()
+    setWheelSaved(true)
+    setTimeout(() => setWheelSaved(false), 2000)
+  }
+
   // ─── Order Picker logic ───────────────────────────────────────────────────
   const addOrderItem = () => {
     const trimmed = newOrderItem.trim()
@@ -426,28 +467,46 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">결정 도구</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          {single ? (initialTab === 'order' ? '순서 정하기' : '메뉴 룰렛') : '결정 도구'}
+        </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          돌림판과 순서뽑기로 공정하게 결정하세요
+          {single
+            ? initialTab === 'order'
+              ? '참가자를 입력하면 랜덤으로 순서를 뽑아드려요'
+              : '돌림판을 돌려 오늘의 메뉴를 정하세요'
+            : '돌림판과 순서뽑기로 공정하게 결정하세요'}
         </p>
       </div>
 
-      {/* Tab switcher */}
-      <div className="flex gap-2 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl w-fit">
-        {(['roulette', 'order'] as const).map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === tab
-                ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow'
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-            }`}
-          >
-            {tab === 'roulette' ? '🎡 돌림판' : '🎴 순서뽑기'}
-          </button>
-        ))}
-      </div>
+      {/* Tab switcher (숨김: single 모드) */}
+      {!single && (
+        <div className="flex gap-2 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl w-fit">
+          {(['roulette', 'order'] as const).map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === tab
+                  ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+              }`}
+            >
+              {tab === 'roulette' ? '🎡 돌림판' : '🎴 순서뽑기'}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* 사다리 허브 크로스링크 (single 모드) */}
+      {single && (
+        <a
+          href="/ladder-game/"
+          className="inline-flex items-center gap-1.5 text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
+        >
+          🪜 사다리타기 · 팀나누기 · 주사위 등 결정 도구 12종 모두 보기 →
+        </a>
+      )}
 
       {/* ═══ ROULETTE TAB ═══════════════════════════════════════════════════ */}
       {activeTab === 'roulette' && (
@@ -464,13 +523,13 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
               <div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">프리셋</p>
                 <div className="flex flex-wrap gap-2">
-                  {(Object.keys(PRESETS) as Array<keyof typeof PRESETS>).map(key => (
+                  {Object.keys(PRESETS).map(key => (
                     <button
                       key={key}
                       onClick={() => applyPreset(key)}
                       className="px-3 py-1 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
                     >
-                      {key === '점심메뉴' ? '🍱 점심메뉴' : key === '벌칙' ? '😈 벌칙' : '📋 순서'}
+                      {PRESET_EMOJI[key] ?? '📋'} {key}
                     </button>
                   ))}
                 </div>
@@ -595,13 +654,22 @@ export default function DecisionTools({ initialTab = 'roulette' }: DecisionTools
                 <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-1">결과</p>
                 <div className="flex items-center justify-between">
                   <p className="text-2xl font-bold text-gray-900 dark:text-white">{spinResult}</p>
-                  <button
-                    onClick={copyRouletteResult}
-                    className="flex items-center gap-1 px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
-                  >
-                    {rouletteCopied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
-                    {rouletteCopied ? '복사됨' : '복사'}
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={saveWheelImage}
+                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
+                    >
+                      {wheelSaved ? <Check size={14} className="text-green-500" /> : <Download size={14} />}
+                      {wheelSaved ? '저장됨' : '이미지'}
+                    </button>
+                    <button
+                      onClick={copyRouletteResult}
+                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
+                    >
+                      {rouletteCopied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+                      {rouletteCopied ? '복사됨' : '복사'}
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

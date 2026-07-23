@@ -1,27 +1,18 @@
 'use client'
 
 /**
- * GpaConverter — 학점 변환기
+ * GpaConverter — 학점 변환기 (4.5 / 4.3 / 4.0 / 백분율 동시 변환)
  * 번역 네임스페이스: gpaConverterCalc
- *
- * 사용하는 번역 키:
- * - title, description
- * - mode.label, mode.45to43, mode.43to45, mode.percentToGpa, mode.gpaToPercent
- * - input.label, input.placeholder, input.maxLabel
- * - result.title, result.converted, result.grade, result.percentRange, result.outOf
- * - result.empty, result.invalidRange
- * - table.title, table.grade, table.gpa45, table.gpa43, table.percent
- * - grades (array via t.raw): [{grade, gpa45, gpa43, percent}]
- * - guide.title, guide.sections (array via t.raw): [{title, items[]}]
- * - copyResult, copied
  */
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Copy, Check, ArrowRightLeft, BookOpen } from 'lucide-react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { Copy, Check, BookOpen, Link as LinkIcon, Download, Calculator, Award, GraduationCap } from 'lucide-react'
+import NextLink from 'next/link'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
-type ConvertMode = '45to43' | '43to45' | 'percentToGpa' | 'gpaToPercent'
+type Scale = '4.5' | '4.3' | '4.0' | '100'
 
 interface GradeRow {
   grade: string
@@ -35,8 +26,23 @@ interface GuideSection {
   items: string[]
 }
 
-// 백분위 → 학점 매핑 테이블
-const PERCENT_TO_GPA_45: { min: number; max: number; gpa: number; grade: string }[] = [
+const SCALE_MAX: Record<Scale, number> = { '4.5': 4.5, '4.3': 4.3, '4.0': 4.0, '100': 100 }
+
+// 학점(4.5 기준) → 등급 / 백분위 매핑
+const GPA45_TO_PERCENT: { min: number; max: number; percentMin: number; percentMax: number; grade: string }[] = [
+  { min: 4.25, max: 4.5, percentMin: 95, percentMax: 100, grade: 'A+' },
+  { min: 3.75, max: 4.24, percentMin: 90, percentMax: 94, grade: 'A0' },
+  { min: 3.25, max: 3.74, percentMin: 85, percentMax: 89, grade: 'B+' },
+  { min: 2.75, max: 3.24, percentMin: 80, percentMax: 84, grade: 'B0' },
+  { min: 2.25, max: 2.74, percentMin: 75, percentMax: 79, grade: 'C+' },
+  { min: 1.75, max: 2.24, percentMin: 70, percentMax: 74, grade: 'C0' },
+  { min: 1.25, max: 1.74, percentMin: 65, percentMax: 69, grade: 'D+' },
+  { min: 0.75, max: 1.24, percentMin: 60, percentMax: 64, grade: 'D0' },
+  { min: 0, max: 0.74, percentMin: 0, percentMax: 59, grade: 'F' },
+]
+
+// 백분위 → 학점(4.5 기준)
+const PERCENT_TO_GPA45: { min: number; max: number; gpa: number; grade: string }[] = [
   { min: 95, max: 100, gpa: 4.5, grade: 'A+' },
   { min: 90, max: 94, gpa: 4.0, grade: 'A0' },
   { min: 85, max: 89, gpa: 3.5, grade: 'B+' },
@@ -48,177 +54,160 @@ const PERCENT_TO_GPA_45: { min: number; max: number; gpa: number; grade: string 
   { min: 0, max: 59, gpa: 0.0, grade: 'F' },
 ]
 
-const PERCENT_TO_GPA_43: { min: number; max: number; gpa: number; grade: string }[] = [
-  { min: 95, max: 100, gpa: 4.3, grade: 'A+' },
-  { min: 90, max: 94, gpa: 4.0, grade: 'A0' },
-  { min: 85, max: 89, gpa: 3.5, grade: 'B+' },
-  { min: 80, max: 84, gpa: 3.0, grade: 'B0' },
-  { min: 75, max: 79, gpa: 2.5, grade: 'C+' },
-  { min: 70, max: 74, gpa: 2.0, grade: 'C0' },
-  { min: 65, max: 69, gpa: 1.5, grade: 'D+' },
-  { min: 60, max: 64, gpa: 1.0, grade: 'D0' },
-  { min: 0, max: 59, gpa: 0.0, grade: 'F' },
-]
-
-// 학점 → 백분위 매핑 (4.5 만점 기준)
-const GPA45_TO_PERCENT: { min: number; max: number; percentMin: number; percentMax: number; grade: string }[] = [
-  { min: 4.5, max: 4.5, percentMin: 95, percentMax: 100, grade: 'A+' },
-  { min: 4.0, max: 4.49, percentMin: 90, percentMax: 94, grade: 'A0' },
-  { min: 3.5, max: 3.99, percentMin: 85, percentMax: 89, grade: 'B+' },
-  { min: 3.0, max: 3.49, percentMin: 80, percentMax: 84, grade: 'B0' },
-  { min: 2.5, max: 2.99, percentMin: 75, percentMax: 79, grade: 'C+' },
-  { min: 2.0, max: 2.49, percentMin: 70, percentMax: 74, grade: 'C0' },
-  { min: 1.5, max: 1.99, percentMin: 65, percentMax: 69, grade: 'D+' },
-  { min: 1.0, max: 1.49, percentMin: 60, percentMax: 64, grade: 'D0' },
-  { min: 0.0, max: 0.99, percentMin: 0, percentMax: 59, grade: 'F' },
-]
-
-// 학점 → 백분위 매핑 (4.3 만점 기준)
-const GPA43_TO_PERCENT: { min: number; max: number; percentMin: number; percentMax: number; grade: string }[] = [
-  { min: 4.3, max: 4.3, percentMin: 95, percentMax: 100, grade: 'A+' },
-  { min: 4.0, max: 4.29, percentMin: 90, percentMax: 94, grade: 'A0' },
-  { min: 3.5, max: 3.99, percentMin: 85, percentMax: 89, grade: 'B+' },
-  { min: 3.0, max: 3.49, percentMin: 80, percentMax: 84, grade: 'B0' },
-  { min: 2.5, max: 2.99, percentMin: 75, percentMax: 79, grade: 'C+' },
-  { min: 2.0, max: 2.49, percentMin: 70, percentMax: 74, grade: 'C0' },
-  { min: 1.5, max: 1.99, percentMin: 65, percentMax: 69, grade: 'D+' },
-  { min: 1.0, max: 1.49, percentMin: 60, percentMax: 64, grade: 'D0' },
-  { min: 0.0, max: 0.99, percentMin: 0, percentMax: 59, grade: 'F' },
-]
-
-function findGradeFromGpa(gpa: number, table: typeof GPA45_TO_PERCENT): { percentMin: number; percentMax: number; grade: string } | null {
-  for (const row of table) {
-    if (gpa >= row.min && gpa <= row.max) {
-      return { percentMin: row.percentMin, percentMax: row.percentMax, grade: row.grade }
-    }
-  }
-  return null
+interface Converted {
+  g45: number
+  g43: number
+  g40: number
+  percentMin: number
+  percentMax: number
+  percentExact: number | null
+  grade: string
 }
 
-function findGpaFromPercent(percent: number, table: typeof PERCENT_TO_GPA_45): { gpa: number; grade: string } | null {
-  for (const row of table) {
-    if (percent >= row.min && percent <= row.max) {
-      return { gpa: row.gpa, grade: row.grade }
-    }
+function round2(n: number): number {
+  return Math.round(n * 100) / 100
+}
+
+function convert(val: number, scale: Scale): Converted | null {
+  if (isNaN(val) || val < 0 || val > SCALE_MAX[scale]) return null
+
+  let g45: number
+  let percentExact: number | null = null
+  let gradeFromPercent: string | null = null
+
+  if (scale === '100') {
+    percentExact = val
+    const band = PERCENT_TO_GPA45.find((r) => val >= r.min && val <= r.max)
+    g45 = band ? band.gpa : 0
+    gradeFromPercent = band ? band.grade : 'F'
+  } else {
+    g45 = val * (4.5 / SCALE_MAX[scale])
   }
-  return null
+
+  const band = GPA45_TO_PERCENT.find((r) => g45 >= r.min && g45 <= r.max) ?? GPA45_TO_PERCENT[GPA45_TO_PERCENT.length - 1]
+
+  return {
+    g45: scale === '4.5' ? val : round2(g45),
+    g43: scale === '4.3' ? val : round2(g45 * (4.3 / 4.5)),
+    g40: scale === '4.0' ? val : round2(g45 * (4.0 / 4.5)),
+    percentMin: band.percentMin,
+    percentMax: band.percentMax,
+    percentExact,
+    grade: gradeFromPercent ?? band.grade,
+  }
 }
 
 export default function GpaConverter() {
   const t = useTranslations('gpaConverterCalc')
-  const [mode, setMode] = useState<ConvertMode>('45to43')
-  const [inputValue, setInputValue] = useState('')
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const [scale, setScale] = useState<Scale>(() => {
+    const s = searchParams.get('scale') as Scale
+    return SCALE_MAX[s] ? s : '4.5'
+  })
+  const [inputValue, setInputValue] = useState(() => searchParams.get('v') ?? '')
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [saved, setSaved] = useState(false)
 
-  const maxGpa = useMemo(() => {
-    if (mode === '45to43') return 4.5
-    if (mode === '43to45') return 4.3
-    if (mode === 'percentToGpa') return 100
-    return 4.5 // gpaToPercent: 사용자가 4.5 또는 4.3 선택
-  }, [mode])
-
-  const [gpaToPercentBase, setGpaToPercentBase] = useState<'4.5' | '4.3'>('4.5')
+  useEffect(() => {
+    const params = new URLSearchParams()
+    params.set('scale', scale)
+    if (inputValue) params.set('v', inputValue)
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }, [scale, inputValue, pathname, router])
 
   const result = useMemo(() => {
+    if (!inputValue) return null
     const val = parseFloat(inputValue)
-    if (isNaN(val) || val < 0) return null
-
-    switch (mode) {
-      case '45to43': {
-        if (val > 4.5) return { error: 'invalidRange' as const }
-        const converted = val * (4.3 / 4.5)
-        const rounded = Math.round(converted * 100) / 100
-        const gradeInfo = findGradeFromGpa(val, GPA45_TO_PERCENT)
-        return {
-          converted: rounded,
-          outOf: 4.3,
-          grade: gradeInfo?.grade ?? 'F',
-          percentRange: gradeInfo ? `${gradeInfo.percentMin}~${gradeInfo.percentMax}` : '0~59',
-        }
-      }
-      case '43to45': {
-        if (val > 4.3) return { error: 'invalidRange' as const }
-        const converted = val * (4.5 / 4.3)
-        const rounded = Math.round(converted * 100) / 100
-        const gradeInfo = findGradeFromGpa(val, GPA43_TO_PERCENT)
-        return {
-          converted: rounded,
-          outOf: 4.5,
-          grade: gradeInfo?.grade ?? 'F',
-          percentRange: gradeInfo ? `${gradeInfo.percentMin}~${gradeInfo.percentMax}` : '0~59',
-        }
-      }
-      case 'percentToGpa': {
-        if (val > 100) return { error: 'invalidRange' as const }
-        const result45 = findGpaFromPercent(val, PERCENT_TO_GPA_45)
-        const result43 = findGpaFromPercent(val, PERCENT_TO_GPA_43)
-        return {
-          gpa45: result45?.gpa ?? 0,
-          gpa43: result43?.gpa ?? 0,
-          grade: result45?.grade ?? 'F',
-          percentRange: `${val}`,
-        }
-      }
-      case 'gpaToPercent': {
-        const maxVal = gpaToPercentBase === '4.5' ? 4.5 : 4.3
-        if (val > maxVal) return { error: 'invalidRange' as const }
-        const table = gpaToPercentBase === '4.5' ? GPA45_TO_PERCENT : GPA43_TO_PERCENT
-        const gradeInfo = findGradeFromGpa(val, table)
-        return {
-          percentMin: gradeInfo?.percentMin ?? 0,
-          percentMax: gradeInfo?.percentMax ?? 59,
-          grade: gradeInfo?.grade ?? 'F',
-          outOf: maxVal,
-        }
-      }
-    }
-  }, [inputValue, mode, gpaToPercentBase])
+    if (isNaN(val)) return null
+    if (val < 0 || val > SCALE_MAX[scale]) return 'invalid' as const
+    return convert(val, scale)
+  }, [inputValue, scale])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text)
       } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
+        const ta = document.createElement('textarea')
+        ta.value = text
+        ta.style.position = 'fixed'
+        ta.style.left = '-999999px'
+        document.body.appendChild(ta)
+        ta.select()
         document.execCommand('copy')
-        document.body.removeChild(textarea)
+        document.body.removeChild(ta)
       }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
+    } catch { /* silent */ }
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
   }, [])
 
   const grades = t.raw('grades') as GradeRow[]
   const guideSections = t.raw('guide.sections') as GuideSection[]
 
-  const resultText = useMemo(() => {
-    if (!result || 'error' in result) return ''
-    if (mode === 'percentToGpa') {
-      const r = result as { gpa45: number; gpa43: number; grade: string }
-      return `${r.grade}: ${r.gpa45}/4.5, ${r.gpa43}/4.3`
-    }
-    if (mode === 'gpaToPercent') {
-      const r = result as { percentMin: number; percentMax: number; grade: string }
-      return `${r.grade}: ${r.percentMin}~${r.percentMax}%`
-    }
-    const r = result as { converted: number; outOf: number; grade: string }
-    return `${r.converted}/${r.outOf} (${r.grade})`
-  }, [result, mode])
+  const percentText = (r: Converted) =>
+    r.percentExact != null ? `${r.percentExact}%` : `${r.percentMin}~${r.percentMax}%`
 
-  const modes: { key: ConvertMode; labelKey: string }[] = [
-    { key: '45to43', labelKey: 'mode.45to43' },
-    { key: '43to45', labelKey: 'mode.43to45' },
-    { key: 'percentToGpa', labelKey: 'mode.percentToGpa' },
-    { key: 'gpaToPercent', labelKey: 'mode.gpaToPercent' },
-  ]
+  const resultText = useMemo(() => {
+    if (!result || result === 'invalid') return ''
+    return `4.5→${result.g45} / 4.3→${result.g43} / 4.0→${result.g40} / ${percentText(result)} (${result.grade})`
+  }, [result])
+
+  const saveAsImage = useCallback(() => {
+    if (!result || result === 'invalid') return
+    const W = 660, H = 420
+    const canvas = document.createElement('canvas')
+    canvas.width = W; canvas.height = H
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    const grad = ctx.createLinearGradient(0, 0, 0, H)
+    grad.addColorStop(0, '#0f172a'); grad.addColorStop(1, '#1e293b')
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H)
+    ctx.fillStyle = '#818cf8'; ctx.fillRect(0, 0, W, 8)
+    ctx.textBaseline = 'top'
+    ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 28px system-ui, sans-serif'
+    ctx.fillText('🎓 ' + t('title'), 40, 40)
+    ctx.fillStyle = '#94a3b8'; ctx.font = '16px system-ui, sans-serif'
+    ctx.fillText(`${t('input.label')}: ${inputValue} (${t(`scales.${scaleKey(scale)}`)})`, 40, 82)
+
+    const tiles: [string, string][] = [
+      ['4.5', String(result.g45)],
+      ['4.3', String(result.g43)],
+      ['4.0*', String(result.g40)],
+      [t('result.percent'), percentText(result)],
+    ]
+    const tw = (W - 80 - 30) / 4
+    tiles.forEach(([label, val], i) => {
+      const x = 40 + i * (tw + 10)
+      ctx.fillStyle = 'rgba(129,140,248,0.12)'
+      ctx.fillRect(x, 140, tw, 110)
+      ctx.strokeStyle = 'rgba(129,140,248,0.4)'
+      ctx.strokeRect(x, 140, tw, 110)
+      ctx.textAlign = 'center'
+      ctx.fillStyle = '#94a3b8'; ctx.font = '14px system-ui, sans-serif'
+      ctx.fillText(label, x + tw / 2, 158)
+      ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 24px system-ui, sans-serif'
+      ctx.fillText(val, x + tw / 2, 190)
+    })
+    ctx.textAlign = 'center'
+    ctx.fillStyle = '#34d399'; ctx.font = 'bold 30px system-ui, sans-serif'
+    ctx.fillText(`${t('result.grade')}  ${result.grade}`, W / 2, 290)
+    ctx.textAlign = 'left'
+    ctx.fillStyle = '#64748b'; ctx.font = '13px system-ui, sans-serif'
+    ctx.fillText('toolhub.ai.kr · ' + t('note40'), 40, H - 34)
+
+    const link = document.createElement('a')
+    link.download = `gpa-${inputValue}-${scale}.png`
+    link.href = canvas.toDataURL('image/png')
+    link.click()
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }, [result, inputValue, scale, t])
+
+  const scales: Scale[] = ['4.5', '4.3', '4.0', '100']
 
   return (
     <div className="space-y-8">
@@ -228,76 +217,62 @@ export default function GpaConverter() {
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
       </div>
 
-      {/* 메인 그리드 */}
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* 좌: 입력 패널 */}
+        {/* 좌: 입력 */}
         <div className="lg:col-span-1">
-          <div className="${glassCard} ${glassInset} p-6 space-y-5">
-            {/* 모드 선택 */}
+          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
+            {/* 만점 기준 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {t('mode.label')}
-              </label>
-              <div className="space-y-2">
-                {modes.map((m) => (
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('scaleLabel')}</label>
+              <div className="grid grid-cols-2 gap-2">
+                {scales.map((s) => (
                   <button
-                    key={m.key}
-                    onClick={() => { setMode(m.key); setInputValue('') }}
-                    className={`w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                      mode === m.key
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    key={s}
+                    onClick={() => setScale(s)}
+                    className={`px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                      scale === s ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
-                    <ArrowRightLeft className="inline-block w-4 h-4 mr-2" />
-                    {t(m.labelKey)}
+                    {t(`scales.${scaleKey(s)}`)}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* 학점→백분위 모드일 때 만점 기준 선택 */}
-            {mode === 'gpaToPercent' && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t('input.maxLabel')}
-                </label>
-                <div className="flex gap-2">
-                  {(['4.5', '4.3'] as const).map((base) => (
-                    <button
-                      key={base}
-                      onClick={() => { setGpaToPercentBase(base); setInputValue('') }}
-                      className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        gpaToPercentBase === base
-                          ? 'bg-indigo-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                      }`}
-                    >
-                      {base} {t('result.outOf')}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* 입력 필드 */}
+            {/* 입력값 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {t('input.label')}
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                max={mode === 'gpaToPercent' ? (gpaToPercentBase === '4.5' ? 4.5 : 4.3) : maxGpa}
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder={t('input.placeholder')}
-                className="w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                {t('input.maxLabel')}: {mode === 'gpaToPercent' ? gpaToPercentBase : maxGpa}
-              </p>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('input.label')}</label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  step={scale === '100' ? '1' : '0.01'}
+                  min="0"
+                  max={SCALE_MAX[scale]}
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder={t('input.placeholder')}
+                  className={`${glassInput} px-3 py-2`}
+                />
+                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">/ {SCALE_MAX[scale]}</span>
+              </div>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('input.help')}</p>
+            </div>
+
+            {/* 액션 */}
+            <div className="space-y-2 pt-2">
+              <button
+                onClick={() => copyToClipboard(window.location.href, 'link')}
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+              >
+                {copiedId === 'link' ? <><Check className="w-4 h-4" />{t('copyLinkDone')}</> : <><LinkIcon className="w-4 h-4" />{t('copyLink')}</>}
+              </button>
+              <button
+                onClick={saveAsImage}
+                disabled={!result || result === 'invalid'}
+                className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {saved ? <><Check className="w-4 h-4" />{t('saveImageDone')}</> : <><Download className="w-4 h-4" />{t('saveImage')}</>}
+              </button>
             </div>
           </div>
         </div>
@@ -305,115 +280,53 @@ export default function GpaConverter() {
         {/* 우: 결과 + 참고표 */}
         <div className="lg:col-span-2 space-y-6">
           {/* 변환 결과 */}
-          <div className="${glassCard} ${glassInset} p-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              {t('result.title')}
-            </h2>
+          <div className={`${glassCard} ${glassInset} p-6`}>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('result.title')}</h2>
 
             {!inputValue || !result ? (
               <p className="text-gray-400 dark:text-gray-500 text-sm">{t('result.empty')}</p>
-            ) : 'error' in result ? (
+            ) : result === 'invalid' ? (
               <p className="text-red-500 text-sm">{t('result.invalidRange')}</p>
             ) : (
-              <div className="space-y-4">
-                {/* 4.5→4.3 or 4.3→4.5 */}
-                {(mode === '45to43' || mode === '43to45') && (() => {
-                  const r = result as { converted: number; outOf: number; grade: string; percentRange: string }
-                  return (
-                    <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
-                      <div className="text-center">
-                        <p className="text-4xl font-bold text-blue-700 dark:text-blue-300">
-                          {r.converted}
-                          <span className="text-lg font-normal text-gray-500 dark:text-gray-400"> / {r.outOf}</span>
-                        </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                          {t('result.grade')}: <span className="font-semibold text-gray-900 dark:text-white">{r.grade}</span>
-                        </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                          {t('result.percentRange')}: <span className="font-semibold">{r.percentRange}%</span>
-                        </p>
-                      </div>
-                      <div className="mt-4 flex justify-center">
-                        <button
-                          onClick={() => copyToClipboard(resultText, 'result')}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-                        >
-                          {copiedId === 'result' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
-                          {copiedId === 'result' ? t('copied') : t('copyResult')}
-                        </button>
-                      </div>
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {([
+                    { key: '4.5', label: t('scales.s45'), val: result.g45 },
+                    { key: '4.3', label: t('scales.s43'), val: result.g43 },
+                    { key: '4.0', label: t('scales.s40'), val: result.g40 },
+                    { key: '100', label: t('result.percent'), val: percentText(result) },
+                  ] as const).map((tile) => (
+                    <div
+                      key={tile.key}
+                      className={`rounded-xl p-4 text-center ${scale === tile.key ? 'bg-blue-600 text-white' : 'bg-blue-50 dark:bg-blue-950'}`}
+                    >
+                      <p className={`text-xs ${scale === tile.key ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400'}`}>{tile.label}</p>
+                      <p className={`text-2xl font-bold ${scale === tile.key ? 'text-white' : 'text-blue-700 dark:text-blue-300'}`}>{tile.val}</p>
                     </div>
-                  )
-                })()}
+                  ))}
+                </div>
 
-                {/* 백분위→학점 */}
-                {mode === 'percentToGpa' && (() => {
-                  const r = result as { gpa45: number; gpa43: number; grade: string }
-                  return (
-                    <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
-                      <div className="text-center space-y-3">
-                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          {t('result.grade')}: <span className="text-xl font-bold text-gray-900 dark:text-white">{r.grade}</span>
-                        </p>
-                        <div className="flex justify-center gap-8">
-                          <div>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">4.5 {t('result.outOf')}</p>
-                            <p className="text-3xl font-bold text-blue-700 dark:text-blue-300">{r.gpa45}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">4.3 {t('result.outOf')}</p>
-                            <p className="text-3xl font-bold text-indigo-700 dark:text-indigo-300">{r.gpa43}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-4 flex justify-center">
-                        <button
-                          onClick={() => copyToClipboard(resultText, 'result')}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-                        >
-                          {copiedId === 'result' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
-                          {copiedId === 'result' ? t('copied') : t('copyResult')}
-                        </button>
-                      </div>
-                    </div>
-                  )
-                })()}
-
-                {/* 학점→백분위 */}
-                {mode === 'gpaToPercent' && (() => {
-                  const r = result as { percentMin: number; percentMax: number; grade: string }
-                  return (
-                    <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
-                      <div className="text-center space-y-3">
-                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          {t('result.grade')}: <span className="text-xl font-bold text-gray-900 dark:text-white">{r.grade}</span>
-                        </p>
-                        <p className="text-4xl font-bold text-blue-700 dark:text-blue-300">
-                          {r.percentMin}~{r.percentMax}
-                          <span className="text-lg font-normal text-gray-500 dark:text-gray-400">%</span>
-                        </p>
-                      </div>
-                      <div className="mt-4 flex justify-center">
-                        <button
-                          onClick={() => copyToClipboard(resultText, 'result')}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-                        >
-                          {copiedId === 'result' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
-                          {copiedId === 'result' ? t('copied') : t('copyResult')}
-                        </button>
-                      </div>
-                    </div>
-                  )
-                })()}
-              </div>
+                <div className="mt-4 flex items-center justify-between flex-wrap gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{t('result.grade')}</span>
+                    <span className="inline-flex items-center justify-center min-w-[3rem] px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-lg font-bold">{result.grade}</span>
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard(resultText, 'result')}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    {copiedId === 'result' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copiedId === 'result' ? t('copied') : t('copyResult')}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">{t('note40')}</p>
+              </>
             )}
           </div>
 
           {/* 등급 참고표 */}
-          <div className="${glassCard} ${glassInset} p-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              {t('table.title')}
-            </h2>
+          <div className={`${glassCard} ${glassInset} p-6`}>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('table.title')}</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -437,11 +350,32 @@ export default function GpaConverter() {
               </table>
             </div>
           </div>
+
+          {/* 관련 도구 */}
+          <div className={`${glassCard} ${glassInset} p-6`}>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('crossLinks.title')}</h2>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <NextLink href="/gpa-calculator/" className="flex items-start gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <Calculator className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
+                <span>
+                  <span className="block font-medium text-gray-900 dark:text-white">{t('crossLinks.calc.label')}</span>
+                  <span className="block text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t('crossLinks.calc.desc')}</span>
+                </span>
+              </NextLink>
+              <NextLink href="/grade-calculator/" className="flex items-start gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <Award className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mt-0.5 shrink-0" />
+                <span>
+                  <span className="block font-medium text-gray-900 dark:text-white">{t('crossLinks.grade.label')}</span>
+                  <span className="block text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t('crossLinks.grade.desc')}</span>
+                </span>
+              </NextLink>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* 가이드 */}
-      <div className="${glassCard} ${glassInset} p-6">
+      <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
           {t('guide.title')}
@@ -449,7 +383,10 @@ export default function GpaConverter() {
         <div className="grid md:grid-cols-2 gap-6">
           {guideSections.map((section, idx) => (
             <div key={idx}>
-              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{section.title}</h3>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                <GraduationCap className="w-4 h-4 text-blue-500" />
+                {section.title}
+              </h3>
               <ul className="space-y-1">
                 {section.items.map((item, jdx) => (
                   <li key={jdx} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
@@ -464,4 +401,8 @@ export default function GpaConverter() {
       </div>
     </div>
   )
+}
+
+function scaleKey(s: Scale): string {
+  return s === '4.5' ? 's45' : s === '4.3' ? 's43' : s === '4.0' ? 's40' : 's100'
 }

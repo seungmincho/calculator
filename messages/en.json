@@ -8694,7 +8694,11 @@
     "reset": "Reset",
     "won": "Won",
     "examples": "Examples",
-    "maxNumber": "Maximum input: 9,999,999,999,999,999 (9999 trillion)",
+    "maxNumber": "Up to 20 digits supported",
+    "englishNum": "English Words",
+    "spacing": "Add spaces",
+    "numberDisplay": "Number",
+    "inputPrompt": "Enter a number",
     "invalidNumber": "Please enter a valid number",
     "units": {
       "il": "il",
@@ -11140,106 +11144,153 @@
   },
   "taxiFare": {
     "title": "Taxi Fare Calculator",
-    "description": "Calculate estimated taxi fare from origin to destination.",
+    "description": "Enter region, distance, time and boarding hour to estimate taxi fare including late-night and out-of-city surcharges.",
     "distance": "Distance (km)",
     "distancePlaceholder": "Enter distance",
     "time": "Estimated Time (min)",
     "timePlaceholder": "Enter time",
     "region": "Region",
+    "regionGroups": {
+      "metro": "Capital Area",
+      "city": "Metropolitan Cities",
+      "province": "Other Regions"
+    },
     "regions": {
       "seoul": "Seoul",
       "gyeonggi": "Gyeonggi",
+      "incheon": "Incheon",
       "busan": "Busan",
-      "other": "Other"
+      "daegu": "Daegu",
+      "daejeon": "Daejeon",
+      "gwangju": "Gwangju",
+      "ulsan": "Ulsan",
+      "sejong": "Sejong",
+      "gangwon": "Gangwon",
+      "chungbuk": "Chungbuk",
+      "chungnam": "Chungnam",
+      "jeonbuk": "Jeonbuk",
+      "jeonnam": "Jeonnam",
+      "gyeongbuk": "Gyeongbuk",
+      "gyeongnam": "Gyeongnam",
+      "jeju": "Jeju"
     },
     "taxiType": "Taxi Type",
     "types": {
-      "regular": "Regular",
+      "regular": "Regular (Mid-size)",
       "deluxe": "Deluxe",
       "jumbo": "Jumbo"
     },
-    "timeOfDay": "Time of Day",
-    "times": {
-      "day": "Day (04:00-24:00)",
-      "night": "Night (00:00-04:00)"
+    "boardingTime": "Boarding Hour",
+    "nowButton": "Now",
+    "hourUnit": "h",
+    "minUnit": "min",
+    "tier": {
+      "day": "Daytime (no surcharge)",
+      "night": "Late-night surcharge"
+    },
+    "outOfCity": {
+      "label": "Out-of-city trip",
+      "desc": "A surcharge applies when crossing administrative boundaries.",
+      "short": "Out-of-city"
     },
     "calculate": "Calculate",
     "reset": "Reset",
+    "copyLink": "Copy Link",
+    "copyLinkDone": "Copied!",
+    "saveImage": "Save Result Image",
+    "saveImageDone": "Saved!",
+    "imageFooter": "Estimate · actual fare may differ",
     "result": {
       "title": "Estimated Taxi Fare",
       "baseFare": "Base Fare",
       "distanceFare": "Distance Fare",
       "timeFare": "Time Fare",
       "nightSurcharge": "Night Surcharge",
+      "outSurcharge": "Out-of-city Surcharge",
       "total": "Total Estimated Fare",
       "won": "KRW",
-      "note": "Actual fare may vary based on traffic conditions"
+      "note": "Actual fare may vary with real-time traffic, route and stop time. Use as a reference only."
     },
     "fareInfo": {
-      "title": "2024 Taxi Fares (Seoul)",
-      "baseFare": "Base: ₩4,800 (1.6km)",
-      "distanceRate": "Distance: ₩100/131m",
-      "timeRate": "Time: ₩100/30sec",
-      "nightRate": "Night surcharge: 20% (00-04h)"
+      "title": "Fare Basis (2025)",
+      "base": "Base fare",
+      "distance": "Distance",
+      "time": "Time",
+      "perMeter": "per m",
+      "perSec": "per sec",
+      "surchargeTitle": "Surcharge / Deluxe·Jumbo",
+      "night": "Night surcharge",
+      "outOfCity": "Out-of-city",
+      "premium": "Deluxe·Jumbo base",
+      "sourceNote": "As of 2025 · rates may change by local government. Verify with your city/taxi association."
+    },
+    "comparison": {
+      "title": "Fare Comparison by Taxi Type",
+      "subtitle": "Regular / deluxe / jumbo estimates at the selected region, distance and hour",
+      "selected": "selected",
+      "note": "* Same region, distance, hour and out-of-city setting. Surcharges included."
     },
     "guide": {
       "title": "Taxi Fare Guide",
       "calculation": {
         "title": "Calculation Method",
         "items": [
-          "Base fare + Distance fare + Time fare",
-          "Distance fare: Excess distance × unit rate",
-          "Time fare: Added per time unit when stopped/slow",
-          "Night surcharge: 20% added 00:00-04:00"
+          "Total = base fare + distance fare + time fare + surcharge",
+          "Distance fare: excess over base distance charged per unit (e.g. Seoul 131m = ₩100)",
+          "Time fare: added per unit time when slow/stopped (below ~15km/h)",
+          "Night surcharge: 20–40% during each region's late-night window (Seoul 40% at 23:00–02:00)",
+          "Out-of-city surcharge: 20–30% when crossing boundaries; up to 60% combined with night"
         ]
       },
       "tips": {
         "title": "Notes",
         "items": [
-          "Deluxe taxis have ~2x base fare",
-          "Rates vary by region",
-          "App-hailed taxis may have additional call fees",
-          "Highway tolls are passenger's responsibility"
+          "Deluxe taxis have a higher ₩7,000 (3km) base but no night surcharge.",
+          "Base fare, base distance and surcharge hours differ by region (auto-applied on selection).",
+          "App-hailed taxis (Kakao T Blue/Black) may add a call fee.",
+          "Highway tolls are the passenger's responsibility and not included above.",
+          "For airport/long out-of-city trips, confirm the fare before boarding."
         ]
       },
       "whatIs": {
         "title": "What is the Taxi Fare Calculator?",
-        "description": "The taxi fare calculator estimates the cost of a taxi ride based on distance and duration, applying the fare structure of major Korean cities including Seoul, Gyeonggi, and Busan. It automatically accounts for the base fare, distance charge, time charge, late-night surcharge (midnight–4 AM), and out-of-boundary surcharges, giving you a clear breakdown before you get in the cab."
+        "description": "The taxi fare calculator estimates a taxi ride's cost from region, distance, expected duration and boarding hour, applying the fare structure of all 17 Korean regions. It automatically accounts for base fare, distance and time charges, region-specific late-night surcharges (20–40% by hour) and out-of-city surcharges, so you can gauge the fare before you hail a cab."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Select your city (Seoul, Gyeonggi, Busan, etc.) and taxi type (regular/premium/large).",
+          "1. Select your region (17 regions such as Seoul/Gyeonggi/Busan) and taxi type (regular/deluxe/jumbo).",
           "2. Enter the estimated trip distance (km) and expected travel time (minutes).",
-          "3. Check the late-night surcharge box if riding between midnight and 4 AM, and check the out-of-boundary box if crossing city limits.",
-          "4. Review the calculated estimated fare and the breakdown: base fare + distance + time + surcharge."
+          "3. Set the boarding hour with the slider to auto-apply the night surcharge (use 'Now' for the current time).",
+          "4. Check the out-of-city box if you cross city limits.",
+          "5. Review the fare breakdown, type comparison, and save the result image or share the link."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "When does the late-night surcharge apply?",
-            "a": "In Seoul, a 20% late-night surcharge applies from midnight (00:00) to 4 AM. Surcharge hours may vary by city."
+            "q": "When does the night surcharge start and how much is it?",
+            "a": "It varies by region. Seoul and Incheon run 22:00–04:00 with 40% at 23:00–02:00 and 20% otherwise. Gyeonggi is 30% at 23:00–04:00, Busan 20–30% at 23:00–04:00, Daejeon 20% at 23:00–04:00, and so on."
           },
           {
-            "q": "Are app-based taxis like Kakao Taxi priced the same?",
-            "a": "Standard metered taxis through apps charge the same metered fare. However, premium or subscription-based services may have different pricing."
+            "q": "Is the base fare different by region?",
+            "a": "Yes. As of 2025, Seoul/Gyeonggi/Incheon are ₩4,800 (1.6km), Daegu/Gyeongbuk ₩4,500, Daejeon/Gwangju/Ulsan ₩4,300, and most other regions around ₩4,000. Distance units and base distance also differ; selecting a region applies its rates automatically."
           },
           {
-            "q": "Can the estimated fare differ from the actual fare?",
-            "a": "Yes. Actual fares may differ due to traffic stops, route differences, and meter variances. Use this estimate as a reference only."
+            "q": "How is the out-of-city surcharge applied?",
+            "a": "When a taxi crosses a city/county boundary, a 20–30% out-of-city surcharge applies. Combined with the late-night surcharge it can reach up to 60% in Seoul."
+          },
+          {
+            "q": "Are app taxis like Kakao Taxi priced the same?",
+            "a": "Standard hails use the same metered fare, but franchise/premium services (Kakao T Blue/Black) may add a call fee, and some platforms apply surge pricing at peak times."
+          },
+          {
+            "q": "Can the estimate differ from the actual fare?",
+            "a": "Yes, due to route, stop time, meter variance and rate revisions. This calculator is a reference estimate based on 2025 rates."
           }
         ]
       }
-    },
-    "copyLink": "Copy Link",
-    "copyLinkDone": "Copied!",
-    "comparison": {
-      "title": "Fare Comparison by Taxi Type",
-      "subtitle": "Estimated fares for regular / deluxe / jumbo at current distance & time",
-      "selected": "selected",
-      "note": "* Same distance, time, and time-of-day. Night surcharge included."
     }
   },
   "installmentCalc": {
@@ -17904,6 +17955,9 @@
     "copyAllSuccess": "All styles copied to clipboard",
     "noInput": "Enter text above to see converted styles",
     "asciiNote": "Only ASCII letters (a-z, A-Z) are converted. Numbers and symbols stay unchanged.",
+    "decorTitle": "Decorative Frames (works on any text)",
+    "decorDesc": "Wraps Korean, English, or emoji. Great for Instagram, game names, and profiles!",
+    "fontTitle": "Latin Unicode Fonts",
     "styles": {
       "bold": "Mathematical Bold",
       "italic": "Mathematical Italic",
@@ -23000,7 +23054,30 @@
   },
   "gpaConverterCalc": {
     "title": "GPA Converter",
-    "description": "Convert between 4.3 and 4.5 scale GPA with percentile",
+    "description": "Convert GPA across 4.5, 4.3, 4.0 scales and percentile (100) at once, with letter grade.",
+    "scaleLabel": "Scale (your transcript)",
+    "scales": {
+      "s45": "4.5 scale",
+      "s43": "4.3 scale",
+      "s40": "4.0 scale",
+      "s100": "Percentile (100)"
+    },
+    "note40": "The 4.0 scale (*) is a linear-approximate US conversion; percentile/grade may vary by school or professor.",
+    "copyLink": "Copy Link",
+    "copyLinkDone": "Copied!",
+    "saveImage": "Save Image",
+    "saveImageDone": "Saved!",
+    "crossLinks": {
+      "title": "You may also need",
+      "calc": {
+        "label": "GPA Calculator",
+        "desc": "Enter course grades to compute your overall GPA"
+      },
+      "grade": {
+        "label": "School Rank Grade Calculator",
+        "desc": "Compute Korean high-school 1–9 grade from rank & class size"
+      }
+    },
     "mode": {
       "label": "Conversion Mode",
       "45to43": "4.5 → 4.3",
@@ -23010,13 +23087,15 @@
     },
     "input": {
       "label": "Input Value",
-      "placeholder": "Enter value",
-      "maxLabel": "Max"
+      "placeholder": "e.g. 3.85",
+      "maxLabel": "Max",
+      "help": "Enter your GPA (e.g. 3.85) or percentile (e.g. 88) from your transcript."
     },
     "result": {
       "title": "Conversion Result",
       "converted": "Converted GPA",
       "grade": "Grade",
+      "percent": "Percentile",
       "percentRange": "Percentile Range",
       "outOf": "out of",
       "empty": "Enter a value to see the result",

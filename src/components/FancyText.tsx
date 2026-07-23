@@ -310,6 +310,35 @@ const STYLE_DEFS: StyleDef[] = [
   },
 ]
 
+// ── Decoration frames (work on ANY script incl. Korean) ─────────────────────
+
+interface DecorDef {
+  key: string
+  badge: string
+  wrap: (text: string) => string
+}
+
+const DECOR_DEFS: DecorDef[] = [
+  { key: 'heart', badge: '♡ ♡', wrap: (x) => `♡ ${x} ♡` },
+  { key: 'sparkle', badge: '✧･ﾟ ✧', wrap: (x) => `✧･ﾟ: ${x} :･ﾟ✧` },
+  { key: 'star', badge: '★ ★', wrap: (x) => `｡･:*:･ﾟ★ ${x} ★ﾟ･:*:･｡` },
+  { key: 'flower', badge: '✿ ✿', wrap: (x) => `✿ ${x} ✿` },
+  { key: 'cute', badge: '꒰ა ໒꒱', wrap: (x) => `˚₊‧꒰ა ${x} ໒꒱‧₊˚` },
+  { key: 'wing', badge: '➶➷ ➸➹', wrap: (x) => `➶➷ ${x} ➸➹` },
+  { key: 'game', badge: '꧁ ꧂', wrap: (x) => `꧁ ${x} ꧂` },
+  { key: 'crown', badge: '♔ ♔', wrap: (x) => `♔ ${x} ♔` },
+  { key: 'moon', badge: '☾ ☽', wrap: (x) => `☾ ${x} ☽` },
+  { key: 'music', badge: '♪♫ ♫♪', wrap: (x) => `♪♫ ${x} ♫♪` },
+  { key: 'bracketFull', badge: '【 】', wrap: (x) => `【 ${x} 】` },
+  { key: 'bracketCorner', badge: '「 」', wrap: (x) => `「 ${x} 」` },
+  { key: 'bracketAngle', badge: '《 》', wrap: (x) => `《 ${x} 》` },
+  { key: 'dot', badge: '•° °•', wrap: (x) => `•°• ${x} •°•` },
+  { key: 'line', badge: '»— —«', wrap: (x) => `»»——— ${x} ———««` },
+  { key: 'fire', badge: '🔥 🔥', wrap: (x) => `🔥 ${x} 🔥` },
+  { key: 'ribbon', badge: '⊹ ⊹', wrap: (x) => `⊹ ࣪ ˖ ${x} ˖ ࣪ ⊹` },
+  { key: 'spaced', badge: 'ㄱ ㅏ', wrap: (x) => [...x.replace(/\s/g, '')].join(' ') },
+]
+
 // ── Component ────────────────────────────────────────────────────────────────
 
 export default function FancyText() {
@@ -325,6 +354,15 @@ export default function FancyText() {
       output: def.convert(input),
     }))
   }, [input, t])
+
+  const decorResults = useMemo(() => {
+    if (!input.trim()) return []
+    return DECOR_DEFS.map((def) => ({
+      key: def.key,
+      badge: def.badge,
+      output: def.wrap(input.trim()),
+    }))
+  }, [input])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -362,7 +400,7 @@ export default function FancyText() {
       </div>
 
       {/* Input area */}
-      <div className="${glassCard} ${glassInset} p-6 space-y-4">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           {t('inputLabel')}
         </label>
@@ -371,7 +409,7 @@ export default function FancyText() {
           onChange={(e) => setInput(e.target.value)}
           placeholder={t('inputPlaceholder')}
           rows={3}
-          className="w-full px-3 py-2 ${glassInput} placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+          className={`w-full px-3 py-2 ${glassInput} placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none`}
           aria-label={t('inputLabel')}
         />
         <p className="text-xs text-gray-400 dark:text-gray-500">{t('asciiNote')}</p>
@@ -399,9 +437,43 @@ export default function FancyText() {
         )}
       </div>
 
-      {/* Results grid */}
+      {/* Decoration frames — works on Korean & any script */}
+      {decorResults.length > 0 && (
+        <div className="space-y-3">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('decorTitle')}</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t('decorDesc')}</p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {decorResults.map((r) => (
+              <div key={r.key} className={`${glassCard} ${glassInset} p-5 flex flex-col gap-3`}>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold tracking-wide text-pink-600 dark:text-pink-400">{r.badge}</span>
+                  <button
+                    onClick={() => copyToClipboard(r.output, `decor:${r.key}`)}
+                    className="flex items-center gap-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-pink-100 dark:hover:bg-pink-900 text-gray-600 dark:text-gray-300 hover:text-pink-700 dark:hover:text-pink-300 rounded-md px-2 py-1 transition-colors"
+                    aria-label={`${t('copy')} ${r.badge}`}
+                  >
+                    {copiedId === `decor:${r.key}` ? (
+                      <><Check className="w-3 h-3" />{t('copied')}</>
+                    ) : (
+                      <><Copy className="w-3 h-3" />{t('copy')}</>
+                    )}
+                  </button>
+                </div>
+                <p className="text-gray-800 dark:text-gray-100 text-lg leading-relaxed break-all select-all cursor-text">{r.output}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Latin Unicode font styles */}
+      {results.length > 0 && (
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('fontTitle')}</h2>
+      )}
       {results.length === 0 ? (
-        <div className="${glassCard} ${glassInset} p-12 text-center">
+        <div className={`${glassCard} ${glassInset} p-12 text-center`}>
           <p className="text-gray-400 dark:text-gray-500 text-lg">{t('noInput')}</p>
         </div>
       ) : (
@@ -409,7 +481,7 @@ export default function FancyText() {
           {results.map((r) => (
             <div
               key={r.key}
-              className="${glassCard} ${glassInset} p-5 flex flex-col gap-3 group"
+              className={`${glassCard} ${glassInset} p-5 flex flex-col gap-3 group`}
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">
@@ -446,7 +518,7 @@ export default function FancyText() {
       )}
 
       {/* Guide */}
-      <div className="${glassCard} ${glassInset} p-6 space-y-6">
+      <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           {t('guide.title')}
         </h2>

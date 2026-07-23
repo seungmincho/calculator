@@ -10,24 +10,27 @@ import GuideSection from '@/components/GuideSection';
 
 type LoanType = 'general' | 'first' | 'newlywed' | 'multichild';
 
-// 2026년 기준 금리 (아낌e 보금자리론 - 기준일 2026.03, 실제 금리는 한국주택금융공사 홈페이지 확인)
+// 2026년 기준 금리 (아낌e 보금자리론 - 실제 금리는 한국주택금융공사 홈페이지 확인)
 const PERIOD_RATES: Record<string, number> = {
-  '10': 4.05,
-  '15': 4.10,
-  '20': 4.15,
-  '25': 4.20,
-  '30': 4.25,
-  '40': 4.30,
-  '50': 4.35,
+  '10': 3.90,
+  '15': 3.95,
+  '20': 4.00,
+  '25': 4.05,
+  '30': 4.10,
+  '40': 4.15,
+  '50': 4.20,
 };
 
-// 소득 기준 (부부합산 연간)
-const INCOME_LIMITS: Record<LoanType, (children: number) => number> = {
-  general: () => 70_000_000,
-  first: () => 70_000_000,
-  newlywed: () => 85_000_000,
-  multichild: (c: number) => c >= 3 ? 100_000_000 : 90_000_000,
-};
+// 소득 기준 (부부합산 연간) — 자녀 수·유형별 완화 반영
+// 기본 7천만, 신혼(7년내) 8.5천만, 미성년 자녀 1명 9천만, 2명 이상 1억 (가장 높은 기준 적용)
+function getIncomeLimit(type: LoanType, children: number): number {
+  let limit = 70_000_000;
+  if (children === 1) limit = 90_000_000;
+  else if (children >= 2) limit = 100_000_000;
+  if (type === 'newlywed') limit = Math.max(limit, 85_000_000);
+  if (type === 'multichild') limit = Math.max(limit, 100_000_000);
+  return limit;
+}
 
 // 최대 대출한도
 const MAX_LOAN: Record<LoanType, number> = {
@@ -142,7 +145,7 @@ const BogeumjariLoanCalculatorContent = () => {
 
     if (!incomeNum || !priceNum) return null;
 
-    const incomeLimit = INCOME_LIMITS[type](childNum);
+    const incomeLimit = getIncomeLimit(type, childNum);
     const typeLabels: Record<LoanType, string> = {
       general: '일반', first: '생애최초', newlywed: '신혼부부', multichild: '다자녀'
     };
@@ -183,7 +186,7 @@ const BogeumjariLoanCalculatorContent = () => {
       };
     }
 
-    const baseRate = PERIOD_RATES[period] ?? 4.25;
+    const baseRate = PERIOD_RATES[period] ?? 4.10;
     const ltv = LTV_RATIO[type];
     const maxLoanByLTV = priceNum * ltv;
     const maxLoan = Math.min(maxLoanByLTV, MAX_LOAN[type]);
@@ -404,11 +407,11 @@ const BogeumjariLoanCalculatorContent = () => {
             LH 보금자리론 계산기
           </h1>
           <span className="text-xs font-semibold bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300 px-2 py-0.5 rounded-full">
-            2026년 2월 기준
+            2026년 기준
           </span>
         </div>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          내 조건에 맞는 대출한도·금리·월 상환액을 즉시 확인하세요 (기준금리 4.05~4.35%, 우대 시 최저 2.90%)
+          내 조건에 맞는 대출한도·금리·월 상환액을 즉시 확인하세요 (기준금리 3.90~4.20%, 우대 시 최저 2.90%)
         </p>
       </div>
 
@@ -467,7 +470,7 @@ const BogeumjariLoanCalculatorContent = () => {
                 </div>
                 {loanType && (
                   <p className="text-xs text-gray-400 mt-1">
-                    기준: {formatCurrency(INCOME_LIMITS[loanType](loanType === 'multichild' ? (childCount === '3plus' ? 3 : parseInt(childCount) || 0) : 0))} 이하
+                    기준: {formatCurrency(getIncomeLimit(loanType, childCount === '3plus' ? 3 : parseInt(childCount) || 0))} 이하
                   </p>
                 )}
               </div>
@@ -521,13 +524,13 @@ const BogeumjariLoanCalculatorContent = () => {
                   onChange={(e) => setLoanPeriod(e.target.value)}
                   className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
                 >
-                  <option value="10">10년 (4.05%)</option>
-                  <option value="15">15년 (4.10%)</option>
-                  <option value="20">20년 (4.15%)</option>
-                  <option value="25">25년 (4.20%)</option>
-                  <option value="30">30년 (4.25%)</option>
-                  <option value="40">40년 (4.30%)</option>
-                  <option value="50">50년 (4.35%)</option>
+                  <option value="10">10년 (3.90%)</option>
+                  <option value="15">15년 (3.95%)</option>
+                  <option value="20">20년 (4.00%)</option>
+                  <option value="25">25년 (4.05%)</option>
+                  <option value="30">30년 (4.10%)</option>
+                  <option value="40">40년 (4.15%)</option>
+                  <option value="50">50년 (4.20%)</option>
                 </select>
                 <p className="text-xs text-gray-400 mt-1">기간이 길수록 금리 소폭 상승</p>
               </div>
@@ -578,6 +581,21 @@ const BogeumjariLoanCalculatorContent = () => {
                       LTV {result.loanToValue}% 적용
                     </div>
                   </div>
+
+                  {/* 필요 자기자본 */}
+                  {(() => {
+                    const price = parseInt(housePrice.replace(/,/g, '')) || 0;
+                    const down = Math.max(0, price - result.maxLoanAmount);
+                    return (
+                      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4">
+                        <div className="text-xs text-amber-600 dark:text-amber-400 mb-1">필요 자기자본 (내 돈)</div>
+                        <div className="text-xl font-bold text-amber-900 dark:text-amber-100">{formatCurrency(down)}</div>
+                        <div className="text-xs text-amber-500 dark:text-amber-400 mt-0.5">
+                          주택가격 {formatCurrency(price)} − 대출 {formatCurrency(result.maxLoanAmount)}
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {/* 금리 계산 내역 */}
                   <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
@@ -710,7 +728,7 @@ const BogeumjariLoanCalculatorContent = () => {
         // 기간별 비교 데이터
         const periods = ['10', '15', '20', '25', '30', '40', '50'];
         const comparisonData = periods.map(p => {
-          const r = (PERIOD_RATES[p] ?? 4.25) - result.totalDiscount;
+          const r = (PERIOD_RATES[p] ?? 4.10) - result.totalDiscount;
           const finalR = Math.max(r, 2.90);
           const mr = finalR / 100 / 12;
           const mo = parseInt(p) * 12;
@@ -913,7 +931,7 @@ const BogeumjariLoanCalculatorContent = () => {
           ))}
         </div>
         <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
-          ※ 2026년 2월 기준. 금리는 매월 변동되므로 주택금융공사 홈페이지에서 최신 금리를 확인하세요.
+          ※ 2026년 기준. 금리는 매월 변동되므로 주택금융공사 홈페이지에서 최신 금리를 확인하세요.
           주택가격 6억원 이하, 전용면적 85㎡ 이하 주택에 한해 적용됩니다.
         </p>
       </div>

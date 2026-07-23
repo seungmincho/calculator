@@ -36,7 +36,7 @@ export default function BogeumjariLoanPage() {
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '2026년 최신 금리 반영 (4.05~4.35%)',
+      '2026년 최신 금리 반영 (3.90~4.20%)',
       '유형별 자동 계산 (생애최초·신혼·다자녀·일반)',
       '우대금리 자동 적용 및 내역 표시',
       '최대 대출한도 계산 (LTV 70~80%)',
@@ -88,7 +88,7 @@ export default function BogeumjariLoanPage() {
         name: '2026년 보금자리론 금리는 얼마인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '2026년 2월 기준 아낌e 보금자리론 기준금리는 10년 4.05% ~ 50년 4.35%입니다. 생애최초(0.2%p), 신혼부부(0.3%p), 다자녀(0.2%p), 저소득 추가(0.1%p) 등 최대 1.0%p 우대 적용 시 최저 2.90~3.35%까지 낮아집니다. 고정금리로 만기까지 동일하게 적용됩니다.',
+          text: '2026년 기준 아낌e 보금자리론 기준금리는 10년 3.90% ~ 50년 4.20%입니다. 생애최초(0.2%p), 신혼부부(0.3%p), 다자녀(0.2%p), 저소득 추가(0.1%p) 등 최대 1.0%p 우대 적용 시 최저 2.90~3.20%까지 낮아집니다. 고정금리로 만기까지 동일하게 적용됩니다. 금리는 매월 변동되므로 한국주택금융공사에서 최신 금리를 확인하세요.',
         },
       },
       {
@@ -120,7 +120,7 @@ export default function BogeumjariLoanPage() {
         name: '보금자리론 대출 기간은 최대 몇 년인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '보금자리론 대출 기간은 10년, 15년, 20년, 25년, 30년, 40년, 50년 중 선택할 수 있습니다. 기간이 길수록 금리가 소폭 높아집니다(10년 4.05% → 50년 4.35%). 40세 미만은 체증식 상환(초기 부담 낮은 방식)도 선택 가능합니다.',
+          text: '보금자리론 대출 기간은 10년, 15년, 20년, 25년, 30년, 40년, 50년 중 선택할 수 있습니다. 기간이 길수록 금리가 소폭 높아집니다(10년 3.90% → 50년 4.20%). 40세 미만은 체증식 상환(초기 부담 낮은 방식)도 선택 가능합니다.',
         },
       },
       {
@@ -136,7 +136,7 @@ export default function BogeumjariLoanPage() {
         name: '생애최초 보금자리론 금리는 얼마인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '2026년 기준 생애최초 보금자리론 금리는 기준금리(30년 기준 4.25%)에서 생애최초 우대금리 0.2%p를 차감한 연 4.05% 수준입니다. 신혼부부 조건도 동시에 해당되면 0.3%p 우대가 추가되어 최저 연 3.75%까지 낮아질 수 있습니다. 저소득 청년 등 추가 우대항목 포함 시 최대 1.0%p까지 차감되어 3%대 금리도 가능합니다.',
+          text: '2026년 기준 생애최초 보금자리론 금리는 기준금리(30년 기준 4.10%)에서 생애최초 우대금리 0.2%p를 차감한 연 3.90% 수준입니다. 신혼부부 조건도 동시에 해당되면 0.3%p 우대가 추가되어 최저 연 3.60%까지 낮아질 수 있습니다. 저소득 청년 등 추가 우대항목 포함 시 최대 1.0%p까지 차감되어 3%대 초반 금리도 가능합니다.',
         },
       },
       {
@@ -186,7 +186,7 @@ export default function BogeumjariLoanPage() {
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: '기준금리 (2월)', value: '4.05~4.35%', sub: '우대 시 최저 2.90%', color: 'blue' },
+                { label: '기준금리', value: '3.90~4.20%', sub: '우대 시 최저 2.90%', color: 'blue' },
                 { label: '최대 대출한도', value: '4.2억원', sub: '생애최초 기준', color: 'green' },
                 { label: '최대 LTV', value: '80%', sub: '생애최초 기준', color: 'purple' },
                 { label: 'DTI 기준', value: '60% 이하', sub: '총부채상환비율', color: 'orange' },
@@ -199,7 +199,7 @@ export default function BogeumjariLoanPage() {
               ))}
             </div>
             <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">
-              ※ 2026년 1월 0.25%p, 2월 0.15%p 추가 인상. 매월 주택금융공사 홈페이지에서 최신 금리 확인 필요.
+              ※ 아낌e(온라인 신청) 기준. 금리는 매월 변동되므로 주택금융공사 홈페이지에서 최신 금리 확인 필요.
             </p>
           </section>
 
@@ -291,7 +291,7 @@ export default function BogeumjariLoanPage() {
           {/* 3. 2026년 금리표 */}
           <section>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-              2026년 2월 기준 금리표 (아낌e 보금자리론)
+              2026년 기준 금리표 (아낌e 보금자리론)
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
@@ -305,11 +305,11 @@ export default function BogeumjariLoanPage() {
                 </thead>
                 <tbody>
                   {[
-                    { period: '10년', base: '4.05%', mid: '3.75~3.85%', max: '3.05%' },
-                    { period: '20년', base: '4.15%', mid: '3.85~3.95%', max: '3.15%' },
-                    { period: '30년', base: '4.25%', mid: '3.95~4.05%', max: '3.25%' },
-                    { period: '40년', base: '4.30%', mid: '4.00~4.10%', max: '3.30%' },
-                    { period: '50년', base: '4.35%', mid: '4.05~4.15%', max: '3.35%' },
+                    { period: '10년', base: '3.90%', mid: '3.60~3.70%', max: '2.90%' },
+                    { period: '20년', base: '4.00%', mid: '3.70~3.80%', max: '3.00%' },
+                    { period: '30년', base: '4.10%', mid: '3.80~3.90%', max: '3.10%' },
+                    { period: '40년', base: '4.15%', mid: '3.85~3.95%', max: '3.15%' },
+                    { period: '50년', base: '4.20%', mid: '3.90~4.00%', max: '3.20%' },
                   ].map((row, i) => (
                     <tr key={row.period} className={`border-b border-gray-100 dark:border-gray-700 ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800/50'}`}>
                       <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{row.period}</td>
@@ -372,7 +372,7 @@ export default function BogeumjariLoanPage() {
                     { label: '소득 기준', didim: '6천만원 이하\n(신혼 8.5천만)', bogeum: '7천만원 이하\n(신혼 8.5천만)' },
                     { label: '주택가격', didim: '5억원 이하', bogeum: '6억원 이하' },
                     { label: '대출 한도', didim: '최대 2.5억원', bogeum: '최대 4.2억원' },
-                    { label: '금리 수준', didim: '2.15~3.0%', bogeum: '4.05~4.35%' },
+                    { label: '금리 수준', didim: '2.15~3.0%', bogeum: '3.90~4.20%' },
                     { label: '금리 유형', didim: '고정/혼합', bogeum: '고정금리' },
                     { label: '추천 대상', didim: '소득 낮은 경우\n한도 2.5억 충분 시', bogeum: '한도 더 필요 시\n소득 6~7천만 구간' },
                   ].map((row, i) => (
@@ -511,7 +511,7 @@ export default function BogeumjariLoanPage() {
               {[
                 {
                   q: '2026년 보금자리론 금리가 왜 올랐나요?',
-                  a: '2026년 한국은행 기준금리 인상 기조의 영향으로 보금자리론 금리도 인상되었습니다. 2026년 1월 0.25%p, 2월 0.15%p 추가 인상되어 30년 기준 4.25% 수준입니다. 우대금리를 최대한 활용하고, 금리가 낮은 디딤돌대출 자격도 함께 확인하세요.',
+                  a: '2026년 기준 아낌e 보금자리론 금리는 30년 만기 기준 약 4.10% 수준입니다. 금리는 시장 상황에 따라 매월 변동되므로, 신혼·생애최초·다자녀·저소득 등 우대금리를 최대한 활용하고 금리가 더 낮은 디딤돌대출 자격도 함께 확인하는 것이 좋습니다.',
                 },
                 {
                   q: '생애최초와 신혼부부 둘 다 해당되면 어떻게 되나요?',
@@ -535,7 +535,7 @@ export default function BogeumjariLoanPage() {
                 },
                 {
                   q: '생애최초 보금자리론 금리는 일반과 얼마나 차이나나요?',
-                  a: '생애최초 유형에는 기준금리에서 0.2%p 우대금리가 자동 적용됩니다. 30년 기준으로 일반 4.25% → 생애최초 4.05%입니다. 신혼부부 조건도 함께 해당되면 0.3%p를 추가 적용하여 3.75%까지 낮아집니다. LTV가 80%로 확대되어 같은 주택에서도 더 많은 대출이 가능한 것이 핵심 혜택입니다.',
+                  a: '생애최초 유형에는 기준금리에서 0.2%p 우대금리가 자동 적용됩니다. 30년 기준으로 일반 4.10% → 생애최초 3.90%입니다. 신혼부부 조건도 함께 해당되면 0.3%p를 추가 적용하여 3.60%까지 낮아집니다. LTV가 80%로 확대되어 같은 주택에서도 더 많은 대출이 가능한 것이 핵심 혜택입니다.',
                 },
                 {
                   q: '생애최초 보금자리론은 어떤 서류를 준비해야 하나요?',
