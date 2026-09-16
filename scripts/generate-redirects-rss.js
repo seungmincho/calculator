@@ -198,6 +198,7 @@ const menuItems = [
   { href: '/roman-numeral', labelKey: 'footer.links.romanNumeral' },
   { href: '/salary-calculator', labelKey: 'footer.links.salaryCalculator' },
   { href: '/salary-comparison', labelKey: 'footer.links.salaryComparison' },
+  { href: '/salary-table', labelKey: 'footer.links.salaryTable' },
   { href: '/salary-rank', labelKey: 'footer.links.salaryRank' },
   { href: '/sales-commission', labelKey: 'footer.links.salesCommission' },
   { href: '/savings-calculator', labelKey: 'footer.links.savingsCalculator' },
@@ -320,7 +321,8 @@ const csVisualizerHrefs = [
 ];
 
 // Static routes not in menuConfig
-const staticRoutes = ['/offline', '/tips'];
+const staticRoutes = ['/offline', '/tips', '/calculators', '/tools', '/media', '/health',
+  ...[2400, 2600, 2800, 3000, 3200, 3500, 3800, 4000, 4500, 5000, 5500, 6000, 7000, 8000, 10000].map(b => '/salary-table/' + b)];
 
 // --- Build complete sorted unique set for _redirects ---
 const allHrefSet = new Set();

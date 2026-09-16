@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
-import { menuConfig, categoryKeys } from '@/config/menuConfig'
+import { menuConfig, categoryKeys, categoryHubs } from '@/config/menuConfig'
+import { BRACKETS } from './salary-table/lib'
 import { algorithms } from '@/config/algorithmConfig'
 import { csVisualizers } from '@/config/csVisualizerConfig'
 
@@ -84,6 +85,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
   ]
+
+  // 카테고리 허브 (/calculators, /tools, /media, /health — /games는 menuConfig에 있음)
+  for (const key of categoryKeys) {
+    const href = categoryHubs[key]
+    if (seen.has(href)) continue
+    seen.add(href)
+    entries.push({ url: `https://toolhub.ai.kr${href}/`, lastModified: '2026-09-17', changeFrequency: 'weekly', priority: 0.9 })
+  }
+
+  // 연봉 실수령액 구간별 페이지
+  for (const b of BRACKETS) {
+    entries.push({ url: `https://toolhub.ai.kr/salary-table/${b}/`, lastModified: '2026-09-17', changeFrequency: 'monthly', priority: 0.8 })
+  }
 
   // menuConfig 기반 자동 생성
   for (const key of categoryKeys) {

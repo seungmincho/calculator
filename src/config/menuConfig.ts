@@ -45,6 +45,7 @@ export const menuConfig: MenuConfig = {
     items: [
       { href: '/salary-calculator', labelKey: 'footer.links.salaryCalculator', descriptionKey: 'toolsShowcase.tools.salary.description', icon: '💰', subcategory: 'subcategory.salaryWork' },
       { href: '/salary-comparison', labelKey: 'footer.links.salaryComparison', descriptionKey: 'toolsShowcase.tools.salaryComparison.description', icon: '⚖️', subcategory: 'subcategory.salaryWork' },
+      { href: '/salary-table', labelKey: 'footer.links.salaryTable', descriptionKey: 'toolsShowcase.tools.salaryTable.description', icon: '📑', addedDate: '2026-09-17', subcategory: 'subcategory.salaryWork' },
       { href: '/loan-calculator', labelKey: 'footer.links.loanCalculator', descriptionKey: 'toolsShowcase.tools.loan.description', icon: '🏦', subcategory: 'subcategory.loanFinance' },
       { href: '/savings-calculator', labelKey: 'footer.links.savingsCalculator', descriptionKey: 'toolsShowcase.tools.savings.description', icon: '📈', subcategory: 'subcategory.investSavings' },
       { href: '/stock-calculator', labelKey: 'footer.links.stockCalculator', descriptionKey: 'toolsShowcase.tools.stock.description', icon: '📊', subcategory: 'subcategory.investSavings' },
@@ -312,3 +313,12 @@ export const menuConfig: MenuConfig = {
 // 카테고리 키 목록
 export const categoryKeys = ['calculators', 'tools', 'media', 'health', 'games'] as const;
 export type CategoryKey = typeof categoryKeys[number];
+
+/** 카테고리 허브 페이지 경로 (Breadcrumb·홈 링크·sitemap 공용) */
+export const categoryHubs: Record<CategoryKey, string> = {
+  calculators: '/calculators',
+  tools: '/tools',
+  media: '/media',
+  health: '/health',
+  games: '/games',
+};

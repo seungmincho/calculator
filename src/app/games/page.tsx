@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import GamesPageContent from '@/components/GamesPageContent'
 import RelatedTools from '@/components/RelatedTools'
+import CategoryHub from '@/components/CategoryHub'
 
 export const metadata: Metadata = {
   title: '게임센터 - 오목·체커·2048 등 20+ 게임 | 툴허브',
@@ -63,6 +64,11 @@ export default function GamesPage() {
       />
       <I18nWrapper>
         <GamesPageContent />
+        {/* 전체 게임 링크 — GameHub는 ssr:false라 HTML에 링크가 없음 (크롤 발견용) */}
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">전체 게임 목록</h2>
+          <CategoryHub category="games" />
+        </section>
         <div className="mt-8">
 
           <RelatedTools />

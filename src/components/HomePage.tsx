@@ -6,7 +6,7 @@ import Link from 'next/link'
 import {
   Search, Star, TrendingUp, Zap, Smartphone, Moon, WifiOff, ArrowRight, Clock, BarChart3
 } from 'lucide-react'
-import { menuConfig, categoryKeys, isNewTool, type CategoryKey, type MenuItem } from '@/config/menuConfig'
+import { menuConfig, categoryKeys, categoryHubs, isNewTool, type CategoryKey, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'
 import { usePopularTools } from '@/hooks/useToolAnalytics'
@@ -552,7 +552,7 @@ export default function HomePage() {
             <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {categoryKeys.map(catKey => (
                 <div key={catKey}>
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{categoryEmoji[catKey]} {t(menuConfig[catKey].titleKey)}</h3>
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2"><Link href={categoryHubs[catKey]} className="hover:text-blue-600 dark:hover:text-blue-400">{categoryEmoji[catKey]} {t(menuConfig[catKey].titleKey)} →</Link></h3>
                   <ul className="space-y-1">
                     {menuConfig[catKey].items.map(item => (
                       <li key={item.href}>

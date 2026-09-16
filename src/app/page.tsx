@@ -3,12 +3,12 @@ import HomePage from '@/components/HomePage'
 import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
-  title: '툴허브 - 126+ 무료 온라인 도구 모음 | 계산기, 개발도구, 게임',
-  description: '연봉 계산기, JSON 포맷터, 이미지 편집기 등 126개 이상의 무료 온라인 도구를 한 곳에서. 금융, 개발, 건강, 미디어, 게임까지 필요한 모든 도구를 제공합니다.',
+  title: '툴허브 - 240+ 무료 온라인 도구 모음 | 계산기, 개발도구, 게임',
+  description: '연봉 계산기, JSON 포맷터, 이미지 편집기 등 240개 이상의 무료 온라인 도구를 한 곳에서. 금융, 개발, 건강, 미디어, 게임까지 필요한 모든 도구를 제공합니다.',
   keywords: '온라인도구, 무료계산기, 개발자도구, 연봉계산기, JSON포맷터, 이미지편집, 단위변환, QR코드생성, 게임, 툴허브',
   openGraph: {
-    title: '툴허브 - 126+ 무료 온라인 도구 모음',
-    description: '금융 계산기, 개발 도구, 이미지 편집, 게임까지 126개 이상의 도구를 한 곳에서',
+    title: '툴허브 - 240+ 무료 온라인 도구 모음',
+    description: '금융 계산기, 개발 도구, 이미지 편집, 게임까지 240개 이상의 도구를 한 곳에서',
     url: 'https://toolhub.ai.kr',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -18,14 +18,14 @@ export const metadata: Metadata = {
         url: 'https://toolhub.ai.kr/og-image-1200x630.png',
         width: 1200,
         height: 630,
-        alt: '툴허브 - 126+ 무료 온라인 도구 모음',
+        alt: '툴허브 - 240+ 무료 온라인 도구 모음',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '툴허브 - 126+ 무료 온라인 도구 모음',
-    description: '금융, 개발, 건강, 게임까지 126+ 무료 도구',
+    title: '툴허브 - 240+ 무료 온라인 도구 모음',
+    description: '금융, 개발, 건강, 게임까지 240+ 무료 도구',
     images: ['https://toolhub.ai.kr/og-image-1200x630.png'],
   },
   robots: {
@@ -51,7 +51,7 @@ export default function Home() {
       '@type': 'WebSite',
       name: '툴허브',
       alternateName: 'ToolHub',
-      description: '126개 이상의 무료 온라인 도구 - 금융 계산기, 개발 도구, 이미지 편집, 게임',
+      description: '240개 이상의 무료 온라인 도구 - 금융 계산기, 개발 도구, 이미지 편집, 게임',
       url: 'https://toolhub.ai.kr',
       inLanguage: ['ko-KR', 'en-US']
     },

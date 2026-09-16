@@ -249,7 +249,7 @@
       "nonTaxablePlaceholder": "0",
       "nonTaxableDesc": "월별 식대, 교통비 등 (예: 20만원/월)",
       "dependents": "부양가족수 (본인포함)",
-      "children": "20세 이하 자녀수",
+      "children": "8~20세 자녀수 (부양가족에 포함)",
       "currency": "원"
     },
     "result": {
@@ -2158,6 +2158,7 @@
       "memoryGame": "타일 매칭 게임",
       "snakeGame": "스네이크 게임",
       "salaryComparison": "연봉 비교기",
+      "salaryTable": "연봉 실수령액 표",
       "yamlJsonConverter": "YAML ↔ JSON 변환기",
       "inheritanceGiftTax": "상속세·증여세 계산기",
       "freelancerTax": "프리랜서 세금 계산기",
@@ -5282,6 +5283,10 @@
       "salaryComparison": {
         "title": "연봉 비교기",
         "description": "연봉 2~4개 실수령액 나란히 비교"
+      },
+      "salaryTable": {
+        "title": "연봉 실수령액 표",
+        "description": "연봉 2천만~2억 구간별 2026년 월 실수령액 표. 4대보험·소득세 공제 후 금액 한눈에"
       },
       "yamlJsonConverter": {
         "title": "YAML ↔ JSON 변환기",

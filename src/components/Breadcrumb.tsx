@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronRight, Home } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
-import { menuConfig, categoryKeys, type CategoryKey } from '@/config/menuConfig'
+import { menuConfig, categoryKeys, categoryHubs, type CategoryKey } from '@/config/menuConfig'
 
 export default function Breadcrumb() {
   const rawPathname = usePathname()
@@ -28,7 +28,7 @@ export default function Breadcrumb() {
   }
 
   // Don't render on home page or if tool not found
-  if (!currentTool || pathname === '/') return null
+  if (!currentTool || !categoryKey || pathname === '/') return null
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -44,7 +44,7 @@ export default function Breadcrumb() {
         '@type': 'ListItem',
         position: 2,
         name: categoryLabel,
-        item: `https://toolhub.ai.kr/?category=${categoryKey}`,
+        item: `https://toolhub.ai.kr${categoryHubs[categoryKey]}/`,
       },
       {
         '@type': 'ListItem',
@@ -80,7 +80,7 @@ export default function Breadcrumb() {
           </li>
           <li>
             <Link
-              href={`/?category=${categoryKey}#tools-grid`}
+              href={categoryHubs[categoryKey]}
               className="text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {categoryLabel}

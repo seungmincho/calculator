@@ -10,7 +10,8 @@ import CalculationHistory from '@/components/CalculationHistory';
 import FeedbackWidget from '@/components/FeedbackWidget';
 import PDFExport from '@/components/PDFExport';
 import dynamic from 'next/dynamic'
-import { INSURANCE, PENSION_ANNUAL_CAP, pct } from '@/utils/insuranceRates'
+import { INSURANCE, pct } from '@/utils/insuranceRates'
+import { calculateNetSalary as calcNetSalary } from '@/utils/netSalary'
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
 const SalaryCalculatorContent = () => {
@@ -49,107 +50,13 @@ const SalaryCalculatorContent = () => {
   // 한국 연봉 실수령액 계산 함수 (4대보험 요율은 insuranceRates.ts 기준연도)
   const calculateNetSalary = (inputSalary: string, type: 'annual' | 'monthly', nonTaxable: string, dependentCount: string, childrenCount: string) => {
     const salaryNum = parseInt(inputSalary.replace(/,/g, ''));
-    const nonTaxableMonthlyNum = parseInt(nonTaxable.replace(/,/g, '')) || 0; // 월별 비과세 금액
-    const dependentNum = parseInt(dependentCount) || 1;
-    const childrenNum = parseInt(childrenCount) || 0;
-    
     if (!salaryNum || salaryNum <= 0) return null;
-
-    // 연봉으로 변환
-    const grossAnnual = type === 'monthly' ? salaryNum * 12 : salaryNum;
-    const nonTaxableAnnual = nonTaxableMonthlyNum * 12; // 연간 비과세 금액
-    const taxableAnnual = grossAnnual - nonTaxableAnnual; // 과세대상소득
-
-    // 4대보험료 계산 — 요율·상한은 utils/insuranceRates.ts (2026년 기준) 단일 관리
-    const nationalPension = Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate);
-    const healthInsurance = Math.floor(taxableAnnual * INSURANCE.healthRate);
-    const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate);
-    const employmentInsurance = Math.floor(taxableAnnual * INSURANCE.employmentRate);
-
-    // 소득공제 계산
-    // 1. 근로소득공제 (총급여액 기준)
-    let workIncomeDeduction = 0;
-    if (grossAnnual <= 5000000) {
-      workIncomeDeduction = grossAnnual * 0.7;
-    } else if (grossAnnual <= 15000000) {
-      workIncomeDeduction = 3500000 + (grossAnnual - 5000000) * 0.4;
-    } else if (grossAnnual <= 45000000) {
-      workIncomeDeduction = 7500000 + (grossAnnual - 15000000) * 0.15;
-    } else if (grossAnnual <= 100000000) {
-      workIncomeDeduction = 12000000 + (grossAnnual - 45000000) * 0.05;
-    } else {
-      workIncomeDeduction = 14750000 + (grossAnnual - 100000000) * 0.02;
-    }
-    workIncomeDeduction = Math.min(workIncomeDeduction, 20000000); // 상한 2천만원
-
-    // 2. 인적공제
-    const basicDeduction = 1500000; // 기본공제 150만원
-    const dependentDeduction = (dependentNum - 1) * 1500000; // 부양가족공제 (본인 제외)
-    const childDeduction = childrenNum * 1500000; // 20세 이하 자녀 공제
-    const totalPersonalDeduction = basicDeduction + dependentDeduction + childDeduction;
-
-    // 근로소득금액 = 총급여 - 근로소득공제
-    const workIncome = grossAnnual - workIncomeDeduction;
-    
-    // 종합소득공제 (국민연금 + 인적공제)
-    const totalDeduction = nationalPension + totalPersonalDeduction;
-    
-    // 과세표준 = 근로소득금액 - 종합소득공제
-    const taxableIncome = Math.max(0, workIncome - totalDeduction);
-
-    // 소득세 계산 (2025년 누진세율)
-    let incomeTax = 0;
-    if (taxableIncome <= 14000000) {
-      incomeTax = taxableIncome * 0.06; // 6%
-    } else if (taxableIncome <= 50000000) {
-      incomeTax = 840000 + (taxableIncome - 14000000) * 0.15; // 15%
-    } else if (taxableIncome <= 88000000) {
-      incomeTax = 6240000 + (taxableIncome - 50000000) * 0.24; // 24%
-    } else if (taxableIncome <= 150000000) {
-      incomeTax = 15360000 + (taxableIncome - 88000000) * 0.35; // 35%
-    } else if (taxableIncome <= 300000000) {
-      incomeTax = 37060000 + (taxableIncome - 150000000) * 0.38; // 38%
-    } else if (taxableIncome <= 500000000) {
-      incomeTax = 94060000 + (taxableIncome - 300000000) * 0.4; // 40%
-    } else if (taxableIncome <= 1000000000) {
-      incomeTax = 174060000 + (taxableIncome - 500000000) * 0.42; // 42%
-    } else {
-      incomeTax = 384060000 + (taxableIncome - 1000000000) * 0.45; // 45%
-    }
-    
-    incomeTax = Math.floor(incomeTax);
-    
-    // 지방소득세: 소득세의 10%
-    const localIncomeTax = Math.floor(incomeTax * 0.1);
-
-    // 총 공제액 계산
-    const totalDeductions = nationalPension + healthInsurance + longTermCare + employmentInsurance + incomeTax + localIncomeTax;
-    const netAnnual = grossAnnual - totalDeductions;
-    const netMonthly = Math.floor(netAnnual / 12);
-
-    return {
-      gross: grossAnnual,
-      taxable: taxableAnnual,
-      workIncome,
-      workIncomeDeduction,
-      netAnnual,
-      netMonthly,
-      deductions: {
-        healthInsurance,
-        longTermCare,
-        nationalPension,
-        employmentInsurance,
-        incomeTax,
-        localIncomeTax,
-        total: totalDeductions
-      },
-      taxInfo: {
-        taxableIncome: taxableIncome,
-        personalDeduction: totalPersonalDeduction,
-        taxCredit: 0, // 자녀세액공제는 소득세 계산 시 반영됨
-        effectiveTaxRate: grossAnnual > 0 ? ((incomeTax + localIncomeTax) / grossAnnual * 100) : 0
-      }
-    };
+    // 계산 로직은 utils/netSalary.ts (연봉 실수령액 표와 공유)
+    return calcNetSalary(type === 'monthly' ? salaryNum * 12 : salaryNum, {
+      nonTaxableMonthly: parseInt(nonTaxable.replace(/,/g, '')) || 0,
+      dependents: parseInt(dependentCount) || 1,
+      children: parseInt(childrenCount) || 0,
+    });
   };
 
   const handleCalculate = React.useCallback(() => {
@@ -696,7 +603,7 @@ const SalaryCalculatorContent = () => {
                       <span className="font-medium text-gray-900 dark:text-white">{formatNumber(result.workIncome)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">{t('result.personalDeduction')} ({dependents}명 + 자녀 {childrenUnder20}명)</span>
+                      <span className="text-gray-600 dark:text-gray-400">{t('result.personalDeduction')} ({dependents}명)</span>
                       <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.taxInfo.personalDeduction)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">

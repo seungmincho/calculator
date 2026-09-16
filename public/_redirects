@@ -83,6 +83,7 @@
 /business-number  /business-number/  301
 /cagr-calculator  /cagr-calculator/  301
 /calculation-history  /calculation-history/  301
+/calculators  /calculators/  301
 /calorie-calculator  /calorie-calculator/  301
 /capital-gains-tax  /capital-gains-tax/  301
 /car-loan-calculator  /car-loan-calculator/  301
@@ -157,6 +158,7 @@
 /gradient-descent  /gradient-descent/  301
 /hangman  /hangman/  301
 /hash-generator  /hash-generator/  301
+/health  /health/  301
 /health-insurance  /health-insurance/  301
 /hourly-wage  /hourly-wage/  301
 /housing-subscription  /housing-subscription/  301
@@ -204,6 +206,7 @@
 /mbti-compatibility  /mbti-compatibility/  301
 /mbti-test  /mbti-test/  301
 /meal-diary  /meal-diary/  301
+/media  /media/  301
 /median-income  /median-income/  301
 /meeting-minutes  /meeting-minutes/  301
 /memory-game  /memory-game/  301
@@ -260,6 +263,22 @@
 /salary-calculator  /salary-calculator/  301
 /salary-comparison  /salary-comparison/  301
 /salary-rank  /salary-rank/  301
+/salary-table  /salary-table/  301
+/salary-table/10000  /salary-table/10000/  301
+/salary-table/2400  /salary-table/2400/  301
+/salary-table/2600  /salary-table/2600/  301
+/salary-table/2800  /salary-table/2800/  301
+/salary-table/3000  /salary-table/3000/  301
+/salary-table/3200  /salary-table/3200/  301
+/salary-table/3500  /salary-table/3500/  301
+/salary-table/3800  /salary-table/3800/  301
+/salary-table/4000  /salary-table/4000/  301
+/salary-table/4500  /salary-table/4500/  301
+/salary-table/5000  /salary-table/5000/  301
+/salary-table/5500  /salary-table/5500/  301
+/salary-table/6000  /salary-table/6000/  301
+/salary-table/7000  /salary-table/7000/  301
+/salary-table/8000  /salary-table/8000/  301
 /sales-commission  /sales-commission/  301
 /savings-calculator  /savings-calculator/  301
 /screen-compare  /screen-compare/  301
@@ -290,6 +309,7 @@
 /time-converter  /time-converter/  301
 /timer  /timer/  301
 /tips  /tips/  301
+/tools  /tools/  301
 /typing-test  /typing-test/  301
 /unemployment-benefit  /unemployment-benefit/  301
 /unit-converter  /unit-converter/  301

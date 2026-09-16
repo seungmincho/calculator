@@ -249,7 +249,7 @@
       "nonTaxablePlaceholder": "0",
       "nonTaxableDesc": "Monthly meal allowance, transportation, etc. (e.g., 200,000 KRW/month)",
       "dependents": "Number of Dependents (Including yourself)",
-      "children": "Number of Children Under 20",
+      "children": "Children Aged 8–20 (included in dependents)",
       "currency": "KRW"
     },
     "result": {
@@ -1628,6 +1628,7 @@
       "memoryGame": "Memory Game",
       "snakeGame": "Snake Game",
       "salaryComparison": "Salary Comparison",
+      "salaryTable": "Salary Take-Home Table",
       "yamlJsonConverter": "YAML ↔ JSON Converter",
       "inheritanceGiftTax": "Inheritance & Gift Tax",
       "freelancerTax": "Freelancer Tax Calculator",
@@ -5282,6 +5283,10 @@
       "salaryComparison": {
         "title": "Salary Comparison",
         "description": "Compare 2-4 salaries side by side"
+      },
+      "salaryTable": {
+        "title": "Salary Take-Home Table",
+        "description": "2026 monthly take-home pay table for annual salaries from 20M to 200M KRW after insurance and tax"
       },
       "yamlJsonConverter": {
         "title": "YAML ↔ JSON Converter",
