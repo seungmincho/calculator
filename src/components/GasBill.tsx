@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Flame, MapPin, Thermometer, BookOpen, Copy, Check, Share2, Home, ChevronDown, Zap, Droplets } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

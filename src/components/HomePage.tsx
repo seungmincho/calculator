@@ -543,6 +543,29 @@ export default function HomePage() {
               )}
             </>
           )}
+
+          {/* 전체 도구 링크 목록 — 슬라이더는 카테고리당 10개만 노출되므로, 크롤러/키보드 사용자가 242개 전부에 <a>로 도달하도록 native <details>로 제공 */}
+          <details className={`mt-10 ${glass.card} ${glass.cardInset} p-4`}>
+            <summary className="cursor-pointer text-sm font-semibold text-gray-700 dark:text-gray-200">
+              {t('homePage.allTools.title')} ({categoryKeys.reduce((n, k) => n + menuConfig[k].items.length, 0)})
+            </summary>
+            <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {categoryKeys.map(catKey => (
+                <div key={catKey}>
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">{categoryEmoji[catKey]} {t(menuConfig[catKey].titleKey)}</h3>
+                  <ul className="space-y-1">
+                    {menuConfig[catKey].items.map(item => (
+                      <li key={item.href}>
+                        <Link href={item.href} className="text-xs text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+                          {item.icon} {t(item.labelKey)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </details>
         </section>
 
         {/* ===== FEATURES ===== */}

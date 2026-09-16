@@ -2,7 +2,8 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Car, Moon, Sun, BookOpen, MapPin, Link, Check, BarChart2, Clock, Navigation, Download } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
@@ -29,7 +30,9 @@ interface RegionRate {
   outRate: number     // 시계외 할증율
 }
 
-// 2025년 기준 시도별 중형택시 요율 (지자체별 변동 가능 — 실제 요율은 관할 시·도 확인)
+// 2026년 9월 기준 시도별 중형택시 요율 (지자체별 변동 가능 — 실제 요율은 관할 시·도 확인)
+// 검증: 서울 4,800/1.6km(2023.2~) · 대구 4,500/1.7km/125m(2025.1~) · 제주 4,300/2km(2024.7~) · 전남 4,300/2km
+// 예정: 전남 22개 시군 4,800/1.7km(2026.11~12 시행 추진), 대구 5,200~5,600(2027 초 용역안)
 const REGION_RATES: Record<RegionKey, RegionRate> = {
   seoul:     { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: 23, deepEnd: 2, nightRate: 0.2, deepRate: 0.4, outRate: 0.2 },
   gyeonggi:  { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.3, deepRate: 0.3, outRate: 0.2 },
@@ -44,10 +47,10 @@ const REGION_RATES: Record<RegionKey, RegionRate> = {
   chungbuk:  { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
   chungnam:  { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
   jeonbuk:   { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  jeonnam:   { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
+  jeonnam:   { base: 4300, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
   gyeongbuk: { base: 4500, baseDist: 1700, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
   gyeongnam: { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  jeju:      { base: 4500, baseDist: 2000, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
+  jeju:      { base: 4300, baseDist: 2000, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
 }
 
 // 모범/대형 택시 프리미엄 요율 (전국 유사 — 지역별 세부 요율은 관할 확인)
@@ -461,7 +464,7 @@ export default function TaxiFare() {
                 />
                 <span>
                   <span className="text-gray-700 dark:text-gray-300 font-medium">{t('outOfCity.label')}</span>
-                  <span className="block text-xs text-gray-500 dark:text-gray-400">{t('outOfCity.desc')}</span>
+                  <span className="block text-xs text-gray-500 dark:text-gray-400">{t('outOfCity.desc', { rate: Math.round(REGION_RATES[region].outRate * 100) })}</span>
                 </span>
               </label>
             </div>

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Calculator, Copy, Check, BookOpen, AlertCircle, Link, GitCompare } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

@@ -1,13 +1,15 @@
 'use client'
 
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from '@/hooks/useSearchParams';
 import dynamic from 'next/dynamic'
 import { Receipt, Building2, TrendingUp, Calculator, Share2, Check, Save } from 'lucide-react';
 import { glassCard, glassInset, glassInput } from '@/lib/glass';
 import GuideSection from '@/components/GuideSection'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
+import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
@@ -166,10 +168,10 @@ const TaxCalculatorContent = () => {
     const localIncomeTax = incomeTax * 0.1; // 지방소득세
     
     // 4대보험 (간소화)
-    const nationalPension = Math.min(income, 63600000) * 0.045;
-    const healthInsurance = income * 0.03545;
-    const longTermCare = healthInsurance * 0.1227;
-    const employmentInsurance = income * 0.009;
+    const nationalPension = Math.min(income, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate;
+    const healthInsurance = income * INSURANCE.healthRate;
+    const longTermCare = healthInsurance * INSURANCE.longTermCareRate;
+    const employmentInsurance = income * INSURANCE.employmentRate;
     
     const totalTax = incomeTax + localIncomeTax + nationalPension + healthInsurance + longTermCare + employmentInsurance;
     

@@ -1,15 +1,14 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import DsrCalculator from '@/components/DsrCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: 'DSR 계산기 2025 - 대출한도 역산, 스트레스 DSR | 툴허브',
-  description: '2025년 기준 DSR(총부채원리금상환비율)을 자동 계산합니다. 주담대·신용대출·카드론 원리금 산정, 스트레스 DSR 3단계 반영, 대출한도 역산까지 한눈에 확인하세요.',
+  title: 'DSR 계산기 2026 - 대출한도 역산, 스트레스 DSR | 툴허브',
+  description: '2026년 기준 DSR(총부채원리금상환비율)을 자동 계산합니다. 주담대·신용대출·카드론 원리금 산정, 스트레스 DSR 3단계 반영, 대출한도 역산까지 한눈에 확인하세요.',
   keywords: 'DSR 계산기, 총부채원리금상환비율, 대출한도 계산, 스트레스 DSR, DSR 40%, 대출 가능액, 주택담보대출 한도, 신용대출 DSR',
   openGraph: {
-    title: 'DSR 계산기 2025 | 툴허브',
+    title: 'DSR 계산기 2026 | 툴허브',
     description: 'DSR 계산 + 대출한도 역산 + 스트레스 DSR 반영',
     url: 'https://toolhub.ai.kr/dsr-calculator',
     siteName: '툴허브',
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DSR 계산기 2025 | 툴허브',
+    title: 'DSR 계산기 2026 | 툴허브',
     description: 'DSR 계산 + 대출한도 역산',
   },
   alternates: { canonical: 'https://toolhub.ai.kr/dsr-calculator/' },
@@ -29,7 +28,7 @@ export default function DsrCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'DSR 계산기',
-    description: '2025년 기준 DSR 계산, 대출한도 역산, 스트레스 DSR 3단계 반영.',
+    description: '2026년 기준 DSR 계산, 대출한도 역산, 스트레스 DSR 3단계 반영.',
     url: 'https://toolhub.ai.kr/dsr-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
@@ -65,12 +64,10 @@ export default function DsrCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper><DsrCalculator />  <div className="mt-8">
     <RelatedTools />
   </div>
 </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

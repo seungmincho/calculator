@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import {
   Plus,
   Trash2,
@@ -20,6 +20,8 @@ interface DecisionToolsProps {
   initialTab?: 'roulette' | 'order'
   /** 단일 도구 모드: 탭 전환기를 숨기고 initialTab 도구만 노출 (전용 랜딩 페이지용) */
   single?: boolean
+  /** URL 파라미터가 없을 때 룰렛 기본 항목으로 적용할 프리셋 (예: 메뉴 룰렛 → '저녁메뉴') */
+  defaultPreset?: keyof typeof PRESETS
 }
 
 const WHEEL_COLORS = [
@@ -67,7 +69,7 @@ interface Confetti {
   alpha: number
 }
 
-export default function DecisionTools({ initialTab = 'roulette', single = false }: DecisionToolsProps) {
+export default function DecisionTools({ initialTab = 'roulette', single = false, defaultPreset }: DecisionToolsProps) {
   const searchParams = useSearchParams()
 
   // -- shared participants state --
@@ -77,7 +79,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false 
       const items = param.split(',').map(s => s.trim()).filter(Boolean)
       if (items.length >= 2) return items.slice(0, 12)
     }
-    return DEFAULT_PARTICIPANTS
+    return defaultPreset ? PRESETS[defaultPreset].slice(0, 12) : DEFAULT_PARTICIPANTS
   }
   const getInitialOrderItems = () => {
     const param = searchParams?.get('order')
@@ -92,6 +94,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false 
 
   // ─── Roulette state ───────────────────────────────────────────────────────
   const [rouletteItems, setRouletteItems] = useState<string[]>(getInitialRouletteItems)
+  const [canvasSize, setCanvasSize] = useState(300)
   const [newRouletteItem, setNewRouletteItem] = useState('')
   const [isSpinning, setIsSpinning] = useState(false)
   const [currentAngle, setCurrentAngle] = useState(0)
@@ -190,7 +193,8 @@ export default function DecisionTools({ initialTab = 'roulette', single = false 
 
   useEffect(() => {
     drawWheel(currentAngle, rouletteItems)
-  }, [currentAngle, rouletteItems, drawWheel])
+    // canvasSize 변경 시 width 속성 재설정으로 비트맵이 지워지므로 다시 그려야 함 (첫 화면 빈 원 버그)
+  }, [currentAngle, rouletteItems, drawWheel, canvasSize])
 
   // ─── Spin logic ───────────────────────────────────────────────────────────
   const spin = useCallback(() => {
@@ -448,7 +452,6 @@ export default function DecisionTools({ initialTab = 'roulette', single = false 
   }
 
   // ─── Canvas responsive size ───────────────────────────────────────────────
-  const [canvasSize, setCanvasSize] = useState(300)
   const wheelContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

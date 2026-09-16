@@ -2,7 +2,8 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Ruler, Copy, Check, RotateCcw, BookOpen, Home, Link, ChevronDown, ChevronUp } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

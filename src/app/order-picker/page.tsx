@@ -1,14 +1,12 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 import OrderPickerClient from './OrderPickerClient'
 
 export const metadata: Metadata = {
-  title: '순서정하기 게임 - 무료 랜덤 순서 뽑기 | 툴허브',
+  title: '순서정하기 게임 - 랜덤 순서 뽑기, 발표·회식 순서 | 툴허브',
   description:
-    '순서정하기 게임 무료 온라인! 참가자 이름을 입력하면 랜덤으로 순서를 뽑아드립니다. 발표 순서, 회식 자리, 게임 순서 등 모든 순서 정하기를 공정하게.',
+    '이름만 입력하면 랜덤으로 순서 결정. 발표 순서, 회식 자리, 게임 차례를 공정하게 뽑고 결과를 링크로 공유하세요.',
   keywords: [
     '순서정하기 게임',
     '순서 정하기 게임',
@@ -188,13 +186,10 @@ export default function OrderPickerPage() {
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumb />
 
-          <Suspense fallback={null}>
             <I18nWrapper>
               <OrderPickerClient />
             </I18nWrapper>
-          </Suspense>
 
           <div className="mt-8">
             <RelatedTools />

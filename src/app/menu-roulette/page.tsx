@@ -1,14 +1,12 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import MenuRouletteClient from './MenuRouletteClient'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '메뉴 추천 룰렛 - 오늘 뭐 먹지? 점심 저녁 메뉴 결정 | 툴허브',
+  title: '저녁메뉴 추천 룰렛 · 돌림판 - 오늘 뭐 먹지? | 툴허브',
   description:
-    '오늘 점심 저녁 메뉴 고민 끝! 메뉴 추천 룰렛으로 랜덤하게 오늘의 메뉴를 결정하세요. 한식·중식·일식·양식·분식 등 원하는 메뉴를 직접 추가해 돌릴 수 있어요.',
+    '저녁·점심 메뉴 고민 끝! 돌림판을 돌리면 한식·중식·일식·양식·분식·치킨 중 오늘의 메뉴를 랜덤 추천. 메뉴 직접 추가, 결과 공유까지 무료.',
   keywords: [
     '메뉴 추천 룰렛',
     '오늘의 메뉴 추천 룰렛',
@@ -191,15 +189,12 @@ export default function MenuRoulettePage() {
 
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
-              <Breadcrumb />
               <MenuRouletteClient />
               <div className="mt-8">
                 <RelatedTools />
               </div>
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
 

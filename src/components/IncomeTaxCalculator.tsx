@@ -61,7 +61,7 @@
 // ============================================================
 
 import { useState, useCallback, useMemo, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import { Calculator, FileText, Settings, BarChart3, AlertTriangle, Info, ChevronDown, ChevronUp } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'

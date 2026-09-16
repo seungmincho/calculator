@@ -2,7 +2,8 @@
 
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, BookOpen, AlertTriangle, Info, Link, Sparkles, Loader2, X } from 'lucide-react'
 import { useChromeAI } from '@/hooks/useChromeAI'
 import dynamic from 'next/dynamic'

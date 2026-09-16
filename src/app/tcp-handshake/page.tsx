@@ -1,8 +1,6 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import TcpHandshakeVisualizer from '@/components/TcpHandshakeVisualizer'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -85,15 +83,12 @@ export default function TcpHandshakePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
-              <Breadcrumb />
               <TcpHandshakeVisualizer />
               <div className="mt-8">
                 <RelatedTools />
               </div>
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

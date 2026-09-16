@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import { Calculator, Copy, Check, BookOpen, AlertCircle, Link } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'

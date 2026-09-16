@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import StampGenerator from '@/components/StampGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -86,7 +85,6 @@ export default function StampGeneratorPage() {
       />
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-rose-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <StampGenerator />
               <div className="mt-8">
@@ -96,7 +94,6 @@ export default function StampGeneratorPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

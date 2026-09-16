@@ -15,7 +15,8 @@ const DailyTips = () => {
   const t = useTranslations('dailyTips');
   const [tips, setTips] = useState<Tip[]>([]);
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  // 기본 접힘(pill): 펼친 카드가 노트북 첫 화면에서 계산 결과 우하단을 가림. 사용자가 연 적이 있을 때만 펼침.
+  const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   // 팁 데이터 로드
@@ -36,8 +37,7 @@ const DailyTips = () => {
         }
         
         // 컴포넌트 표시 상태 확인
-        const isHidden = localStorage.getItem('dailyTipsHidden') === 'true';
-        setIsVisible(!isHidden);
+        setIsVisible(localStorage.getItem('dailyTipsHidden') === 'false');
       } catch (error) {
         console.error('Failed to load tips:', error);
       } finally {
@@ -80,7 +80,7 @@ const DailyTips = () => {
 
   if (!isVisible) {
     return (
-      <div className="fixed bottom-20 md:bottom-4 right-4 z-40">
+      <div className="hidden md:block fixed bottom-4 right-4 z-40">
         <button
           onClick={showTips}
           className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-colors"
@@ -96,7 +96,7 @@ const DailyTips = () => {
   const currentTip = tips[currentTipIndex];
 
   return (
-    <div className="fixed bottom-20 md:bottom-4 right-4 z-40 max-w-sm">
+    <div className="hidden md:block fixed bottom-4 right-4 z-40 max-w-sm">
       <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         {/* 헤더 */}
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-3">

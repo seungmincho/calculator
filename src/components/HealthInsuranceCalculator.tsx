@@ -1,20 +1,21 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, BookOpen, Building2, Home, Users, BarChart3, ChevronDown, ChevronUp, AlertTriangle, CheckCircle2, XCircle, Info, Link } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
 
-// ── Constants: 2025 rates ──
-const HEALTH_RATE = 0.0709
-const HEALTH_RATE_HALF = 0.03545
-const LONG_TERM_CARE_RATE = 0.1295
-const PENSION_RATE = 0.09
-const PENSION_RATE_HALF = 0.045
-const PENSION_CAP_MONTHLY = 6_170_000
-const EMPLOYMENT_RATE_EMPLOYEE = 0.009
+// ── Constants: 4대보험 요율은 utils/insuranceRates.ts (2026) 단일 관리 ──
+const HEALTH_RATE = INSURANCE.healthRateTotal
+const HEALTH_RATE_HALF = INSURANCE.healthRate
+const LONG_TERM_CARE_RATE = INSURANCE.longTermCareRate
+const PENSION_RATE = INSURANCE.pensionRateTotal
+const PENSION_RATE_HALF = INSURANCE.pensionRate
+const PENSION_CAP_MONTHLY = INSURANCE.pensionMonthlyCap
+const EMPLOYMENT_RATE_EMPLOYEE = INSURANCE.employmentRate
 const POINT_VALUE = 208.4
 const REGIONAL_MIN_PREMIUM = 19_780
 const INCOME_THRESHOLD_MONTHLY = 280_000

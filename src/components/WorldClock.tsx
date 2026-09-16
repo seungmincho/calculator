@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Globe, Plus, X, Clock, BookOpen, Sun, Moon, Link, Check, Users } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

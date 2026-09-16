@@ -5,7 +5,8 @@ import { Activity, Calculator, Target, Users, Share2, Check, Save } from 'lucide
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface BodyFatResult {

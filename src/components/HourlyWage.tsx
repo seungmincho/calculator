@@ -2,7 +2,8 @@
 
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { DollarSign, Clock, TrendingUp, BookOpen, ArrowRightLeft, Link, Check } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

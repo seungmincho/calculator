@@ -1,12 +1,11 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import PcElectricityCalculator from '@/components/PcElectricityCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '컴퓨터 전기세 계산기 - PC 전력 소비·전기요금 | 툴허브',
-  description: 'PC 부품별 소비전력으로 월간·연간 전기요금을 계산합니다. CPU, GPU, RAM, 모니터 등 부품별 전력 소비를 분석하세요.',
+  title: '컴퓨터 소비전력 계산기 - PC 전기세·월 전기요금 | 툴허브',
+  description: 'CPU·GPU·모니터 등 부품별 소비전력으로 PC 총 전력(W)과 하루 사용시간 기준 월·연간 전기요금을 계산. 게이밍 PC·사무용 PC·24시간 가동 전기세 비교.',
   keywords: '컴퓨터 전기세, PC 전기요금, 소비전력 계산, GPU 전력, CPU 전력, 전기요금 계산기, 게이밍 PC 전기세',
   openGraph: { title: '컴퓨터 전기세 계산기 | 툴허브', description: 'PC 전력 소비·전기요금 계산', url: 'https://toolhub.ai.kr/pc-electricity', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '컴퓨터 전기세 계산기 | 툴허브' },
@@ -47,7 +46,6 @@ export default function PcElectricityPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <PcElectricityCalculator />
               <div className="mt-8">
@@ -57,7 +55,6 @@ export default function PcElectricityPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

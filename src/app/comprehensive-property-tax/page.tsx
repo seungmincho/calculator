@@ -1,15 +1,14 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import ComprehensivePropertyTax from '@/components/ComprehensivePropertyTax'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '종합부동산세 계산기 2025 - 종부세 자동계산, 세율표, 세액공제 | 툴허브',
+  title: '종합부동산세 계산기 2026 - 종부세 자동계산, 세율표, 세액공제 | 툴허브',
   description: '2025년 종합부동산세(종부세)를 자동으로 계산합니다. 1세대1주택·다주택·법인별 세율, 공정시장가액비율 60%, 고령자·장기보유 세액공제, 세부담상한, 농어촌특별세까지 단계별로 확인하세요.',
   keywords: '종합부동산세 계산기, 종부세 계산기, 종부세 2025, 종부세 세율, 종부세 공제, 공정시장가액비율, 고령자 세액공제, 장기보유 세액공제, 세부담상한, 농어촌특별세, 다주택 종부세, 법인 종부세',
   openGraph: {
-    title: '종합부동산세 계산기 2025 | 툴허브',
+    title: '종합부동산세 계산기 2026 | 툴허브',
     description: '2025년 종부세 자동계산. 납세자 유형별 세율, 세액공제, 세부담상한까지 단계별 분석.',
     url: 'https://toolhub.ai.kr/comprehensive-property-tax/',
     siteName: '툴허브',
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '종합부동산세 계산기 2025 | 툴허브',
+    title: '종합부동산세 계산기 2026 | 툴허브',
     description: '종부세 자동계산 - 세율, 세액공제, 농어촌특별세',
   },
   alternates: {
@@ -38,7 +37,7 @@ export default function ComprehensivePropertyTaxPage() {
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '2025년 최신 종부세 세율 반영',
+      '2026년 종부세 세율·공정시장가액비율 60% 반영',
       '1세대1주택·일반·3주택이상·법인 구분',
       '공정시장가액비율 60% 자동 적용',
       '고령자·장기보유 세액공제 계산',
@@ -94,7 +93,6 @@ export default function ComprehensivePropertyTaxPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <ComprehensivePropertyTax />
               <div className="mt-8">
@@ -104,7 +102,6 @@ export default function ComprehensivePropertyTaxPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

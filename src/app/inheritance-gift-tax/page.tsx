@@ -1,15 +1,14 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import InheritanceGiftTax from '@/components/InheritanceGiftTax'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '상속세 증여세 계산기 - 2025년 세율, 공제한도, 간편 계산 | 툴허브',
-  description: '2025년 기준 상속세와 증여세를 간편하게 계산하세요. 배우자 상속공제, 일괄공제, 증여재산공제(배우자 6억, 자녀 5천만원), 혼인·출산 추가공제까지 반영한 정확한 세금 계산기입니다.',
+  title: '상속세 증여세 계산기 - 2026년 세율, 공제한도, 간편 계산 | 툴허브',
+  description: '2026년 기준 상속세와 증여세를 간편하게 계산하세요. 배우자 상속공제, 일괄공제, 증여재산공제(배우자 6억, 자녀 5천만원), 혼인·출산 추가공제까지 반영한 정확한 세금 계산기입니다.',
   keywords: '상속세 계산기, 증여세 계산기, 상속세 세율, 증여세 공제, 2025 상속세, 배우자 상속공제, 증여 공제한도, 상속세 면제한도',
   openGraph: {
-    title: '상속세 증여세 계산기 2025 | 툴허브',
+    title: '상속세 증여세 계산기 2026 | 툴허브',
     description: '상속세·증여세 간편 계산. 2025년 세율과 모든 공제를 반영한 정확한 계산기.',
     url: 'https://toolhub.ai.kr/inheritance-gift-tax',
     siteName: '툴허브',
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '상속세 증여세 계산기 2025 | 툴허브',
+    title: '상속세 증여세 계산기 2026 | 툴허브',
     description: '상속세·증여세 간편 계산. 2025년 세율과 모든 공제를 반영.',
   },
   alternates: {
@@ -46,7 +45,7 @@ export default function InheritanceGiftTaxPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '상속세 증여세 계산기',
-    description: '2025년 기준 상속세와 증여세를 간편하게 계산하는 온라인 도구',
+    description: '2026년 기준 상속세와 증여세를 간편하게 계산하는 온라인 도구',
     url: 'https://toolhub.ai.kr/inheritance-gift-tax',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
@@ -55,7 +54,7 @@ export default function InheritanceGiftTaxPage() {
     featureList: [
       '상속세 계산 (배우자 공제, 일괄공제, 금융재산공제)',
       '증여세 계산 (6가지 관계별 공제)',
-      '2025년 최신 세율 반영',
+      '2026년 세율 반영 (10~50% 누진, 자녀공제 5천만 원 현행 유지)',
       '혼인·출산 추가공제 반영',
       '세율표 및 상세 내역',
     ],
@@ -77,14 +76,12 @@ export default function InheritanceGiftTaxPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <InheritanceGiftTax />
               <div className="mt-8">
                 <RelatedTools />
               </div>
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
       {/* SEO 콘텐츠 */}
@@ -94,7 +91,7 @@ export default function InheritanceGiftTaxPage() {
             상속세·증여세 계산기란?
           </h2>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-            상속세·증여세 계산기는 2025년 최신 세율을 기준으로 상속 및 증여 시 납부해야 할 세금을 미리 계산해볼 수 있는 온라인 도구입니다. 배우자 상속공제(최소 5억), 일괄공제(5억), 금융재산공제, 증여재산공제(배우자 6억·성인 자녀 5천만원) 등 모든 공제 항목을 반영하여 정확한 세금 예상 금액을 확인할 수 있습니다.
+            상속세·증여세 계산기는 2026년 세율(현행 유지)을 기준으로 상속 및 증여 시 납부해야 할 세금을 미리 계산해볼 수 있는 온라인 도구입니다. 배우자 상속공제(최소 5억), 일괄공제(5억), 금융재산공제, 증여재산공제(배우자 6억·성인 자녀 5천만원) 등 모든 공제 항목을 반영하여 정확한 세금 예상 금액을 확인할 수 있습니다.
           </p>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
             상속세·증여세 절세 팁

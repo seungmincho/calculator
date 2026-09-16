@@ -7,7 +7,6 @@ import Footer from '@/components/Footer'
 import DailyTips from '@/components/DailyTips'
 import ToolsShowcase from '@/components/ToolsShowcase'
 import Breadcrumb from '@/components/Breadcrumb'
-import ToolJsonLd from '@/components/ToolJsonLd'
 import SkipToContent from '@/components/SkipToContent'
 import ToolTracker from '@/components/ToolTracker'
 import ToolShareButton from '@/components/ToolShareButton'
@@ -22,10 +21,8 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://toolhub.ai.kr'),
-  title: {
-    default: '툴허브 - 연봉, 대출, 시간변환 계산기 | 무료 온라인 도구',
-    template: '%s | 툴허브'
-  },
+  // template 제거: 각 page.tsx title이 이미 '| 툴허브'로 끝남 (이중 접미사 방지)
+  title: '툴허브 - 연봉, 대출, 시간변환 계산기 | 무료 온라인 도구',
   description: '연봉 실수령액, 대출 상환, 적금 이자, 시간변환까지! 금융계산기부터 개발자 도구까지 모든 계산을 한 곳에서 해결하세요.',
   keywords: '툴허브, 계산기, 연봉계산기, 대출계산기, 적금계산기, 시간변환기, 타임존변환, Unix타임스탬프, 실수령액계산, 정규식추출기, JSON 포맷터, SQL 포맷터, Markdown 뷰어, 바코드 생성기, QR코드 생성기, 온라인도구, 무료계산기, 개발자도구',
   authors: [{ name: '툴허브' }],
@@ -135,9 +132,6 @@ export default function RootLayout({
         {/* DNS Prefetch */}
         <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
 
-        {/* hreflang - same URL for all languages (client-side i18n) */}
-        <link rel="alternate" hrefLang="x-default" href="https://toolhub.ai.kr" />
-        
         {/* AdSense Script in Head */}
         {adsenseId && (
           <script
@@ -191,8 +185,6 @@ export default function RootLayout({
             <Header />
             {/* Breadcrumb Navigation */}
             <Breadcrumb />
-            {/* Per-tool JSON-LD structured data */}
-            <ToolJsonLd />
             {/* Main Content */}
             <main id="main-content" className="pb-16 md:pb-0">
               <ErrorBoundary>
@@ -236,7 +228,7 @@ export default function RootLayout({
                           newWorker.addEventListener('statechange', function() {
                             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                               var toast = document.createElement('div');
-                              toast.innerHTML = '<div style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#1e40af;color:#fff;padding:16px 20px;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.2);display:flex;align-items:center;gap:12px;font-size:14px;font-family:sans-serif;max-width:360px;animation:slideUp .3s ease"><span>새 버전이 있습니다</span><button onclick="window.location.reload()" style="background:#fff;color:#1e40af;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;white-space:nowrap">업데이트</button><button onclick="this.closest(\'div\').parentElement.remove()" style="background:none;border:none;color:#93c5fd;cursor:pointer;font-size:18px;padding:0 4px">✕</button></div>';
+                              toast.innerHTML = '<div style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#1e40af;color:#fff;padding:16px 20px;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.2);display:flex;align-items:center;gap:12px;font-size:14px;font-family:sans-serif;max-width:360px;animation:slideUp .3s ease"><span>새 버전이 있습니다</span><button onclick="window.location.reload()" style="background:#fff;color:#1e40af;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;white-space:nowrap">업데이트</button><button onclick="this.parentNode.parentNode.remove()" style="background:none;border:none;color:#93c5fd;cursor:pointer;font-size:18px;padding:0 4px">✕</button></div>';
                               document.body.appendChild(toast);
                             }
                           });

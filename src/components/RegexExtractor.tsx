@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Search, Replace, Filter, Copy, Download, Upload, RefreshCw, Zap, Eye, EyeOff, AlertCircle, CheckCircle, Share2, Save, Trash2, FileText, Code, Mail, Globe, Hash, Calendar, Lightbulb, Target, BookOpen, Wand2, HelpCircle } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
 import CalculationHistory from './CalculationHistory'

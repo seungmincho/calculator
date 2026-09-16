@@ -1,12 +1,11 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import HousingSubscription from '@/components/HousingSubscription'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '청약가점 계산기 - 청약 점수 자동 계산 | 툴허브',
-  description: '무주택기간, 부양가족 수, 청약통장 가입기간을 입력하면 청약가점 84점 만점을 자동 계산합니다. 2025년 기준 최신 가점 산정 기준 반영.',
+  description: '무주택기간, 부양가족 수, 청약통장 가입기간을 입력하면 청약가점 84점 만점을 자동 계산합니다. 2026년 기준 최신 가점 산정 기준 반영.',
   keywords: '청약가점 계산기, 청약 점수 계산, 무주택기간 점수, 부양가족 가점, 청약통장 가점, 아파트 청약, 분양 가점',
   openGraph: {
     title: '청약가점 계산기 | 툴허브',
@@ -54,7 +53,6 @@ export default function HousingSubscriptionPage() {
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <HousingSubscription />
               <div className="mt-8">
@@ -64,7 +62,6 @@ export default function HousingSubscriptionPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

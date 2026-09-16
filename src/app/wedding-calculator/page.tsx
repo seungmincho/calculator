@@ -1,11 +1,10 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import WeddingCalculator from '@/components/WeddingCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '결혼비용 계산기 2025 - 예식비용, 축의금, 양가분담 계산 | 툴허브',
+  title: '결혼비용 계산기 2026 - 예식비용, 축의금, 양가분담 계산 | 툴허브',
   description: '결혼 총 비용을 항목별로 계획하고 축의금 예상, 양가 분담까지 한번에 계산하세요. 예식장, 스드메, 예물, 예단, 신혼여행, 신혼집 비용을 서울/지방 기준으로 자동 추정합니다.',
   keywords: '결혼비용 계산기, 결혼 예산, 웨딩 비용, 축의금 계산, 양가 분담, 예식장 비용, 스드메 비용, 예물 예단, 신혼여행 비용, 신혼집 비용, 결혼 준비 체크리스트',
   openGraph: {
@@ -86,7 +85,6 @@ export default function WeddingCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <WeddingCalculator />
               <div className="mt-8">
@@ -96,7 +94,6 @@ export default function WeddingCalculatorPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

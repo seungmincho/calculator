@@ -168,9 +168,8 @@ export default function ToolsShowcase() {
         </div>
       )}
 
-      {/* Expanded content */}
-      {isExpanded && (
-        <>
+      {/* Expanded content — 항상 HTML에 렌더(크롤러가 242개 도구 링크를 발견하도록), 접힘 상태는 hidden 속성으로만 숨김 */}
+      <div hidden={!isExpanded}>
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
           {t('toolsShowcase.title')}
@@ -274,8 +273,7 @@ export default function ToolsShowcase() {
           {t('toolsShowcase.collapse')}
         </button>
       </div>
-        </>
-      )}
+      </div>
     </section>
   )
 }

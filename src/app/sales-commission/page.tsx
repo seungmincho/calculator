@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import SalesCommissionCalculator from '@/components/SalesCommissionCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import Link from 'next/link'
+import { glassCard } from '@/lib/glass'
 
 export const metadata: Metadata = {
   title: '판매수수료 계산기 - 쿠팡·스마트스토어·11번가 수수료 비교 | 툴허브',
@@ -41,12 +42,16 @@ export default function SalesCommissionPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
+            {/* 네이버에서 "성과급 계산기"·"인센티브 세금" 검색이 이 페이지로 유입됨 → 의도 분기 안내 */}
+            <p className={`${glassCard} mb-6 px-4 py-3 text-sm text-gray-700 dark:text-gray-200`}>
+              회사에서 받는 <strong>성과급·인센티브의 세금과 실수령액</strong>이 궁금하신가요? →{' '}
+              <Link href="/bonus-calculator" className="font-semibold underline underline-offset-2">성과급 계산기</Link>
+              {' '}· 이 페이지는 쿠팡·스마트스토어 등 <strong>온라인 판매 수수료</strong> 계산기입니다.
+            </p>
             <I18nWrapper><SalesCommissionCalculator />  <div className="mt-8">
     <RelatedTools />
   </div>
 </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

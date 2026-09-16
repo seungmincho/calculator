@@ -1,16 +1,15 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import HealthInsuranceCalculator from '@/components/HealthInsuranceCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '건강보험료 계산기 2025 - 직장/지역가입자 보험료 계산 | 툴허브',
-  description: '2025년 건강보험료를 정확하게 계산합니다. 직장가입자 4대보험료, 지역가입자 소득·재산 보험료, 피부양자 자격 판정, 직장 vs 지역가입자 비교까지 한번에 확인하세요.',
+  title: '건강보험료 계산기 2026 - 직장/지역가입자 보험료 계산 | 툴허브',
+  description: '2026년 건강보험료(7.19%)를 정확하게 계산합니다. 직장가입자 4대보험료, 지역가입자 소득·재산 보험료, 피부양자 자격 판정, 직장 vs 지역가입자 비교까지 한번에 확인하세요.',
   keywords: '건강보험료 계산기, 건강보험료, 직장가입자 보험료, 지역가입자 보험료, 4대보험, 건강보험 요율, 장기요양보험, 피부양자 자격, 국민건강보험, 2025 보험료율',
   openGraph: {
-    title: '건강보험료 계산기 2025 - 직장/지역가입자 | 툴허브',
-    description: '2025년 직장·지역가입자 건강보험료 계산, 피부양자 판정, 직장 vs 지역 비교',
+    title: '건강보험료 계산기 2026 - 직장/지역가입자 | 툴허브',
+    description: '2026년 직장·지역가입자 건강보험료 계산, 피부양자 판정, 직장 vs 지역 비교',
     url: 'https://toolhub.ai.kr/health-insurance/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '건강보험료 계산기 2025 | 툴허브',
+    title: '건강보험료 계산기 2026 | 툴허브',
     description: '직장/지역가입자 건강보험료 계산, 피부양자 판정',
   },
   alternates: {
@@ -31,14 +30,14 @@ export default function HealthInsurancePage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '건강보험료 계산기',
-    description: '2025년 직장·지역가입자 건강보험료 계산, 피부양자 판정, 직장 vs 지역 비교',
+    description: '2026년 직장·지역가입자 건강보험료 계산, 피부양자 판정, 직장 vs 지역 비교',
     url: 'https://toolhub.ai.kr/health-insurance/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '2025년 건강보험료율 7.09% 반영',
+      '2026년 건강보험료율 7.19% 반영',
       '직장가입자 4대보험 전체 계산',
       '지역가입자 소득·재산 보험료 계산',
       '피부양자 자격 판정',
@@ -54,10 +53,10 @@ export default function HealthInsurancePage() {
     mainEntity: [
       {
         '@type': 'Question',
-        name: '2025년 건강보험료율은 얼마인가요?',
+        name: '2026년 건강보험료율은 얼마인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '2025년 건강보험료율은 7.09%입니다. 직장가입자는 근로자와 사업주가 각각 3.545%씩 부담하며, 지역가입자는 전액 본인이 부담합니다.',
+          text: '2026년 건강보험료율은 7.19%(2025년 7.09%에서 0.1%p 인상)입니다. 직장가입자는 근로자와 사업주가 각각 3.595%씩 부담하며, 지역가입자는 전액 본인이 부담합니다.',
         },
       },
       {
@@ -73,7 +72,7 @@ export default function HealthInsurancePage() {
         name: '지역가입자 건강보험료는 어떻게 계산하나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '지역가입자 건강보험료는 소득보험료와 재산보험료를 합산합니다. 소득보험료는 소득월액에 7.09%를 곱하고, 재산보험료는 재산 과세표준에서 기본공제 1억을 뺀 후 등급별 점수에 208.4원을 곱합니다.',
+          text: '지역가입자 건강보험료는 소득보험료와 재산보험료를 합산합니다. 소득보험료는 소득월액에 7.19%를 곱하고, 재산보험료는 재산 과세표준에서 기본공제 1억을 뺀 후 등급별 점수에 208.4원을 곱합니다.',
         },
       },
     ],
@@ -98,7 +97,6 @@ export default function HealthInsurancePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <HealthInsuranceCalculator />
               <div className="mt-8">
@@ -108,7 +106,6 @@ export default function HealthInsurancePage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

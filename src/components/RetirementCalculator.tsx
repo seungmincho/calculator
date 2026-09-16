@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from '@/hooks/useSearchParams';
 import { Briefcase, Calendar, TrendingUp, Calculator, Share2, Check, Save } from 'lucide-react';
 import { glassCard, glassInset, glassInput } from '@/lib/glass';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';

@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from '@/hooks/useSearchParams';
 import { Home, Calculator, TrendingUp, Share2, Check, Building, Save } from 'lucide-react';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';

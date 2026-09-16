@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Calculator, AlertTriangle, CheckCircle, Info, Link, Check } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
@@ -126,7 +126,8 @@ export default function CapitalGainsTax() {
   })
   const [isAdjusted, setIsAdjusted] = useState(() => searchParams.get('ia') === '1')
   const [residenceYears, setResidenceYears] = useState(() => searchParams.get('ry') ?? '')
-  const [applySurcharge, setApplySurcharge] = useState(() => searchParams.get('as') === '1')
+  // 2026.5.10부터 다주택 중과 유예 종료 → 기본 적용. URL as=0 이면 미적용(유예 경과규정 대상)
+  const [applySurcharge, setApplySurcharge] = useState(() => searchParams.get('as') !== '0')
 
   // URL sync
   useEffect(() => {
@@ -140,7 +141,7 @@ export default function CapitalGainsTax() {
     if (houseCount !== '1') params.set('hc', houseCount)
     if (isAdjusted)       params.set('ia', '1')
     if (residenceYears)   params.set('ry', residenceYears)
-    if (applySurcharge)   params.set('as', '1')
+    if (!applySurcharge)  params.set('as', '0')
     const qs = params.toString()
     window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname)
   }, [salePrice, acqPrice, expenses, acqDate, saleDate, propertyType, houseCount, isAdjusted, residenceYears, applySurcharge])

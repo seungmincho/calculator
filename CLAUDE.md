@@ -177,7 +177,6 @@ src/
 - `SearchDialog`: Global command palette (Ctrl+K / Cmd+K) for searching all tools
 - `Breadcrumb`: Auto-generated breadcrumb with JSON-LD structured data
 - `RelatedTools`: Same-category tool recommendations (auto from menuConfig)
-- `ToolJsonLd`: Per-tool WebApplication JSON-LD structured data
 - `SkipToContent`: Skip-to-main-content accessibility link (i18n)
 - `CalculationHistory`: localStorage-based calculation history with manual save
 - `DailyTips`: Daily financial tips display
@@ -243,7 +242,7 @@ Header and ToolsShowcase auto-read from menuConfig. Footer is minimal (no menu l
 ### SEO & Metadata
 - Comprehensive Korean SEO metadata in layout.tsx
 - OpenGraph and Twitter card support
-- JSON-LD structured data: site-level (WebSite + SoftwareApplication) + per-tool (WebApplication via ToolJsonLd) + per-game (VideoGame schema)
+- JSON-LD structured data: site-level (WebSite + SoftwareApplication) + per-tool (WebApplication + FAQPage in each page.tsx) + per-game (VideoGame schema)
 - Breadcrumb JSON-LD structured data (auto-generated via Breadcrumb component)
 - Static sitemap generation (`src/app/sitemap.ts`) with all 110+ routes
 - Naver site verification configured
@@ -779,6 +778,7 @@ HomePage와 /ladder-game/에 적용된 글래스 디자인 시스템. 점진적�
 - Follow consistent naming conventions
 
 ### TypeScript Gotchas
+- **`useSearchParams` 금지 (next/navigation)**: static export에서 프리렌더 bailout → 도구 본문이 HTML에서 빠져 Google 색인 불가. 반드시 `import { useSearchParams } from '@/hooks/useSearchParams'` 사용 (동일 API, 서버=빈 params).
 - **Recharts callback types**: `Tooltip formatter` and `Pie label` callbacks have optional params (`value?: number`, `name?: string`, `percent?: number`). Always use nullish coalescing (`value ?? 0`).
 - **`unknown` type in JSX**: When using `&&` short-circuit in JSX with `unknown`-typed values (e.g., `parsedResult?.data`), wrap with `!!` to cast to boolean. Otherwise TypeScript errors with "Type 'unknown' is not assignable to type 'ReactNode'".
 - **Tailwind CSS v4 JIT**: Dynamic class names like `` `bg-${color}-50` `` don't work. Must use explicit hardcoded class names.

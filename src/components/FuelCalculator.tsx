@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import {
   Car,
@@ -112,7 +112,7 @@ const FuelCalculator = () => {
   const [activeTab, setActiveTab] = useState<'calculator' | 'drivingLog'>('calculator')
 
   // Calculator state
-  const [distance, setDistance] = useState<number>(() => parseInt(searchParams.get('distance') || '') || 0)
+  const [distance, setDistance] = useState<number>(() => parseInt(searchParams.get('distance') || '') || 100) // 기본 100km: 첫 화면부터 결과 노출
   const [vehicleType, setVehicleType] = useState<string>(() => searchParams.get('vehicleType') || 'compact')
   const [fuelType, setFuelType] = useState<'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg'>(() => {
     const p = searchParams.get('fuelType')
@@ -129,7 +129,7 @@ const FuelCalculator = () => {
     diesel: 1400,
     lpg: 900
   })
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null) // 서버 렌더 시각 ≠ 클라이언트 시각 → hydration mismatch 방지
   const [isEditingPrices, setIsEditingPrices] = useState(false)
   const [tempPrices, setTempPrices] = useState(fuelPrices)
   const [priceSource, setPriceSource] = useState<'manual' | 'opinet'>('manual')
@@ -697,7 +697,7 @@ ${t('title')} 결과
 km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
 
 === 비고 ===
-- 연료비는 ${lastUpdated.toLocaleDateString('ko-KR')} 기준 유가 적용
+- 연료비는 ${(lastUpdated ?? new Date()).toLocaleDateString('ko-KR')} 기준 유가 적용
 - 감가상각비는 차종별 평균값 적용
 - 실제 비용과 차이가 있을 수 있음
 
@@ -1080,7 +1080,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                           <span className="text-green-600 dark:text-green-400">
                             OPINET {selectedSido ? SIDO_OPTIONS.find(s => s.code === selectedSido)?.name : '전국'}
                           </span>
-                        ) : '수동 입력'} · {lastUpdated.toLocaleTimeString('ko-KR')}
+                        ) : '수동 입력'}{lastUpdated && ` · ${lastUpdated.toLocaleTimeString('ko-KR')}`}
                       </span>
                     </div>
                     <button

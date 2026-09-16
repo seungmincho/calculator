@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import ChmodCalculator from '@/components/ChmodCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -128,9 +127,7 @@ export default function ChmodCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <I18nWrapper>
-        <Suspense fallback={null}>
           <ChmodCalculator />
-        </Suspense>
         <div className="mt-8">
           <RelatedTools />
         </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import {
   Sparkles, Copy, Check, Download, Share2, RefreshCw,
   ChevronLeft, ChevronRight,

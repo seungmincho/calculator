@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import WeeklyHolidayPay from '@/components/WeeklyHolidayPay'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -45,7 +44,6 @@ export default function WeeklyHolidayPayPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <WeeklyHolidayPay />
               <div className="mt-8">
@@ -55,7 +53,6 @@ export default function WeeklyHolidayPayPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
 

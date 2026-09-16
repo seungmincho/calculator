@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import { Calculator, RotateCcw, Copy, Check, ChevronDown, ChevronUp, TrendingUp, AlertTriangle } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
@@ -82,12 +83,10 @@ function calcIncomeTax(taxableIncome: number): { tax: number; marginalRate: numb
 function calculateTax(grossAnnual: number, nonTaxableAnnual: number, dependents: number, children: number): TaxResult {
   const taxableAnnual = Math.max(0, grossAnnual - nonTaxableAnnual)
 
-  // 4대보험
-  const pensionCap = 29_160_000
-  const nationalPension = Math.floor(Math.min(taxableAnnual, pensionCap) * 0.045)
-  const healthInsurance = Math.floor(taxableAnnual * 0.03545)
-  const longTermCare = Math.floor(healthInsurance * 0.1295)
-  const employmentInsurance = Math.floor(taxableAnnual * 0.009)
+  // 4대보험  const nationalPension = Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate)
+  const healthInsurance = Math.floor(taxableAnnual * INSURANCE.healthRate)
+  const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate)
+  const employmentInsurance = Math.floor(taxableAnnual * INSURANCE.employmentRate)
 
   // 소득공제
   const workIncomeDeduction = calcWorkIncomeDeduction(grossAnnual)

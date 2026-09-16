@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { Suspense } from 'react';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import TipDetailClient from './TipDetailClient';
@@ -79,6 +78,8 @@ export async function generateMetadata({
     alternates: {
       canonical: canonicalUrl,
     },
+    // 한 문장짜리 페이지 400개 — 색인 제외 (사이트 품질 점수 보호)
+    robots: { index: false, follow: true },
   };
 }
 
@@ -95,8 +96,6 @@ export default async function TipDetailPage({
   }
 
   return (
-    <Suspense fallback={null}>
       <TipDetailClient tipId={resolvedParams.id} />
-    </Suspense>
   );
 }

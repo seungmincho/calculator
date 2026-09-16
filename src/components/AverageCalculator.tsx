@@ -27,7 +27,8 @@
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import { Copy, Check, Calculator, Plus, Trash2, BookOpen, BarChart3 } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 interface WeightedPair {

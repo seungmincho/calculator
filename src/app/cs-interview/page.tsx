@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import CsInterview from '@/components/CsInterview'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -86,7 +85,6 @@ export default function CsInterviewPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <CsInterview />
               <div className="mt-8">
@@ -96,7 +94,6 @@ export default function CsInterviewPage() {
                 <RelatedTools />
               </div>
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

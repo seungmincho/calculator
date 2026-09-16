@@ -23,7 +23,8 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Calculator, RotateCcw, Award, BarChart3, BookOpen, Info } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

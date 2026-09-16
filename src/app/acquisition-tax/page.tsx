@@ -1,20 +1,19 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import AcquisitionTaxCalculator from '@/components/AcquisitionTaxCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '취득세 계산기 2025 - 부동산 취득세·농특세·지방교육세 | 툴허브',
-  description: '2025년 기준 부동산 취득세를 자동 계산합니다. 주택·토지·상가 취득세, 다주택 중과세율, 농어촌특별세, 지방교육세까지 한눈에 확인하세요.',
+  title: '취득세 계산기 2026 - 부동산 취득세·농특세·지방교육세 | 툴허브',
+  description: '2026년 기준 부동산 취득세를 자동 계산합니다. 주택·토지·상가 취득세, 다주택 중과세율, 농어촌특별세, 지방교육세까지 한눈에 확인하세요.',
   keywords: '취득세 계산기, 부동산 취득세, 주택 취득세, 다주택 취득세, 농어촌특별세, 지방교육세, 취득세 중과, 조정대상지역, 2025 취득세',
   openGraph: {
-    title: '취득세 계산기 2025 | 툴허브',
+    title: '취득세 계산기 2026 | 툴허브',
     description: '부동산 취득세·농특세·지방교육세 자동 계산. 다주택 중과 반영.',
     url: 'https://toolhub.ai.kr/acquisition-tax',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
   },
-  twitter: { card: 'summary_large_image', title: '취득세 계산기 2025 | 툴허브', description: '부동산 취득세 자동계산' },
+  twitter: { card: 'summary_large_image', title: '취득세 계산기 2026 | 툴허브', description: '부동산 취득세 자동계산' },
   alternates: { canonical: 'https://toolhub.ai.kr/acquisition-tax/' },
 }
 
@@ -22,7 +21,7 @@ export default function AcquisitionTaxPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '취득세 계산기',
-    description: '2025년 기준 부동산 취득세·농특세·지방교육세 자동 계산. 다주택 중과 반영.',
+    description: '2026년 기준 부동산 취득세·농특세·지방교육세 자동 계산. 다주택 중과 반영.',
     url: 'https://toolhub.ai.kr/acquisition-tax/',
     applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
@@ -55,12 +54,10 @@ export default function AcquisitionTaxPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper><AcquisitionTaxCalculator />  <div className="mt-8">
     <RelatedTools />
   </div>
 </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
 import I18nWrapper from '@/components/I18nWrapper'
 import AllCalculationHistory from '@/components/AllCalculationHistory'
 import RelatedTools from '@/components/RelatedTools'
@@ -66,14 +65,12 @@ export default function CalculationHistoryPage() {
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <AllCalculationHistory />
               <div className="mt-8">
                 <RelatedTools />
               </div>
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

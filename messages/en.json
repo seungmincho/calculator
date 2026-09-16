@@ -393,7 +393,7 @@
         "items": [
           {
             "q": "What rates does the calculator use?",
-            "a": "It applies the 2025 rates: National Pension 4.5%, Health Insurance 3.545%, Long-term Care Insurance 12.95% of health insurance premium, and Employment Insurance 0.9%."
+            "a": "It applies the 2026 rates: National Pension 4.75% (9.5% total after the 2025 pension reform, monthly income cap ₩6.59M), Health Insurance 3.595% (7.19% total), Long-term Care Insurance 13.14% of health insurance premium, and Employment Insurance 0.9%."
           },
           {
             "q": "What are common non-taxable allowances?",
@@ -2346,7 +2346,7 @@
         "title": "Tips",
         "items": [
           "Compact cars (1,000cc or less) qualify for acquisition tax discounts.",
-          "EVs get up to 1.4M KRW acquisition tax reduction as of 2025.",
+          "EVs get up to 1.4M KRW acquisition tax reduction through Dec 31, 2026 (1.0M from 2027); apply within 60 days.",
           "Multi-child families (3+ children under 18) may qualify for tax exemption.",
           "Used car taxes may be based on standard assessed value rather than actual price."
         ]
@@ -2360,7 +2360,7 @@
           },
           {
             "q": "What are EV tax benefits?",
-            "a": "As of 2025, EVs get up to 1.4M KRW reduction in acquisition tax. Hybrids get up to 400K KRW."
+            "a": "Through Dec 31, 2026, EVs get up to 1.4M KRW reduction in acquisition tax (1.0M from 2027). The hybrid reduction ended in 2024."
           },
           {
             "q": "What is bond purchase?",
@@ -3037,7 +3037,7 @@
       "withHoliday": "(incl. holiday pay)",
       "withoutHoliday": "(excl. holiday pay)",
       "insuranceTitle": "Social Insurance Deductions (Monthly)",
-      "nationalPension": "National Pension (4.5%)",
+      "nationalPension": "National Pension (4.75%)",
       "healthInsurance": "Health Insurance (3.545%)",
       "longTermCare": "Long-term Care (0.46%)",
       "employmentInsurance": "Employment Insurance (0.9%)",
@@ -5669,7 +5669,7 @@
       },
       "comprehensivePropertyTax": {
         "title": "Comprehensive Property Tax Calculator",
-        "description": "Multi-property assessment, 2025 tax rates, elderly/long-term credits, tax burden ceiling"
+        "description": "Multi-property assessment, 2026 tax rates, elderly/long-term credits, tax burden ceiling"
       },
       "cagrCalculator": {
         "title": "CAGR Calculator",
@@ -11190,7 +11190,7 @@
     },
     "outOfCity": {
       "label": "Out-of-city trip",
-      "desc": "A surcharge applies when crossing administrative boundaries.",
+      "desc": "{rate}% surcharge outside the city boundary; stacks with the night surcharge.",
       "short": "Out-of-city"
     },
     "calculate": "Calculate",
@@ -11212,7 +11212,7 @@
       "note": "Actual fare may vary with real-time traffic, route and stop time. Use as a reference only."
     },
     "fareInfo": {
-      "title": "Fare Basis (2025)",
+      "title": "Fare Basis (Sep 2026)",
       "base": "Base fare",
       "distance": "Distance",
       "time": "Time",
@@ -11222,7 +11222,7 @@
       "night": "Night surcharge",
       "outOfCity": "Out-of-city",
       "premium": "Deluxe·Jumbo base",
-      "sourceNote": "As of 2025 · rates may change by local government. Verify with your city/taxi association."
+      "sourceNote": "As of Sep 2026 · rates may change by local government. Verify with your city/taxi association."
     },
     "comparison": {
       "title": "Fare Comparison by Taxi Type",
@@ -11275,7 +11275,7 @@
           },
           {
             "q": "Is the base fare different by region?",
-            "a": "Yes. As of 2025, Seoul/Gyeonggi/Incheon are ₩4,800 (1.6km), Daegu/Gyeongbuk ₩4,500, Daejeon/Gwangju/Ulsan ₩4,300, and most other regions around ₩4,000. Distance units and base distance also differ; selecting a region applies its rates automatically."
+            "a": "Yes. As of Sep 2026, Seoul/Gyeonggi/Incheon/Busan are ₩4,800 (1.6–2km), Daegu/Gyeongbuk ₩4,500, Daejeon/Gwangju/Ulsan/Jeonnam/Jeju ₩4,300, and most other regions around ₩4,000. Distance units and base distance also differ; selecting a region applies its rates automatically."
           },
           {
             "q": "How is the out-of-city surcharge applied?",
@@ -11287,7 +11287,7 @@
           },
           {
             "q": "Can the estimate differ from the actual fare?",
-            "a": "Yes, due to route, stop time, meter variance and rate revisions. This calculator is a reference estimate based on 2025 rates."
+            "a": "Yes, due to route, stop time, meter variance and rate revisions. This calculator is a reference estimate based on Sep 2026 rates."
           }
         ]
       }
@@ -16060,7 +16060,7 @@
       "standard": {
         "title": "2025 Deduction Standards",
         "items": [
-          "National Pension: 4.5% (cap: 2.43M KRW/month)",
+          "National Pension: 4.75% (income cap: 6.59M KRW/month)",
           "Health Insurance: 3.545%",
           "Long-term Care: 12.95% of Health Insurance",
           "Employment Insurance: 0.9%",
@@ -22687,8 +22687,8 @@
     "houseCount3plus": "3+ Homes",
     "isAdjusted": "Located in Regulated Area",
     "residenceYears": "Actual Residence Period",
-    "surchargeNote": "The multi-home surcharge rate is currently temporarily suspended in 2025. Enable the option below to preview tax if the suspension ends.",
-    "applySurcharge": "Apply Surcharge Rate (preview if suspension ends)",
+    "surchargeNote": "The multi-home surcharge suspension ended on May 10, 2026: +20%p for 2 homes and +30%p for 3+ homes in regulated areas. Sales contracted by May 9, 2026 and transferred within 4 months (6 months in areas newly designated on Oct 16, 2025) keep the suspension — uncheck if that applies.",
+    "applySurcharge": "Apply multi-home surcharge (default since May 10, 2026)",
     "exemptBadge": "Exempt — 1-Home Tax Exemption",
     "exemptDesc": "Meets holding/residence requirements and sale price ≤ 1.2 billion KRW — No capital gains tax",
     "partialExemptBadge": "Partial 1-Home Exemption",
@@ -24762,7 +24762,7 @@
       "employer": "Employer",
       "employerShare": "Employer Total",
       "remuneration": "Remuneration",
-      "rateInfo": "2025 Health Insurance Rate: 7.09% (Employee 3.545% + Employer 3.545%), Long-term Care 12.95%",
+      "rateInfo": "2026 Health Insurance Rate: 7.19% (Employee 3.595% + Employer 3.595%), Long-term Care 13.14%",
       "netSalary": "Net Salary (after 4 insurances)",
       "annualProjection": "Annual Premium Projection"
     },
@@ -25196,7 +25196,8 @@
     "convertEncode": "Convert/Encode",
     "generators": "Generators",
     "otherTools": "Other Tools",
-    "education": "Education"
+    "education": "Education",
+    "decision": "Random/Decision"
   },
   "parentalLeave": {
     "title": "Parental Leave Benefit Calculator",
@@ -28402,7 +28403,7 @@
     "bValue": "B Value (Your Average Monthly Income)",
     "bValueDesc": "Your average monthly income during contribution period",
     "replacementRate": "Income Replacement Rate",
-    "year2025": "2025 standard",
+    "year2025": "2026 standard",
     "extraYears": "Extra Years (beyond 20)",
     "extraYearsDesc": "5% additional benefit per year beyond 20 years",
     "guide": {
@@ -28414,7 +28415,7 @@
           "A: Average monthly income of all contributors (~2.86M KRW in 2024)",
           "B: Your average monthly standard income during contribution",
           "n: Years of contribution beyond 20 (0 if less than 20)",
-          "Replacement rate: 42% in 2025 (decreasing 0.5%p/year, fixed at 40% from 2028)"
+          "Replacement rate: 43% from 2026 (2025 pension reform) · contribution rate 9.5%, +0.5%p yearly to 13% by 2033"
         ]
       },
       "earlyVsDeferred": {

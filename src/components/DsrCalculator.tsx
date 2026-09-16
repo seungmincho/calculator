@@ -112,7 +112,7 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Calculator,

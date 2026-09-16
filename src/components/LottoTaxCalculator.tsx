@@ -2,7 +2,8 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Link, RotateCcw, BookOpen, ChevronDown, ChevronUp, TrendingUp, Trophy, Banknote } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'

@@ -1,12 +1,11 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import BonusCalculator from '@/components/BonusCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 // RelatedTools auto-detects current path from URL
 
 export const metadata: Metadata = {
-  title: '성과급 계산기 - 세후 실수령액 계산 | 툴허브',
+  title: '성과급 계산기 - 인센티브 세금·세후 실수령액 | 툴허브',
   description: '성과급·인센티브 세후 실수령액을 정확하게 계산합니다. PS, PI, 경영성과급 비율별 시뮬레이션, 4대보험·소득세 공제 분석, 과세구간 변동 확인, 절세 팁까지.',
   keywords: '성과급 계산기, 인센티브 계산, PS 실수령액, PI 계산, 성과급 세금, 성과급 세후, 경영성과급, 보너스 계산기, 성과급 실수령액',
   openGraph: {
@@ -103,12 +102,10 @@ export default function BonusCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <BonusCalculator />
               <RelatedTools />
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

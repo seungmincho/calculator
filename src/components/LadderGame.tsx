@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { GitBranch, Play, RefreshCw, Share2, Check, Save, Users, Target, Zap, BookMarked, Camera, ChevronDown, ChevronUp } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
@@ -928,7 +929,7 @@ export default function LadderGame() {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* ── Settings panel ── */}
-        <div className={`${glass.card} ${glass.cardInset} p-4 sm:p-6 lg:p-8`}>
+        <div className={`min-w-0 ${glass.card} ${glass.cardInset} p-4 sm:p-6 lg:p-8`}>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <Users className="w-6 h-6 mr-2 text-green-600" />
             {t('settings.title')}
@@ -941,7 +942,7 @@ export default function LadderGame() {
                 <BookMarked className="inline w-4 h-4 mr-1 mb-0.5" />
                 {t('presets.title')}
               </label>
-              <div className="flex gap-2 overflow-x-auto pb-1">
+              <div className="flex flex-wrap gap-2 pb-1">
                 {PRESETS.map(preset => (
                   <button
                     key={preset.id}
@@ -1173,7 +1174,7 @@ export default function LadderGame() {
         </div>
 
         {/* ── Ladder SVG + results ── */}
-        <div className="space-y-6">
+        <div className="min-w-0 space-y-6">
           <div className={`${glass.card} ${glass.cardInset} p-4 sm:p-6`}>
             <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center">
@@ -1333,7 +1334,7 @@ export default function LadderGame() {
               </div>
 
             {/* SVG Ladder */}
-            <div className={`relative ${glass.subCardStrong} overflow-hidden`} style={{ minWidth: `${svgWidth}px` }}>
+            <div className={`relative ${glass.subCardStrong} overflow-x-auto`}>
               {!ladderReady ? (
                 <div className="flex flex-col items-center justify-center h-56 text-gray-400 dark:text-gray-600">
                   <GitBranch className="w-10 h-10 mb-3 opacity-40" />
@@ -1344,7 +1345,7 @@ export default function LadderGame() {
                   ref={svgRef}
                   viewBox={`0 0 ${svgWidth} ${svgHeight}`}
                   className="w-full"
-                  style={{ maxHeight: '360px' }}
+                  style={{ maxHeight: '360px', minWidth: `${svgWidth}px` }}
                 >
                   <defs>
                     {/* Glow filter per color */}

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
 import { algorithms } from '@/config/algorithmConfig'
+import { csVisualizers } from '@/config/csVisualizerConfig'
 
 export const dynamic = 'force-static'
 export const revalidate = false
@@ -70,7 +71,8 @@ const frequencyOverrides: Record<string, MetadataRoute.Sitemap[number]['changeFr
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const today = new Date().toISOString().split('T')[0]
+  // 빌드마다 전 URL lastmod가 바뀌면 Google이 lastmod를 무시함 → 고정 기준일 사용, 콘텐츠 대량 수정 시에만 갱신
+  const today = '2026-09-16'
   const seen = new Set<string>()
 
   // 홈
@@ -113,6 +115,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
       })
     }
+  }
+
+  // CS 시각화 개별 페이지 (csVisualizerConfig 기반)
+  for (const cs of csVisualizers) {
+    if (seen.has(cs.href)) continue
+    seen.add(cs.href)
+    entries.push({
+      url: `https://toolhub.ai.kr${cs.href}/`,
+      lastModified: today,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    })
   }
 
   // 특수 페이지 (menuConfig 외)

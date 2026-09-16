@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 

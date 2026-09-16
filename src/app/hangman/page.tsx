@@ -1,12 +1,11 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import Hangman from '@/components/Hangman'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '단어 맞추기 (행맨) - 한글 단어 추측 게임 | 툴허브',
-  description: '한글 단어를 추측하는 행맨 게임입니다. 자음과 모음 버튼을 눌러 단어를 맞춰보세요. 동물, 음식, 나라, 과일 등 4가지 카테고리로 즐기는 한국어 단어 게임.',
+  title: '단어 맞추기 게임 - 한글 행맨, 무료 온라인 단어 게임 | 툴허브',
+  description: '한글 단어 맞추기 게임(행맨). 자음·모음을 눌러 숨은 단어를 맞혀보세요. 동물·음식·나라·과일 4개 카테고리, 설치 없이 바로 플레이.',
   keywords: '행맨, 단어 맞추기, 한글 게임, 한국어 게임, 단어 게임, hangman, 자음 모음',
   openGraph: {
     title: '단어 맞추기 (행맨) - 한글 단어 추측 게임 | 툴허브',
@@ -72,7 +71,6 @@ export default function HangmanPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <Hangman />
               <div className="mt-8">
@@ -82,7 +80,6 @@ export default function HangmanPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

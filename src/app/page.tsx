@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import HomePage from '@/components/HomePage'
 import I18nWrapper from '@/components/I18nWrapper'
 
@@ -91,11 +90,9 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Suspense fallback={null}>
         <I18nWrapper>
           <HomePage />
         </I18nWrapper>
-      </Suspense>
     </>
   )
 }

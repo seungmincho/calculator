@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import { TrendingUp, Calculator, Copy, Check, BookOpen, RotateCcw, Link, GitCompare } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'

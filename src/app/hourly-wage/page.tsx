@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import HourlyWage from '@/components/HourlyWage'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -64,10 +63,10 @@ export default function HourlyWagePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}><I18nWrapper><HourlyWage />  <div className="mt-8">
+          <I18nWrapper><HourlyWage />  <div className="mt-8">
     <RelatedTools />
   </div>
-</I18nWrapper></Suspense>
+</I18nWrapper>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import SpeedTest from '@/components/SpeedTest'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -87,7 +86,6 @@ export default function SpeedTestPage() {
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <SpeedTest />
               <div className="mt-8">
@@ -97,7 +95,6 @@ export default function SpeedTestPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

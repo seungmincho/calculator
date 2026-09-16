@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import { Metadata } from 'next'
 import JwtDecoder from '@/components/JwtDecoder'
 import I18nWrapper from '@/components/I18nWrapper'
@@ -93,7 +92,6 @@ export default function JwtDecoderPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <Suspense fallback={null}>
         <I18nWrapper>
           <JwtDecoder />
           <div className="mt-8">
@@ -103,7 +101,6 @@ export default function JwtDecoderPage() {
           </div>
 
         </I18nWrapper>
-      </Suspense>
       {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
         <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">

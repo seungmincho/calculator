@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import MenuPicker from '@/components/MenuPicker'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -86,7 +85,6 @@ export default function MenuPickerPage() {
         <div className="fixed top-16 left-8 w-64 h-64 bg-orange-300/20 dark:bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="fixed bottom-16 right-8 w-80 h-80 bg-rose-300/18 dark:bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <MenuPicker />
               <div className="mt-8">
@@ -96,7 +94,6 @@ export default function MenuPickerPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
         {/* SEO 콘텐츠 */}

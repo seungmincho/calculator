@@ -1,12 +1,11 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import KeyboardConverter from '@/components/KeyboardConverter'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '한영 타자 변환기 - 영타를 한글로, 한타를 영문으로 | 툴허브',
-  description: '한영 타자 변환기 - 영문 타자를 한글로, 한글 타자를 영문으로 변환합니다. 실시간 변환, 양방향 지원.',
+  title: '한영 타자 변환기 - 영타 한글 변환, 한타 영문 변환 | 툴허브',
+  description: '한영키 안 누르고 친 글자를 바로 복구. 영타(dkssud)→한글(안녕), 한글 타자→영문 양방향 실시간 변환, 복사 한 번에.',
   keywords: '한영 타자 변환, 영타 한글 변환, 한타 영문 변환, dkssudgktpdy, keyboard converter',
   openGraph: { title: '한영 타자 변환기 | 툴허브', description: '영문 타자를 한글로, 한글 타자를 영문으로 변환', url: 'https://toolhub.ai.kr/keyboard-converter', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '한영 타자 변환기 | 툴허브', description: '영문 타자를 한글로, 한글 타자를 영문으로 변환' },
@@ -43,10 +42,10 @@ export default function KeyboardConverterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}><I18nWrapper><KeyboardConverter />  <div className="mt-8">
+          <I18nWrapper><KeyboardConverter />  <div className="mt-8">
     <RelatedTools />
   </div>
-</I18nWrapper></Suspense>
+</I18nWrapper>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

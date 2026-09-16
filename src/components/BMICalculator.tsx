@@ -6,7 +6,8 @@ import { Activity, Calculator, Heart, Scale, TrendingUp, Share2, Check, Save } f
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })

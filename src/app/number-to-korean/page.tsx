@@ -1,12 +1,11 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import NumberToKorean from '@/components/NumberToKorean'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '숫자 한글 변환 - 금액 한글 표기, 수표 작성 | 툴허브',
-  description: '숫자 한글 변환 - 숫자를 한글 금액으로 변환합니다. 수표, 계약서, 영수증 작성 시 유용. 한자 금액 표기도 지원합니다.',
+  title: '금액 한글표기 변환기 - 숫자를 한글·한자 금액으로 | 툴허브',
+  description: '숫자를 입력하면 한글 금액(삼백만원)과 한자 표기(金 參百萬圓整)로 즉시 변환. 수표·계약서·영수증·견적서 작성용, 복사 한 번에.',
   keywords: '숫자 한글 변환, 금액 한글 표기, 수표 금액 한글, number to korean, 한글 숫자, 금일봉',
   openGraph: { title: '숫자 한글 변환 | 툴허브', description: '숫자를 한글 금액 표기로 변환', url: 'https://toolhub.ai.kr/number-to-korean', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '숫자 한글 변환 | 툴허브', description: '숫자를 한글 금액으로 변환' },
@@ -35,10 +34,10 @@ export default function NumberToKoreanPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}><I18nWrapper><NumberToKorean />  <div className="mt-8">
+          <I18nWrapper><NumberToKorean />  <div className="mt-8">
     <RelatedTools />
   </div>
-</I18nWrapper></Suspense>
+</I18nWrapper>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

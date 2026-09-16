@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import FuelCalculator from '@/components/FuelCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -96,7 +95,6 @@ export default function FuelCalculatorPage() {
         <div className="fixed top-20 left-10 w-72 h-72 bg-emerald-300/18 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="fixed bottom-20 right-10 w-80 h-80 bg-sky-300/18 dark:bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <FuelCalculator />
               <div className="mt-8">
@@ -106,7 +104,6 @@ export default function FuelCalculatorPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

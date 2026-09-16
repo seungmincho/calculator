@@ -1,15 +1,14 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import ParentalLeaveCalculator from '@/components/ParentalLeaveCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '육아휴직급여 계산기 2025 - 6+6 부모육아휴직제 반영 | 툴허브',
+  title: '육아휴직급여 계산기 2026 - 6+6 부모육아휴직제 반영 | 툴허브',
   description: '2025년 육아휴직급여를 자동 계산합니다. 6+6 부모육아휴직제, 월별 급여 상세, 부부 시뮬레이션, 육아기 근로시간 단축 급여까지 한번에 확인하세요. 사후지급금 폐지, 상한액 인상 등 최신 제도 반영.',
   keywords: '육아휴직급여 계산기, 육아휴직 급여, 6+6 부모육아휴직제, 육아휴직 계산, 육아휴직 상한액, 육아휴직 기간, 부부 육아휴직, 육아기 근로시간 단축, 사후지급금 폐지, 2025 육아휴직',
   openGraph: {
-    title: '육아휴직급여 계산기 2025 - 6+6 부모육아휴직제 | 툴허브',
+    title: '육아휴직급여 계산기 2026 - 6+6 부모육아휴직제 | 툴허브',
     description: '2025년 육아휴직급여 자동 계산. 6+6 부모육아휴직제, 월별 급여, 부부 시뮬레이션 지원.',
     url: 'https://toolhub.ai.kr/parental-leave/',
     siteName: '툴허브',
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '육아휴직급여 계산기 2025 | 툴허브',
+    title: '육아휴직급여 계산기 2026 | 툴허브',
     description: '2025년 6+6 부모육아휴직제 반영 육아휴직급여 계산',
   },
   alternates: {
@@ -107,7 +106,6 @@ export default function ParentalLeavePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <ParentalLeaveCalculator />
               <div className="mt-8">
@@ -117,7 +115,6 @@ export default function ParentalLeavePage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

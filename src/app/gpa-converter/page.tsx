@@ -1,11 +1,10 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import GpaConverter from '@/components/GpaConverter'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '학점 변환기 - 4.5 4.3 4.0 백분율 변환 | 툴허브',
+  title: '4.3 4.5 학점 변환기 - 4.0·백분율 환산표 | 툴허브',
   description: '4.5·4.3·4.0 만점 학점과 백분율(100점)을 한 번에 상호 변환하고 등급(A+~F)까지 확인하는 학점 변환기. 취업·대학원·해외 유학 지원 시 학점 환산에 사용하세요.',
   keywords: '학점 변환기, 4.3 4.5 변환, 4.5 4.3 학점, 학점 백분위 변환, GPA 변환, 4.0 학점 변환, 학점 등급표, 대학원 학점 환산, 백분율 학점',
   openGraph: {
@@ -77,14 +76,12 @@ export default function GpaConverterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <GpaConverter />
               <div className="mt-8">
                 <RelatedTools />
               </div>
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

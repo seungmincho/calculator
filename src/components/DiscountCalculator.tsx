@@ -2,7 +2,8 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Tag, Copy, Check, RotateCcw, Plus, BookOpen, Percent, X, Link } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

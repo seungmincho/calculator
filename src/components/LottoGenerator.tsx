@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Sparkles, RefreshCw, Share2, Check, Save, BarChart3, Search, TrendingUp, Database, Activity, Filter, Shield, Zap, AlertCircle, CheckCircle, X, Trophy, Target } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import FeedbackWidget from './FeedbackWidget'

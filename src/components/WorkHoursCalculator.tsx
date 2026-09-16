@@ -1,21 +1,22 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Clock, Calculator, DollarSign, Users, Share2, Check, Save, Zap, TrendingUp, Shield, CalendarRange, CalendarDays, RefreshCw, Info } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
 import CustomDatePicker from './CustomDatePicker'
 import CustomTimePicker from './CustomTimePicker'
+import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
 
 // ─── 상수 ─────────────────────────────────────────────
 const MIN_WAGE_2026 = 10320
 const INSURANCE_RATES = {
-  nationalPension: 0.045,
-  healthInsurance: 0.03545,
-  longTermCare: 0.004591,
-  employmentInsurance: 0.009,
+  nationalPension: INSURANCE.pensionRate,
+  healthInsurance: INSURANCE.healthRate,
+  longTermCare: INSURANCE.healthRate * INSURANCE.longTermCareRate, // 보수 대비 (건강보험료 × 13.14%)
+  employmentInsurance: INSURANCE.employmentRate,
 }
 const PRESETS = [
   { id: 'convenience', startTime: '22:00', endTime: '06:00', breakTime: 30 },

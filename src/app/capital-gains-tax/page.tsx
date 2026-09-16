@@ -1,12 +1,11 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import CapitalGainsTax from '@/components/CapitalGainsTax'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '양도소득세 계산기 - 부동산 양도세 자동 계산 | 툴허브',
-  description: '부동산 양도소득세를 자동 계산합니다. 장기보유특별공제, 1세대1주택 비과세(12억), 다주택 중과세율, 지방소득세까지 2025년 기준으로 단계별 계산.',
+  description: '부동산 양도소득세를 자동 계산합니다. 장기보유특별공제, 1세대1주택 비과세(12억), 다주택 중과세율, 지방소득세까지 2026년 기준(5.10~ 다주택 중과 부활)으로 단계별 계산.',
   keywords: '양도소득세 계산기, 양도세 계산, 부동산 양도세, 장기보유특별공제, 1세대1주택 비과세, 다주택 중과세율, 양도차익 계산, 2025 양도소득세',
   openGraph: {
     title: '양도소득세 계산기 | 툴허브',
@@ -31,7 +30,7 @@ export default function CapitalGainsTaxPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '양도소득세 계산기',
-    description: '부동산 양도소득세를 자동 계산합니다. 장기보유특별공제, 1세대1주택 비과세(12억), 다주택 중과세율, 지방소득세까지 2025년 기준 단계별 계산.',
+    description: '부동산 양도소득세를 자동 계산합니다. 장기보유특별공제, 1세대1주택 비과세(12억), 다주택 중과세율, 지방소득세까지 2026년 기준 단계별 계산.',
     url: 'https://toolhub.ai.kr/capital-gains-tax',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
@@ -107,7 +106,6 @@ export default function CapitalGainsTaxPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <CapitalGainsTax />
               <div className="mt-8">
@@ -117,7 +115,6 @@ export default function CapitalGainsTaxPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

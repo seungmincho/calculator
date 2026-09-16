@@ -1,9 +1,7 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import AlgorithmLayout from '@/components/algorithm/AlgorithmLayout'
 import TarjanSccVisualizer from '@/components/algorithm/visualizers/TarjanSccVisualizer'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -56,17 +54,14 @@ export default function TarjanSccPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Suspense fallback={null}>
         <I18nWrapper>
           <AlgorithmLayout>
-            <Breadcrumb />
             <TarjanSccVisualizer />
             <div className="mt-8">
               <RelatedTools />
             </div>
           </AlgorithmLayout>
         </I18nWrapper>
-      </Suspense>
     </>
   )
 }

@@ -7,7 +7,8 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, BookOpen, Link as LinkIcon, Download, Calculator, Award, GraduationCap } from 'lucide-react'
 import NextLink from 'next/link'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'

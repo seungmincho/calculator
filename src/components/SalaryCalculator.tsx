@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from '@/hooks/useSearchParams';
 import { DollarSign, TrendingUp, Calculator, Share2, Check, Table, Save, BarChart3, LineChart, PieChart } from 'lucide-react';
 import { useTranslations } from '@/lib/i18n';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
@@ -9,6 +10,7 @@ import CalculationHistory from '@/components/CalculationHistory';
 import FeedbackWidget from '@/components/FeedbackWidget';
 import PDFExport from '@/components/PDFExport';
 import dynamic from 'next/dynamic'
+import { INSURANCE, PENSION_ANNUAL_CAP, pct } from '@/utils/insuranceRates'
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
 const SalaryCalculatorContent = () => {
@@ -44,7 +46,7 @@ const SalaryCalculatorContent = () => {
     loadFromHistory
   } = useCalculationHistory('salary');
 
-  // 2025년 한국 연봉 실수령액 정확한 계산 함수
+  // 한국 연봉 실수령액 계산 함수 (4대보험 요율은 insuranceRates.ts 기준연도)
   const calculateNetSalary = (inputSalary: string, type: 'annual' | 'monthly', nonTaxable: string, dependentCount: string, childrenCount: string) => {
     const salaryNum = parseInt(inputSalary.replace(/,/g, ''));
     const nonTaxableMonthlyNum = parseInt(nonTaxable.replace(/,/g, '')) || 0; // 월별 비과세 금액
@@ -58,19 +60,11 @@ const SalaryCalculatorContent = () => {
     const nonTaxableAnnual = nonTaxableMonthlyNum * 12; // 연간 비과세 금액
     const taxableAnnual = grossAnnual - nonTaxableAnnual; // 과세대상소득
 
-    // 4대보험료 계산 (2025년 기준)
-    // 1. 국민연금: 4.5%, 상한액 월 243만원 (연 2,916만원)
-    const pensionCap = 29160000; // 2025년 국민연금 연간 상한액
-    const nationalPension = Math.floor(Math.min(taxableAnnual, pensionCap) * 0.045);
-    
-    // 2. 건강보험료: 3.545% (2025년 기준)
-    const healthInsurance = Math.floor(taxableAnnual * 0.03545);
-    
-    // 3. 장기요양보험료: 건강보험료의 12.95%
-    const longTermCare = Math.floor(healthInsurance * 0.1295);
-    
-    // 4. 고용보험료: 0.9%
-    const employmentInsurance = Math.floor(taxableAnnual * 0.009);
+    // 4대보험료 계산 — 요율·상한은 utils/insuranceRates.ts (2026년 기준) 단일 관리
+    const nationalPension = Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate);
+    const healthInsurance = Math.floor(taxableAnnual * INSURANCE.healthRate);
+    const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate);
+    const employmentInsurance = Math.floor(taxableAnnual * INSURANCE.employmentRate);
 
     // 소득공제 계산
     // 1. 근로소득공제 (총급여액 기준)
@@ -727,19 +721,19 @@ const SalaryCalculatorContent = () => {
                 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.nationalPension')} (4.5%)</span>
+                    <span className="text-gray-600 dark:text-gray-400">{t('result.nationalPension')} ({pct(INSURANCE.pensionRate)})</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.healthInsurance')} (3.545%)</span>
+                    <span className="text-gray-600 dark:text-gray-400">{t('result.healthInsurance')} ({pct(INSURANCE.healthRate)})</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.healthInsurance)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.longTermCare')} (12.95%)</span>
+                    <span className="text-gray-600 dark:text-gray-400">{t('result.longTermCare')} ({pct(INSURANCE.longTermCareRate)})</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.longTermCare)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
-                    <span className="text-gray-600 dark:text-gray-400">{t('result.employmentInsurance')} (0.9%)</span>
+                    <span className="text-gray-600 dark:text-gray-400">{t('result.employmentInsurance')} ({pct(INSURANCE.employmentRate)})</span>
                     <span className="font-semibold text-gray-900 dark:text-white">{formatNumber(result.deductions.employmentInsurance)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">

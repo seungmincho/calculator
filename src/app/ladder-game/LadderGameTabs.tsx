@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import dynamic from 'next/dynamic'
 
 const LadderGame = dynamic(() => import('@/components/LadderGame'), { ssr: false })
@@ -62,9 +62,9 @@ export default function LadderGameTabs() {
       <div className="relative z-10">
       {/* 탭 바 — Liquid Glass */}
       <div className="flex justify-center mb-6">
-        <div className="w-full overflow-x-auto scrollbar-hide px-1">
+        <div className="w-full px-1 flex justify-center">
           <div
-            className="inline-flex rounded-[1.4rem] p-1.5 gap-1 min-w-max mx-auto bg-white/38 dark:bg-white/[0.06] backdrop-blur-xl border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_8px_rgba(255,255,255,0.26),inset_-1px_-1px_8px_rgba(255,255,255,0.08),0_16px_40px_rgba(79,70,229,0.12)]"
+            className="inline-flex flex-wrap justify-center rounded-[1.4rem] p-1.5 gap-1 max-w-full bg-white/38 dark:bg-white/[0.06] backdrop-blur-xl border border-white/45 dark:border-white/[0.08] shadow-[inset_1px_1px_8px_rgba(255,255,255,0.26),inset_-1px_-1px_8px_rgba(255,255,255,0.08),0_16px_40px_rgba(79,70,229,0.12)]"
           >
             {TABS.map((tab) => (
               <button

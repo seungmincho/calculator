@@ -1,11 +1,10 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import NationalPensionCalculator from '@/components/NationalPensionCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 
 export const metadata: Metadata = {
   title: '국민연금 수령액 계산기 - 예상 연금 확인 | 툴허브',
-  description: '국민연금 예상 수령액을 계산하세요. 가입 기간과 평균 소득을 입력하면 노령연금, 조기수령, 연기수령 금액을 비교할 수 있습니다. 2025년 기준.',
+  description: '국민연금 예상 수령액을 계산하세요. 가입 기간과 평균 소득을 입력하면 노령연금, 조기수령, 연기수령 금액을 비교할 수 있습니다. 2026년 기준(연금개혁 소득대체율 43%·A값 반영).',
   keywords: '국민연금 계산, 국민연금 수령액, 노령연금, 조기수령, 연기수령, 국민연금 예상액, 연금 계산기',
   openGraph: {
     title: '국민연금 수령액 계산기 | 툴허브',
@@ -49,11 +48,9 @@ export default function NationalPensionPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <NationalPensionCalculator />
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from '@/hooks/useSearchParams';
 import { Home, Calculator, Share2, Check, Save, Info, AlertCircle, CheckCircle, Baby, Heart, Users, BarChart3, TrendingDown, Copy } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
@@ -10,15 +10,16 @@ import GuideSection from '@/components/GuideSection';
 
 type LoanType = 'general' | 'first' | 'newlywed' | 'multichild';
 
-// 2026년 기준 금리 (아낌e 보금자리론 - 실제 금리는 한국주택금융공사 홈페이지 확인)
+// 2026년 9월 기준 아낌e 보금자리론 기준금리 (주금공 9월 동결 발표: 10년 4.90 ~ 50년 5.20, 우대 최대 1.0%p → 최저 3.90)
+// 실제 금리는 매월 변동 — 한국주택금융공사(hf.go.kr) 확인. 25년은 공식 만기가 아니라 20·30년 사이값.
 const PERIOD_RATES: Record<string, number> = {
-  '10': 3.90,
-  '15': 3.95,
-  '20': 4.00,
-  '25': 4.05,
-  '30': 4.10,
-  '40': 4.15,
-  '50': 4.20,
+  '10': 4.90,
+  '15': 5.00,
+  '20': 5.05,
+  '25': 5.08,
+  '30': 5.10,
+  '40': 5.15,
+  '50': 5.20,
 };
 
 // 소득 기준 (부부합산 연간) — 자녀 수·유형별 완화 반영
@@ -186,7 +187,7 @@ const BogeumjariLoanCalculatorContent = () => {
       };
     }
 
-    const baseRate = PERIOD_RATES[period] ?? 4.10;
+    const baseRate = PERIOD_RATES[period] ?? 5.10;
     const ltv = LTV_RATIO[type];
     const maxLoanByLTV = priceNum * ltv;
     const maxLoan = Math.min(maxLoanByLTV, MAX_LOAN[type]);
@@ -211,7 +212,7 @@ const BogeumjariLoanCalculatorContent = () => {
     }
 
     const totalDiscount = Math.min(discounts.reduce((sum, d) => sum + d.rate, 0), 1.0);
-    const finalRate = Math.max(Number((baseRate - totalDiscount).toFixed(2)), 2.90);
+    const finalRate = Math.max(Number((baseRate - totalDiscount).toFixed(2)), 3.90);
 
     // 원리금균등상환 월 상환액
     const monthlyRate = finalRate / 100 / 12;
@@ -411,7 +412,7 @@ const BogeumjariLoanCalculatorContent = () => {
           </span>
         </div>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          내 조건에 맞는 대출한도·금리·월 상환액을 즉시 확인하세요 (기준금리 3.90~4.20%, 우대 시 최저 2.90%)
+          내 조건에 맞는 대출한도·금리·월 상환액을 즉시 확인하세요 (2026년 9월 기준금리 4.90~5.20%, 우대 시 최저 3.90%)
         </p>
       </div>
 
@@ -524,13 +525,9 @@ const BogeumjariLoanCalculatorContent = () => {
                   onChange={(e) => setLoanPeriod(e.target.value)}
                   className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
                 >
-                  <option value="10">10년 (3.90%)</option>
-                  <option value="15">15년 (3.95%)</option>
-                  <option value="20">20년 (4.00%)</option>
-                  <option value="25">25년 (4.05%)</option>
-                  <option value="30">30년 (4.10%)</option>
-                  <option value="40">40년 (4.15%)</option>
-                  <option value="50">50년 (4.20%)</option>
+                  {Object.entries(PERIOD_RATES).map(([y, r]) => (
+                    <option key={y} value={y}>{y}년 ({r.toFixed(2)}%)</option>
+                  ))}
                 </select>
                 <p className="text-xs text-gray-400 mt-1">기간이 길수록 금리 소폭 상승</p>
               </div>
@@ -728,8 +725,8 @@ const BogeumjariLoanCalculatorContent = () => {
         // 기간별 비교 데이터
         const periods = ['10', '15', '20', '25', '30', '40', '50'];
         const comparisonData = periods.map(p => {
-          const r = (PERIOD_RATES[p] ?? 4.10) - result.totalDiscount;
-          const finalR = Math.max(r, 2.90);
+          const r = (PERIOD_RATES[p] ?? 5.10) - result.totalDiscount;
+          const finalR = Math.max(r, 3.90);
           const mr = finalR / 100 / 12;
           const mo = parseInt(p) * 12;
           const mp = Math.round(loan * (mr * Math.pow(1 + mr, mo)) / (Math.pow(1 + mr, mo) - 1));

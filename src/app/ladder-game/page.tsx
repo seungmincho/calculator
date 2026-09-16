@@ -1,10 +1,9 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import LadderGameTabs from './LadderGameTabs'
 
 export const metadata: Metadata = {
-  title: '사다리타기 · 돌림판 · 가위바위보 · 벌칙룰렛 - 결정 도구 12종 | 툴허브',
-  description: '사다리타기, 돌림판, 가위바위보, 벌칙룰렛, 숫자뽑기, 타이머 등 12가지 랜덤 결정 도구를 한 곳에서 무료로.',
+  title: '사다리타기 게임 - 온라인 사다리 타기 · 돌림판 · 벌칙 룰렛 | 툴허브',
+  description: '참가자와 결과를 입력하면 바로 사다리타기. 돌림판, 가위바위보, 벌칙 룰렛, 숫자뽑기 등 결정 도구 12종을 한 곳에서, 링크로 결과 공유.',
   keywords: [
     '사다리 타기',
     '사다리 게임',
@@ -134,9 +133,7 @@ export default function LadderGamePage() {
         <div className="fixed bottom-20 right-10 w-96 h-96 bg-indigo-300/24 dark:bg-indigo-500/14 rounded-full blur-3xl pointer-events-none" />
         <div className="fixed top-1/2 left-1/2 w-64 h-64 bg-cyan-200/18 dark:bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
         <div className="container mx-auto px-4 relative z-10">
-          <Suspense fallback={null}>
             <LadderGameTabs />
-          </Suspense>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

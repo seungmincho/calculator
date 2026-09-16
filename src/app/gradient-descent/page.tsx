@@ -1,9 +1,7 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import GradientDescentVisualizer from '@/components/GradientDescentVisualizer'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
-import Breadcrumb from '@/components/Breadcrumb'
 
 export const metadata: Metadata = {
   title: '경사하강법 시각화 - 2D/3D 손실 함수 최적화 과정 | 툴허브',
@@ -53,15 +51,12 @@ export default function GradientDescentPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
-              <Breadcrumb />
               <GradientDescentVisualizer />
               <div className="mt-8">
                 <RelatedTools />
               </div>
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

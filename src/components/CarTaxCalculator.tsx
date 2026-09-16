@@ -5,7 +5,8 @@ import { Car, Calculator, Percent, Receipt, DollarSign, AlertCircle, Share2, Che
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
@@ -891,7 +892,7 @@ export default function CarTaxCalculator() {
           
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-              절세 혜택 (2025년 기준)
+              절세 혜택 (2026년 기준)
             </h4>
             <ul className="space-y-2 text-gray-700 dark:text-gray-300">
               <li>• <strong>경차</strong>: 취득세 최대 75만원 감면</li>

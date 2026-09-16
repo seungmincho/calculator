@@ -42,7 +42,7 @@
  */
 
 import { useState, useEffect, useCallback, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import { Calculator, CheckCircle, XCircle, AlertTriangle, BookOpen, Building2, GraduationCap, Heart, Landmark } from 'lucide-react'
 import { glassCard, glassInset } from '@/lib/glass'

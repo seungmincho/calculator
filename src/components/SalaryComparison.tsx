@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import { ArrowLeftRight, Plus, Trash2, Copy, Check, TrendingUp, TrendingDown, Minus, RotateCcw, BookOpen, Link } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
 
 // ── 2025년 한국 급여 계산 로직 (SalaryCalculator와 동일 기준) ──
 
@@ -55,11 +56,10 @@ function calculateNetSalary(
   const taxableAnnual = grossAnnual - nonTaxableAnnual
 
   // 4대보험 (2025)
-  const pensionCap = 29160000
-  const nationalPension = Math.floor(Math.min(taxableAnnual, pensionCap) * 0.045)
-  const healthInsurance = Math.floor(taxableAnnual * 0.03545)
-  const longTermCare = Math.floor(healthInsurance * 0.1295)
-  const employmentInsurance = Math.floor(taxableAnnual * 0.009)
+  const nationalPension = Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate)
+  const healthInsurance = Math.floor(taxableAnnual * INSURANCE.healthRate)
+  const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate)
+  const employmentInsurance = Math.floor(taxableAnnual * INSURANCE.employmentRate)
 
   // 근로소득공제
   let workIncomeDeduction = 0

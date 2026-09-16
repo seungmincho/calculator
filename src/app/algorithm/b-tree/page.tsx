@@ -1,9 +1,7 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import AlgorithmLayout from '@/components/algorithm/AlgorithmLayout'
 import BTreeVisualizer from '@/components/algorithm/visualizers/BTreeVisualizer'
 import I18nWrapper from '@/components/I18nWrapper'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
@@ -33,15 +31,12 @@ export default function BTreePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Suspense fallback={null}>
         <I18nWrapper>
           <AlgorithmLayout>
-            <Breadcrumb />
             <BTreeVisualizer />
             <div className="mt-8"><RelatedTools /></div>
           </AlgorithmLayout>
         </I18nWrapper>
-      </Suspense>
     </>
   )
 }

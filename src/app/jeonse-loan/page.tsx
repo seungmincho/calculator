@@ -1,15 +1,14 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import JeonseLoanCalculator from '@/components/JeonseLoanCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '전세대출 계산기 2025 - 버팀목·청년·신혼 금리 비교 | 툴허브',
-  description: '2025년 기준 전세자금대출 금리·한도·월이자를 자동 계산합니다. 버팀목, 청년 버팀목, 신혼 버팀목, 시중은행 전세대출을 한눈에 비교하세요.',
+  title: '전세대출 계산기 2026 - 버팀목·청년·신혼 금리 비교 | 툴허브',
+  description: '2026년 기준 전세자금대출 금리·한도·월이자를 자동 계산합니다. 버팀목, 청년 버팀목, 신혼 버팀목, 시중은행 전세대출을 한눈에 비교하세요.',
   keywords: '전세대출 계산기, 버팀목 전세대출, 청년 전세대출, 신혼 전세대출, 전세대출 금리, 전세대출 한도, 전세대출 이자, LTV, 전세보증금대출',
   openGraph: {
-    title: '전세대출 계산기 2025 | 툴허브',
+    title: '전세대출 계산기 2026 | 툴허브',
     description: '버팀목·청년·신혼 전세대출 금리·한도 비교, 월 이자 자동 계산.',
     url: 'https://toolhub.ai.kr/jeonse-loan',
     siteName: '툴허브',
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '전세대출 계산기 2025 | 툴허브',
+    title: '전세대출 계산기 2026 | 툴허브',
     description: '전세대출 금리·한도·월이자 자동계산',
   },
   alternates: {
@@ -31,14 +30,14 @@ export default function JeonseLoanPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '전세대출 계산기',
-    description: '2025년 기준 전세자금대출 금리·한도·월이자를 자동 계산. 버팀목·청년·신혼·시중은행 비교.',
+    description: '2026년 기준 전세자금대출 금리·한도·월이자를 자동 계산. 버팀목·청년·신혼·시중은행 비교.',
     url: 'https://toolhub.ai.kr/jeonse-loan/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '2025년 최신 금리 반영',
+      '2026년 최신 금리 반영',
       '버팀목·청년·신혼·시중은행 4종 비교',
       '소득·보증금 구간별 금리 자동 매칭',
       '만기일시/원리금균등 상환 계산',
@@ -95,7 +94,7 @@ export default function JeonseLoanPage() {
         name: '버팀목 전세대출 금리는 얼마인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '2025년 기준 일반 버팀목 전세대출 금리는 연 2.5%~3.5%입니다. 청년 버팀목은 연 1.3%~4.3%, 신혼 버팀목은 연 1.0%~4.3%로, 소득과 보증금 구간에 따라 차등 적용됩니다.',
+          text: '2026년 8월 기준 일반 버팀목 전세대출 금리는 연 2.5%~3.5%입니다. 청년 버팀목은 연 1.0%~4.3%(지방 -0.2%p), 신혼 버팀목은 연 1.0%~4.3%로, 소득과 보증금 구간에 따라 차등 적용됩니다.',
         },
       },
       {
@@ -124,7 +123,6 @@ export default function JeonseLoanPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <JeonseLoanCalculator />
               <div className="mt-8">
@@ -134,7 +132,6 @@ export default function JeonseLoanPage() {
               </div>
 
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
     </>

@@ -139,7 +139,7 @@
  */
 
 import { useState, useCallback, useEffect, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import { Calculator, Share2, Check, ChevronRight, RotateCcw, BookOpen, AlertTriangle } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'

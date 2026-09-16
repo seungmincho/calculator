@@ -185,18 +185,18 @@ const Header = () => {
     <header ref={headerRef} className="bg-white dark:bg-white/[0.04] backdrop-blur-xl border-b border-gray-200/40 dark:border-white/[0.06] sticky top-0 z-50 shadow-[0_1px_20px_rgba(0,0,0,0.05),0_1px_2px_rgba(0,0,0,0.03)] dark:shadow-[0_1px_12px_rgba(0,0,0,0.2)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity group">
+          <Link href="/" className="flex items-center space-x-2 shrink-0 whitespace-nowrap hover:opacity-80 transition-opacity group">
             <Calculator className="w-8 h-8 text-blue-600 group-hover:text-indigo-600 transition-colors" />
             <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">{t('header.title')}</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1" aria-label={t('common.menu')}>
+          <nav className="hidden lg:flex items-center space-x-0.5 whitespace-nowrap text-sm xl:text-base" aria-label={t('common.menu')}>
             {categoryKeys.map((key) => (
               <div key={key} className="relative">
                 <button
                   onClick={() => handleDropdownToggle(key)}
-                  className="flex items-center space-x-1 px-3 py-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/50 dark:hover:bg-white/[0.08] transition-all duration-200"
+                  className="flex items-center space-x-1 px-2 xl:px-3 py-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/50 dark:hover:bg-white/[0.08] transition-all duration-200"
                   aria-expanded={openDropdown === key}
                   aria-haspopup="true"
                 >
@@ -260,7 +260,7 @@ const Header = () => {
             {/* 알고리즘 시각화 */}
             <Link
               href="/algorithm"
-              className="px-3 py-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-violet-600 hover:bg-violet-100/50 dark:hover:bg-violet-500/10 transition-all duration-200"
+              className="hidden xl:inline-flex px-2 xl:px-3 py-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-violet-600 hover:bg-violet-100/50 dark:hover:bg-violet-500/10 transition-all duration-200"
             >
               🧠 {t('navigation.algorithm')}
             </Link>
@@ -268,7 +268,7 @@ const Header = () => {
             {/* 금융 팁 */}
             <Link
               href="/tips"
-              className="px-3 py-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/50 dark:hover:bg-white/[0.08] transition-all duration-200"
+              className="hidden xl:inline-flex px-2 xl:px-3 py-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-white/50 dark:hover:bg-white/[0.08] transition-all duration-200"
             >
               {t('navigation.financialTips')}
             </Link>
@@ -281,7 +281,7 @@ const Header = () => {
             >
               <Search className="w-4 h-4" />
               <span className="hidden xl:inline">{t('common.search')}</span>
-              <kbd className="hidden xl:inline-flex px-1.5 py-0.5 text-[10px] font-mono text-gray-400 bg-white/60 dark:bg-white/[0.08] rounded-md border border-white/40 dark:border-white/[0.10]">
+              <kbd className="hidden 2xl:inline-flex px-1.5 py-0.5 text-[10px] font-mono text-gray-400 bg-white/60 dark:bg-white/[0.08] rounded-md border border-white/40 dark:border-white/[0.10]">
                 ⌘K
               </kbd>
             </button>

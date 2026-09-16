@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import FreelancerTax from '@/components/FreelancerTax'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -9,7 +8,7 @@ export const metadata: Metadata = {
   description: '프리랜서·자영업자 3.3% 원천징수세와 종합소득세를 간편하게 계산하세요. 업종별 경비율(단순·기준), 소득공제 반영, 예상 환급액·추가납부액까지 한번에 확인할 수 있습니다.',
   keywords: '프리랜서 세금 계산기, 3.3% 원천징수, 종합소득세 계산, 경비율 계산, 프리랜서 환급, 단순경비율, 기준경비율, 사업소득세',
   openGraph: {
-    title: '프리랜서 세금 계산기 2025 | 툴허브',
+    title: '프리랜서 세금 계산기 2026 | 툴허브',
     description: '3.3% 원천징수 vs 실제 세금 비교. 업종별 경비율 반영, 환급액 자동 계산.',
     url: 'https://toolhub.ai.kr/freelancer-tax',
     siteName: '툴허브',
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '프리랜서 세금 계산기 2025 | 툴허브',
+    title: '프리랜서 세금 계산기 2026 | 툴허브',
     description: '3.3% 원천징수 vs 실제 종합소득세. 환급액 자동 계산.',
   },
   alternates: {
@@ -77,14 +76,12 @@ export default function FreelancerTaxPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Suspense fallback={null}>
             <I18nWrapper>
               <FreelancerTax />
               <div className="mt-8">
                 <RelatedTools />
               </div>
             </I18nWrapper>
-          </Suspense>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

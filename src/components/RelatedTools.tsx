@@ -41,11 +41,12 @@ export default function RelatedTools() {
       return { sameCategoryTools: [], crossCategoryTools: [], currentCategory: null }
     }
 
-    // Same category: shuffled, exclude current, take 4
-    const sameCategory = seededShuffle(
-      menuConfig[currentCat].items.filter((item) => item.href !== pathname),
-      pathname
-    ).slice(0, 4)
+    // Same subcategory first (관련성), then fill from the rest of the category. Shuffled, exclude current, take 4
+    const current = menuConfig[currentCat].items.find((item) => item.href === pathname)
+    const others = menuConfig[currentCat].items.filter((item) => item.href !== pathname)
+    const sameSub = current?.subcategory ? others.filter((item) => item.subcategory === current.subcategory) : []
+    const rest = others.filter((item) => !sameSub.includes(item))
+    const sameCategory = [...seededShuffle(sameSub, pathname), ...seededShuffle(rest, pathname)].slice(0, 4)
 
     // Cross category: pick 4 random tools from other categories
     const otherTools: MenuItem[] = []

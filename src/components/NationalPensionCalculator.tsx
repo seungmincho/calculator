@@ -2,19 +2,20 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Link, RotateCcw, BookOpen, ChevronDown, ChevronUp, Calculator, TrendingUp, Clock, AlertTriangle } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 // ── Constants ──
-const A_VALUE = 2_861_091 // 2024년 전체 가입자 평균소득월액
-const MIN_INCOME = 350_000 // 2025년 기준소득월액 하한
-const MAX_INCOME = 5_900_000 // 2025년 기준소득월액 상한
+const A_VALUE = 3_193_511 // 2026년 적용 A값 (전체 가입자 3년 평균소득월액)
+const MIN_INCOME = 410_000 // 2026.7~ 기준소득월액 하한
+const MAX_INCOME = 6_590_000 // 2026.7~ 기준소득월액 상한
 const MIN_CONTRIBUTION_YEARS = 10 // 최소 가입 기간
 
-// 소득대체율 (2025년 기준 42%, 매년 0.5%p 하락 → 2028년 40%)
-const REPLACEMENT_RATE = 0.42
+// 소득대체율 43% — 2025.3 연금개혁으로 2026년 가입기간부터 43% 고정 (보험료율은 9.5%→2033년 13%)
+const REPLACEMENT_RATE = 0.43
 
 // 조기/연기 수령 조정
 const EARLY_REDUCTION_PER_YEAR = 0.06 // 연 6% 감액
