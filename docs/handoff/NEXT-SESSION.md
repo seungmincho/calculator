@@ -1,22 +1,23 @@
-# NEXT-SESSION (2026-09-16 세션 종료 시점)
+# NEXT-SESSION (2026-09-16 야간 세션 종료 시점, 커밋 33a4d06 푸시됨)
 
 ## 1. 미완료 + 막힌 이유
-- **GSC 후속 조치(사용자)**: 사이트맵 재제출(311 URL), "리디렉션 오류" 4건 유효성 검사 시작, 상위 도구 10개 URL 검사→색인 요청. 배포는 끝났고 Google 재크롤을 기다려야 하므로 코드 작업 없음.
-- **미검증 2025 표기 3건**: 육아휴직급여(parental-leave FAQ 250/200/160만), 도시가스 단가(gasBill), 결혼비용 통계(wedding). 2026 공식 수치를 웹 검증 못 해 라벨만 바꾸고 수치는 그대로 둠.
-- **pending Suspense 19페이지**: 금융 계산기 내부 Suspense(차트 dynamic 등)로 `<template id="B:">` 잔존. 본문은 HTML에 있어 색인엔 무해 → 방치 가능.
-- **BreadcrumbList 2중 3페이지**: /algorithm, /games(CollectionPage 내 breadcrumb — 정상), /tax-season. 경미.
-- **미푸시 커밋**: origin/main 대비 ahead. 푸시는 사용자 지시 시.
+- **GSC 재크롤 대기(사용자)**: 사이트맵 재제출(이제 331 URL — 허브 4 + salary-table 16 추가). 색인 효과 판정은 1~2주 후 스크린샷 필요. 코드 작업 없음.
+- **연봉 계산기 결과 변경 사용자 확인**: `utils/netSalary.ts`에 근로소득세액공제·자녀세액공제 추가로 실수령액이 올라감(5000만 1인: 월 342만→349만). 사용자 체감 확인 대기.
+- **미검증 2025 표기 3건**: 육아휴직급여(parental-leave FAQ), 도시가스 단가(gasBill), 결혼비용 통계(wedding). 2026 공식 수치 웹 검증 미완.
+- **CLAUDE.md 구조 문서 미갱신**: 새 라우트(/calculators /tools /media /health /salary-table/*)·`utils/netSalary.ts`·`menuConfig.categoryHubs`·`generate-redirects-rss.js` 하드코딩 주의가 CLAUDE.md에 없음. 사용자 승인 후 `docs:` 커밋.
 
 ## 2. 재개 프롬프트
 ```
-C:\projects\salary-calculator, 브랜치 main. MEMORY.md의 seo_google_index_fix.md를 먼저 읽을 것.
-할 일: (1) GSC 색인 현황 재확인 — 사용자에게 "페이지 색인 생성" 스크린샷 요청 후 "크롤링됨-미색인" 수 변화 비교.
-(2) 미검증 3건 웹 검증: 2026 육아휴직급여 상한(고용노동부), 도시가스 도매요금 2026(가스공사), 결혼비용 통계 2026(듀오/통계청) → src/app/parental-leave/page.tsx, messages/ko.json gasBill/wedding 갱신.
-(3) 다음 고도화 후보(트래픽 순): keyboard-converter(노출 3,274) UI, image-mosaic(3,931) 브러시 UX, shipping-calculator(3,397) 2026 택배 요금표 검증, text-to-speech(1,497).
-배포는 `pnpm wrangler:deploy` 직접 실행 승인됨. 검증: BAILOUT 0(ssr:false 8p 제외), title '툴허브 | 툴허브' 0, Playwright pageerror 0.
+C:\projects\salary-calculator, 브랜치 main (origin 동기화됨). MEMORY.md의 project_seo_hubs_salary_table.md를 먼저 읽을 것.
+할 일: (1) GSC "페이지 색인 생성" 스크린샷 요청 → /calculators/, /salary-table/5000/ 색인 여부 확인.
+(2) CLAUDE.md 갱신: Utility Files에 netSalary.ts, 새 도구 추가 절차에 "scripts/generate-redirects-rss.js menuItems 하드코딩 배열에도 추가", 카테고리 허브(categoryHubs) 설명.
+(3) 미검증 3건 웹 검증: 2026 육아휴직급여 상한(고용노동부), 도시가스 도매요금 2026(가스공사), 결혼비용 통계 2026 → src/app/parental-leave/page.tsx, messages/ko.json gasBill/wedding.
+(4) 효과 확인되면 퇴직금(/severance-pay) 구간 페이지를 salary-table 패턴(lib.ts + [amount]/page.tsx + generateStaticParams)으로 검토.
+(5) 다음 고도화 후보(트래픽 순): keyboard-converter(3,274) UI, image-mosaic(3,931) 브러시 UX, shipping-calculator(3,397) 2026 요금표.
+배포: 빌드 후 `npx wrangler pages deploy out --commit-dirty=true --commit-message=deploy --branch=main` (Claude 직접 실행 승인됨). 로컬 검증: `python -m http.server 3040 -d out` + `MSYS_NO_PATHCONV=1 node scripts/verify-page.mjs /path/ --check-i18n --dark`.
 ```
 
 ## 3. 확인 대기 (사용자에게)
-- GSC 재제출 후 1~2주 뒤 "페이지 색인 생성" 리포트 스크린샷을 주실 수 있나요? (색인 수 변화로 효과 판정)
-- 미푸시 커밋을 origin/main으로 푸시할까요?
-- 육아휴직급여·도시가스·결혼비용 2026 수치 갱신을 다음 라운드에 포함할까요?
+- 연봉 계산기에서 본인 연봉 넣어보고 실수령액이 급여명세서와 크게 다르면 알려주실 수 있나요? (세액공제 추가로 결과 바뀜)
+- GSC 사이트맵 재제출(331 URL) 후 1~2주 뒤 색인 리포트 스크린샷 부탁드립니다.
+- CLAUDE.md 구조 문서 갱신을 다음 세션 시작 때 바로 할까요?
