@@ -24,8 +24,8 @@ pnpm lint
 # Static export
 pnpm export
 
-# Cloudflare Pages deployment
-pnpm cf:deploy
+# Cloudflare Pages deployment (next build + fix-rsc-paths + wrangler)
+pnpm wrangler:deploy
 
 # Test Cloudflare Pages locally
 pnpm wrangler:dev
@@ -195,6 +195,7 @@ src/
 - `I18nWrapper`: Client-side i18n provider
 
 ### Custom Hooks
+- `useSearchParams`: `@/hooks/useSearchParams` — next/navigation 대체 (static export bailout 방지, 서버=빈 params, router.replace/popstate 반영). **모든 컴포넌트는 이것을 사용**
 - `useCalculationHistory`: localStorage-based history management with type safety
 - `useMessages`: Dynamic locale message loading with fallback
 - `useLottoData`: Lotto winning number data fetching
@@ -205,6 +206,7 @@ src/
 - `useGameSounds`: Web Audio API synthesized sounds (no audio files), toggle with localStorage
 
 ### Utility Files
+- `insuranceRates.ts`: 4대보험 요율·국민연금 상한 단일 출처 (2026). Salary/Bonus/SalaryComparison/HealthInsurance/WorkHours/Tax 계산기가 import — 요율 개정 시 여기만 수정
 - `localStorage.ts`: Type-safe localStorage wrapper with history titles
 - `recentTools.ts`: Recent tool usage tracking per category
 - `favorites.ts`: Tool favorites management (localStorage)
