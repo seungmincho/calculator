@@ -151,9 +151,9 @@ export default function AlcoholCalculator() {
 
   const getStatusBgColor = (status: string) => {
     switch (status) {
-      case 'sober': return 'bg-green-100 dark:bg-green-950 text-green-800 dark:text-green-200'
+      case 'sober': return 'bg-soft text-sub'
       case 'buzzed': return 'bg-yellow-100 dark:bg-yellow-950 text-yellow-800 dark:text-yellow-200'
-      case 'drunk': return 'bg-orange-100 dark:bg-orange-950 text-orange-800 dark:text-orange-200'
+      case 'drunk': return 'bg-soft text-sub'
       case 'veryDrunk': return 'bg-red-100 dark:bg-red-950 text-red-800 dark:text-red-200'
       case 'dangerous': return 'bg-red-200 dark:bg-red-900 text-red-900 dark:text-red-100'
       default: return 'bg-soft text-body'
@@ -164,11 +164,11 @@ export default function AlcoholCalculator() {
     if (status === 'dangerous' || status === 'veryDrunk') {
       return 'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800'
     } else if (status === 'drunk') {
-      return 'bg-orange-50 dark:bg-orange-950 border-orange-200 dark:border-orange-800'
+      return 'bg-subtle border-line'
     } else if (status === 'buzzed') {
       return 'bg-yellow-50 dark:bg-yellow-950 border-yellow-200 dark:border-yellow-800'
     }
-    return 'bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800'
+    return 'bg-subtle border-line'
   }
 
   return (
@@ -393,7 +393,7 @@ export default function AlcoholCalculator() {
             <button
               onClick={handleCalculate}
               disabled={drinks.length === 0}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <Calculator className="w-5 h-5" />
               {t('calculate')}
@@ -467,7 +467,7 @@ export default function AlcoholCalculator() {
                 </div>
 
                 {/* Sober Time */}
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+                <div className="bg-subtle rounded-xl p-4">
                   <div className="flex items-center gap-3">
                     <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     <div>
@@ -511,7 +511,6 @@ export default function AlcoholCalculator() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
 

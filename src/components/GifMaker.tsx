@@ -481,7 +481,7 @@ export default function GifMaker() {
       <div
         className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
           isDraggingOver
-            ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+            ? 'border-blue-500 bg-subtle'
             : 'border-line-strong bg-surface hover:border-blue-400 dark:hover:border-blue-500'
         }`}
         onDragOver={(e) => { e.preventDefault(); setIsDraggingOver(true) }}
@@ -701,7 +701,7 @@ export default function GifMaker() {
           <button
             onClick={generateGif}
             disabled={isGenerating}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 text-white rounded-xl font-medium transition-all shadow-lg"
+            className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-blue-700 disabled:opacity-60 text-white rounded-xl font-medium transition-all shadow-lg"
           >
             {isGenerating ? (
               <>

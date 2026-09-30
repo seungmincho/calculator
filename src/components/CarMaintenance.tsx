@@ -336,7 +336,6 @@ export default function CarMaintenance() {
           {/* Vehicle Info */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Car className="w-5 h-5 text-blue-500" />
               {t('vehicleInfo')}
             </h2>
 
@@ -456,7 +455,6 @@ export default function CarMaintenance() {
           {/* Driving & Costs */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Fuel className="w-5 h-5 text-amber-500" />
               {t('drivingCosts')}
             </h2>
 
@@ -586,7 +584,7 @@ export default function CarMaintenance() {
           <div className="flex gap-3">
             <button
               onClick={handleCalculate}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
+              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
             >
               <Calculator className="w-5 h-5" />
               {t('calculate')}
@@ -607,15 +605,15 @@ export default function CarMaintenance() {
             <>
               {/* Summary Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl p-5 text-white shadow-lg">
+                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white shadow-lg">
                   <p className="text-sm opacity-90">{t('annualTotal')}</p>
                   <p className="text-2xl font-bold mt-1">{formatWon(annualTotal)}</p>
                 </div>
-                <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl p-5 text-white shadow-lg">
+                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white shadow-lg">
                   <p className="text-sm opacity-90">{t('monthlyAverage')}</p>
                   <p className="text-2xl font-bold mt-1">{formatWon(monthlyTotal)}</p>
                 </div>
-                <div className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl p-5 text-white shadow-lg">
+                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white shadow-lg">
                   <p className="text-sm opacity-90">{t('costPerKm')}</p>
                   <p className="text-2xl font-bold mt-1">{formatNumber(costPerKm)}{t('wonPerKm')}</p>
                 </div>
@@ -708,7 +706,7 @@ export default function CarMaintenance() {
                         { key: 'tollFees', value: costBreakdown.tollFees },
                         { key: 'depreciation', value: costBreakdown.depreciation },
                       ].map(item => (
-                        <tr key={item.key} className="border-b border-gray-100 dark:border-gray-700/50">
+                        <tr key={item.key} className="border-b border-line">
                           <td className="py-2 text-body">{t(`categories.${item.key}`)}</td>
                           <td className="py-2 text-right text-fg">{formatNumber(Math.round(item.value / 12))}{t('won')}</td>
                           <td className="py-2 text-right text-fg">{formatNumber(item.value)}{t('won')}</td>
@@ -729,9 +727,8 @@ export default function CarMaintenance() {
               </div>
 
               {/* Public Transport Comparison */}
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
+              <div className="bg-subtle rounded-xl p-6">
                 <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
-                  <Bus className="w-5 h-5 text-blue-500" />
                   {t('transitComparison')}
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -778,7 +775,7 @@ export default function CarMaintenance() {
                       </thead>
                       <tbody>
                         {scheduleItems.map(item => (
-                          <tr key={item.nameKey} className="border-b border-gray-100 dark:border-gray-700/50">
+                          <tr key={item.nameKey} className="border-b border-line">
                             <td className="py-2 text-body">{t(`maintenanceItems.${item.nameKey}`)}</td>
                             <td className="py-2 text-right text-muted text-xs">
                               {formatNumber(item.intervalKm)}km / {item.intervalMonths}{t('months')}
@@ -807,7 +804,6 @@ export default function CarMaintenance() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

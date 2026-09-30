@@ -1,4 +1,5 @@
 'use client'
+import ToolIcon from './ToolIcon'
 
 import { useMemo } from 'react'
 import { usePathname } from 'next/navigation'
@@ -72,7 +73,7 @@ export default function RelatedTools() {
       href={item.href}
       className={`flex items-center gap-3 p-3 ${glassCard} hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all group`}
     >
-      <span className="text-2xl flex-shrink-0">{item.icon}</span>
+      <ToolIcon href={item.href} size="md" />
       <div className="min-w-0">
         <div className="text-sm font-medium text-fg group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
           {t(item.labelKey)}

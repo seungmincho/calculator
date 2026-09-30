@@ -143,7 +143,7 @@ export default function VoronoiVisualizer() {
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
         <div className="flex items-center gap-2 mt-2">
-          <span className="px-2 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400">
+          <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
             {tHub('categories.geometry')}
           </span>
           <span className="text-xs text-gray-400">★★☆</span>
@@ -191,7 +191,7 @@ export default function VoronoiVisualizer() {
                 </strong>
               </span>
               {isDone && (
-                <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium">
+                <span className="px-2 py-0.5 rounded-full bg-soft text-sub text-xs font-medium">
                   {t('stats.done')}
                 </span>
               )}
@@ -201,11 +201,11 @@ export default function VoronoiVisualizer() {
           <div className="bg-surface border border-line rounded-xl p-4 space-y-3">
             <div className="flex flex-wrap gap-2">
               <button onClick={handleRandom} disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 disabled:opacity-40">
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-blue-600 hover:to-indigo-600 disabled:opacity-40">
                 🎲 {t('controls.random')}
               </button>
               <button onClick={handleGrid} disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 disabled:opacity-40">
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-emerald-600 hover:to-teal-600 disabled:opacity-40">
                 📐 {t('controls.grid')}
               </button>
             </div>
@@ -232,10 +232,10 @@ export default function VoronoiVisualizer() {
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-indigo-50/50 dark:bg-indigo-900/20'
+                        ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}>
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -245,7 +245,7 @@ export default function VoronoiVisualizer() {
                   <div className="space-y-2">
                     <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
                     {currentStep ? (
-                      <div className="p-3 rounded-lg bg-indigo-50/50 dark:bg-indigo-900/20 border border-indigo-200/50 dark:border-indigo-700/30">
+                      <div className="p-3 rounded-lg bg-subtle border border-line">
                         <p className="text-sm text-body">{currentStep.description}</p>
                         <p className="text-xs text-muted mt-1">
                           {t('stepsGuide.sweepAt', { y: String(currentStep.sweepY) })}

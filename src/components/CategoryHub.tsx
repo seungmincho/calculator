@@ -1,4 +1,5 @@
 'use client'
+import ToolIcon from './ToolIcon'
 
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
@@ -31,7 +32,7 @@ export default function CategoryHub({ category }: { category: CategoryKey }) {
                   href={item.href}
                   className={`${glassCard} flex items-start gap-3 p-4 h-full hover:bg-soft hover:-translate-y-0.5 transition-all`}
                 >
-                  <span className="text-2xl leading-none mt-0.5">{item.icon}</span>
+                  <ToolIcon href={item.href} size="md" />
                   <span className="min-w-0">
                     <span className="flex items-center gap-2 font-medium text-fg">
                       {t(item.labelKey)}

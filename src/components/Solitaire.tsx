@@ -1730,7 +1730,7 @@ export default function Solitaire() {
           <div className="flex items-center gap-2">
             <button
               onClick={dealNewGame}
-              className="flex items-center gap-1.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg px-3 py-2 text-sm font-medium hover:from-green-700 hover:to-emerald-700 transition-all"
+              className="flex items-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-3 py-2 text-sm font-medium hover:from-green-700 hover:to-emerald-700 transition-all"
               title={t('newGame')}
             >
               <RotateCcw className="w-4 h-4" />
@@ -1757,7 +1757,7 @@ export default function Solitaire() {
             {canAutoComplete() && gameState === 'playing' && (
               <button
                 onClick={doAutoComplete}
-                className="flex items-center gap-1.5 bg-gradient-to-r from-yellow-500 to-amber-500 text-white rounded-lg px-3 py-2 text-sm font-medium hover:from-yellow-600 hover:to-amber-600 transition-all animate-pulse"
+                className="flex items-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-3 py-2 text-sm font-medium hover:from-yellow-600 hover:to-amber-600 transition-all animate-pulse"
               >
                 <Trophy className="w-4 h-4" />
                 <span className="hidden sm:inline">{t('autoComplete')}</span>
@@ -1792,7 +1792,7 @@ export default function Solitaire() {
 
       {/* Win message */}
       {gameState === 'won' && (
-        <div className="bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-950 dark:to-amber-950 rounded-xl shadow-lg p-6 text-center">
+        <div className="bg-subtle rounded-xl shadow-lg p-6 text-center">
           <div className="text-4xl mb-3">
             <Trophy className="w-12 h-12 text-yellow-500 mx-auto" />
           </div>
@@ -1806,7 +1806,7 @@ export default function Solitaire() {
           </p>
           <button
             onClick={dealNewGame}
-            className="mt-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg px-6 py-3 font-medium hover:from-green-700 hover:to-emerald-700 transition-all"
+            className="mt-4 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-green-700 hover:to-emerald-700 transition-all"
           >
             {t('newGame')}
           </button>

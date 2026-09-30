@@ -190,7 +190,7 @@ export default function KoreanSyllable() {
             onClick={() => setMode('chosung')}
             className={`px-4 py-3 rounded-lg font-medium transition-all ${
               mode === 'chosung'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
@@ -200,7 +200,7 @@ export default function KoreanSyllable() {
             onClick={() => setMode('decompose')}
             className={`px-4 py-3 rounded-lg font-medium transition-all ${
               mode === 'decompose'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
@@ -210,7 +210,7 @@ export default function KoreanSyllable() {
             onClick={() => setMode('compose')}
             className={`px-4 py-3 rounded-lg font-medium transition-all ${
               mode === 'compose'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
@@ -226,7 +226,6 @@ export default function KoreanSyllable() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <label className="block text-sm font-medium text-fg">
-                <Type className="w-4 h-4 inline mr-2" />
                 {t('input')}
               </label>
               <button
@@ -318,7 +317,7 @@ export default function KoreanSyllable() {
             </div>
 
             {mode === 'chosung' && (
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
+              <div className="bg-subtle rounded-xl p-6">
                 <p className="text-4xl font-bold text-blue-900 dark:text-blue-100 break-all tracking-wider">
                   {(typeof result === 'string' ? result : '') || '결과가 여기 표시됩니다'}
                 </p>
@@ -326,7 +325,7 @@ export default function KoreanSyllable() {
             )}
 
             {mode === 'compose' && (
-              <div className="bg-green-50 dark:bg-green-950 rounded-xl p-6">
+              <div className="bg-subtle rounded-xl p-6">
                 <p className="text-4xl font-bold text-green-900 dark:text-green-100 break-all">
                   {(typeof result === 'string' ? result : '') || '결과가 여기 표시됩니다'}
                 </p>
@@ -381,7 +380,7 @@ export default function KoreanSyllable() {
                 )}
 
                 {result.length > 0 && (
-                  <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <div className="flex flex-wrap gap-4 text-sm">
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 bg-blue-500 rounded"></div>
@@ -407,7 +406,6 @@ export default function KoreanSyllable() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 
@@ -428,7 +426,7 @@ export default function KoreanSyllable() {
               모드 안내
             </h3>
             <div className="space-y-4">
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+              <div className="bg-subtle rounded-lg p-4">
                 <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
                   초성 추출
                 </h4>
@@ -440,7 +438,7 @@ export default function KoreanSyllable() {
                 </p>
               </div>
 
-              <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4">
+              <div className="bg-subtle rounded-lg p-4">
                 <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">
                   자모 분리
                 </h4>
@@ -452,7 +450,7 @@ export default function KoreanSyllable() {
                 </p>
               </div>
 
-              <div className="bg-orange-50 dark:bg-orange-950 rounded-lg p-4">
+              <div className="bg-subtle rounded-lg p-4">
                 <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">
                   자모 합치기
                 </h4>
@@ -481,7 +479,7 @@ export default function KoreanSyllable() {
             <h3 className="text-lg font-semibold text-fg mb-3">
               한글 자모 구성
             </h3>
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 space-y-2">
+            <div className="bg-subtle rounded-lg p-4 space-y-2">
               <p className="text-sm text-body">
                 한글은 유니코드 0xAC00 ~ 0xD7A3 범위에 11,172개의 완성형 글자가 정의되어 있습니다.
               </p>

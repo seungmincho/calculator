@@ -457,10 +457,10 @@ const SavingsCalculatorContent = () => {
 
   const getTypeColor = (type: SavingsType) => {
     const colors = {
-      'regular': 'bg-gradient-to-r from-blue-500 to-blue-600',
-      'free': 'bg-gradient-to-r from-green-500 to-green-600',
-      'target': 'bg-gradient-to-r from-purple-500 to-purple-600',
-      'compound': 'bg-gradient-to-r from-orange-500 to-orange-600'
+      'regular': 'bg-primary hover:bg-blue-700',
+      'free': 'bg-primary hover:bg-blue-700',
+      'target': 'bg-primary hover:bg-blue-700',
+      'compound': 'bg-primary hover:bg-blue-700'
     };
     return colors[type];
   };
@@ -698,21 +698,21 @@ const SavingsCalculatorContent = () => {
                       </div>
                     </div>
                     
-                    <div className="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4">
+                    <div className="bg-subtle rounded-xl p-4">
                       <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">총 납입액</div>
                       <div className="text-lg font-bold text-blue-900 dark:text-blue-200">
                         {formatNumber(result.totalSaved)}원
                       </div>
                     </div>
                     
-                    <div className="bg-green-50 dark:bg-green-900/30 rounded-xl p-4">
+                    <div className="bg-subtle rounded-xl p-4">
                       <div className="text-sm text-green-600 dark:text-green-400 mb-1">총 이자</div>
                       <div className="text-lg font-bold text-green-900 dark:text-green-200">
                         {formatNumber(result.totalInterest)}원
                       </div>
                     </div>
                     
-                    <div className="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-4">
+                    <div className="bg-subtle rounded-xl p-4">
                       <div className="text-sm text-purple-600 dark:text-purple-400 mb-1">실질 수익률</div>
                       <div className="text-lg font-bold text-purple-900 dark:text-purple-200">
                         {result.effectiveRate.toFixed(2)}%
@@ -774,13 +774,12 @@ const SavingsCalculatorContent = () => {
         <div className="max-w-4xl mx-auto">
           <div className={`${glassCard} ${glassInset} p-8`}>
             <h2 className="text-2xl font-semibold mb-6 text-fg flex items-center">
-              <Target className="w-6 h-6 mr-2" />
               목표 금액 달성 계획
             </h2>
             
             {results.find(r => r.type === 'target') ? (
               <div className="space-y-6">
-                <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-6 text-white">
+                <div className="bg-primary hover:bg-blue-700 rounded-xl p-6 text-white">
                   <h3 className="text-lg font-semibold mb-4">목표 달성 정보</h3>
                   <div className="grid md:grid-cols-3 gap-4">
                     <div>
@@ -801,16 +800,16 @@ const SavingsCalculatorContent = () => {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
-                    <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-3">💡 목표 달성 팁</h4>
+                  <div className="bg-subtle rounded-lg p-6">
+                    <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-3">목표 달성 팁</h4>
                     <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-2">
                       <li>• 자동이체를 설정하여 꾸준히 납입하세요</li>
                       <li>• 금리가 높은 상품을 선택하세요</li>
                       <li>• 중간에 해지하지 않도록 주의하세요</li>
                     </ul>
                   </div>
-                  <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
-                    <h4 className="font-semibold text-green-900 dark:text-green-200 mb-3">📈 추가 절약 방법</h4>
+                  <div className="bg-subtle rounded-lg p-6">
+                    <h4 className="font-semibold text-green-900 dark:text-green-200 mb-3">추가 절약 방법</h4>
                     <ul className="text-sm text-green-800 dark:text-green-300 space-y-2">
                       <li>• 보너스가 있을 때 추가 납입하세요</li>
                       <li>• 가계부를 써서 불필요한 지출을 줄이세요</li>
@@ -835,7 +834,6 @@ const SavingsCalculatorContent = () => {
             <>
               <div className={`${glassCard} ${glassInset} p-8`}>
                 <h2 className="text-2xl font-semibold mb-6 text-fg flex items-center">
-                  <BarChart3 className="w-6 h-6 mr-2" />
                   적금 상품 비교
                 </h2>
                 
@@ -891,9 +889,9 @@ const SavingsCalculatorContent = () => {
               </div>
 
               <div className={`${glassCard} ${glassInset} p-8`}>
-                <h2 className="text-2xl font-semibold mb-6 text-fg">💡 상품별 특징</h2>
+                <h2 className="text-2xl font-semibold mb-6 text-fg">상품별 특징</h2>
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
+                  <div className="bg-subtle rounded-lg p-6">
                     <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
                       최고 수익률: {savingsTypes[results.sort((a, b) => b.effectiveRate - a.effectiveRate)[0].type]}
                     </h3>
@@ -901,7 +899,7 @@ const SavingsCalculatorContent = () => {
                       가장 높은 수익률을 제공하는 상품입니다.
                     </p>
                   </div>
-                  <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
+                  <div className="bg-subtle rounded-lg p-6">
                     <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">
                       최대 수령액: {savingsTypes[results.sort((a, b) => b.finalAmount - a.finalAmount)[0].type]}
                     </h3>
@@ -925,7 +923,7 @@ const SavingsCalculatorContent = () => {
 
       {/* 적금 상품 설명 */}
       <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-2xl font-semibold mb-6 text-fg">📚 적금 상품 안내</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-fg">적금 상품 안내</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div className="border-l-4 border-blue-500 pl-4">
@@ -960,21 +958,21 @@ const SavingsCalculatorContent = () => {
 
       {/* 저축 팁 */}
       <div className={`mt-8 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-2xl font-semibold mb-6 text-fg">💡 오늘의 저축 팁</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-fg">오늘의 저축 팁</h2>
         <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-emerald-50 dark:bg-emerald-900/30 rounded-lg p-6">
+          <div className="bg-subtle rounded-lg p-6">
             <h3 className="font-semibold text-emerald-900 dark:text-emerald-200 mb-2">적금 선택 요령</h3>
             <p className="text-emerald-800 dark:text-emerald-300 text-sm">
               금리뿐만 아니라 우대조건, 중도해지 시 이자율 등을 종합적으로 고려하세요.
             </p>
           </div>
-          <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
+          <div className="bg-subtle rounded-lg p-6">
             <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">자동이체 활용</h3>
             <p className="text-blue-800 dark:text-blue-300 text-sm">
               급여일 다음날 자동이체를 설정하여 저축을 우선순위로 만들어 보세요.
             </p>
           </div>
-          <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-6">
+          <div className="bg-subtle rounded-lg p-6">
             <h3 className="font-semibold text-purple-900 dark:text-purple-200 mb-2">비상금 준비</h3>
             <p className="text-purple-800 dark:text-purple-300 text-sm">
               적금과 별도로 생활비 3-6개월분의 비상금을 예금으로 준비하세요.

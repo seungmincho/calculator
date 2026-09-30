@@ -279,7 +279,7 @@ export default function AdminFeedback() {
             <button
               type="submit"
               disabled={isAuthLoading || !passwordInput}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               {isAuthLoading ? '...' : t('login.submit')}
             </button>
@@ -379,7 +379,7 @@ export default function AdminFeedback() {
                 <React.Fragment key={inquiry.id}>
                   <tr
                     className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer ${
-                      !inquiry.is_read ? 'bg-blue-50/30 dark:bg-blue-950/20' : ''
+                      !inquiry.is_read ? 'bg-subtle' : ''
                     }`}
                     onClick={() => setExpandedId(expandedId === inquiry.id ? null : inquiry.id)}
                   >
@@ -429,7 +429,7 @@ export default function AdminFeedback() {
                   </tr>
 
                   {expandedId === inquiry.id && (
-                    <tr className="bg-gray-50 dark:bg-gray-900">
+                    <tr className="bg-subtle">
                       <td colSpan={5} className="px-4 py-4">
                         <div className="bg-surface rounded-lg p-4 border border-line space-y-2">
                           <p className="text-sm text-sub whitespace-pre-wrap">{inquiry.message}</p>
@@ -517,7 +517,7 @@ export default function AdminFeedback() {
           <button
             onClick={() => fetchInquiries(false)}
             disabled={isLoading}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? t('loading') : t('loadMore')}
           </button>

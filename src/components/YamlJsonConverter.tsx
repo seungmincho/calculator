@@ -295,7 +295,7 @@ export default function YamlJsonConverter() {
             />
             <button
               onClick={() => setShowOptions(!showOptions)}
-              className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition-colors ${showOptions ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300' : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'}`}
+              className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition-colors ${showOptions ? 'bg-soft text-sub' : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'}`}
               aria-expanded={showOptions}
             >
               <Settings className="w-4 h-4" />
@@ -448,7 +448,7 @@ export default function YamlJsonConverter() {
         <div
           role="status"
           aria-live="polite"
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm ${result.error ? 'bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400' : 'bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400'}`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm ${result.error ? 'bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400' : 'bg-subtle text-green-700 dark:text-green-400'}`}
         >
           {result.error ? (
             <AlertTriangle className="w-4 h-4" />
@@ -472,7 +472,6 @@ export default function YamlJsonConverter() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>

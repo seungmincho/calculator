@@ -362,7 +362,6 @@ export default function ScreenRecorder() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Settings className="w-5 h-5" />
               {t('settings')}
             </h2>
 
@@ -561,7 +560,6 @@ export default function ScreenRecorder() {
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                    <Video className="w-5 h-5" />
                     {t('preview')}
                   </h2>
                   <span className="text-sm text-muted">
@@ -591,7 +589,7 @@ export default function ScreenRecorder() {
                 <div className="flex flex-wrap gap-3">
                   <button
                     onClick={downloadRecording}
-                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center gap-2"
+                    className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center gap-2"
                   >
                     <Download className="w-5 h-5" />
                     {t('download')}
@@ -618,7 +616,6 @@ export default function ScreenRecorder() {
           aria-expanded={guideOpen}
         >
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-faint text-xl">
@@ -631,7 +628,6 @@ export default function ScreenRecorder() {
             {/* How to use */}
             <div className="space-y-3">
               <h3 className="font-semibold text-fg flex items-center gap-2">
-                <Video className="w-4 h-4 text-blue-500" />
                 {t('guide.howto.title')}
               </h3>
               <ul className="space-y-2">
@@ -650,7 +646,6 @@ export default function ScreenRecorder() {
             {/* Formats */}
             <div className="space-y-3">
               <h3 className="font-semibold text-fg flex items-center gap-2">
-                <Monitor className="w-4 h-4 text-green-500" />
                 {t('guide.formats.title')}
               </h3>
               <ul className="space-y-2">
@@ -669,7 +664,6 @@ export default function ScreenRecorder() {
             {/* Tips */}
             <div className="space-y-3">
               <h3 className="font-semibold text-fg flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-amber-500" />
                 {t('guide.tips.title')}
               </h3>
               <ul className="space-y-2">

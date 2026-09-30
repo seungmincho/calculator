@@ -74,10 +74,10 @@ export default function ReactionTest() {
   const isSessionDone = sessionAttempts.length >= MAX_ROUNDS
 
   const getRating = useCallback((time: number): { key: string; color: string; bgColor: string } => {
-    if (time < 200) return { key: 'rating.excellent', color: 'text-green-600 dark:text-green-400', bgColor: 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300' }
-    if (time < 300) return { key: 'rating.good', color: 'text-blue-600 dark:text-blue-400', bgColor: 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300' }
+    if (time < 200) return { key: 'rating.excellent', color: 'text-green-600 dark:text-green-400', bgColor: 'bg-soft text-sub' }
+    if (time < 300) return { key: 'rating.good', color: 'text-blue-600 dark:text-blue-400', bgColor: 'bg-soft text-sub' }
     if (time < 400) return { key: 'rating.average', color: 'text-yellow-600 dark:text-yellow-400', bgColor: 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300' }
-    if (time < 500) return { key: 'rating.slow', color: 'text-orange-600 dark:text-orange-400', bgColor: 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300' }
+    if (time < 500) return { key: 'rating.slow', color: 'text-orange-600 dark:text-orange-400', bgColor: 'bg-soft text-sub' }
     return { key: 'rating.verySlow', color: 'text-red-600 dark:text-red-400', bgColor: 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300' }
   }, [])
 
@@ -178,19 +178,19 @@ export default function ReactionTest() {
   const getBackgroundColor = (): string => {
     switch (gameState) {
       case 'idle':
-        return 'bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700'
+        return 'bg-primary hover:bg-blue-700'
       case 'waiting':
-        return 'bg-gradient-to-br from-red-500 to-red-600'
+        return 'bg-red-500 hover:bg-red-600'
       case 'ready':
-        return 'bg-gradient-to-br from-green-400 to-green-500'
+        return 'bg-primary hover:bg-blue-700'
       case 'result':
-        return 'bg-gradient-to-br from-blue-500 to-indigo-600'
+        return 'bg-primary hover:bg-blue-700'
       case 'tooEarly':
-        return 'bg-gradient-to-br from-orange-500 to-orange-600'
+        return 'bg-primary hover:bg-blue-700'
       case 'sessionComplete':
-        return 'bg-gradient-to-br from-purple-500 to-indigo-600'
+        return 'bg-primary hover:bg-blue-700'
       default:
-        return 'bg-gradient-to-br from-blue-500 to-indigo-600'
+        return 'bg-primary hover:bg-blue-700'
     }
   }
 
@@ -495,7 +495,6 @@ export default function ReactionTest() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 

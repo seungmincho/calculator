@@ -352,7 +352,7 @@ export default function LunarConverter() {
                   onClick={() => setMode('solarToLunar')}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     mode === 'solarToLunar'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -367,7 +367,7 @@ export default function LunarConverter() {
                   onClick={() => setMode('lunarToSolar')}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     mode === 'lunarToSolar'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -385,7 +385,6 @@ export default function LunarConverter() {
             {mode === 'solarToLunar' ? (
               <div className="space-y-4">
                 <h3 className="text-sm font-medium text-body flex items-center gap-2">
-                  <Sun className="w-4 h-4" />
                   {t('solar')}
                 </h3>
 
@@ -442,7 +441,6 @@ export default function LunarConverter() {
             ) : (
               <div className="space-y-4">
                 <h3 className="text-sm font-medium text-body flex items-center gap-2">
-                  <Moon className="w-4 h-4" />
                   {t('lunar')}
                 </h3>
 
@@ -552,14 +550,13 @@ export default function LunarConverter() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
               {t('result.title')}
             </h2>
 
             {result ? (
               <div className="space-y-6">
                 {/* Main Result */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-xl p-6">
+                <div className="bg-subtle rounded-xl p-6">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="text-sm text-sub mb-2">
@@ -658,7 +655,6 @@ export default function LunarConverter() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 

@@ -230,7 +230,7 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
       {!gameState.winner && (
         <div className={`text-center py-2 px-4 rounded-xl ${
           isPlayerTurn
-            ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+            ? 'bg-soft text-sub'
             : 'bg-soft text-sub'
         }`}>
           {isThinking ? (
@@ -248,9 +248,9 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
       {gameState.winner && (
         <div className={`text-center py-6 px-6 rounded-2xl ${
           gameState.winner === playerColor
-            ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+            ? 'bg-primary hover:bg-blue-700 text-white'
             : gameState.winner === 'draw'
-            ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
+            ? 'bg-primary hover:bg-blue-700 text-white'
             : 'bg-track text-body'
         }`}>
           <Trophy className="w-10 h-10 mx-auto mb-2" />
@@ -294,7 +294,7 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
         <div className="flex gap-3 flex-wrap">
           <button
             onClick={handleRestart}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-xl"
+            className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl"
           >
             <RefreshCw className="w-5 h-5" />
             {t('playAgain')}
@@ -330,7 +330,7 @@ export default function Connect4AI({ difficulty, onBack }: Connect4AIProps) {
         {showStats && stats && (
           <div className="mt-4">
             <div className="grid grid-cols-3 gap-4 text-center">
-              <div className="p-3 bg-green-50 dark:bg-green-900/30 rounded-xl">
+              <div className="p-3 bg-subtle rounded-xl">
                 <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.totalWins}</p>
                 <p className="text-xs text-muted">{tHub('wins') || 'Wins'}</p>
               </div>

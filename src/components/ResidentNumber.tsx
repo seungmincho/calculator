@@ -132,7 +132,7 @@ export default function ResidentNumber() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+      <div className="bg-subtle border border-line rounded-xl p-4">
         <p className="text-sm text-blue-900 dark:text-blue-100 flex items-center gap-2">
           <Shield className="w-4 h-4" />
           {t('privacy')}
@@ -159,7 +159,7 @@ export default function ResidentNumber() {
           <button
             onClick={handleVerify}
             disabled={input.replace(/-/g, '').length !== 13}
-            className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             {t('verify')}
           </button>
@@ -175,7 +175,7 @@ export default function ResidentNumber() {
       {!!result && (
         <div className={`rounded-xl shadow-lg p-6 ${
           result.isValid
-            ? 'bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800'
+            ? 'bg-subtle border border-line'
             : 'bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800'
         }`}>
           <div className="flex items-center gap-3 mb-4">
@@ -243,7 +243,6 @@ export default function ResidentNumber() {
 
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

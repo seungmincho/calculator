@@ -30,14 +30,14 @@ interface MatchResult {
 // ── Token colors by type ──
 
 const TOKEN_COLORS: Record<RegexToken['type'], { bg: string; border: string; text: string }> = {
-  anchor:      { bg: 'bg-purple-100 dark:bg-purple-900/40', border: 'border-purple-300 dark:border-purple-700', text: 'text-purple-800 dark:text-purple-200' },
+  anchor:      { bg: 'bg-purple-100 dark:bg-purple-900/40', border: 'border-line', text: 'text-purple-800 dark:text-purple-200' },
   literal:     { bg: 'bg-soft', border: 'border-line-strong', text: 'text-body' },
   quantifier:  { bg: 'bg-amber-100 dark:bg-amber-900/40', border: 'border-amber-300 dark:border-amber-700', text: 'text-amber-800 dark:text-amber-200' },
-  class:       { bg: 'bg-blue-100 dark:bg-blue-900/40', border: 'border-blue-300 dark:border-blue-700', text: 'text-blue-800 dark:text-blue-200' },
-  group:       { bg: 'bg-green-100 dark:bg-green-900/40', border: 'border-green-300 dark:border-green-700', text: 'text-green-800 dark:text-green-200' },
-  escape:      { bg: 'bg-teal-100 dark:bg-teal-900/40', border: 'border-teal-300 dark:border-teal-700', text: 'text-teal-800 dark:text-teal-200' },
-  alternation: { bg: 'bg-rose-100 dark:bg-rose-900/40', border: 'border-rose-300 dark:border-rose-700', text: 'text-rose-800 dark:text-rose-200' },
-  special:     { bg: 'bg-indigo-100 dark:bg-indigo-900/40', border: 'border-indigo-300 dark:border-indigo-700', text: 'text-indigo-800 dark:text-indigo-200' },
+  class:       { bg: 'bg-blue-100 dark:bg-blue-900/40', border: 'border-line', text: 'text-blue-800 dark:text-blue-200' },
+  group:       { bg: 'bg-green-100 dark:bg-green-900/40', border: 'border-line', text: 'text-green-800 dark:text-green-200' },
+  escape:      { bg: 'bg-teal-100 dark:bg-teal-900/40', border: 'border-line', text: 'text-teal-800 dark:text-teal-200' },
+  alternation: { bg: 'bg-rose-100 dark:bg-rose-900/40', border: 'border-line', text: 'text-rose-800 dark:text-rose-200' },
+  special:     { bg: 'bg-indigo-100 dark:bg-indigo-900/40', border: 'border-line', text: 'text-indigo-800 dark:text-indigo-200' },
 }
 
 // ── Regex tokenizer ──
@@ -527,7 +527,7 @@ export default function RegexEngineVisualizer() {
               onClick={() => toggleFlag(flag)}
               className={`px-2.5 py-1 text-xs font-mono rounded-md border transition-colors ${
                 flags.includes(flag)
-                  ? 'bg-orange-100 dark:bg-orange-900/40 border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-300'
+                  ? 'bg-orange-100 dark:bg-orange-900/40 border-line text-orange-700 dark:text-orange-300'
                   : 'bg-subtle border-line text-muted'
               }`}
               title={`${label}: ${desc}`}
@@ -557,7 +557,7 @@ export default function RegexEngineVisualizer() {
           <button
             onClick={handleTogglePlay}
             disabled={!isValid || !pattern || !testStr}
-            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             {isPlaying ? <Pause size={16} /> : <Play size={16} />}
             {currentStep === -1 ? '매칭 시작' : isPlaying ? '일시정지' : '재생'}
@@ -595,7 +595,7 @@ export default function RegexEngineVisualizer() {
           <div className="flex items-center gap-3">
             <div className="flex-1 h-2 bg-track rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-orange-400 to-red-500 rounded-full transition-all duration-200"
+                className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-200"
                 style={{ width: `${currentStep < 0 ? 0 : ((currentStep + 1) / totalSteps) * 100}%` }}
               />
             </div>
@@ -689,7 +689,7 @@ export default function RegexEngineVisualizer() {
             {currentAttempt && (
               <div className={`mt-4 px-4 py-3 rounded-lg text-sm ${
                 currentAttempt.success
-                  ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200'
+                  ? 'bg-subtle border border-line text-green-800 dark:text-green-200'
                   : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200'
               }`}>
                 <span className="font-medium">위치 {currentAttempt.position}:</span>{' '}
@@ -730,14 +730,14 @@ export default function RegexEngineVisualizer() {
                         <span className="text-xs font-medium text-muted">매칭 #{i + 1}</span>
                         <span className="text-[10px] text-faint">위치 {r.start}~{r.end - 1}</span>
                       </div>
-                      <p className="font-mono text-sm text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded break-all">
+                      <p className="font-mono text-sm text-green-700 dark:text-green-300 bg-subtle px-2 py-1 rounded break-all">
                         &quot;{r.text}&quot;
                       </p>
                       {r.groups.length > 0 && r.groups.some(g => g !== '') && (
                         <div className="mt-2 space-y-1">
                           {r.groups.map((g, gi) => g !== '' && (
                             <div key={gi} className="flex items-center gap-2 text-xs">
-                              <span className="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded font-mono">
+                              <span className="px-1.5 py-0.5 bg-soft text-sub rounded font-mono">
                                 ${gi + 1}
                               </span>
                               <span className="font-mono text-body">&quot;{g}&quot;</span>
@@ -828,7 +828,7 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
                     </thead>
                     <tbody>
                       {SYNTAX_TABLE.map((row, i) => (
-                        <tr key={i} className="border-b border-gray-100 dark:border-gray-700/50">
+                        <tr key={i} className="border-b border-line">
                           <td className="py-2 pr-4 font-mono text-orange-600 dark:text-orange-400 font-bold">{row.syntax}</td>
                           <td className="py-2 text-sub">{row.desc}</td>
                         </tr>
@@ -858,7 +858,7 @@ const matches = str.match${flags.includes('g') ? '' : ''}All(regex);
                       결과: <span className="font-mono bg-green-100 dark:bg-green-900/40 px-1 rounded text-green-800 dark:text-green-200">&quot;a&quot; and &quot;b&quot;</span> (전체 매칭)
                     </p>
                   </div>
-                  <div className="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4 border border-teal-200 dark:border-teal-800">
+                  <div className="bg-subtle rounded-lg p-4 border border-line">
                     <h4 className="font-semibold text-teal-800 dark:text-teal-200 mb-2">게으른 (Lazy)</h4>
                     <p className="text-sm text-body mb-2">
                       패턴: <code className="font-mono bg-surface px-1 rounded">&quot;.*?&quot;</code>

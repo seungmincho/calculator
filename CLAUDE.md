@@ -427,7 +427,7 @@ Header shows recently used tools per category (max 4) using `recentTools.ts` uti
 
 | # | 파일 | 작업 | 코드 위치 힌트 |
 |---|------|------|---------------|
-| 1 | `/src/config/menuConfig.ts` | 메뉴 항목 추가 | 적절한 카테고리 items 배열 끝에 추가 |
+| 1 | `/src/config/menuConfig.ts` + `/src/config/toolIcons.ts` | 메뉴 항목 + 라인 아이콘 추가 | 적절한 카테고리 items 배열 끝에 추가 |
 | 2 | `/messages/ko.json` | 한국어 번역 3곳 | footer.links + toolsShowcase.tools + 컴포넌트 네임스페이스 |
 | 3 | `/messages/en.json` | 영어 번역 3곳 | ko.json과 동일 구조 |
 | 4 | `/src/app/sitemap.ts` | URL 추가 | 배열 끝에 추가 |
@@ -635,18 +635,21 @@ export default function NewTool() {
 
 ### 디자인 시스템 (토스 스타일, 2026-09-30~) — **페이지별 색상 하드코딩 금지**
 
+목표: "AI가 만든 티" 없이 잘 만든 도구 모음. **색은 의미가 있을 때만**(주요 버튼·오류/경고·결과 숫자), 아이콘은 단색 라인 한 종류, 박스는 흰색/회색 두 가지.
+
 단일 출처: `src/app/globals.css`. 색·모서리·그림자 변경은 여기만 수정하면 전 페이지 반영.
+- **배경**: 페이지 흰색(`bg-canvas`), 카드 = 흰색 + 1px 테두리(`ui-card`). 그림자는 팝오버/모달에만.
 - **시맨틱 토큰** (`:root` 라이트 / `.dark` 다크 값을 CSS 변수로 전환 → `dark:` 접두사 불필요)
   - 텍스트: `text-fg`(제목) `text-body`(본문/라벨) `text-sub`(보조) `text-muted`(설명) `text-faint`(플레이스홀더/비활성)
-  - 배경: `bg-canvas`(페이지) `bg-surface`(카드) `bg-field`(입력) `bg-subtle`(카드 내부 구역) `bg-soft`(칩/보조버튼/hover) `bg-track`(진행바 트랙)
+  - 배경: `bg-canvas` `bg-surface`(카드) `bg-field` `bg-subtle`(카드 내부 구역·정보 박스) `bg-soft`(칩/보조버튼/hover/아이콘 타일) `bg-track`
   - 테두리: `border-line` `border-line-strong` · 브랜드: `text-primary` `bg-primary` `bg-primary-soft`
 - **컴포넌트 클래스** (`@layer components` → 같이 쓴 유틸리티가 이김, 예: `ui-card p-6 rounded-xl`)
-  - `ui-card` 카드 · `ui-field` 입력(회색 채움+포커스 파란 링) · `ui-btn` 메인 버튼 · `ui-btn-soft` 보조 버튼
-- **팔레트 재정의**: gray/slate = 토스 그레이, blue = 토스 블루(#3182F6), **indigo/violet/purple → blue로 매핑**(보라 그라데이션 제거). 기존 `bg-blue-600` 등은 그대로 동작.
-- 폰트: Pretendard(CDN). 페이지 배경은 body `bg-canvas` — page.tsx 래퍼에 배경 그라데이션 넣지 말 것.
-- `src/lib/glass.ts`의 `glassCard/glassInput`은 `ui-card/ui-field` 별칭(레거시 238파일 호환). 새 코드는 `ui-*` 직접 사용.
-- 금지: `backdrop-blur`, 배경 color blob(`blur-3xl`), 파랑→보라 그라데이션 버튼, `text-gray-900 dark:text-white` 같은 light/dark 쌍(→ 토큰), 인라인 `rgba()` 그림자.
-- 일괄 치환 스크립트: `python scripts/codemod-design-tokens.py` (재실행 안전, 새로 들어온 쌍 패턴 정리용)
+  - `ui-card` 카드 · `ui-field` 입력(회색 채움, `bg-subtle` 안에서는 자동으로 흰색) · `ui-btn` 메인 버튼 · `ui-btn-soft` 보조 버튼
+- **아이콘**: 도구 아이콘은 `<ToolIcon href=... />`(`src/config/toolIcons.ts` 매핑, 새 도구 추가 시 한 줄 추가). menuConfig의 emoji `icon`은 화면에 쓰지 말 것.
+- **팔레트 재정의**: gray/slate = 토스 그레이, blue = 토스 블루(#3182F6), indigo/violet/purple → blue. 폰트 Pretendard.
+- 금지: 장식용 이모지(제목·버튼·라벨 앞), 입력 라벨/섹션 제목 앞 아이콘, 색 틴트 박스(`bg-green-50` 등 — 정보 박스는 `bg-subtle`, 경고만 amber/red), 그라데이션 버튼·배너, `backdrop-blur`, 배경 color blob, light/dark 색 쌍 하드코딩, 인라인 `rgba()` 그림자, page.tsx 래퍼 배경.
+- 게임·이모지 도구 등 이모지가 콘텐츠인 곳은 예외.
+- 일괄 치환 스크립트: `python scripts/codemod-design-tokens.py` (재실행 안전)
 
 ```
 카드:       ui-card p-6
@@ -654,7 +657,7 @@ export default function NewTool() {
 메인 버튼:  ui-btn px-4 py-3
 보조 버튼:  ui-btn-soft px-4 py-2   또는  bg-soft hover:bg-subtle text-body rounded-xl
 제목/본문:  text-fg / text-body / text-muted
-정보 박스:  bg-primary-soft text-primary rounded-2xl p-5
+정보 박스:  bg-subtle rounded-2xl p-5 text-sub   (경고: bg-amber-50 text-amber-800)
 결과 숫자:  text-3xl font-bold text-fg tabular-nums
 ```
 

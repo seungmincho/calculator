@@ -223,7 +223,7 @@ export default function PathfindingCompareVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.search')}
             </span>
             <span className="text-xs text-gray-400">★☆☆</span>
@@ -266,12 +266,12 @@ export default function PathfindingCompareVisualizer() {
             {/* Comparison stats */}
             {result && currentStepIndex >= totalSteps - 1 && (
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-3 text-center">
+                <div className="bg-subtle rounded-lg p-3 text-center">
                   <p className="text-xs font-bold text-blue-700 dark:text-blue-400 mb-1">A*</p>
                   <p className="text-sm text-body">{t('stats.visited')}: <strong className="text-blue-600">{result.astarVisited}</strong></p>
                   <p className="text-sm text-body">{t('stats.pathLength')}: <strong className="text-blue-600">{result.astarPathLength || '-'}</strong></p>
                 </div>
-                <div className="bg-orange-50 dark:bg-orange-950/30 rounded-lg p-3 text-center">
+                <div className="bg-subtle rounded-lg p-3 text-center">
                   <p className="text-xs font-bold text-orange-700 dark:text-orange-400 mb-1">Dijkstra</p>
                   <p className="text-sm text-body">{t('stats.visited')}: <strong className="text-orange-600">{result.dijkstraVisited}</strong></p>
                   <p className="text-sm text-body">{t('stats.pathLength')}: <strong className="text-orange-600">{result.dijkstraPathLength || '-'}</strong></p>
@@ -310,11 +310,11 @@ export default function PathfindingCompareVisualizer() {
 
             <div className="flex flex-wrap gap-2">
               <button onClick={randomWalls}
-                className="px-3 py-1.5 text-xs rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200/50 dark:border-blue-700/30 transition-colors">
+                className="px-3 py-1.5 text-xs rounded-lg bg-subtle text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-line transition-colors">
                 🎲 {t('controls.randomWalls')}
               </button>
               <button onClick={makeMaze}
-                className="px-3 py-1.5 text-xs rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/40 border border-purple-200/50 dark:border-purple-700/30 transition-colors">
+                className="px-3 py-1.5 text-xs rounded-lg bg-subtle text-purple-700 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/40 border border-line transition-colors">
                 🏰 {t('controls.maze')}
               </button>
               <button onClick={resetGrid}
@@ -332,8 +332,8 @@ export default function PathfindingCompareVisualizer() {
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
-                      activeTab === tab.key ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20' : 'text-muted'
-                    }`}>{tab.icon} {tab.label}</button>
+                      activeTab === tab.key ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle' : 'text-muted'
+                    }`}>{tab.label}</button>
                 ))}
               </div>
               <div className="p-4 max-h-[70vh] overflow-y-auto">
@@ -341,7 +341,7 @@ export default function PathfindingCompareVisualizer() {
                   <div className="space-y-4">
                     <p className="text-sm text-sub">{t('stepsGuide.description')}</p>
 
-                    <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-3 text-xs">
+                    <div className="bg-subtle rounded-lg p-3 text-xs">
                       <p className="font-bold text-blue-700 dark:text-blue-400 mb-1">A* vs Dijkstra</p>
                       <p className="text-sub">{t('stepsGuide.comparison')}</p>
                     </div>

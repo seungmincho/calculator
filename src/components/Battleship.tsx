@@ -771,7 +771,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
               <div className="flex justify-center gap-3 mb-4">
                 <button
                   onClick={() => setHorizontal(!horizontal)}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg"
+                  className="flex items-center gap-2 px-4 py-2 bg-soft text-sub rounded-lg"
                 >
                   <RotateCw className="w-4 h-4" />
                   {horizontal ? (t('horizontal') || 'Horizontal') : (t('vertical') || 'Vertical')}
@@ -810,9 +810,9 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                     key={ship.id}
                     className={`px-3 py-1 rounded-lg text-sm ${
                       idx < currentShipIndex
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                        ? 'bg-soft text-sub'
                         : idx === currentShipIndex
-                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+                        ? 'bg-soft text-sub'
                         : 'bg-soft text-gray-500'
                     }`}
                   >
@@ -826,7 +826,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                 <div className="mt-6 text-center">
                   <button
                     onClick={handleConfirmPlacement}
-                    className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-xl transition-all"
+                    className="px-8 py-3 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl transition-all"
                   >
                     {t('ready') || 'Ready!'}
                   </button>
@@ -879,7 +879,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                 onClick={() => setShowChat(!showChat)}
                 className={`relative p-2 rounded-lg transition-all ${
                   showChat
-                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                    ? 'bg-soft text-sub'
                     : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
               >
@@ -965,7 +965,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
           {!gameState.winner && (
             <div className={`text-center py-2 px-4 rounded-xl ${
               gameState.currentTurn === myRole
-                ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+                ? 'bg-soft text-sub'
                 : 'bg-soft text-sub'
             }`}>
               {gameState.currentTurn === myRole ? t('yourTurn') : t('opponentTurn')}
@@ -976,7 +976,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
           {gameState.winner && (
             <div className={`text-center py-4 px-6 rounded-2xl ${
               gameState.winner === myRole
-                ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-track text-body'
             }`}>
               <Trophy className="w-8 h-8 mx-auto mb-2" />
@@ -1031,7 +1031,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
                       ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 line-through'
                       : ship.hits > 0
                       ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
-                      : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                      : 'bg-soft text-sub'
                   }`}
                 >
                   {ship.name} ({ship.size - ship.hits}/{ship.size})
@@ -1045,7 +1045,7 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
             <div className="flex gap-3">
               <button
                 onClick={handleRestart}
-                className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-xl transition-all"
+                className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl transition-all"
               >
                 <RefreshCw className="w-5 h-5" />
                 {t('playAgain')}
@@ -1066,7 +1066,6 @@ export default function Battleship({ initialRoom, isHost: isHostProp, hostPeerId
             <div className="bg-surface rounded-2xl shadow-lg h-[500px] flex flex-col">
               <div className="p-4 border-b border-line">
                 <h3 className="font-semibold text-fg flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5" />
                   {t('chat') || 'Chat'}
                 </h3>
               </div>

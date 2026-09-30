@@ -26,16 +26,16 @@ const DIFF_COLORS: Record<TermDifficulty, { bg: string; text: string; dot: strin
 }
 
 const CATEGORY_COLORS: Record<TermCategory, { bg: string; text: string; border: string }> = {
-  dataStructures: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-blue-300 dark:border-blue-700' },
-  algorithms: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', border: 'border-purple-300 dark:border-purple-700' },
-  network: { bg: 'bg-cyan-100 dark:bg-cyan-900/40', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-cyan-300 dark:border-cyan-700' },
-  os: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-orange-700 dark:text-orange-300', border: 'border-orange-300 dark:border-orange-700' },
-  database: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', border: 'border-green-300 dark:border-green-700' },
-  architecture: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-indigo-300 dark:border-indigo-700' },
-  softwareEngineering: { bg: 'bg-pink-100 dark:bg-pink-900/40', text: 'text-pink-700 dark:text-pink-300', border: 'border-pink-300 dark:border-pink-700' },
+  dataStructures: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-line' },
+  algorithms: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', border: 'border-line' },
+  network: { bg: 'bg-cyan-100 dark:bg-cyan-900/40', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-line' },
+  os: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-orange-700 dark:text-orange-300', border: 'border-line' },
+  database: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', border: 'border-line' },
+  architecture: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-line' },
+  softwareEngineering: { bg: 'bg-pink-100 dark:bg-pink-900/40', text: 'text-pink-700 dark:text-pink-300', border: 'border-line' },
   security: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300', border: 'border-red-300 dark:border-red-700' },
   linux: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-700' },
-  web: { bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-teal-700 dark:text-teal-300', border: 'border-teal-300 dark:border-teal-700' },
+  web: { bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-teal-700 dark:text-teal-300', border: 'border-line' },
 }
 
 type ViewMode = 'list' | 'card'
@@ -218,7 +218,7 @@ export default function CsDictionary() {
             <span className="text-xs text-muted mb-1">{t('stats.progress')}</span>
             <div className="w-full bg-track rounded-full h-3 overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500"
+                className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-500"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
@@ -277,7 +277,7 @@ export default function CsDictionary() {
                   onClick={() => setCategory(cat)}
                   className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     isActive
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm'
+                      ? 'bg-primary hover:bg-blue-700 text-white shadow-sm'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -333,7 +333,7 @@ export default function CsDictionary() {
                     onClick={() => setLearningFilter(s)}
                     className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all ${
                       isActive
-                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                        ? 'bg-primary hover:bg-blue-700 text-white'
                         : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -349,14 +349,14 @@ export default function CsDictionary() {
           <div className="flex items-center gap-1 ml-auto">
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-md ${viewMode === 'list' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
+              className={`p-1.5 rounded-md ${viewMode === 'list' ? 'bg-soft text-sub' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
               title={t('view.list')}
             >
               <List className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('card')}
-              className={`p-1.5 rounded-md ${viewMode === 'card' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
+              className={`p-1.5 rounded-md ${viewMode === 'card' ? 'bg-soft text-sub' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
               title={t('view.card')}
             >
               <LayoutGrid className="w-4 h-4" />
@@ -499,7 +499,7 @@ const ListItem = forwardRef<HTMLDivElement, {
     <div
       ref={ref}
       className={`bg-surface rounded-xl shadow-sm border transition-all duration-300 ${
-        highlighted ? 'ring-2 ring-blue-500 border-blue-300 dark:border-blue-600' : 'border-line'
+        highlighted ? 'ring-2 ring-blue-500 border-line' : 'border-line'
       }`}
     >
       {/* Header row */}
@@ -557,7 +557,7 @@ const CardItem = forwardRef<HTMLDivElement, {
     <div
       ref={ref}
       className={`bg-surface rounded-xl shadow-lg p-5 border transition-all duration-300 ${
-        highlighted ? 'ring-2 ring-blue-500 border-blue-300 dark:border-blue-600' : 'border-line'
+        highlighted ? 'ring-2 ring-blue-500 border-line' : 'border-line'
       }`}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
@@ -615,7 +615,7 @@ function TermDetail({
       {term.example && (
         <div>
           <h4 className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('term.example')}</h4>
-          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 text-sm text-body font-mono whitespace-pre-wrap border border-line">
+          <div className="bg-subtle rounded-lg p-3 text-sm text-body font-mono whitespace-pre-wrap border border-line">
             {term.example}
           </div>
         </div>
@@ -633,7 +633,7 @@ function TermDetail({
                 <button
                   key={relId}
                   onClick={() => onRelatedClick(relId)}
-                  className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                  className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-subtle text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
                 >
                   {related.nameKo}
                 </button>
@@ -649,7 +649,7 @@ function TermDetail({
           onClick={onToggleLearned}
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             learned
-              ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
+              ? 'bg-soft text-sub'
               : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >

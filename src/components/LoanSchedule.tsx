@@ -525,7 +525,6 @@ export default function LoanSchedule() {
           {/* Start Date (shared) */}
           <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
             <label className="block text-sm font-medium text-body mb-1">
-              <Calendar className="w-4 h-4 inline mr-1" />
               {t('startDate')}
             </label>
             <input
@@ -578,9 +577,8 @@ export default function LoanSchedule() {
 
             {/* Early Repayment Savings */}
             {extraMonthly > 0 && resultNoExtra && result && (
-              <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 border border-green-200 dark:border-green-800">
+              <div className="bg-subtle rounded-xl p-4 border border-line">
                 <h3 className="text-sm font-semibold text-green-800 dark:text-green-300 flex items-center gap-1.5 mb-2">
-                  <TrendingDown className="w-4 h-4" />
                   {t('earlyRepaymentSavings')}
                 </h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
@@ -696,7 +694,7 @@ export default function LoanSchedule() {
                   <div className="px-4 py-3 border-t border-line text-center">
                     <button
                       onClick={() => setVisibleRows(prev => Math.min(prev + 48, result.schedule.length))}
-                      className="flex items-center gap-1.5 mx-auto px-4 py-2 text-sm font-medium rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                      className="flex items-center gap-1.5 mx-auto px-4 py-2 text-sm font-medium rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-blue-700 hover:to-indigo-700 transition-colors"
                     >
                       <Plus className="w-4 h-4" />
                       {t('loadMore')} ({result.schedule.length - visibleRows}{t('rowsRemaining')})
@@ -779,7 +777,7 @@ export default function LoanSchedule() {
           {/* Side-by-side summary */}
           <div className="grid lg:grid-cols-2 gap-6">
             {/* Loan A Summary */}
-            <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+            <div className="bg-subtle rounded-xl p-6 border border-line">
               <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-4">{t('loanA')}</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
@@ -806,7 +804,7 @@ export default function LoanSchedule() {
             </div>
 
             {/* Loan B Summary */}
-            <div className="bg-green-50 dark:bg-green-950 rounded-xl p-6 border border-green-200 dark:border-green-800">
+            <div className="bg-subtle rounded-xl p-6 border border-line">
               <h3 className="text-sm font-semibold text-green-800 dark:text-green-300 mb-4">{t('loanB')}</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
@@ -864,7 +862,6 @@ export default function LoanSchedule() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

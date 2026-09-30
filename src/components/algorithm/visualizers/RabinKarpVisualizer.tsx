@@ -146,29 +146,29 @@ export default function RabinKarpVisualizer() {
   ]
 
   const ACTION_STYLE: Record<string, string> = {
-    'compute-pattern-hash': 'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50 dark:border-blue-700/40',
-    'compute-window-hash':  'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50 dark:border-blue-700/40',
-    'hash-match':           'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300/50 dark:border-emerald-700/40',
-    'hash-mismatch':        'bg-gray-50 dark:bg-gray-900/20 border-gray-300/50 dark:border-gray-700/40',
-    'verify-start':         'bg-pink-50 dark:bg-pink-900/20 border-pink-300/50 dark:border-pink-700/40',
-    'verify-match':         'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300/50 dark:border-emerald-700/40',
+    'compute-pattern-hash': 'bg-subtle border-line',
+    'compute-window-hash':  'bg-subtle border-line',
+    'hash-match':           'bg-subtle border-line',
+    'hash-mismatch':        'bg-subtle border-line',
+    'verify-start':         'bg-subtle border-line',
+    'verify-match':         'bg-subtle border-line',
     'verify-mismatch':      'bg-amber-50 dark:bg-amber-900/20 border-amber-300/50 dark:border-amber-700/40',
-    'found':                'bg-purple-50 dark:bg-purple-900/20 border-purple-300/50 dark:border-purple-700/40',
-    'slide-window':         'bg-cyan-50 dark:bg-cyan-900/20 border-cyan-300/50 dark:border-cyan-700/40',
-    'complete':             'bg-purple-50 dark:bg-purple-900/20 border-purple-300/50 dark:border-purple-700/40',
+    'found':                'bg-subtle border-line',
+    'slide-window':         'bg-subtle border-line',
+    'complete':             'bg-subtle border-line',
   }
 
   const ACTION_BADGE: Record<string, string> = {
-    'compute-pattern-hash': 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
-    'compute-window-hash':  'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
-    'hash-match':           'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
-    'hash-mismatch':        'bg-gray-100 dark:bg-gray-900/40 text-gray-700 dark:text-gray-400',
-    'verify-start':         'bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-400',
-    'verify-match':         'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+    'compute-pattern-hash': 'bg-soft text-sub',
+    'compute-window-hash':  'bg-soft text-sub',
+    'hash-match':           'bg-soft text-sub',
+    'hash-mismatch':        'bg-soft text-sub',
+    'verify-start':         'bg-soft text-sub',
+    'verify-match':         'bg-soft text-sub',
     'verify-mismatch':      'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400',
-    'found':                'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
-    'slide-window':         'bg-cyan-100 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-400',
-    'complete':             'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
+    'found':                'bg-soft text-sub',
+    'slide-window':         'bg-soft text-sub',
+    'complete':             'bg-soft text-sub',
   }
 
   return (
@@ -178,7 +178,7 @@ export default function RabinKarpVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.string')}
             </span>
             <span className="text-xs text-gray-400">★★☆</span>
@@ -273,7 +273,7 @@ export default function RabinKarpVisualizer() {
             </div>
 
             <button onClick={runAlgorithm}
-              className="w-full px-4 py-2 bg-gradient-to-r from-pink-600 to-rose-600 text-white rounded-lg font-medium hover:from-pink-700 hover:to-rose-700 transition-colors">
+              className="w-full px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-pink-700 hover:to-rose-700 transition-colors">
               {t('run')}
             </button>
           </div>
@@ -286,9 +286,9 @@ export default function RabinKarpVisualizer() {
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
-                      activeTab === tab.key ? 'text-pink-600 dark:text-pink-400 border-b-2 border-pink-500 bg-pink-50/50 dark:bg-pink-900/20'
+                      activeTab === tab.key ? 'text-pink-600 dark:text-pink-400 border-b-2 border-pink-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
-                    }`}>{tab.icon} {tab.label}</button>
+                    }`}>{tab.label}</button>
                 ))}
               </div>
               <div className="p-4 max-h-[70vh] overflow-y-auto">
@@ -334,7 +334,7 @@ function StepsList({ steps, currentIndex, onStepClick, actionStyle, actionBadge 
         const idx = ws + wi; const isCur = idx === currentIndex; const isAct = idx <= currentIndex
         return (
           <div key={idx} data-active={isCur ? 'true' : undefined} onClick={() => onStepClick(idx)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'}`}>
+            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-subtle' : 'border-line opacity-40'}`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap ${actionBadge[step.action] || ''}`}>
                 {step.action.replace('compute-', '').replace('pattern-', 'P:').replace('window-', 'W:').replace('hash-', 'H:').replace('verify-', 'V:').replace('slide-', 'S:')}

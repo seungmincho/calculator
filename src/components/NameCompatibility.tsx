@@ -378,7 +378,7 @@ export default function NameCompatibility() {
 
               <button
                 onClick={calculate}
-                className="w-full bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-lg px-4 py-3 font-medium hover:from-pink-600 hover:to-red-600 transition-all flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-pink-600 hover:to-red-600 transition-all flex items-center justify-center gap-2"
               >
                 <Heart className="w-5 h-5" />
                 {t('startButton')}
@@ -408,7 +408,7 @@ export default function NameCompatibility() {
                     {interleaved.map((char, i) => (
                       <div
                         key={i}
-                        className="flex flex-col items-center p-2 bg-pink-50 dark:bg-pink-950 rounded-lg transition-all duration-300"
+                        className="flex flex-col items-center p-2 bg-subtle rounded-lg transition-all duration-300"
                         style={{ animationDelay: `${i * 80}ms` }}
                       >
                         <span className="text-lg font-bold text-fg">{char}</span>
@@ -454,7 +454,7 @@ export default function NameCompatibility() {
                               className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold transition-all duration-300 ${
                                 rowIdx === reductionRows.length - 1
                                   ? 'bg-red-500 text-white scale-110'
-                                  : 'bg-pink-50 dark:bg-pink-900 text-pink-700 dark:text-pink-300'
+                                  : 'bg-subtle text-pink-700 dark:text-pink-300'
                               }`}
                             >
                               {num}
@@ -511,21 +511,21 @@ export default function NameCompatibility() {
                   <div className="flex flex-wrap justify-center gap-2">
                     <button
                       onClick={shareResult}
-                      className="flex items-center gap-1.5 px-4 py-2 bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300 rounded-lg hover:bg-pink-200 dark:hover:bg-pink-800 transition-colors text-sm font-medium"
+                      className="flex items-center gap-1.5 px-4 py-2 bg-soft text-sub rounded-lg hover:bg-pink-200 dark:hover:bg-pink-800 transition-colors text-sm font-medium"
                     >
                       <Share2 className="w-4 h-4" />
                       {t('shareButton')}
                     </button>
                     <button
                       onClick={saveImage}
-                      className="flex items-center gap-1.5 px-4 py-2 bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300 rounded-lg hover:bg-pink-200 dark:hover:bg-pink-800 transition-colors text-sm font-medium"
+                      className="flex items-center gap-1.5 px-4 py-2 bg-soft text-sub rounded-lg hover:bg-pink-200 dark:hover:bg-pink-800 transition-colors text-sm font-medium"
                     >
                       <Download className="w-4 h-4" />
                       {t('saveImageButton')}
                     </button>
                     <button
                       onClick={copyLink}
-                      className="flex items-center gap-1.5 px-4 py-2 bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300 rounded-lg hover:bg-pink-200 dark:hover:bg-pink-800 transition-colors text-sm font-medium"
+                      className="flex items-center gap-1.5 px-4 py-2 bg-soft text-sub rounded-lg hover:bg-pink-200 dark:hover:bg-pink-800 transition-colors text-sm font-medium"
                     >
                       {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                       {copiedLink ? t('linkCopied') : t('copyLinkButton')}

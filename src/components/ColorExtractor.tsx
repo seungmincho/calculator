@@ -375,7 +375,7 @@ export default function ColorExtractor() {
           <div
             className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors ${
               isDragging
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                ? 'border-blue-500 bg-subtle'
                 : 'border-line-strong'
             }`}
             onDragOver={handleDragOver}
@@ -386,7 +386,7 @@ export default function ColorExtractor() {
             <p className="text-lg text-sub mb-4">{t('dragDrop')}</p>
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-8 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
             >
               {t('upload')}
             </button>
@@ -450,7 +450,6 @@ export default function ColorExtractor() {
             <div className="lg:col-span-1">
               <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
                 <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                  <Droplet className="w-5 h-5" />
                   {t('pickedColor')}
                 </h2>
 

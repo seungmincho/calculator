@@ -273,7 +273,7 @@ export default function BloodSugar() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-            <span>🩸</span> {t('title')}
+            {t('title')}
           </h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
@@ -388,7 +388,7 @@ export default function BloodSugar() {
             <div className="flex gap-2">
               <button
                 onClick={handleSubmit}
-                className="flex-1 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-lg px-4 py-3 font-medium hover:from-red-700 hover:to-pink-700 transition-all"
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-lg px-4 py-3 font-medium hover:from-red-700 hover:to-pink-700 transition-all"
               >
                 {t('submit')}
               </button>
@@ -406,7 +406,6 @@ export default function BloodSugar() {
           <div className={`${glassCard} ${glassInset} p-6 mt-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-red-500" />
                 {t('statistics')}
               </h2>
               <div className="flex rounded-lg overflow-hidden border border-line text-sm">
@@ -456,7 +455,7 @@ export default function BloodSugar() {
                   <>
                     <button
                       onClick={handleExportCsv}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-lg hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-sub rounded-lg hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors"
                     >
                       <Download className="w-4 h-4" />
                       {t('exportCsv')}
@@ -494,7 +493,7 @@ export default function BloodSugar() {
                       return (
                         <tr
                           key={record.id}
-                          className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors"
+                          className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors"
                         >
                           <td className="py-2.5 pr-3 text-sub whitespace-nowrap">
                             {record.date}<br />
@@ -582,7 +581,7 @@ export default function BloodSugar() {
         <div className="mt-6 pt-6 border-t border-line">
           <div className="flex flex-wrap gap-3 text-sm">
             <LegendBadge label={t('classLow')} color="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400" />
-            <LegendBadge label={t('classNormalFasting') + ' / ' + t('classNormalAfterMeal')} color="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400" />
+            <LegendBadge label={t('classNormalFasting') + ' / ' + t('classNormalAfterMeal')} color="bg-soft text-sub" />
             <LegendBadge label={t('classPreDiabetes')} color="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400" />
             <LegendBadge label={t('classDiabetes')} color="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400" />
           </div>

@@ -465,7 +465,7 @@ export default function SalaryRank() {
             {/* Buttons */}
             <div className="flex gap-2">
               <button onClick={handleCalculate} disabled={!salaryInput}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
                 <BarChart3 className="w-5 h-5" />
                 {t('calculate')}
               </button>
@@ -476,7 +476,7 @@ export default function SalaryRank() {
           </div>
 
           {/* Data source note */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+          <div className="bg-subtle rounded-xl p-4">
             <p className="text-xs text-blue-700 dark:text-blue-300 font-medium mb-1">{t('dataSource')}</p>
             <p className="text-xs text-blue-600 dark:text-blue-400">{t('dataSourceDesc')}</p>
           </div>
@@ -564,7 +564,7 @@ export default function SalaryRank() {
               {/* Distribution chart */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-sm font-semibold text-body mb-4 flex items-center gap-2">
-                  <BarChart3 className="w-4 h-4" /> {t('distributionChart')}
+                  {t('distributionChart')}
                 </h3>
                 <div className="h-64">
                   <ResponsiveContainer width="100%" height="100%">
@@ -592,7 +592,7 @@ export default function SalaryRank() {
 
               {/* Data contribution */}
               {showContribute && (
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-xl p-4">
+                <div className="bg-subtle rounded-xl p-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-semibold text-green-800 dark:text-green-200">{t('contributeTitle')}</p>
@@ -624,21 +624,21 @@ export default function SalaryRank() {
               {communityStats && communityStats.totalCount >= 5 && (
                 <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-sm font-semibold text-body mb-4 flex items-center gap-2">
-                    <Users className="w-4 h-4 text-indigo-500" /> {t('community.title')}
+                    {t('community.title')}
                     <span className="text-xs font-normal text-faint">({t('community.realtime')})</span>
                   </h3>
 
                   {/* Summary stats */}
                   <div className="grid grid-cols-3 gap-3 mb-5">
-                    <div className="bg-indigo-50 dark:bg-indigo-950 rounded-lg p-3 text-center">
+                    <div className="bg-subtle rounded-lg p-3 text-center">
                       <p className="text-xs text-indigo-600 dark:text-indigo-400">{t('community.participants')}</p>
                       <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300">{communityStats.totalCount.toLocaleString()}{t('community.people')}</p>
                     </div>
-                    <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3 text-center">
+                    <div className="bg-subtle rounded-lg p-3 text-center">
                       <p className="text-xs text-blue-600 dark:text-blue-400">{t('community.avgSalary')}</p>
                       <p className="text-lg font-bold text-blue-700 dark:text-blue-300">{formatKRW(communityStats.avgSalary)}</p>
                     </div>
-                    <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-3 text-center">
+                    <div className="bg-subtle rounded-lg p-3 text-center">
                       <p className="text-xs text-purple-600 dark:text-purple-400">{t('community.medianSalary')}</p>
                       <p className="text-lg font-bold text-purple-700 dark:text-purple-300">{formatKRW(communityStats.medianSalary)}</p>
                     </div>
@@ -646,7 +646,7 @@ export default function SalaryRank() {
 
                   {/* Community rank */}
                   {communityRank && communityRank.total > 0 && (
-                    <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950 dark:to-purple-950 rounded-lg p-4 mb-5">
+                    <div className="bg-subtle rounded-lg p-4 mb-5">
                       <div className="flex items-center justify-between">
                         <p className="text-sm text-indigo-700 dark:text-indigo-300">{t('community.yourRank')}</p>
                         <p className="text-xl font-black text-indigo-700 dark:text-indigo-300">
@@ -762,7 +762,7 @@ export default function SalaryRank() {
               <summary className="cursor-pointer font-medium text-body hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 {t(`faq.q${i}.question`)}
               </summary>
-              <p className="mt-2 text-sm text-sub pl-4 border-l-2 border-blue-300 dark:border-blue-700">
+              <p className="mt-2 text-sm text-sub pl-4 border-l-2 border-line">
                 {t(`faq.q${i}.answer`)}
               </p>
             </details>

@@ -701,7 +701,7 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
           {!gameState.winner && (
             <div className={`text-center py-2 px-4 rounded-xl ${
               gameState.currentTurn === myColor
-                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                ? 'bg-soft text-sub'
                 : 'bg-soft text-sub'
             }`}>
               {gameState.currentTurn === myColor ? t('yourTurn') : t('opponentTurn')}
@@ -712,9 +712,9 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
           {gameState.winner && (
             <div className={`text-center py-4 px-6 rounded-2xl ${
               gameState.winner === myColor
-                ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : gameState.winner === 'draw'
-                ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-track text-body'
             }`}>
               <Trophy className="w-8 h-8 mx-auto mb-2" />
@@ -745,7 +745,7 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
             <div className="flex gap-3">
               <button
                 onClick={handleRestart}
-                className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-xl"
+                className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl"
               >
                 <RefreshCw className="w-5 h-5" />
                 {t('playAgain')}
@@ -766,7 +766,6 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
             <div className="bg-surface rounded-2xl shadow-lg h-[500px] flex flex-col">
               <div className="p-4 border-b border-line">
                 <h3 className="font-semibold text-fg flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5" />
                   {t('chat') || 'Chat'}
                 </h3>
               </div>

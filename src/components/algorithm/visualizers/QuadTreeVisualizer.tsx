@@ -336,7 +336,7 @@ export default function QuadTreeVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.dataStructure')}
             </span>
             <span className="text-xs text-gray-400">★★☆</span>
@@ -445,14 +445,14 @@ export default function QuadTreeVisualizer() {
               <button
                 onClick={handleGenerateRandom}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-blue-600 hover:to-cyan-600 disabled:opacity-40"
               >
                 🎲 {t('controls.random')}
               </button>
               <button
                 onClick={handleGenerateClustered}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-purple-600 hover:to-pink-600 disabled:opacity-40"
               >
                 🫧 {t('controls.clustered')}
               </button>
@@ -549,11 +549,11 @@ export default function QuadTreeVisualizer() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-500 bg-emerald-50/50 dark:bg-emerald-900/20'
+                        ? 'text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -682,15 +682,15 @@ function QuadTreeStepsList({
   function actionColors(action: QuadTreeStep['action']): { dot: string; border: string; bg: string } {
     switch (action) {
       case 'insert':
-        return { dot: 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400', border: 'border-blue-200/50 dark:border-blue-700/30', bg: '' }
+        return { dot: 'bg-soft text-sub', border: 'border-line', bg: '' }
       case 'subdivide':
-        return { dot: 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400', border: 'border-purple-200/50 dark:border-purple-700/30', bg: '' }
+        return { dot: 'bg-soft text-sub', border: 'border-line', bg: '' }
       case 'search-check':
         return { dot: 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400', border: 'border-amber-200/50 dark:border-amber-700/30', bg: '' }
       case 'search-found':
-        return { dot: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400', border: 'border-emerald-200/50 dark:border-emerald-700/30', bg: '' }
+        return { dot: 'bg-soft text-sub', border: 'border-line', bg: '' }
       case 'search-skip':
-        return { dot: 'bg-soft text-gray-500', border: 'border-gray-200/30 dark:border-gray-700/30', bg: '' }
+        return { dot: 'bg-soft text-gray-500', border: 'border-line', bg: '' }
       default:
         return { dot: 'bg-track text-gray-500', border: 'border-gray-200/30', bg: '' }
     }
@@ -720,8 +720,8 @@ function QuadTreeStepsList({
               isCurrent
                 ? `${colors.border} bg-white/60 dark:bg-gray-800/60 ring-1 ring-inset ring-emerald-400/30`
                 : isActive
-                  ? `${colors.border} bg-gray-50/30 dark:bg-gray-800/20`
-                  : 'border-gray-200/20 dark:border-gray-700/20 opacity-35'
+                  ? `${colors.border} bg-subtle`
+                  : 'border-line opacity-35'
             }`}
             onClick={() => onStepClick(step.originalIndex)}
           >

@@ -242,7 +242,6 @@ export default function CarLoanCalculator() {
         {/* 입력 폼 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-            <Calculator className="w-6 h-6 mr-2 text-blue-600" />
             할부 정보 입력
           </h2>
 
@@ -250,7 +249,6 @@ export default function CarLoanCalculator() {
             {/* 차량 가격 */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <Car className="w-4 h-4 inline mr-1" />
                 차량 가격 (원)
               </label>
               <input
@@ -273,7 +271,6 @@ export default function CarLoanCalculator() {
             {/* 선수금 */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <DollarSign className="w-4 h-4 inline mr-1" />
                 선수금 (원)
               </label>
               <input
@@ -296,7 +293,6 @@ export default function CarLoanCalculator() {
             {/* 할부 기간 */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <Calendar className="w-4 h-4 inline mr-1" />
                 할부 기간 (개월)
               </label>
               <select
@@ -317,7 +313,6 @@ export default function CarLoanCalculator() {
             {/* 금리 */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <Percent className="w-4 h-4 inline mr-1" />
                 연 금리 (%)
               </label>
               <input
@@ -338,9 +333,8 @@ export default function CarLoanCalculator() {
           {result && (
             <>
               {/* 주요 결과 */}
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-lg p-8 text-white">
+              <div className="bg-primary hover:bg-blue-700 rounded-2xl shadow-lg p-8 text-white">
                 <h3 className="text-xl font-bold mb-6 flex items-center">
-                  <TrendingUp className="w-6 h-6 mr-2" />
                   할부 계산 결과
                 </h3>
                 
@@ -434,7 +428,7 @@ export default function CarLoanCalculator() {
           )}
 
           {!result && (
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
+            <div className="bg-subtle rounded-2xl p-8 text-center">
               <Car className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-sub">
                 차량 가격과 할부 조건을 입력하면<br />
@@ -447,9 +441,9 @@ export default function CarLoanCalculator() {
 
 
       {/* 할부 가이드 */}
-      <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
+      <div className="bg-subtle rounded-2xl p-8">
         <h3 className="text-2xl font-bold text-fg mb-6">
-          💡 자동차 할부 가이드
+          자동차 할부 가이드
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">

@@ -177,7 +177,7 @@ export default function InquiryForm() {
             setContact('')
             setCategory('suggestion')
           }}
-          className="mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700"
+          className="mt-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700"
         >
           {t('success.another')}
         </button>
@@ -197,7 +197,7 @@ export default function InquiryForm() {
 
       {/* 연결된 페이지 표시 */}
       {fromTool && (
-        <div className="mb-4 flex items-center gap-2 px-3 py-2 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+        <div className="mb-4 flex items-center gap-2 px-3 py-2 bg-subtle rounded-lg border border-line">
           <span className="text-lg">{fromTool.icon}</span>
           <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
             {fromTool.name}
@@ -225,7 +225,7 @@ export default function InquiryForm() {
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-colors
                   ${
                     category === cat
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+                      ? 'border-blue-500 bg-subtle text-blue-700 dark:text-blue-300'
                       : 'border-line-strong bg-field text-body hover:border-blue-300 dark:hover:border-blue-700'
                   }`}
               >
@@ -313,7 +313,7 @@ export default function InquiryForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-opacity"
+          className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-opacity"
         >
           {submitting ? (
             <span className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />

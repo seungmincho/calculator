@@ -295,7 +295,7 @@ export default function TimerStopwatch() {
           onClick={() => setMode('stopwatch')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'stopwatch'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+              ? 'bg-primary hover:bg-blue-700 text-white'
               : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
@@ -306,7 +306,7 @@ export default function TimerStopwatch() {
           onClick={() => setMode('timer')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'timer'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+              ? 'bg-primary hover:bg-blue-700 text-white'
               : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
@@ -317,7 +317,7 @@ export default function TimerStopwatch() {
           onClick={() => setMode('pomodoro')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
             mode === 'pomodoro'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+              ? 'bg-primary hover:bg-blue-700 text-white'
               : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
@@ -341,7 +341,7 @@ export default function TimerStopwatch() {
             <div className="flex justify-center gap-4 flex-wrap">
               <button
                 onClick={startStopwatch}
-                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
               >
                 {stopwatchRunning ? (
                   <>
@@ -498,7 +498,7 @@ export default function TimerStopwatch() {
               {!timerRunning && timerRemaining === 0 ? (
                 <button
                   onClick={startTimer}
-                  className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                  className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
                 >
                   <Play className="w-5 h-5" />
                   {t('countdown.start')}
@@ -506,7 +506,7 @@ export default function TimerStopwatch() {
               ) : timerRunning ? (
                 <button
                   onClick={pauseTimer}
-                  className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                  className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
                 >
                   <Pause className="w-5 h-5" />
                   {t('countdown.pause')}
@@ -514,7 +514,7 @@ export default function TimerStopwatch() {
               ) : (
                 <button
                   onClick={startTimer}
-                  className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                  className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
                 >
                   <Play className="w-5 h-5" />
                   {t('countdown.resume')}
@@ -655,7 +655,7 @@ export default function TimerStopwatch() {
               {pomodoroRunning ? (
                 <button
                   onClick={pausePomodoro}
-                  className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                  className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
                 >
                   <Pause className="w-5 h-5" />
                   {t('pomodoro.pause')}
@@ -663,7 +663,7 @@ export default function TimerStopwatch() {
               ) : (
                 <button
                   onClick={startPomodoro}
-                  className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                  className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
                 >
                   <Play className="w-5 h-5" />
                   {t('pomodoro.start')}
@@ -691,7 +691,6 @@ export default function TimerStopwatch() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <Timer className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

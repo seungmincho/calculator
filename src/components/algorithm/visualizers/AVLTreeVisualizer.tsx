@@ -247,7 +247,7 @@ export default function AVLTreeVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.dataStructure')}
             </span>
             <span className="text-xs text-gray-400">★★★</span>
@@ -337,7 +337,7 @@ export default function AVLTreeVisualizer() {
                   className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
               </div>
               <button onClick={executeOperation}
-                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
+                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
                 {t('controls.execute')}
               </button>
             </div>
@@ -349,7 +349,7 @@ export default function AVLTreeVisualizer() {
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 <button onClick={() => buildBatch(treeSize)}
-                  className="px-3 py-1.5 text-xs rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200/50 dark:border-blue-700/30 transition-colors">
+                  className="px-3 py-1.5 text-xs rounded-lg bg-subtle text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-line transition-colors">
                   🎲 {t('controls.random')}
                 </button>
                 <button onClick={clearTree}
@@ -378,9 +378,9 @@ export default function AVLTreeVisualizer() {
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
+                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
-                    }`}>{tab.icon} {tab.label}</button>
+                    }`}>{tab.label}</button>
                 ))}
               </div>
 
@@ -390,11 +390,11 @@ export default function AVLTreeVisualizer() {
                     <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
                     <div className="grid grid-cols-2 gap-1.5 mb-3">
                       {([
-                        ['compare', 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400', t('stepsGuide.compare')],
-                        ['rotate', 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400', t('stepsGuide.rotate')],
+                        ['compare', 'bg-soft text-sub', t('stepsGuide.compare')],
+                        ['rotate', 'bg-soft text-sub', t('stepsGuide.rotate')],
                         ['check-balance', 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400', t('stepsGuide.checkBalance')],
-                        ['insert', 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400', t('stepsGuide.insert')],
-                        ['update-height', 'bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-400', t('stepsGuide.updateHeight')],
+                        ['insert', 'bg-soft text-sub', t('stepsGuide.insert')],
+                        ['update-height', 'bg-soft text-sub', t('stepsGuide.updateHeight')],
                       ] as [string, string, string][]).map(([key, cls, label]) => (
                         <div key={key} className={`px-2 py-1 rounded text-[10px] font-medium ${cls}`}>{label}</div>
                       ))}
@@ -464,35 +464,35 @@ function AVLStepsList({ steps, currentIndex, onStepClick }: {
   if (displaySteps.length === 0) return null
 
   const ACTION_STYLE: Record<string, string> = {
-    compare:       'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50 dark:border-blue-700/40',
+    compare:       'bg-subtle border-line',
     'go-left':     'bg-amber-50 dark:bg-amber-900/20 border-amber-300/50 dark:border-amber-700/40',
-    'go-right':    'bg-orange-50 dark:bg-orange-900/20 border-orange-300/50 dark:border-orange-700/40',
-    insert:        'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300/50 dark:border-emerald-700/40',
+    'go-right':    'bg-subtle border-line',
+    insert:        'bg-subtle border-line',
     'check-balance':'bg-amber-50 dark:bg-amber-900/20 border-amber-300/50 dark:border-amber-700/40',
-    rotate:        'bg-purple-50 dark:bg-purple-900/20 border-purple-300/50 dark:border-purple-700/40',
-    'update-height':'bg-sky-50 dark:bg-sky-900/20 border-sky-300/50 dark:border-sky-700/40',
+    rotate:        'bg-subtle border-line',
+    'update-height':'bg-subtle border-line',
     'not-found':   'bg-red-50 dark:bg-red-900/20 border-red-300/50 dark:border-red-700/40',
     'delete-leaf': 'bg-red-50 dark:bg-red-900/20 border-red-300/50 dark:border-red-700/40',
     'delete-one-child':'bg-red-50 dark:bg-red-900/20 border-red-300/50 dark:border-red-700/40',
     'delete-two-children':'bg-red-50 dark:bg-red-900/20 border-red-300/50 dark:border-red-700/40',
-    successor:     'bg-sky-50 dark:bg-sky-900/20 border-sky-300/50 dark:border-sky-700/40',
-    found:         'bg-purple-50 dark:bg-purple-900/20 border-purple-300/50 dark:border-purple-700/40',
+    successor:     'bg-subtle border-line',
+    found:         'bg-subtle border-line',
   }
 
   const ACTION_BADGE: Record<string, string> = {
-    compare:       'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
+    compare:       'bg-soft text-sub',
     'go-left':     'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400',
-    'go-right':    'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-400',
-    insert:        'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+    'go-right':    'bg-soft text-sub',
+    insert:        'bg-soft text-sub',
     'check-balance':'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400',
-    rotate:        'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
-    'update-height':'bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-400',
+    rotate:        'bg-soft text-sub',
+    'update-height':'bg-soft text-sub',
     'not-found':   'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
     'delete-leaf': 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
     'delete-one-child':'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
     'delete-two-children':'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
-    successor:     'bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-400',
-    found:         'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
+    successor:     'bg-soft text-sub',
+    found:         'bg-soft text-sub',
   }
 
   const windowStart = Math.max(0, currentIndex - 10)
@@ -511,7 +511,7 @@ function AVLStepsList({ steps, currentIndex, onStepClick }: {
         return (
           <div key={step.originalIndex} data-active={isCurrent ? 'true' : undefined} onClick={() => onStepClick(step.originalIndex)}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
-              isCurrent ? (ACTION_STYLE[step.action] || '') : isActive ? 'border-line bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
+              isCurrent ? (ACTION_STYLE[step.action] || '') : isActive ? 'border-line bg-subtle' : 'border-line opacity-40'
             }`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${ACTION_BADGE[step.action] || ''}`}>{label}</span>

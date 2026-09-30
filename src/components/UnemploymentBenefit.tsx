@@ -361,7 +361,7 @@ export default function UnemploymentBenefit() {
               <button
                 onClick={handleCalculate}
                 disabled={!avgDailyWageStr || isVoluntary}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 {t('form.calculate')}
               </button>
@@ -381,7 +381,7 @@ export default function UnemploymentBenefit() {
             <div className="space-y-4">
               {/* 상한/하한 안내 */}
               {result.cappedAt !== 'none' && (
-                <div className="flex items-start gap-3 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                <div className="flex items-start gap-3 bg-subtle border border-line rounded-xl p-4">
                   <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-blue-800 dark:text-blue-200">
                     {result.cappedAt === 'cap' ? t('result.capNotice') : t('result.floorNotice')}
@@ -407,12 +407,12 @@ export default function UnemploymentBenefit() {
 
                 {/* 수치 카드 그리드 */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">{t('result.dailyBenefit')}</p>
                     <p className="text-xl font-bold text-blue-700 dark:text-blue-300">{formatWon(result.dailyBenefit)}</p>
                     <p className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">{t('result.perDay')}</p>
                   </div>
-                  <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <p className="text-xs text-indigo-600 dark:text-indigo-400 font-medium mb-1">{t('result.benefitDays')}</p>
                     <p className="text-xl font-bold text-indigo-700 dark:text-indigo-300">
                       {result.benefitDays}{t('result.days')}
@@ -421,12 +421,12 @@ export default function UnemploymentBenefit() {
                       {t('result.aboutMonths', { months: Math.floor(result.benefitDays / 30) })}
                     </p>
                   </div>
-                  <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mb-1">{t('result.monthlyEstimate')}</p>
                     <p className="text-xl font-bold text-purple-700 dark:text-purple-300">{formatWon(result.monthlyEstimate)}</p>
                     <p className="text-xs text-purple-500 dark:text-purple-400 mt-0.5">{t('result.per30days')}</p>
                   </div>
-                  <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <p className="text-xs text-green-600 dark:text-green-400 font-medium mb-1">{t('result.totalBenefit')}</p>
                     <p className="text-xl font-bold text-green-700 dark:text-green-300">{formatWon(result.totalBenefit)}</p>
                     <p className="text-xs text-green-500 dark:text-green-400 mt-0.5">{t('result.totalLabel')}</p>
@@ -492,12 +492,11 @@ export default function UnemploymentBenefit() {
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {/* 수급 요건 */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-3">{t('guide.eligibility.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.eligibility.items') as string[]).map((item, i) => (
@@ -510,7 +509,7 @@ export default function UnemploymentBenefit() {
           </div>
 
           {/* 신청 방법 */}
-          <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="font-semibold text-indigo-900 dark:text-indigo-100 mb-3">{t('guide.howToApply.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.howToApply.items') as string[]).map((item, i) => (
@@ -525,7 +524,7 @@ export default function UnemploymentBenefit() {
           </div>
 
           {/* 연장급여 */}
-          <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-3">{t('guide.extended.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.extended.items') as string[]).map((item, i) => (

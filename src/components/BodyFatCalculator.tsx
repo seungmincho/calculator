@@ -328,10 +328,10 @@ export default function BodyFatCalculator() {
   const getCategoryBgColor = (category: string) => {
     switch (category) {
       case 'essential': return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-600'
-      case 'athletic': return 'bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-600'
-      case 'fitness': return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-600'
+      case 'athletic': return 'bg-blue-100 dark:bg-blue-900/30 border-line'
+      case 'fitness': return 'bg-green-100 dark:bg-green-900/30 border-line'
       case 'average': return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-600'
-      case 'overweight': return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-600'
+      case 'overweight': return 'bg-orange-100 dark:bg-orange-900/30 border-line'
       case 'obese': return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-600'
       default: return 'bg-gray-100 dark:bg-gray-800 border-line-strong'
     }
@@ -389,7 +389,6 @@ export default function BodyFatCalculator() {
         {/* 입력 폼 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-            <Calculator className="w-6 h-6 mr-2 text-purple-600" />
             {t('input.title')}
           </h2>
 
@@ -552,7 +551,6 @@ export default function BodyFatCalculator() {
               {/* 주요 결과 */}
               <div className={`rounded-2xl shadow-lg p-8 border-2 ${getCategoryBgColor(result.category)}`}>
                 <h3 className="text-xl font-bold mb-6 flex items-center text-fg">
-                  <Target className="w-6 h-6 mr-2" />
                   {t('result.title')}
                 </h3>
                 
@@ -701,7 +699,7 @@ export default function BodyFatCalculator() {
           )}
 
           {!result && (
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
+            <div className="bg-subtle rounded-2xl p-8 text-center">
               <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-sub">
                 {t('placeholder')}
@@ -712,7 +710,7 @@ export default function BodyFatCalculator() {
       </div>
 
       {/* 체지방률 가이드 */}
-      <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
+      <div className="bg-subtle rounded-2xl p-8">
         <h3 className="text-2xl font-bold text-fg mb-6">
           💡 {t('guide.title')}
         </h3>
@@ -747,7 +745,6 @@ export default function BodyFatCalculator() {
       {/* 측정 방법 가이드 */}
       <div className={`${glassCard} ${glassInset} p-8`}>
         <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-          <Activity className="w-6 h-6 mr-2 text-green-600" />
           {t('measurementGuide.title')}
         </h3>
         <div className="grid md:grid-cols-3 gap-6">
@@ -781,7 +778,7 @@ export default function BodyFatCalculator() {
             </div>
           </div>
         </div>
-        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+        <div className="mt-6 p-4 bg-subtle rounded-lg">
           <p className="text-sm text-blue-800 dark:text-blue-300">
             💡 <strong>{t('measurementGuide.measurementTip')}</strong> {t('measurementGuide.measurementTipText')}
           </p>

@@ -42,7 +42,7 @@ export default function TetrisPageClient() {
             onClick={() => handleModeChange('solo')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all text-sm ${
               mode === 'solo'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                ? 'bg-primary hover:bg-blue-700 text-white shadow-md'
                 : 'text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >
@@ -53,7 +53,7 @@ export default function TetrisPageClient() {
             onClick={() => handleModeChange('multi')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all text-sm ${
               mode === 'multi'
-                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md'
+                ? 'bg-primary hover:bg-blue-700 text-white shadow-md'
                 : 'text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >

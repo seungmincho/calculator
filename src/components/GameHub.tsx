@@ -280,7 +280,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
   return (
     <div className="max-w-7xl mx-auto space-y-4">
       {/* 슬림 헤더 */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl px-5 py-4 text-white shadow-md">
+      <div className="bg-primary hover:bg-blue-700 rounded-xl px-5 py-4 text-white shadow-md">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
             <Gamepad2 className="w-6 h-6" />
@@ -312,7 +312,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       {/* 닉네임 바 (compact) */}
       <div className={`rounded-xl px-4 py-2.5 border flex items-center gap-3 ${
         globalNickname.trim()
-          ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800'
+          ? 'bg-subtle border-line'
           : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
       }`}>
         <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -381,7 +381,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
           >
             <span>{label}</span>
             <span className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${
-              modeFilter === key ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300' : 'bg-track text-gray-500'
+              modeFilter === key ? 'bg-soft text-sub' : 'bg-track text-gray-500'
             }`}>{count}</span>
             {sub && <span className="block text-xs text-faint mt-0.5">{sub}</span>}
           </button>
@@ -411,7 +411,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   aria-pressed={isBoardGame ? isSelected : undefined}
                   className={`relative p-3 rounded-xl text-left transition-all border group ${
                     isSelected
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
+                      ? 'border-blue-500 bg-subtle shadow-sm'
                       : 'border-line hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-sm bg-white dark:bg-gray-800/50'
                   }`}
                 >
@@ -432,17 +432,17 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   {/* 모드 배지 */}
                   <div className="flex gap-1 flex-wrap">
                     {game.modes?.includes('ai') && (
-                      <span className="inline-flex items-center gap-0.5 text-xs px-1.5 py-0.5 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-md font-medium">
+                      <span className="inline-flex items-center gap-0.5 text-xs px-1.5 py-0.5 bg-soft text-sub rounded-md font-medium">
                         <Monitor className="w-2.5 h-2.5" />AI
                       </span>
                     )}
                     {game.modes?.includes('online') && (
-                      <span className="inline-flex items-center gap-0.5 text-xs px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-md font-medium">
+                      <span className="inline-flex items-center gap-0.5 text-xs px-1.5 py-0.5 bg-soft text-sub rounded-md font-medium">
                         <Users className="w-2.5 h-2.5" />온라인
                       </span>
                     )}
                     {game.modes?.includes('solo') && !game.modes?.includes('ai') && (
-                      <span className="inline-flex items-center gap-0.5 text-xs px-1.5 py-0.5 bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 rounded-md font-medium">
+                      <span className="inline-flex items-center gap-0.5 text-xs px-1.5 py-0.5 bg-soft text-sub rounded-md font-medium">
                         ▶ {t('badgeSolo') || '솔로'}
                       </span>
                     )}
@@ -455,7 +455,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
 
         {/* 보드게임 모드 선택 패널 (인라인) */}
         {selectedGame && selectedGameInfo && (
-          <div id="mode-panel" className="border-t border-line bg-gray-50 dark:bg-gray-900/50 p-4">
+          <div id="mode-panel" className="border-t border-line bg-subtle p-4">
             <div className="max-w-2xl mx-auto space-y-4">
               {/* 선택된 게임 표시 */}
               <div className="flex items-center gap-3">
@@ -478,7 +478,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   onClick={() => setPlayMode('computer')}
                   className={`p-3 rounded-xl border-2 transition-all text-left ${
                     playMode === 'computer'
-                      ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
+                      ? 'border-indigo-500 bg-subtle'
                       : 'border-line hover:border-indigo-300'
                   }`}
                 >
@@ -494,7 +494,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   onClick={() => setPlayMode('online')}
                   className={`p-3 rounded-xl border-2 transition-all text-left ${
                     playMode === 'online'
-                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
+                      ? 'border-emerald-500 bg-subtle'
                       : 'border-line hover:border-emerald-300'
                   }`}
                 >
@@ -518,7 +518,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   <div className="grid grid-cols-3 gap-2">
                     {(['easy', 'normal', 'hard'] as const).map(diff => {
                       const colors = {
-                        easy: { active: 'bg-green-500 text-white', inactive: 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400 border border-green-200 dark:border-green-800' },
+                        easy: { active: 'bg-green-500 text-white', inactive: 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400 border border-line' },
                         normal: { active: 'bg-amber-500 text-white', inactive: 'bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400 border border-amber-200 dark:border-amber-800' },
                         hard: { active: 'bg-red-500 text-white', inactive: 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 border border-red-200 dark:border-red-800' }
                       }
@@ -558,7 +558,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                     />
                     <button
                       onClick={() => setIsPrivateRoom(false)}
-                      className={`p-1.5 rounded-lg border transition-all ${!isPrivateRoom ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600' : 'border-line text-gray-400'}`}
+                      className={`p-1.5 rounded-lg border transition-all ${!isPrivateRoom ? 'border-emerald-500 bg-subtle text-emerald-600' : 'border-line text-gray-400'}`}
                       title="공개 방"
                     >
                       <Globe className="w-4 h-4" />
@@ -583,8 +583,8 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   isCreatingRoom || (playMode === 'online' && !globalNickname.trim())
                     ? 'bg-gray-400 cursor-not-allowed'
                     : playMode === 'online'
-                      ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600'
-                      : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700'
+                      ? 'bg-primary hover:bg-blue-700'
+                      : 'bg-primary hover:bg-blue-700'
                 }`}
               >
                 {isCreatingRoom ? (
@@ -604,7 +604,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       <div className="grid lg:grid-cols-3 gap-4">
         {/* 대기방 */}
         <div className="bg-surface rounded-xl shadow-sm border border-line overflow-hidden">
-          <div className="px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white flex items-center justify-between">
+          <div className="px-4 py-3 bg-primary hover:bg-blue-700 text-white flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="w-5 h-5 bg-white/30 rounded-full flex items-center justify-center text-xs font-bold">{allWaitingRooms.length}</span>
               <span className="font-semibold text-sm">{t('waitingRooms')}</span>
@@ -660,7 +660,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
             ) : myTotalGames > 0 ? (
               <div className="space-y-3">
                 <div className="grid grid-cols-3 gap-2 text-center">
-                  <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-2">
+                  <div className="bg-subtle rounded-lg p-2">
                     <p className="text-xl font-bold text-green-600">{myTotalWins}</p>
                     <p className="text-xs text-gray-500">{t('wins')}</p>
                   </div>
@@ -725,17 +725,17 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                     <p className="text-lg font-bold text-fg">{globalStats.totalGames.toLocaleString()}</p>
                     <p className="text-xs text-gray-500">{t('totalGamesPlayed') || '총 게임'}</p>
                   </div>
-                  <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-2 text-center">
+                  <div className="bg-subtle rounded-lg p-2 text-center">
                     <Monitor className="w-4 h-4 mx-auto mb-1 text-indigo-600" />
                     <p className="text-lg font-bold text-fg">{globalStats.totalAIGames.toLocaleString()}</p>
                     <p className="text-xs text-gray-500">{t('aiGames') || 'AI 대전'}</p>
                   </div>
-                  <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-2 text-center">
+                  <div className="bg-subtle rounded-lg p-2 text-center">
                     <Users className="w-4 h-4 mx-auto mb-1 text-emerald-600" />
                     <p className="text-lg font-bold text-fg">{globalStats.totalOnlineGames.toLocaleString()}</p>
                     <p className="text-xs text-gray-500">{t('onlineGames') || '온라인'}</p>
                   </div>
-                  <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-2 text-center">
+                  <div className="bg-subtle rounded-lg p-2 text-center">
                     <Gamepad2 className="w-4 h-4 mx-auto mb-1 text-blue-600" />
                     <p className="text-lg font-bold text-fg">{globalStats.uniquePlayers.toLocaleString()}</p>
                     <p className="text-xs text-gray-500">{t('uniquePlayers') || '참여자'}</p>
@@ -768,7 +768,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                                 </span>
                               </div>
                               <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-1">
-                                <div className="h-1 rounded-full bg-gradient-to-r from-amber-400 to-orange-500" style={{ width: `${pct}%` }} />
+                                <div className="h-1 rounded-full bg-primary hover:bg-blue-700" style={{ width: `${pct}%` }} />
                               </div>
                             </div>
                           </div>
@@ -805,7 +805,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
           onKeyDown={(e) => e.key === 'Escape' && handleCloseJoinModal()}
         >
           <div className="bg-surface rounded-2xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-5 text-white flex items-center gap-4">
+            <div className="bg-primary hover:bg-blue-700 p-5 text-white flex items-center gap-4">
               <div className="text-3xl">{BOARD_GAMES.find(g => hrefToGameId(g.href) === joiningRoom.gameType)?.icon}</div>
               <div>
                 <h3 id="join-modal-title" className="text-lg font-bold">{t('joinRoom')}</h3>

@@ -240,7 +240,7 @@ export default function AspectRatio() {
                 onClick={handleLockToggle}
                 className={`flex-1 flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                   isRatioLocked
-                    ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                    ? 'bg-soft text-sub'
                     : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
@@ -277,23 +277,23 @@ export default function AspectRatio() {
               <div className="space-y-6">
                 {/* Results Grid */}
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <div className="text-sm text-sub mb-1">{t('result.aspectRatio')}</div>
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{results.ratio}</div>
                   </div>
-                  <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <div className="text-sm text-sub mb-1">{t('result.decimal')}</div>
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{results.decimal}</div>
                   </div>
-                  <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <div className="text-sm text-sub mb-1">{t('result.totalPixels')}</div>
                     <div className="text-xl font-bold text-green-600 dark:text-green-400">{results.totalPixels}</div>
                   </div>
-                  <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <div className="text-sm text-sub mb-1">{t('result.megapixels')}</div>
                     <div className="text-xl font-bold text-green-600 dark:text-green-400">{results.megapixels} MP</div>
                   </div>
-                  <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-4 md:col-span-2">
+                  <div className="bg-subtle rounded-xl p-4 md:col-span-2">
                     <div className="text-sm text-sub mb-1">{t('result.orientation')}</div>
                     <div className="text-xl font-bold text-purple-600 dark:text-purple-400">{results.orientationText}</div>
                   </div>
@@ -301,7 +301,7 @@ export default function AspectRatio() {
 
                 {/* Visual Preview */}
                 {visualPreview && (
-                  <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 flex items-center justify-center" style={{ minHeight: '340px' }}>
+                  <div className="bg-subtle rounded-xl p-6 flex items-center justify-center" style={{ minHeight: '340px' }}>
                     <div
                       className="border-4 border-blue-600 dark:border-blue-400 rounded-lg shadow-lg"
                       style={{
@@ -367,7 +367,7 @@ export default function AspectRatio() {
               </div>
 
               {resizerResults && (
-                <div className="mt-4 bg-purple-50 dark:bg-purple-950 rounded-xl p-4">
+                <div className="mt-4 bg-subtle rounded-xl p-4">
                   <div className="text-sm text-sub mb-1">{t('resizer.resultSize')}</div>
                   <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                     {resizerResults.width} × {resizerResults.height}

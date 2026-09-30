@@ -994,7 +994,7 @@ function YearEndTaxCalculatorContent() {
             {/* Final result highlight */}
             <div className={`rounded-xl p-6 text-center ${
               result.refundAmount > 0
-                ? 'bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800'
+                ? 'bg-subtle border border-line'
                 : result.refundAmount < 0
                   ? 'bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800'
                   : 'bg-subtle border border-line'
@@ -1154,7 +1154,7 @@ function YearEndTaxCalculatorContent() {
         <button
           onClick={handleCalculate}
           disabled={!grossSalary}
-          className="flex-1 sm:flex-none bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
+          className="flex-1 sm:flex-none bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
         >
           <Calculator className="w-4 h-4" />
           {t('calculate')}

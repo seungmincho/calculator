@@ -256,7 +256,7 @@ export default function SegmentTreeVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.dataStructure')}
             </span>
             <span className="text-xs text-gray-400">★★☆</span>
@@ -344,7 +344,7 @@ export default function SegmentTreeVisualizer() {
                   className="flex-1 px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
                   placeholder="5, 8, 6, 3, 2, 7, 4, 1" />
                 <button onClick={fillRandom}
-                  className="px-3 py-1.5 text-xs rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200/50 dark:border-blue-700/30 transition-colors whitespace-nowrap">
+                  className="px-3 py-1.5 text-xs rounded-lg bg-subtle text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-line transition-colors whitespace-nowrap">
                   🎲 {t('random')}
                 </button>
               </div>
@@ -364,7 +364,7 @@ export default function SegmentTreeVisualizer() {
                     className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
                 </div>
                 <button onClick={executeOperation}
-                  className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
+                  className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
                   {t('controls.execute')}
                 </button>
               </div>
@@ -384,7 +384,7 @@ export default function SegmentTreeVisualizer() {
                     className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
                 </div>
                 <button onClick={executeOperation}
-                  className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
+                  className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
                   {t('controls.execute')}
                 </button>
               </div>
@@ -393,7 +393,7 @@ export default function SegmentTreeVisualizer() {
             {/* Build button */}
             {operation === 'build' && (
               <button onClick={executeOperation}
-                className="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors">
+                className="w-full px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors">
                 {t('build')}
               </button>
             )}
@@ -417,9 +417,9 @@ export default function SegmentTreeVisualizer() {
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
+                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
-                    }`}>{tab.icon} {tab.label}</button>
+                    }`}>{tab.label}</button>
                 ))}
               </div>
 
@@ -467,15 +467,15 @@ function SegTreeStepsList({ steps, currentIndex, onStepClick }: {
   if (!steps || steps.length === 0) return null
 
   const ACTION_BADGE: Record<string, string> = {
-    build:          'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
-    merge:          'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
+    build:          'bg-soft text-sub',
+    merge:          'bg-soft text-sub',
     'query-visit':  'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400',
-    'query-match':  'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+    'query-match':  'bg-soft text-sub',
     'query-skip':   'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
     'update-visit': 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400',
-    'update-leaf':  'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
-    'update-merge': 'bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-400',
-    done:           'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+    'update-leaf':  'bg-soft text-sub',
+    'update-merge': 'bg-soft text-sub',
+    done:           'bg-soft text-sub',
     visit:          'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400',
   }
 
@@ -491,8 +491,8 @@ function SegTreeStepsList({ steps, currentIndex, onStepClick }: {
         return (
           <div key={i} data-active={isCurrent ? 'true' : undefined} onClick={() => onStepClick(i)}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
-              isCurrent ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50 dark:border-blue-700/40'
-                : i <= currentIndex ? 'border-line bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
+              isCurrent ? 'bg-subtle border-line'
+                : i <= currentIndex ? 'border-line bg-subtle' : 'border-line opacity-40'
             }`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${ACTION_BADGE[step.action] || ''}`}>{step.action}</span>

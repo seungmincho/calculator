@@ -13,12 +13,12 @@ import {
 
 
 const CATEGORY_COLORS: Record<PatternCategory, { bg: string; text: string; border: string }> = {
-  array:  { bg: 'bg-blue-50 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-300', border: 'border-blue-200 dark:border-blue-800' },
-  string: { bg: 'bg-purple-50 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-300', border: 'border-purple-200 dark:border-purple-800' },
-  tree:   { bg: 'bg-green-50 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-300', border: 'border-green-200 dark:border-green-800' },
-  graph:  { bg: 'bg-cyan-50 dark:bg-cyan-900/30', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-cyan-200 dark:border-cyan-800' },
-  dp:     { bg: 'bg-orange-50 dark:bg-orange-900/30', text: 'text-orange-700 dark:text-orange-300', border: 'border-orange-200 dark:border-orange-800' },
-  design: { bg: 'bg-indigo-50 dark:bg-indigo-900/30', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-indigo-200 dark:border-indigo-800' },
+  array:  { bg: 'bg-subtle', text: 'text-blue-700 dark:text-blue-300', border: 'border-line' },
+  string: { bg: 'bg-subtle', text: 'text-purple-700 dark:text-purple-300', border: 'border-line' },
+  tree:   { bg: 'bg-subtle', text: 'text-green-700 dark:text-green-300', border: 'border-line' },
+  graph:  { bg: 'bg-subtle', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-line' },
+  dp:     { bg: 'bg-subtle', text: 'text-orange-700 dark:text-orange-300', border: 'border-line' },
+  design: { bg: 'bg-subtle', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-line' },
 }
 
 const DIFF_COLORS: Record<PatternDifficulty, string> = {
@@ -137,7 +137,7 @@ export default function CodingPatterns() {
         </div>
         <div className="w-full bg-track rounded-full h-3">
           <div
-            className="bg-gradient-to-r from-blue-500 to-indigo-500 h-3 rounded-full transition-all duration-500"
+            className="bg-primary hover:bg-blue-700 h-3 rounded-full transition-all duration-500"
             style={{ width: `${progressPct}%` }}
           />
         </div>
@@ -191,7 +191,7 @@ export default function CodingPatterns() {
             onClick={() => setSelectedCategory('all')}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               selectedCategory === 'all'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
@@ -203,7 +203,7 @@ export default function CodingPatterns() {
               onClick={() => setSelectedCategory(cat)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
                 selectedCategory === cat
-                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                  ? 'bg-primary hover:bg-blue-700 text-white'
                   : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
@@ -224,7 +224,7 @@ export default function CodingPatterns() {
               key={pattern.id}
               id={`pattern-${pattern.id}`}
               className={`bg-surface rounded-xl shadow-lg overflow-hidden border transition-all ${
-                isExpanded ? 'lg:col-span-3 md:col-span-2 col-span-1 border-blue-300 dark:border-blue-700' : 'border-transparent hover:shadow-xl'
+                isExpanded ? 'lg:col-span-3 md:col-span-2 col-span-1 border-line' : 'border-transparent hover:shadow-xl'
               }`}
             >
               {/* Card Header */}
@@ -356,12 +356,12 @@ function PatternDetail({ pattern, t, onRelatedClick }: PatternDetailProps) {
       {/* Complexity */}
       <Section icon={<Clock className="w-4 h-4" />} title={t('section.complexity')}>
         <div className="flex flex-wrap gap-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-sm font-mono">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-subtle text-sm font-mono">
             <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span className="text-muted text-xs">{t('time')}:</span>
             <span className="font-semibold text-blue-700 dark:text-blue-300">{pattern.timeComplexity}</span>
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-50 dark:bg-purple-900/30 text-sm font-mono">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-subtle text-sm font-mono">
             <Database className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
             <span className="text-muted text-xs">{t('space')}:</span>
             <span className="font-semibold text-purple-700 dark:text-purple-300">{pattern.spaceComplexity}</span>

@@ -384,7 +384,6 @@ export default function AverageCalculator() {
           {stats && (
             <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-indigo-500" />
                 {t('statsTitle')}
               </h2>
               <div className="grid sm:grid-cols-2 gap-x-8 gap-y-2">
@@ -429,7 +428,6 @@ export default function AverageCalculator() {
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}
         </h2>
         <div className="grid sm:grid-cols-2 gap-6">

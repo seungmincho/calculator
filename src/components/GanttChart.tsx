@@ -528,7 +528,7 @@ export default function GanttChart() {
             <button
               onClick={addOrUpdateTask}
               disabled={!taskName.trim() || !startDate || !endDate}
-              className="flex-1 flex items-center justify-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="flex-1 flex items-center justify-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               {editingId ? (
                 <><Check className="w-4 h-4" />{t('actions.update')}</>
@@ -562,7 +562,7 @@ export default function GanttChart() {
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-4">
             <div
-              className="bg-gradient-to-r from-blue-500 to-indigo-500 h-2.5 rounded-full transition-all duration-300"
+              className="bg-primary hover:bg-blue-700 h-2.5 rounded-full transition-all duration-300"
               style={{ width: `${overallProgress}%` }}
             />
           </div>
@@ -727,7 +727,6 @@ export default function GanttChart() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}
         </h2>
 

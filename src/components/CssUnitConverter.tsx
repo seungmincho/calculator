@@ -10,16 +10,16 @@ type CssUnit = 'px' | 'rem' | 'em' | 'vw' | 'vh' | '%' | 'pt' | 'cm' | 'mm' | 'i
 const ALL_UNITS: CssUnit[] = ['px', 'rem', 'em', 'vw', 'vh', '%', 'pt', 'cm', 'mm', 'in']
 
 const UNIT_COLORS: Record<CssUnit, string> = {
-  px: 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300',
-  rem: 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300',
-  em: 'bg-violet-100 dark:bg-violet-900 text-violet-700 dark:text-violet-300',
-  vw: 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300',
-  vh: 'bg-teal-100 dark:bg-teal-900 text-teal-700 dark:text-teal-300',
-  '%': 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300',
+  px: 'bg-soft text-sub',
+  rem: 'bg-soft text-sub',
+  em: 'bg-soft text-sub',
+  vw: 'bg-soft text-sub',
+  vh: 'bg-soft text-sub',
+  '%': 'bg-soft text-sub',
   pt: 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300',
   cm: 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300',
   mm: 'bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300',
-  in: 'bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300',
+  in: 'bg-soft text-sub',
 }
 
 interface ConversionSettings {
@@ -186,7 +186,7 @@ export default function CssUnitConverter() {
                     onClick={() => setSelectedUnit(unit)}
                     className={`py-2 rounded-lg text-sm font-bold transition-all ${
                       selectedUnit === unit
-                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md scale-105'
+                        ? 'bg-primary hover:bg-blue-700 text-white shadow-md scale-105'
                         : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                     }`}
                     aria-pressed={selectedUnit === unit}
@@ -284,7 +284,7 @@ export default function CssUnitConverter() {
                     key={unit}
                     className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
                       isActive
-                        ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-950'
+                        ? 'border-blue-500 dark:border-blue-400 bg-subtle'
                         : 'border-line hover:border-gray-300 dark:hover:border-gray-600'
                     }`}
                   >
@@ -366,7 +366,7 @@ export default function CssUnitConverter() {
         {showGuide && (
           <div className="mt-6 space-y-6">
             {/* Absolute Units */}
-            <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-5">
+            <div className="bg-subtle rounded-xl p-5">
               <h3 className="text-base font-semibold text-blue-800 dark:text-blue-200 mb-3">{t('guideAbsoluteTitle')}</h3>
               <ul className="space-y-2">
                 {guideAbsoluteItems.map((item, i) => (
@@ -379,7 +379,7 @@ export default function CssUnitConverter() {
             </div>
 
             {/* Relative Units */}
-            <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-5">
+            <div className="bg-subtle rounded-xl p-5">
               <h3 className="text-base font-semibold text-purple-800 dark:text-purple-200 mb-3">{t('guideRelativeTitle')}</h3>
               <ul className="space-y-2">
                 {guideRelativeItems.map((item, i) => (
@@ -392,7 +392,7 @@ export default function CssUnitConverter() {
             </div>
 
             {/* Viewport Units */}
-            <div className="bg-green-50 dark:bg-green-950 rounded-xl p-5">
+            <div className="bg-subtle rounded-xl p-5">
               <h3 className="text-base font-semibold text-green-800 dark:text-green-200 mb-3">{t('guideViewportTitle')}</h3>
               <ul className="space-y-2">
                 {guideViewportItems.map((item, i) => (
@@ -405,7 +405,7 @@ export default function CssUnitConverter() {
             </div>
 
             {/* Tips */}
-            <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-5">
+            <div className="bg-subtle rounded-xl p-5">
               <h3 className="text-base font-semibold text-orange-800 dark:text-orange-200 mb-3">{t('guideTipsTitle')}</h3>
               <ul className="space-y-2">
                 {guideTipsItems.map((item, i) => (

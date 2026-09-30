@@ -189,22 +189,22 @@ export default function TrieVisualizer() {
   ]
 
   const ACTION_STYLE: Record<string, string> = {
-    traverse:             'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50 dark:border-blue-700/40',
-    create:               'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300/50 dark:border-emerald-700/40',
-    'mark-end':           'bg-purple-50 dark:bg-purple-900/20 border-purple-300/50 dark:border-purple-700/40',
-    found:                'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300/50 dark:border-emerald-700/40',
+    traverse:             'bg-subtle border-line',
+    create:               'bg-subtle border-line',
+    'mark-end':           'bg-subtle border-line',
+    found:                'bg-subtle border-line',
     'not-found':          'bg-red-50 dark:bg-red-900/20 border-red-300/50 dark:border-red-700/40',
     'autocomplete-collect':'bg-amber-50 dark:bg-amber-900/20 border-amber-300/50 dark:border-amber-700/40',
-    'autocomplete-done':  'bg-purple-50 dark:bg-purple-900/20 border-purple-300/50 dark:border-purple-700/40',
+    'autocomplete-done':  'bg-subtle border-line',
   }
   const ACTION_BADGE: Record<string, string> = {
-    traverse:             'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
-    create:               'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
-    'mark-end':           'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
-    found:                'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+    traverse:             'bg-soft text-sub',
+    create:               'bg-soft text-sub',
+    'mark-end':           'bg-soft text-sub',
+    found:                'bg-soft text-sub',
     'not-found':          'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
     'autocomplete-collect':'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400',
-    'autocomplete-done':  'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
+    'autocomplete-done':  'bg-soft text-sub',
   }
 
   return (
@@ -214,7 +214,7 @@ export default function TrieVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.string')}
             </span>
             <span className="text-xs text-gray-400">★★☆</span>
@@ -289,14 +289,14 @@ export default function TrieVisualizer() {
                   className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-pink-500 focus:outline-none font-mono" />
               </div>
               <button onClick={executeOperation}
-                className="px-4 py-2 bg-gradient-to-r from-pink-600 to-rose-600 text-white rounded-lg font-medium hover:from-pink-700 hover:to-rose-700 transition-colors whitespace-nowrap">
+                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-pink-700 hover:to-rose-700 transition-colors whitespace-nowrap">
                 {t('controls.execute')}
               </button>
             </div>
 
             <div className="flex flex-wrap gap-2">
               <button onClick={buildDefault}
-                className="px-3 py-1.5 text-xs rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200/50 dark:border-blue-700/30 transition-colors">
+                className="px-3 py-1.5 text-xs rounded-lg bg-subtle text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-line transition-colors">
                 {t('controls.resetTrie')}
               </button>
               <div className="flex flex-wrap gap-1">
@@ -322,9 +322,9 @@ export default function TrieVisualizer() {
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
-                      activeTab === tab.key ? 'text-pink-600 dark:text-pink-400 border-b-2 border-pink-500 bg-pink-50/50 dark:bg-pink-900/20'
+                      activeTab === tab.key ? 'text-pink-600 dark:text-pink-400 border-b-2 border-pink-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
-                    }`}>{tab.icon} {tab.label}</button>
+                    }`}>{tab.label}</button>
                 ))}
               </div>
               <div className="p-4 max-h-[70vh] overflow-y-auto">
@@ -370,7 +370,7 @@ function StepsList({ steps, currentIndex, onStepClick, actionStyle, actionBadge 
         const idx = ws + wi; const isCur = idx === currentIndex; const isAct = idx <= currentIndex
         return (
           <div key={idx} data-active={isCur ? 'true' : undefined} onClick={() => onStepClick(idx)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'}`}>
+            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-subtle' : 'border-line opacity-40'}`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${actionBadge[step.action] || ''}`}>{step.action}</span>
               <span className="text-sub truncate">{step.description}</span>

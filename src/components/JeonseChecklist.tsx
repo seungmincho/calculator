@@ -221,7 +221,7 @@ function CheckItemRow({ itemKey, weight, state, onChange, t }: CheckItemRowProps
   const dots = Array.from({ length: 10 }, (_, i) => i < weight)
 
   const stateStyle: Record<CheckState, string> = {
-    checked: 'border-green-500 bg-green-50 dark:bg-green-950',
+    checked: 'border-green-500 bg-subtle',
     unchecked: 'border-line-strong bg-surface',
     na: 'border-gray-400 bg-subtle',
   }
@@ -581,9 +581,8 @@ export default function JeonseChecklist() {
       </div>
 
       {/* Emergency Contacts */}
-      <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
+      <div className="bg-subtle rounded-xl p-6">
         <h2 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">
-          <Phone className="w-5 h-5 text-blue-600" />
           {t('contactsTitle')}
         </h2>
         <div className="grid sm:grid-cols-2 gap-3">
@@ -609,7 +608,7 @@ export default function JeonseChecklist() {
       <div className="flex flex-wrap gap-3">
         <button
           onClick={handleShare}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+          className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
         >
           <Share2 className="w-4 h-4" />
           {copied ? t('copiedLabel') : t('shareLabel')}

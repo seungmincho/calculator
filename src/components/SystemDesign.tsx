@@ -16,11 +16,11 @@ type Mode = 'overview' | 'detail'
 type DetailTab = 'requirements' | 'estimation' | 'architecture' | 'deepDive' | 'scaleTradeoffs'
 
 const CATEGORY_COLORS: Record<DesignCategory, { bg: string; text: string; border: string }> = {
-  web: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-blue-300 dark:border-blue-700' },
-  data: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', border: 'border-purple-300 dark:border-purple-700' },
-  messaging: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', border: 'border-green-300 dark:border-green-700' },
+  web: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-line' },
+  data: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', border: 'border-line' },
+  messaging: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', border: 'border-line' },
   storage: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-700' },
-  infrastructure: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-indigo-300 dark:border-indigo-700' },
+  infrastructure: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-line' },
 }
 
 const DIFFICULTY_COLORS: Record<DesignDifficulty, { bg: string; text: string }> = {
@@ -318,7 +318,7 @@ export default function SystemDesign() {
             {!practicing ? (
               <button
                 onClick={startPractice}
-                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
               >
                 <Play className="w-4 h-4" />
                 {t('practice.start')}
@@ -350,7 +350,7 @@ export default function SystemDesign() {
 
           {/* Practice progress */}
           {practicing && (
-            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+            <div className="mt-4 p-3 bg-subtle rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
                   {isPracticeComplete
@@ -395,7 +395,7 @@ export default function SystemDesign() {
                 onClick={() => setActiveTab(tab)}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                   activeTab === tab
-                    ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                    ? 'bg-soft text-sub'
                     : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}
               >
@@ -422,13 +422,12 @@ export default function SystemDesign() {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
-          <Target className="w-5 h-5 text-blue-500" />
           {t('section.functional')}
         </h3>
         <ol className="space-y-2">
           {q.requirements.functional.map((item, i) => (
             <li key={i} className="flex gap-3 text-sm text-body">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 flex items-center justify-center text-xs font-bold">{i + 1}</span>
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub flex items-center justify-center text-xs font-bold">{i + 1}</span>
               {item}
             </li>
           ))}
@@ -436,7 +435,6 @@ export default function SystemDesign() {
       </div>
       <div>
         <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
-          <Zap className="w-5 h-5 text-amber-500" />
           {t('section.nonFunctional')}
         </h3>
         <ol className="space-y-2">
@@ -454,7 +452,6 @@ export default function SystemDesign() {
   const renderEstimation = (q: SystemDesignQuestion) => (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
-        <BookMarked className="w-5 h-5 text-purple-500" />
         {q.estimations.title}
       </h3>
       <div className="bg-subtle rounded-lg p-4 space-y-2">
@@ -486,7 +483,6 @@ export default function SystemDesign() {
       {/* Components */}
       <div>
         <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
-          <Server className="w-5 h-5 text-indigo-500" />
           {t('section.components')}
         </h3>
         <div className="grid sm:grid-cols-2 gap-3">
@@ -502,14 +498,13 @@ export default function SystemDesign() {
       {/* Data flow */}
       <div>
         <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
-          <ArrowRight className="w-5 h-5 text-teal-500" />
           {t('section.dataFlow')}
         </h3>
         <div className="space-y-0">
           {q.architecture.dataFlow.map((step, i) => (
             <div key={i} className="flex items-start gap-3">
               <div className="flex flex-col items-center">
-                <div className="w-7 h-7 rounded-full bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 flex items-center justify-center text-xs font-bold flex-shrink-0">
+                <div className="w-7 h-7 rounded-full bg-soft text-sub flex items-center justify-center text-xs font-bold flex-shrink-0">
                   {i + 1}
                 </div>
                 {i < q.architecture.dataFlow.length - 1 && (
@@ -553,7 +548,6 @@ export default function SystemDesign() {
       {/* Scalability */}
       <div>
         <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
-          <Zap className="w-5 h-5 text-green-500" />
           {t('section.scalability')}
         </h3>
         <div className="space-y-2">
@@ -569,7 +563,6 @@ export default function SystemDesign() {
       {/* Tradeoffs */}
       <div>
         <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
-          <Scale className="w-5 h-5 text-orange-500" />
           {t('section.tradeoffs')}
         </h3>
         <div className="space-y-2">
@@ -585,7 +578,6 @@ export default function SystemDesign() {
       {/* Interview tips */}
       <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-amber-900 dark:text-amber-200 mb-3 flex items-center gap-2">
-          <Lightbulb className="w-5 h-5" />
           {t('section.interviewTips')}
         </h3>
         <div className="space-y-2">

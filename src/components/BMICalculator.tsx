@@ -246,10 +246,10 @@ export default function BMICalculator() {
 
   const getBMIBgColor = (category: string) => {
     switch (category) {
-      case 'underweight': return 'bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-600'
-      case 'normal': return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-600'
+      case 'underweight': return 'bg-blue-100 dark:bg-blue-900/30 border-line'
+      case 'normal': return 'bg-green-100 dark:bg-green-900/30 border-line'
       case 'overweight': return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-600'
-      case 'obese1': return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-600'
+      case 'obese1': return 'bg-orange-100 dark:bg-orange-900/30 border-line'
       case 'obese2': return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-600'
       default: return 'bg-gray-100 dark:bg-gray-800 border-line-strong'
     }
@@ -330,7 +330,6 @@ export default function BMICalculator() {
         {/* 입력 폼 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-            <Calculator className="w-6 h-6 mr-2 text-pink-600" />
             {t('input.title')}
           </h2>
 
@@ -338,7 +337,6 @@ export default function BMICalculator() {
             {/* 키 */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <Scale className="w-4 h-4 inline mr-1" />
                 {t('input.height')}
               </label>
               <input
@@ -354,7 +352,6 @@ export default function BMICalculator() {
             {/* 몸무게 */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <Activity className="w-4 h-4 inline mr-1" />
                 {t('input.weight')}
               </label>
               <input
@@ -420,7 +417,6 @@ export default function BMICalculator() {
               {/* 주요 결과 */}
               <div className={`rounded-2xl shadow-lg p-8 border-2 ${getBMIBgColor(result.category)}`}>
                 <h3 className="text-xl font-bold mb-6 flex items-center text-fg">
-                  <TrendingUp className="w-6 h-6 mr-2" />
                   {t('result.title')}
                 </h3>
                 
@@ -540,7 +536,7 @@ export default function BMICalculator() {
           )}
 
           {!result && (
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
+            <div className="bg-subtle rounded-2xl p-8 text-center">
               <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-sub">
                 {t('placeholder')}
@@ -551,7 +547,7 @@ export default function BMICalculator() {
       </div>
 
       {/* BMI 건강 가이드 */}
-      <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
+      <div className="bg-subtle rounded-2xl p-8">
         <h3 className="text-2xl font-bold text-fg mb-6">
           💡 {t('guide.title')}
         </h3>
@@ -588,7 +584,6 @@ export default function BMICalculator() {
         {/* BMI 계산기 활용법 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
           <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-            <Calculator className="w-6 h-6 mr-2 text-pink-600" />
             {t('usage.title')}
           </h3>
           <div className="space-y-4">
@@ -625,23 +620,22 @@ export default function BMICalculator() {
         {/* 체중 관리 팁 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
           <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-            <Heart className="w-6 h-6 mr-2 text-red-500" />
             {t('healthTips.title')}
           </h3>
           <div className="space-y-4">
-            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border-l-4 border-green-500">
+            <div className="p-4 bg-subtle rounded-lg border-l-4 border-green-500">
               <h4 className="font-semibold text-green-800 dark:text-green-400 mb-2">🥗 {t('healthTips.diet.title')}</h4>
               <p className="text-green-700 dark:text-green-300 text-sm">{t('healthTips.diet.content')}</p>
             </div>
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-l-4 border-blue-500">
+            <div className="p-4 bg-subtle rounded-lg border-l-4 border-blue-500">
               <h4 className="font-semibold text-blue-800 dark:text-blue-400 mb-2">🏃‍♂️ {t('healthTips.exercise.title')}</h4>
               <p className="text-blue-700 dark:text-blue-300 text-sm">{t('healthTips.exercise.content')}</p>
             </div>
-            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border-l-4 border-purple-500">
+            <div className="p-4 bg-subtle rounded-lg border-l-4 border-purple-500">
               <h4 className="font-semibold text-purple-800 dark:text-purple-400 mb-2">😴 {t('healthTips.sleep.title')}</h4>
               <p className="text-purple-700 dark:text-purple-300 text-sm">{t('healthTips.sleep.content')}</p>
             </div>
-            <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border-l-4 border-orange-500">
+            <div className="p-4 bg-subtle rounded-lg border-l-4 border-orange-500">
               <h4 className="font-semibold text-orange-800 dark:text-orange-400 mb-2">💧 {t('healthTips.water.title')}</h4>
               <p className="text-orange-700 dark:text-orange-300 text-sm">{t('healthTips.water.content')}</p>
             </div>
@@ -652,7 +646,6 @@ export default function BMICalculator() {
       {/* BMI와 질병 위험도 */}
       <div className={`${glassCard} ${glassInset} p-8`}>
         <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-          <TrendingUp className="w-6 h-6 mr-2 text-yellow-600" />
           BMI와 건강 위험도
         </h3>
         <div className="overflow-x-auto">

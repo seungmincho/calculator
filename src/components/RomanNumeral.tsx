@@ -157,7 +157,7 @@ export default function RomanNumeral() {
                   onClick={() => { setMode('toRoman'); setInputValue('') }}
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     mode === 'toRoman'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -172,7 +172,7 @@ export default function RomanNumeral() {
                   onClick={() => { setMode('toArabic'); setInputValue('') }}
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     mode === 'toArabic'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -238,7 +238,7 @@ export default function RomanNumeral() {
                 {referenceValues.map(([roman, arabic]) => (
                   <div
                     key={roman}
-                    className="bg-blue-50 dark:bg-blue-950 rounded-lg p-2 text-center"
+                    className="bg-subtle rounded-lg p-2 text-center"
                   >
                     <div className="font-serif text-lg font-bold text-blue-600 dark:text-blue-400">
                       {roman}
@@ -275,7 +275,7 @@ export default function RomanNumeral() {
             {conversionResult && !conversionResult.error && (
               <div className="grid md:grid-cols-2 gap-4">
                 {/* Arabic Number Card */}
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+                <div className="bg-subtle rounded-xl p-6 border border-line">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
                       {t('arabicNumber')}
@@ -298,7 +298,7 @@ export default function RomanNumeral() {
                 </div>
 
                 {/* Roman Numeral Card */}
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 rounded-xl p-6 border border-purple-200 dark:border-purple-800">
+                <div className="bg-subtle rounded-xl p-6 border border-line">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
                       {t('romanNumeral')}
@@ -323,7 +323,7 @@ export default function RomanNumeral() {
             )}
 
             {/* Information Box */}
-            <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+            <div className="bg-subtle rounded-xl p-4 border border-line">
               <p className="text-sm text-blue-800 dark:text-blue-200">
                 {t('maxNumber')}
               </p>
@@ -335,7 +335,6 @@ export default function RomanNumeral() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 

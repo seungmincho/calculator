@@ -247,7 +247,7 @@ export default function VatCalculator() {
                       onClick={() => handleModeChange(m)}
                       className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${
                         mode === m
-                          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                          ? 'bg-primary hover:bg-blue-700 text-white'
                           : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
@@ -309,7 +309,7 @@ export default function VatCalculator() {
           <div className="lg:col-span-2 space-y-6">
             {/* Result Cards */}
             <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('supplyAmount')}</h3>
                   <button
@@ -322,7 +322,7 @@ export default function VatCalculator() {
                 <p className="text-2xl font-bold">{formatCurrency(calculations.supply)}원</p>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('vatAmount')}</h3>
                   <button
@@ -336,7 +336,7 @@ export default function VatCalculator() {
                 <p className="text-xs opacity-75 mt-1">(10%)</p>
               </div>
 
-              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('totalAmount')}</h3>
                   <button
@@ -403,12 +403,11 @@ export default function VatCalculator() {
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-base font-semibold text-fg flex items-center gap-2">
-                    <Receipt className="w-5 h-5" />
                     {t('receipt')}
                   </h3>
                   <button
                     onClick={handleCopyAll}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors text-sm"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors text-sm"
                   >
                     {copiedId === 'all' ? (
                       <><Check className="w-3.5 h-3.5" />{t('copied')}</>
@@ -431,7 +430,7 @@ export default function VatCalculator() {
                       <span className="text-body font-medium text-sm">{t('vatAmount')}</span>
                       <span className="font-bold text-orange-600 dark:text-orange-400 text-sm">{formatCurrency(calculations.vat)}원</span>
                     </div>
-                    <div className="flex items-center justify-between py-2 bg-blue-50 dark:bg-blue-950 rounded-lg px-3">
+                    <div className="flex items-center justify-between py-2 bg-subtle rounded-lg px-3">
                       <span className="text-fg font-bold text-sm">{t('totalAmount')}</span>
                       <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{formatCurrency(calculations.total)}원</span>
                     </div>
@@ -453,7 +452,7 @@ export default function VatCalculator() {
               </h2>
               <button
                 onClick={addBatchItem}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors text-sm"
+                className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors text-sm"
               >
                 <Plus className="w-4 h-4" />
                 {t('batchAdd')}
@@ -531,15 +530,15 @@ export default function VatCalculator() {
 
           {/* Batch Summary Cards */}
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-5 text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-5 text-white">
               <p className="text-sm opacity-90 mb-1">{t('supplyAmount')} {t('batchTotalLabel')}</p>
               <p className="text-2xl font-bold">{formatCurrency(batchTotals.supply)}원</p>
             </div>
-            <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg p-5 text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-5 text-white">
               <p className="text-sm opacity-90 mb-1">{t('vatAmount')} {t('batchTotalLabel')}</p>
               <p className="text-2xl font-bold">{formatCurrency(batchTotals.vat)}원</p>
             </div>
-            <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-5 text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-5 text-white">
               <p className="text-sm opacity-90 mb-1">{t('totalAmount')} {t('batchTotalLabel')}</p>
               <p className="text-2xl font-bold">{formatCurrency(batchTotals.total)}원</p>
             </div>
@@ -550,7 +549,6 @@ export default function VatCalculator() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
 

@@ -281,7 +281,6 @@ export default function ElectricityCalculator() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <Zap className="w-5 h-5 text-yellow-500" />
                 설정
               </h2>
               <button
@@ -363,7 +362,7 @@ export default function ElectricityCalculator() {
                   onClick={() => setSeason('normal')}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     season === 'normal'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -373,7 +372,7 @@ export default function ElectricityCalculator() {
                   onClick={() => setSeason('summer')}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     season === 'summer'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -383,7 +382,7 @@ export default function ElectricityCalculator() {
                   onClick={() => setSeason('winter')}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     season === 'winter'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -402,7 +401,7 @@ export default function ElectricityCalculator() {
                   onClick={() => setContractType('low')}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     contractType === 'low'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -412,7 +411,7 @@ export default function ElectricityCalculator() {
                   onClick={() => setContractType('high')}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     contractType === 'high'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -426,7 +425,7 @@ export default function ElectricityCalculator() {
         {/* Right Panel - Results */}
         <div className="lg:col-span-2 space-y-6">
           {/* Total Bill Card */}
-          <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl shadow-lg p-8 text-white">
+          <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-8 text-white">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium opacity-90">{t('result.totalMonthly')}</p>
@@ -596,7 +595,7 @@ export default function ElectricityCalculator() {
                   {breakdown.fund.toLocaleString()}원
                 </span>
               </div>
-              <div className="flex justify-between py-3 bg-blue-50 dark:bg-blue-950 rounded-lg px-3 mt-2">
+              <div className="flex justify-between py-3 bg-subtle rounded-lg px-3 mt-2">
                 <span className="font-semibold text-fg">총 요금</span>
                 <span className="font-bold text-blue-600 dark:text-blue-400 text-lg">
                   {breakdown.total.toLocaleString()}원
@@ -608,7 +607,6 @@ export default function ElectricityCalculator() {
           {/* Saving Tips */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <Lightbulb className="w-5 h-5 text-yellow-500" />
               {t('savingTips.title')}
             </h3>
             <ul className="space-y-2">
@@ -630,7 +628,6 @@ export default function ElectricityCalculator() {
           className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            <Zap className="w-5 h-5 text-yellow-500" />
             {t('simulator.title')}
           </h2>
           <div className="flex items-center gap-3">
@@ -708,7 +705,7 @@ export default function ElectricityCalculator() {
                   })}
                 </tbody>
                 <tfoot>
-                  <tr className="bg-blue-50 dark:bg-blue-950">
+                  <tr className="bg-subtle">
                     <td colSpan={3} className="py-3 px-4 font-semibold text-fg">
                       {t('simulator.total')}
                     </td>
@@ -727,7 +724,7 @@ export default function ElectricityCalculator() {
               <button
                 onClick={applyApplianceUsage}
                 disabled={applianceMonthlyKwh === 0}
-                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium text-sm hover:from-blue-700 hover:to-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium text-sm hover:from-blue-700 hover:to-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
               >
                 {t('simulator.apply')} ({Math.round(applianceMonthlyKwh)} kWh)
               </button>
@@ -739,7 +736,6 @@ export default function ElectricityCalculator() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

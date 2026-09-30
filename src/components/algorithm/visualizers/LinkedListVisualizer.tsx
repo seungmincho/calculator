@@ -225,7 +225,7 @@ export default function LinkedListVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.dataStructure')}
             </span>
             <span className="text-xs text-gray-400">★☆☆</span>
@@ -327,14 +327,14 @@ export default function LinkedListVisualizer() {
                 </div>
               )}
               <button onClick={executeOperation}
-                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
+                className="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors whitespace-nowrap">
                 {t('controls.execute')}
               </button>
             </div>
 
             <div className="flex flex-wrap gap-2">
               <button onClick={() => buildRandom(6)}
-                className="px-3 py-1.5 text-xs rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200/50 dark:border-blue-700/30 transition-colors">
+                className="px-3 py-1.5 text-xs rounded-lg bg-subtle text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-line transition-colors">
                 🎲 {t('controls.random')}
               </button>
               <button onClick={clearAll}
@@ -359,8 +359,8 @@ export default function LinkedListVisualizer() {
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
-                      activeTab === tab.key ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20' : 'text-muted'
-                    }`}>{tab.icon} {tab.label}</button>
+                      activeTab === tab.key ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle' : 'text-muted'
+                    }`}>{tab.label}</button>
                 ))}
               </div>
               <div className="p-4 max-h-[70vh] overflow-y-auto">
@@ -376,7 +376,7 @@ export default function LinkedListVisualizer() {
                           return (
                             <div key={i} data-active={isCurrent ? 'true' : undefined} onClick={() => setCurrentStepIndex(i)}
                               className={`p-2 rounded-lg border text-xs cursor-pointer transition-all ${
-                                isCurrent ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50' : i <= currentStepIndex ? 'border-line' : 'opacity-40 border-gray-200/30'
+                                isCurrent ? 'bg-subtle border-blue-300/50' : i <= currentStepIndex ? 'border-line' : 'opacity-40 border-gray-200/30'
                               }`}>
                               <span className="text-sub">{step.description}</span>
                             </div>

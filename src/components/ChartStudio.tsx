@@ -579,7 +579,6 @@ export default function MyChart() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <FileJson className="w-5 h-5" />
             {t('dataInput.title')}
           </h2>
           {parsedData && (
@@ -621,7 +620,7 @@ export default function MyChart() {
           <div
             className={`relative rounded-lg border-2 border-dashed transition-colors ${
               isDragging
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                ? 'border-blue-500 bg-subtle'
                 : 'border-line-strong'
             }`}
             onDrop={handleDrop}
@@ -635,7 +634,7 @@ export default function MyChart() {
               className="w-full min-h-[140px] px-4 py-3 bg-transparent text-fg font-mono text-sm focus:outline-none resize-y rounded-lg"
             />
             {isDragging && (
-              <div className="absolute inset-0 flex items-center justify-center bg-blue-50/80 dark:bg-blue-900/60 rounded-lg pointer-events-none">
+              <div className="absolute inset-0 flex items-center justify-center bg-subtle rounded-lg pointer-events-none">
                 <div className="flex flex-col items-center gap-2 text-blue-600 dark:text-blue-300">
                   <Upload className="w-8 h-8" />
                   <span className="text-sm font-medium">{t('dataInput.dropHere')}</span>
@@ -680,7 +679,6 @@ export default function MyChart() {
           <div className="lg:col-span-1 space-y-6">
             <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <Settings className="w-5 h-5" />
                 {t('config.title')}
               </h2>
 
@@ -696,7 +694,7 @@ export default function MyChart() {
                       onClick={() => updateConfig('chartType', type)}
                       className={`flex flex-col items-center gap-1 p-3 rounded-lg transition-colors ${
                         config.chartType === type
-                          ? 'border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/30'
+                          ? 'border-2 border-blue-500 bg-subtle'
                           : 'border-2 border-line hover:border-blue-300'
                       }`}
                     >
@@ -756,7 +754,7 @@ export default function MyChart() {
                           />
                           <span className="text-sm text-body">{h}</span>
                           {isNumericColumn(parsedData.rows, h) && (
-                            <span className="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 px-1.5 py-0.5 rounded ml-auto">
+                            <span className="text-xs bg-soft text-sub px-1.5 py-0.5 rounded ml-auto">
                               {t('config.numeric')}
                             </span>
                           )}
@@ -847,7 +845,7 @@ export default function MyChart() {
                       onClick={() => updateConfig('colorScheme', scheme)}
                       className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors ${
                         config.colorScheme === scheme
-                          ? 'bg-blue-50 dark:bg-blue-900/30 ring-2 ring-blue-500'
+                          ? 'bg-subtle ring-2 ring-blue-500'
                           : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
                       }`}
                     >
@@ -878,7 +876,7 @@ export default function MyChart() {
               </h2>
 
               {echartsOption ? (
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                <div className="bg-subtle rounded-lg p-4">
                   <ReactECharts
                     option={echartsOption}
                     style={{ height: '400px', width: '100%' }}
@@ -887,7 +885,7 @@ export default function MyChart() {
                   />
                 </div>
               ) : (
-                <div className="h-[400px] bg-gray-50 dark:bg-gray-900 rounded-lg flex items-center justify-center">
+                <div className="h-[400px] bg-subtle rounded-lg flex items-center justify-center">
                   <p className="text-faint text-sm">
                     {t('preview.noChart')}
                   </p>
@@ -899,7 +897,7 @@ export default function MyChart() {
                 <div className="flex flex-wrap gap-3 mt-4">
                   <button
                     onClick={handleExportPNG}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
                   >
                     <Image className="w-4 h-4" />
                     {t('export.png')}
@@ -952,7 +950,7 @@ export default function MyChart() {
                     </thead>
                     <tbody>
                       {parsedData.rows.slice(0, 10).map((row, i) => (
-                        <tr key={i} className="border-b border-gray-100 dark:border-gray-700/50">
+                        <tr key={i} className="border-b border-line">
                           {parsedData.headers.map(h => (
                             <td key={h} className="px-3 py-1.5 text-body">
                               {String(row[h] ?? '')}
@@ -978,7 +976,6 @@ export default function MyChart() {
       {echartsOption && (
         <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-            <Code className="w-5 h-5" />
             {t('codeOutput.title')}
           </h2>
 
@@ -1033,7 +1030,6 @@ export default function MyChart() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

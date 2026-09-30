@@ -179,7 +179,6 @@ export default function ChmodCalculator() {
       {/* Presets */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-base font-semibold text-fg mb-3 flex items-center gap-2">
-          <Zap className="w-4 h-4 text-yellow-500" />
           {t('presets')}
         </h2>
         <div className="flex flex-wrap gap-2">
@@ -282,7 +281,7 @@ export default function ChmodCalculator() {
                     key={i}
                     className={`w-7 h-7 flex items-center justify-center rounded text-sm ${
                       ch !== '-'
-                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                        ? 'bg-soft text-sub'
                         : 'bg-soft text-faint'
                     }`}
                   >
@@ -294,7 +293,7 @@ export default function ChmodCalculator() {
           </div>
 
           {/* Permission Description */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+          <div className="bg-subtle rounded-xl p-4">
             <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">{t('permDescTitle')}</p>
             <p className="text-sm text-blue-800 dark:text-blue-200">{getPermDescription(perms)}</p>
           </div>
@@ -318,7 +317,6 @@ export default function ChmodCalculator() {
       {/* Commands */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
         <h2 className="text-base font-semibold text-fg flex items-center gap-2">
-          <Terminal className="w-4 h-4 text-green-500" />
           {t('commands')}
         </h2>
 
@@ -370,7 +368,6 @@ export default function ChmodCalculator() {
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

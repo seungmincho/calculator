@@ -25,26 +25,25 @@ const LanguageToggle = () => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 rounded-md text-sub hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-sm text-sub hover:bg-soft transition-colors"
       >
         <Languages className="w-4 h-4" />
         <span className="hidden xl:inline">{currentLanguage.name}</span>
-        <span className="xl:hidden">{currentLanguage.flag}</span>
+        <span className="xl:hidden">{currentLanguage.code.toUpperCase()}</span>
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-1 w-40 bg-surface rounded-md shadow-lg border border-line py-1 z-50">
+        <div className="absolute top-full right-0 mt-1 w-36 bg-surface rounded-xl shadow-xl border border-line p-1 z-50">
           {languages.map((language) => (
             <button
               key={language.code}
               onClick={() => handleLanguageChange(language.code)}
-              className={`w-full flex items-center space-x-3 px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+              className={`w-full flex items-center px-3 py-2 rounded-lg text-sm hover:bg-soft transition-colors ${
                 currentLanguage.code === language.code
-                  ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/30'
+                  ? 'text-primary font-semibold'
                   : 'text-body'
               }`}
             >
-              <span className="text-lg">{language.flag}</span>
               <span>{language.name}</span>
             </button>
           ))}

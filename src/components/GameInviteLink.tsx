@@ -49,7 +49,7 @@ export default function GameInviteLink({ peerId, gameSlug, gameTitle }: GameInvi
   }
 
   return (
-    <div className="bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800 rounded-xl p-4 mb-4">
+    <div className="bg-subtle border border-line rounded-xl p-4 mb-4">
       <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2 flex items-center gap-1.5">
         <Link className="w-4 h-4" />
         {t('inviteLink')}
@@ -68,7 +68,7 @@ export default function GameInviteLink({ peerId, gameSlug, gameTitle }: GameInvi
         </button>
         <button
           onClick={handleShare}
-          className="flex-shrink-0 p-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-all"
+          className="flex-shrink-0 p-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg transition-all"
           disabled={!peerId}
           title={t('shareButton')}
         >

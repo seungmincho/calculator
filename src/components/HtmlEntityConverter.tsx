@@ -281,7 +281,7 @@ export default function HtmlEntityConverter() {
               )}
             </div>
           </div>
-          <div className="w-full h-48 px-3 py-2 border border-line-strong rounded-lg bg-gray-50 dark:bg-gray-900 text-fg text-sm font-mono overflow-auto whitespace-pre-wrap break-all">
+          <div className="w-full h-48 px-3 py-2 border border-line-strong rounded-lg bg-subtle text-fg text-sm font-mono overflow-auto whitespace-pre-wrap break-all">
             {output || <span className="text-gray-400">{t('outputPlaceholder')}</span>}
           </div>
           {charCount.entities > 0 && (
@@ -362,7 +362,6 @@ export default function HtmlEntityConverter() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>

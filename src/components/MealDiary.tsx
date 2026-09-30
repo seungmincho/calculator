@@ -409,7 +409,7 @@ export default function MealDiary() {
               className="text-lg font-semibold bg-transparent text-fg border-none focus:ring-0 cursor-pointer"
             />
             {selectedDate !== today() && (
-              <button onClick={goToday} className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">
+              <button onClick={goToday} className="text-xs bg-soft text-sub px-2 py-1 rounded-full">
                 {t('today')}
               </button>
             )}
@@ -421,12 +421,12 @@ export default function MealDiary() {
 
         {/* Daily totals */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-4 text-center">
+          <div className="bg-subtle rounded-xl p-4 text-center">
             <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">{Math.round(dayTotals.cal)}</div>
             <div className="text-xs text-muted">kcal / {DRI.cal}</div>
             <div className="text-xs text-muted">{t('totalCalories')}</div>
           </div>
-          <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 text-center">
+          <div className="bg-subtle rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-green-600 dark:text-green-400">{Math.round(dayTotals.protein)}g</div>
             <div className="text-xs text-muted">{t('protein')} / {DRI.protein}g</div>
           </div>
@@ -434,7 +434,7 @@ export default function MealDiary() {
             <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{Math.round(dayTotals.fat)}g</div>
             <div className="text-xs text-muted">{t('fat')} / {DRI.fat}g</div>
           </div>
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 text-center">
+          <div className="bg-subtle rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{Math.round(dayTotals.carbs)}g</div>
             <div className="text-xs text-muted">{t('carbs')} / {DRI.carbs}g</div>
           </div>
@@ -459,7 +459,7 @@ export default function MealDiary() {
               onClick={() => setActiveMeal(mt)}
               className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                 activeMeal === mt
-                  ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white'
+                  ? 'bg-primary hover:bg-blue-700 text-white'
                   : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
@@ -528,7 +528,7 @@ export default function MealDiary() {
                 <input type="number" value={manualCarbs} onChange={e => setManualCarbs(e.target.value)} placeholder={`${t('carbs')} (g)`} className={`${glassInput} px-3 py-2 text-sm`} />
               </div>
               <div className="flex gap-2">
-                <button onClick={addManualEntry} className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-green-700 hover:to-emerald-700">
+                <button onClick={addManualEntry} className="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-green-700 hover:to-emerald-700">
                   {t('addFood')}
                 </button>
                 <button onClick={() => setShowManual(false)} className="bg-gray-200 dark:bg-gray-600 text-body px-4 py-2 rounded-lg text-sm">

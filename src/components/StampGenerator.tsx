@@ -405,7 +405,7 @@ export default function StampGenerator() {
             <h2 className="text-lg font-semibold text-fg mb-4">{t('previewTitle')}</h2>
 
             {/* Canvas Preview */}
-            <div className="flex justify-center items-center min-h-64 bg-gray-50 dark:bg-gray-900 rounded-xl border-2 border-dashed border-line p-6">
+            <div className="flex justify-center items-center min-h-64 bg-subtle rounded-xl border-2 border-dashed border-line p-6">
               <div className="flex flex-col items-center gap-4">
                 <canvas
                   ref={canvasRef}
@@ -421,17 +421,17 @@ export default function StampGenerator() {
 
             {/* Stamp Info */}
             <div className="mt-4 grid grid-cols-3 gap-3">
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 text-center">
+              <div className="bg-subtle rounded-lg p-3 text-center">
                 <p className="text-xs text-muted">{t('infoShape')}</p>
                 <p className="text-sm font-semibold text-fg mt-1">
                   {t(`shape${config.shape.charAt(0).toUpperCase() + config.shape.slice(1)}`)}
                 </p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 text-center">
+              <div className="bg-subtle rounded-lg p-3 text-center">
                 <p className="text-xs text-muted">{t('infoSize')}</p>
                 <p className="text-sm font-semibold text-fg mt-1">{config.size}px</p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 text-center">
+              <div className="bg-subtle rounded-lg p-3 text-center">
                 <p className="text-xs text-muted">{t('infoColor')}</p>
                 <div className="flex items-center justify-center gap-1 mt-1">
                   <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: activeColor }} />
@@ -444,7 +444,7 @@ export default function StampGenerator() {
             <div className="mt-4 flex gap-3">
               <button
                 onClick={handleDownload}
-                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg font-medium transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
               >
                 <Download className="w-4 h-4" />
                 {t('buttonDownload')}
@@ -460,7 +460,7 @@ export default function StampGenerator() {
           </div>
 
           {/* Usage Tips */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-3">{t('tipsTitle')}</h3>
             <ul className="space-y-1">
               {(t.raw('tipsList') as string[]).map((tip, i) => (

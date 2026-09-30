@@ -171,7 +171,7 @@ export default function NoiseMeter() {
             <Mic className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             {t('title')}
           </h1>
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-full">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-soft text-sub rounded-full">
             <Smartphone className="w-3 h-3" />
             {t('mobileFriendly')}
           </span>
@@ -229,7 +229,7 @@ export default function NoiseMeter() {
           {!isRecording ? (
             <button
               onClick={startRecording}
-              className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-medium text-lg transition-colors shadow-lg"
+              className="flex items-center gap-2 px-8 py-3 bg-primary hover:bg-blue-700 text-white rounded-xl font-medium text-lg transition-colors shadow-lg"
             >
               <Mic className="w-5 h-5" />
               {t('start')}
@@ -337,7 +337,6 @@ export default function NoiseMeter() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>

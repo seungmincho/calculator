@@ -185,7 +185,7 @@ export default function LotteryDraw() {
 
           <button
             onClick={handleStart}
-            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg px-4 py-3 font-medium hover:from-indigo-700 hover:to-purple-700 flex items-center justify-center gap-2"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-indigo-700 hover:to-purple-700 flex items-center justify-center gap-2"
           >
             <Play size={18} />
             {t('startDraw')}
@@ -240,7 +240,7 @@ export default function LotteryDraw() {
         {mode === 'allAtOnce' && !allRevealed && (
           <button
             onClick={revealAll}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-indigo-700 hover:to-purple-700"
+            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-indigo-700 hover:to-purple-700"
           >
             {t('revealAll')}
           </button>
@@ -262,9 +262,9 @@ export default function LotteryDraw() {
                 ${lot.shaking ? 'animate-shake' : ''}
                 ${
                   !lot.revealed
-                    ? 'bg-gradient-to-br from-indigo-500 to-purple-600 cursor-pointer hover:scale-105 hover:shadow-lg'
+                    ? 'bg-primary hover:bg-blue-700 cursor-pointer hover:scale-105 hover:shadow-lg'
                     : lot.isWin
-                    ? 'bg-gradient-to-br from-yellow-400 to-orange-500 scale-105 shadow-lg'
+                    ? 'bg-primary hover:bg-blue-700 scale-105 shadow-lg'
                     : 'bg-track text-gray-400 cursor-default'
                 }
               `}
@@ -282,7 +282,7 @@ export default function LotteryDraw() {
                 </>
               ) : lot.isWin ? (
                 <>
-                  <span className="text-2xl">🎉</span>
+                  
                   <span className="text-xs mt-1">{t('win')}</span>
                   {participantName && (
                     <span className="text-xs opacity-90 truncate max-w-full px-1">{participantName}</span>
@@ -290,7 +290,7 @@ export default function LotteryDraw() {
                 </>
               ) : (
                 <>
-                  <span className="text-2xl">💨</span>
+                  
                   <span className="text-xs mt-1 text-muted">{t('lose')}</span>
                   {participantName && (
                     <span className="text-xs text-gray-400 truncate max-w-full px-1">{participantName}</span>

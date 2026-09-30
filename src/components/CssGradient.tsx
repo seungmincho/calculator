@@ -410,7 +410,7 @@ export default function CssGradient() {
             </h2>
             <button
               onClick={() => copyToClipboard(fullCssRule, 'css-main')}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
             >
               {copiedId === 'css-main' ? (
                 <Check className="w-4 h-4" />
@@ -420,7 +420,7 @@ export default function CssGradient() {
               {copiedId === 'css-main' ? t('copied') : t('copy')}
             </button>
           </div>
-          <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all">
+          <pre className="bg-subtle rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all">
             {fullCssRule}
           </pre>
 
@@ -439,7 +439,7 @@ export default function CssGradient() {
             </button>
             {showVendorPrefix && (
               <div className="mt-2 relative">
-                <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
+                <pre className="bg-subtle rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
                   {vendorPrefixCss}
                 </pre>
                 <button
@@ -472,7 +472,7 @@ export default function CssGradient() {
               </button>
               {showTailwind && (
                 <div className="mt-2 relative">
-                  <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
+                  <pre className="bg-subtle rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
                     {tailwindHint}
                   </pre>
                   <button
@@ -682,7 +682,7 @@ export default function CssGradient() {
                 <button
                   onClick={addColorStop}
                   disabled={colorStops.length >= MAX_COLORS}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   {t('addColor')}
@@ -706,7 +706,7 @@ export default function CssGradient() {
                 {colorStops.map((stop, index) => (
                   <div
                     key={stop.id}
-                    className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg"
+                    className="flex items-center gap-3 p-3 bg-subtle rounded-lg"
                   >
                     {/* Stop label */}
                     <span className="text-xs text-muted flex-shrink-0 font-medium whitespace-nowrap">
@@ -800,7 +800,6 @@ export default function CssGradient() {
         {/* Guide Section */}
         <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
 

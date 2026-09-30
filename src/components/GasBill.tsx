@@ -291,7 +291,6 @@ export default function GasBill() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <Flame className="inline-block w-4 h-4 mr-1" />
                 {t('usage')}
               </label>
               <input
@@ -305,7 +304,6 @@ export default function GasBill() {
 
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <MapPin className="inline-block w-4 h-4 mr-1" />
                 {t('region')}
               </label>
               <select
@@ -321,7 +319,6 @@ export default function GasBill() {
 
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <Thermometer className="inline-block w-4 h-4 mr-1" />
                 {t('season')}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -331,7 +328,7 @@ export default function GasBill() {
                     onClick={() => handleSeasonChange(s)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       season === s
-                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                        ? 'bg-primary hover:bg-blue-700 text-white'
                         : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                     }`}
                   >
@@ -421,14 +418,14 @@ export default function GasBill() {
                   </div>
                 </div>
 
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
+                <div className="bg-subtle rounded-lg p-3">
                   <div className="text-xs text-sub">{t('boilerSim.estimatedUsage')}</div>
                   <div className="text-xl font-bold text-fg">{boilerEstimate.toLocaleString('ko-KR')} MJ</div>
                 </div>
 
                 <button
                   onClick={applyBoilerEstimate}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                  className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
                 >
                   {t('boilerSim.apply')}
                 </button>
@@ -459,25 +456,25 @@ export default function GasBill() {
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <div className="text-sm text-sub">{t('result.basicCharge')}</div>
                     <div className="text-2xl font-bold text-fg mt-1">
                       {result.basicCharge.toLocaleString('ko-KR')} {t('result.won')}
                     </div>
                   </div>
-                  <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <div className="text-sm text-sub">{t('result.usageCharge')}</div>
                     <div className="text-2xl font-bold text-fg mt-1">
                       {result.usageCharge.toLocaleString('ko-KR')} {t('result.won')}
                     </div>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <div className="text-sm text-sub">{t('result.subtotal')}</div>
                     <div className="text-2xl font-bold text-fg mt-1">
                       {result.subtotal.toLocaleString('ko-KR')} {t('result.won')}
                     </div>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <div className="text-sm text-sub">{t('result.vat')}</div>
                     <div className="text-2xl font-bold text-fg mt-1">
                       {result.vat.toLocaleString('ko-KR')} {t('result.won')}
@@ -485,7 +482,7 @@ export default function GasBill() {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-6 text-white">
+                <div className="bg-primary hover:bg-blue-700 rounded-xl p-6 text-white">
                   <div className="text-sm opacity-90">{t('result.total')}</div>
                   <div className="text-4xl font-bold mt-2">
                     {result.total.toLocaleString('ko-KR')} {t('result.won')}
@@ -604,7 +601,7 @@ export default function GasBill() {
           <div className="px-6 pb-6 border-t border-line pt-4">
             <p className="text-sm text-muted mb-4">{t('utility.description')}</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-4">
+              <div className="bg-subtle rounded-xl p-4">
                 <div className="flex items-center gap-1 text-sm font-medium text-body mb-2">
                   <Flame className="w-4 h-4" />
                   {t('utility.gas')}
@@ -629,7 +626,7 @@ export default function GasBill() {
                 />
               </div>
 
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+              <div className="bg-subtle rounded-xl p-4">
                 <div className="flex items-center gap-1 text-sm font-medium text-body mb-2">
                   <Droplets className="w-4 h-4" />
                   {t('utility.water')}
@@ -643,7 +640,7 @@ export default function GasBill() {
                 />
               </div>
 
-              <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-4">
+              <div className="bg-subtle rounded-xl p-4">
                 <div className="text-sm font-medium text-body mb-2">
                   {t('utility.internet')}
                 </div>
@@ -657,7 +654,7 @@ export default function GasBill() {
               </div>
             </div>
 
-            <div className="mt-4 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl p-5 text-white">
+            <div className="mt-4 bg-primary hover:bg-blue-700 rounded-xl p-5 text-white">
               <div className="text-sm opacity-90">{t('utility.totalLabel')}</div>
               <div className="text-3xl font-bold mt-1">
                 {utilityTotal.toLocaleString('ko-KR')} {t('result.won')}
@@ -676,7 +673,6 @@ export default function GasBill() {
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

@@ -191,7 +191,7 @@ export default function DutchPay() {
           onClick={() => setMode('equal')}
           className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
             mode === 'equal'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+              ? 'bg-primary hover:bg-blue-700 text-white'
               : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
           }`}
         >
@@ -202,7 +202,7 @@ export default function DutchPay() {
           onClick={() => setMode('custom')}
           className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
             mode === 'custom'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+              ? 'bg-primary hover:bg-blue-700 text-white'
               : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
           }`}
         >
@@ -343,7 +343,7 @@ export default function DutchPay() {
             </div>
 
             {mode === 'equal' ? (
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-8 text-center">
+              <div className="bg-subtle rounded-xl p-8 text-center">
                 <div className="text-sm text-sub mb-2">
                   {t('perPerson')}
                 </div>
@@ -367,7 +367,7 @@ export default function DutchPay() {
                     {calculateTransfers.map((transfer, index) => (
                       <div
                         key={index}
-                        className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 flex items-center justify-between"
+                        className="bg-subtle rounded-xl p-4 flex items-center justify-between"
                       >
                         <div className="flex items-center gap-3">
                           <span className="font-medium text-fg">
@@ -394,7 +394,6 @@ export default function DutchPay() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center">
-          <BookOpen className="w-6 h-6 mr-2 text-blue-600 dark:text-blue-400" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

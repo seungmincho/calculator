@@ -92,7 +92,7 @@ export default function GameResultShare({
     <>
       <button
         onClick={handleNativeShare}
-        className="flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-medium rounded-xl transition-all"
+        className="flex items-center justify-center gap-2 py-3 px-6 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl transition-all"
       >
         <Share2 className="w-5 h-5" />
         {t('share')}

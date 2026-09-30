@@ -187,7 +187,7 @@ export default function DiceRoller() {
               <button
                 onClick={roll}
                 disabled={isRolling}
-                className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all text-lg"
+                className="w-full py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all text-lg"
               >
                 {isRolling ? t('rolling') : t('rollButton')} {diceCount}D{sides}
               </button>
@@ -229,7 +229,7 @@ export default function DiceRoller() {
                   { label: t('min'), value: min },
                   { label: t('average'), value: avg },
                 ].map(({ label, value, highlight }) => (
-                  <div key={label} className={`rounded-xl p-4 text-center ${highlight ? 'bg-blue-50 dark:bg-blue-950' : 'bg-subtle'}`}>
+                  <div key={label} className={`rounded-xl p-4 text-center ${highlight ? 'bg-subtle' : 'bg-subtle'}`}>
                     <div className="text-xs text-muted mb-1">{label}</div>
                     <div className={`text-2xl font-bold ${highlight ? 'text-blue-600 dark:text-blue-400' : 'text-fg'}`}>
                       {value}

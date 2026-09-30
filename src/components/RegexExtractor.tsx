@@ -509,7 +509,7 @@ export default function RegexExtractor() {
       </div>
 
       {/* 초보자를 위한 스마트 모드 */}
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-2xl shadow-lg p-6 mb-8">
+      <div className="bg-subtle rounded-2xl shadow-lg p-6 mb-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <Wand2 className="w-6 h-6 text-green-600" />
@@ -550,7 +550,7 @@ export default function RegexExtractor() {
               }}
               className={`p-3 rounded-lg border-2 text-left transition-all ${
                 smartMode === mode.id
-                  ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                  ? 'border-green-500 bg-subtle'
                   : 'border-line hover:border-green-300'
               }`}
             >
@@ -591,7 +591,6 @@ export default function RegexExtractor() {
         <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-fg flex items-center">
-              <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
               {t('guide.regexBasics')}
             </h3>
             <button
@@ -651,7 +650,6 @@ export default function RegexExtractor() {
         <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-fg flex items-center">
-              <Target className="w-5 h-5 mr-2 text-purple-600" />
               {t('patternBuilder.title')}
             </h3>
             <button
@@ -700,7 +698,6 @@ export default function RegexExtractor() {
           {/* 작업 유형 선택 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-xl font-bold text-fg mb-4 flex items-center">
-              <Zap className="w-5 h-5 mr-2 text-blue-600" />
               {t('operation.title')}
             </h2>
             
@@ -718,7 +715,7 @@ export default function RegexExtractor() {
                   }}
                   className={`p-4 rounded-lg border-2 text-left transition-all ${
                     operation === key
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                      ? 'border-blue-500 bg-subtle'
                       : 'border-line hover:border-blue-300'
                   }`}
                 >
@@ -775,7 +772,7 @@ export default function RegexExtractor() {
 
             {/* 패턴 설명 */}
             {pattern && isValid && (
-              <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <div className="mt-3 p-3 bg-subtle rounded-lg">
                 <div className="flex items-start space-x-2">
                   <HelpCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
                   <div>
@@ -902,7 +899,6 @@ export default function RegexExtractor() {
               </h3>
               <div className="flex space-x-2">
                 <label className="flex items-center space-x-2 px-3 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer transition-colors">
-                  <Upload className="w-4 h-4" />
                   <span className="text-sm">{t('input.upload')}</span>
                   <input
                     type="file"
@@ -964,15 +960,15 @@ export default function RegexExtractor() {
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="text-center p-3 bg-subtle rounded-lg">
                   <div className="text-2xl font-bold text-blue-600">{matches.length}</div>
                   <div className="text-sm text-blue-700 dark:text-blue-300">{t('results.matches')}</div>
                 </div>
-                <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div className="text-center p-3 bg-subtle rounded-lg">
                   <div className="text-2xl font-bold text-green-600">{outputText.split('\n').filter(line => line.trim()).length}</div>
                   <div className="text-sm text-green-700 dark:text-green-300">{t('results.outputLines')}</div>
                 </div>
-                <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                <div className="text-center p-3 bg-subtle rounded-lg">
                   <div className="text-2xl font-bold text-purple-600">{outputText.length}</div>
                   <div className="text-sm text-purple-700 dark:text-purple-300">{t('results.outputChars')}</div>
                 </div>
@@ -1070,7 +1066,7 @@ export default function RegexExtractor() {
       </div>
 
       {/* 사용 가이드 */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
+      <div className="bg-subtle rounded-2xl p-8">
         <h3 className="text-2xl font-bold text-fg mb-6">
           🔍 {t('guide.title')}
         </h3>

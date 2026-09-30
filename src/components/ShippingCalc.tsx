@@ -438,7 +438,7 @@ export default function ShippingCalc() {
                   </div>
                 ))}
               </div>
-              <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg">
+              <div className="mt-3 p-3 bg-subtle rounded-lg">
                 <div className="text-xs text-sub">{t('volumeWeightInfo')}</div>
                 <div className="text-lg font-semibold text-blue-600 dark:text-blue-400 mt-0.5">
                   {volumeWeight.toFixed(2)} kg
@@ -465,7 +465,7 @@ export default function ShippingCalc() {
                     onClick={() => { setDestination(dest); setShowSaveButton(true) }}
                     className={`py-2 rounded-lg text-xs font-medium transition-colors ${
                       destination === dest
-                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                        ? 'bg-primary hover:bg-blue-700 text-white'
                         : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                     }`}
                   >
@@ -485,7 +485,7 @@ export default function ShippingCalc() {
                   onClick={() => { setCarrierCategory('standard'); setShowSaveButton(true) }}
                   className={`py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${
                     carrierCategory === 'standard'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
@@ -496,7 +496,7 @@ export default function ShippingCalc() {
                   onClick={() => { setCarrierCategory('cvs'); setShowSaveButton(true) }}
                   className={`py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${
                     carrierCategory === 'cvs'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
@@ -523,7 +523,6 @@ export default function ShippingCalc() {
           {/* Weight Summary */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-blue-600" />
               무게 계산
             </h2>
             <div className="grid grid-cols-3 gap-3">
@@ -539,7 +538,7 @@ export default function ShippingCalc() {
                   {volumeWeight.toFixed(2)}<span className="text-sm font-normal ml-1">kg</span>
                 </div>
               </div>
-              <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded-lg text-center border-2 border-blue-300 dark:border-blue-700">
+              <div className="p-3 bg-subtle rounded-lg text-center border-2 border-line">
                 <div className="text-xs text-blue-600 dark:text-blue-400">{t('result.appliedWeight')}</div>
                 <div className="text-xl font-bold text-blue-700 dark:text-blue-300 mt-1">
                   {appliedWeight.toFixed(2)}<span className="text-sm font-normal ml-1">kg</span>
@@ -547,7 +546,7 @@ export default function ShippingCalc() {
               </div>
             </div>
             {appliedWeight === volumeWeight && appliedWeight > (parseFloat(weight) || 0) && (
-              <div className="mt-3 flex items-center gap-2 text-xs text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950 rounded-lg p-2.5">
+              <div className="mt-3 flex items-center gap-2 text-xs text-orange-600 dark:text-orange-400 bg-subtle rounded-lg p-2.5">
                 <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
                 부피무게가 실중량보다 큽니다 — 부피무게 기준으로 요금이 적용됩니다
               </div>
@@ -574,7 +573,7 @@ export default function ShippingCalc() {
                       isUnavailable
                         ? 'bg-subtle border-line opacity-50'
                         : isCheapest
-                        ? 'bg-green-50 dark:bg-green-950 border-green-400 dark:border-green-600'
+                        ? 'bg-subtle border-green-400 dark:border-green-600'
                         : 'bg-subtle border-line'
                     }`}
                   >
@@ -627,7 +626,7 @@ export default function ShippingCalc() {
 
             {/* Price Range Summary */}
             {availableResults.length > 1 && (
-              <div className="mt-5 p-4 bg-indigo-50 dark:bg-indigo-950 rounded-lg">
+              <div className="mt-5 p-4 bg-subtle rounded-lg">
                 <div className="text-sm text-muted mb-1">가격 범위</div>
                 <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                   {availableResults[0].price!.toLocaleString()}원 ~ {availableResults[availableResults.length - 1].price!.toLocaleString()}원
@@ -669,7 +668,6 @@ export default function ShippingCalc() {
       {/* ── Guide Section ── */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6 text-blue-600" />
           {t('guide.title')}
         </h2>
 

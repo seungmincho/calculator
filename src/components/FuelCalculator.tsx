@@ -1212,7 +1212,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
-                      <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg">
+                      <div className="bg-subtle p-4 rounded-lg">
                         <div className="flex items-center space-x-2 mb-2">
                           <DollarSign className="w-5 h-5 text-blue-600" />
                           <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
@@ -1224,7 +1224,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                         </p>
                       </div>
 
-                      <div className="bg-green-50 dark:bg-green-950 p-4 rounded-lg">
+                      <div className="bg-subtle p-4 rounded-lg">
                         <div className="flex items-center space-x-2 mb-2">
                           <Fuel className="w-5 h-5 text-green-600" />
                           <span className="text-sm font-medium text-green-800 dark:text-green-200">
@@ -1241,7 +1241,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                     </div>
 
                     <div className="space-y-4">
-                      <div className="bg-orange-50 dark:bg-orange-950 p-4 rounded-lg">
+                      <div className="bg-subtle p-4 rounded-lg">
                         <div className="flex items-center space-x-2 mb-2">
                           <TrendingDown className="w-5 h-5 text-orange-600" />
                           <span className="text-sm font-medium text-orange-800 dark:text-orange-200">
@@ -1253,7 +1253,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                         </p>
                       </div>
 
-                      <div className="bg-purple-50 dark:bg-purple-950 p-4 rounded-lg">
+                      <div className="bg-subtle p-4 rounded-lg">
                         <div className="flex items-center space-x-2 mb-2">
                           <Zap className="w-5 h-5 text-purple-600" />
                           <span className="text-sm font-medium text-purple-800 dark:text-purple-200">
@@ -1269,7 +1269,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                 </div>
 
                 {/* 상세 내역 */}
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                <div className="bg-subtle rounded-xl p-6">
                   <h3 className="text-lg font-semibold text-fg mb-4">
                     {t('result.breakdown')}
                   </h3>
@@ -1303,7 +1303,6 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   {/* 비용 구성 */}
                   <div className={`${glassCard} ${glassInset} p-6`}>
                     <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">
-                      <BarChart3 className="w-4 h-4 text-blue-500" />
                       비용 구성
                     </h3>
                     <div className="h-64">
@@ -1334,7 +1333,6 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   {/* 연료별 비교 */}
                   <div className={`${glassCard} ${glassInset} p-6`}>
                     <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">
-                      <Fuel className="w-4 h-4 text-green-500" />
                       연료별 비용 비교
                     </h3>
                     {(() => {
@@ -1532,19 +1530,19 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
             {/* 요약 카드 */}
             {filteredLogs.length > 0 && (
               <div className="grid grid-cols-3 gap-3 mb-4">
-                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-center">
+                <div className="bg-subtle rounded-lg p-3 text-center">
                   <div className="text-xs text-muted mb-1">총 주행거리</div>
                   <div className="text-sm font-bold text-blue-700 dark:text-blue-300">
                     {filteredLogs.reduce((sum, l) => sum + l.distance, 0).toLocaleString()} km
                   </div>
                 </div>
-                <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 text-center">
+                <div className="bg-subtle rounded-lg p-3 text-center">
                   <div className="text-xs text-muted mb-1">총 연료비</div>
                   <div className="text-sm font-bold text-orange-700 dark:text-orange-300">
                     {filteredLogs.reduce((sum, l) => sum + calculateLogFuelCost(l.distance), 0).toLocaleString()} 원
                   </div>
                 </div>
-                <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 text-center">
+                <div className="bg-subtle rounded-lg p-3 text-center">
                   <div className="text-xs text-muted mb-1">기록 수</div>
                   <div className="text-sm font-bold text-green-700 dark:text-green-300">
                     {filteredLogs.length}건
@@ -1584,7 +1582,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       const fuelCost = calculateLogFuelCost(log.distance)
                       const total = log.tollFee + log.parkingFee + fuelCost
                       return (
-                        <tr key={log.id} className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30">
+                        <tr key={log.id} className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/30">
                           <td className="py-3 px-2">{log.date}</td>
                           <td className="py-3 px-2 text-right">{log.distance.toLocaleString()}km</td>
                           <td className="py-3 px-2 text-right">{log.tollFee.toLocaleString()}원</td>
@@ -1622,7 +1620,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
 
           {/* Summary Card */}
           {drivingLogs.length > 0 && (
-            <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
               <h3 className="text-lg font-semibold mb-4">{t('drivingLog.summary.title')}</h3>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div>
@@ -1655,7 +1653,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
       {activeTab === 'calculator' && (
         <div className="mt-16 space-y-12">
           {/* Business Expense Guide */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8">
+          <div className="bg-subtle rounded-2xl p-8">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-fg mb-4">
                 {t('businessExpense.title')}
@@ -1816,7 +1814,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
           </div>
 
           {/* Cost Optimization */}
-          <div className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl p-8">
+          <div className="bg-subtle rounded-2xl p-8">
             <div className="text-center mb-8">
               <div className="flex items-center justify-center space-x-3 mb-4">
                 <TrendingUp className="w-8 h-8 text-green-600" />

@@ -265,23 +265,23 @@ export default function OrderPickerPage() {
             </h2>
             <ol className="space-y-3 text-body">
               <li className="flex items-start gap-3">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-bold flex items-center justify-center">1</span>
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">1</span>
                 <span>참가자 이름을 입력 칸에 한 명씩 추가합니다. 이름이 없으면 "참가자 1, 2, 3..." 형태로 기본값이 제공됩니다.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-bold flex items-center justify-center">2</span>
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">2</span>
                 <span>"순서 뽑기" 버튼을 클릭하면 참가자들의 순서가 랜덤으로 섞입니다.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-bold flex items-center justify-center">3</span>
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">3</span>
                 <span>뒤집힌 카드를 한 장씩 클릭하면 순서가 하나씩 공개됩니다. "전체 공개" 버튼으로 한 번에 모두 볼 수도 있습니다.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-bold flex items-center justify-center">4</span>
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">4</span>
                 <span>결과를 복사하여 카카오톡이나 슬랙 등 메신저로 바로 공유하세요.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-bold flex items-center justify-center">5</span>
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">5</span>
                 <span>다시 뽑고 싶다면 초기화 버튼을 눌러 처음부터 진행합니다. 참가자 목록은 유지됩니다.</span>
               </li>
             </ol>

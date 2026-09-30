@@ -178,20 +178,20 @@ export default function SlidingWindowVisualizer() {
   ]
 
   const ACTION_STYLE: Record<string, string> = {
-    'init':        'bg-gray-50 dark:bg-gray-900/20 border-gray-300/50 dark:border-gray-700/40',
-    'expand':      'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50 dark:border-blue-700/40',
+    'init':        'bg-subtle border-line',
+    'expand':      'bg-subtle border-line',
     'shrink':      'bg-red-50 dark:bg-red-900/20 border-red-300/50 dark:border-red-700/40',
-    'slide':       'bg-cyan-50 dark:bg-cyan-900/20 border-cyan-300/50 dark:border-cyan-700/40',
-    'update-best': 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300/50 dark:border-emerald-700/40',
-    'complete':    'bg-purple-50 dark:bg-purple-900/20 border-purple-300/50 dark:border-purple-700/40',
+    'slide':       'bg-subtle border-line',
+    'update-best': 'bg-subtle border-line',
+    'complete':    'bg-subtle border-line',
   }
   const ACTION_BADGE: Record<string, string> = {
-    'init':        'bg-gray-100 dark:bg-gray-900/40 text-gray-700 dark:text-gray-400',
-    'expand':      'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
+    'init':        'bg-soft text-sub',
+    'expand':      'bg-soft text-sub',
     'shrink':      'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
-    'slide':       'bg-cyan-100 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-400',
-    'update-best': 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
-    'complete':    'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
+    'slide':       'bg-soft text-sub',
+    'update-best': 'bg-soft text-sub',
+    'complete':    'bg-soft text-sub',
   }
 
   return (
@@ -201,7 +201,7 @@ export default function SlidingWindowVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.technique')}
             </span>
             <span className="text-xs text-gray-400">★☆☆</span>
@@ -314,7 +314,7 @@ export default function SlidingWindowVisualizer() {
               )}
               <div className="flex items-end">
                 <button onClick={runAlgorithm}
-                  className="w-full px-4 py-2 bg-gradient-to-r from-sky-600 to-blue-600 text-white rounded-lg font-medium hover:from-sky-700 hover:to-blue-700 transition-colors">
+                  className="w-full px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-sky-700 hover:to-blue-700 transition-colors">
                   {t('run')}
                 </button>
               </div>
@@ -329,9 +329,9 @@ export default function SlidingWindowVisualizer() {
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
-                      activeTab === tab.key ? 'text-sky-600 dark:text-sky-400 border-b-2 border-sky-500 bg-sky-50/50 dark:bg-sky-900/20'
+                      activeTab === tab.key ? 'text-sky-600 dark:text-sky-400 border-b-2 border-sky-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
-                    }`}>{tab.icon} {tab.label}</button>
+                    }`}>{tab.label}</button>
                 ))}
               </div>
               <div className="p-4 max-h-[70vh] overflow-y-auto">
@@ -392,7 +392,7 @@ function StepsList({ steps, currentIndex, onStepClick, actionStyle, actionBadge 
         const isAct = idx <= currentIndex
         return (
           <div key={idx} data-active={isCur ? 'true' : undefined} onClick={() => onStepClick(idx)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'}`}>
+            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-subtle' : 'border-line opacity-40'}`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap ${actionBadge[step.action] || ''}`}>
                 {step.action}

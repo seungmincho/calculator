@@ -533,7 +533,7 @@ export default function KmeansClusteringVisualizer() {
           {/* K slider */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="text-sm font-semibold text-body flex items-center gap-2">
-              <Target className="w-4 h-4" /> 설정
+              설정
             </h2>
 
             <div>
@@ -580,7 +580,7 @@ export default function KmeansClusteringVisualizer() {
           {/* Data presets */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
             <h2 className="text-sm font-semibold text-body flex items-center gap-2">
-              <Shuffle className="w-4 h-4" /> 데이터 생성
+              데이터 생성
             </h2>
             <div className="grid grid-cols-2 gap-2">
               {([
@@ -638,7 +638,7 @@ export default function KmeansClusteringVisualizer() {
           {/* Stats */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
             <h2 className="text-sm font-semibold text-body flex items-center gap-2">
-              <Info className="w-4 h-4" /> 통계
+              통계
             </h2>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="bg-subtle rounded-lg p-2.5">
@@ -760,7 +760,7 @@ export default function KmeansClusteringVisualizer() {
                   key={p}
                   className={`flex-1 min-w-[120px] rounded-lg p-3 text-xs border-2 transition-colors ${
                     phase === p
-                      ? 'border-teal-500 bg-teal-50 dark:bg-teal-950 dark:border-teal-400'
+                      ? 'border-teal-500 bg-subtle dark:border-teal-400'
                       : 'border-transparent bg-subtle'
                   }`}
                 >
@@ -782,7 +782,7 @@ export default function KmeansClusteringVisualizer() {
           className="w-full flex items-center justify-between p-6 text-left"
         >
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" /> K-means 클러스터링 가이드
+            K-means 클러스터링 가이드
           </h2>
           {guideOpen ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
         </button>

@@ -235,7 +235,7 @@ export default function RandomPicker() {
             onClick={() => setMode(m)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${
               mode === m
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25'
+                ? 'bg-primary hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25'
                 : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 border border-line'
             }`}
           >
@@ -379,7 +379,7 @@ export default function RandomPicker() {
               <button
                 onClick={mode === 'number' ? pickRandomNumbers : mode === 'list' ? pickRandomItems : divideIntoTeams}
                 disabled={mode === 'number' ? !canPickNumbers() : mode === 'list' ? !canPickList() : !canDivideTeams()}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2"
               >
                 {mode === 'number' ? <Dice1 className="w-4 h-4" /> : mode === 'list' ? <Shuffle className="w-4 h-4" /> : <Users className="w-4 h-4" />}
                 {mode === 'number' ? t('number.generate') : mode === 'list' ? t('list.pick') : t('team.divide')}
@@ -405,7 +405,7 @@ export default function RandomPicker() {
               <div>
                 {numberResult ? (
                   <div className="space-y-4">
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-xl p-6">
+                    <div className="bg-subtle rounded-xl p-6">
                       <p className="text-sm text-muted mb-4">
                         {t('number.result')}
                       </p>
@@ -413,7 +413,7 @@ export default function RandomPicker() {
                         {numberResult.numbers.map((num, i) => (
                           <div
                             key={`${num}-${i}`}
-                            className={`flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-bold text-xl shadow-lg ${
+                            className={`flex items-center justify-center w-16 h-16 rounded-xl bg-primary hover:bg-blue-700 text-white font-bold text-xl shadow-lg ${
                               isShufflingNumbers ? 'animate-pulse' : 'animate-[scale-up_0.3s_ease-out]'
                             }`}
                             style={{ animationDelay: `${i * 50}ms` }}
@@ -451,7 +451,7 @@ export default function RandomPicker() {
               <div>
                 {listResult ? (
                   <div className="space-y-4">
-                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 rounded-xl p-6">
+                    <div className="bg-subtle rounded-xl p-6">
                       <p className="text-sm text-muted mb-4">
                         {t('list.result')}
                       </p>
@@ -465,7 +465,7 @@ export default function RandomPicker() {
                             style={{ animationDelay: `${i * 100}ms` }}
                           >
                             <div className="flex items-center gap-3">
-                              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 text-white font-bold text-sm">
+                              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary hover:bg-blue-700 text-white font-bold text-sm">
                                 {i + 1}
                               </div>
                               <p className="text-lg font-medium text-fg">{item}</p>
@@ -560,7 +560,6 @@ export default function RandomPicker() {
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-3 gap-6">

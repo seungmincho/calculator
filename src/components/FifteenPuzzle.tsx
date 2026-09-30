@@ -444,7 +444,7 @@ export default function FifteenPuzzle() {
             </p>
             <button
               onClick={() => startNewGame()}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
+              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               {t('newGame')}
@@ -509,7 +509,7 @@ export default function FifteenPuzzle() {
       <div className="flex justify-center">
         <button
           onClick={() => startNewGame()}
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2 shadow-md"
+          className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2 shadow-md"
         >
           <RotateCcw className="w-4 h-4" />
           {t('newGame')}
@@ -536,7 +536,7 @@ export default function FifteenPuzzle() {
               </li>
             ))}
           </ul>
-          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg text-sm text-blue-700 dark:text-blue-300">
+          <div className="mt-4 p-3 bg-subtle rounded-lg text-sm text-blue-700 dark:text-blue-300">
             <strong>팁:</strong> 방향키(↑↓←→)를 사용하면 더 빠르게 조작할 수 있습니다. 초록색 타일은 정확한 위치에 있는 것입니다.
           </div>
         </div>

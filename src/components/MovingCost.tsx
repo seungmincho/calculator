@@ -407,7 +407,6 @@ export default function MovingCost() {
           {/* 1. Home Size */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Home className="w-5 h-5" />
               {t('sizeLabel')}
             </h2>
 
@@ -475,7 +474,6 @@ export default function MovingCost() {
           {/* 2. Moving Type */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Truck className="w-5 h-5" />
               {t('movingTypeLabel')}
             </h2>
             <div className="grid sm:grid-cols-3 gap-3">
@@ -485,7 +483,7 @@ export default function MovingCost() {
                   onClick={() => setMovingType(type)}
                   className={`p-4 rounded-xl border-2 text-left transition-colors ${
                     movingType === type
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                      ? 'border-blue-500 bg-subtle'
                       : 'border-line hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
@@ -503,7 +501,6 @@ export default function MovingCost() {
           {/* 3. Distance */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <MapPin className="w-5 h-5" />
               {t('distanceLabel')}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -538,7 +535,6 @@ export default function MovingCost() {
           {/* 4. Floor Info */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Building2 className="w-5 h-5" />
               {t('floorLabel')}
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
@@ -606,7 +602,6 @@ export default function MovingCost() {
           {/* 5. Extra Services */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Wrench className="w-5 h-5" />
               {t('extrasLabel')}
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
@@ -693,7 +688,6 @@ export default function MovingCost() {
           {/* 6. Moving Date */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
               {t('dateLabel')}
             </h2>
             <input
@@ -710,17 +704,17 @@ export default function MovingCost() {
                   </span>
                 )}
                 {dateInfo.weekend && (
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-soft text-sub">
                     {t('weekend')}
                   </span>
                 )}
                 {dateInfo.isAuspicious && (
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-soft text-sub">
                     {t('auspiciousDay')}
                   </span>
                 )}
                 {!dateInfo.peak && !dateInfo.weekend && (
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-soft text-sub">
                     {t('normalDay')}
                   </span>
                 )}
@@ -750,14 +744,13 @@ export default function MovingCost() {
         <div className="lg:col-span-1 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6 sticky top-24`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2 mb-4">
-              <Calculator className="w-5 h-5" />
               {t('result.title')}
             </h2>
 
             {costBreakdown ? (
               <div className="space-y-3">
                 {/* Summary badge */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-xl p-4 border-2 border-blue-200 dark:border-blue-800">
+                <div className="bg-subtle rounded-xl p-4 border-2 border-line">
                   <div className="text-xs font-medium text-blue-700 dark:text-blue-300 mb-1">
                     {t('result.estimatedTotal')}
                   </div>
@@ -854,7 +847,6 @@ export default function MovingCost() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

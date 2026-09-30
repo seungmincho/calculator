@@ -226,7 +226,7 @@ export default function RandomNumberPicker() {
           <button
             onClick={draw}
             disabled={isDrawing}
-            className="flex items-center gap-2 px-8 py-3 rounded-2xl font-bold text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-60 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-200 active:scale-95 text-lg"
+            className="flex items-center gap-2 px-8 py-3 rounded-2xl font-bold text-white bg-primary hover:bg-blue-700 disabled:opacity-60 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-200 active:scale-95 text-lg"
           >
             <Shuffle size={20} className={isDrawing ? 'animate-spin' : ''} />
             {isDrawing ? t('drawing') : t('draw')}

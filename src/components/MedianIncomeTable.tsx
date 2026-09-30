@@ -244,7 +244,6 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
           {/* 입력 섹션 */}
           <div className="space-y-4">
             <h3 className="font-semibold text-fg flex items-center gap-2">
-              <Users className="w-4 h-4" />
               기본 정보
             </h3>
 
@@ -280,7 +279,6 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
             </div>
 
             <h3 className="font-semibold text-fg flex items-center gap-2 pt-2">
-              <Wallet className="w-4 h-4" />
               소득 정보 (월)
             </h3>
 
@@ -312,7 +310,6 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
             </div>
 
             <h3 className="font-semibold text-fg flex items-center gap-2 pt-2">
-              <Home className="w-4 h-4" />
               재산 정보
             </h3>
 
@@ -369,7 +366,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
 
             <button
               onClick={() => setShowResult(true)}
-              className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold rounded-lg transition-all"
+              className="w-full py-3 bg-primary hover:bg-blue-700 text-white font-semibold rounded-lg transition-all"
             >
               수급자격 판정하기
             </button>
@@ -411,7 +408,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                       key={benefit}
                       className={`flex justify-between items-center p-3 rounded-lg ${
                         eligible
-                          ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
+                          ? 'bg-subtle border border-line'
                           : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'
                       }`}
                     >
@@ -463,17 +460,17 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
             소득인정액 계산식 보기
           </summary>
           <div className="mt-4 space-y-3 text-sm">
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+            <div className="bg-subtle rounded-lg p-3">
               <p className="font-semibold text-blue-700 dark:text-blue-300">
                 소득인정액 = 소득평가액 + 소득환산액
               </p>
             </div>
-            <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3">
+            <div className="bg-subtle rounded-lg p-3">
               <p className="font-semibold text-green-700 dark:text-green-300">
                 소득평가액 = 실제소득 - 가구특성 지출비용 - 근로소득공제(30%)
               </p>
             </div>
-            <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
+            <div className="bg-subtle rounded-lg p-3">
               <p className="font-semibold text-purple-700 dark:text-purple-300">
                 소득환산액 = (재산 - 기본재산액 - 부채) × 소득환산율
               </p>
@@ -531,7 +528,7 @@ const MedianIncomeTable = () => {
                 onClick={() => setSelectedYear(year)}
                 className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-base sm:text-lg transition-all duration-200 ${
                   selectedYear === year
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                    ? 'bg-primary hover:bg-blue-700 text-white shadow-md'
                     : 'text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}
               >
@@ -555,7 +552,7 @@ const MedianIncomeTable = () => {
             {householdLabels.map((label, index) => (
               <div
                 key={label}
-                className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 rounded-xl p-4 text-center"
+                className="bg-subtle rounded-xl p-4 text-center"
               >
                 <div className="text-sm text-sub mb-1">{label}</div>
                 <div className="text-lg font-bold text-fg">
@@ -597,7 +594,7 @@ const MedianIncomeTable = () => {
               {householdLabels.map((label, index) => (
                 <div
                   key={label}
-                  className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-4 text-center border-2 border-purple-200 dark:border-purple-700"
+                  className="bg-subtle rounded-xl p-4 text-center border-2 border-line"
                 >
                   <div className="text-sm text-sub mb-1">{label}</div>
                   <div className="text-lg font-bold text-purple-700 dark:text-purple-300">
@@ -646,7 +643,7 @@ const MedianIncomeTable = () => {
                     <tr
                       key={percentage}
                       className={`
-                        ${isHighlighted ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''}
+                        ${isHighlighted ? 'bg-subtle' : ''}
                         hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors
                       `}
                     >
@@ -720,7 +717,7 @@ const MedianIncomeTable = () => {
               return (
                 <div
                   key={percentage}
-                  className={`${isHighlighted ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''}`}
+                  className={`${isHighlighted ? 'bg-subtle' : ''}`}
                 >
                   <button
                     onClick={() => setExpandedRow(isExpanded ? null : percentage)}
@@ -830,9 +827,9 @@ const MedianIncomeTable = () => {
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {[
-                  { name: '교육급여', percentage: 50, color: 'text-green-600', bg: 'bg-green-50 dark:bg-green-900/10' },
-                  { name: '주거급여', percentage: 48, color: 'text-orange-600', bg: 'bg-orange-50 dark:bg-orange-900/10' },
-                  { name: '의료급여', percentage: 40, color: 'text-pink-600', bg: 'bg-pink-50 dark:bg-pink-900/10' },
+                  { name: '교육급여', percentage: 50, color: 'text-green-600', bg: 'bg-subtle' },
+                  { name: '주거급여', percentage: 48, color: 'text-orange-600', bg: 'bg-subtle' },
+                  { name: '의료급여', percentage: 40, color: 'text-pink-600', bg: 'bg-subtle' },
                   { name: '생계급여', percentage: 32, color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/10' },
                 ].map((benefit) => (
                   <tr key={benefit.name} className={benefit.bg}>
@@ -955,7 +952,7 @@ const MedianIncomeTable = () => {
                       <td className="px-3 py-3 text-right text-body text-sm font-medium">{formatCurrency(amount2025)}</td>
                       <td className="px-3 py-3 text-right text-blue-600 dark:text-blue-400 text-sm font-semibold">{formatCurrency(amount2026)}</td>
                       <td className="px-3 py-3 text-right">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-soft text-sub">
                           +{totalIncreaseRate}%
                         </span>
                       </td>

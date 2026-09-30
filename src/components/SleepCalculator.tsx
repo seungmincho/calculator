@@ -39,16 +39,16 @@ function getQuality(cycles: number): 'excellent' | 'good' | 'fair' | 'poor' {
 
 const qualityColors: Record<string, { bg: string; border: string; text: string; badge: string }> = {
   excellent: {
-    bg: 'bg-emerald-50 dark:bg-emerald-950/40',
-    border: 'border-emerald-200 dark:border-emerald-800',
+    bg: 'bg-subtle',
+    border: 'border-line',
     text: 'text-emerald-700 dark:text-emerald-300',
-    badge: 'bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300',
+    badge: 'bg-soft text-sub',
   },
   good: {
-    bg: 'bg-green-50 dark:bg-green-950/40',
-    border: 'border-green-200 dark:border-green-800',
+    bg: 'bg-subtle',
+    border: 'border-line',
     text: 'text-green-700 dark:text-green-300',
-    badge: 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300',
+    badge: 'bg-soft text-sub',
   },
   fair: {
     bg: 'bg-yellow-50 dark:bg-yellow-950/40',
@@ -306,7 +306,7 @@ export default function SleepCalculator() {
             </div>
             <button
               onClick={handleCalculateWakeAt}
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg px-4 py-3 font-medium hover:from-indigo-700 hover:to-purple-700 flex items-center justify-center gap-2 transition-colors"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-indigo-700 hover:to-purple-700 flex items-center justify-center gap-2 transition-colors"
             >
               <Moon size={18} />
               {t('calculate')}
@@ -361,7 +361,7 @@ export default function SleepCalculator() {
           </div>
 
           {/* Explanation */}
-          <div className="bg-indigo-50 dark:bg-indigo-950/30 rounded-xl p-4 text-sm text-indigo-700 dark:text-indigo-300">
+          <div className="bg-subtle rounded-xl p-4 text-sm text-indigo-700 dark:text-indigo-300">
             <p className="flex items-start gap-2">
               <ChevronRight size={16} className="flex-shrink-0 mt-0.5" />
               {t('cycleExplanation')}
@@ -392,9 +392,9 @@ export default function SleepCalculator() {
               {ageGroupData.map((row, i) => (
                 <tr
                   key={i}
-                  className={`border-b border-gray-100 dark:border-gray-700/50 ${
+                  className={`border-b border-line ${
                     row.age === t('ageAdult')
-                      ? 'bg-indigo-50 dark:bg-indigo-950/30 font-medium'
+                      ? 'bg-subtle font-medium'
                       : ''
                   }`}
                 >

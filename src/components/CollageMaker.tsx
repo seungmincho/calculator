@@ -308,7 +308,7 @@ export default function CollageMaker() {
         className={`
           border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors
           ${isDragging
-            ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+            ? 'border-blue-500 bg-subtle'
             : 'border-line-strong hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/30'
           }
         `}
@@ -374,7 +374,7 @@ export default function CollageMaker() {
                   className={`
                     flex flex-col items-center gap-1 p-2 rounded-lg border-2 transition-all
                     ${layout === id
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                      ? 'border-blue-500 bg-subtle'
                       : 'border-line hover:border-blue-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }
                   `}
@@ -451,7 +451,7 @@ export default function CollageMaker() {
                     className={`
                       text-left text-sm px-3 py-2 rounded-lg border transition-all
                       ${outputSizeIdx === i
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+                        ? 'border-blue-500 bg-subtle text-blue-700 dark:text-blue-300'
                         : 'border-line text-body hover:border-blue-300'
                       }
                     `}
@@ -468,7 +468,7 @@ export default function CollageMaker() {
             <button
               onClick={handleDownload}
               disabled={images.length === 0 || isRendering}
-              className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               <Download className="h-4 w-4" />
               {t('download')}

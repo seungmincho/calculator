@@ -525,7 +525,7 @@ export default function TcpHandshakeVisualizer() {
             <div className="flex flex-wrap items-center gap-3">
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
-                className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
               >
                 {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                 {isPlaying ? '일시정지' : '자동 재생'}
@@ -605,7 +605,7 @@ export default function TcpHandshakeVisualizer() {
                 </div>
               </div>
               {currentStepData.packet && (
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-lg px-3 py-2">
+                <div className="bg-subtle rounded-lg px-3 py-2">
                   <code className="text-xs font-mono text-blue-800 dark:text-blue-200">
                     {currentStepData.packet.label}
                   </code>
@@ -648,7 +648,7 @@ export default function TcpHandshakeVisualizer() {
                     key={state}
                     className={`flex gap-2 px-2 py-1.5 rounded text-xs transition-colors ${
                       isActive
-                        ? 'bg-blue-50 dark:bg-blue-950 ring-1 ring-blue-200 dark:ring-blue-800'
+                        ? 'bg-subtle ring-1 ring-blue-200 dark:ring-blue-800'
                         : ''
                     }`}
                   >
@@ -702,7 +702,7 @@ export default function TcpHandshakeVisualizer() {
                 3-way Handshake vs 4-way Termination
               </h3>
               <div className="space-y-3">
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+                <div className="bg-subtle rounded-lg p-4">
                   <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-1">3-way Handshake (연결 수립)</h4>
                   <ol className="list-decimal list-inside space-y-1">
                     <li>Client → Server: <code className="bg-surface px-1 rounded">SYN</code> (연결 요청, 초기 seq 번호 전달)</li>

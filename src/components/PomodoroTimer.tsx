@@ -530,7 +530,7 @@ export default function PomodoroTimer() {
     shortBreak: {
       text: 'text-green-500',
       stroke: '#22c55e',
-      bg: 'bg-green-50 dark:bg-green-950',
+      bg: 'bg-subtle',
       buttonFrom: 'from-green-500',
       buttonTo: 'to-emerald-600',
       accent: 'accent-green-500',
@@ -538,7 +538,7 @@ export default function PomodoroTimer() {
     longBreak: {
       text: 'text-blue-500',
       stroke: '#3b82f6',
-      bg: 'bg-blue-50 dark:bg-blue-950',
+      bg: 'bg-subtle',
       buttonFrom: 'from-blue-500',
       buttonTo: 'to-indigo-600',
       accent: 'accent-blue-500',
@@ -847,15 +847,15 @@ export default function PomodoroTimer() {
             <div className="text-2xl font-bold text-red-600 dark:text-red-400">{todayPomodoros}</div>
             <div className="text-xs text-muted mt-1">{t('statsTodayPomodoros')}</div>
           </div>
-          <div className="bg-orange-50 dark:bg-orange-950 rounded-lg p-4 text-center">
+          <div className="bg-subtle rounded-lg p-4 text-center">
             <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{todayMinutes}</div>
             <div className="text-xs text-muted mt-1">{t('statsTodayMinutes')}</div>
           </div>
-          <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4 text-center">
+          <div className="bg-subtle rounded-lg p-4 text-center">
             <div className="text-2xl font-bold text-green-600 dark:text-green-400">{completedRounds}</div>
             <div className="text-xs text-muted mt-1">{t('statsSessionRounds')}</div>
           </div>
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4 text-center">
+          <div className="bg-subtle rounded-lg p-4 text-center">
             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{streak}</div>
             <div className="text-xs text-muted mt-1">{t('statsStreak')}</div>
           </div>
@@ -977,7 +977,7 @@ export default function PomodoroTimer() {
                   {notificationPermission === 'default' && (
                     <button
                       onClick={requestNotificationPermission}
-                      className="text-xs px-2 py-1 rounded bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 hover:bg-blue-200"
+                      className="text-xs px-2 py-1 rounded bg-soft text-sub hover:bg-blue-200"
                     >
                       {t('settingsNotifAllow')}
                     </button>
@@ -1063,7 +1063,7 @@ export default function PomodoroTimer() {
               </button>
               <button
                 onClick={handleSaveSettings}
-                className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-rose-600 text-white font-medium hover:from-red-600 hover:to-rose-700"
+                className="flex-1 px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium hover:from-red-600 hover:to-rose-700"
               >
                 {t('save')}
               </button>

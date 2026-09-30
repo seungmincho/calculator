@@ -442,10 +442,10 @@ export default function PdfTools() {
         <div
           className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
             status.type === 'success'
-              ? 'bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300'
+              ? 'bg-subtle text-green-700 dark:text-green-300'
               : status.type === 'error'
               ? 'bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300'
-              : 'bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+              : 'bg-subtle text-blue-700 dark:text-blue-300'
           }`}
         >
           {status.type === 'success' && <CheckCircle2 className="w-4 h-4 shrink-0" />}
@@ -466,7 +466,7 @@ export default function PdfTools() {
             onClick={() => mergeInputRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
               mergeDragging
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                ? 'border-blue-500 bg-subtle'
                 : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
             }`}
           >
@@ -496,8 +496,8 @@ export default function PdfTools() {
                   onDrop={(e) => handleDrop(e, index)}
                   className={`flex items-center gap-3 p-3 rounded-lg border transition-colors ${
                     dragOverIndex === index
-                      ? 'border-blue-400 bg-blue-50 dark:bg-blue-950'
-                      : 'border-line bg-gray-50 dark:bg-gray-900'
+                      ? 'border-blue-400 bg-subtle'
+                      : 'border-line bg-subtle'
                   }`}
                 >
                   <GripVertical className="w-4 h-4 text-gray-400 cursor-grab shrink-0" />
@@ -526,7 +526,7 @@ export default function PdfTools() {
           <button
             onClick={mergePdfs}
             disabled={status.type === 'processing'}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {status.type === 'processing' ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -610,7 +610,7 @@ export default function PdfTools() {
                         className={`w-12 h-12 rounded-lg text-sm font-medium border transition-colors ${
                           p.selected
                             ? 'bg-blue-600 text-white border-blue-600'
-                            : 'bg-gray-50 dark:bg-gray-900 text-body border-line hover:border-blue-400'
+                            : 'bg-subtle text-body border-line hover:border-blue-400'
                         }`}
                       >
                         {p.index + 1}
@@ -637,7 +637,7 @@ export default function PdfTools() {
               <button
                 onClick={splitPdf}
                 disabled={status.type === 'processing'}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {status.type === 'processing' ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -707,7 +707,7 @@ export default function PdfTools() {
                 {rotatePages.map((p) => (
                   <div key={p.index} className="flex flex-col items-center gap-1">
                     <div
-                      className="w-16 h-20 border-2 border-line rounded-lg bg-gray-50 dark:bg-gray-900 flex items-center justify-center relative transition-transform"
+                      className="w-16 h-20 border-2 border-line rounded-lg bg-subtle flex items-center justify-center relative transition-transform"
                       style={{ transform: `rotate(${p.rotation}deg)` }}
                     >
                       <span className="text-xs text-gray-400">{p.index + 1}</span>
@@ -734,7 +734,7 @@ export default function PdfTools() {
               <button
                 onClick={savePdfWithRotation}
                 disabled={status.type === 'processing'}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {status.type === 'processing' ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -758,7 +758,7 @@ export default function PdfTools() {
             onClick={() => imageInputRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
               imageDragging
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                ? 'border-blue-500 bg-subtle'
                 : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
             }`}
           >
@@ -848,7 +848,7 @@ export default function PdfTools() {
               <button
                 onClick={convertImagesToPdf}
                 disabled={status.type === 'processing'}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {status.type === 'processing' ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -865,12 +865,11 @@ export default function PdfTools() {
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {(['merge', 'split', 'rotate', 'imageToPdf'] as const).map((section) => (
-            <div key={section} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+            <div key={section} className="bg-subtle rounded-lg p-4">
               <h3 className="font-medium text-fg mb-2">{t(`guide.${section}.title`)}</h3>
               <ul className="space-y-1">
                 {(t.raw(`guide.${section}.items`) as string[]).map((item: string, i: number) => (

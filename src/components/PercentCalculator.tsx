@@ -173,7 +173,7 @@ export default function PercentCalculator() {
             onClick={() => setMode(m)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${
               mode === m
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25'
+                ? 'bg-primary hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25'
                 : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 border border-line'
             }`}
           >
@@ -323,7 +323,7 @@ export default function PercentCalculator() {
                     onClick={() => setAddSubMode('add')}
                     className={`flex-1 py-2 rounded-lg font-medium text-sm transition-all ${
                       addSubMode === 'add'
-                        ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 border-2 border-green-500'
+                        ? 'bg-soft text-sub border-2 border-green-500'
                         : 'bg-soft text-sub border-2 border-transparent'
                     }`}
                   >
@@ -352,7 +352,7 @@ export default function PercentCalculator() {
                     <button
                       key={p}
                       onClick={() => handleQuickPercent(p)}
-                      className="px-3 py-1.5 text-xs font-medium rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                      className="px-3 py-1.5 text-xs font-medium rounded-full bg-subtle text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
                     >
                       {p}%
                     </button>
@@ -371,7 +371,7 @@ export default function PercentCalculator() {
                   (mode === 'change' && changeResult === null) ||
                   (mode === 'addSubtract' && addSubResult === null)
                 }
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
               >
                 {t('common.calculate')}
               </button>
@@ -386,7 +386,7 @@ export default function PercentCalculator() {
           </div>
 
           {/* 활용 팁 */}
-          <div className="bg-blue-50 dark:bg-blue-950/50 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-3">{t('common.tipTitle')}</h3>
             <ul className="space-y-2">
               {(t.raw('common.tips') as string[]).map((tip, i) => (
@@ -410,7 +410,7 @@ export default function PercentCalculator() {
               <div>
                 {basicResult !== null ? (
                   <div className="space-y-4">
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-xl p-6">
+                    <div className="bg-subtle rounded-xl p-6">
                       <p className="text-sm text-muted mb-2">
                         {formatNumber(parseFloat(basicValue))}{t('basicPercent.resultPrefix')} {basicPercent}{t('basicPercent.resultMiddle')}
                       </p>
@@ -459,7 +459,7 @@ export default function PercentCalculator() {
               <div>
                 {whatPercentResult !== null ? (
                   <div className="space-y-4">
-                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 rounded-xl p-6">
+                    <div className="bg-subtle rounded-xl p-6">
                       <p className="text-sm text-muted mb-2">
                         {formatNumber(parseFloat(partValue))} {t('whatPercent.resultPrefix')} {formatNumber(parseFloat(wholeValue))}{t('whatPercent.resultMiddle')}
                       </p>
@@ -489,7 +489,7 @@ export default function PercentCalculator() {
                       </div>
                       <div className="w-full bg-track rounded-full h-4 overflow-hidden">
                         <div
-                          className="bg-gradient-to-r from-purple-500 to-pink-500 h-4 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
+                          className="bg-primary hover:bg-blue-700 h-4 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
                           style={{ width: `${Math.min(whatPercentResult, 100)}%` }}
                         >
                           {whatPercentResult >= 15 && (
@@ -514,10 +514,10 @@ export default function PercentCalculator() {
                   <div className="space-y-4">
                     <div className={`rounded-xl p-6 ${
                       changeResult.percent > 0
-                        ? 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30'
+                        ? 'bg-subtle'
                         : changeResult.percent < 0
-                          ? 'bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30'
-                          : 'bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30'
+                          ? 'bg-subtle'
+                          : 'bg-subtle'
                     }`}>
                       <p className="text-sm text-muted mb-2">
                         {formatNumber(parseFloat(fromValue))} {t('change.resultPrefix')} {formatNumber(parseFloat(toValue))} {t('change.resultMiddle')}
@@ -581,7 +581,7 @@ export default function PercentCalculator() {
                       {/* 추가 결과 */}
                       <div className={`rounded-xl p-5 ${
                         addSubMode === 'add'
-                          ? 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 ring-2 ring-green-500/30'
+                          ? 'bg-subtle ring-2 ring-green-500/30'
                           : 'bg-subtle'
                       }`}>
                         <p className="text-sm text-muted mb-1">{t('addSubtract.addResult')}</p>
@@ -608,7 +608,7 @@ export default function PercentCalculator() {
                       {/* 차감 결과 */}
                       <div className={`rounded-xl p-5 ${
                         addSubMode === 'subtract'
-                          ? 'bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 ring-2 ring-red-500/30'
+                          ? 'bg-subtle ring-2 ring-red-500/30'
                           : 'bg-subtle'
                       }`}>
                         <p className="text-sm text-muted mb-1">{t('addSubtract.subtractResult')}</p>
@@ -703,7 +703,6 @@ export default function PercentCalculator() {
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

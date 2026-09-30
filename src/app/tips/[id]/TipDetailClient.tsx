@@ -221,7 +221,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
         {/* Main Content */}
         <article className="bg-surface rounded-2xl shadow-lg border border-line overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-8 text-white">
+          <div className="bg-primary hover:bg-blue-700 p-8 text-white">
             <div className="flex items-center space-x-4 mb-4">
               <div className="bg-white/20 p-3 rounded-full">
                 <span className="text-3xl">{getCategoryIcon(tip.category)}</span>
@@ -262,15 +262,15 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
               </div>
               <ul className="space-y-2">
                 <li className="flex items-start space-x-2">
-                  <span className="w-6 h-6 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full flex items-center justify-center text-sm font-medium mt-0.5">1</span>
+                  <span className="w-6 h-6 bg-soft text-sub rounded-full flex items-center justify-center text-sm font-medium mt-0.5">1</span>
                   <span className="text-body">현재 상황을 파악하고 목표를 설정하세요</span>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <span className="w-6 h-6 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full flex items-center justify-center text-sm font-medium mt-0.5">2</span>
+                  <span className="w-6 h-6 bg-soft text-sub rounded-full flex items-center justify-center text-sm font-medium mt-0.5">2</span>
                   <span className="text-body">구체적인 실행 계획을 세우고 일정을 정하세요</span>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <span className="w-6 h-6 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full flex items-center justify-center text-sm font-medium mt-0.5">3</span>
+                  <span className="w-6 h-6 bg-soft text-sub rounded-full flex items-center justify-center text-sm font-medium mt-0.5">3</span>
                   <span className="text-body">정기적으로 진행 상황을 점검하고 조정하세요</span>
                 </li>
               </ul>
@@ -318,7 +318,7 @@ export default function TipDetailClient({ tipId }: TipDetailClientProps) {
         )}
 
         {/* CTA */}
-        <div className="mt-12 text-center bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8">
+        <div className="mt-12 text-center bg-subtle rounded-2xl p-8">
           <h2 className="text-2xl font-bold text-fg mb-4">
             금융 계산기로 실제 계획 세우기
           </h2>

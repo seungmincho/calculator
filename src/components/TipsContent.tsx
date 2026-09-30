@@ -192,7 +192,7 @@ export default function TipsContent() {
         )}
 
         {/* CTA Section */}
-        <div className="mt-16 text-center bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8">
+        <div className="mt-16 text-center bg-subtle rounded-2xl p-8">
           <h2 className="text-2xl font-bold text-fg mb-4">
             {t('ctaTitle')}
           </h2>

@@ -186,7 +186,7 @@ export default function DiffViewer() {
 
         {/* Right Text */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="px-4 py-3 bg-green-50 dark:bg-green-900/20 border-b border-line">
+          <div className="px-4 py-3 bg-subtle border-b border-line">
             <span className="text-sm font-medium text-green-700 dark:text-green-300">
               {t('input.modified')}
             </span>
@@ -234,7 +234,7 @@ export default function DiffViewer() {
                 {t('results.title')}
               </span>
               <div className="flex items-center gap-3 text-xs">
-                <span className="px-2 py-1 rounded bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                <span className="px-2 py-1 rounded bg-soft text-sub">
                   +{stats.added} {t('results.added')}
                 </span>
                 <span className="px-2 py-1 rounded bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300">
@@ -260,7 +260,7 @@ export default function DiffViewer() {
                   key={idx}
                   className={`flex ${
                     line.type === 'added'
-                      ? 'bg-green-50 dark:bg-green-900/20'
+                      ? 'bg-subtle'
                       : line.type === 'removed'
                       ? 'bg-red-50 dark:bg-red-900/20'
                       : ''

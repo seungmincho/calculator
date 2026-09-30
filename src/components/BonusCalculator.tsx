@@ -546,7 +546,7 @@ function BonusCalculatorContent() {
             <div className="flex gap-3">
               <button
                 onClick={copyToClipboard}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2 transition-all"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2 transition-all"
               >
                 {copiedId === 'url' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 {copiedId === 'url' ? t('share.copied') : t('share.copy')}
@@ -594,7 +594,7 @@ function BonusCalculatorContent() {
               {activeTab === 0 && bonusDeductions && salaryOnlyResult && withBonusResult && (
                 <div className="space-y-6">
                   {/* Hero card */}
-                  <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
+                  <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
                     <p className="text-sm opacity-80">{t('result.bonusNet')}</p>
                     <p className="text-3xl font-bold mt-1">
                       {formatNumber(bonusDeductions.net)}{t('chart.won')}
@@ -670,7 +670,7 @@ function BonusCalculatorContent() {
                               ['incomeTax', 'result.incomeTax'],
                               ['localIncomeTax', 'result.localTax'],
                             ] as const).map(([key, label]) => (
-                              <tr key={key} className="border-b border-gray-100 dark:border-gray-700/50">
+                              <tr key={key} className="border-b border-line">
                                 <td className="py-2 pr-4 text-body">{t(label)}</td>
                                 <td className="py-2 px-2 text-right text-sub">
                                   {formatNumber(salaryOnlyResult.deductions[key])}
@@ -727,16 +727,16 @@ function BonusCalculatorContent() {
                           {simulationData.map(row => (
                             <tr
                               key={row.ratio}
-                              className={`border-b border-gray-100 dark:border-gray-700/50 ${
+                              className={`border-b border-line ${
                                 row.isCurrent
-                                  ? 'bg-blue-50 dark:bg-blue-950/30 font-semibold'
+                                  ? 'bg-subtle font-semibold'
                                   : ''
                               }`}
                             >
                               <td className="py-2 text-body">
                                 {row.ratio}%
                                 {row.isCurrent && (
-                                  <span className="ml-2 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">
+                                  <span className="ml-2 text-xs bg-soft text-sub px-2 py-0.5 rounded-full">
                                     {t('simulation.current')}
                                   </span>
                                 )}
@@ -818,7 +818,7 @@ function BonusCalculatorContent() {
                       </div>
 
                       {/* With bonus */}
-                      <div className="border-2 border-blue-300 dark:border-blue-700 rounded-xl p-5 space-y-3 bg-blue-50/50 dark:bg-blue-950/20">
+                      <div className="border-2 border-line rounded-xl p-5 space-y-3 bg-subtle">
                         <h4 className="font-semibold text-blue-700 dark:text-blue-300">{t('taxAnalysis.withBonus')}</h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">

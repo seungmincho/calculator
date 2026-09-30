@@ -310,7 +310,7 @@ export default function NumberBaseball() {
                 </p>
                 <button
                   onClick={() => startGame(difficulty)}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                  className="inline-flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
                 >
                   <RotateCcw className="w-4 h-4" />
                   {t('newGame')}
@@ -356,7 +356,7 @@ export default function NumberBaseball() {
                 {/* Submit */}
                 <button
                   onClick={handleSubmit}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                  className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
                 >
                   {t('submit')}
                 </button>

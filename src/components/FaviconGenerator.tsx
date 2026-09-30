@@ -655,7 +655,7 @@ export const metadata: Metadata = {
           <div className="flex flex-wrap items-start gap-6">
             {/* Color Range controls */}
             {removeColor && (
-              <div className="flex-1 min-w-[240px] bg-gray-50 dark:bg-gray-900 rounded-lg p-4 space-y-3">
+              <div className="flex-1 min-w-[240px] bg-subtle rounded-lg p-4 space-y-3">
                 <div className="flex items-center gap-3">
                   <div
                     className="w-8 h-8 rounded-lg border-2 border-line-strong shrink-0"
@@ -703,7 +703,7 @@ export const metadata: Metadata = {
 
             {/* Crop info */}
             {cropRect && cropRect.w > 5 && cropRect.h > 5 && !isDragging && (
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 space-y-2">
+              <div className="bg-subtle rounded-lg p-4 space-y-2">
                 <p className="text-sm font-medium text-fg">
                   {t('editor.cropActive')}
                 </p>
@@ -813,7 +813,7 @@ export const metadata: Metadata = {
           <button
             onClick={generateFavicons}
             disabled={!sourceImage || isGenerating}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
           >
             <Image className="w-5 h-5" />
             {isGenerating ? t('generating') : t('generate')}
@@ -831,7 +831,7 @@ export const metadata: Metadata = {
                   </h2>
                   <button
                     onClick={downloadAll}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all font-medium text-sm"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all font-medium text-sm"
                   >
                     <Download className="w-4 h-4" />
                     {t('result.downloadAll')}
@@ -860,7 +860,7 @@ export const metadata: Metadata = {
                     const dataUrl = generatedFavicons.get(size.name)
                     if (!dataUrl) return null
                     return (
-                      <div key={size.name} className="group bg-gray-50 dark:bg-gray-900 rounded-lg p-3 border border-line hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+                      <div key={size.name} className="group bg-subtle rounded-lg p-3 border border-line hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
                         <div className="flex items-center justify-center mb-2 h-16">
                           <img
                             src={dataUrl}
@@ -879,7 +879,7 @@ export const metadata: Metadata = {
                         </div>
                         <button
                           onClick={() => downloadSingle(dataUrl, size.name)}
-                          className="mt-2 w-full flex items-center justify-center gap-1 px-2 py-1 text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors opacity-0 group-hover:opacity-100"
+                          className="mt-2 w-full flex items-center justify-center gap-1 px-2 py-1 text-xs bg-subtle text-blue-600 dark:text-blue-400 rounded hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors opacity-0 group-hover:opacity-100"
                         >
                           <Download className="w-3 h-3" />
                           {t('result.download')}
@@ -894,7 +894,6 @@ export const metadata: Metadata = {
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                    <FileCode className="w-5 h-5 text-blue-600" />
                     {t('code.htmlTitle')}
                   </h2>
                   <button
@@ -912,7 +911,6 @@ export const metadata: Metadata = {
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                    <FileCode className="w-5 h-5 text-purple-600" />
                     {t('code.nextjsTitle')}
                   </h2>
                   <button
@@ -939,7 +937,6 @@ export const metadata: Metadata = {
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

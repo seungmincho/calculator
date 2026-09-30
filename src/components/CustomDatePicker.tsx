@@ -199,7 +199,7 @@ export default function CustomDatePicker({ value, onChange, placeholder = 'ë‚ ì§
                     ${selected
                       ? 'bg-blue-600 text-white shadow-md shadow-blue-200 dark:shadow-blue-900'
                       : today
-                      ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 ring-1 ring-blue-300 dark:ring-blue-700'
+                      ? 'bg-subtle text-blue-600 dark:text-blue-400 ring-1 ring-blue-300 dark:ring-blue-700'
                       : isSat
                       ? 'text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/50'
                       : isSun

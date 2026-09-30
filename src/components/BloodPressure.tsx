@@ -68,12 +68,12 @@ export default function BloodPressure() {
   // Get classification color
   const getClassificationColor = useCallback((classification: Classification) => {
     switch (classification) {
-      case 'normal': return 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950'
+      case 'normal': return 'text-green-600 dark:text-green-400 bg-subtle'
       case 'elevated': return 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-950'
-      case 'high1': return 'text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950'
+      case 'high1': return 'text-orange-600 dark:text-orange-400 bg-subtle'
       case 'high2': return 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950'
-      case 'crisis': return 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950'
-      default: return 'text-sub bg-gray-50 dark:bg-gray-950'
+      case 'crisis': return 'text-purple-600 dark:text-purple-400 bg-subtle'
+      default: return 'text-sub bg-subtle'
     }
   }, [])
 
@@ -177,7 +177,6 @@ export default function BloodPressure() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Activity className="w-5 h-5" />
               {t('record')}
             </h2>
 
@@ -241,7 +240,7 @@ export default function BloodPressure() {
             <div className="flex gap-2">
               <button
                 onClick={handleRecord}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
               >
                 {t('record')}
               </button>
@@ -282,7 +281,7 @@ export default function BloodPressure() {
               {t('classification.title')}
             </h2>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 rounded-lg bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-green-700 dark:text-green-300">
                 <span className="font-medium">{t('classification.normal')}</span>
                 <span className="text-sm">{t('ranges.normal')}</span>
               </div>
@@ -290,7 +289,7 @@ export default function BloodPressure() {
                 <span className="font-medium">{t('classification.elevated')}</span>
                 <span className="text-sm">{t('ranges.elevated')}</span>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-lg bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-300">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-orange-700 dark:text-orange-300">
                 <span className="font-medium">{t('classification.high1')}</span>
                 <span className="text-sm">{t('ranges.high1')}</span>
               </div>
@@ -298,7 +297,7 @@ export default function BloodPressure() {
                 <span className="font-medium">{t('classification.high2')}</span>
                 <span className="text-sm">{t('ranges.high2')}</span>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-lg bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-purple-700 dark:text-purple-300">
                 <span className="font-medium">{t('classification.crisis')}</span>
                 <span className="text-sm">{t('ranges.crisis')}</span>
               </div>
@@ -391,7 +390,6 @@ export default function BloodPressure() {
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

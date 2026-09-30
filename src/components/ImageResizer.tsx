@@ -239,7 +239,6 @@ const ImageResizer = () => {
           <div className="lg:col-span-1">
             <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-xl font-semibold mb-4 text-fg">
-                <Upload className="w-5 h-5 inline mr-2" />
                 이미지 업로드
               </h2>
 
@@ -250,7 +249,7 @@ const ImageResizer = () => {
                   onDragLeave={handleDragLeave}
                   className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
                     dragOver
-                      ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                      ? 'border-purple-500 bg-subtle'
                       : 'border-line-strong hover:border-purple-400 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                   onClick={() => fileInputRef.current?.click()}
@@ -301,7 +300,6 @@ const ImageResizer = () => {
             {originalImage && (
               <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
                 <h3 className="text-lg font-semibold mb-4 text-fg">
-                  <Settings className="w-5 h-5 inline mr-2" />
                   사전 설정
                 </h3>
                 <div className="space-y-2">
@@ -406,7 +404,7 @@ const ImageResizer = () => {
                   )}
 
                   {/* Info */}
-                  <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <div className="flex items-start space-x-2">
                       <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5" />
                       <div className="text-sm">
@@ -485,8 +483,8 @@ const ImageResizer = () => {
         <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-fg">이미지 리사이저 사용법</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
-              <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">✅ 주요 기능</h3>
+            <div className="bg-subtle rounded-lg p-6">
+              <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">주요 기능</h3>
               <ul className="text-green-800 dark:text-green-300 text-sm space-y-1">
                 <li>• 브라우저에서 직접 처리 (서버 업로드 없음)</li>
                 <li>• JPG, PNG, WebP 형식 지원</li>
@@ -497,7 +495,7 @@ const ImageResizer = () => {
               </ul>
             </div>
             <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-6">
-              <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">💡 사용 팁</h3>
+              <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">사용 팁</h3>
               <ul className="text-amber-800 dark:text-amber-300 text-sm space-y-1">
                 <li>• 웹용 이미지는 JPEG 또는 WebP 추천</li>
                 <li>• 투명 배경이 필요하면 PNG 사용</li>

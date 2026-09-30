@@ -498,7 +498,7 @@ export default function MahjongSolitaire() {
             <button
               onClick={handleShuffle}
               disabled={gameStatus === 'won'}
-              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 disabled:opacity-40 transition-colors"
+              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-sub rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 disabled:opacity-40 transition-colors"
               title={t('shuffle')}
             >
               <Shuffle className="w-4 h-4" />
@@ -516,7 +516,7 @@ export default function MahjongSolitaire() {
             </button>
             <button
               onClick={initGame}
-              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
+              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
               title={t('newGame')}
             >
               <RotateCw className="w-4 h-4" />
@@ -609,7 +609,7 @@ export default function MahjongSolitaire() {
 
       {/* Win overlay */}
       {gameStatus === 'won' && (
-        <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl p-6 text-center">
+        <div className="bg-subtle border border-line rounded-xl p-6 text-center">
           <Trophy className="w-12 h-12 text-yellow-500 mx-auto mb-3" />
           <h2 className="text-xl font-bold text-green-700 dark:text-green-300 mb-2">{t('winTitle')}</h2>
           <p className="text-green-600 dark:text-green-400 mb-1">
@@ -622,7 +622,7 @@ export default function MahjongSolitaire() {
           )}
           <button
             onClick={initGame}
-            className="mt-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 font-medium"
+            className="mt-2 px-6 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 font-medium"
           >
             {t('playAgain')}
           </button>
@@ -637,7 +637,7 @@ export default function MahjongSolitaire() {
           <div className="flex gap-3 justify-center">
             <button
               onClick={handleShuffle}
-              className="px-5 py-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 font-medium"
+              className="px-5 py-2 bg-soft text-sub rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 font-medium"
             >
               {t('shuffle')}
             </button>
@@ -650,7 +650,7 @@ export default function MahjongSolitaire() {
             </button>
             <button
               onClick={initGame}
-              className="px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 font-medium"
+              className="px-5 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 font-medium"
             >
               {t('newGame')}
             </button>

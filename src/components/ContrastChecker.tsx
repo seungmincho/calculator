@@ -272,9 +272,9 @@ export default function ContrastChecker() {
 
   const gradeBg =
     wcag.grade === 'AAA'
-      ? 'bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800'
+      ? 'bg-subtle border-line'
       : wcag.grade === 'AA'
-      ? 'bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800'
+      ? 'bg-subtle border-line'
       : wcag.grade === 'AA Large'
       ? 'bg-yellow-50 dark:bg-yellow-950 border-yellow-200 dark:border-yellow-800'
       : 'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800'
@@ -515,7 +515,7 @@ export default function ContrastChecker() {
               </h2>
               <div className="space-y-3">
                 {!wcag.normalAA && suggestionAA && (
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-subtle border border-line">
                     <div className="flex items-center gap-3">
                       <div
                         className="w-8 h-8 rounded-md border border-line-strong flex-shrink-0"
@@ -547,7 +547,7 @@ export default function ContrastChecker() {
                   </div>
                 )}
                 {!wcag.normalAAA && suggestionAAA && (
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-subtle border border-line">
                     <div className="flex items-center gap-3">
                       <div
                         className="w-8 h-8 rounded-md border border-line-strong flex-shrink-0"
@@ -626,7 +626,6 @@ export default function ContrastChecker() {
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

@@ -427,7 +427,7 @@ export default function QrScanner() {
                 <button
                   onClick={startCamera}
                   disabled={!isBrowserSupported}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   {t('startCamera')}
                 </button>
@@ -450,7 +450,7 @@ export default function QrScanner() {
               onDrop={handleDrop}
               className={`relative border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
                 isDragging
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                  ? 'border-blue-500 bg-subtle'
                   : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
               }`}
             >
@@ -497,7 +497,7 @@ export default function QrScanner() {
               </div>
 
               {/* Content */}
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+              <div className="bg-subtle rounded-lg p-4">
                 <p className="text-sm font-mono text-fg break-all whitespace-pre-wrap">
                   {scanResult}
                 </p>
@@ -579,7 +579,7 @@ export default function QrScanner() {
             {history.map((item, index) => (
               <div
                 key={index}
-                className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-850 transition-colors"
+                className="bg-subtle rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-850 transition-colors"
               >
                 <div className="flex items-start justify-between space-x-4">
                   <div className="flex-1 min-w-0">
@@ -615,7 +615,6 @@ export default function QrScanner() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center">
-          <BookOpen className="w-5 h-5 mr-2" />
           {t('guide.title')}
         </h2>
 

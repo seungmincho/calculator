@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Search, X, ArrowRight, TrendingUp, Clock } from 'lucide-react'
+import ToolIcon from './ToolIcon'
 import { getAllRecentTools } from '@/utils/recentTools'
 import { useTranslations } from '@/lib/i18n'
 import { useRouter } from 'next/navigation'
@@ -246,7 +247,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
               {/* Recent tools */}
               {suggestedItems.recentItems.length > 0 && (
                 <div>
-                  <div className="px-4 py-2 text-xs font-semibold text-muted uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0 flex items-center gap-1.5">
+                  <div className="px-4 py-2 text-xs font-semibold text-muted uppercase tracking-wide bg-subtle sticky top-0 flex items-center gap-1.5">
                     <Clock className="w-3 h-3" />
                     {t('header.recent')}
                   </div>
@@ -261,11 +262,11 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                       onMouseEnter={() => setSelectedIndex(i)}
                       className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
                         i === selectedIndex
-                          ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                          ? 'bg-subtle text-blue-700 dark:text-blue-300'
                           : 'text-body hover:bg-gray-50 dark:hover:bg-gray-700/50'
                       }`}
                     >
-                      <span className="text-xl flex-shrink-0 w-8 text-center">{item.icon}</span>
+                      <ToolIcon href={item.href} size="sm" />
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium truncate">{item.label}</div>
                         <div className="text-xs text-muted truncate">{item.description}</div>
@@ -277,7 +278,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
               {/* Popular tools */}
               {suggestedItems.popularItems.length > 0 && (
                 <div>
-                  <div className="px-4 py-2 text-xs font-semibold text-muted uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0 flex items-center gap-1.5">
+                  <div className="px-4 py-2 text-xs font-semibold text-muted uppercase tracking-wide bg-subtle sticky top-0 flex items-center gap-1.5">
                     <TrendingUp className="w-3 h-3" />
                     {t('searchDialog.popular')}
                   </div>
@@ -294,11 +295,11 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                         onMouseEnter={() => setSelectedIndex(idx)}
                         className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
                           idx === selectedIndex
-                            ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                            ? 'bg-subtle text-blue-700 dark:text-blue-300'
                             : 'text-body hover:bg-gray-50 dark:hover:bg-gray-700/50'
                         }`}
                       >
-                        <span className="text-xl flex-shrink-0 w-8 text-center">{item.icon}</span>
+                        <ToolIcon href={item.href} size="sm" />
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-medium truncate">{item.label}</div>
                           <div className="text-xs text-muted truncate">{item.description}</div>
@@ -323,7 +324,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
 
                 return (
                   <div key={catKey}>
-                    <div className="px-4 py-2 text-xs font-semibold text-muted uppercase tracking-wide bg-gray-50 dark:bg-gray-900/50 sticky top-0">
+                    <div className="px-4 py-2 text-xs font-semibold text-muted uppercase tracking-wide bg-subtle sticky top-0">
                       {catItems[0].categoryLabel} ({catItems.length})
                     </div>
                     {catItems.map((item) => {
@@ -345,13 +346,11 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                           onMouseEnter={() => setSelectedIndex(globalIndex)}
                           className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
                             isSelected
-                              ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                              ? 'bg-subtle text-blue-700 dark:text-blue-300'
                               : 'text-body hover:bg-gray-50 dark:hover:bg-gray-700/50'
                           }`}
                         >
-                          <span className="text-xl flex-shrink-0 w-8 text-center">
-                            {item.icon}
-                          </span>
+                          <ToolIcon href={item.href} size="sm" />
                           <div className="flex-1 min-w-0">
                             <div className="text-sm font-medium truncate">
                               {item.label}
@@ -374,7 +373,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
         </div>
 
         {/* Footer hint */}
-        <div className="flex items-center justify-between px-4 py-2 border-t border-line bg-gray-50 dark:bg-gray-900/50 text-xs text-gray-400">
+        <div className="flex items-center justify-between px-4 py-2 border-t border-line bg-subtle text-xs text-gray-400">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <kbd className="px-1.5 py-0.5 font-mono bg-track rounded text-[10px]">↑↓</kbd>

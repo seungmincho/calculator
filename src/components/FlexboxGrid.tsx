@@ -580,7 +580,7 @@ export default function FlexboxGrid() {
           onClick={() => setMode('flexbox')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-colors ${
             mode === 'flexbox'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+              ? 'bg-primary hover:bg-blue-700 text-white'
               : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 shadow-lg'
           }`}
         >
@@ -591,7 +591,7 @@ export default function FlexboxGrid() {
           onClick={() => setMode('grid')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-colors ${
             mode === 'grid'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+              ? 'bg-primary hover:bg-blue-700 text-white'
               : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 shadow-lg'
           }`}
         >
@@ -875,7 +875,7 @@ export default function FlexboxGrid() {
             </div>
             <div className="flex justify-center">
               <div
-                className="border-2 border-dashed border-line-strong rounded-xl bg-gray-50 dark:bg-gray-900 transition-all overflow-auto"
+                className="border-2 border-dashed border-line-strong rounded-xl bg-subtle transition-all overflow-auto"
                 style={{
                   width: previewWidth === 'desktop' ? '100%' : `${PREVIEW_WIDTHS[previewWidth]}px`,
                   maxWidth: '100%',
@@ -930,7 +930,7 @@ export default function FlexboxGrid() {
               <h2 className="text-sm font-semibold text-fg">{t('cssCode')}</h2>
               <button
                 onClick={() => copyToClipboard(fullCss, 'css-main')}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
               >
                 {copiedId === 'css-main' ? (
                   <Check className="w-4 h-4" />
@@ -940,7 +940,7 @@ export default function FlexboxGrid() {
                 {copiedId === 'css-main' ? t('copied') : t('copy')}
               </button>
             </div>
-            <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all">
+            <pre className="bg-subtle rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all">
               {fullCss}
             </pre>
           </div>
@@ -954,7 +954,7 @@ export default function FlexboxGrid() {
           <button
             onClick={mode === 'flexbox' ? addFlexChild : addGridChild}
             disabled={(mode === 'flexbox' ? flexChildren.length : gridChildren.length) >= MAX_CHILDREN}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Plus className="w-4 h-4" />
             {t('addChild')}
@@ -1139,7 +1139,7 @@ export default function FlexboxGrid() {
             <button
               key={preset.key}
               onClick={preset.apply}
-              className="group relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-line hover:border-blue-500 dark:hover:border-blue-500 transition-all bg-gray-50 dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-blue-950"
+              className="group relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-line hover:border-blue-500 dark:hover:border-blue-500 transition-all bg-subtle hover:bg-blue-50 dark:hover:bg-blue-950"
             >
               <span className="text-xs font-medium text-faint uppercase">{preset.mode}</span>
               <span className="text-sm font-semibold text-fg group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -1153,7 +1153,6 @@ export default function FlexboxGrid() {
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
         <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 

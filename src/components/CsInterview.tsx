@@ -32,16 +32,16 @@ const DIFF_COLORS: Record<InterviewDifficulty, { bg: string; text: string; dot: 
 }
 
 const CATEGORY_COLORS: Record<InterviewCategory, { bg: string; text: string; border: string }> = {
-  dataStructures: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-blue-300 dark:border-blue-700' },
-  algorithms: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', border: 'border-purple-300 dark:border-purple-700' },
-  network: { bg: 'bg-cyan-100 dark:bg-cyan-900/40', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-cyan-300 dark:border-cyan-700' },
-  os: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-orange-700 dark:text-orange-300', border: 'border-orange-300 dark:border-orange-700' },
-  database: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', border: 'border-green-300 dark:border-green-700' },
-  architecture: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-indigo-300 dark:border-indigo-700' },
-  softwareEngineering: { bg: 'bg-pink-100 dark:bg-pink-900/40', text: 'text-pink-700 dark:text-pink-300', border: 'border-pink-300 dark:border-pink-700' },
+  dataStructures: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-line' },
+  algorithms: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', border: 'border-line' },
+  network: { bg: 'bg-cyan-100 dark:bg-cyan-900/40', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-line' },
+  os: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-orange-700 dark:text-orange-300', border: 'border-line' },
+  database: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', border: 'border-line' },
+  architecture: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-line' },
+  softwareEngineering: { bg: 'bg-pink-100 dark:bg-pink-900/40', text: 'text-pink-700 dark:text-pink-300', border: 'border-line' },
   security: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300', border: 'border-red-300 dark:border-red-700' },
   linux: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-700' },
-  web: { bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-teal-700 dark:text-teal-300', border: 'border-teal-300 dark:border-teal-700' },
+  web: { bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-teal-700 dark:text-teal-300', border: 'border-line' },
 }
 
 // ── localStorage helpers ──
@@ -316,7 +316,7 @@ export default function CsInterview() {
 
       {/* Follow-up Question */}
       {q.followUp && (
-        <div className="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 rounded-lg p-4">
+        <div className="bg-subtle border border-line rounded-lg p-4">
           <h4 className="text-sm font-semibold text-indigo-700 dark:text-indigo-300 mb-1 flex items-center gap-1.5">
             <MessageCircle className="w-4 h-4" />
             {t('question.followUp')}
@@ -374,7 +374,7 @@ export default function CsInterview() {
           {t(`difficulty.${q.difficulty}`)}
         </span>
         {masteredIds.has(q.id) && (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-soft text-sub">
             <Check className="w-3 h-3" /> {t('practice.mastered')}
           </span>
         )}
@@ -601,7 +601,7 @@ export default function CsInterview() {
               {!answerRevealed ? (
                 <button
                   onClick={() => setAnswerRevealed(true)}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
                 >
                   <Eye className="w-5 h-5" />
                   {t('practice.showAnswer')}
@@ -624,7 +624,7 @@ export default function CsInterview() {
                   <div className="flex gap-3 mt-6 pt-4 border-t border-line">
                     <button
                       onClick={() => handleMastered(currentQuestion.id)}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-300 dark:border-green-700 rounded-lg font-medium hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-subtle text-green-700 dark:text-green-300 border border-line rounded-lg font-medium hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
                     >
                       <Check className="w-5 h-5" />
                       {t('practice.mastered')}
@@ -788,7 +788,7 @@ export default function CsInterview() {
                                   onClick={() => handleMastered(q.id)}
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
                                     masteredIds.has(q.id)
-                                      ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700'
+                                      ? 'bg-soft text-sub border-line'
                                       : 'bg-field text-sub border-line hover:border-green-300 hover:text-green-600'
                                   }`}
                                 >

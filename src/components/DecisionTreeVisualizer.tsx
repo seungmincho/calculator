@@ -746,7 +746,7 @@ export default function DecisionTreeVisualizer() {
                 <button key={p.name} onClick={() => selectPreset(i)}
                   className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     dataset.name === p.name
-                      ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 ring-1 ring-green-400'
+                      ? 'bg-soft text-sub ring-1 ring-green-400'
                       : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                   }`}>
                   {p.name}
@@ -789,7 +789,7 @@ export default function DecisionTreeVisualizer() {
           {/* Action buttons */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-3`}>
             <button onClick={handleBuild}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg px-4 py-3 font-medium hover:from-green-700 hover:to-emerald-700 transition-colors">
+              className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-green-700 hover:to-emerald-700 transition-colors">
               <Play className="w-4 h-4" /> 트리 생성
             </button>
             <button onClick={handleStepBuild}
@@ -809,18 +809,18 @@ export default function DecisionTreeVisualizer() {
           {stats && (
             <div className={`${glassCard} ${glassInset} p-5`}>
               <h2 className="font-semibold text-fg mb-3 flex items-center gap-2">
-                <BarChart3 className="w-4 h-4" /> 통계
+                통계
               </h2>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-green-50 dark:bg-green-950 rounded-lg p-3 text-center">
+                <div className="bg-subtle rounded-lg p-3 text-center">
                   <div className="text-xl font-bold text-green-600">{stats.depth}</div>
                   <div className="text-xs text-muted">깊이</div>
                 </div>
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3 text-center">
+                <div className="bg-subtle rounded-lg p-3 text-center">
                   <div className="text-xl font-bold text-blue-600">{stats.nodes}</div>
                   <div className="text-xs text-muted">노드 수</div>
                 </div>
-                <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-3 text-center">
+                <div className="bg-subtle rounded-lg p-3 text-center">
                   <div className="text-xl font-bold text-purple-600">{stats.leaves}</div>
                   <div className="text-xs text-muted">잎 노드</div>
                 </div>
@@ -838,7 +838,7 @@ export default function DecisionTreeVisualizer() {
           {/* Tree Canvas */}
           <div className={`${glassCard} ${glassInset} p-4`} ref={containerRef}>
             <h2 className="font-semibold text-fg mb-3 flex items-center gap-2">
-              <TreeDeciduous className="w-4 h-4" /> 트리 시각화
+              트리 시각화
             </h2>
             {tree ? (
               <div className="overflow-x-auto">

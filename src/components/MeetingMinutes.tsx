@@ -468,7 +468,7 @@ export default function MeetingMinutes() {
             <button
               key={id}
               onClick={() => applyTemplate(id)}
-              className="px-3 py-1.5 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors border border-blue-200 dark:border-blue-800"
+              className="px-3 py-1.5 text-xs bg-subtle text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors border border-line"
             >
               {t(`templates.${id}`)}
             </button>
@@ -492,7 +492,7 @@ export default function MeetingMinutes() {
           </button>
 
           {/* Save slots */}
-          <button onClick={() => setShowSaveSlots(v => !v)} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 rounded-md hover:bg-indigo-200 dark:hover:bg-indigo-900 transition-colors">
+          <button onClick={() => setShowSaveSlots(v => !v)} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-sub rounded-md hover:bg-indigo-200 dark:hover:bg-indigo-900 transition-colors">
             <Save className="w-4 h-4" />
             {t('saveSlots')}
             {showSaveSlots ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -501,7 +501,7 @@ export default function MeetingMinutes() {
 
         {/* Save slot panel */}
         {showSaveSlots && (
-          <div className="mt-3 p-3 border border-line rounded-lg bg-gray-50 dark:bg-gray-900 space-y-2">
+          <div className="mt-3 p-3 border border-line rounded-lg bg-subtle space-y-2">
             <div className="flex gap-2">
               <input
                 className={`${smallInputClass} flex-1`}
@@ -589,7 +589,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addAttendee} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addAttendee} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
               <Plus className="w-4 h-4" /> {t('addAttendee')}
             </button>
           </div>
@@ -610,7 +610,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addAgenda} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addAgenda} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
               <Plus className="w-4 h-4" /> {t('addAgenda')}
             </button>
           </div>
@@ -628,7 +628,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addDiscussion} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addDiscussion} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
               <Plus className="w-4 h-4" /> {t('addDiscussion')}
             </button>
           </div>
@@ -658,7 +658,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addAction} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addAction} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
               <Plus className="w-4 h-4" /> {t('addAction')}
             </button>
           </div>
@@ -692,7 +692,7 @@ export default function MeetingMinutes() {
                 <h2 className="text-base font-semibold text-body mb-2 border-l-4 border-blue-600 pl-3">{t('attendees')}</h2>
                 <div className="flex flex-wrap gap-2">
                   {data.attendees.map(a => (
-                    <span key={a.id} className={`px-2 py-1 rounded-full text-xs ${a.status === 'absent' ? 'bg-soft text-gray-400 line-through' : a.status === 'remote' ? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300' : 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'}`}>
+                    <span key={a.id} className={`px-2 py-1 rounded-full text-xs ${a.status === 'absent' ? 'bg-soft text-gray-400 line-through' : a.status === 'remote' ? 'bg-soft text-sub' : 'bg-soft text-sub'}`}>
                       {a.name}{a.role ? ` · ${a.role}` : ''}
                     </span>
                   ))}
@@ -789,7 +789,7 @@ export default function MeetingMinutes() {
         <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           {(t.raw('guide.sections') as { title: string; items: string[] }[]).map((section, i) => (
-            <div key={i} className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+            <div key={i} className="bg-subtle rounded-xl p-4">
               <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-3">{section.title}</h3>
               <ul className="space-y-1.5">
                 {section.items.map((item, j) => (

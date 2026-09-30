@@ -855,7 +855,7 @@ export default function MenuPicker() {
               onClick={() => handleSituation(s)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
                 situation === s
-                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md scale-105'
+                  ? 'bg-primary hover:bg-blue-700 text-white shadow-md scale-105'
                   : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
@@ -877,7 +877,7 @@ export default function MenuPicker() {
               onClick={() => handleCategoryToggle(cat)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1 ${
                 selectedCategories.has(cat)
-                  ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 ring-1 ring-blue-300 dark:ring-blue-700'
+                  ? 'bg-soft text-sub ring-1 ring-blue-300 dark:ring-blue-700'
                   : 'bg-soft text-faint'
               }`}
             >
@@ -944,7 +944,7 @@ export default function MenuPicker() {
                 className={`flex items-center gap-2 px-8 py-2.5 rounded-lg font-bold text-white text-lg transition-all shadow-lg ${
                   spinning
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 hover:shadow-xl hover:scale-105 active:scale-95'
+                    : 'bg-primary hover:bg-blue-700 hover:shadow-xl hover:scale-105 active:scale-95'
                 }`}
               >
                 {spinning ? t('spinning') : t('spin')}
@@ -1006,7 +1006,7 @@ export default function MenuPicker() {
               ) : (
                 <button
                   onClick={startTournament}
-                  className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-bold text-lg hover:from-purple-600 hover:to-indigo-600 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+                  className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-primary hover:bg-blue-700 text-white font-bold text-lg hover:from-purple-600 hover:to-indigo-600 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
                 >
                   <Trophy className="w-5 h-5" />
                   {t('start')}
@@ -1019,7 +1019,7 @@ export default function MenuPicker() {
             <div className="space-y-4">
               {/* Round info */}
               <div className="text-center">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-bold">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-soft text-sub text-sm font-bold">
                   {currentMatchup.totalInRound === 2 ? t('roundFinal') : currentMatchup.totalInRound === 4 ? t('roundSemifinal') : t('round', { size: currentMatchup.totalInRound })} ({currentMatchup.matchNumber}/{currentMatchup.totalMatches})
                 </span>
               </div>
@@ -1062,7 +1062,7 @@ export default function MenuPicker() {
 
               {/* VS badge */}
               <div className="flex justify-center -mt-2">
-                <div className={`relative -top-14 sm:-top-16 z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg ${
+                <div className={`relative -top-14 sm:-top-16 z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary hover:bg-blue-700 flex items-center justify-center shadow-lg ${
                   tournamentAnim ? 'animate-bounce' : ''
                 }`}>
                   <span className="text-white font-black text-sm sm:text-base">VS</span>
@@ -1077,7 +1077,7 @@ export default function MenuPicker() {
                 </div>
                 <div className="w-full bg-track rounded-full h-2">
                   <div
-                    className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full transition-all duration-500"
+                    className="bg-primary hover:bg-blue-700 h-2 rounded-full transition-all duration-500"
                     style={{ width: `${((currentMatchup.matchNumber - 1) / currentMatchup.totalMatches) * 100}%` }}
                   />
                 </div>
@@ -1097,7 +1097,7 @@ export default function MenuPicker() {
           {tournamentPhase === 'finished' && tournamentWinner && (
             <div className="space-y-4">
               {/* Winner celebration */}
-              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-2xl shadow-xl p-8 text-center relative overflow-hidden">
+              <div className="bg-subtle rounded-2xl shadow-xl p-8 text-center relative overflow-hidden">
                 {/* Decorative sparkles */}
                 <div className="absolute inset-0 pointer-events-none">
                   {[...Array(12)].map((_, i) => (
@@ -1134,7 +1134,7 @@ export default function MenuPicker() {
                       setTournamentPhase('setup')
                       setTournamentWinner(null)
                     }}
-                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium hover:from-purple-600 hover:to-indigo-600 transition-all text-sm"
+                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium hover:from-purple-600 hover:to-indigo-600 transition-all text-sm"
                   >
                     <RotateCcw className="w-4 h-4" />
                     {t('playAgain')}
@@ -1166,7 +1166,6 @@ export default function MenuPicker() {
         <div className="space-y-4">
           <div className="text-center">
             <h2 className="text-lg font-bold text-fg flex items-center justify-center gap-2">
-              <Star className="w-5 h-5 text-amber-500" />
               {t('modeTop3')}
             </h2>
             <p className="text-sm text-muted mt-1">
@@ -1193,9 +1192,9 @@ export default function MenuPicker() {
                   >
                     {/* Card gradient top */}
                     <div className={`h-2 ${
-                      idx === 0 ? 'bg-gradient-to-r from-rose-400 to-pink-400' :
-                      idx === 1 ? 'bg-gradient-to-r from-blue-400 to-cyan-400' :
-                      'bg-gradient-to-r from-amber-400 to-orange-400'
+                      idx === 0 ? 'bg-primary hover:bg-blue-700' :
+                      idx === 1 ? 'bg-primary hover:bg-blue-700' :
+                      'bg-primary hover:bg-blue-700'
                     }`} />
 
                     <div className="p-6 text-center">
@@ -1212,9 +1211,9 @@ export default function MenuPicker() {
                           <button
                             onClick={() => selectTop3(item)}
                             className={`w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg font-bold text-white transition-all text-sm ${
-                              idx === 0 ? 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600' :
-                              idx === 1 ? 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600' :
-                              'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600'
+                              idx === 0 ? 'bg-red-500 hover:bg-red-600' :
+                              idx === 1 ? 'bg-primary hover:bg-blue-700' :
+                              'bg-primary hover:bg-blue-700'
                             } hover:scale-105 active:scale-95`}
                           >
                             {t('pickThis')}
@@ -1251,7 +1250,7 @@ export default function MenuPicker() {
           <div className="flex justify-center gap-3">
             <button
               onClick={drawTop3}
-              className="flex items-center gap-1.5 px-6 py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-sm"
+              className="flex items-center gap-1.5 px-6 py-2.5 rounded-lg bg-primary hover:bg-blue-700 text-white font-bold hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-sm"
             >
               <Shuffle className="w-4 h-4" />
               {top3Selected ? t('redraw') : t('drawNew')}
@@ -1286,7 +1285,7 @@ export default function MenuPicker() {
                 key={`${item.name}-${i}`}
                 className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm ${
                   i === 0
-                    ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 ring-1 ring-orange-300 dark:ring-orange-700'
+                    ? 'bg-soft text-sub ring-1 ring-orange-300 dark:ring-orange-700'
                     : 'bg-soft text-sub'
                 }`}
               >
@@ -1333,7 +1332,7 @@ function ResultCard({
         show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}
     >
-      <div className="bg-gradient-to-r from-orange-500 to-red-500 px-6 py-3">
+      <div className="bg-primary hover:bg-blue-700 px-6 py-3">
         <p className="text-white font-semibold text-sm">{t('result')}</p>
       </div>
       <div className="p-6 text-center">
@@ -1344,7 +1343,7 @@ function ResultCard({
         <div className="flex flex-wrap justify-center gap-2">
           <button
             onClick={onRespin}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium hover:from-orange-600 hover:to-red-600 transition-all text-sm"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium hover:from-orange-600 hover:to-red-600 transition-all text-sm"
           >
             <RotateCcw className="w-4 h-4" />
             {t('respin')}
@@ -1368,7 +1367,7 @@ function ResultCard({
           <button
             onClick={() => onMarkEaten(item.name)}
             disabled={eatenToday.includes(item.name)}
-            className="text-xs px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="text-xs px-2 py-1 bg-soft text-sub rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {eatenToday.includes(item.name) ? t('excludedToday') : t('alreadyAte')}
           </button>

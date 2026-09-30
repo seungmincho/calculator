@@ -189,7 +189,7 @@ export default function BogeumjariLoanPage() {
                 { label: '최대 LTV', value: '80%', sub: '생애최초 기준', color: 'purple' },
                 { label: 'DTI 기준', value: '60% 이하', sub: '총부채상환비율', color: 'orange' },
               ].map((item) => (
-                <div key={item.label} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 text-center">
+                <div key={item.label} className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-xs text-muted mb-1">{item.label}</div>
                   <div className="text-lg font-bold text-fg">{item.value}</div>
                   <div className="text-xs text-faint mt-0.5">{item.sub}</div>
@@ -217,14 +217,14 @@ export default function BogeumjariLoanPage() {
                 { label: 'LTV (담보인정비율)', value: '80%', sub: '일반(70%) 대비 +10%p', color: 'green' },
                 { label: '금리 우대', value: '0.2%p', sub: '기준금리에서 자동 차감', color: 'purple' },
               ].map((item) => (
-                <div key={item.label} className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 text-center">
+                <div key={item.label} className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-xs text-muted mb-1">{item.label}</div>
                   <div className="text-xl font-bold text-blue-700 dark:text-blue-300">{item.value}</div>
                   <div className="text-xs text-muted mt-0.5">{item.sub}</div>
                 </div>
               ))}
             </div>
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-5 space-y-2">
+            <div className="bg-subtle rounded-xl p-5 space-y-2">
               <p className="text-sm font-semibold text-fg mb-2">생애최초 보금자리론 자격 요건</p>
               {[
                 '본인 및 배우자 모두 과거 주택 소유 이력 없음 (세대원 전원 미보유)',
@@ -270,7 +270,7 @@ export default function BogeumjariLoanPage() {
                     { type: '다자녀 (2명+)', income: '9천만원 이하', limit: '4억원', ltv: '70%', discount: '0.2%p', bg: true },
                     { type: '다자녀 (3명+)', income: '1억원 이하', limit: '4억원', ltv: '70%', discount: '0.2%p', bg: false },
                   ].map((row) => (
-                    <tr key={row.type} className={`border-b border-line ${row.bg ? 'bg-gray-50 dark:bg-gray-800/50' : 'bg-white dark:bg-gray-900'}`}>
+                    <tr key={row.type} className={`border-b border-line ${row.bg ? 'bg-subtle' : 'bg-white dark:bg-gray-900'}`}>
                       <td className="px-4 py-3 font-medium text-fg">{row.type}</td>
                       <td className="px-4 py-3 text-center text-body">{row.income}</td>
                       <td className="px-4 py-3 text-center font-semibold text-blue-700 dark:text-blue-300">{row.limit}</td>
@@ -309,7 +309,7 @@ export default function BogeumjariLoanPage() {
                     { period: '40년', base: '5.15%', mid: '4.85~4.95%', max: '4.15%' },
                     { period: '50년', base: '5.20%', mid: '4.90~5.00%', max: '4.20%' },
                   ].map((row, i) => (
-                    <tr key={row.period} className={`border-b border-line ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800/50'}`}>
+                    <tr key={row.period} className={`border-b border-line ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-subtle'}`}>
                       <td className="px-4 py-3 font-medium text-fg">{row.period}</td>
                       <td className="px-4 py-3 text-center text-body">{row.base}</td>
                       <td className="px-4 py-3 text-center text-blue-700 dark:text-blue-300">{row.mid}</td>
@@ -338,8 +338,8 @@ export default function BogeumjariLoanPage() {
                 { label: '사회적 배려층', rate: '최대 0.4%p', desc: '장애인, 국가유공자, 다문화가족, 한부모가족 등', color: 'orange' },
                 { label: '전세사기 피해자', rate: '별도 우대', desc: '전세사기피해지원법 상 피해자 인정 시 별도 적용', color: 'red' },
               ].map((item) => (
-                <div key={item.label} className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
-                  <div className="flex-shrink-0 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-bold text-xs px-2 py-1 rounded-lg min-w-[60px] text-center">
+                <div key={item.label} className="flex items-start gap-3 bg-subtle rounded-xl p-4">
+                  <div className="flex-shrink-0 bg-soft text-sub font-bold text-xs px-2 py-1 rounded-lg min-w-[60px] text-center">
                     {item.rate}
                   </div>
                   <div>
@@ -361,8 +361,8 @@ export default function BogeumjariLoanPage() {
                 <thead>
                   <tr className="bg-gray-100 dark:bg-gray-800 text-body">
                     <th className="px-4 py-3 text-left">구분</th>
-                    <th className="px-4 py-3 text-center bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300">디딤돌대출</th>
-                    <th className="px-4 py-3 text-center bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300">보금자리론</th>
+                    <th className="px-4 py-3 text-center bg-subtle text-green-800 dark:text-green-300">디딤돌대출</th>
+                    <th className="px-4 py-3 text-center bg-subtle text-blue-800 dark:text-blue-300">보금자리론</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -374,7 +374,7 @@ export default function BogeumjariLoanPage() {
                     { label: '금리 유형', didim: '고정/혼합', bogeum: '고정금리' },
                     { label: '추천 대상', didim: '소득 낮은 경우\n한도 2.5억 충분 시', bogeum: '한도 더 필요 시\n소득 6~7천만 구간' },
                   ].map((row, i) => (
-                    <tr key={row.label} className={`border-b border-line ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800/50'}`}>
+                    <tr key={row.label} className={`border-b border-line ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-subtle'}`}>
                       <td className="px-4 py-3 font-medium text-body">{row.label}</td>
                       <td className="px-4 py-3 text-center text-body whitespace-pre-line">{row.didim}</td>
                       <td className="px-4 py-3 text-center text-body whitespace-pre-line">{row.bogeum}</td>
@@ -395,7 +395,7 @@ export default function BogeumjariLoanPage() {
             <h2 className="text-xl font-bold text-fg mb-4">
               LH 신혼희망타운 전용 주택담보대출
             </h2>
-            <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-xl p-6">
+            <div className="bg-subtle rounded-xl p-6">
               <p className="text-sm text-body mb-4">
                 LH가 공급하는 신혼희망타운(60㎡ 이하) 입주자에게는 일반 보금자리론보다 유리한 전용 모기지가 제공됩니다.
               </p>
@@ -434,7 +434,7 @@ export default function BogeumjariLoanPage() {
                 { step: '5', title: '대출 실행', desc: '심사 통과 후 잔금일에 대출 실행, 전입신고 의무' },
               ].map((item, i) => (
                 <div key={item.step} className="flex-1 relative">
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 h-full">
+                  <div className="bg-subtle rounded-xl p-4 h-full">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="w-6 h-6 bg-blue-600 text-white text-xs font-bold rounded-full flex items-center justify-center flex-shrink-0">{item.step}</span>
                       <span className="font-semibold text-sm text-fg">{item.title}</span>
@@ -454,7 +454,7 @@ export default function BogeumjariLoanPage() {
             <h2 className="text-xl font-bold text-fg mb-4">
               나는 보금자리론 대상일까? — 자격 체크리스트
             </h2>
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 space-y-3">
+            <div className="bg-subtle rounded-xl p-6 space-y-3">
               {[
                 { check: '무주택자이거나, 1주택 보유자로 3년 내 처분 예정인가?', important: true },
                 { check: '부부합산 연소득이 7천만원 이하인가? (신혼은 8.5천만, 다자녀는 9천만)', important: true },
@@ -540,7 +540,7 @@ export default function BogeumjariLoanPage() {
                   a: '일반 서류 외에 세대원 전원의 주택 소유 이력이 없음을 증명하는 확인서가 필요합니다. 주민등록등본(전 주소 포함 발급), 부동산 등기부등본(과거 소유 이력 조회용)을 한국주택금융공사에서 확인합니다. 건강보험료 납부 확인서, 소득 증빙(근로소득원천징수영수증 등), 주택매매계약서도 공통 필수 서류입니다.',
                 },
               ].map((item, i) => (
-                <details key={i} className="group bg-gray-50 dark:bg-gray-800 rounded-xl">
+                <details key={i} className="group bg-subtle rounded-xl">
                   <summary className="cursor-pointer px-5 py-4 font-medium text-sm text-fg list-none flex justify-between items-center">
                     <span>Q. {item.q}</span>
                     <span className="text-gray-400 group-open:rotate-180 transition-transform text-lg leading-none">›</span>

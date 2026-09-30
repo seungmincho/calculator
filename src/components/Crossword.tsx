@@ -666,7 +666,7 @@ export default function Crossword() {
           <button
             onClick={handleRevealWord}
             disabled={!activeClue}
-            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors disabled:opacity-50"
+            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-sub rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors disabled:opacity-50"
           >
             <Eye className="w-4 h-4" />
             {t('revealWord')}
@@ -685,7 +685,7 @@ export default function Crossword() {
 
       {/* Win banner */}
       {completed && (
-        <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl p-4 text-center">
+        <div className="bg-subtle border border-line rounded-xl p-4 text-center">
           <p className="text-lg font-bold text-green-800 dark:text-green-200">
             {t('congratulations')}
           </p>
@@ -702,7 +702,7 @@ export default function Crossword() {
           <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
             {/* Active clue display */}
             {activeClue && (
-              <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+              <div className="mb-4 p-3 bg-subtle rounded-lg">
                 <span className="font-bold text-blue-800 dark:text-blue-200">
                   {activeClue.clue.number}{activeClue.direction === 'across' ? t('acrossShort') : t('downShort')}
                 </span>
@@ -796,10 +796,10 @@ export default function Crossword() {
                         ${cellSize} relative border border-line-strong cursor-pointer select-none
                         ${isBlack ? 'bg-gray-800 dark:bg-gray-950 cursor-default' : ''}
                         ${!isBlack && isSelected ? 'ring-2 ring-blue-500 ring-inset z-10 bg-blue-100 dark:bg-blue-800' : ''}
-                        ${!isBlack && !isSelected && isInWord ? 'bg-blue-50 dark:bg-blue-900/40' : ''}
+                        ${!isBlack && !isSelected && isInWord ? 'bg-subtle' : ''}
                         ${!isBlack && !isSelected && !isInWord ? 'bg-surface' : ''}
                         ${isWrong ? 'bg-red-100 dark:bg-red-900/50' : ''}
-                        ${isRevealed && !isSelected ? 'bg-green-50 dark:bg-green-900/30' : ''}
+                        ${isRevealed && !isSelected ? 'bg-subtle' : ''}
                       `}
                       onClick={() => !isBlack && handleCellClick(r, c)}
                       role="gridcell"
@@ -838,7 +838,6 @@ export default function Crossword() {
           {/* Across clues */}
           <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
             <h2 className="text-lg font-bold text-fg mb-3 flex items-center gap-2">
-              <ChevronRight className="w-5 h-5" />
               {t('across')}
             </h2>
             <div className="space-y-2">
@@ -873,7 +872,6 @@ export default function Crossword() {
           {puzzle.clues.down.length > 0 && (
             <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
               <h2 className="text-lg font-bold text-fg mb-3 flex items-center gap-2">
-                <ChevronRight className="w-5 h-5 rotate-90" />
                 {t('down')}
               </h2>
               <div className="space-y-2">
@@ -915,7 +913,6 @@ export default function Crossword() {
           {/* Guide */}
           <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
             <h2 className="text-lg font-bold text-fg mb-3 flex items-center gap-2">
-              <BookOpen className="w-5 h-5" />
               {t('guide.title')}
             </h2>
             <ul className="space-y-2 text-sm text-body">

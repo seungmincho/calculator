@@ -31,9 +31,9 @@ function getRatingBgClass(rating: CompatibilityRating): string {
 
 function getRatingBgLightClass(rating: CompatibilityRating): string {
   switch (rating) {
-    case 5: return 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
-    case 4: return 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
-    case 3: return 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200'
+    case 5: return 'bg-soft text-sub'
+    case 4: return 'bg-soft text-sub'
+    case 3: return 'bg-soft text-sub'
     case 2: return 'bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200'
     case 1: return 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
   }
@@ -240,7 +240,7 @@ export default function MbtiCompatibility() {
               </div>
               <button
                 onClick={handleAnalyze}
-                className="bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg px-6 py-3 font-medium hover:from-pink-700 hover:to-purple-700 transition-all"
+                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-pink-700 hover:to-purple-700 transition-all"
               >
                 {t('analyze')}
               </button>
@@ -414,7 +414,7 @@ export default function MbtiCompatibility() {
             {/* Analysis sections */}
             <div className="grid sm:grid-cols-2 gap-4">
               {/* First impression */}
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+              <div className="bg-subtle rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">💫</span>
                   <h3 className="font-semibold text-fg text-sm">{t('firstImpression')}</h3>
@@ -425,7 +425,7 @@ export default function MbtiCompatibility() {
               </div>
 
               {/* Dating strengths */}
-              <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
+              <div className="bg-subtle rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">💕</span>
                   <h3 className="font-semibold text-fg text-sm">{t('datingStrengths')}</h3>
@@ -447,7 +447,7 @@ export default function MbtiCompatibility() {
               </div>
 
               {/* Advice */}
-              <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-4">
+              <div className="bg-subtle rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">💡</span>
                   <h3 className="font-semibold text-fg text-sm">{t('advice')}</h3>

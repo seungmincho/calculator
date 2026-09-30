@@ -185,7 +185,7 @@ export default function ImageConverter() {
               onClick={handleUploadClick}
               className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer ${
                 isDragging
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                  ? 'border-blue-500 bg-subtle'
                   : 'border-line-strong hover:border-blue-500'
               }`}
             >
@@ -240,7 +240,7 @@ export default function ImageConverter() {
             <div className="space-y-2">
               <button
                 onClick={handleConvert}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
               >
                 <ImageIcon className="w-5 h-5" />
                 {t('convert')}
@@ -267,7 +267,7 @@ export default function ImageConverter() {
               {images.length > 1 && (
                 <button
                   onClick={downloadAll}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center gap-2"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center gap-2"
                 >
                   <Download className="w-4 h-4" />
                   {t('downloadAll')}
@@ -309,7 +309,7 @@ export default function ImageConverter() {
                     </div>
 
                     {/* File Info */}
-                    <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 space-y-2 text-sm">
+                    <div className="bg-subtle rounded-lg p-4 space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-sub">{t('fileInfo.name')}:</span>
                         <span className="text-fg font-medium">
@@ -349,7 +349,7 @@ export default function ImageConverter() {
                     {/* Download Button */}
                     <button
                       onClick={() => downloadImage(image)}
-                      className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
+                      className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4" />
                       {t('download')}
@@ -365,7 +365,6 @@ export default function ImageConverter() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

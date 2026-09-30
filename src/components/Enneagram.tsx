@@ -433,7 +433,7 @@ export default function Enneagram() {
     return (
       <div className="space-y-8">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+          <div className="inline-flex items-center gap-2 bg-soft text-sub px-4 py-1.5 rounded-full text-sm font-medium mb-4">
             <Sparkles className="w-4 h-4" />
             36문항 · 약 5분 소요
           </div>
@@ -460,7 +460,7 @@ export default function Enneagram() {
         <div className="text-center">
           <button
             onClick={() => setPhase('test')}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl px-8 py-4 text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
+            className="bg-primary hover:bg-blue-700 text-white rounded-xl px-8 py-4 text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
           >
             테스트 시작하기
           </button>
@@ -484,7 +484,7 @@ export default function Enneagram() {
           </div>
           <div className="w-full bg-track rounded-full h-2.5">
             <div
-              className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2.5 rounded-full transition-all duration-300"
+              className="bg-primary hover:bg-blue-700 h-2.5 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -507,7 +507,7 @@ export default function Enneagram() {
                   onClick={() => handleAnswer(val)}
                   className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-xl border-2 transition-all text-left ${
                     selected
-                      ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300'
+                      ? 'border-indigo-500 bg-subtle text-indigo-700 dark:text-indigo-300'
                       : 'border-line hover:border-indigo-300 dark:hover:border-indigo-500 text-body'
                   }`}
                 >
@@ -537,7 +537,7 @@ export default function Enneagram() {
             disabled={!canGoNext}
             className={`flex items-center gap-1 px-6 py-2.5 rounded-lg font-medium transition-all ${
               canGoNext
-                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow'
+                ? 'bg-primary hover:bg-blue-700 text-white hover:from-indigo-700 hover:to-purple-700 shadow'
                 : 'bg-track text-gray-400 cursor-not-allowed'
             }`}
           >
@@ -552,7 +552,7 @@ export default function Enneagram() {
   return (
     <div className="space-y-8">
       {/* Primary Type Header */}
-      <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl shadow-xl p-8 text-white text-center">
+      <div className="bg-primary hover:bg-blue-700 rounded-2xl shadow-xl p-8 text-white text-center">
         <div className="text-6xl mb-3">{primaryInfo.emoji}</div>
         <div className="text-lg opacity-80 mb-1">당신의 에니어그램 유형은</div>
         <h2 className="text-4xl font-bold mb-1">Type {primaryType} — {primaryInfo.name}</h2>
@@ -614,7 +614,7 @@ export default function Enneagram() {
         </h3>
 
         <div className="grid sm:grid-cols-2 gap-4">
-          <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4">
+          <div className="bg-subtle rounded-xl p-4">
             <div className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 mb-1">핵심 동기</div>
             <div className="text-body text-sm">{primaryInfo.motivation}</div>
           </div>
@@ -622,7 +622,7 @@ export default function Enneagram() {
             <div className="text-sm font-semibold text-red-600 dark:text-red-400 mb-1">기본 두려움</div>
             <div className="text-body text-sm">{primaryInfo.fear}</div>
           </div>
-          <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
+          <div className="bg-subtle rounded-xl p-4">
             <div className="text-sm font-semibold text-green-600 dark:text-green-400 mb-1">건강한 상태</div>
             <div className="text-body text-sm">{primaryInfo.healthy}</div>
           </div>
@@ -633,15 +633,15 @@ export default function Enneagram() {
         </div>
 
         <div className="grid sm:grid-cols-3 gap-4">
-          <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-4">
+          <div className="bg-subtle rounded-xl p-4">
             <div className="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-1">날개</div>
             <div className="text-body text-sm">{primaryInfo.wings}</div>
           </div>
-          <div className="bg-teal-50 dark:bg-teal-950 rounded-xl p-4">
+          <div className="bg-subtle rounded-xl p-4">
             <div className="text-sm font-semibold text-teal-600 dark:text-teal-400 mb-1">성장 방향</div>
             <div className="text-body text-sm">{primaryInfo.growth}</div>
           </div>
-          <div className="bg-rose-50 dark:bg-rose-950 rounded-xl p-4">
+          <div className="bg-subtle rounded-xl p-4">
             <div className="text-sm font-semibold text-rose-600 dark:text-rose-400 mb-1">스트레스 방향</div>
             <div className="text-body text-sm">{primaryInfo.stress}</div>
           </div>
@@ -652,7 +652,7 @@ export default function Enneagram() {
           <div className="text-sm font-semibold text-body mb-2">관련 MBTI 유형</div>
           <div className="flex gap-3">
             {primaryInfo.mbti.map(m => (
-              <span key={m} className="bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 px-4 py-2 rounded-lg font-bold text-lg">
+              <span key={m} className="bg-soft text-sub px-4 py-2 rounded-lg font-bold text-lg">
                 {m}
               </span>
             ))}
@@ -683,7 +683,7 @@ export default function Enneagram() {
           </button>
           <button
             onClick={shareResult}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-indigo-700 hover:to-purple-700 transition-all"
           >
             <Share2 className="w-4 h-4" /> 공유하기
           </button>

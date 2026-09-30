@@ -180,7 +180,6 @@ export default function ParkingFee() {
           {/* Parking Type */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <Car className="w-5 h-5" />
               {t('parkingType')}
             </h2>
             <div className="grid grid-cols-1 gap-2">
@@ -190,7 +189,7 @@ export default function ParkingFee() {
                   onClick={() => setParkingType(type)}
                   className={`px-4 py-3 rounded-lg font-medium transition-all ${
                     parkingType === type
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                      ? 'bg-primary hover:bg-blue-700 text-white shadow-md'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -203,7 +202,6 @@ export default function ParkingFee() {
           {/* Time Input */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <Clock className="w-5 h-5" />
               {t('duration')}
             </h2>
 
@@ -329,7 +327,6 @@ export default function ParkingFee() {
           {/* Fee Settings */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <Settings className="w-5 h-5" />
               {t('settings.title')}
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
@@ -414,9 +411,8 @@ export default function ParkingFee() {
 
           {/* Result */}
           {result && (
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-xl shadow-lg p-6">
+            <div className="bg-subtle rounded-xl shadow-lg p-6">
               <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                <Calculator className="w-5 h-5" />
                 {t('result.title')}
               </h2>
               <div className="space-y-3">
@@ -476,7 +472,6 @@ export default function ParkingFee() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

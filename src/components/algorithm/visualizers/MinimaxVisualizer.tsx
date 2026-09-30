@@ -337,7 +337,7 @@ export default function MinimaxVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.gameAi')}
             </span>
             <span className="text-xs text-gray-400">★★☆</span>
@@ -350,7 +350,7 @@ export default function MinimaxVisualizer() {
           className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             useAlphaBeta
               ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-400/30'
-              : 'bg-soft text-sub border border-gray-300/30 dark:border-gray-600/30'
+              : 'bg-soft text-sub border border-line'
           }`}
         >
           <span className={`w-2 h-2 rounded-full ${useAlphaBeta ? 'bg-emerald-500' : 'bg-gray-400'}`} />
@@ -462,12 +462,12 @@ export default function MinimaxVisualizer() {
                           ${isWinCell
                             ? 'border-yellow-400 bg-yellow-100 dark:bg-yellow-900/40'
                             : cell === 'X'
-                              ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                              ? 'border-blue-400 bg-subtle text-blue-600 dark:text-blue-400'
                               : cell === 'O'
                                 ? 'border-red-400 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                                 : canClick
                                   ? 'border-line bg-field hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-600 cursor-pointer'
-                                  : 'border-line bg-gray-50 dark:bg-gray-800 cursor-default opacity-60'
+                                  : 'border-line bg-subtle cursor-default opacity-60'
                           }
                         `}
                       >
@@ -559,12 +559,12 @@ export default function MinimaxVisualizer() {
           <div className="xl:sticky xl:top-20 space-y-4">
             {/* ── Explanation box (always visible) ── */}
             <div className={`rounded-2xl p-4 border-2 transition-colors ${
-              explanation.color === 'blue' ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700' :
-              explanation.color === 'emerald' ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-700' :
+              explanation.color === 'blue' ? 'bg-subtle border-line' :
+              explanation.color === 'emerald' ? 'bg-subtle border-line' :
               explanation.color === 'red' ? 'bg-red-50 dark:bg-red-950/40 border-red-300 dark:border-red-700' :
               explanation.color === 'amber' ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700' :
-              explanation.color === 'indigo' ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-700' :
-              'bg-gray-50 dark:bg-gray-800/60 border-gray-300 dark:border-gray-700'
+              explanation.color === 'indigo' ? 'bg-subtle border-line' :
+              'bg-subtle border-line'
             }`}>
               <div className="flex items-start gap-3">
                 <span className="text-2xl flex-shrink-0 mt-0.5">{explanation.emoji}</span>
@@ -607,11 +607,11 @@ export default function MinimaxVisualizer() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
+                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -624,9 +624,9 @@ export default function MinimaxVisualizer() {
                     <div className="grid grid-cols-2 gap-1.5 mb-3">
                       {(
                         [
-                          ['expand', 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400', t('stepsGuide.expand')],
-                          ['evaluate', 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400', t('stepsGuide.evaluate')],
-                          ['backpropagate', 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400', t('stepsGuide.backpropagate')],
+                          ['expand', 'bg-soft text-sub', t('stepsGuide.expand')],
+                          ['evaluate', 'bg-soft text-sub', t('stepsGuide.evaluate')],
+                          ['backpropagate', 'bg-soft text-sub', t('stepsGuide.backpropagate')],
                           ['prune', 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400', t('stepsGuide.prune')],
                         ] as [string, string, string][]
                       ).map(([key, cls, label]) => (
@@ -709,16 +709,16 @@ function MinimaxStepsList({
   if (displaySteps.length === 0) return null
 
   const ACTION_STYLES: Record<MinimaxStep['action'], string> = {
-    expand: 'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50 dark:border-blue-700/40',
-    evaluate: 'bg-purple-50 dark:bg-purple-900/20 border-purple-300/50 dark:border-purple-700/40',
-    backpropagate: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300/50 dark:border-emerald-700/40',
+    expand: 'bg-subtle border-line',
+    evaluate: 'bg-subtle border-line',
+    backpropagate: 'bg-subtle border-line',
     prune: 'bg-red-50 dark:bg-red-900/20 border-red-300/50 dark:border-red-700/40',
   }
 
   const ACTION_BADGE: Record<MinimaxStep['action'], string> = {
-    expand: 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
-    evaluate: 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
-    backpropagate: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+    expand: 'bg-soft text-sub',
+    evaluate: 'bg-soft text-sub',
+    backpropagate: 'bg-soft text-sub',
     prune: 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
   }
 
@@ -756,8 +756,8 @@ function MinimaxStepsList({
               isCurrent
                 ? ACTION_STYLES[step.action]
                 : isActive
-                  ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
-                  : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
+                  ? 'border-line bg-subtle'
+                  : 'border-line opacity-40'
             }`}
           >
             <div className="flex items-center gap-2">

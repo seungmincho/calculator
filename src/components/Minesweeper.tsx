@@ -411,7 +411,7 @@ export default function Minesweeper() {
             onClick={() => changeDifficulty('beginner')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               difficulty === 'beginner'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
             }`}
           >
@@ -421,7 +421,7 @@ export default function Minesweeper() {
             onClick={() => changeDifficulty('intermediate')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               difficulty === 'intermediate'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
             }`}
           >
@@ -431,7 +431,7 @@ export default function Minesweeper() {
             onClick={() => changeDifficulty('expert')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               difficulty === 'expert'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
             }`}
           >
@@ -466,7 +466,7 @@ export default function Minesweeper() {
 
         {/* Game Status Message */}
         {gameStatus === 'won' && (
-          <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg p-4 text-center font-semibold">
+          <div className="bg-soft text-sub rounded-lg p-4 text-center font-semibold">
             {t('youWin')}
           </div>
         )}

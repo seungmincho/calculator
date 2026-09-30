@@ -408,9 +408,9 @@ const COMMANDS: CommandDef[] = [
 ]
 
 const CATEGORY_LABELS: Record<string, { ko: string; en: string; color: string }> = {
-  file: { ko: '파일/디렉터리', en: 'File/Directory', color: 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300' },
-  text: { ko: '텍스트 처리', en: 'Text Processing', color: 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' },
-  system: { ko: '시스템', en: 'System', color: 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300' },
+  file: { ko: '파일/디렉터리', en: 'File/Directory', color: 'bg-soft text-sub' },
+  text: { ko: '텍스트 처리', en: 'Text Processing', color: 'bg-soft text-sub' },
+  system: { ko: '시스템', en: 'System', color: 'bg-soft text-sub' },
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
@@ -601,10 +601,9 @@ export default function LinuxCommand() {
         {/* Right: generated command + examples */}
         <div className="lg:col-span-3 space-y-5">
           {/* Generated command */}
-          <div className="bg-surface rounded-xl border border-green-300 dark:border-green-800 p-5">
+          <div className="bg-surface rounded-xl border border-line p-5">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-semibold text-body flex items-center gap-2">
-                <Zap className="w-4 h-4 text-green-600 dark:text-green-400" />
                 {t('generatedCommand')}
               </h2>
               <button
@@ -629,7 +628,6 @@ export default function LinuxCommand() {
           {/* Examples */}
           <div className="bg-surface rounded-xl border border-line p-5">
             <h2 className="text-sm font-semibold text-body flex items-center gap-2 mb-4">
-              <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               {t('examples')}
             </h2>
             <div className="space-y-3">

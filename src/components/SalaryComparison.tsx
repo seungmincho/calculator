@@ -140,10 +140,10 @@ const formatNumber = (num: number) => num.toLocaleString('ko-KR')
 const formatWon = (num: number) => `${formatNumber(num)}원`
 
 const COLORS = [
-  { bg: 'bg-blue-50 dark:bg-blue-950', border: 'border-blue-200 dark:border-blue-800', text: 'text-blue-700 dark:text-blue-300', accent: 'text-blue-600 dark:text-blue-400', bar: 'bg-blue-500', label: 'A' },
-  { bg: 'bg-emerald-50 dark:bg-emerald-950', border: 'border-emerald-200 dark:border-emerald-800', text: 'text-emerald-700 dark:text-emerald-300', accent: 'text-emerald-600 dark:text-emerald-400', bar: 'bg-emerald-500', label: 'B' },
+  { bg: 'bg-subtle', border: 'border-line', text: 'text-blue-700 dark:text-blue-300', accent: 'text-blue-600 dark:text-blue-400', bar: 'bg-blue-500', label: 'A' },
+  { bg: 'bg-subtle', border: 'border-line', text: 'text-emerald-700 dark:text-emerald-300', accent: 'text-emerald-600 dark:text-emerald-400', bar: 'bg-emerald-500', label: 'B' },
   { bg: 'bg-amber-50 dark:bg-amber-950', border: 'border-amber-200 dark:border-amber-800', text: 'text-amber-700 dark:text-amber-300', accent: 'text-amber-600 dark:text-amber-400', bar: 'bg-amber-500', label: 'C' },
-  { bg: 'bg-purple-50 dark:bg-purple-950', border: 'border-purple-200 dark:border-purple-800', text: 'text-purple-700 dark:text-purple-300', accent: 'text-purple-600 dark:text-purple-400', bar: 'bg-purple-500', label: 'D' },
+  { bg: 'bg-subtle', border: 'border-line', text: 'text-purple-700 dark:text-purple-300', accent: 'text-purple-600 dark:text-purple-400', bar: 'bg-purple-500', label: 'D' },
 ]
 
 export default function SalaryComparison() {
@@ -523,10 +523,10 @@ export default function SalaryComparison() {
                 </tr>
 
                 {/* 연간 실수령액 */}
-                <CompRow label={t('netAnnual')} results={results} scenarios={scenarios} baseResult={baseResult} getValue={r => r.netAnnual} rowClass="bg-blue-50 dark:bg-blue-950/30 hover:bg-blue-100 dark:hover:bg-blue-950/50" labelClass="font-bold text-blue-700 dark:text-blue-400" valueClass="font-bold text-blue-700 dark:text-blue-400" />
+                <CompRow label={t('netAnnual')} results={results} scenarios={scenarios} baseResult={baseResult} getValue={r => r.netAnnual} rowClass="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-950/50" labelClass="font-bold text-blue-700 dark:text-blue-400" valueClass="font-bold text-blue-700 dark:text-blue-400" />
 
                 {/* 월 실수령액 (하이라이트) */}
-                <CompRow label={t('netMonthly')} results={results} scenarios={scenarios} baseResult={baseResult} getValue={r => r.netMonthly} rowClass="bg-green-50 dark:bg-green-950/30 hover:bg-green-100 dark:hover:bg-green-950/50" labelClass="font-bold text-green-700 dark:text-green-400 text-base" valueClass="font-bold text-green-700 dark:text-green-400 text-base" py="py-4" />
+                <CompRow label={t('netMonthly')} results={results} scenarios={scenarios} baseResult={baseResult} getValue={r => r.netMonthly} rowClass="bg-subtle hover:bg-green-100 dark:hover:bg-green-950/50" labelClass="font-bold text-green-700 dark:text-green-400 text-base" valueClass="font-bold text-green-700 dark:text-green-400 text-base" py="py-4" />
               </tbody>
             </table>
           </div>
@@ -634,7 +634,6 @@ export default function SalaryComparison() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>

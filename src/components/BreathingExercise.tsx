@@ -201,7 +201,7 @@ export default function BreathingExercise() {
                 onClick={() => setSelectedPatternId(pattern.id)}
                 className={`w-full text-left rounded-lg border-2 p-4 transition-all ${
                   selectedPatternId === pattern.id
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                    ? 'border-blue-500 bg-subtle'
                     : 'border-line hover:border-blue-300 dark:hover:border-blue-600'
                 }`}
               >
@@ -328,7 +328,7 @@ export default function BreathingExercise() {
               {!isRunning ? (
                 <button
                   onClick={startSession}
-                  className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-8 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                  className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
                 >
                   <Play className="w-5 h-5" />
                   {t('start')}
@@ -346,12 +346,12 @@ export default function BreathingExercise() {
 
             {/* Pattern timing display */}
             <div className="mt-6 w-full">
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+              <div className="bg-subtle rounded-xl p-4">
                 <div className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
                   {t(`pattern${selectedPattern.id === '478' ? '478' : selectedPattern.id === 'box' ? 'Box' : 'Relaxing'}Name`)}
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full px-3 py-1">
+                  <span className="text-xs bg-soft text-sub rounded-full px-3 py-1">
                     {t('inhaleLabel')} {selectedPattern.inhale}s
                   </span>
                   {selectedPattern.hold1 > 0 && (
@@ -359,11 +359,11 @@ export default function BreathingExercise() {
                       {t('holdLabel')} {selectedPattern.hold1}s
                     </span>
                   )}
-                  <span className="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full px-3 py-1">
+                  <span className="text-xs bg-soft text-sub rounded-full px-3 py-1">
                     {t('exhaleLabel')} {selectedPattern.exhale}s
                   </span>
                   {selectedPattern.hold2 > 0 && (
-                    <span className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full px-3 py-1">
+                    <span className="text-xs bg-soft text-sub rounded-full px-3 py-1">
                       {t('holdLabel')} {selectedPattern.hold2}s
                     </span>
                   )}

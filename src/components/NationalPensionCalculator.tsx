@@ -338,7 +338,7 @@ export default function NationalPensionCalculator() {
             </div>
 
             {/* 수급개시연령 (auto) */}
-            <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
+            <div className="bg-subtle rounded-lg p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-body">
                   {t('pensionStartAge')}
@@ -357,7 +357,7 @@ export default function NationalPensionCalculator() {
               <button
                 onClick={handleCalculate}
                 disabled={isUnderMinContribution || incomeNum <= 0}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Calculator className="w-5 h-5" />
                 {t('calculate')}
@@ -388,7 +388,7 @@ export default function NationalPensionCalculator() {
               <div className="grid sm:grid-cols-3 gap-4">
                 {/* 조기수령 */}
                 <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-                  <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3">
+                  <div className="bg-primary hover:bg-blue-700 px-4 py-3">
                     <div className="flex items-center gap-2 text-white">
                       <Clock className="w-5 h-5" />
                       <span className="font-bold">{t('earlyPension')}</span>
@@ -422,7 +422,7 @@ export default function NationalPensionCalculator() {
 
                 {/* 정상수령 */}
                 <div className={`${glassCard} ${glassInset} overflow-hidden ring-2 ring-blue-500`}>
-                  <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-3">
+                  <div className="bg-primary hover:bg-blue-700 px-4 py-3">
                     <div className="flex items-center gap-2 text-white">
                       <TrendingUp className="w-5 h-5" />
                       <span className="font-bold">{t('normalPension')}</span>
@@ -457,7 +457,7 @@ export default function NationalPensionCalculator() {
 
                 {/* 연기수령 */}
                 <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-                  <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3">
+                  <div className="bg-primary hover:bg-blue-700 px-4 py-3">
                     <div className="flex items-center gap-2 text-white">
                       <TrendingUp className="w-5 h-5" />
                       <span className="font-bold">{t('deferredPension')}</span>

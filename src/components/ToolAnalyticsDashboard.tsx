@@ -169,7 +169,7 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-line shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-primary hover:bg-blue-700 rounded-xl flex items-center justify-center">
               <BarChart3 className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -194,19 +194,19 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
         {/* Summary Cards */}
         <div className="px-6 py-4 border-b border-line shrink-0">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/30 rounded-xl p-3 text-center">
+            <div className="bg-subtle rounded-xl p-3 text-center">
               <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">{totalClicks.toLocaleString()}</div>
               <div className="text-xs text-blue-600 dark:text-blue-400">{t('analyticsDashboard.totalVisits')}</div>
             </div>
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/50 dark:to-purple-900/30 rounded-xl p-3 text-center">
+            <div className="bg-subtle rounded-xl p-3 text-center">
               <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">{allTools.length}</div>
               <div className="text-xs text-purple-600 dark:text-purple-400">{t('analyticsDashboard.totalTools')}</div>
             </div>
-            <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/50 dark:to-green-900/30 rounded-xl p-3 text-center">
+            <div className="bg-subtle rounded-xl p-3 text-center">
               <div className="text-2xl font-bold text-green-700 dark:text-green-300">{activeToolCount}</div>
               <div className="text-xs text-green-600 dark:text-green-400">{t('analyticsDashboard.activeTools')}</div>
             </div>
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950/50 dark:to-orange-900/30 rounded-xl p-3 text-center">
+            <div className="bg-subtle rounded-xl p-3 text-center">
               <div className="text-2xl font-bold text-orange-700 dark:text-orange-300">
                 {activeToolCount > 0 ? Math.round(totalClicks / activeToolCount) : 0}
               </div>
@@ -281,14 +281,14 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
                     {/* Rank */}
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 ${
                       isTop3
-                        ? 'bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-sm'
+                        ? 'bg-primary hover:bg-blue-700 text-white shadow-sm'
                         : 'bg-gray-100 dark:bg-gray-800 text-muted'
                     }`}>
                       {isTop3 ? <Trophy className="w-4 h-4" /> : globalRank}
                     </div>
 
                     {/* Icon */}
-                    <div className="w-9 h-9 rounded-lg flex items-center justify-center text-xl shrink-0 bg-gray-50 dark:bg-gray-800">
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center text-xl shrink-0 bg-subtle">
                       {tool.icon}
                     </div>
 
@@ -307,8 +307,8 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
                         <div
                           className={`h-full rounded-full transition-all duration-500 ${
                             isTop3
-                              ? 'bg-gradient-to-r from-yellow-400 to-orange-500'
-                              : 'bg-gradient-to-r from-blue-400 to-blue-600'
+                              ? 'bg-primary hover:bg-blue-700'
+                              : 'bg-primary hover:bg-blue-700'
                           }`}
                           style={{ width: `${Math.max(percentage, 1)}%` }}
                         />

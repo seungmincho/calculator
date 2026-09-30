@@ -146,22 +146,22 @@ export default function HuffmanCodingVisualizer() {
   ]
 
   const ACTION_STYLE: Record<string, string> = {
-    'count-freq':   'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50 dark:border-blue-700/40',
-    'init-heap':    'bg-purple-50 dark:bg-purple-900/20 border-purple-300/50 dark:border-purple-700/40',
+    'count-freq':   'bg-subtle border-line',
+    'init-heap':    'bg-subtle border-line',
     'extract-min':  'bg-amber-50 dark:bg-amber-900/20 border-amber-300/50 dark:border-amber-700/40',
-    'merge':        'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300/50 dark:border-emerald-700/40',
-    'assign-code':  'bg-pink-50 dark:bg-pink-900/20 border-pink-300/50 dark:border-pink-700/40',
-    'encode-char':  'bg-cyan-50 dark:bg-cyan-900/20 border-cyan-300/50 dark:border-cyan-700/40',
-    'complete':     'bg-green-50 dark:bg-green-900/20 border-green-300/50 dark:border-green-700/40',
+    'merge':        'bg-subtle border-line',
+    'assign-code':  'bg-subtle border-line',
+    'encode-char':  'bg-subtle border-line',
+    'complete':     'bg-subtle border-line',
   }
   const ACTION_BADGE: Record<string, string> = {
-    'count-freq':   'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
-    'init-heap':    'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
+    'count-freq':   'bg-soft text-sub',
+    'init-heap':    'bg-soft text-sub',
     'extract-min':  'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400',
-    'merge':        'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
-    'assign-code':  'bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-400',
-    'encode-char':  'bg-cyan-100 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-400',
-    'complete':     'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400',
+    'merge':        'bg-soft text-sub',
+    'assign-code':  'bg-soft text-sub',
+    'encode-char':  'bg-soft text-sub',
+    'complete':     'bg-soft text-sub',
   }
 
   return (
@@ -242,7 +242,7 @@ export default function HuffmanCodingVisualizer() {
             </div>
 
             <button onClick={runAlgorithm}
-              className="w-full px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-lg font-medium hover:from-amber-700 hover:to-orange-700 transition-colors">
+              className="w-full px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-amber-700 hover:to-orange-700 transition-colors">
               {t('encode')}
             </button>
           </div>
@@ -257,7 +257,7 @@ export default function HuffmanCodingVisualizer() {
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key ? 'text-amber-600 dark:text-amber-400 border-b-2 border-amber-500 bg-amber-50/50 dark:bg-amber-900/20'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
-                    }`}>{tab.icon} {tab.label}</button>
+                    }`}>{tab.label}</button>
                 ))}
               </div>
               <div className="p-4 max-h-[70vh] overflow-y-auto">
@@ -311,7 +311,7 @@ function StepsList({ steps, currentIndex, onStepClick, actionStyle, actionBadge 
         const isAct = idx <= currentIndex
         return (
           <div key={idx} data-active={isCur ? 'true' : undefined} onClick={() => onStepClick(idx)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'}`}>
+            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-subtle' : 'border-line opacity-40'}`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap ${actionBadge[step.action] || ''}`}>
                 {step.action}

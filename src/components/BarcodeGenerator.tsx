@@ -566,7 +566,7 @@ const BarcodeGenerator = () => {
       </div>
 
       {/* Features Guide */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8">
+      <div className="bg-subtle rounded-2xl p-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-fg mb-4">
             {t('features.title')}
@@ -725,7 +725,7 @@ const BarcodeGenerator = () => {
         </div>
 
         <div className="mt-8 grid md:grid-cols-3 gap-6">
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+          <div className="bg-subtle rounded-lg p-4">
             <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">
               {t('guide.tips.printing.title')}
             </h4>
@@ -733,7 +733,7 @@ const BarcodeGenerator = () => {
               {t('guide.tips.printing.content')}
             </p>
           </div>
-          <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+          <div className="bg-subtle rounded-lg p-4">
             <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">
               {t('guide.tips.scanning.title')}
             </h4>
@@ -741,7 +741,7 @@ const BarcodeGenerator = () => {
               {t('guide.tips.scanning.content')}
             </p>
           </div>
-          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+          <div className="bg-subtle rounded-lg p-4">
             <h4 className="font-semibold text-purple-800 dark:text-purple-200 mb-2">
               {t('guide.tips.format.title')}
             </h4>

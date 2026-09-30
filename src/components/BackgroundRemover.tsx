@@ -279,7 +279,7 @@ export default function BackgroundRemover() {
           onClick={() => fileInputRef.current?.click()}
           className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-colors ${
             isDragging
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+              ? 'border-blue-500 bg-subtle'
               : 'border-line-strong hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-gray-700'
           }`}
         >
@@ -340,7 +340,7 @@ export default function BackgroundRemover() {
               {hasResult && (
                 <button
                   onClick={handleDownload}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-medium text-sm hover:from-green-700 hover:to-emerald-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium text-sm hover:from-green-700 hover:to-emerald-700 transition-colors"
                 >
                   <Download className="h-4 w-4" />
                   {t('download')}
@@ -407,7 +407,7 @@ export default function BackgroundRemover() {
 
             {/* Instructions */}
             {!selectedColor && (
-              <p className="text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 rounded-lg px-3 py-2">
+              <p className="text-sm text-blue-600 dark:text-blue-400 bg-subtle rounded-lg px-3 py-2">
                 {t('pickColor')} 버튼을 누른 후 원본 이미지에서 배경 색상을 클릭하세요.
               </p>
             )}

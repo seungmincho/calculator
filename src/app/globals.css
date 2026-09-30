@@ -5,7 +5,7 @@
 
 :root {
   /* ── Semantic tokens (light) — 디자인 변경은 이 블록과 .dark 블록만 수정 ── */
-  --canvas: #f2f4f6;
+  --canvas: #ffffff;
   --surface: #ffffff;
   --field: #ffffff;
   --subtle: #f9fafb;
@@ -29,13 +29,13 @@
 }
 
 .dark {
-  --canvas: #101114;
-  --surface: #1e2026;
-  --field: #333842;
-  --subtle: #2a2d34;
-  --soft: #333842;
-  --track: #333842;
-  --line: #2e3139;
+  --canvas: #0f1012;
+  --surface: #16171b;
+  --field: #1f2126;
+  --subtle: #1c1e22;
+  --soft: #26282e;
+  --track: #2a2c32;
+  --line: #2a2c32;
   --line-strong: #4e5968;
   --fg: #f9fafb;
   --body: #d1d6db;
@@ -45,7 +45,7 @@
   --primary: #3182f6;
   --primary-hover: #4593fc;
   --primary-soft: rgb(49 130 246 / 0.16);
-  --field-fill: #2a2d34;
+  --field-fill: #1f2126;
 }
 
 @theme inline {
@@ -142,10 +142,11 @@
   --color-purple-900: #194aa6;
   --color-purple-950: #0f2a5c;
 
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.04);
-  --shadow: 0 1px 3px rgb(0 0 0 / 0.05);
-  --shadow-md: 0 2px 8px rgb(0 0 0 / 0.05);
-  --shadow-lg: 0 4px 16px rgb(0 0 0 / 0.06);
+  /* 흰 배경 + 테두리 방식: 카드 그림자는 거의 평평하게, xl 이상은 팝오버/모달용 */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.03);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 1px 3px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.04);
   --shadow-xl: 0 8px 24px rgb(0 0 0 / 0.08);
   --shadow-2xl: 0 12px 32px rgb(0 0 0 / 0.10);
 }
@@ -154,10 +155,9 @@
 @layer components {
   .ui-card {
     background: var(--surface);
-    border-radius: 20px;
-    border: 1px solid transparent;
+    border-radius: 16px;
+    border: 1px solid var(--line);
   }
-  .dark .ui-card { border-color: var(--line); }
 
   .ui-field {
     width: 100%;
@@ -168,6 +168,8 @@
     transition: border-color .15s, box-shadow .15s, background .15s;
   }
   .ui-field::placeholder { color: var(--faint); }
+  /* 회색 구역(bg-subtle/soft) 안에서는 입력창을 흰색+테두리로 띄움 */
+  :where(.bg-subtle, .bg-soft) .ui-field { background: var(--surface); border-color: var(--line); }
   .ui-field:focus {
     outline: none;
     background: var(--surface);

@@ -398,10 +398,10 @@ const LoanCalculatorContent = () => {
 
   const getTypeColor = (type: LoanType) => {
     const colors = {
-      'equal-payment': 'bg-gradient-to-r from-blue-500 to-blue-600',
-      'equal-principal': 'bg-gradient-to-r from-green-500 to-green-600',
-      'interest-only': 'bg-gradient-to-r from-orange-500 to-orange-600',
-      'balloon': 'bg-gradient-to-r from-purple-500 to-purple-600'
+      'equal-payment': 'bg-primary hover:bg-blue-700',
+      'equal-principal': 'bg-primary hover:bg-blue-700',
+      'interest-only': 'bg-primary hover:bg-blue-700',
+      'balloon': 'bg-primary hover:bg-blue-700'
     };
     return colors[type];
   };
@@ -576,7 +576,7 @@ const LoanCalculatorContent = () => {
                       </div>
                     </div>
                     
-                    <div className="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4">
+                    <div className="bg-subtle rounded-xl p-4">
                       <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">총 상환금액</div>
                       <div className="text-lg font-bold text-blue-900 dark:text-blue-200">
                         {formatNumber(result.totalPayment)}원
@@ -644,7 +644,6 @@ const LoanCalculatorContent = () => {
               {/* 비교 차트 */}
               <div className={`${glassCard} ${glassInset} p-8`}>
                 <h2 className="text-2xl font-semibold mb-6 text-fg flex items-center">
-                  <BarChart3 className="w-6 h-6 mr-2" />
                   상환 방식 비교
                 </h2>
                 
@@ -701,9 +700,9 @@ const LoanCalculatorContent = () => {
 
               {/* 추천 */}
               <div className={`${glassCard} ${glassInset} p-8`}>
-                <h2 className="text-2xl font-semibold mb-6 text-fg">💡 추천</h2>
+                <h2 className="text-2xl font-semibold mb-6 text-fg">추천</h2>
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
+                  <div className="bg-subtle rounded-lg p-6">
                     <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">
                       총 이자 최소: {loanTypes[results.sort((a, b) => a.totalInterest - b.totalInterest)[0].type]}
                     </h3>
@@ -711,7 +710,7 @@ const LoanCalculatorContent = () => {
                       장기적으로 가장 적은 이자를 부담하는 방식입니다.
                     </p>
                   </div>
-                  <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
+                  <div className="bg-subtle rounded-lg p-6">
                     <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
                       초기 부담 최소: {loanTypes[results.sort((a, b) => a.monthlyPayment - b.monthlyPayment)[0].type]}
                     </h3>

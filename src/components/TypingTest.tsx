@@ -254,15 +254,15 @@ export default function TypingTest() {
   // Get speed rating
   const getSpeedRating = (wpm: number): { label: string; color: string } => {
     if (language === 'korean') {
-      if (wpm >= 200) return { label: t('excellent'), color: 'bg-gradient-to-r from-purple-600 to-pink-600' }
-      if (wpm >= 150) return { label: t('fast'), color: 'bg-gradient-to-r from-blue-600 to-indigo-600' }
-      if (wpm >= 100) return { label: t('average'), color: 'bg-gradient-to-r from-green-600 to-teal-600' }
-      return { label: t('slow'), color: 'bg-gradient-to-r from-orange-600 to-red-600' }
+      if (wpm >= 200) return { label: t('excellent'), color: 'bg-primary hover:bg-blue-700' }
+      if (wpm >= 150) return { label: t('fast'), color: 'bg-primary hover:bg-blue-700' }
+      if (wpm >= 100) return { label: t('average'), color: 'bg-primary hover:bg-blue-700' }
+      return { label: t('slow'), color: 'bg-primary hover:bg-blue-700' }
     } else {
-      if (wpm >= 80) return { label: t('excellent'), color: 'bg-gradient-to-r from-purple-600 to-pink-600' }
-      if (wpm >= 60) return { label: t('fast'), color: 'bg-gradient-to-r from-blue-600 to-indigo-600' }
-      if (wpm >= 40) return { label: t('average'), color: 'bg-gradient-to-r from-green-600 to-teal-600' }
-      return { label: t('slow'), color: 'bg-gradient-to-r from-orange-600 to-red-600' }
+      if (wpm >= 80) return { label: t('excellent'), color: 'bg-primary hover:bg-blue-700' }
+      if (wpm >= 60) return { label: t('fast'), color: 'bg-primary hover:bg-blue-700' }
+      if (wpm >= 40) return { label: t('average'), color: 'bg-primary hover:bg-blue-700' }
+      return { label: t('slow'), color: 'bg-primary hover:bg-blue-700' }
     }
   }
 
@@ -310,7 +310,7 @@ export default function TypingTest() {
                 }}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   language === 'korean'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                    ? 'bg-primary hover:bg-blue-700 text-white'
                     : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
                 disabled={isRunning}
@@ -324,7 +324,7 @@ export default function TypingTest() {
                 }}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   language === 'english'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                    ? 'bg-primary hover:bg-blue-700 text-white'
                     : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
                 disabled={isRunning}
@@ -349,7 +349,7 @@ export default function TypingTest() {
                   }}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     difficulty === level
-                      ? 'bg-gradient-to-r from-green-600 to-teal-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                   disabled={isRunning}
@@ -377,7 +377,7 @@ export default function TypingTest() {
                   }}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     duration === dur
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                   disabled={isRunning}
@@ -393,7 +393,7 @@ export default function TypingTest() {
             {!isRunning ? (
               <button
                 onClick={startTest}
-                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
               >
                 <Play className="w-5 h-5" />
                 {t('start')}
@@ -401,7 +401,7 @@ export default function TypingTest() {
             ) : (
               <button
                 onClick={stopTest}
-                className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-lg px-6 py-3 font-medium hover:from-red-700 hover:to-orange-700 transition-all"
+                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-red-700 hover:to-orange-700 transition-all"
               >
                 <Square className="w-5 h-5" />
                 {t('stop')}
@@ -445,7 +445,7 @@ export default function TypingTest() {
         </div>
 
         {/* Display Text */}
-        <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 mb-4">
+        <div className="bg-subtle rounded-lg p-6 mb-4">
           <div className="font-mono text-lg leading-relaxed whitespace-pre-wrap break-words">
             {currentText.split('').map((char, idx) => {
               const status = charStatuses[idx]
@@ -488,7 +488,7 @@ export default function TypingTest() {
 
       {/* Results Modal */}
       {showResults && results && (
-        <div className="relative rounded-xl shadow-lg p-8 border-2 border-blue-300 dark:border-blue-700">
+        <div className="relative rounded-xl shadow-lg p-8 border-2 border-line">
           <div className="text-center mb-6">
             <Trophy className="w-16 h-16 mx-auto mb-4 text-yellow-500" />
             <h2 className="text-3xl font-bold text-fg mb-2">
@@ -527,7 +527,7 @@ export default function TypingTest() {
 
           <button
             onClick={() => setShowResults(false)}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
           >
             닫기
           </button>
@@ -553,15 +553,15 @@ export default function TypingTest() {
           {/* Summary Stats */}
           {stats && (
             <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4 text-center">
+              <div className="bg-subtle rounded-lg p-4 text-center">
                 <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('bestRecord')}</div>
                 <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.bestWpm}</div>
               </div>
-              <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4 text-center">
+              <div className="bg-subtle rounded-lg p-4 text-center">
                 <div className="text-sm text-green-600 dark:text-green-400 mb-1">{t('averageSpeed')}</div>
                 <div className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.avgWpm}</div>
               </div>
-              <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-4 text-center">
+              <div className="bg-subtle rounded-lg p-4 text-center">
                 <div className="text-sm text-purple-600 dark:text-purple-400 mb-1">{t('totalTests')}</div>
                 <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{stats.totalTests}</div>
               </div>
@@ -631,7 +631,6 @@ export default function TypingTest() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
 

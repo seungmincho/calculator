@@ -306,11 +306,11 @@ export default function SATVisualizer() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
+                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -324,10 +324,10 @@ export default function SATVisualizer() {
                         key={i}
                         className={`p-2.5 rounded-lg border transition-all cursor-pointer ${
                           i === currentStep
-                            ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20'
+                            ? 'border-blue-500/50 bg-subtle'
                             : i <= currentStep
-                              ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
-                              : 'border-gray-200/30 dark:border-gray-700/30 opacity-50'
+                              ? 'border-line bg-subtle'
+                              : 'border-line opacity-50'
                         }`}
                         onClick={() => setCurrentStep(i)}
                       >
@@ -335,7 +335,7 @@ export default function SATVisualizer() {
                           <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
                             i <= currentStep
                               ? axis.isSeparating
-                                ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'
+                                ? 'bg-soft text-sub'
                                 : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
                               : 'bg-track text-gray-500'
                           }`}>
@@ -347,7 +347,7 @@ export default function SATVisualizer() {
                           {i <= currentStep && (
                             <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded-full ${
                               axis.isSeparating
-                                ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400'
+                                ? 'bg-soft text-sub'
                                 : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                             }`}>
                               {axis.isSeparating ? t('stepsGuide.separated') : t('stepsGuide.overlapping')}

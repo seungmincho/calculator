@@ -295,7 +295,7 @@ export default function LottoTaxCalculator() {
               <button
                 onClick={handleCalculate}
                 disabled={!prizeInput}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Banknote className="w-5 h-5" />
                 {t('calculate')}
@@ -312,7 +312,6 @@ export default function LottoTaxCalculator() {
           {/* Rank presets */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-sm font-semibold text-body mb-3 flex items-center gap-1.5">
-              <Trophy className="w-4 h-4 text-yellow-500" />
               {t('rankPresets')}
             </h3>
             <div className="space-y-2">
@@ -345,7 +344,7 @@ export default function LottoTaxCalculator() {
             <>
               {/* Main result card */}
               <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3">
+                <div className="bg-primary hover:bg-blue-700 px-6 py-3">
                   <h2 className="text-white font-semibold">{t('result')}</h2>
                 </div>
                 <div className="p-6 space-y-6">
@@ -369,7 +368,7 @@ export default function LottoTaxCalculator() {
                   </div>
 
                   {result.isTaxFree ? (
-                    <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 text-center">
+                    <div className="bg-subtle rounded-xl p-4 text-center">
                       <p className="text-green-700 dark:text-green-300 font-bold text-lg">{t('noTax')}</p>
                     </div>
                   ) : (
@@ -432,7 +431,7 @@ export default function LottoTaxCalculator() {
                       </div>
 
                       {/* Detailed breakdown */}
-                      <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 space-y-3">
+                      <div className="bg-subtle rounded-xl p-4 space-y-3">
                         {result.taxBelow300m > 0 && (
                           <div>
                             <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">
@@ -589,7 +588,7 @@ export default function LottoTaxCalculator() {
               <summary className="cursor-pointer font-medium text-body hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 {t(`faq.q${i}.question`)}
               </summary>
-              <p className="mt-2 text-sm text-sub pl-4 border-l-2 border-blue-300 dark:border-blue-700">
+              <p className="mt-2 text-sm text-sub pl-4 border-l-2 border-line">
                 {t(`faq.q${i}.answer`)}
               </p>
             </details>

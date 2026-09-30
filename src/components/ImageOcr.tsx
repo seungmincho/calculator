@@ -306,7 +306,7 @@ export default function ImageOcr() {
                 onClick={handleUploadClick}
                 className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer ${
                   isDragging
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                    ? 'border-blue-500 bg-subtle'
                     : 'border-line-strong hover:border-blue-500'
                 }`}
               >
@@ -359,7 +359,6 @@ export default function ImageOcr() {
             {/* Language Selection */}
             <div>
               <label className="flex items-center gap-2 text-sm font-medium text-body mb-3">
-                <Languages className="w-4 h-4" />
                 {t('language')}
               </label>
               <div className="flex flex-wrap gap-2">
@@ -384,7 +383,7 @@ export default function ImageOcr() {
               <button
                 onClick={handleRecognize}
                 disabled={!imageFile || isProcessing}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <FileText className="w-5 h-5" />
                 {isProcessing ? t('recognizing') : t('recognize')}
@@ -408,7 +407,7 @@ export default function ImageOcr() {
                 </div>
                 <div className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-300"
+                    className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-300"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
@@ -448,7 +447,7 @@ export default function ImageOcr() {
                   </button>
                   <button
                     onClick={handleDownloadTxt}
-                    className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                    className="flex items-center gap-1 px-3 py-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
                   >
                     <Download className="w-4 h-4" />
                     <span>{t('downloadTxt')}</span>
@@ -519,7 +518,6 @@ export default function ImageOcr() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

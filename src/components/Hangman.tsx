@@ -242,7 +242,7 @@ export default function Hangman() {
         <div className="bg-surface rounded-xl shadow-lg p-6 flex flex-col gap-6">
           {/* Hint */}
           <div className="text-center">
-            <span className="inline-block bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-sm font-medium px-3 py-1 rounded-full">
+            <span className="inline-block bg-subtle text-blue-700 dark:text-blue-300 text-sm font-medium px-3 py-1 rounded-full">
               {t('hint')}: {categoryIcon[category]} {t(`categories.${category}`)}
             </span>
           </div>
@@ -295,7 +295,7 @@ export default function Hangman() {
                   aria-label={used ? t('consonantUsed', { letter: con }) : t('consonantLabel', { letter: con })}
                   className={`w-10 h-10 rounded-lg text-base font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                     isCorrect
-                      ? 'bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 opacity-70 cursor-not-allowed'
+                      ? 'bg-soft text-sub opacity-70 cursor-not-allowed'
                       : isWrong
                       ? 'bg-red-200 dark:bg-red-900 text-red-700 dark:text-red-300 opacity-50 cursor-not-allowed'
                       : 'bg-soft text-body hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer'
@@ -325,7 +325,7 @@ export default function Hangman() {
                   aria-label={used ? t('vowelUsed', { letter: vow }) : t('vowelLabel', { letter: vow })}
                   className={`w-10 h-10 rounded-lg text-base font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                     isCorrect
-                      ? 'bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 opacity-70 cursor-not-allowed'
+                      ? 'bg-soft text-sub opacity-70 cursor-not-allowed'
                       : isWrong
                       ? 'bg-red-200 dark:bg-red-900 text-red-700 dark:text-red-300 opacity-50 cursor-not-allowed'
                       : 'bg-soft text-body hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer'
@@ -360,7 +360,7 @@ export default function Hangman() {
             )}
             <button
               onClick={() => startNewGame(category)}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
             >
               {t('newGame')}
             </button>

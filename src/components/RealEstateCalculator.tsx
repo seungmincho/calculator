@@ -1131,7 +1131,7 @@ const RealEstateCalculatorContent = () => {
       const loanResult = result as LoanResult;
       return (
         <div className="space-y-6">
-          <div className="text-center p-6 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl text-white">
+          <div className="text-center p-6 bg-primary hover:bg-blue-700 rounded-xl text-white">
             <div className="text-sm opacity-90 mb-1">월 상환금액</div>
             <div className="text-3xl font-bold">{formatNumber(loanResult.monthlyPayment)}원</div>
             {loanResult.loanToValue && (
@@ -1234,9 +1234,8 @@ const RealEstateCalculatorContent = () => {
           
           {renderInputSection()}
 
-          <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg mt-6">
+          <div className="bg-subtle p-4 rounded-lg mt-6">
             <h3 className="text-sm font-medium text-purple-800 dark:text-purple-200 mb-2">
-              <Calculator className="w-4 h-4 inline mr-1" />
               계산 기준
             </h3>
             <ul className="text-sm text-purple-700 dark:text-purple-300 space-y-1">
@@ -1282,9 +1281,8 @@ const RealEstateCalculatorContent = () => {
           )}
 
           {result && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg mt-6">
+            <div className="bg-subtle p-4 rounded-lg mt-6">
               <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
-                <TrendingUp className="w-4 h-4 inline mr-1" />
                 참고사항
               </h3>
               <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">

@@ -723,7 +723,7 @@ export default function DnsLookupVisualizer() {
           {/* Domain input */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-fg flex items-center gap-2">
-              <Server className="w-4 h-4" /> 조회 설정
+              조회 설정
             </h2>
 
             <div>
@@ -797,7 +797,7 @@ export default function DnsLookupVisualizer() {
             {/* Action button */}
             <button
               onClick={startSimulation}
-              className="w-full bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-lg px-4 py-3 font-medium hover:from-indigo-700 hover:to-violet-700 transition-all flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-indigo-700 hover:to-violet-700 transition-all flex items-center justify-center gap-2"
             >
               <Zap className="w-4 h-4" />
               {isStarted ? '다시 시작' : '조회 시작'}
@@ -827,7 +827,7 @@ export default function DnsLookupVisualizer() {
           {isStarted && (
             <div className={`${glassCard} ${glassInset} p-5`}>
               <h2 className="font-semibold text-fg text-sm mb-3 flex items-center gap-2">
-                <Database className="w-4 h-4" /> 통계
+                통계
               </h2>
               <div className="grid grid-cols-3 gap-3 text-center">
                 <div>
@@ -955,7 +955,7 @@ export default function DnsLookupVisualizer() {
                     {currentStepData.detail}
                   </p>
                   {currentStepData.recordInfo && (
-                    <div className="mt-2 px-3 py-1.5 bg-gray-50 dark:bg-gray-900 rounded-lg text-xs font-mono text-indigo-700 dark:text-indigo-300">
+                    <div className="mt-2 px-3 py-1.5 bg-subtle rounded-lg text-xs font-mono text-indigo-700 dark:text-indigo-300">
                       {currentStepData.recordInfo}
                     </div>
                   )}
@@ -984,9 +984,9 @@ export default function DnsLookupVisualizer() {
                     }}
                     className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2 ${
                       i === currentStep
-                        ? 'bg-indigo-50 dark:bg-indigo-950 border border-indigo-300 dark:border-indigo-700'
+                        ? 'bg-subtle border border-line'
                         : i < currentStep
-                          ? 'bg-gray-50 dark:bg-gray-900 text-muted'
+                          ? 'bg-subtle text-muted'
                           : 'text-faint'
                     }`}
                   >
@@ -1014,7 +1014,6 @@ export default function DnsLookupVisualizer() {
       {/* DNS Record Types reference */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-          <Info className="w-5 h-5 text-indigo-500" />
           DNS 레코드 타입
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1077,7 +1076,6 @@ export default function DnsLookupVisualizer() {
           className="w-full px-6 py-4 flex items-center justify-between text-left"
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-indigo-500" />
             DNS 학습 가이드
           </h2>
           {guideOpen ? (
@@ -1105,7 +1103,7 @@ export default function DnsLookupVisualizer() {
                 재귀 조회 vs 반복 조회
               </h3>
               <div className="grid sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950">
+                <div className="p-4 rounded-lg bg-subtle">
                   <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">
                     재귀 조회 (Recursive)
                   </div>
@@ -1115,7 +1113,7 @@ export default function DnsLookupVisualizer() {
                     방식입니다.
                   </p>
                 </div>
-                <div className="p-4 rounded-lg bg-emerald-50 dark:bg-emerald-950">
+                <div className="p-4 rounded-lg bg-subtle">
                   <div className="text-sm font-medium text-emerald-700 dark:text-emerald-300 mb-1">
                     반복 조회 (Iterative)
                   </div>
@@ -1148,7 +1146,7 @@ export default function DnsLookupVisualizer() {
                 ].map((item) => (
                   <div
                     key={item.level}
-                    className="flex gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-900"
+                    className="flex gap-3 p-3 rounded-lg bg-subtle"
                   >
                     <div className="shrink-0 w-1.5 rounded bg-indigo-500" />
                     <div>
@@ -1191,7 +1189,7 @@ export default function DnsLookupVisualizer() {
                     a: 'Windows: ipconfig /flushdns, macOS: sudo dscacheutil -flushcache, Chrome: chrome://net-internals/#dns에서 Clear host cache를 클릭하세요.',
                   },
                 ].map((faq) => (
-                  <div key={faq.q} className="p-3 rounded-lg bg-gray-50 dark:bg-gray-900">
+                  <div key={faq.q} className="p-3 rounded-lg bg-subtle">
                     <div className="text-sm font-medium text-fg">
                       Q: {faq.q}
                     </div>

@@ -1301,7 +1301,7 @@ export default function CurlBuilder() {
 
       {/* Parse Success Toast */}
       {parseSuccess && (
-        <div className="bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+        <div className="bg-subtle text-green-700 dark:text-green-300 px-4 py-2 rounded-lg text-sm flex items-center gap-2">
           <Check className="w-4 h-4" />
           {t('parse.parseSuccess')}
         </div>
@@ -1349,7 +1349,7 @@ export default function CurlBuilder() {
           <div className="flex gap-3">
             <button
               onClick={handleParse}
-              className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+              className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
             >
               <Play className="w-4 h-4" />
               {t('parse.parseButton')}
@@ -1472,7 +1472,7 @@ export default function CurlBuilder() {
                         onClick={() => setConfig(prev => ({ ...prev, auth: { ...prev.auth, type } }))}
                         className={`px-3 py-1.5 text-sm rounded-lg ${
                           config.auth.type === type
-                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium'
+                            ? 'bg-soft text-sub font-medium'
                             : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
@@ -1546,7 +1546,7 @@ export default function CurlBuilder() {
                       onClick={() => setConfig(prev => ({ ...prev, body: { ...prev.body, type } }))}
                       className={`px-3 py-1.5 text-sm rounded-lg ${
                         config.body.type === type
-                          ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium'
+                          ? 'bg-soft text-sub font-medium'
                           : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
@@ -1705,7 +1705,7 @@ export default function CurlBuilder() {
               <button
                 onClick={() => config.url.trim() && saveToHistory(config)}
                 disabled={!config.url.trim() || !isValidUrl}
-                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Clock className="w-4 h-4" />
                 {t('history.title')}
@@ -1731,7 +1731,7 @@ export default function CurlBuilder() {
                     onClick={() => setExportFormat(f.key)}
                     className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                       exportFormat === f.key
-                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                        ? 'bg-soft text-sub'
                         : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -1797,7 +1797,6 @@ export default function CurlBuilder() {
           className="w-full flex items-center justify-between p-6 text-left"
         >
           <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <Clock className="w-5 h-5 text-gray-400" />
             {t('history.title')}
             {history.length > 0 && (
               <span className="text-sm font-normal text-gray-400">({history.length})</span>
@@ -1845,7 +1844,6 @@ export default function CurlBuilder() {
           className="w-full flex items-center justify-between p-6 text-left"
         >
           <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-blue-500" />
             {t('guide.title')}
           </h3>
           {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}

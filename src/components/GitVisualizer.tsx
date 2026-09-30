@@ -702,7 +702,7 @@ export default function GitVisualizer() {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-4 overflow-x-auto`}>
             <h2 className="text-sm font-semibold text-muted mb-2 flex items-center gap-1.5">
-              <GitCommit className="w-4 h-4" /> 커밋 그래프
+              커밋 그래프
             </h2>
             <div className="min-h-[200px] border border-line rounded-lg overflow-auto">
               <canvas ref={canvasRef} />
@@ -715,7 +715,7 @@ export default function GitVisualizer() {
           {/* Command input */}
           <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-muted mb-2 flex items-center gap-1.5">
-              <Terminal className="w-4 h-4" /> 명령어 입력
+              명령어 입력
             </h3>
             <div className="flex gap-2 mb-3">
               <input
@@ -728,7 +728,7 @@ export default function GitVisualizer() {
               />
               <button
                 onClick={() => executeCommand(commandInput)}
-                className="px-3 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg hover:from-emerald-700 hover:to-teal-700 transition-colors"
+                className="px-3 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-emerald-700 hover:to-teal-700 transition-colors"
               >
                 <Play className="w-4 h-4" />
               </button>
@@ -755,7 +755,7 @@ export default function GitVisualizer() {
           {/* Branch list */}
           <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-muted mb-2 flex items-center gap-1.5">
-              <GitBranch className="w-4 h-4" /> 브랜치 ({branchList.length})
+              브랜치 ({branchList.length})
             </h3>
             <div className="space-y-1.5">
               {branchList.map(([name, commitId]) => (
@@ -764,7 +764,7 @@ export default function GitVisualizer() {
                   onClick={() => executeCommand(`checkout ${name}`)}
                   className={`w-full text-left px-3 py-1.5 rounded-lg text-sm flex items-center justify-between transition-colors ${
                     name === repo.head
-                      ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 font-semibold'
+                      ? 'bg-subtle text-emerald-700 dark:text-emerald-300 font-semibold'
                       : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                   }`}
                 >
@@ -781,14 +781,14 @@ export default function GitVisualizer() {
           {/* Operation log */}
           <div className={`${glassCard} ${glassInset} p-4`}>
             <h3 className="text-sm font-semibold text-muted mb-2 flex items-center gap-1.5">
-              <GitMerge className="w-4 h-4" /> 실행 로그
+              실행 로그
             </h3>
             <div className="max-h-48 overflow-y-auto space-y-2 text-sm">
               {logs.map((log, i) => (
                 <div key={i} className={`p-2 rounded-lg ${
                   log.type === 'error' ? 'bg-red-50 dark:bg-red-900/20' :
-                  log.type === 'success' ? 'bg-emerald-50 dark:bg-emerald-900/20' :
-                  'bg-blue-50 dark:bg-blue-900/20'
+                  log.type === 'success' ? 'bg-subtle' :
+                  'bg-subtle'
                 }`}>
                   <div className="font-mono text-xs text-muted">$ {log.command}</div>
                   <div className={`text-xs mt-0.5 ${
@@ -877,7 +877,7 @@ export default function GitVisualizer() {
                       ['cherry-pick', 'cherry-pick <ID>', '특정 커밋을 현재 브랜치에 복사합니다'],
                       ['reset', 'reset <ID>', '브랜치 포인터를 해당 커밋으로 되돌립니다'],
                     ].map(([cmd, usage, desc]) => (
-                      <tr key={cmd} className="border-b border-gray-100 dark:border-gray-700/50">
+                      <tr key={cmd} className="border-b border-line">
                         <td className="py-2 pr-4 font-mono font-semibold text-emerald-600 dark:text-emerald-400">{cmd}</td>
                         <td className="py-2 pr-4 font-mono text-xs">{usage}</td>
                         <td className="py-2">{desc}</td>
@@ -892,7 +892,7 @@ export default function GitVisualizer() {
             <div>
               <h3 className="text-base font-bold text-fg mb-3">merge vs rebase</h3>
               <div className="grid md:grid-cols-2 gap-4">
-                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="p-4 bg-subtle rounded-lg">
                   <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">merge</h4>
                   <ul className="text-sm text-body space-y-1.5">
                     <li>- 병합 커밋을 생성 (부모 2개)</li>
@@ -902,7 +902,7 @@ export default function GitVisualizer() {
                     <li>- 협업 시 기본 전략으로 권장</li>
                   </ul>
                 </div>
-                <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                <div className="p-4 bg-subtle rounded-lg">
                   <h4 className="font-semibold text-purple-700 dark:text-purple-300 mb-2">rebase</h4>
                   <ul className="text-sm text-body space-y-1.5">
                     <li>- 커밋을 새 위치에 재생성</li>

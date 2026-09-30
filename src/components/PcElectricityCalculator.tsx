@@ -221,7 +221,6 @@ export default function PcElectricityCalculator() {
           {/* Components */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-blue-500" />
               {t('components.cpu')}
             </h2>
 
@@ -334,7 +333,6 @@ export default function PcElectricityCalculator() {
             {/* Monitor */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <Monitor className="w-4 h-4 inline mr-1" />
                 {t('components.monitorLabel')}
               </label>
               <div className="flex flex-wrap gap-2 mb-2">
@@ -393,7 +391,6 @@ export default function PcElectricityCalculator() {
           {/* Usage Pattern */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-green-500" />
               {t('usage.title')}
             </h2>
 
@@ -510,7 +507,6 @@ export default function PcElectricityCalculator() {
           {/* Result cards */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Zap className="w-5 h-5 text-yellow-500" />
               {t('result.title')}
             </h2>
 
@@ -522,13 +518,13 @@ export default function PcElectricityCalculator() {
             </div>
 
             <div className="border-t border-line pt-4 space-y-3">
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+              <div className="bg-subtle rounded-xl p-4">
                 <p className="text-sm text-sub">{t('result.monthlyCost')}</p>
                 <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                   {formatNumber(Math.round(result.monthlyCost))}{t('result.won')}
                 </p>
               </div>
-              <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4">
+              <div className="bg-subtle rounded-xl p-4">
                 <p className="text-sm text-sub">{t('result.yearlyCost')}</p>
                 <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                   {formatNumber(Math.round(result.yearlyCost))}{t('result.won')}
@@ -540,7 +536,6 @@ export default function PcElectricityCalculator() {
           {/* Component ratio bar */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-sm font-semibold text-fg mb-4 flex items-center gap-2">
-              <HardDrive className="w-4 h-4 text-purple-500" />
               {t('ratio.title')}
             </h3>
 
@@ -577,7 +572,6 @@ export default function PcElectricityCalculator() {
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-8">

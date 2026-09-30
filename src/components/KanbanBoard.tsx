@@ -285,7 +285,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
           <div className="flex gap-3 pt-2">
             <button
               type="submit"
-              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
             >
               {t('save')}
             </button>
@@ -349,7 +349,7 @@ function ColModal({ t, initial, onSave, onClose }: ColModalProps) {
           <div className="flex gap-3">
             <button
               type="submit"
-              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
             >
               {t('save')}
             </button>
@@ -748,7 +748,7 @@ export default function KanbanBoard() {
           <input ref={importRef} type="file" accept=".json" className="hidden" onChange={importBoard} />
           <button
             onClick={() => setColModal({})}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all"
           >
             <Plus size={15} />
             {t('addColumn')}
@@ -847,8 +847,8 @@ export default function KanbanBoard() {
 
               {/* Cards area */}
               <div
-                className={`flex-1 bg-gray-50 dark:bg-gray-800/60 rounded-b-xl p-2 space-y-2 min-h-[4rem] transition-colors ${
-                  isDropTarget ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                className={`flex-1 bg-subtle rounded-b-xl p-2 space-y-2 min-h-[4rem] transition-colors ${
+                  isDropTarget ? 'bg-subtle' : ''
                 }`}
               >
                 {col.cards.map((card) => (
@@ -916,7 +916,7 @@ export default function KanbanBoard() {
             <ul className="space-y-2">
               {(t.raw('guide.howTo.items') as string[]).map((item, i) => (
                 <li key={i} className="flex gap-2 text-sm text-sub">
-                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 text-xs flex items-center justify-center font-bold">
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-soft text-sub text-xs flex items-center justify-center font-bold">
                     {i + 1}
                   </span>
                   {item}
@@ -939,7 +939,7 @@ export default function KanbanBoard() {
           </div>
         </div>
 
-        <div className="mt-6 bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+        <div className="mt-6 bg-subtle rounded-xl p-4">
           <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">{t('guide.dragDrop.title')}</h3>
           <p className="text-sm text-blue-700 dark:text-blue-300">{t('guide.dragDrop.desc')}</p>
         </div>
@@ -963,7 +963,7 @@ export default function KanbanBoard() {
       {touchDrag && (
         <div
           ref={touchGhostRef}
-          className="fixed z-50 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 px-3 py-2 rounded-lg shadow-lg text-sm font-medium pointer-events-none opacity-90"
+          className="fixed z-50 bg-soft text-sub px-3 py-2 rounded-lg shadow-lg text-sm font-medium pointer-events-none opacity-90"
           style={{ left: -100, top: -100 }}
         >
           {columns

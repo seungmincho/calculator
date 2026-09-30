@@ -391,9 +391,9 @@ const BogeumjariLoanCalculatorContent = () => {
   };
 
   const typeColorMap: Record<LoanType, { active: string; base: string }> = {
-    first: { active: 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300', base: 'border-line hover:border-blue-300' },
-    newlywed: { active: 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300', base: 'border-line hover:border-pink-300' },
-    multichild: { active: 'border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300', base: 'border-line hover:border-green-300' },
+    first: { active: 'border-blue-500 bg-subtle text-blue-700 dark:text-blue-300', base: 'border-line hover:border-blue-300' },
+    newlywed: { active: 'border-pink-500 bg-subtle text-pink-700 dark:text-pink-300', base: 'border-line hover:border-pink-300' },
+    multichild: { active: 'border-green-500 bg-subtle text-green-700 dark:text-green-300', base: 'border-line hover:border-green-300' },
     general: { active: 'border-gray-500 bg-subtle text-body', base: 'border-line hover:border-gray-400' },
   };
   const glassCard = 'bg-surface border border-line rounded-2xl shadow-[0_18px_50px_rgba(59,130,246,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]';
@@ -421,7 +421,6 @@ const BogeumjariLoanCalculatorContent = () => {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-blue-500" />
               대출 조건 입력
             </h2>
 
@@ -491,7 +490,7 @@ const BogeumjariLoanCalculatorContent = () => {
                   <option value="3plus">3명 이상</option>
                 </select>
                 {loanType !== 'multichild' && (parseInt(childCount) >= 2 || childCount === '3plus') && (
-                  <p className="text-xs text-blue-500 mt-1">💡 다자녀 유형으로 전환 시 혜택↑</p>
+                  <p className="text-xs text-blue-500 mt-1">다자녀 유형으로 전환 시 혜택↑</p>
                 )}
               </div>
             </div>
@@ -569,7 +568,7 @@ const BogeumjariLoanCalculatorContent = () => {
               {result.eligible ? (
                 <div className="space-y-4">
                   {/* 최대 대출한도 */}
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <div className="text-xs text-blue-600 dark:text-blue-400 mb-1">최대 대출한도</div>
                     <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">
                       {formatCurrency(result.maxLoanAmount)}
@@ -629,7 +628,7 @@ const BogeumjariLoanCalculatorContent = () => {
                       <div className="text-muted text-xs mb-0.5">총 상환액</div>
                       <div className="font-semibold text-fg">{formatCurrency(result.totalPayment)}</div>
                     </div>
-                    <div className={`rounded-lg p-3 ${result.dti <= 40 ? 'bg-green-50 dark:bg-green-900/20' : 'bg-yellow-50 dark:bg-yellow-900/20'}`}>
+                    <div className={`rounded-lg p-3 ${result.dti <= 40 ? 'bg-subtle' : 'bg-yellow-50 dark:bg-yellow-900/20'}`}>
                       <div className="text-muted text-xs mb-0.5">DTI</div>
                       <div className={`font-bold ${result.dti <= 40 ? 'text-green-700 dark:text-green-300' : 'text-yellow-700 dark:text-yellow-300'}`}>
                         {result.dti.toFixed(1)}%
@@ -662,9 +661,9 @@ const BogeumjariLoanCalculatorContent = () => {
                       </div>
                     </div>
                   )}
-                  <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3">
+                  <div className="bg-subtle rounded-lg p-3">
                     <p className="text-xs text-blue-700 dark:text-blue-300">
-                      💡 다른 유형(신혼/다자녀)이 해당된다면 소득기준이 완화됩니다. 디딤돌대출도 함께 검토해보세요.
+                      다른 유형(신혼/다자녀)이 해당된다면 소득기준이 완화됩니다. 디딤돌대출도 함께 검토해보세요.
                     </p>
                   </div>
                 </div>
@@ -750,7 +749,6 @@ const BogeumjariLoanCalculatorContent = () => {
             {/* 연도별 상환 스케줄 */}
             <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-blue-500" />
                 연도별 상환 스케줄
               </h3>
               <div className="h-72 sm:h-80">
@@ -790,7 +788,6 @@ const BogeumjariLoanCalculatorContent = () => {
             {/* 기간별 비교 */}
             <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                <TrendingDown className="w-5 h-5 text-green-500" />
                 대출 기간별 비교 <span className="text-xs font-normal text-gray-400">(대출금 {formatCurrency(loan)} 기준)</span>
               </h3>
               <div className="overflow-x-auto -mx-2">
@@ -807,7 +804,7 @@ const BogeumjariLoanCalculatorContent = () => {
                     {comparisonData.map((row) => (
                       <tr
                         key={row.period}
-                        className={`border-b border-gray-100 dark:border-gray-700/50 ${row.isCurrent ? 'bg-blue-50 dark:bg-blue-900/20 font-semibold' : ''}`}
+                        className={`border-b border-line ${row.isCurrent ? 'bg-subtle font-semibold' : ''}`}
                       >
                         <td className="py-2.5 px-2 text-fg">
                           {row.period} {row.isCurrent && <span className="text-xs text-blue-500 ml-1">선택</span>}
@@ -831,7 +828,7 @@ const BogeumjariLoanCalculatorContent = () => {
       {/* 관련 사이트 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-          <span>🔗</span>
+          
           관련 사이트
         </h3>
         <div className="grid sm:grid-cols-2 gap-3">
@@ -866,7 +863,7 @@ const BogeumjariLoanCalculatorContent = () => {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors group"
+              className="flex items-start gap-3 p-3 bg-subtle border border-line rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors group"
             >
               <span className="text-2xl flex-shrink-0">{link.icon}</span>
               <div>
@@ -893,7 +890,6 @@ const BogeumjariLoanCalculatorContent = () => {
       {/* 유형별 요약 가이드 */}
       <div className="bg-gradient-to-r from-blue-100/60 to-indigo-50/60 dark:from-blue-500/[0.08] dark:to-indigo-500/[0.08] border border-line rounded-2xl p-6 shadow-[0_18px_50px_rgba(59,130,246,0.10)]">
         <h3 className="text-lg font-bold text-fg mb-4 flex items-center gap-2">
-          <Home className="w-5 h-5 text-blue-500" />
           2026년 보금자리론 유형별 핵심 조건
         </h3>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">

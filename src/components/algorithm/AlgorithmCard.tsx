@@ -21,14 +21,14 @@ export default function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
       border: 'border-red-200/50 dark:border-red-800/30',
     },
     blue: {
-      chip: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
+      chip: 'bg-soft text-sub',
       glow: 'group-hover:shadow-blue-500/20',
-      border: 'border-blue-200/50 dark:border-blue-800/30',
+      border: 'border-line',
     },
     purple: {
-      chip: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400',
+      chip: 'bg-soft text-sub',
       glow: 'group-hover:shadow-purple-500/20',
-      border: 'border-purple-200/50 dark:border-purple-800/30',
+      border: 'border-line',
     },
     amber: {
       chip: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',
@@ -36,39 +36,39 @@ export default function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
       border: 'border-amber-200/50 dark:border-amber-800/30',
     },
     emerald: {
-      chip: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400',
+      chip: 'bg-soft text-sub',
       glow: 'group-hover:shadow-emerald-500/20',
-      border: 'border-emerald-200/50 dark:border-emerald-800/30',
+      border: 'border-line',
     },
     teal: {
-      chip: 'bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400',
+      chip: 'bg-soft text-sub',
       glow: 'group-hover:shadow-teal-500/20',
-      border: 'border-teal-200/50 dark:border-teal-800/30',
+      border: 'border-line',
     },
     cyan: {
-      chip: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400',
+      chip: 'bg-soft text-sub',
       glow: 'group-hover:shadow-cyan-500/20',
-      border: 'border-cyan-200/50 dark:border-cyan-800/30',
+      border: 'border-line',
     },
     pink: {
-      chip: 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400',
+      chip: 'bg-soft text-sub',
       glow: 'group-hover:shadow-pink-500/20',
-      border: 'border-pink-200/50 dark:border-pink-800/30',
+      border: 'border-line',
     },
     indigo: {
-      chip: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400',
+      chip: 'bg-soft text-sub',
       glow: 'group-hover:shadow-indigo-500/20',
-      border: 'border-indigo-200/50 dark:border-indigo-800/30',
+      border: 'border-line',
     },
     rose: {
-      chip: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400',
+      chip: 'bg-soft text-sub',
       glow: 'group-hover:shadow-rose-500/20',
-      border: 'border-rose-200/50 dark:border-rose-800/30',
+      border: 'border-line',
     },
     sky: {
-      chip: 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400',
+      chip: 'bg-soft text-sub',
       glow: 'group-hover:shadow-sky-500/20',
-      border: 'border-sky-200/50 dark:border-sky-800/30',
+      border: 'border-line',
     },
   }
 
@@ -170,7 +170,7 @@ export default function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
       }`}
     >
       {/* Mini preview canvas */}
-      <div className="relative h-36 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 overflow-hidden">
+      <div className="relative h-36 bg-subtle overflow-hidden">
         {algorithm.id === 'sat' && !isComingSoon ? (
           <canvas
             ref={canvasRef}

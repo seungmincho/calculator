@@ -17,7 +17,7 @@ export default function AlgorithmLayout({ children }: AlgorithmLayoutProps) {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="w-full flex items-center justify-between px-4 py-3 bg-white/80 dark:bg-gray-800/80 rounded-xl border border-line text-fg font-medium"
         >
-          <span>📚 다른 알고리즘</span>
+          <span>다른 알고리즘</span>
           <span className={`transition-transform ${sidebarOpen ? 'rotate-180' : ''}`}>▼</span>
         </button>
         {sidebarOpen && (

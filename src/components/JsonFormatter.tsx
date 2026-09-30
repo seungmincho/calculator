@@ -41,7 +41,7 @@ const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 const JsonCodeEditor = dynamic(() => import('./JsonCodeEditor'), {
   ssr: false,
   loading: () => (
-    <div className="h-96 bg-gray-50 dark:bg-gray-800 rounded-lg animate-pulse flex items-center justify-center">
+    <div className="h-96 bg-subtle rounded-lg animate-pulse flex items-center justify-center">
       <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
     </div>
   ),
@@ -672,7 +672,7 @@ const JsonFormatter = () => {
       <div className="mb-6">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 bg-primary hover:bg-blue-700 rounded-xl flex items-center justify-center shadow-lg">
               <FileJson className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -708,7 +708,7 @@ const JsonFormatter = () => {
 
         {/* Shortcuts tooltip */}
         {showShortcuts && (
-          <div className="mt-3 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-sm">
+          <div className="mt-3 bg-subtle rounded-lg p-4 text-sm">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
                 { keys: 'Ctrl+Shift+F', action: t('shortcuts.format') },
@@ -729,7 +729,7 @@ const JsonFormatter = () => {
 
         {/* Settings panel */}
         {showSettings && (
-          <div className="mt-3 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+          <div className="mt-3 bg-subtle rounded-lg p-4">
             <div className="flex flex-wrap items-center gap-4 text-sm">
               <div className="flex items-center gap-2">
                 <label className="text-sub font-medium">{t('settings.indentSize')}:</label>
@@ -910,14 +910,14 @@ const JsonFormatter = () => {
 
       {/* JSONPath Query panel */}
       {showJsonPath && (
-        <div className="mb-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+        <div className="mb-4 bg-subtle rounded-lg p-4">
           <div className="flex gap-2 mb-3">
             <input
               type="text"
               value={jsonPathQuery}
               onChange={(e) => setJsonPathQuery(e.target.value)}
               placeholder={t('jsonPath.placeholder')}
-              className="flex-1 px-3 py-2 rounded-lg border border-purple-200 dark:border-purple-700 bg-field text-body text-sm font-mono focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="flex-1 px-3 py-2 rounded-lg border border-line bg-field text-body text-sm font-mono focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               onKeyDown={(e) => e.key === 'Enter' && executeJsonPath()}
             />
             <button
@@ -940,7 +940,7 @@ const JsonFormatter = () => {
               <button
                 key={query}
                 onClick={() => setJsonPathQuery(query)}
-                className="px-2 py-0.5 text-xs bg-purple-100 dark:bg-purple-800/50 text-purple-700 dark:text-purple-300 rounded-full hover:bg-purple-200 dark:hover:bg-purple-700/50 transition-colors"
+                className="px-2 py-0.5 text-xs bg-soft text-sub rounded-full hover:bg-purple-200 dark:hover:bg-purple-700/50 transition-colors"
                 title={label}
               >
                 {query}
@@ -958,7 +958,7 @@ const JsonFormatter = () => {
           {jsonPathResult && (
             <div className="mt-2">
               <div className="text-xs text-purple-600 dark:text-purple-400 mb-1 font-medium">{t('jsonPath.result')}:</div>
-              <pre className="text-sm bg-surface p-3 rounded-lg border border-purple-200 dark:border-purple-700 overflow-auto max-h-60 text-body font-mono">
+              <pre className="text-sm bg-surface p-3 rounded-lg border border-line overflow-auto max-h-60 text-body font-mono">
                 {jsonPathResult}
               </pre>
             </div>
@@ -983,7 +983,7 @@ const JsonFormatter = () => {
                   className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
                     parsedResult.error
                       ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
-                      : 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+                      : 'bg-soft text-sub'
                   }`}
                 >
                   {parsedResult.error ? (
@@ -1111,7 +1111,7 @@ const JsonFormatter = () => {
               {parsedResult?.data ? (
                 <div className="p-2">
                   {copiedPath && (
-                    <div className="sticky top-0 z-10 mb-2 px-3 py-1.5 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 text-xs rounded-lg flex items-center gap-1">
+                    <div className="sticky top-0 z-10 mb-2 px-3 py-1.5 bg-soft text-sub text-xs rounded-lg flex items-center gap-1">
                       <Check className="w-3 h-3" />
                       {t('treeView.pathCopied')}: <code className="font-mono">{copiedPath}</code>
                     </div>
@@ -1287,7 +1287,7 @@ const JsonFormatter = () => {
 
       {/* Status bar */}
       {statusData && (
-        <div className="flex flex-wrap items-center gap-3 px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-lg text-xs text-sub mb-8">
+        <div className="flex flex-wrap items-center gap-3 px-4 py-2 bg-subtle rounded-lg text-xs text-sub mb-8">
           <span
             className={`inline-flex items-center gap-1 font-medium ${
               statusData.isValid ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
@@ -1324,21 +1324,21 @@ const JsonFormatter = () => {
 
         {/* Feature cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
+          <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
               <Code className="w-5 h-5 text-green-600" />
               <h3 className="font-semibold text-green-900 dark:text-green-200 ml-2">{t('guide.features.syntaxHighlight')}</h3>
             </div>
             <p className="text-green-800 dark:text-green-300 text-sm">{t('guide.features.syntaxHighlightDesc')}</p>
           </div>
-          <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
+          <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
               <TreePine className="w-5 h-5 text-blue-600" />
               <h3 className="font-semibold text-blue-900 dark:text-blue-200 ml-2">{t('guide.features.treeView')}</h3>
             </div>
             <p className="text-blue-800 dark:text-blue-300 text-sm">{t('guide.features.treeViewDesc')}</p>
           </div>
-          <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-6">
+          <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
               <Search className="w-5 h-5 text-purple-600" />
               <h3 className="font-semibold text-purple-900 dark:text-purple-200 ml-2">{t('guide.features.jsonPath')}</h3>
@@ -1355,14 +1355,14 @@ const JsonFormatter = () => {
             </div>
             <p className="text-amber-800 dark:text-amber-300 text-sm">{t('guide.features.json5Desc')}</p>
           </div>
-          <div className="bg-cyan-50 dark:bg-cyan-900/30 rounded-lg p-6">
+          <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
               <BarChart3 className="w-5 h-5 text-cyan-600" />
               <h3 className="font-semibold text-cyan-900 dark:text-cyan-200 ml-2">{t('guide.features.stats')}</h3>
             </div>
             <p className="text-cyan-800 dark:text-cyan-300 text-sm">{t('guide.features.statsDesc')}</p>
           </div>
-          <div className="bg-orange-50 dark:bg-orange-900/30 rounded-lg p-6">
+          <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
               <Zap className="w-5 h-5 text-orange-600" />
               <h3 className="font-semibold text-orange-900 dark:text-orange-200 ml-2">{t('guide.features.performance')}</h3>
@@ -1375,15 +1375,15 @@ const JsonFormatter = () => {
         <div className="mb-8">
           <h3 className="text-lg font-semibold text-fg mb-4">{t('guide.useCases.title')}</h3>
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-4">
+            <div className="bg-subtle rounded-lg p-4">
               <h4 className="font-semibold text-green-900 dark:text-green-200 mb-2">{t('guide.useCases.apiDebug')}</h4>
               <p className="text-green-800 dark:text-green-300 text-sm">{t('guide.useCases.apiDebugDesc')}</p>
             </div>
-            <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
+            <div className="bg-subtle rounded-lg p-4">
               <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">{t('guide.useCases.configEdit')}</h4>
               <p className="text-blue-800 dark:text-blue-300 text-sm">{t('guide.useCases.configEditDesc')}</p>
             </div>
-            <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-4">
+            <div className="bg-subtle rounded-lg p-4">
               <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-2">{t('guide.useCases.dataAnalysis')}</h4>
               <p className="text-purple-800 dark:text-purple-300 text-sm">{t('guide.useCases.dataAnalysisDesc')}</p>
             </div>

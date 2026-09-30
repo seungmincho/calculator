@@ -35,44 +35,44 @@ export default function AlgorithmHub() {
 
   const filterColorClasses: Record<string, string> = {
     red: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800',
-    blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800',
-    purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800',
+    blue: 'bg-soft text-sub border-line',
+    purple: 'bg-soft text-sub border-line',
     amber: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800',
-    emerald: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
-    teal: 'bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 border-teal-200 dark:border-teal-800',
-    cyan: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400 border-cyan-200 dark:border-cyan-800',
-    pink: 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 border-pink-200 dark:border-pink-800',
-    indigo: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800',
-    rose: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800',
-    sky: 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800',
+    emerald: 'bg-soft text-sub border-line',
+    teal: 'bg-soft text-sub border-line',
+    cyan: 'bg-soft text-sub border-line',
+    pink: 'bg-soft text-sub border-line',
+    indigo: 'bg-soft text-sub border-line',
+    rose: 'bg-soft text-sub border-line',
+    sky: 'bg-soft text-sub border-line',
   }
 
   const chipColorClasses: Record<string, string> = {
     red: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
-    blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
-    purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400',
+    blue: 'bg-soft text-sub',
+    purple: 'bg-soft text-sub',
     amber: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',
-    emerald: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400',
-    teal: 'bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400',
-    cyan: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400',
-    pink: 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400',
-    indigo: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400',
-    rose: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400',
-    sky: 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400',
+    emerald: 'bg-soft text-sub',
+    teal: 'bg-soft text-sub',
+    cyan: 'bg-soft text-sub',
+    pink: 'bg-soft text-sub',
+    indigo: 'bg-soft text-sub',
+    rose: 'bg-soft text-sub',
+    sky: 'bg-soft text-sub',
   }
 
   const headerBgClasses: Record<string, string> = {
     red: 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800',
-    blue: 'bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800',
-    purple: 'bg-purple-50 dark:bg-purple-950/30 border-purple-200 dark:border-purple-800',
+    blue: 'bg-subtle border-line',
+    purple: 'bg-subtle border-line',
     amber: 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800',
-    emerald: 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800',
-    teal: 'bg-teal-50 dark:bg-teal-950/30 border-teal-200 dark:border-teal-800',
-    cyan: 'bg-cyan-50 dark:bg-cyan-950/30 border-cyan-200 dark:border-cyan-800',
-    pink: 'bg-pink-50 dark:bg-pink-950/30 border-pink-200 dark:border-pink-800',
-    indigo: 'bg-indigo-50 dark:bg-indigo-950/30 border-indigo-200 dark:border-indigo-800',
-    rose: 'bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800',
-    sky: 'bg-sky-50 dark:bg-sky-950/30 border-sky-200 dark:border-sky-800',
+    emerald: 'bg-subtle border-line',
+    teal: 'bg-subtle border-line',
+    cyan: 'bg-subtle border-line',
+    pink: 'bg-subtle border-line',
+    indigo: 'bg-subtle border-line',
+    rose: 'bg-subtle border-line',
+    sky: 'bg-subtle border-line',
   }
 
   return (
@@ -130,7 +130,7 @@ export default function AlgorithmHub() {
             onClick={() => setViewMode('list')}
             className={`p-1.5 rounded-md transition-colors ${
               viewMode === 'list'
-                ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400'
+                ? 'bg-soft text-sub'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
             title={t('view.list')}
@@ -141,7 +141,7 @@ export default function AlgorithmHub() {
             onClick={() => setViewMode('card')}
             className={`p-1.5 rounded-md transition-colors ${
               viewMode === 'card'
-                ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400'
+                ? 'bg-soft text-sub'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
             title={t('view.card')}
@@ -172,7 +172,7 @@ export default function AlgorithmHub() {
                       key={algo.id}
                       href={algo.href}
                       className={`flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors group ${
-                        i > 0 ? 'border-t border-gray-100 dark:border-gray-700/50' : ''
+                        i > 0 ? 'border-t border-line' : ''
                       }`}
                     >
                       <span className="text-lg w-7 text-center flex-shrink-0">{algo.icon}</span>

@@ -463,7 +463,7 @@ export default function VoiceMemo() {
               ref={canvasRef}
               width={600}
               height={80}
-              className="w-full h-20 rounded-lg bg-gray-50 dark:bg-gray-900"
+              className="w-full h-20 rounded-lg bg-subtle"
             />
           </div>
         )}
@@ -647,7 +647,7 @@ export default function VoiceMemo() {
                       onClick={() => togglePlayback(rec)}
                       className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
                         isPlaying
-                          ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                          ? 'bg-soft text-sub'
                           : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
@@ -713,7 +713,6 @@ export default function VoiceMemo() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '\u2212' : '+'}</span>

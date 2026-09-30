@@ -111,9 +111,9 @@ const DEFAULT_SCENARIOS: ScenarioRate[] = [
 ]
 
 const SCENARIO_COLORS = [
-  { bg: 'bg-blue-500', text: 'text-blue-600 dark:text-blue-400', bar: 'bg-blue-500', light: 'bg-blue-50 dark:bg-blue-950' },
-  { bg: 'bg-emerald-500', text: 'text-emerald-600 dark:text-emerald-400', bar: 'bg-emerald-500', light: 'bg-emerald-50 dark:bg-emerald-950' },
-  { bg: 'bg-violet-500', text: 'text-violet-600 dark:text-violet-400', bar: 'bg-violet-500', light: 'bg-violet-50 dark:bg-violet-950' },
+  { bg: 'bg-blue-500', text: 'text-blue-600 dark:text-blue-400', bar: 'bg-blue-500', light: 'bg-subtle' },
+  { bg: 'bg-emerald-500', text: 'text-emerald-600 dark:text-emerald-400', bar: 'bg-emerald-500', light: 'bg-subtle' },
+  { bg: 'bg-violet-500', text: 'text-violet-600 dark:text-violet-400', bar: 'bg-violet-500', light: 'bg-subtle' },
 ]
 
 // ── Stacked bar chart helpers ──────────────────────────────────────────────
@@ -297,7 +297,6 @@ export default function CompoundCalculator() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <Calculator className="w-5 h-5" />
                 설정
               </h2>
               <button
@@ -404,7 +403,6 @@ export default function CompoundCalculator() {
           {/* Guide Section */}
           <div className={`${glassCard} ${glassInset} p-6 mt-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <BookOpen className="w-5 h-5" />
               {t('guide.title')}
             </h2>
             <div className="space-y-4 text-sm text-sub">
@@ -437,7 +435,7 @@ export default function CompoundCalculator() {
           {/* Total Results Cards */}
           <div className="grid md:grid-cols-2 gap-4">
             {/* Total Amount */}
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-medium opacity-90">{t('result.totalAmount')}</h3>
                 <button
@@ -452,7 +450,7 @@ export default function CompoundCalculator() {
             </div>
 
             {/* Total Interest */}
-            <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-medium opacity-90">{t('result.totalInterest')}</h3>
                 <button
@@ -467,7 +465,7 @@ export default function CompoundCalculator() {
             </div>
 
             {/* Total Deposited */}
-            <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-medium opacity-90">{t('result.totalDeposit')}</h3>
                 <button
@@ -482,7 +480,7 @@ export default function CompoundCalculator() {
             </div>
 
             {/* Effective Rate */}
-            <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-medium opacity-90">{t('result.effectiveRate')}</h3>
                 <button
@@ -500,7 +498,6 @@ export default function CompoundCalculator() {
           {/* Simple vs Compound Comparison */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5" />
               {t('comparison.title')}
             </h2>
             <div className="space-y-3">
@@ -539,7 +536,6 @@ export default function CompoundCalculator() {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <GitCompare className="w-5 h-5" />
                 금리 시나리오 비교
               </h2>
               <button

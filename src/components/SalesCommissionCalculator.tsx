@@ -109,13 +109,13 @@ const PLATFORM_COLORS: Record<PlatformKey, { bg: string; text: string; ring: str
     icon: 'text-red-500',
   },
   smartstore: {
-    bg: 'bg-green-50 dark:bg-green-950',
+    bg: 'bg-subtle',
     text: 'text-green-700 dark:text-green-300',
     ring: 'ring-green-500',
     icon: 'text-green-500',
   },
   elevenst: {
-    bg: 'bg-orange-50 dark:bg-orange-950',
+    bg: 'bg-subtle',
     text: 'text-orange-700 dark:text-orange-300',
     ring: 'ring-orange-500',
     icon: 'text-orange-500',
@@ -218,7 +218,6 @@ export default function SalesCommissionCalculator() {
         {/* 판매가 */}
         <div>
           <label className="block text-sm font-medium text-body mb-1.5">
-            <ShoppingCart className="w-4 h-4 inline-block mr-1 -mt-0.5" />
             {t('input.sellingPrice')}
           </label>
           <div className="relative">
@@ -239,7 +238,6 @@ export default function SalesCommissionCalculator() {
         {/* 배송비 */}
         <div>
           <label className="block text-sm font-medium text-body mb-1.5">
-            <Truck className="w-4 h-4 inline-block mr-1 -mt-0.5" />
             {t('input.shippingCost')}
           </label>
           <div className="relative">
@@ -260,7 +258,6 @@ export default function SalesCommissionCalculator() {
         {/* 카테고리 선택 */}
         <div>
           <label className="block text-sm font-medium text-body mb-1.5">
-            <Tag className="w-4 h-4 inline-block mr-1 -mt-0.5" />
             {t('input.category')}
           </label>
           <select
@@ -354,7 +351,6 @@ export default function SalesCommissionCalculator() {
       {/* 전체 카테고리 비교 테이블 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-          <ShoppingCart className="w-5 h-5 text-blue-600" />
           {t('compare.title')}
         </h2>
         <div className="overflow-x-auto">
@@ -393,7 +389,7 @@ export default function SalesCommissionCalculator() {
                   <tr
                     key={ck}
                     className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
-                      ck === category ? 'bg-blue-50 dark:bg-blue-950' : ''
+                      ck === category ? 'bg-subtle' : ''
                     }`}
                   >
                     <td className="py-2.5 px-2 text-fg font-medium">
@@ -447,7 +443,6 @@ export default function SalesCommissionCalculator() {
       {/* 가이드 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
 

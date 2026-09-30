@@ -313,7 +313,7 @@ export default function EnvEditor() {
               <textarea
                 value={rawText}
                 onChange={e => handleRawChange(e.target.value)}
-                className="w-full h-96 font-mono text-sm px-3 py-2 border border-line-strong rounded-lg bg-gray-50 dark:bg-gray-900 text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                className="w-full h-96 font-mono text-sm px-3 py-2 border border-line-strong rounded-lg bg-subtle text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                 placeholder="KEY=value"
                 spellCheck={false}
               />
@@ -351,7 +351,7 @@ export default function EnvEditor() {
                             type="text"
                             value={entry.rawComment}
                             onChange={e => updateEntry(entry.id, 'rawComment', e.target.value)}
-                            className="w-full px-2 py-1.5 font-mono text-sm border border-line rounded bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300 focus:ring-1 focus:ring-blue-500"
+                            className="w-full px-2 py-1.5 font-mono text-sm border border-line rounded bg-subtle text-green-700 dark:text-green-300 focus:ring-1 focus:ring-blue-500"
                           />
                         </div>
                         <button onClick={() => deleteEntry(entry.id)} className="col-span-1 text-gray-400 hover:text-red-500 transition-colors flex justify-center">
@@ -402,7 +402,7 @@ export default function EnvEditor() {
 
                 <button
                   onClick={addEntry}
-                  className="flex items-center gap-2 mt-3 px-4 py-2 text-sm font-medium bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-lg transition-colors w-full justify-center"
+                  className="flex items-center gap-2 mt-3 px-4 py-2 text-sm font-medium bg-subtle text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-lg transition-colors w-full justify-center"
                 >
                   <Plus size={14} />
                   {t('addVariable')}
@@ -439,7 +439,7 @@ export default function EnvEditor() {
                 </button>
               ))}
             </div>
-            <pre className="w-full h-48 overflow-auto font-mono text-xs p-3 border border-line rounded-lg bg-gray-50 dark:bg-gray-900 text-body whitespace-pre">
+            <pre className="w-full h-48 overflow-auto font-mono text-xs p-3 border border-line rounded-lg bg-subtle text-body whitespace-pre">
               {exportOutput}
             </pre>
           </div>
@@ -506,7 +506,7 @@ export default function EnvEditor() {
           )}
 
           {/* Guide */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h2 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">{t('guide.title')}</h2>
             <ul className="space-y-1.5">
               {(t.raw('guide.format.items') as string[]).map((item, i) => (
@@ -516,7 +516,7 @@ export default function EnvEditor() {
                 </li>
               ))}
             </ul>
-            <div className="mt-3 pt-3 border-t border-blue-200 dark:border-blue-800">
+            <div className="mt-3 pt-3 border-t border-line">
               <ul className="space-y-1.5">
                 {(t.raw('guide.usage.items') as string[]).map((item, i) => (
                   <li key={i} className="text-xs text-blue-700 dark:text-blue-300 flex gap-1.5">

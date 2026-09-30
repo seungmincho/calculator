@@ -9,13 +9,13 @@ import { glassCard, glassInset, glassInput } from '@/lib/glass'
 const TEAM_COLORS = ['#EF4444', '#3B82F6', '#22C55E', '#F59E0B', '#8B5CF6', '#EC4899', '#14B8A6', '#F97316']
 const TEAM_BG = [
   'bg-red-50 dark:bg-red-950',
-  'bg-blue-50 dark:bg-blue-950',
-  'bg-green-50 dark:bg-green-950',
+  'bg-subtle',
+  'bg-subtle',
   'bg-amber-50 dark:bg-amber-950',
-  'bg-violet-50 dark:bg-violet-950',
-  'bg-pink-50 dark:bg-pink-950',
-  'bg-teal-50 dark:bg-teal-950',
-  'bg-orange-50 dark:bg-orange-950',
+  'bg-subtle',
+  'bg-subtle',
+  'bg-subtle',
+  'bg-subtle',
 ]
 
 type Mode = 'random' | 'balanced' | 'captain'
@@ -271,7 +271,7 @@ export default function TeamDivider() {
             <button
               onClick={handleDivide}
               disabled={isDividing || validNames.length < teamCount}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
+              className="w-full py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
             >
               <Shuffle className={`w-4 h-4 ${isDividing ? 'animate-spin' : ''}`} />
               {isDividing ? t('dividing') : t('divide')}
@@ -298,7 +298,7 @@ export default function TeamDivider() {
                   <button
                     key={name}
                     onClick={() => handleDraftPick(name)}
-                    className="px-3 py-1.5 text-sm rounded-lg border-2 border-blue-400 text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors font-medium"
+                    className="px-3 py-1.5 text-sm rounded-lg border-2 border-blue-400 text-blue-700 dark:text-blue-300 bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors font-medium"
                   >
                     {name}
                   </button>

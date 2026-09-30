@@ -5,6 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Wrench, Star, ChevronDown } from 'lucide-react'
+import ToolIcon from './ToolIcon'
 import { glassCard, glassInset } from '@/lib/glass'
 import { menuConfig, categoryKeys, isNewTool, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
@@ -57,11 +58,7 @@ export default function ToolsShowcase() {
     return (
       <button
         onClick={(e) => handleToggleFavorite(e, href)}
-        className={`absolute top-2 right-2 p-1 rounded-full transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 ${
-          isFav
-            ? 'opacity-100 text-yellow-500 hover:text-yellow-600'
-            : 'text-gray-300 dark:text-gray-600 hover:text-yellow-400'
-        }`}
+        className={`p-1 rounded-md transition-opacity ${isFav ? 'opacity-100 text-amber-400' : 'opacity-0 group-hover:opacity-100 focus:opacity-100 text-faint hover:text-amber-400'}`}
         aria-label={isFav ? t('favorites.remove') : t('favorites.add')}
       >
         <Star className={`w-4 h-4 ${isFav ? 'fill-current' : ''}`} />
@@ -70,63 +67,26 @@ export default function ToolsShowcase() {
   }
 
   const renderToolCard = (item: MenuItem, isCurrentPage: boolean) => {
+    const body = (
+      <>
+        <ToolIcon href={item.href} size="md" />
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5 text-[15px] font-semibold text-fg">
+            <span className="truncate">{t(item.labelKey)}</span>
+            {isCurrentPage && <span className="shrink-0 text-[11px] font-semibold text-primary">{t('toolsShowcase.currentPage')}</span>}
+            {!isCurrentPage && isNewTool(item) && <span className="shrink-0 text-[10px] font-bold text-primary">NEW</span>}
+          </div>
+          <div className="text-[13px] text-muted truncate">{t(item.descriptionKey)}</div>
+        </div>
+      </>
+    )
     if (isCurrentPage) {
-      return (
-        <div
-          key={item.href}
-          className="group relative bg-blue-50 dark:bg-blue-950 rounded-lg border-2 border-blue-300 dark:border-blue-600 p-4"
-        >
-          <div className="absolute top-2 right-2">
-            <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">
-              {t('toolsShowcase.currentPage')}
-            </span>
-          </div>
-          <div className="flex items-center space-x-3">
-            <div className="flex-shrink-0">
-              <div className="w-10 h-10 bg-blue-200 dark:bg-blue-800 rounded-lg flex items-center justify-center text-xl">
-                {item.icon}
-              </div>
-            </div>
-            <div className="min-w-0 flex-1">
-              <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                {t(item.labelKey)}
-              </h4>
-              <p className="text-xs text-blue-600 dark:text-blue-400 mt-1 truncate">
-                {t(item.descriptionKey)}
-              </p>
-            </div>
-          </div>
-        </div>
-      )
+      return <div key={item.href} className="flex items-center gap-3 px-3 py-3 rounded-xl bg-subtle">{body}</div>
     }
-
     return (
-      <Link
-        key={item.href}
-        href={item.href}
-        className={`${glassCard} ${glassInset} group relative p-4 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200 hover:-translate-y-1`}
-      >
+      <Link key={item.href} href={item.href} className="group relative flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-subtle transition-colors">
+        {body}
         {renderFavoriteButton(item.href)}
-        <div className="flex items-center space-x-3">
-          <div className="flex-shrink-0">
-            <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800 transition-colors text-xl">
-              {item.icon}
-            </div>
-          </div>
-          <div className="min-w-0 flex-1">
-            <h4 className="text-sm font-medium text-fg group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-1.5">
-              {t(item.labelKey)}
-              {isNewTool(item) && (
-                <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full leading-none">
-                  NEW
-                </span>
-              )}
-            </h4>
-            <p className="text-xs text-muted mt-1 truncate">
-              {t(item.descriptionKey)}
-            </p>
-          </div>
-        </div>
       </Link>
     )
   }
@@ -147,23 +107,22 @@ export default function ToolsShowcase() {
   }
 
   return (
-    <section className="mt-16 mb-8">
+    <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 mb-8">
       {/* Collapsed header - click to expand */}
       {!isExpanded && (
         <div className="text-center">
           <button
             onClick={() => setIsExpanded(true)}
             aria-expanded={false}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl border border-line hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-600 transition-all group"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-line text-sub hover:text-fg hover:bg-subtle transition-colors"
           >
-            <Wrench className="w-5 h-5 text-blue-600" />
-            <span className="text-lg font-semibold text-fg">
+            <span className="text-[15px] font-semibold">
               {t('toolsShowcase.title')}
             </span>
             <span className="text-sm text-muted">
               ({totalTools})
             </span>
-            <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
+            <ChevronDown className="w-4 h-4" />
           </button>
         </div>
       )}
@@ -183,47 +142,23 @@ export default function ToolsShowcase() {
 
       {isExpanded && (
       <div>
-      <div className="text-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-fg mb-3">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-fg mb-1">
           {t('toolsShowcase.title')}
         </h2>
-        <p className="text-sub max-w-2xl mx-auto">
+        <p className="text-muted">
           {t('toolsShowcase.description')}
         </p>
       </div>
 
       {/* Favorites Section */}
       {favoritedItems.length > 0 && (
-        <div className="space-y-4 mb-12">
-          <h3 className="text-xl font-semibold text-body border-b border-yellow-300 dark:border-yellow-600 pb-2 flex items-center gap-2">
-            <Star className="w-5 h-5 text-yellow-500 fill-current" />
+        <div className="space-y-2 mb-10">
+          <h3 className="text-lg font-bold text-fg px-1">
             {t('favorites.title')}
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {favoritedItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="group relative bg-yellow-50 dark:bg-yellow-900/10 rounded-lg border border-yellow-200 dark:border-yellow-800 p-4 hover:shadow-lg hover:border-yellow-400 dark:hover:border-yellow-600 transition-all duration-200 hover:-translate-y-1"
-              >
-                {renderFavoriteButton(item.href)}
-                <div className="flex items-center space-x-3">
-                  <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center text-xl">
-                      {item.icon}
-                    </div>
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h4 className="text-sm font-medium text-fg group-hover:text-yellow-700 dark:group-hover:text-yellow-400 transition-colors">
-                      {t(item.labelKey)}
-                    </h4>
-                    <p className="text-xs text-muted mt-1 truncate">
-                      {t(item.descriptionKey)}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-2">
+            {favoritedItems.map((item) => renderToolCard(item, false))}
           </div>
         </div>
       )}
@@ -237,23 +172,22 @@ export default function ToolsShowcase() {
           const hasSubcategories = Array.from(subcategoryGroups.keys()).some(k => k !== '')
 
           return (
-            <div key={categoryKey} className="space-y-4">
-              <h3 className="text-xl font-semibold text-body border-b border-line pb-2">
+            <div key={categoryKey} className="space-y-2">
+              <h3 className="text-lg font-bold text-fg px-1">
                 {t(categoryTitleKeys[categoryKey])}
               </h3>
 
               {hasSubcategories ? (
                 // Render with subcategory grouping
-                <div className="space-y-6">
+                <div>
                   {Array.from(subcategoryGroups.entries()).map(([subcatKey, items]) => (
                     <div key={subcatKey || '_ungrouped'}>
                       {subcatKey && (
-                        <h4 className="text-sm font-semibold text-sub mb-3 flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                        <h4 className="text-[13px] font-semibold text-muted mb-1 mt-3 px-1">
                           {t(subcatKey)}
                         </h4>
                       )}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-2">
                         {items.map((item) => renderToolCard(item, pathname === item.href))}
                       </div>
                     </div>
@@ -261,7 +195,7 @@ export default function ToolsShowcase() {
                 </div>
               ) : (
                 // Render flat grid (no subcategories, e.g. media, health, games)
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-2">
                   {category.items.map((item) => renderToolCard(item, pathname === item.href))}
                 </div>
               )}
@@ -273,9 +207,8 @@ export default function ToolsShowcase() {
       <div className="text-center mt-12 flex flex-col items-center gap-3">
         <Link
           href="/tips"
-          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+          className="ui-btn-soft px-5 py-2.5 text-sm"
         >
-          <Wrench className="w-5 h-5 mr-2" />
           {t('toolsShowcase.viewTips')}
         </Link>
         <button

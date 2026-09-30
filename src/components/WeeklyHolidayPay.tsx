@@ -321,7 +321,7 @@ function WeeklyHolidayPayInner() {
             {/* 주간 근무시간 요약 */}
             <div className={`rounded-lg p-3 text-sm font-medium text-center ${
               result.eligible
-                ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                ? 'bg-subtle text-green-700 dark:text-green-300'
                 : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
             }`}>
               {t('result.weeklyHours')}: {result.weeklyHours}{t('input.hoursUnit')} &nbsp;|&nbsp;
@@ -391,7 +391,7 @@ function WeeklyHolidayPayInner() {
               </div>
 
               {/* 월/연 환산 */}
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+              <div className="bg-subtle rounded-lg p-4">
                 <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-3">{t('result.monthlySection')}</p>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
@@ -402,7 +402,7 @@ function WeeklyHolidayPayInner() {
                     <span className="text-sm font-semibold text-body">{t('result.monthlyTotal')}</span>
                     <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{formatWon(result.monthlyTotal)}</span>
                   </div>
-                  <div className="flex justify-between items-center border-t border-blue-200 dark:border-blue-800 pt-2 mt-2">
+                  <div className="flex justify-between items-center border-t border-line pt-2 mt-2">
                     <span className="text-sm font-semibold text-body">{t('result.annualTotal')}</span>
                     <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">{formatWon(result.annualTotal)}</span>
                   </div>
@@ -460,12 +460,12 @@ function WeeklyHolidayPayInner() {
 
           {/* AI 요약 (Chrome Built-in AI — progressive enhancement) */}
           {aiAvailable && result.monthlyTotal > 0 && (
-            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/30 dark:to-indigo-950/30 border border-purple-200 dark:border-purple-800 rounded-xl p-4">
+            <div className="bg-subtle border border-line rounded-xl p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                   <span className="text-sm font-semibold text-purple-800 dark:text-purple-200">AI 요약</span>
-                  <span className="text-[10px] px-1.5 py-0.5 bg-purple-200 dark:bg-purple-800 text-purple-700 dark:text-purple-300 rounded-full">Chrome AI</span>
+                  <span className="text-[10px] px-1.5 py-0.5 bg-soft text-sub rounded-full">Chrome AI</span>
                 </div>
                 {aiSummary && (
                   <button onClick={aiClear} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -555,9 +555,9 @@ function WeeklyHolidayPayInner() {
                 return (
                   <tr
                     key={s.hours}
-                    className={`border-b border-gray-100 dark:border-gray-700/50 transition-colors ${
+                    className={`border-b border-line transition-colors ${
                       isCurrent
-                        ? 'bg-blue-50 dark:bg-blue-900/20'
+                        ? 'bg-subtle'
                         : 'hover:bg-gray-50 dark:hover:bg-gray-700/30'
                     }`}
                   >
@@ -570,7 +570,7 @@ function WeeklyHolidayPayInner() {
                     <td className="py-3 px-3 text-right">
                       <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                         s.eligible
-                          ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
+                          ? 'bg-soft text-sub'
                           : 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400'
                       }`}>
                         {s.eligible ? t('eligible') : t('notEligible')}
@@ -594,7 +594,7 @@ function WeeklyHolidayPayInner() {
       </div>
 
       {/* 15시간 룰 안내 */}
-      <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6 flex gap-4">
+      <div className="bg-subtle rounded-xl p-6 flex gap-4">
         <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
         <div>
           <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">{t('info.title')}</h3>
@@ -619,7 +619,7 @@ function WeeklyHolidayPayInner() {
             <ul className="space-y-2">
               {(t.raw('guide.calc.items') as string[]).map((item, i) => (
                 <li key={i} className="flex gap-2 text-sm text-sub">
-                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-xs flex items-center justify-center font-bold">{i + 1}</span>
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-soft text-sub text-xs flex items-center justify-center font-bold">{i + 1}</span>
                   <span>{item}</span>
                 </li>
               ))}

@@ -313,7 +313,6 @@ export default function EvSubsidyCalculator() {
         <div className="lg:col-span-1 space-y-5">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-base font-semibold text-fg flex items-center gap-2">
-              <Car className="w-4 h-4 text-green-500" />
               {t('vehicleInfo')}
             </h2>
 
@@ -367,7 +366,7 @@ export default function EvSubsidyCalculator() {
                     key={i}
                     className={`text-xs px-2 py-0.5 rounded-full ${
                       i === 0
-                        ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                        ? 'bg-soft text-sub'
                         : i === 1
                         ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300'
                         : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
@@ -423,7 +422,6 @@ export default function EvSubsidyCalculator() {
             {/* Region */}
             <div>
               <label className="block text-sm font-medium text-body mb-1 flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5" />
                 {t('region')}
               </label>
               <select
@@ -443,7 +441,7 @@ export default function EvSubsidyCalculator() {
             <div className="flex gap-3 pt-1">
               <button
                 onClick={handleCalculate}
-                className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg px-4 py-3 font-medium hover:from-green-700 hover:to-emerald-700 transition flex items-center justify-center gap-2"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-green-700 hover:to-emerald-700 transition flex items-center justify-center gap-2"
               >
                 <Calculator className="w-4 h-4" />
                 {t('calculate')}
@@ -487,7 +485,7 @@ export default function EvSubsidyCalculator() {
           {result ? (
             <>
               {/* Summary card */}
-              <div className="bg-gradient-to-br from-green-600 to-emerald-700 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
                 <h2 className="text-base font-medium opacity-90 mb-4">{t('subsidySummary')}</h2>
                 <div className="grid grid-cols-3 gap-4 mb-6">
                   <div className="text-center">
@@ -526,7 +524,7 @@ export default function EvSubsidyCalculator() {
                   <span
                     className={`font-semibold text-sm px-3 py-1 rounded-full ${
                       result.priceGateRatio === 100
-                        ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                        ? 'bg-soft text-sub'
                         : result.priceGateRatio === 50
                         ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300'
                         : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
@@ -580,7 +578,6 @@ export default function EvSubsidyCalculator() {
               className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition"
             >
               <h2 className="text-base font-semibold text-fg flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-green-500" />
                 {t('regionComparisonTitle')}
               </h2>
               {showRegionTable ? (
@@ -607,7 +604,7 @@ export default function EvSubsidyCalculator() {
                         key={row.region}
                         className={`transition ${
                           row.region === region
-                            ? 'bg-green-50 dark:bg-green-950'
+                            ? 'bg-subtle'
                             : idx % 2 === 0
                             ? 'bg-surface'
                             : 'bg-gray-50 dark:bg-gray-750'
@@ -652,7 +649,6 @@ export default function EvSubsidyCalculator() {
               className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition"
             >
               <h2 className="text-base font-semibold text-fg flex items-center gap-2">
-                <Car className="w-4 h-4 text-green-500" />
                 {t('modelsComparisonTitle')}
                 <span className="text-xs font-normal text-gray-400">({t('regionLabel')}: {t(`region${region.charAt(0).toUpperCase() + region.slice(1)}`)})</span>
               </h2>

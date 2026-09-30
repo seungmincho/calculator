@@ -789,9 +789,9 @@ export default function Mancala({ initialRoom, isHost: isHostProp, hostPeerId, o
           {gameState.winner && (
             <div className={`text-center py-4 px-6 rounded-2xl ${
               gameState.winner === myRole
-                ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : gameState.winner === 'draw'
-                ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-track text-body'
             }`}>
               <Trophy className="w-8 h-8 mx-auto mb-2" />
@@ -826,7 +826,7 @@ export default function Mancala({ initialRoom, isHost: isHostProp, hostPeerId, o
             <div className="flex gap-3">
               <button
                 onClick={handleRestart}
-                className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium rounded-xl transition-all"
+                className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl transition-all"
               >
                 <RefreshCw className="w-5 h-5" />
                 {t('playAgain')}
@@ -848,7 +848,6 @@ export default function Mancala({ initialRoom, isHost: isHostProp, hostPeerId, o
               {/* 채팅 헤더 */}
               <div className="p-4 border-b border-line">
                 <h3 className="font-semibold text-fg flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5" />
                   {t('chat') || 'Chat'}
                 </h3>
               </div>

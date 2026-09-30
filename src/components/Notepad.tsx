@@ -230,7 +230,7 @@ export default function Notepad() {
             {/* New Note Button */}
             <button
               onClick={createNote}
-              className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2"
+              className="w-full px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2"
             >
               <Plus className="w-5 h-5" />
               {t('newNote')}
@@ -249,7 +249,7 @@ export default function Notepad() {
                     key={note.id}
                     className={`p-3 rounded-lg cursor-pointer transition-all ${
                       note.id === activeNoteId
-                        ? 'bg-blue-50 dark:bg-blue-950 border-2 border-blue-500'
+                        ? 'bg-subtle border-2 border-blue-500'
                         : 'bg-subtle hover:bg-gray-100 dark:hover:bg-gray-600 border-2 border-transparent'
                     }`}
                     onClick={() => {
@@ -354,7 +354,6 @@ export default function Notepad() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
 

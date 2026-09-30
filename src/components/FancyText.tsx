@@ -418,7 +418,7 @@ export default function FancyText() {
           <div className="flex justify-end">
             <button
               onClick={copyAll}
-              className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-purple-700 hover:to-indigo-700 transition-all"
+              className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-purple-700 hover:to-indigo-700 transition-all"
               aria-label={t('copyAll')}
             >
               {copiedId === '__all__' ? (

@@ -869,7 +869,7 @@ export default function WebserverConfig() {
                       key={i}
                       className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${
                         item.status === 'good'
-                          ? 'bg-green-50 dark:bg-green-950/20'
+                          ? 'bg-subtle'
                           : item.status === 'warn'
                             ? 'bg-yellow-50 dark:bg-yellow-950/20'
                             : 'bg-subtle'
@@ -901,7 +901,7 @@ export default function WebserverConfig() {
                     <ul className="space-y-1">
                       {analysisResult.analysis.filter(a => a.status === 'warn').map((item, i) => (
                         <li key={i} className="text-xs text-yellow-700 dark:text-yellow-400 flex items-start gap-1">
-                          <span className="shrink-0">⚠</span>
+                          
                           {t(`analysisAdvice.${item.label}`)}
                         </li>
                       ))}
@@ -954,7 +954,7 @@ export default function WebserverConfig() {
                     onClick={() => updateOption('scenario', s.id)}
                     className={`text-left px-3 py-2 rounded-lg border text-xs transition-colors ${
                       options.scenario === s.id
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300'
+                        ? 'border-blue-500 bg-subtle text-blue-700 dark:text-blue-300'
                         : 'border-line hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
                     }`}
                   >
@@ -1098,7 +1098,6 @@ export default function WebserverConfig() {
           {/* 베스트 프리셋 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-3`}>
             <h3 className="text-sm font-semibold text-fg flex items-center gap-2">
-              <Zap className="w-4 h-4 text-yellow-500" />
               {t('presetLabel')}
             </h3>
             <div className="grid grid-cols-2 gap-2">
@@ -1162,7 +1161,6 @@ export default function WebserverConfig() {
           className="flex items-center justify-between w-full text-left"
         >
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           {showGuide ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}

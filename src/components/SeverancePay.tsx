@@ -199,7 +199,6 @@ export default function SeverancePay() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
               {t('inputInfo')}
             </h2>
 
@@ -261,7 +260,6 @@ export default function SeverancePay() {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <DollarSign className="w-5 h-5" />
                 {t('result.title')}
               </h2>
               {result && (
@@ -278,7 +276,7 @@ export default function SeverancePay() {
             {result ? (
               <div className="space-y-6">
                 {/* Work Period */}
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
+                <div className="bg-subtle rounded-xl p-6">
                   <div className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-2">
                     {t('result.workPeriod')}
                   </div>
@@ -291,7 +289,7 @@ export default function SeverancePay() {
                 </div>
 
                 {/* Daily Wage */}
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6">
+                <div className="bg-subtle rounded-xl p-6">
                   <div className="text-sm font-medium text-body mb-2">
                     {t('result.avgDailyWage')}
                   </div>
@@ -301,7 +299,7 @@ export default function SeverancePay() {
                 </div>
 
                 {/* Severance Pay */}
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-xl p-6 border-2 border-green-200 dark:border-green-800">
+                <div className="bg-subtle rounded-xl p-6 border-2 border-line">
                   <div className="text-sm font-medium text-green-900 dark:text-green-300 mb-2">
                     {t('result.severancePay')}
                   </div>
@@ -315,7 +313,7 @@ export default function SeverancePay() {
 
                 {/* Breakdown Bar */}
                 {(result.bonusContribution > 0 || result.leaveContribution > 0) && (
-                  <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5">
+                  <div className="bg-subtle rounded-xl p-5">
                     <div className="text-sm font-medium text-body mb-3">
                       {t('breakdown.title')}
                     </div>
@@ -362,7 +360,7 @@ export default function SeverancePay() {
                 )}
 
                 {/* Formula */}
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-line">
+                <div className="bg-subtle rounded-lg p-4 border border-line">
                   <div className="text-xs text-sub">
                     {t('result.formula')}
                   </div>
@@ -381,7 +379,6 @@ export default function SeverancePay() {
       {(parseFloat(monthlyPay) || 0) > 0 && (
         <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-xl font-semibold text-fg mb-2 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" />
             {t('simulation.title')}
           </h2>
           <p className="text-sm text-muted mb-6">
@@ -416,7 +413,7 @@ export default function SeverancePay() {
                   </span>
                   <div className="flex-1 bg-soft rounded-full h-8 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-blue-500 to-indigo-500 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-500"
+                      className="bg-primary hover:bg-blue-700 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-500"
                       style={{ width: `${Math.max((item.pay / maxSimPay) * 100, 8)}%` }}
                     >
                       <span className="text-xs text-white font-medium whitespace-nowrap">
@@ -438,7 +435,6 @@ export default function SeverancePay() {
           className="w-full flex items-center justify-between text-left"
         >
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            <Briefcase className="w-5 h-5" />
             {t('irpGuide.title')}
           </h2>
           <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${showIrpGuide ? 'rotate-180' : ''}`} />
@@ -454,7 +450,7 @@ export default function SeverancePay() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
                 <thead>
-                  <tr className="bg-gray-50 dark:bg-gray-900">
+                  <tr className="bg-subtle">
                     <th className="text-left px-4 py-3 border border-line font-semibold text-fg">
                       {t('irpGuide.table.category')}
                     </th>
@@ -491,7 +487,7 @@ export default function SeverancePay() {
             </div>
 
             {/* IRP Tax Benefit Highlight */}
-            <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-5">
+            <div className="bg-subtle rounded-xl p-5">
               <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-2">
                 {t('irpGuide.taxBenefitTitle')}
               </h3>
@@ -511,7 +507,6 @@ export default function SeverancePay() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 

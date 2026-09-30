@@ -138,7 +138,7 @@ export default function KruskalVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.graph')}
             </span>
             <span className="text-xs text-gray-400">★★☆</span>
@@ -192,7 +192,7 @@ export default function KruskalVisualizer() {
                 {t('stats.totalWeight')}: <strong className="text-blue-600 dark:text-blue-400">{currentStep?.totalWeight ?? 0}</strong>
               </span>
               {currentStep?.action === 'done' && (
-                <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium">
+                <span className="px-2 py-0.5 rounded-full bg-soft text-sub text-xs font-medium">
                   {t('stats.complete')}
                 </span>
               )}
@@ -205,7 +205,7 @@ export default function KruskalVisualizer() {
               <button
                 onClick={handleNewGraph}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-purple-600 hover:to-pink-600 disabled:opacity-40"
               >
                 🎲 {t('controls.newGraph')}
               </button>
@@ -232,11 +232,11 @@ export default function KruskalVisualizer() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
+                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -310,9 +310,9 @@ function KruskalStepsList({ steps, currentIndex, onStepClick, t }: {
             key={i}
             data-active={isCurrent ? 'true' : undefined}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
-              isCurrent ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20'
-                : isActive ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
-                : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
+              isCurrent ? 'border-blue-500/50 bg-subtle'
+                : isActive ? 'border-line bg-subtle'
+                : 'border-line opacity-40'
             }`}
             onClick={() => onStepClick(i)}
           >

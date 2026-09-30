@@ -252,7 +252,6 @@ const JwtDecoder = () => {
         {/* Input Section */}
         <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-fg flex items-center">
-            <Key className="w-6 h-6 mr-2" />
             {t('input.title')}
           </h2>
 
@@ -327,7 +326,6 @@ const JwtDecoder = () => {
             <div className={`${glassCard} ${glassInset} p-8`}>
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-fg flex items-center">
-                  <Shield className="w-5 h-5 mr-2" />
                   {t('result.header')}
                 </h3>
                 <button
@@ -357,7 +355,6 @@ const JwtDecoder = () => {
             <div className={`${glassCard} ${glassInset} p-8`}>
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-fg flex items-center">
-                  <FileText className="w-5 h-5 mr-2" />
                   {t('result.payload')}
                 </h3>
                 <button
@@ -409,7 +406,6 @@ const JwtDecoder = () => {
             <div className={`lg:col-span-2 ${glassCard} ${glassInset} p-8`}>
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-fg flex items-center">
-                  <Key className="w-5 h-5 mr-2" />
                   {t('result.signature')}
                 </h3>
                 <button
@@ -423,7 +419,7 @@ const JwtDecoder = () => {
               <div className="bg-subtle p-4 rounded-lg">
                 <code className="text-sm break-all">{decodedParts.signature}</code>
               </div>
-              <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+              <div className="mt-4 p-3 bg-subtle rounded-lg">
                 <div className="flex items-start space-x-2">
                   <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5" />
                   <p className="text-sm text-blue-800 dark:text-blue-200">{t('result.signatureNote')}</p>

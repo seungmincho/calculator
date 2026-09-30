@@ -275,7 +275,7 @@ export default function StackQueueVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {t('chip')}
             </span>
             <span className="text-xs text-gray-400">★☆☆</span>
@@ -342,7 +342,7 @@ export default function StackQueueVisualizer() {
                   className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-colors ${
                     isDemoMode
                       ? 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
-                      : 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600'
+                      : 'bg-primary hover:bg-blue-700 text-white hover:from-emerald-600 hover:to-teal-600'
                   }`}
                 >
                   {isDemoMode ? t('resetDemo') : t('runDemo')}
@@ -417,11 +417,11 @@ export default function StackQueueVisualizer() {
                   onClick={() => setActiveTab(tab.key)}
                   className={`flex-1 px-3 py-3 text-xs font-medium transition-colors ${
                     activeTab === tab.key
-                      ? 'text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-500 bg-emerald-50/50 dark:bg-emerald-900/10'
+                      ? 'text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-500 bg-subtle'
                       : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
-                  {tab.icon} {tab.label}
+                  {tab.label}
                 </button>
               ))}
             </div>
@@ -432,7 +432,7 @@ export default function StackQueueVisualizer() {
                 <div className="space-y-4">
                   {/* Step description */}
                   {currentStep ? (
-                    <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800/50">
+                    <div className="p-3 bg-subtle rounded-xl border border-line">
                       <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 mb-1">
                         {t('steps.step')} {currentStepIndex + 1} / {totalSteps}
                       </div>
@@ -442,8 +442,8 @@ export default function StackQueueVisualizer() {
                       <div className="mt-2 flex gap-2">
                         <span className={`px-2 py-0.5 text-xs rounded-full font-mono ${
                           currentStep.target === 'stack'
-                            ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'
-                            : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400'
+                            ? 'bg-soft text-sub'
+                            : 'bg-soft text-sub'
                         }`}>
                           {currentStep.action.toUpperCase()}
                         </span>
@@ -455,14 +455,14 @@ export default function StackQueueVisualizer() {
                       </div>
                     </div>
                   ) : (
-                    <div className="p-3 bg-gray-50 dark:bg-gray-900/40 rounded-xl text-sm text-muted">
+                    <div className="p-3 bg-subtle rounded-xl text-sm text-muted">
                       {t('steps.hint')}
                     </div>
                   )}
 
                   {/* LIFO vs FIFO explanation */}
                   <div className="space-y-3">
-                    <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-100 dark:border-emerald-900/30">
+                    <div className="p-3 bg-subtle rounded-xl border border-line">
                       <div className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-1">
                         Stack — LIFO
                       </div>
@@ -473,7 +473,7 @@ export default function StackQueueVisualizer() {
                         push(10) push(20) push(30) → pop() = <strong className="text-emerald-600 dark:text-emerald-400">30</strong>
                       </div>
                     </div>
-                    <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-xl border border-blue-100 dark:border-blue-900/30">
+                    <div className="p-3 bg-subtle rounded-xl border border-line">
                       <div className="text-xs font-bold text-blue-700 dark:text-blue-400 mb-1">
                         Queue — FIFO
                       </div>
@@ -487,7 +487,7 @@ export default function StackQueueVisualizer() {
                   </div>
 
                   {/* Complexity */}
-                  <div className="p-3 bg-gray-50 dark:bg-gray-900/40 rounded-xl space-y-1">
+                  <div className="p-3 bg-subtle rounded-xl space-y-1">
                     <div className="text-xs font-semibold text-sub mb-2">
                       {t('steps.complexity')}
                     </div>
@@ -512,7 +512,7 @@ export default function StackQueueVisualizer() {
                   </div>
 
                   {/* Use cases */}
-                  <div className="p-3 bg-gray-50 dark:bg-gray-900/40 rounded-xl">
+                  <div className="p-3 bg-subtle rounded-xl">
                     <div className="text-xs font-semibold text-sub mb-2">
                       {t('steps.useCases')}
                     </div>

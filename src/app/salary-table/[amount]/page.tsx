@@ -106,7 +106,7 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
               <div><dt className="text-muted">세금(월)</dt><dd className="font-semibold text-fg">-{won(taxMonthly)}</dd></div>
               <div><dt className="text-muted">연 실수령액</dt><dd className="font-semibold text-fg">{won(r.netAnnual)}</dd></div>
             </dl>
-            <Link href={calcLink(man)} className="mt-6 inline-block bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700">
+            <Link href={calcLink(man)} className="mt-6 inline-block bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700">
               내 조건으로 다시 계산 →
             </Link>
           </header>

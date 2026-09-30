@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
-import { Calculator, Menu, X, ChevronDown, Clock, Grid3X3, Search } from 'lucide-react';
+import { Calculator, Menu, X, ChevronDown, Search } from 'lucide-react';
+import ToolIcon from './ToolIcon';
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
 import SearchDialog from './SearchDialog';
 import { useTranslations } from '@/lib/i18n';
-import { menuConfig, categoryKeys, CategoryKey } from '@/config/menuConfig';
+import { menuConfig, categoryKeys, categoryHubs, CategoryKey } from '@/config/menuConfig';
 import { getRecentToolsByCategory, recordToolUsage } from '@/utils/recentTools';
 
 const MAX_RECENT_DISPLAY = 4; // 최근 사용 표시 최대 개수
@@ -46,14 +47,13 @@ const Header = () => {
 
   // menuConfig에서 번역된 메뉴 아이템 생성 (카테고리 자동 반영, 메모이즈)
   const menuItems = useMemo(() => {
-    const result: Record<string, { title: string; items: { href: string; label: string; icon: string }[] }> = {};
+    const result: Record<string, { title: string; items: { href: string; label: string }[] }> = {};
     for (const key of categoryKeys) {
       result[key] = {
         title: t(menuConfig[key].titleKey),
         items: menuConfig[key].items.map(item => ({
           href: item.href,
           label: t(item.labelKey),
-          icon: item.icon,
         })),
       };
     }
@@ -172,80 +172,72 @@ const Header = () => {
     };
   }, []);
 
-  // 카테고리별 아이콘
-  const categoryIcons: Record<string, string> = {
-    calculators: '💰',
-    tools: '🛠️',
-    media: '🖼️',
-    health: '❤️',
-    games: '🎮',
-  };
-
   return (<>
-    <header ref={headerRef} className="bg-surface/95 border-b border-line sticky top-0 z-50">
+    <header ref={headerRef} className="bg-surface border-b border-line sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-2 shrink-0 whitespace-nowrap hover:opacity-80 transition-opacity group">
-            <Calculator className="w-7 h-7 text-primary" />
-            <span className="text-xl font-bold tracking-tight text-fg">{t('header.title')}</span>
+        <div className="flex items-center h-14 gap-6">
+          <Link href="/" className="flex items-center gap-2 shrink-0 whitespace-nowrap">
+            <span className="w-7 h-7 rounded-lg bg-primary text-white inline-flex items-center justify-center">
+              <Calculator className="w-4 h-4" strokeWidth={2.25} />
+            </span>
+            <span className="text-[17px] font-bold tracking-tight text-fg">{t('header.title')}</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-0.5 whitespace-nowrap text-sm xl:text-base" aria-label={t('common.menu')}>
+          <nav className="hidden lg:flex items-center gap-0.5 whitespace-nowrap text-[15px] font-medium flex-1" aria-label={t('common.menu')}>
             {categoryKeys.map((key) => (
               <div key={key} className="relative">
                 <button
                   onClick={() => handleDropdownToggle(key)}
-                  className="flex items-center space-x-1 px-2 xl:px-3 py-2 rounded-xl text-sub hover:text-blue-600 hover:bg-soft transition-all duration-200"
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-colors ${openDropdown === key ? 'text-fg bg-soft' : 'text-sub hover:text-fg hover:bg-soft'}`}
                   aria-expanded={openDropdown === key}
                   aria-haspopup="true"
                 >
                   <span>{menuItems[key].title}</span>
-                  <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === key ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 text-faint transition-transform ${openDropdown === key ? 'rotate-180' : ''}`} />
                 </button>
 
                 {openDropdown === key && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-surface rounded-2xl shadow-xl border border-line z-50 overflow-hidden">
+                  <div className="absolute top-full left-0 mt-2 w-[640px] bg-surface rounded-2xl shadow-xl border border-line z-50 overflow-hidden">
                     <div className="flex">
-                      {/* 왼쪽: 최근 사용 또는 추천 항목 */}
-                      <div className="w-[180px] bg-subtle p-3 border-r border-line">
-                        <div className="flex items-center gap-1.5 mb-3 px-1">
-                          <Clock className="w-3.5 h-3.5 text-blue-500" />
-                          <span className="text-xs font-semibold text-muted uppercase tracking-wide">
-                            {hasRecentItems(key) ? t('header.recent') : t('header.recommended')}
-                          </span>
+                      {/* 왼쪽: 최근 사용 또는 추천 */}
+                      <div className="w-[200px] bg-subtle p-3 border-r border-line">
+                        <div className="px-2 pb-2 text-xs font-semibold text-muted">
+                          {hasRecentItems(key) ? t('header.recent') : t('header.recommended')}
                         </div>
-                        <div className="space-y-1">
+                        <div className="space-y-0.5">
                           {getRecentOrDefaultItems(key).map((item) => item && (
                             <Link
                               key={item.href}
                               href={item.href}
                               onClick={() => handleToolClick(key, item.href)}
-                              className="flex items-center gap-2 px-2 py-2 rounded-xl text-body hover:bg-soft hover:text-blue-600 transition-all duration-200"
+                              className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg text-body hover:bg-soft transition-colors"
                             >
-                              <span className="text-lg">{item.icon}</span>
+                              <ToolIcon href={item.href} size="sm" className="!bg-surface border border-line" />
                               <span className="text-sm font-medium truncate">{item.label}</span>
                             </Link>
                           ))}
                         </div>
                       </div>
-                      {/* 오른쪽: 전체 목록 (스크롤) */}
-                      <div className="flex-1 p-3">
-                        <div className="flex items-center gap-1.5 mb-3 px-1">
-                          <Grid3X3 className="w-3.5 h-3.5 text-gray-400" />
-                          <span className="text-xs font-semibold text-muted uppercase tracking-wide">{t('header.all')} ({menuItems[key].items.length})</span>
+                      {/* 오른쪽: 전체 목록 */}
+                      <div className="flex-1 p-3 min-w-0">
+                        <div className="flex items-center justify-between px-2 pb-2">
+                          <span className="text-xs font-semibold text-muted">{t('header.all')} {menuItems[key].items.length}</span>
+                          <Link href={categoryHubs[key]} onClick={closeDropdown} className="text-xs font-medium text-primary hover:underline">
+                            {t('homePage.allTools.viewAll')}
+                          </Link>
                         </div>
-                        <div className="max-h-[280px] overflow-y-auto pr-1 glass-scrollbar">
-                          <div className="grid grid-cols-3 gap-1.5">
+                        <div className="max-h-[360px] overflow-y-auto pr-1 glass-scrollbar">
+                          <div className="grid grid-cols-2 gap-x-1">
                             {menuItems[key].items.map((item) => (
                               <Link
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => handleToolClick(key, item.href)}
-                                className="flex flex-col items-center text-center p-2.5 rounded-xl text-body hover:bg-soft hover:text-blue-600 transition-all duration-200"
+                                className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm text-body hover:bg-soft hover:text-fg transition-colors"
                               >
-                                <span className="text-xl mb-1">{item.icon}</span>
-                                <span className="text-[11px] font-medium leading-tight line-clamp-2">{item.label}</span>
+                                <ToolIcon href={item.href} bare size="sm" className="text-faint shrink-0" />
+                                <span className="truncate">{item.label}</span>
                               </Link>
                             ))}
                           </div>
@@ -257,47 +249,33 @@ const Header = () => {
               </div>
             ))}
 
-            {/* 알고리즘 시각화 */}
-            <Link
-              href="/algorithm"
-              className="hidden xl:inline-flex px-2 xl:px-3 py-2 rounded-xl text-sub hover:text-blue-600 hover:bg-soft transition-all duration-200"
-            >
-              🧠 {t('navigation.algorithm')}
+            <Link href="/algorithm" className="hidden xl:inline-flex px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
+              {t('navigation.algorithm')}
             </Link>
-
-            {/* 금융 팁 */}
-            <Link
-              href="/tips"
-              className="hidden xl:inline-flex px-2 xl:px-3 py-2 rounded-xl text-sub hover:text-blue-600 hover:bg-soft transition-all duration-200"
-            >
+            <Link href="/tips" className="hidden xl:inline-flex px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
               {t('navigation.financialTips')}
             </Link>
+          </nav>
 
-            {/* 검색 */}
+          <div className="hidden lg:flex items-center gap-1 shrink-0">
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-muted hover:text-gray-700 dark:hover:text-gray-200 bg-surface hover:bg-soft border border-line transition-all duration-200 text-sm"
+              className="flex items-center gap-2 w-44 xl:w-56 px-3 py-1.5 rounded-lg bg-soft text-faint hover:text-muted text-sm transition-colors"
               aria-label={t('common.search')}
             >
               <Search className="w-4 h-4" />
-              <span className="hidden xl:inline">{t('common.search')}</span>
-              <kbd className="hidden 2xl:inline-flex px-1.5 py-0.5 text-[10px] font-mono text-gray-400 bg-surface rounded-md border border-line">
-                ⌘K
-              </kbd>
+              <span className="flex-1 text-left">{t('common.search')}</span>
+              <kbd className="px-1.5 text-[11px] font-sans text-faint border border-line rounded bg-surface">⌘K</kbd>
             </button>
-
-            {/* 테마 전환 */}
             <ThemeToggle />
-
-            {/* 언어 전환 */}
             <LanguageToggle />
-          </nav>
+          </div>
 
-          {/* Mobile: Search + Theme + Language Toggle + Menu Button */}
-          <div className="lg:hidden flex items-center space-x-2">
+          {/* Mobile */}
+          <div className="lg:hidden flex items-center gap-1 ml-auto">
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="p-2 rounded-xl text-sub hover:text-blue-600 hover:bg-soft transition-all duration-200"
+              className="p-2 rounded-lg text-sub hover:bg-soft transition-colors"
               aria-label={t('common.search')}
             >
               <Search className="w-5 h-5" />
@@ -306,51 +284,42 @@ const Header = () => {
             <LanguageToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-xl text-sub hover:text-blue-600 hover:bg-soft transition-all duration-200"
+              className="p-2 rounded-lg text-sub hover:bg-soft transition-colors"
               aria-label={isMobileMenuOpen ? t('common.close') : t('common.menu')}
               aria-expanded={isMobileMenuOpen}
             >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-line max-h-[calc(100vh-5rem)] overflow-y-auto glass-scrollbar">
-            {/* Mobile Search */}
-            <div className="px-3 pb-3">
+          <div className="lg:hidden py-3 border-t border-line max-h-[calc(100vh-4rem)] overflow-y-auto glass-scrollbar">
+            <div className="pb-3">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-faint" />
                 <input
                   ref={mobileSearchRef}
                   type="text"
                   value={mobileSearchQuery}
                   onChange={(e) => setMobileSearchQuery(e.target.value)}
                   placeholder={t('common.search')}
-                  className="w-full pl-10 pr-8 py-2.5 text-sm border border-line rounded-xl bg-surface text-fg focus:ring-2 focus:ring-blue-500/40"
+                  className="ui-field pl-10 pr-8 py-2.5 text-sm"
                 />
                 {mobileSearchQuery && (
-                  <button
-                    onClick={() => setMobileSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
+                  <button onClick={() => setMobileSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-faint">
                     <X className="w-4 h-4" />
                   </button>
                 )}
               </div>
             </div>
 
-            {/* Mobile search results */}
             {mobileSearchQuery.trim() ? (
-              <nav className="space-y-1 px-1">
+              <nav className="space-y-0.5">
                 {(() => {
                   const q = mobileSearchQuery.toLowerCase()
-                  const results: { href: string; label: string; icon: string; catTitle: string }[] = []
+                  const results: { href: string; label: string; catTitle: string }[] = []
                   for (const key of categoryKeys) {
                     for (const item of menuItems[key].items) {
                       if (item.label.toLowerCase().includes(q) || item.href.toLowerCase().includes(q)) {
@@ -359,22 +328,18 @@ const Header = () => {
                     }
                   }
                   if (results.length === 0) {
-                    return (
-                      <div className="text-center py-6 text-muted text-sm">
-                        {t('searchDialog.noResults')}
-                      </div>
-                    )
+                    return <div className="text-center py-6 text-muted text-sm">{t('searchDialog.noResults')}</div>
                   }
                   return results.slice(0, 15).map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => { setIsMobileMenuOpen(false); setMobileSearchQuery('') }}
-                      className="flex items-center space-x-3 px-4 py-2.5 text-sub hover:text-blue-600 hover:bg-soft rounded-xl transition-all duration-200"
+                      className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-soft transition-colors"
                     >
-                      <span className="text-lg">{item.icon}</span>
+                      <ToolIcon href={item.href} size="sm" />
                       <div className="min-w-0 flex-1">
-                        <span className="block text-sm">{item.label}</span>
+                        <span className="block text-sm text-body">{item.label}</span>
                         <span className="block text-xs text-faint">{item.catTitle}</span>
                       </div>
                     </Link>
@@ -382,64 +347,45 @@ const Header = () => {
                 })()}
               </nav>
             ) : (
-            <nav className="space-y-1">
+            <nav className="space-y-0.5">
               {categoryKeys.map((key) => (
                 <div key={key}>
                   <button
                     onClick={() => setExpandedMobileCategory(expandedMobileCategory === key ? null : key)}
                     aria-expanded={expandedMobileCategory === key}
-                    className="w-full flex items-center justify-between px-3 py-3 text-sm font-semibold text-fg hover:bg-soft rounded-xl transition-all duration-200"
+                    className="w-full flex items-center justify-between px-2 py-2.5 text-[15px] font-semibold text-fg hover:bg-soft rounded-lg transition-colors"
                   >
-                    <span className="flex items-center gap-2">
-                      <span>{categoryIcons[key]}</span>
+                    <span className="flex items-center gap-3">
+                      <ToolIcon category={key} size="sm" />
                       <span>{menuItems[key].title}</span>
                     </span>
                     <span className="flex items-center gap-2">
-                      <span className="text-xs font-normal text-faint bg-surface px-2 py-0.5 rounded-full">
-                        {menuItems[key].items.length}
-                      </span>
-                      <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${expandedMobileCategory === key ? 'rotate-180' : ''}`} />
+                      <span className="text-xs font-normal text-faint">{menuItems[key].items.length}</span>
+                      <ChevronDown className={`w-4 h-4 text-faint transition-transform ${expandedMobileCategory === key ? 'rotate-180' : ''}`} />
                     </span>
                   </button>
                   {expandedMobileCategory === key && (
-                    <div className="space-y-1 pb-2">
+                    <div className="pb-2 pl-11 grid grid-cols-1">
                       {menuItems[key].items.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className="flex items-center space-x-3 px-6 py-2 text-sub hover:text-blue-600 hover:bg-soft rounded-xl transition-all duration-200"
+                          className="py-2 text-sm text-sub hover:text-fg"
                         >
-                          <span className="text-lg">{item.icon}</span>
-                          <span>{item.label}</span>
+                          {item.label}
                         </Link>
                       ))}
                     </div>
                   )}
                 </div>
               ))}
-
-              {/* 알고리즘 시각화 */}
-              <div>
-                <Link
-                  href="/algorithm"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center space-x-3 px-3 py-3 text-sub hover:text-violet-600 hover:bg-violet-100/40 dark:hover:bg-violet-500/10 rounded-xl mx-3 transition-all duration-200 font-medium"
-                >
-                  <span className="text-lg">🧠</span>
-                  <span>{t('navigation.algorithm')}</span>
+              <div className="border-t border-line mt-2 pt-2">
+                <Link href="/algorithm" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-2.5 text-[15px] font-medium text-body hover:bg-soft rounded-lg">
+                  {t('navigation.algorithm')}
                 </Link>
-              </div>
-
-              {/* 금융 팁 */}
-              <div>
-                <Link
-                  href="/tips"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center space-x-3 px-3 py-3 text-sub hover:text-blue-600 hover:bg-soft rounded-xl mx-3 transition-all duration-200 font-medium"
-                >
-                  <span className="text-lg">💡</span>
-                  <span>{t('navigation.financialTips')}</span>
+                <Link href="/tips" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-2.5 text-[15px] font-medium text-body hover:bg-soft rounded-lg">
+                  {t('navigation.financialTips')}
                 </Link>
               </div>
             </nav>

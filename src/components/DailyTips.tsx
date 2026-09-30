@@ -99,7 +99,7 @@ const DailyTips = () => {
     <div className="hidden md:block fixed bottom-4 right-4 z-40 max-w-sm">
       <div className={`${glassCard} ${glassInset} overflow-hidden`}>
         {/* 헤더 */}
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-3">
+        <div className="bg-primary hover:bg-blue-700 px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Lightbulb className="w-5 h-5 text-white" />
@@ -119,7 +119,7 @@ const DailyTips = () => {
         <div className="p-4">
           <div aria-live="polite" aria-atomic="true">
             <div className="mb-3">
-              <span className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded-full">
+              <span className="inline-block bg-soft text-sub text-xs font-medium px-2 py-1 rounded-full">
                 {currentTip.category}
               </span>
             </div>

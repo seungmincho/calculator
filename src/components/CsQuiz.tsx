@@ -33,7 +33,7 @@ const CATEGORY_ICONS: Record<QuizCategory | 'all', string> = {
 
 const DIFFICULTIES: QuizDifficulty[] = ['beginner', 'intermediate', 'advanced']
 const DIFF_COLORS: Record<QuizDifficulty, { bg: string; ring: string; text: string }> = {
-  beginner: { bg: 'bg-green-50 dark:bg-green-900/30', ring: 'ring-green-500', text: 'text-green-700 dark:text-green-300' },
+  beginner: { bg: 'bg-subtle', ring: 'ring-green-500', text: 'text-green-700 dark:text-green-300' },
   intermediate: { bg: 'bg-yellow-50 dark:bg-yellow-900/30', ring: 'ring-yellow-500', text: 'text-yellow-700 dark:text-yellow-300' },
   advanced: { bg: 'bg-red-50 dark:bg-red-900/30', ring: 'ring-red-500', text: 'text-red-700 dark:text-red-300' },
 }
@@ -302,7 +302,7 @@ export default function CsQuiz() {
                   onClick={() => setSelectedCategory(cat)}
                   className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
                     selected
-                      ? 'border-blue-500 ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/30'
+                      ? 'border-blue-500 ring-2 ring-blue-500 bg-subtle'
                       : 'border-line hover:border-blue-300 dark:hover:border-blue-600 bg-surface'
                   }`}
                 >
@@ -367,7 +367,7 @@ export default function CsQuiz() {
           <button
             onClick={startQuiz}
             disabled={!selectedCategory || !selectedDifficulty || questionCount === 0}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg px-8 py-3 font-medium hover:from-indigo-700 hover:to-purple-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-lg"
+            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium hover:from-indigo-700 hover:to-purple-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-lg"
           >
             {t('startQuiz')} {questionCount > 0 && `(${questionCount}${t('questionsUnit')})`}
           </button>
@@ -429,14 +429,14 @@ export default function CsQuiz() {
               let cls = 'border-line bg-surface hover:border-blue-300 dark:hover:border-blue-600'
               if (answered) {
                 if (i === q.correctIndex) {
-                  cls = 'border-green-500 bg-green-50 dark:bg-green-900/30'
+                  cls = 'border-green-500 bg-subtle'
                 } else if (i === ans.selected && !ans.correct) {
                   cls = 'border-red-500 bg-red-50 dark:bg-red-900/30'
                 } else {
-                  cls = 'border-line bg-gray-50 dark:bg-gray-800 opacity-60'
+                  cls = 'border-line bg-subtle opacity-60'
                 }
               } else if (ans.selected === i) {
-                cls = 'border-blue-500 ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/30'
+                cls = 'border-blue-500 ring-2 ring-blue-500 bg-subtle'
               }
 
               return (
@@ -466,13 +466,13 @@ export default function CsQuiz() {
             <div className="mt-6 space-y-3">
               <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium ${
                 ans.correct
-                  ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
+                  ? 'bg-soft text-sub'
                   : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300'
               }`}>
                 {ans.correct ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />}
                 {ans.correct ? t('correct') : t('incorrect')}
               </div>
-              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 text-sm text-blue-800 dark:text-blue-200">
+              <div className="bg-subtle rounded-xl p-4 text-sm text-blue-800 dark:text-blue-200">
                 {q.explanation}
               </div>
             </div>
@@ -513,7 +513,7 @@ export default function CsQuiz() {
             {isLast ? (
               <button
                 onClick={showResults}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg px-6 py-2 text-sm font-medium hover:from-indigo-700 hover:to-purple-700 transition-all"
+                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-2 text-sm font-medium hover:from-indigo-700 hover:to-purple-700 transition-all"
               >
                 {t('showResult')}
               </button>
@@ -539,7 +539,7 @@ export default function CsQuiz() {
     return (
       <div className="space-y-6">
         {/* Score Summary */}
-        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-xl shadow-lg p-8 text-center text-white">
+        <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-8 text-center text-white">
           <Trophy className="w-12 h-12 mx-auto mb-4 opacity-80" />
           <div className="text-5xl font-bold mb-2">
             {correctCount} / {totalCount}
@@ -615,7 +615,7 @@ export default function CsQuiz() {
                         </span>
                       </div>
                     </div>
-                    <div className="mt-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-xs text-blue-800 dark:text-blue-200">
+                    <div className="mt-3 bg-subtle rounded-lg p-3 text-xs text-blue-800 dark:text-blue-200">
                       {wq.explanation}
                     </div>
                   </div>
@@ -624,7 +624,7 @@ export default function CsQuiz() {
             )}
           </div>
         ) : (
-          <div className="bg-green-50 dark:bg-green-900/20 rounded-xl shadow-lg p-8 text-center">
+          <div className="bg-subtle rounded-xl shadow-lg p-8 text-center">
             <div className="text-4xl mb-3">🎉</div>
             <p className="text-lg font-semibold text-green-700 dark:text-green-300">{t('perfectScore')}</p>
           </div>
@@ -656,7 +656,7 @@ export default function CsQuiz() {
           </button>
           <button
             onClick={shareResult}
-            className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+            className="flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
           >
             {copied ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
             {copied ? t('copied') : t('share')}

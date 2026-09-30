@@ -247,11 +247,11 @@ export default function HashTableVisualizer() {
 
   // ── Action color helper ───────────────────────────────────────────────────
   const actionColor: Record<string, string> = {
-    hash:       'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300',
-    insert:     'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300',
+    hash:       'bg-soft text-sub',
+    insert:     'bg-soft text-sub',
     collision:  'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300',
-    probe:      'bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300',
-    found:      'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300',
+    probe:      'bg-soft text-sub',
+    found:      'bg-soft text-sub',
     'not-found':'bg-gray-100 dark:bg-gray-700/60 text-sub',
     resize:     'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300',
   }
@@ -277,7 +277,7 @@ export default function HashTableVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.dataStructure')}
             </span>
             <span className="text-xs text-gray-400">★★☆</span>
@@ -388,7 +388,7 @@ export default function HashTableVisualizer() {
                     onClick={() => setStrategy(opt.value)}
                     className={`w-full text-left px-3 py-2.5 rounded-lg border transition-all ${
                       strategy === opt.value
-                        ? 'bg-emerald-50 dark:bg-emerald-900/30 border-emerald-300 dark:border-emerald-600'
+                        ? 'bg-subtle border-line'
                         : 'bg-white/50 dark:bg-gray-700/30 border-line hover:bg-white/80 dark:hover:bg-gray-700/50'
                     }`}
                   >
@@ -430,14 +430,14 @@ export default function HashTableVisualizer() {
                 <button
                   onClick={() => { setOperationMode('insert'); handleInsert() }}
                   disabled={!keyInput.trim()}
-                  className="flex-1 py-2 text-sm font-medium bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-lg disabled:opacity-40 transition-all"
+                  className="flex-1 py-2 text-sm font-medium bg-primary hover:bg-blue-700 text-white rounded-lg disabled:opacity-40 transition-all"
                 >
                   {t('input.insertButton')}
                 </button>
                 <button
                   onClick={() => { setOperationMode('search'); handleSearch() }}
                   disabled={!keyInput.trim()}
-                  className="flex-1 py-2 text-sm font-medium bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-lg disabled:opacity-40 transition-all"
+                  className="flex-1 py-2 text-sm font-medium bg-primary hover:bg-blue-700 text-white rounded-lg disabled:opacity-40 transition-all"
                 >
                   {t('input.searchButton')}
                 </button>
@@ -466,7 +466,7 @@ export default function HashTableVisualizer() {
                         : 'text-muted hover:bg-white/40 dark:hover:bg-gray-700/40'
                     }`}
                   >
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -485,7 +485,7 @@ export default function HashTableVisualizer() {
                         onClick={() => setCurrentStep(idx)}
                         className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${
                           idx === currentStep
-                            ? 'bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700'
+                            ? 'bg-subtle border border-line'
                             : idx < currentStep
                               ? 'bg-gray-50 dark:bg-gray-700/30 opacity-60'
                               : 'bg-white/40 dark:bg-gray-700/20'

@@ -1247,7 +1247,7 @@ export default function KoreanWordle() {
               className={`
                 flex-1 py-2 rounded-lg text-sm font-bold transition-all
                 ${wordLength === len
-                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                  ? 'bg-primary hover:bg-blue-700 text-white shadow-md'
                   : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                 }
               `}
@@ -1387,12 +1387,12 @@ export default function KoreanWordle() {
 
           {/* Streak emphasis */}
           {endStreak && endStreak.wasLost && endStreak.value >= 2 && (
-            <div className="bg-orange-50 dark:bg-orange-950/50 border border-orange-200 dark:border-orange-800 rounded-lg px-4 py-3 text-center text-sm font-medium text-orange-700 dark:text-orange-300">
+            <div className="bg-subtle border border-line rounded-lg px-4 py-3 text-center text-sm font-medium text-orange-700 dark:text-orange-300">
               {t('streakLost', { count: endStreak.value })}
             </div>
           )}
           {endStreak && !endStreak.wasLost && endStreak.value >= 2 && (
-            <div className="bg-green-50 dark:bg-green-950/50 border border-green-200 dark:border-green-800 rounded-lg px-4 py-3 text-center text-sm font-medium text-green-700 dark:text-green-300">
+            <div className="bg-subtle border border-line rounded-lg px-4 py-3 text-center text-sm font-medium text-green-700 dark:text-green-300">
               {t('streakContinued', { count: endStreak.value })}
             </div>
           )}
@@ -1485,7 +1485,7 @@ export default function KoreanWordle() {
           <div className="flex gap-1 sm:gap-1.5">
             <button
               onClick={() => handleKeyPress('Enter')}
-              className="px-2 sm:px-4 h-10 sm:h-12 flex items-center justify-center rounded-md text-xs sm:text-sm font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-none active:scale-95 transition-transform"
+              className="px-2 sm:px-4 h-10 sm:h-12 flex items-center justify-center rounded-md text-xs sm:text-sm font-bold bg-primary hover:bg-blue-700 text-white border-none active:scale-95 transition-transform"
             >
               {t('enter')}
             </button>
@@ -1589,7 +1589,7 @@ export default function KoreanWordle() {
                 </div>
               </div>
 
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3 space-y-1">
+              <div className="bg-subtle rounded-lg p-3 space-y-1">
                 <p className="font-semibold text-blue-800 dark:text-blue-300">{t('helpJamoTitle')}</p>
                 <p className="text-blue-700 dark:text-blue-400">{t('helpJamo')}</p>
               </div>
@@ -1657,7 +1657,7 @@ export default function KoreanWordle() {
             {gameStatus !== 'playing' && (
               <button
                 onClick={shareResults}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg px-4 py-3 font-bold hover:from-green-600 hover:to-emerald-700 transition-all"
+                className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-bold hover:from-green-600 hover:to-emerald-700 transition-all"
               >
                 {copiedShare ? <Check className="w-5 h-5" /> : <Share2 className="w-5 h-5" />}
                 {copiedShare ? t('shared') : t('share')}
@@ -1687,7 +1687,6 @@ export default function KoreanWordle() {
       {/* Guide Section */}
       <div className="bg-surface rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-fg mb-4 flex items-center gap-2">
-          <HelpCircle className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid sm:grid-cols-2 gap-4">

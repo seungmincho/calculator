@@ -220,7 +220,7 @@ function HourlyWageInner() {
                     onClick={() => setInputType(type)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       inputType === type
-                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                        ? 'bg-primary hover:bg-blue-700 text-white'
                         : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -351,7 +351,7 @@ function HourlyWageInner() {
             {showResults ? (
               <div className="space-y-4">
                 {/* Hourly Wage */}
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-xl p-4 border-t-4 border-blue-600">
+                <div className="bg-subtle rounded-xl p-4 border-t-4 border-blue-600">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-sm text-sub">
@@ -367,7 +367,7 @@ function HourlyWageInner() {
                 </div>
 
                 {/* Daily Wage */}
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-xl p-4 border-t-4 border-green-600">
+                <div className="bg-subtle rounded-xl p-4 border-t-4 border-green-600">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-sm text-sub">
@@ -383,7 +383,7 @@ function HourlyWageInner() {
                 </div>
 
                 {/* Monthly Wage */}
-                <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 rounded-xl p-4 border-t-4 border-purple-600">
+                <div className="bg-subtle rounded-xl p-4 border-t-4 border-purple-600">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-sm text-sub">
@@ -399,7 +399,7 @@ function HourlyWageInner() {
                 </div>
 
                 {/* Yearly Wage */}
-                <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950 dark:to-red-950 rounded-xl p-4 border-t-4 border-orange-600">
+                <div className="bg-subtle rounded-xl p-4 border-t-4 border-orange-600">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-sm text-sub">
@@ -415,7 +415,7 @@ function HourlyWageInner() {
                 </div>
 
                 {/* ── NEW: Minimum Wage Visual Comparison Bar ── */}
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 space-y-3">
+                <div className="bg-subtle rounded-xl p-5 space-y-3">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold text-fg">
                       2025년 최저임금 비교
@@ -423,7 +423,7 @@ function HourlyWageInner() {
                     <span
                       className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                         minimumWageComparison.isAbove
-                          ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                          ? 'bg-soft text-sub'
                           : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
                       }`}
                     >
@@ -482,7 +482,7 @@ function HourlyWageInner() {
                 </div>
 
                 {/* ── NEW: Annual Salary Projection ── */}
-                <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-5 space-y-3 border border-indigo-200 dark:border-indigo-800">
+                <div className="bg-subtle rounded-xl p-5 space-y-3 border border-line">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold text-fg">
                       연봉 환산 예상 (주 52주 기준)
@@ -490,8 +490,8 @@ function HourlyWageInner() {
                     <span
                       className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                         annualComparison.isAbove
-                          ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
-                          : 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300'
+                          ? 'bg-soft text-sub'
+                          : 'bg-soft text-sub'
                       }`}
                     >
                       {annualComparison.isAbove ? '평균 이상' : '평균 미만'}
@@ -560,7 +560,7 @@ function HourlyWageInner() {
                 </div>
 
                 {/* Original Minimum Wage Info Cards */}
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 mt-2">
+                <div className="bg-subtle rounded-xl p-6 mt-2">
                   <h3 className="text-lg font-semibold text-fg mb-4">
                     {t('minimumWage.title')}
                   </h3>
@@ -585,7 +585,7 @@ function HourlyWageInner() {
                   <div
                     className={`mt-4 p-4 rounded-lg ${
                       minimumWageComparison.isAbove
-                        ? 'bg-green-100 dark:bg-green-950 border border-green-300 dark:border-green-700'
+                        ? 'bg-green-100 dark:bg-green-950 border border-line'
                         : 'bg-red-100 dark:bg-red-950 border border-red-300 dark:border-red-700'
                     }`}
                   >

@@ -560,7 +560,7 @@ export default function CagrCalculator() {
               onClick={() => setMode(m)}
               className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${
                 mode === m
-                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                  ? 'bg-primary hover:bg-blue-700 text-white'
                   : 'text-sub hover:bg-gray-50 dark:hover:bg-gray-700'
               }`}
             >
@@ -585,7 +585,7 @@ export default function CagrCalculator() {
 
           {/* Comparison Input B */}
           {compareMode && (
-            <div className={`${glassCard} ${glassInset} p-6 border-2 border-emerald-200 dark:border-emerald-800`}>
+            <div className={`${glassCard} ${glassInset} p-6 border-2 border-line`}>
               <h2 className="text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-4">
                 {t('compare.investmentB')}
               </h2>
@@ -658,7 +658,7 @@ export default function CagrCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {/* Primary Result Card */}
           {resultA ? (
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
               <div className="flex items-start justify-between">
                 <div>
                   {mode === 'cagr' && (() => {
@@ -727,7 +727,6 @@ export default function CagrCalculator() {
           {compareMode && resultA && resultB && (
             <div className={`${glassCard} ${glassInset} p-6`}>
               <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                <GitCompareArrows className="w-5 h-5" />
                 {t('compare.title')}
               </h3>
               <div className="overflow-x-auto">
@@ -975,7 +974,6 @@ export default function CagrCalculator() {
           className="w-full flex items-center justify-between px-6 py-4 text-left"
         >
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}

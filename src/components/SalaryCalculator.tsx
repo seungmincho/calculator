@@ -409,7 +409,7 @@ const SalaryCalculatorContent = () => {
             {/* 고급 설정 (접이식) */}
             <details className="group rounded-2xl border border-line bg-surface overflow-hidden">
               <summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-semibold text-body select-none list-none">
-                <span>⚙️ 고급 설정 <span className="font-normal text-faint">(상여금 · 성과급 · 경력)</span></span>
+                <span>고급 설정 <span className="font-normal text-faint">(상여금 · 성과급 · 경력)</span></span>
                 <span className="text-gray-400 transition-transform duration-200 group-open:rotate-45 text-lg leading-none">+</span>
               </summary>
               <div className="border-t border-line px-5 py-5 space-y-5">
@@ -471,7 +471,7 @@ const SalaryCalculatorContent = () => {
                 {/* 성과급 설정 */}
                 <div className="border-t border-line pt-5">
                   <h3 className="text-sm font-medium text-body mb-2">성과급 설정</h3>
-                  <div className="bg-green-50/80 dark:bg-green-900/20 rounded-xl p-3 mb-3 border border-green-200/40 dark:border-green-700/20">
+                  <div className="bg-subtle rounded-xl p-3 mb-3 border border-line">
                     <p className="text-xs text-green-800 dark:text-green-200">
                       💡 <strong>성과급은 연봉에 추가로 지급되는 금액입니다</strong><br/>
                       예: 연봉 3000만원 + 성과급 200% = 3000만원 + (3000만원의 200%)
@@ -530,7 +530,7 @@ const SalaryCalculatorContent = () => {
           {result ? (
             <div className="space-y-6">
               {/* Main Results */}
-              <div className="relative overflow-hidden bg-gradient-to-br from-slate-800/90 to-slate-900/92 dark:from-black/60 dark:to-slate-900/55 border border-line rounded-2xl p-6 sm:p-8 shadow-[0_8px_40px_rgba(15,23,42,0.25)]">
+              <div className="relative overflow-hidden bg-[#191f28] dark:bg-soft rounded-2xl p-6 sm:p-8">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/[0.08] via-transparent to-blue-500/[0.05] pointer-events-none rounded-2xl" />
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent" />
                 <div className="relative">
@@ -760,7 +760,6 @@ const SalaryCalculatorContent = () => {
         {showTable && (
           <div className="mt-6 bg-surface border border-line p-4 rounded-2xl">
             <h3 className="text-sm font-medium text-body mb-2">
-              <Calculator className="w-4 h-4 inline mr-1" />
               {t('table.usage.title')}
             </h3>
             <ul className="text-sm text-sub space-y-1">
@@ -776,7 +775,7 @@ const SalaryCalculatorContent = () => {
       {result && (
         <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-fg">📊 상세 분석 차트</h2>
+            <h2 className="text-2xl font-semibold text-fg">상세 분석 차트</h2>
             <button
               onClick={() => setShowCharts(!showCharts)}
               className="inline-flex items-center gap-2 bg-surface hover:bg-soft border border-line px-4 py-2 rounded-xl text-body text-sm font-medium transition-colors"
@@ -791,7 +790,6 @@ const SalaryCalculatorContent = () => {
               {/* 월별 실수령액 차트 */}
               <div className="bg-surface border border-line rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-fg mb-6 flex items-center">
-                  <LineChart className="w-6 h-6 mr-2 text-blue-600" />
                   월별 실수령액 변화 (상여금 포함)
                 </h3>
                 <ReactECharts option={{
@@ -813,7 +811,7 @@ const SalaryCalculatorContent = () => {
                 <div className="mt-4 space-y-2">
                   <div className="p-3 bg-surface border border-blue-200/40 dark:border-blue-400/20 rounded-xl">
                     <p className="text-sm text-body">
-                      <strong>📊 상여금 지급 방식:</strong> 연봉 {formatNumber(result.gross)}원을 {12 + parseInt(bonusPercentage)/100}회로 분할
+                      <strong>상여금 지급 방식:</strong> 연봉 {formatNumber(result.gross)}원을 {12 + parseInt(bonusPercentage)/100}회로 분할
                     </p>
                     {bonusMonths.length > 0 && (
                       <p className="text-sm text-muted mt-1">
@@ -829,7 +827,7 @@ const SalaryCalculatorContent = () => {
                   {parseInt(performanceBonus) > 0 && (
                     <div className="p-3 bg-surface border border-amber-200/40 dark:border-amber-400/20 rounded-xl">
                       <p className="text-sm text-body">
-                        <strong>🎯 성과급:</strong> 연봉의 {performanceBonus}% = {formatNumber(Math.floor(result.gross * (parseInt(performanceBonus) / 100)))}원 (12월 지급)
+                        <strong>성과급:</strong> 연봉의 {performanceBonus}% = {formatNumber(Math.floor(result.gross * (parseInt(performanceBonus) / 100)))}원 (12월 지급)
                       </p>
                       <p className="text-xs text-muted mt-1">
                         성과급은 회사 실적에 따라 변동될 수 있습니다
@@ -842,7 +840,6 @@ const SalaryCalculatorContent = () => {
               {/* 경력별 연봉 비교 */}
               <div className="bg-surface border border-line rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-fg mb-6 flex items-center">
-                  <BarChart3 className="w-6 h-6 mr-2 text-green-600" />
                   경력별 평균 연봉 비교
                 </h3>
                 <ReactECharts option={{
@@ -888,7 +885,6 @@ const SalaryCalculatorContent = () => {
               {/* 세금 구성 차트 */}
               <div className="bg-surface border border-line rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-fg mb-6 flex items-center">
-                  <PieChart className="w-6 h-6 mr-2 text-purple-600" />
                   공제항목별 구성
                 </h3>
                 <div className="grid lg:grid-cols-2 gap-8">
@@ -947,7 +943,7 @@ const SalaryCalculatorContent = () => {
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           <div className="bg-surface border border-blue-200/40 dark:border-blue-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)]">
             <div className="flex items-center mb-4">
-              <div className="bg-blue-500/15 dark:bg-blue-500/20 p-3 rounded-full mr-3">
+              <div className="bg-soft p-3 rounded-full mr-3">
                 <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="text-xl font-bold text-blue-900 dark:text-blue-200">💎 {t('guide.features.accurate.title')}</h3>
@@ -973,7 +969,7 @@ const SalaryCalculatorContent = () => {
           
           <div className="bg-surface border border-emerald-200/40 dark:border-emerald-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(16,185,129,0.15)]">
             <div className="flex items-center mb-4">
-              <div className="bg-emerald-500/15 dark:bg-emerald-500/20 p-3 rounded-full mr-3">
+              <div className="bg-soft p-3 rounded-full mr-3">
                 <TrendingUp className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
               </div>
               <h3 className="text-xl font-bold text-green-900 dark:text-green-200">📊 {t('guide.features.smart.title')}</h3>
@@ -999,7 +995,7 @@ const SalaryCalculatorContent = () => {
           
           <div className="bg-surface border border-purple-200/40 dark:border-purple-500/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)]">
             <div className="flex items-center mb-4">
-              <div className="bg-purple-500/15 dark:bg-purple-500/20 p-3 rounded-full mr-3">
+              <div className="bg-soft p-3 rounded-full mr-3">
                 <DollarSign className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
               <h3 className="text-xl font-bold text-purple-900 dark:text-purple-200">⚡ {t('guide.features.practical.title')}</h3>
@@ -1032,7 +1028,7 @@ const SalaryCalculatorContent = () => {
           <div className="grid lg:grid-cols-2 gap-8">
             <div className="bg-surface border border-line p-6 rounded-2xl">
               <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4 flex items-center">
-                <span className="bg-blue-500/10 dark:bg-blue-500/15 p-2 rounded-full mr-3">🏥</span>
+                
                 {t('insurance.health.title')}
               </h4>
               <div className="space-y-4">
@@ -1059,7 +1055,7 @@ const SalaryCalculatorContent = () => {
 
             <div className="bg-surface border border-line p-6 rounded-2xl">
               <h4 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
-                <span className="bg-purple-500/10 dark:bg-purple-500/15 p-2 rounded-full mr-3">👴</span>
+                
                 {t('insurance.pension.title')}
               </h4>
               <div className="space-y-4">
@@ -1166,8 +1162,8 @@ const SalaryCalculatorContent = () => {
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="bg-surface border border-line p-6 rounded-2xl">
               <div className="text-center mb-4">
-                <div className="bg-emerald-500/10 dark:bg-emerald-500/15 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
-                  <span className="text-2xl">💼</span>
+                <div className="bg-soft p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  
                 </div>
                 <h4 className="text-xl font-bold text-fg">{t('taxStrategy.incomeDeduction.title')}</h4>
               </div>
@@ -1189,8 +1185,8 @@ const SalaryCalculatorContent = () => {
 
             <div className="bg-surface border border-line p-6 rounded-2xl">
               <div className="text-center mb-4">
-                <div className="bg-blue-500/10 dark:bg-blue-500/15 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
-                  <span className="text-2xl">💊</span>
+                <div className="bg-soft p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  
                 </div>
                 <h4 className="text-xl font-bold text-fg">{t('taxStrategy.taxCredit.title')}</h4>
               </div>
@@ -1212,8 +1208,8 @@ const SalaryCalculatorContent = () => {
 
             <div className="bg-surface border border-line p-6 rounded-2xl">
               <div className="text-center mb-4">
-                <div className="bg-purple-500/10 dark:bg-purple-500/15 p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
-                  <span className="text-2xl">🏦</span>
+                <div className="bg-soft p-3 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+                  
                 </div>
                 <h4 className="text-xl font-bold text-fg">{t('taxStrategy.pension.title')}</h4>
               </div>
@@ -1241,7 +1237,7 @@ const SalaryCalculatorContent = () => {
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
               <h4 className="text-lg font-semibold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center">
-                <span className="bg-indigo-500/10 p-2 rounded-full mr-2">📅</span>
+                
                 {t('yearEndTax.schedule.title')}
               </h4>
               <div className="space-y-4">
@@ -1265,7 +1261,7 @@ const SalaryCalculatorContent = () => {
             </div>
             <div>
               <h4 className="text-lg font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
-                <span className="bg-purple-500/10 p-2 rounded-full mr-2">💡</span>
+                
                 {t('yearEndTax.tips.title')}
               </h4>
               <div className="space-y-4">

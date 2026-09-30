@@ -198,7 +198,7 @@ export default function Metronome() {
         <div className="flex items-center gap-2">
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           {hasVibration && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-full">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-soft text-sub rounded-full">
               <Smartphone className="w-3 h-3" />
               {t('vibrationSupport')}
             </span>
@@ -258,7 +258,7 @@ export default function Metronome() {
             className={`w-16 h-16 rounded-full flex items-center justify-center text-white shadow-lg transition-colors ${
               isPlaying
                 ? 'bg-red-600 hover:bg-red-700'
-                : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
+                : 'bg-primary hover:bg-blue-700'
             }`}
           >
             {isPlaying ? <Square className="w-6 h-6" /> : <Play className="w-6 h-6 ml-1" />}
@@ -380,7 +380,7 @@ export default function Metronome() {
               onClick={() => setBpm(preset.bpm)}
               className={`py-2 px-3 rounded-lg text-sm transition-colors ${
                 bpm === preset.bpm
-                  ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 ring-1 ring-blue-300 dark:ring-blue-600'
+                  ? 'bg-soft text-sub ring-1 ring-blue-300 dark:ring-blue-600'
                   : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
               }`}
             >
@@ -399,7 +399,6 @@ export default function Metronome() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>

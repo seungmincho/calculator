@@ -398,16 +398,16 @@ const CATEGORY_COLORS: Record<Exclude<Category, 'all'>, { badge: string; text: s
   '1xx': {
     badge: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
     text: 'text-blue-600 dark:text-blue-400',
-    bg: 'bg-blue-50 dark:bg-blue-950',
-    border: 'border-blue-200 dark:border-blue-800',
+    bg: 'bg-subtle',
+    border: 'border-line',
     tab: 'bg-surface text-sub border border-line',
     tabActive: 'bg-blue-600 text-white border border-blue-600',
   },
   '2xx': {
     badge: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
     text: 'text-green-600 dark:text-green-400',
-    bg: 'bg-green-50 dark:bg-green-950',
-    border: 'border-green-200 dark:border-green-800',
+    bg: 'bg-subtle',
+    border: 'border-line',
     tab: 'bg-surface text-sub border border-line',
     tabActive: 'bg-green-600 text-white border border-green-600',
   },
@@ -422,8 +422,8 @@ const CATEGORY_COLORS: Record<Exclude<Category, 'all'>, { badge: string; text: s
   '4xx': {
     badge: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
     text: 'text-orange-600 dark:text-orange-400',
-    bg: 'bg-orange-50 dark:bg-orange-950',
-    border: 'border-orange-200 dark:border-orange-800',
+    bg: 'bg-subtle',
+    border: 'border-line',
     tab: 'bg-surface text-sub border border-line',
     tabActive: 'bg-orange-500 text-white border border-orange-500',
   },
@@ -689,19 +689,18 @@ export default function HttpStatus() {
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6 mt-8`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-500" />
           {t('guideTitle')}
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* 1xx */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+          <div className="bg-subtle rounded-xl p-4 border border-line">
             <h3 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">1xx — 정보 응답</h3>
             <p className="text-sm text-sub">
               요청을 받았으며 작업을 계속 진행 중임을 알립니다. 주로 WebSocket 업그레이드(101)나 사전 확인(100)에 사용됩니다.
             </p>
           </div>
           {/* 2xx */}
-          <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 border border-green-200 dark:border-green-800">
+          <div className="bg-subtle rounded-xl p-4 border border-line">
             <h3 className="font-semibold text-green-700 dark:text-green-300 mb-2">2xx — 성공</h3>
             <p className="text-sm text-sub">
               요청이 성공적으로 처리되었습니다. GET 성공은 200, 리소스 생성은 201, 삭제 성공은 204를 사용하세요.
@@ -715,7 +714,7 @@ export default function HttpStatus() {
             </p>
           </div>
           {/* 4xx */}
-          <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-4 border border-orange-200 dark:border-orange-800">
+          <div className="bg-subtle rounded-xl p-4 border border-line">
             <h3 className="font-semibold text-orange-700 dark:text-orange-300 mb-2">4xx — 클라이언트 오류</h3>
             <p className="text-sm text-sub">
               클라이언트 요청에 문제가 있습니다. 인증 없음(401), 권한 없음(403), 리소스 없음(404), 잘못된 요청(400)을 구분하세요.
@@ -729,7 +728,7 @@ export default function HttpStatus() {
             </p>
           </div>
           {/* Tips */}
-          <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4 border border-indigo-200 dark:border-indigo-800">
+          <div className="bg-subtle rounded-xl p-4 border border-line">
             <h3 className="font-semibold text-indigo-700 dark:text-indigo-300 mb-2">REST API 설계 팁</h3>
             <p className="text-sm text-sub">
               GET→200, POST→201, DELETE→204, 인증→401, 권한→403, 없음→404, 유효성→422, Rate Limit→429, 서버 오류→500을 정확히 구분하세요.

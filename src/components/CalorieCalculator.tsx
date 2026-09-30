@@ -251,9 +251,9 @@ export default function CalorieCalculator() {
   }
 
   const getGoalBgColor = (goalType: Goal) => {
-    if (goalType.includes('lose')) return 'bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-600'
-    if (goalType.includes('gain')) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-600'
-    return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-600'
+    if (goalType.includes('lose')) return 'bg-blue-100 dark:bg-blue-900/30 border-line'
+    if (goalType.includes('gain')) return 'bg-orange-100 dark:bg-orange-900/30 border-line'
+    return 'bg-green-100 dark:bg-green-900/30 border-line'
   }
 
   const macroChartOption = useMemo(() => {
@@ -350,7 +350,6 @@ export default function CalorieCalculator() {
         {/* 입력 폼 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-            <Calculator className="w-6 h-6 mr-2 text-orange-600" />
             {t('input.title')}
           </h2>
 
@@ -518,7 +517,6 @@ export default function CalorieCalculator() {
               {/* 주요 결과 */}
               <div className={`rounded-2xl shadow-lg p-8 border-2 ${getGoalBgColor(goal)}`}>
                 <h3 className="text-xl font-bold mb-6 flex items-center text-fg">
-                  <Target className="w-6 h-6 mr-2" />
                   {t('result.title')}
                 </h3>
                 
@@ -645,7 +643,7 @@ export default function CalorieCalculator() {
           )}
 
           {!result && (
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
+            <div className="bg-subtle rounded-2xl p-8 text-center">
               <Utensils className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-sub">
                 {t('placeholder')}
@@ -656,7 +654,7 @@ export default function CalorieCalculator() {
       </div>
 
       {/* 칼로리 가이드 */}
-      <div className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
+      <div className="bg-subtle rounded-2xl p-8">
         <h3 className="text-2xl font-bold text-fg mb-6">
           💡 {t('guide.title')}
         </h3>
@@ -691,7 +689,6 @@ export default function CalorieCalculator() {
       {/* 음식 칼로리 참고표 */}
       <div className={`${glassCard} ${glassInset} p-8`}>
         <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-          <Utensils className="w-6 h-6 mr-2 text-green-600" />
           {t('foodCalories.title')}
         </h3>
         <div className="grid md:grid-cols-3 gap-6">
@@ -766,7 +763,6 @@ export default function CalorieCalculator() {
       {/* 운동 칼로리 소모표 */}
       <div className={`${glassCard} ${glassInset} p-8`}>
         <h3 className="text-xl font-bold text-fg mb-6 flex items-center">
-          <Activity className="w-6 h-6 mr-2 text-red-500" />
           {t('exerciseCalories.title')}
         </h3>
         <div className="grid md:grid-cols-2 gap-6">

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import ToolIcon from './ToolIcon'
 import { menuConfig, categoryHubs, type CategoryKey } from '@/config/menuConfig'
 import ko from '../../messages/ko.json'
 import CategoryHub from './CategoryHub'
@@ -163,7 +164,7 @@ export default function CategoryHubPage({ category }: { category: HubKey }) {
             {popular.map(item => (
               <li key={item.href}>
                 <Link href={item.href} className={`${glassCard} inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-body hover:bg-soft transition-colors`}>
-                  <span>{item.icon}</span>{label(item.labelKey)}
+                  <ToolIcon href={item.href} bare size="sm" className="text-muted" />{label(item.labelKey)}
                 </Link>
               </li>
             ))}

@@ -79,28 +79,28 @@ const TRACK_COLORS: Record<string, {
   progressBg: string; progressBar: string
 }> = {
   blue: {
-    bg: 'bg-blue-600', bgLight: 'bg-blue-50 dark:bg-blue-950',
+    bg: 'bg-blue-600', bgLight: 'bg-subtle',
     border: 'border-blue-500', text: 'text-blue-600 dark:text-blue-400',
     ring: 'ring-blue-500', gradientFrom: 'from-blue-600', gradientTo: 'to-blue-700',
     badge: 'bg-blue-100 dark:bg-blue-900', badgeText: 'text-blue-700 dark:text-blue-300',
     progressBg: 'bg-blue-100 dark:bg-blue-900', progressBar: 'bg-blue-500',
   },
   green: {
-    bg: 'bg-green-600', bgLight: 'bg-green-50 dark:bg-green-950',
+    bg: 'bg-green-600', bgLight: 'bg-subtle',
     border: 'border-green-500', text: 'text-green-600 dark:text-green-400',
     ring: 'ring-green-500', gradientFrom: 'from-green-600', gradientTo: 'to-green-700',
     badge: 'bg-green-100 dark:bg-green-900', badgeText: 'text-green-700 dark:text-green-300',
     progressBg: 'bg-green-100 dark:bg-green-900', progressBar: 'bg-green-500',
   },
   purple: {
-    bg: 'bg-purple-600', bgLight: 'bg-purple-50 dark:bg-purple-950',
+    bg: 'bg-purple-600', bgLight: 'bg-subtle',
     border: 'border-purple-500', text: 'text-purple-600 dark:text-purple-400',
     ring: 'ring-purple-500', gradientFrom: 'from-purple-600', gradientTo: 'to-purple-700',
     badge: 'bg-purple-100 dark:bg-purple-900', badgeText: 'text-purple-700 dark:text-purple-300',
     progressBg: 'bg-purple-100 dark:bg-purple-900', progressBar: 'bg-purple-500',
   },
   orange: {
-    bg: 'bg-orange-600', bgLight: 'bg-orange-50 dark:bg-orange-950',
+    bg: 'bg-orange-600', bgLight: 'bg-subtle',
     border: 'border-orange-500', text: 'text-orange-600 dark:text-orange-400',
     ring: 'ring-orange-500', gradientFrom: 'from-orange-600', gradientTo: 'to-orange-700',
     badge: 'bg-orange-100 dark:bg-orange-900', badgeText: 'text-orange-700 dark:text-orange-300',

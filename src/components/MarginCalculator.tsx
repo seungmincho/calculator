@@ -572,7 +572,7 @@ export default function MarginCalculator() {
 
               {/* 역산 모드: 산출 판매가 */}
               {mode === 'reverse' && (
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 flex items-center gap-3">
+                <div className="bg-subtle rounded-xl p-4 flex items-center gap-3">
                   <Target className="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">{t('result.calculatedPrice')}</p>
@@ -757,7 +757,6 @@ export default function MarginCalculator() {
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

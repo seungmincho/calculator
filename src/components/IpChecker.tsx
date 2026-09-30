@@ -160,7 +160,7 @@ export default function IpChecker() {
             <p className="text-red-600 dark:text-red-400 text-center">{error}</p>
             <button
               onClick={fetchIPData}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
+              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
             >
               <RefreshCw className="w-5 h-5" />
               {t('retry')}
@@ -435,7 +435,7 @@ export default function IpChecker() {
       <div className="flex justify-center">
         <button
           onClick={copyAllInfo}
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-8 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
+          className="bg-primary hover:bg-blue-700 text-white rounded-lg px-8 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
         >
           {copiedId === 'all' ? (
             <>
@@ -454,7 +454,6 @@ export default function IpChecker() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6 text-blue-600" />
           {t('guide.title')}
         </h2>
 

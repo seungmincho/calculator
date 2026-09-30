@@ -256,7 +256,7 @@ export default function InteriorCalc() {
           {/* Paint */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-fg text-base flex items-center gap-2">
-              <span>🎨</span> {t('paintCalc')}
+              {t('paintCalc')}
             </h2>
             <div>
               <label className={labelCls}>{t('paintCoverage')}</label>
@@ -298,7 +298,7 @@ export default function InteriorCalc() {
           {/* Wallpaper */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-fg text-base flex items-center gap-2">
-              <span>📜</span> {t('wallpaperCalc')}
+              {t('wallpaperCalc')}
             </h2>
             <div>
               <label className={labelCls}>{t('rollWidth')}</label>
@@ -341,7 +341,7 @@ export default function InteriorCalc() {
           {/* Tile */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <h2 className="font-semibold text-fg text-base flex items-center gap-2">
-              <span>🟦</span> {t('tileCalc')}
+              {t('tileCalc')}
             </h2>
             <div className="grid grid-cols-2 gap-3">
               <div>
@@ -411,7 +411,7 @@ export default function InteriorCalc() {
                   aria-expanded={isExpanded}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-7 h-7 rounded-full bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 flex items-center justify-center text-sm font-bold">
+                    <span className="w-7 h-7 rounded-full bg-soft text-sub flex items-center justify-center text-sm font-bold">
                       {idx + 1}
                     </span>
                     <span className="font-semibold text-fg">
@@ -537,7 +537,7 @@ export default function InteriorCalc() {
 
                     {/* Room result */}
                     {result && (
-                      <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-4 space-y-3">
+                      <div className="bg-subtle rounded-xl p-4 space-y-3">
                         <p className="text-xs font-semibold text-orange-700 dark:text-orange-400 uppercase tracking-wide">{t('results')}</p>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 text-sm">
                           <div className="flex justify-between">
@@ -562,7 +562,7 @@ export default function InteriorCalc() {
                           </div>
                         </div>
 
-                        <hr className="border-orange-200 dark:border-orange-800" />
+                        <hr className="border-line" />
 
                         {/* Paint result */}
                         <div className="space-y-1 text-sm">
@@ -613,7 +613,7 @@ export default function InteriorCalc() {
           {/* Add room button */}
           <button
             onClick={addRoom}
-            className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-orange-300 dark:border-orange-700 rounded-xl text-orange-600 dark:text-orange-400 hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors font-medium text-sm"
+            className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-line rounded-xl text-orange-600 dark:text-orange-400 hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors font-medium text-sm"
           >
             <Plus size={18} />
             {t('addRoom')}
@@ -621,7 +621,7 @@ export default function InteriorCalc() {
 
           {/* Summary */}
           {rooms.length > 1 && (
-            <div className="bg-gradient-to-r from-orange-500 to-amber-500 dark:from-orange-700 dark:to-amber-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
               <h2 className="font-bold text-lg mb-4">{t('summaryTitle')} ({rooms.length} {t('totalRooms')})</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div className="bg-white/20 rounded-lg p-3 text-center">

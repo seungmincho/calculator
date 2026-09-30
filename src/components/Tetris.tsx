@@ -831,7 +831,7 @@ export default function Tetris() {
                 <p className="text-white text-2xl font-bold">TETRIS</p>
                 <button
                   onClick={startGame}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
                 >
                   {t('newGame')}
                 </button>
@@ -844,7 +844,7 @@ export default function Tetris() {
                 <p className="text-white text-2xl font-bold">{t('paused')}</p>
                 <button
                   onClick={togglePause}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
                 >
                   <Play className="w-4 h-4" />{t('resume')}
                 </button>
@@ -867,7 +867,7 @@ export default function Tetris() {
                 )}
                 <button
                   onClick={startGame}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center gap-2"
                 >
                   <RotateCcw className="w-4 h-4" />{t('newGame')}
                 </button>
@@ -906,14 +906,14 @@ export default function Tetris() {
               ) : gameState === 'paused' ? (
                 <button
                   onClick={togglePause}
-                  className="flex-1 flex items-center justify-center gap-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg py-2 text-xs font-medium hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1 bg-soft text-sub rounded-lg py-2 text-xs font-medium hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
                 >
                   <Play className="w-3 h-3" />{t('resume')}
                 </button>
               ) : null}
               <button
                 onClick={startGame}
-                className="flex-1 flex items-center justify-center gap-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg py-2 text-xs font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+                className="flex-1 flex items-center justify-center gap-1 bg-soft text-sub rounded-lg py-2 text-xs font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
               >
                 <RotateCcw className="w-3 h-3" />{t('newGame')}
               </button>
@@ -967,11 +967,11 @@ export default function Tetris() {
                 <Pause className="w-4 h-4" />{t('pause')}
               </button>
             ) : gameState === 'paused' ? (
-              <button onClick={togglePause} className="flex-1 flex items-center justify-center gap-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg py-2 text-sm font-medium">
+              <button onClick={togglePause} className="flex-1 flex items-center justify-center gap-1 bg-soft text-sub rounded-lg py-2 text-sm font-medium">
                 <Play className="w-4 h-4" />{t('resume')}
               </button>
             ) : null}
-            <button onClick={startGame} className="flex-1 flex items-center justify-center gap-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg py-2 text-sm font-medium">
+            <button onClick={startGame} className="flex-1 flex items-center justify-center gap-1 bg-primary hover:bg-blue-700 text-white rounded-lg py-2 text-sm font-medium">
               <RotateCcw className="w-4 h-4" />{t('newGame')}
             </button>
           </div>
@@ -1023,7 +1023,7 @@ export default function Tetris() {
           <h3 className="text-sm font-semibold text-body mb-3">{t('guide.scoring.title')}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {(t.raw('guide.scoring.items') as string[]).map((item, i) => (
-              <div key={i} className="bg-blue-50 dark:bg-blue-950 rounded-lg p-2 text-center text-sm text-body">
+              <div key={i} className="bg-subtle rounded-lg p-2 text-center text-sm text-body">
                 {item}
               </div>
             ))}

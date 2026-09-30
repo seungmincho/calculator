@@ -530,7 +530,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     <button
                       key={key}
                       onClick={() => applyPreset(key)}
-                      className="px-3 py-1 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
+                      className="px-3 py-1 text-xs bg-subtle text-blue-700 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
                     >
                       {PRESET_EMOJI[key] ?? '📋'} {key}
                     </button>
@@ -644,7 +644,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 <button
                   onClick={spin}
                   disabled={isSpinning || rouletteItems.length < 2}
-                  className="w-full max-w-xs bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl px-6 py-3 font-bold text-lg hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-lg active:scale-95"
+                  className="w-full max-w-xs bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-3 font-bold text-lg hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-lg active:scale-95"
                 >
                   {isSpinning ? '돌아가는 중...' : '🎡 돌리기!'}
                 </button>
@@ -653,7 +653,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
 
             {/* Result card */}
             {spinResult && (
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-xl shadow-lg p-5 border border-blue-200 dark:border-blue-800">
+              <div className="bg-subtle rounded-xl shadow-lg p-5 border border-line">
                 <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-1">결과</p>
                 <div className="flex items-center justify-between">
                   <p className="text-2xl font-bold text-fg">{spinResult}</p>
@@ -691,7 +691,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
               <ul className="space-y-2 max-h-72 overflow-y-auto">
                 {orderItems.map((item, i) => (
                   <li key={i} className="flex items-center gap-2">
-                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-bold flex-shrink-0">
+                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-soft text-sub text-xs font-bold flex-shrink-0">
                       {i + 1}
                     </span>
                     <span className="flex-1 text-sm text-body truncate">
@@ -733,7 +733,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 <button
                   onClick={startOrder}
                   disabled={isShuffling || isRevealing || orderItems.length < 2}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl px-4 py-3 font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow active:scale-95"
+                  className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow active:scale-95"
                 >
                   <Shuffle size={18} />
                   {isShuffling ? '섞는 중...' : '뽑기!'}

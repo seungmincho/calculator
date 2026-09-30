@@ -221,10 +221,10 @@ function FrameTable({ pages, result, currentStep, label, color }: {
     : color === 'amber' ? 'border-amber-400 dark:border-amber-600'
     : 'border-emerald-400 dark:border-emerald-600'
 
-  const headerBg = color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200'
-    : color === 'purple' ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-200'
+  const headerBg = color === 'blue' ? 'bg-soft text-sub'
+    : color === 'purple' ? 'bg-soft text-sub'
     : color === 'amber' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200'
-    : 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200'
+    : 'bg-soft text-sub'
 
   return (
     <div className="mb-6">
@@ -258,7 +258,7 @@ function FrameTable({ pages, result, currentStep, label, color }: {
                 </td>
                 {pages.map((_, col) => {
                   if (col > currentStep) {
-                    return <td key={col} className="px-2 py-1 border border-line bg-gray-50/50 dark:bg-gray-800/30" />
+                    return <td key={col} className="px-2 py-1 border border-line bg-subtle" />
                   }
                   const step = result.steps[col]
                   const val = step.frames[row]
@@ -300,7 +300,7 @@ function FrameTable({ pages, result, currentStep, label, color }: {
                     key={col}
                     className={`px-2 py-1 border border-line font-bold ${
                       step.isHit
-                        ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
+                        ? 'bg-subtle text-emerald-600 dark:text-emerald-400'
                         : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
                     } ${col === currentStep ? 'ring-2 ring-sky-400 ring-inset' : ''}`}
                   >
@@ -486,13 +486,13 @@ export default function MemoryManagementVisualizer() {
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={() => { setCompareMode(false); runSimulation() }}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-5 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors text-sm"
+            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-5 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors text-sm"
           >
             실행
           </button>
           <button
             onClick={() => { setCompareMode(true); setTimeout(runSimulation, 0) }}
-            className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg px-4 py-2.5 font-medium hover:from-emerald-700 hover:to-teal-700 transition-colors text-sm"
+            className="flex items-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-emerald-700 hover:to-teal-700 transition-colors text-sm"
           >
             <BarChart3 className="w-4 h-4" />
             4개 비교
@@ -576,7 +576,6 @@ export default function MemoryManagementVisualizer() {
       {results && compareMode && (
         <div className={`${glassCard} ${glassInset} p-5`}>
           <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-            <BarChart3 className="w-5 h-5" />
             알고리즘 비교 요약
           </h2>
           <div className="overflow-x-auto">
@@ -598,7 +597,7 @@ export default function MemoryManagementVisualizer() {
                   const best = Math.min(...Object.values(results).map(v => v.faults))
                   const isBest = r.faults === best
                   return (
-                    <tr key={algo} className={`border-b border-line ${isBest ? 'bg-emerald-50 dark:bg-emerald-900/20' : ''}`}>
+                    <tr key={algo} className={`border-b border-line ${isBest ? 'bg-subtle' : ''}`}>
                       <td className="py-2 px-3 font-medium text-fg">
                         {ALGO_NAMES[algo]}
                         {isBest && <span className="ml-2 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">최소 폴트</span>}

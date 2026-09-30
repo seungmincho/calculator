@@ -751,7 +751,7 @@ export default function WeddingCalculator() {
               })}
 
               {/* Running total sticky bar */}
-              <div className="sticky bottom-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-4 text-white shadow-lg" aria-live="polite">
+              <div className="sticky bottom-0 bg-primary hover:bg-blue-700 rounded-xl p-4 text-white shadow-lg" aria-live="polite">
                 <div className="flex flex-wrap justify-between items-center gap-2">
                   <div className="flex items-center gap-4">
                     <div>
@@ -790,7 +790,7 @@ export default function WeddingCalculator() {
                   <h3 className="text-lg font-semibold text-fg">{t('congratulatory.guestGroup')}</h3>
                   <button
                     onClick={addGuestGroup}
-                    className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+                    className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-sub rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
                   >
                     <Plus size={14} />
                     {t('congratulatory.addGroup')}
@@ -854,7 +854,7 @@ export default function WeddingCalculator() {
               </div>
 
               {/* Summary */}
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6 space-y-4">
+              <div className="bg-subtle rounded-xl p-6 space-y-4">
                 <h3 className="text-lg font-semibold text-fg">{t('congratulatory.total')}</h3>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="bg-surface rounded-lg p-4">
@@ -987,7 +987,7 @@ export default function WeddingCalculator() {
               {/* Amount mode */}
               {splitConfig.mode === 'amount' && (
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <label className="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">
                       {t('split.groomSide')}
                     </label>
@@ -995,12 +995,12 @@ export default function WeddingCalculator() {
                       <CommaInput
                         value={splitConfig.groomAmount}
                         onChange={(v) => setSplitConfig(prev => ({ ...prev, groomAmount: v }))}
-                        className="w-full px-3 py-2 border border-blue-300 dark:border-blue-600 rounded-lg bg-field text-fg text-right text-sm focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-line rounded-lg bg-field text-fg text-right text-sm focus:ring-2 focus:ring-blue-500"
                       />
                       <span className="text-sm text-gray-500">{t('fields.unit')}</span>
                     </div>
                   </div>
-                  <div className="bg-pink-50 dark:bg-pink-950 rounded-xl p-4">
+                  <div className="bg-subtle rounded-xl p-4">
                     <label className="block text-sm font-medium text-pink-700 dark:text-pink-300 mb-2">
                       {t('split.brideSide')}
                     </label>
@@ -1008,7 +1008,7 @@ export default function WeddingCalculator() {
                       <CommaInput
                         value={splitConfig.brideAmount}
                         onChange={(v) => setSplitConfig(prev => ({ ...prev, brideAmount: v }))}
-                        className="w-full px-3 py-2 border border-pink-300 dark:border-pink-600 rounded-lg bg-field text-fg text-right text-sm focus:ring-2 focus:ring-pink-500"
+                        className="w-full px-3 py-2 border border-line rounded-lg bg-field text-fg text-right text-sm focus:ring-2 focus:ring-pink-500"
                       />
                       <span className="text-sm text-gray-500">{t('fields.unit')}</span>
                     </div>
@@ -1088,11 +1088,11 @@ export default function WeddingCalculator() {
             <div ref={dashboardRef} className="space-y-6">
               {/* Summary cards */}
               <div className="grid sm:grid-cols-3 gap-4">
-                <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-5 text-white">
+                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white">
                   <div className="text-sm opacity-80">{t('dashboard.totalCost')}</div>
                   <div className="text-2xl font-bold mt-1">{formatNumber(effectiveTotalCost)}<span className="text-base font-normal ml-0.5">{t('fields.unit')}</span></div>
                 </div>
-                <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-5 text-white">
+                <div className="bg-primary hover:bg-blue-700 rounded-xl p-5 text-white">
                   <div className="text-sm opacity-80">{t('dashboard.congratulatoryMoney')}</div>
                   <div className="text-2xl font-bold mt-1">{formatNumber(totalCongratulatoryMoney)}<span className="text-base font-normal ml-0.5">{t('fields.unit')}</span></div>
                 </div>
@@ -1228,7 +1228,7 @@ export default function WeddingCalculator() {
                 </button>
                 <button
                   onClick={handlePdfExport}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
                 >
                   <FileDown size={16} />
                   {t('actions.savePdf')}
@@ -1247,7 +1247,7 @@ export default function WeddingCalculator() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="font-semibold text-fg mb-3">{t('guide.averageCosts.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.averageCosts.items') as string[]).map((item, i) => (
@@ -1258,7 +1258,7 @@ export default function WeddingCalculator() {
               ))}
             </ul>
           </div>
-          <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="font-semibold text-fg mb-3">{t('guide.savingTips.title')}</h3>
             <ul className="space-y-2">
               {(t.raw('guide.savingTips.items') as string[]).map((item, i) => (

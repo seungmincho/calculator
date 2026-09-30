@@ -336,7 +336,7 @@ export default function PortReference() {
             <div>
               <h3 className="font-medium text-fg mb-3">{t('guide.ranges.title')}</h3>
               <div className="grid sm:grid-cols-3 gap-3">
-                <div className="bg-green-50 dark:bg-green-950 rounded-lg p-3">
+                <div className="bg-subtle rounded-lg p-3">
                   <p className="text-sm font-semibold text-green-700 dark:text-green-400">{t('catWellKnown')} (0–1023)</p>
                   <p className="text-xs text-green-600 dark:text-green-500 mt-1">{t('guide.ranges.wellKnownDesc')}</p>
                 </div>
@@ -368,11 +368,11 @@ export default function PortReference() {
             <div>
               <h3 className="font-medium text-fg mb-2">{t('guide.tcpUdp.title')}</h3>
               <div className="grid sm:grid-cols-2 gap-3">
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
+                <div className="bg-subtle rounded-lg p-3">
                   <p className="text-sm font-semibold text-blue-700 dark:text-blue-400 mb-1">TCP</p>
                   <p className="text-xs text-blue-600 dark:text-blue-400">{t('guide.tcpUdp.tcpDesc')}</p>
                 </div>
-                <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-3">
+                <div className="bg-subtle rounded-lg p-3">
                   <p className="text-sm font-semibold text-purple-700 dark:text-purple-400 mb-1">UDP</p>
                   <p className="text-xs text-purple-600 dark:text-purple-400">{t('guide.tcpUdp.udpDesc')}</p>
                 </div>

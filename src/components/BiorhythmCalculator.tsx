@@ -309,7 +309,6 @@ export default function BiorhythmCalculator() {
         <div className="lg:col-span-1 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-blue-600" />
               {t('inputTitle')}
             </h2>
 
@@ -358,7 +357,7 @@ export default function BiorhythmCalculator() {
 
             {/* Days lived info */}
             {birth && (
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3 text-sm">
+              <div className="bg-subtle rounded-lg p-3 text-sm">
                 <p className="text-blue-800 dark:text-blue-300">
                   {t('daysLived', { days: todayDays.toLocaleString() })}
                 </p>
@@ -370,7 +369,6 @@ export default function BiorhythmCalculator() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <Users className="w-5 h-5 text-purple-600" />
                 {t('compatibility.title')}
               </h2>
               <button
@@ -463,15 +461,14 @@ export default function BiorhythmCalculator() {
               {showCompatibility && compatibility && (
                 <div className={`${glassCard} ${glassInset} p-6`}>
                   <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                    <Users className="w-5 h-5 text-purple-600" />
                     {t('compatibility.resultTitle')}
                   </h2>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {[
-                      { key: 'overall', value: compatibility.overall, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 dark:bg-purple-950' },
+                      { key: 'overall', value: compatibility.overall, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-subtle' },
                       { key: 'physical', value: compatibility.physical, color: 'text-red-600 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-950' },
-                      { key: 'emotional', value: compatibility.emotional, color: 'text-green-600 dark:text-green-400', bg: 'bg-green-50 dark:bg-green-950' },
-                      { key: 'intellectual', value: compatibility.intellectual, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950' },
+                      { key: 'emotional', value: compatibility.emotional, color: 'text-green-600 dark:text-green-400', bg: 'bg-subtle' },
+                      { key: 'intellectual', value: compatibility.intellectual, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-subtle' },
                     ].map(item => (
                       <div key={item.key} className={`${item.bg} rounded-xl p-4 text-center`}>
                         <p className="text-xs text-muted mb-1">
@@ -551,7 +548,6 @@ export default function BiorhythmCalculator() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
 
@@ -582,7 +578,6 @@ export default function BiorhythmCalculator() {
           {/* Critical days */}
           <div className="space-y-3">
             <h3 className="font-medium text-fg flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-amber-500" />
               {t('guide.critical.title')}
             </h3>
             <div className="text-sm text-sub space-y-2">
@@ -595,7 +590,6 @@ export default function BiorhythmCalculator() {
           {/* Disclaimer */}
           <div className="space-y-3">
             <h3 className="font-medium text-fg flex items-center gap-2">
-              <Info className="w-4 h-4 text-blue-500" />
               {t('guide.disclaimer.title')}
             </h3>
             <div className="bg-amber-50 dark:bg-amber-950 rounded-lg p-4 text-sm text-amber-800 dark:text-amber-300 space-y-2">

@@ -437,7 +437,7 @@ export default function SubnetCalculator() {
                           setCidrInput(String(row.cidr))
                           setInputMode('cidr')
                         }}
-                        className={`cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors ${cidr === row.cidr ? 'bg-blue-50 dark:bg-blue-950/30 font-semibold' : ''}`}
+                        className={`cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors ${cidr === row.cidr ? 'bg-subtle font-semibold' : ''}`}
                       >
                         <td className="px-2 py-1 font-mono text-fg">/{row.cidr}</td>
                         <td className="px-2 py-1 font-mono text-sub">{row.mask}</td>
@@ -475,15 +475,15 @@ export default function SubnetCalculator() {
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                    <div className="bg-blue-50 dark:bg-blue-950/30 rounded-xl p-3 text-center">
+                    <div className="bg-subtle rounded-xl p-3 text-center">
                       <p className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('usableHosts')}</p>
                       <p className="text-lg font-bold text-blue-700 dark:text-blue-400">{result.usableHosts.toLocaleString()}</p>
                     </div>
-                    <div className="bg-purple-50 dark:bg-purple-950/30 rounded-xl p-3 text-center">
+                    <div className="bg-subtle rounded-xl p-3 text-center">
                       <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">CIDR</p>
                       <p className="text-lg font-bold text-purple-700 dark:text-purple-400">/{result.cidr}</p>
                     </div>
-                    <div className="bg-green-50 dark:bg-green-950/30 rounded-xl p-3 text-center">
+                    <div className="bg-subtle rounded-xl p-3 text-center">
                       <p className="text-xs text-green-600 dark:text-green-400 mb-1">{t('class')}</p>
                       <p className="text-lg font-bold text-green-700 dark:text-green-400">{t('classLabel', { cls: result.ipClass })}</p>
                     </div>
@@ -535,7 +535,7 @@ export default function SubnetCalculator() {
               <h2 className="text-lg font-semibold text-fg">{t('overlapTitle')}</h2>
               <button
                 onClick={() => setOverlapCidrs(prev => [...prev, ''])}
-                className="flex items-center gap-1 text-xs bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-lg px-3 py-1.5 transition-colors"
+                className="flex items-center gap-1 text-xs bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-lg px-3 py-1.5 transition-colors"
               >
                 <Plus className="w-3 h-3" />
                 {t('addCidr')}
@@ -602,7 +602,6 @@ export default function SubnetCalculator() {
             {overlapResults.overlaps.length > 0 ? (
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-red-600 dark:text-red-400 flex items-center gap-1">
-                  <AlertCircle className="w-4 h-4" />
                   {t('overlapFound', { count: overlapResults.overlaps.length })}
                 </h3>
                 {overlapResults.overlaps.map((o, i) => (
@@ -616,7 +615,7 @@ export default function SubnetCalculator() {
                 ))}
               </div>
             ) : overlapResults.ranges.length >= 2 ? (
-              <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-lg p-4 text-center">
+              <div className="bg-subtle border border-line rounded-lg p-4 text-center">
                 <Check className="w-6 h-6 text-green-500 mx-auto mb-1" />
                 <p className="text-sm text-green-700 dark:text-green-300">{t('noOverlap')}</p>
               </div>
@@ -641,7 +640,7 @@ export default function SubnetCalculator() {
                 <h2 className="text-lg font-semibold text-fg">{t('lookupCidrTitle')}</h2>
                 <button
                   onClick={() => setLookupCidrs(prev => [...prev, ''])}
-                  className="flex items-center gap-1 text-xs bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-lg px-3 py-1.5 transition-colors"
+                  className="flex items-center gap-1 text-xs bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-lg px-3 py-1.5 transition-colors"
                 >
                   <Plus className="w-3 h-3" />
                   {t('addCidr')}
@@ -717,7 +716,7 @@ export default function SubnetCalculator() {
                       !r.validIp
                         ? 'bg-red-50 dark:bg-red-950/20'
                         : r.matches.length > 0
-                          ? 'bg-green-50 dark:bg-green-950/20'
+                          ? 'bg-subtle'
                           : 'bg-subtle'
                     }`}
                   >
@@ -729,7 +728,7 @@ export default function SubnetCalculator() {
                         <span className="text-xs text-red-500">{t('invalidIp')}</span>
                       ) : r.matches.length > 0 ? (
                         r.matches.map((m, j) => (
-                          <span key={j} className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full font-mono">
+                          <span key={j} className="text-xs bg-soft text-sub px-2 py-0.5 rounded-full font-mono">
                             {numToIp(m.networkNum)}/{m.cidr}
                           </span>
                         ))
@@ -758,7 +757,6 @@ export default function SubnetCalculator() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
@@ -794,7 +792,7 @@ export default function SubnetCalculator() {
       </div>
 
       {/* 참고 */}
-      <div className="bg-blue-50 dark:bg-blue-950/30 rounded-xl p-4 flex items-start gap-3">
+      <div className="bg-subtle rounded-xl p-4 flex items-start gap-3">
         <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
         <p className="text-xs text-blue-700 dark:text-blue-300">{t('note')}</p>
       </div>

@@ -826,7 +826,7 @@ export default function MonitorTest() {
 
               <button
                 onClick={() => startTest(activeTest)}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
               >
                 <Maximize size={18} />
                 {t('startFullscreen')}

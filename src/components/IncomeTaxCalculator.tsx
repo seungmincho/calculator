@@ -598,7 +598,7 @@ function IncomeTaxContent() {
 
                 {/* Simple rate display */}
                 {expenseMethod === 'simple' && revenue && (
-                  <div className="mt-3 bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
+                  <div className="mt-3 bg-subtle rounded-lg p-3">
                     <p className="text-sm text-blue-800 dark:text-blue-300">
                       {t('appliedExpenseRate')}: {(getOccupation().simpleRate * 100).toFixed(1)}% → {t('expenseAmount')}: {formatWon(parseNum(revenue) * getOccupation().simpleRate)}{t('won')}
                     </p>
@@ -644,7 +644,7 @@ function IncomeTaxContent() {
                         />
                       </div>
                     </div>
-                    <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
+                    <div className="bg-subtle rounded-lg p-3">
                       <p className="text-sm text-blue-800 dark:text-blue-300">
                         {t('standardExpenseRate')}: {(getOccupation().standardRate * 100).toFixed(1)}%
                       </p>
@@ -736,7 +736,7 @@ function IncomeTaxContent() {
             {/* Next tab button */}
             <button
               onClick={() => setActiveTab('deduction')}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
             >
               {t('tabDeduction')} →
             </button>
@@ -896,7 +896,7 @@ function IncomeTaxContent() {
               </button>
               <button
                 onClick={() => setActiveTab('result')}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
               >
                 {t('tabResult')} →
               </button>
@@ -1020,7 +1020,7 @@ function IncomeTaxContent() {
                   </div>
 
                   {/* Final result */}
-                  <div className={`mt-4 p-4 rounded-xl ${result.finalAmount < 0 ? 'bg-blue-50 dark:bg-blue-950' : result.finalAmount > 0 ? 'bg-red-50 dark:bg-red-950' : 'bg-gray-50 dark:bg-gray-900'}`}>
+                  <div className={`mt-4 p-4 rounded-xl ${result.finalAmount < 0 ? 'bg-subtle' : result.finalAmount > 0 ? 'bg-red-50 dark:bg-red-950' : 'bg-subtle'}`}>
                     <div className="flex justify-between items-center">
                       <span className="font-semibold text-fg">{t('finalResult')}</span>
                       <span className={`text-xl font-bold ${result.finalAmount < 0 ? 'text-blue-600 dark:text-blue-400' : result.finalAmount > 0 ? 'text-red-600 dark:text-red-400' : 'text-fg'}`}>
@@ -1128,7 +1128,7 @@ function WaterfallRow({ label, value, step, isSubtotal }: {
   return (
     <div className={`flex items-center justify-between py-2.5 px-3 rounded-lg ${isSubtotal ? 'bg-subtle font-semibold' : ''}`}>
       <div className="flex items-center gap-2">
-        <span className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs flex items-center justify-center font-bold">{step}</span>
+        <span className="w-6 h-6 rounded-full bg-soft text-sub text-xs flex items-center justify-center font-bold">{step}</span>
         <span className="text-sm text-body">{label}</span>
       </div>
       <span className={`text-sm ${value < 0 ? 'text-red-600 dark:text-red-400' : 'text-fg'} ${isSubtotal ? 'font-semibold' : ''}`}>

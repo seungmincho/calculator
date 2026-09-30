@@ -436,7 +436,6 @@ export default function BudgetCalculator() {
           {/* Income Section */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <Wallet className="w-5 h-5 text-blue-500" />
               {t('income.title')}
             </h2>
             <div className="space-y-4">
@@ -518,7 +517,7 @@ export default function BudgetCalculator() {
               />
               <button
                 onClick={handleSavePreset}
-                className="flex items-center gap-1 px-3 py-2 text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                className="flex items-center gap-1 px-3 py-2 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
               >
                 <Save className="w-4 h-4" />
                 {t('actions.save')}
@@ -587,10 +586,10 @@ export default function BudgetCalculator() {
                         <span
                           className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                             expense.budgetType === 'need'
-                              ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                              ? 'bg-soft text-sub'
                               : expense.budgetType === 'saving'
-                              ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
-                              : 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300'
+                              ? 'bg-soft text-sub'
+                              : 'bg-soft text-sub'
                           }`}
                         >
                           {t(`budgetType.${expense.budgetType}`)}
@@ -853,7 +852,7 @@ export default function BudgetCalculator() {
             </p>
             <div className="grid sm:grid-cols-3 gap-4">
               {/* Needs 50% */}
-              <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
+              <div className="p-4 rounded-lg bg-subtle border border-line">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
                     {t('rule.needs')} (50%)
@@ -882,7 +881,7 @@ export default function BudgetCalculator() {
               </div>
 
               {/* Wants 30% */}
-              <div className="p-4 rounded-lg bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800">
+              <div className="p-4 rounded-lg bg-subtle border border-line">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
                     {t('rule.wants')} (30%)
@@ -911,7 +910,7 @@ export default function BudgetCalculator() {
               </div>
 
               {/* Savings 20% */}
-              <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800">
+              <div className="p-4 rounded-lg bg-subtle border border-line">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-green-700 dark:text-green-300">
                     {t('rule.saving')} (20%)

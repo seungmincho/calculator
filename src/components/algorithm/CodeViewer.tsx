@@ -60,7 +60,7 @@ export default function CodeViewer({ code, language = 'typescript', highlightLin
       </div>
 
       {/* Code */}
-      <div className="overflow-x-auto bg-gray-50 dark:bg-gray-900">
+      <div className="overflow-x-auto bg-subtle">
         <pre className="text-sm leading-6">
           {lines.map((line, i) => {
             const lineNum = i + 1

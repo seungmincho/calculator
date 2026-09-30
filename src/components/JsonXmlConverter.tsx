@@ -621,7 +621,6 @@ const JsonXmlConverter = () => {
             </div>
             <div className="flex items-center space-x-2">
               <label className="cursor-pointer p-2 text-gray-500 hover:text-blue-600 transition-colors">
-                <Upload className="w-4 h-4" />
                 <input
                   type="file"
                   accept={activeTab === 'json-to-xml' ? '.json' : '.xml'}
@@ -813,7 +812,7 @@ const JsonXmlConverter = () => {
       </div>
 
       {/* Guide */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8">
+      <div className="bg-subtle rounded-2xl p-8">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <FileText className="w-8 h-8 text-blue-600" />

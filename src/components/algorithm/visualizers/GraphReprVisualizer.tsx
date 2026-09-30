@@ -111,7 +111,7 @@ export default function GraphReprVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.dataStructure')}
             </span>
             <span className="text-xs text-gray-400">★☆☆</span>
@@ -153,7 +153,7 @@ export default function GraphReprVisualizer() {
             </div>
 
             {selectedNode !== null && (
-              <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-3 text-sm text-blue-700 dark:text-blue-400 text-center">
+              <div className="bg-subtle rounded-lg p-3 text-sm text-blue-700 dark:text-blue-400 text-center">
                 {t('controls.selectedHint', { node: String(selectedNode) })}
               </div>
             )}
@@ -201,11 +201,11 @@ export default function GraphReprVisualizer() {
                 </button>
               )}
               <button onClick={() => setGraphState(createSampleGraph())}
-                className="px-3 py-1.5 text-xs rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200/50 dark:border-blue-700/30 transition-colors">
+                className="px-3 py-1.5 text-xs rounded-lg bg-subtle text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-line transition-colors">
                 📐 {t('controls.sample')}
               </button>
               <button onClick={() => setGraphState(createCompleteGraph(5))}
-                className="px-3 py-1.5 text-xs rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/40 border border-purple-200/50 dark:border-purple-700/30 transition-colors">
+                className="px-3 py-1.5 text-xs rounded-lg bg-subtle text-purple-700 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/40 border border-line transition-colors">
                 🔗 {t('controls.complete')}
               </button>
               <button onClick={() => { setGraphState(createEmptyGraph()); setSelectedNode(null) }}
@@ -228,8 +228,8 @@ export default function GraphReprVisualizer() {
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-2 py-2.5 text-xs font-medium transition-colors ${
-                      activeTab === tab.key ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20' : 'text-muted'
-                    }`}>{tab.icon} {tab.label}</button>
+                      activeTab === tab.key ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle' : 'text-muted'
+                    }`}>{tab.label}</button>
                 ))}
               </div>
 
@@ -260,8 +260,8 @@ export default function GraphReprVisualizer() {
                                       if (cell !== null) handleRemoveEdge(graphState.nodes[ri].id, graphState.nodes[ci].id)
                                       else if (ri !== ci) setGraphState(prev => addEdge(prev, graphState.nodes[ri].id, graphState.nodes[ci].id, parseInt(edgeWeightInput) || 1))
                                     }}
-                                    className={`p-1 text-center cursor-pointer border border-gray-200/30 dark:border-gray-700/30 transition-colors hover:bg-blue-50 dark:hover:bg-blue-900/20 ${
-                                      cell !== null ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 font-bold' : 'text-gray-400 dark:text-gray-600'
+                                    className={`p-1 text-center cursor-pointer border border-line transition-colors hover:bg-blue-50 dark:hover:bg-blue-900/20 ${
+                                      cell !== null ? 'bg-subtle text-emerald-700 dark:text-emerald-400 font-bold' : 'text-gray-400 dark:text-gray-600'
                                     }`}>
                                     {cell ?? 0}
                                   </td>
@@ -285,7 +285,7 @@ export default function GraphReprVisualizer() {
                       <div className="space-y-2">
                         {adjList.map(entry => (
                           <div key={entry.nodeId} className="flex items-start gap-2">
-                            <span className="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 text-xs font-bold min-w-[28px] text-center">
+                            <span className="px-2 py-0.5 rounded bg-soft text-sub text-xs font-bold min-w-[28px] text-center">
                               {entry.label}
                             </span>
                             <span className="text-faint">→</span>

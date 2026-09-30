@@ -323,10 +323,10 @@ export default function WorkHoursCalculator() {
 
   const presetKeys = ['presetConvenience', 'presetCafe', 'presetRestaurant', 'presetOffice', 'presetLogistics'] as const
   const presetBtnCls = [
-    'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200',
+    'bg-soft text-sub hover:bg-purple-200',
     'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 hover:bg-amber-200',
     'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-200',
-    'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200',
+    'bg-soft text-sub hover:bg-blue-200',
     'bg-soft text-body hover:bg-gray-200',
   ]
   const glassCard = 'bg-surface border border-line rounded-2xl shadow-[0_18px_50px_rgba(59,130,246,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
@@ -336,10 +336,10 @@ export default function WorkHoursCalculator() {
   // ─── 결과 패널 ─────────────────────────────────────────
   const ResultPanel = () => result ? (
     <>
-      <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white">
+      <div className="bg-primary hover:bg-blue-700 rounded-2xl shadow-lg p-6 text-white">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-base font-semibold opacity-90 flex items-center gap-2">
-            <DollarSign className="w-5 h-5" />{t('result.title')}
+            {t('result.title')}
           </h3>
           <div className="flex gap-2">
             <button onClick={handleShare} className="flex items-center gap-1 bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg text-xs transition-colors">
@@ -628,7 +628,7 @@ export default function WorkHoursCalculator() {
         <div className="grid lg:grid-cols-2 gap-6">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-bold text-fg flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-green-600" />{t('conversion.title')}
+              {t('conversion.title')}
             </h2>
             <p className="text-xs text-muted">{t('conversion.description')}</p>
 
@@ -669,10 +669,10 @@ export default function WorkHoursCalculator() {
             </div>
 
             {convResult && (
-              <div className={`p-3 rounded-xl text-xs ${convResult.isEligibleWeeklyHoliday ? 'bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-subtle text-gray-500'}`}>
+              <div className={`p-3 rounded-xl text-xs ${convResult.isEligibleWeeklyHoliday ? 'bg-subtle text-green-700 dark:text-green-300' : 'bg-subtle text-gray-500'}`}>
                 {convResult.isEligibleWeeklyHoliday
                   ? `✅ ${t('conversion.eligibleWeeklyHoliday')} — 주휴수당 ${fmt(convResult.weeklyHolidayPay)}원/주`
-                  : '❌ 주 15시간 미만 — 주휴수당 미발생'}
+                  : '주 15시간 미만 — 주휴수당 미발생'}
               </div>
             )}
           </div>
@@ -681,7 +681,7 @@ export default function WorkHoursCalculator() {
             <div className="space-y-4">
               <div className={`${glassCard} ${glassInset} p-5`}>
                 <h3 className="text-sm font-bold text-fg mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-green-600" />{t('conversion.wageTable')}
+                  {t('conversion.wageTable')}
                 </h3>
                 <div className="divide-y divide-gray-100 dark:divide-gray-700">
                   {[
@@ -691,7 +691,7 @@ export default function WorkHoursCalculator() {
                     { label: `${t('conversion.monthly')} ${t('conversion.withHoliday')}`, value: convResult.monthlyWithHoliday, color: convResult.isEligibleWeeklyHoliday ? 'text-blue-600 font-bold' : '' },
                     { label: `${t('conversion.yearly')} ${t('conversion.withHoliday')}`, value: convResult.yearlyWithHoliday, color: 'text-green-600 font-bold text-base', big: true },
                   ].filter(Boolean).map((row, i) => row && (
-                    <div key={i} className={`flex justify-between items-center py-3 ${row.big ? 'bg-green-50 dark:bg-green-950 px-3 rounded-lg mt-1' : ''}`}>
+                    <div key={i} className={`flex justify-between items-center py-3 ${row.big ? 'bg-subtle px-3 rounded-lg mt-1' : ''}`}>
                       <span className="text-sm text-sub">{row.label}</span>
                       <span className={`font-semibold text-sm text-fg ${row.color}`}>{fmt(row.value)}원</span>
                     </div>
@@ -701,7 +701,7 @@ export default function WorkHoursCalculator() {
 
               <div className={`${glassCard} ${glassInset} p-5`}>
                 <h3 className="text-sm font-bold text-fg mb-4 flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-blue-600" />{t('conversion.insuranceTitle')}
+                  {t('conversion.insuranceTitle')}
                 </h3>
                 <div className="divide-y divide-gray-100 dark:divide-gray-700 text-sm">
                   {[
@@ -719,7 +719,7 @@ export default function WorkHoursCalculator() {
                     <span className="text-body">{t('conversion.totalDeduction')}</span>
                     <span className="text-red-600">-{fmt(convResult.deductions.total)}원</span>
                   </div>
-                  <div className="flex justify-between items-center py-3 bg-blue-50 dark:bg-blue-950 px-3 rounded-lg mt-1">
+                  <div className="flex justify-between items-center py-3 bg-subtle px-3 rounded-lg mt-1">
                     <div>
                       <span className="font-bold text-fg">{t('conversion.netMonthly')}</span>
                       <div className="text-xs text-muted">(4대보험 공제 후 예상액)</div>
@@ -737,13 +737,13 @@ export default function WorkHoursCalculator() {
       {/* ═══ 2026 최저임금 ═══ */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h3 className="text-lg font-bold text-fg mb-5 flex items-center gap-2">
-          <Users className="w-5 h-5 text-green-600" />{t('minimumWage.title')}
+          {t('minimumWage.title')}
         </h3>
         <div className="grid grid-cols-3 gap-4">
           {[
-            { val: '10,320원', label: t('minimumWage.2026'), bg: 'bg-green-50 dark:bg-green-900/20', c: 'text-green-600', lc: 'text-green-700 dark:text-green-300' },
-            { val: '2,156,880원', label: t('minimumWage.monthly'), bg: 'bg-blue-50 dark:bg-blue-900/20', c: 'text-blue-600', lc: 'text-blue-700 dark:text-blue-300' },
-            { val: '209시간', label: t('minimumWage.monthlyHours'), bg: 'bg-purple-50 dark:bg-purple-900/20', c: 'text-purple-600', lc: 'text-purple-700 dark:text-purple-300' },
+            { val: '10,320원', label: t('minimumWage.2026'), bg: 'bg-subtle', c: 'text-green-600', lc: 'text-green-700 dark:text-green-300' },
+            { val: '2,156,880원', label: t('minimumWage.monthly'), bg: 'bg-subtle', c: 'text-blue-600', lc: 'text-blue-700 dark:text-blue-300' },
+            { val: '209시간', label: t('minimumWage.monthlyHours'), bg: 'bg-subtle', c: 'text-purple-600', lc: 'text-purple-700 dark:text-purple-300' },
           ].map((item, i) => (
             <div key={i} className={`text-center p-4 ${item.bg} rounded-xl`}>
               <div className={`text-xl font-bold ${item.c} mb-1`}>{item.val}</div>

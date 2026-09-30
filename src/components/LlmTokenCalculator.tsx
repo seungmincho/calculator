@@ -258,7 +258,7 @@ export default function LlmTokenCalculator() {
               <h2 className="text-lg font-semibold text-fg">{t('estimatedCost')}</h2>
 
               {/* 토큰 수 */}
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+              <div className="bg-subtle rounded-lg p-4">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                     {formatNumber(inputTokens)}
@@ -443,7 +443,7 @@ export default function LlmTokenCalculator() {
                       key={m.id}
                       onClick={() => setSelectedModelId(m.id)}
                       className={`border-b border-line cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-750 ${
-                        m.id === selectedModelId ? 'bg-blue-50 dark:bg-blue-950' : ''
+                        m.id === selectedModelId ? 'bg-subtle' : ''
                       }`}
                     >
                       <td className="py-2 pr-2 font-medium text-fg whitespace-nowrap">
@@ -490,7 +490,6 @@ export default function LlmTokenCalculator() {
           className="flex items-center justify-between w-full text-left"
         >
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           {showGuide ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}

@@ -20,8 +20,8 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-10">
           <div className="max-w-sm">
             <Link href="/" className="flex items-center space-x-2 mb-3 group">
-              <Calculator className="w-7 h-7 text-primary" />
-              <span className="text-xl font-bold tracking-tight text-fg">{t('footer.title')}</span>
+              <span className="w-7 h-7 rounded-lg bg-primary text-white inline-flex items-center justify-center"><Calculator className="w-4 h-4" strokeWidth={2.25} /></span>
+              <span className="text-[17px] font-bold tracking-tight text-fg">{t('footer.title')}</span>
             </Link>
             <p className="text-sm text-sub leading-relaxed">
               {t('footer.description')}

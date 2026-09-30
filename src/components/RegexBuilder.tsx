@@ -390,7 +390,7 @@ export default function RegexBuilder() {
                 className={`${inputBase} border-line-strong`}
               />
               <div className="text-xs font-medium text-muted mb-1">{t('result')}</div>
-              <div className="text-sm text-body font-mono whitespace-pre-wrap break-all p-3 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800 min-h-[48px]">
+              <div className="text-sm text-body font-mono whitespace-pre-wrap break-all p-3 bg-subtle rounded-lg border border-line min-h-[48px]">
                 {replaceResult}
               </div>
               <button
@@ -428,7 +428,7 @@ export default function RegexBuilder() {
                       </td>
                       <td className="py-1.5 font-mono text-sub text-xs">
                         {m.groups.length > 0 ? m.groups.map((g, gi) => (
-                          <span key={gi} className="mr-1 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded px-1">{g || '(없음)'}</span>
+                          <span key={gi} className="mr-1 bg-subtle text-blue-700 dark:text-blue-300 rounded px-1">{g || '(없음)'}</span>
                         )) : '-'}
                       </td>
                     </tr>

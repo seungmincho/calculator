@@ -214,9 +214,8 @@ export default function WaterBillCalculator() {
             </div>
 
             {/* Average Usage Reference */}
-            <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+            <div className="bg-subtle rounded-lg p-4">
               <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2 flex items-center gap-2">
-                <Droplets className="w-4 h-4" />
                 {t('averageUsage')}
               </h3>
               <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-1">
@@ -241,7 +240,7 @@ export default function WaterBillCalculator() {
         {/* Right Panel - Results */}
         <div className="lg:col-span-2 space-y-6">
           {/* Total Card */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg p-8 text-white">
+          <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-8 text-white">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm opacity-90 mb-1">{t('totalAmount')}</p>

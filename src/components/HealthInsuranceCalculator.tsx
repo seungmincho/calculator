@@ -541,7 +541,7 @@ export default function HealthInsuranceCalculator() {
                   placeholder="200,000"
                 />
 
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3 text-xs text-blue-700 dark:text-blue-300">
+                <div className="bg-subtle rounded-lg p-3 text-xs text-blue-700 dark:text-blue-300">
                   <Info className="w-4 h-4 inline mr-1" />
                   {t('workplace.rateInfo')}
                 </div>
@@ -629,7 +629,7 @@ export default function HealthInsuranceCalculator() {
                           </div>
                         </div>
 
-                        <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4 mt-3">
+                        <div className="bg-subtle rounded-lg p-4 mt-3">
                           <div className="flex justify-between items-center">
                             <span className="text-sm font-semibold text-green-800 dark:text-green-200">{t('workplace.netSalary')}</span>
                             <span className="text-lg font-bold text-green-700 dark:text-green-300">{formatNumber(workplaceResult.netSalary)}{t('unit.won')}</span>
@@ -643,7 +643,7 @@ export default function HealthInsuranceCalculator() {
                   <div className={`${glassCard} ${glassInset} p-6`}>
                     <h3 className="text-lg font-semibold text-fg mb-4">{t('workplace.annualProjection')}</h3>
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+                      <div className="bg-subtle rounded-lg p-4">
                         <div className="text-xs text-blue-600 dark:text-blue-400">{t('insurance.healthInsurance')} + {t('insurance.longTermCare')}</div>
                         <div className="text-lg font-bold text-blue-700 dark:text-blue-300 mt-1">
                           {formatNumber((workplaceResult.healthEmployee + workplaceResult.longTermEmployee) * 12)}{t('unit.won')}
@@ -651,7 +651,7 @@ export default function HealthInsuranceCalculator() {
                         <div className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">{t('unit.perYear')}</div>
                       </div>
                       {showAllInsurance && (
-                        <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-4">
+                        <div className="bg-subtle rounded-lg p-4">
                           <div className="text-xs text-purple-600 dark:text-purple-400">{t('insurance.total4')}</div>
                           <div className="text-lg font-bold text-purple-700 dark:text-purple-300 mt-1">
                             {formatNumber(workplaceResult.totalEmployee * 12)}{t('unit.won')}
@@ -826,7 +826,7 @@ export default function HealthInsuranceCalculator() {
                   {/* Result header */}
                   <div className={`flex items-center gap-3 mb-6 p-4 rounded-xl ${
                     dependentResult.eligible
-                      ? 'bg-green-50 dark:bg-green-950'
+                      ? 'bg-subtle'
                       : 'bg-red-50 dark:bg-red-950'
                   }`}>
                     {dependentResult.eligible ? (
@@ -881,7 +881,7 @@ export default function HealthInsuranceCalculator() {
 
                   {/* Estimated regional premium if not eligible */}
                   {!dependentResult.eligible && dependentResult.estimatedRegionalPremium !== null && (
-                    <div className="mt-6 bg-orange-50 dark:bg-orange-950 rounded-xl p-4">
+                    <div className="mt-6 bg-subtle rounded-xl p-4">
                       <div className="text-sm text-orange-700 dark:text-orange-300 font-medium mb-1">
                         {t('dependent.switchToRegional')}
                       </div>
@@ -992,7 +992,7 @@ export default function HealthInsuranceCalculator() {
                     const annualDiff = diff * 12
 
                     return (
-                      <div className={`mt-4 p-4 rounded-xl ${diff > 0 ? 'bg-blue-50 dark:bg-blue-950' : 'bg-red-50 dark:bg-red-950'}`}>
+                      <div className={`mt-4 p-4 rounded-xl ${diff > 0 ? 'bg-subtle' : 'bg-red-50 dark:bg-red-950'}`}>
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                           <div>
                             <div className="text-sm font-medium text-body">{t('comparison.difference')}</div>
@@ -1166,7 +1166,7 @@ function PremiumRow({ label, employee, employer, t }: {
 
 function ConditionRow({ pass, label, detail }: { pass: boolean; label: string; detail: string }) {
   return (
-    <div className={`flex items-start gap-2 p-3 rounded-lg ${pass ? 'bg-green-50 dark:bg-green-950/50' : 'bg-red-50 dark:bg-red-950/50'}`}>
+    <div className={`flex items-start gap-2 p-3 rounded-lg ${pass ? 'bg-subtle' : 'bg-red-50 dark:bg-red-950/50'}`}>
       {pass ? (
         <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0" />
       ) : (

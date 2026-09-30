@@ -17,7 +17,7 @@ export default function StepNavigator({ steps, currentStep, onStepClick }: StepN
       {/* Progress bar */}
       <div className="h-1.5 bg-gray-200/50 dark:bg-gray-700/50 rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500"
+          className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-500"
           style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
         />
       </div>
@@ -36,7 +36,7 @@ export default function StepNavigator({ steps, currentStep, onStepClick }: StepN
                 isActive
                   ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
                   : isPast
-                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                    ? 'bg-soft text-sub'
                     : 'bg-gray-100/50 dark:bg-gray-800/50 text-muted hover:bg-gray-200/50 dark:hover:bg-gray-700/50'
               }`}
               title={step.description}

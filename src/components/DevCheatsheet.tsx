@@ -37,13 +37,13 @@ const DIFFICULTY_COLORS: Record<CheatsheetCommand['difficulty'], string> = {
 }
 
 const CATEGORY_BG: Record<string, string> = {
-  orange: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-700',
-  green: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700',
-  blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700',
-  purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700',
-  teal: 'bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 border-teal-300 dark:border-teal-700',
-  cyan: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 border-cyan-300 dark:border-cyan-700',
-  pink: 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 border-pink-300 dark:border-pink-700',
+  orange: 'bg-soft text-sub border-line',
+  green: 'bg-soft text-sub border-line',
+  blue: 'bg-soft text-sub border-line',
+  purple: 'bg-soft text-sub border-line',
+  teal: 'bg-soft text-sub border-line',
+  cyan: 'bg-soft text-sub border-line',
+  pink: 'bg-soft text-sub border-line',
   amber: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-700',
 }
 
@@ -501,7 +501,7 @@ export default function DevCheatsheet() {
                                 <span className="text-xs font-medium text-muted uppercase tracking-wide">
                                   {t('command.example')}
                                 </span>
-                                <pre className="mt-1 font-mono bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300 px-4 py-3 rounded-lg text-sm overflow-x-auto whitespace-pre-wrap break-all">
+                                <pre className="mt-1 font-mono bg-subtle text-gray-800 dark:text-gray-300 px-4 py-3 rounded-lg text-sm overflow-x-auto whitespace-pre-wrap break-all">
                                   {cmd.example}
                                 </pre>
                               </div>

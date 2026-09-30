@@ -662,28 +662,28 @@ const SqlFormatter = () => {
 
                 {/* 분석 결과 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                  <div className="bg-subtle p-4 rounded-lg">
                     <h4 className="font-medium text-blue-900 dark:text-blue-200 mb-2">테이블</h4>
                     <div className="text-sm text-blue-800 dark:text-blue-300">
                       {analysis.tables.length > 0 ? analysis.tables.join(', ') : '없음'}
                     </div>
                   </div>
 
-                  <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                  <div className="bg-subtle p-4 rounded-lg">
                     <h4 className="font-medium text-green-900 dark:text-green-200 mb-2">함수</h4>
                     <div className="text-sm text-green-800 dark:text-green-300">
                       {analysis.functions.length > 0 ? analysis.functions.join(', ') : '없음'}
                     </div>
                   </div>
 
-                  <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+                  <div className="bg-subtle p-4 rounded-lg">
                     <h4 className="font-medium text-purple-900 dark:text-purple-200 mb-2">JOIN 타입</h4>
                     <div className="text-sm text-purple-800 dark:text-purple-300">
                       {analysis.joins.length > 0 ? analysis.joins.join(', ') : '없음'}
                     </div>
                   </div>
 
-                  <div className="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg">
+                  <div className="bg-subtle p-4 rounded-lg">
                     <h4 className="font-medium text-orange-900 dark:text-orange-200 mb-2">복잡도</h4>
                     <div className="text-sm text-orange-800 dark:text-orange-300">
                       {analysis.complexity}

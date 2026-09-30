@@ -487,7 +487,7 @@ export default function ScreenCompare() {
       )}
 
       {/* PPI guide */}
-      <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
+      <div className="bg-subtle rounded-xl p-6">
         <h2 className="text-lg font-semibold text-fg mb-4">{t('ppiGuide.title')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {[

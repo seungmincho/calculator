@@ -368,7 +368,7 @@ export default function ImageCompressor() {
             <div
               className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
                 isDragging
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                  ? 'border-blue-500 bg-subtle'
                   : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
               }`}
               onClick={() => fileInputRef.current?.click()}
@@ -479,7 +479,7 @@ export default function ImageCompressor() {
               <button
                 onClick={compressAll}
                 disabled={images.length === 0 || isCompressing}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
               >
                 {isCompressing ? (
                   <>
@@ -539,11 +539,11 @@ export default function ImageCompressor() {
                 </div>
                 {doneCount > 0 && (
                   <>
-                    <div className="bg-green-50 dark:bg-green-950 rounded-lg p-3">
+                    <div className="bg-subtle rounded-lg p-3">
                       <p className="text-xs text-muted">{t('compressedSize')}</p>
                       <p className="text-lg font-bold text-green-600 dark:text-green-400">{formatFileSize(totalCompressed)}</p>
                     </div>
-                    <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
+                    <div className="bg-subtle rounded-lg p-3">
                       <p className="text-xs text-muted">{t('savings')}</p>
                       <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
                         {totalOriginal > 0 ? `${Math.round(((totalOriginal - totalCompressed) / totalOriginal) * 100)}%` : '0%'}
@@ -568,7 +568,7 @@ export default function ImageCompressor() {
               <div className="space-y-4">
                 {/* Progress indicator */}
                 {processingCount > 0 && (
-                  <div className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
+                  <div className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 bg-subtle rounded-lg p-3">
                     <RefreshCw size={16} className="animate-spin" />
                     {t('processing')} ({processingCount}/{images.length})
                   </div>
@@ -647,7 +647,7 @@ export default function ImageCompressor() {
                           <div
                             className={`rounded-lg p-2 ${
                               image.status === 'done'
-                                ? 'bg-green-50 dark:bg-green-950'
+                                ? 'bg-subtle'
                                 : 'bg-subtle'
                             }`}
                           >
@@ -665,7 +665,7 @@ export default function ImageCompressor() {
                           <div
                             className={`rounded-lg p-2 ${
                               image.status === 'done'
-                                ? 'bg-blue-50 dark:bg-blue-950'
+                                ? 'bg-subtle'
                                 : 'bg-subtle'
                             }`}
                           >

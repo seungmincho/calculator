@@ -1227,7 +1227,7 @@ export default function BreakoutGame() {
               {gameState === 'idle' && (
                 <button
                   onClick={startGame}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 transition-colors"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 transition-colors"
                 >
                   <Play className="w-4 h-4" />
                   {t('start')}
@@ -1247,7 +1247,7 @@ export default function BreakoutGame() {
               {gameState === 'paused' && (
                 <button
                   onClick={togglePause}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 transition-colors"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 transition-colors"
                 >
                   <Play className="w-4 h-4" />
                   {t('resume')}
@@ -1257,7 +1257,7 @@ export default function BreakoutGame() {
               {gameState === 'gameover' && (
                 <button
                   onClick={startGame}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 transition-colors"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 transition-colors"
                 >
                   <RotateCcw className="w-4 h-4" />
                   {t('restart')}
@@ -1267,7 +1267,7 @@ export default function BreakoutGame() {
               {gameState === 'levelclear' && (
                 <button
                   onClick={nextLevel}
-                  className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg px-4 py-3 font-medium hover:from-green-700 hover:to-emerald-700 flex items-center gap-2 transition-colors"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-green-700 hover:to-emerald-700 flex items-center gap-2 transition-colors"
                 >
                   <Play className="w-4 h-4" />
                   {t('nextLevel')}
@@ -1311,7 +1311,7 @@ export default function BreakoutGame() {
 
           {/* Level Clear Info */}
           {gameState === 'levelclear' && (
-            <div className="bg-green-50 dark:bg-green-950 rounded-xl shadow-lg p-6">
+            <div className="bg-subtle rounded-xl shadow-lg p-6">
               <h3 className="text-lg font-bold text-green-600 dark:text-green-400 mb-2">{t('levelClear')}</h3>
               <div className="space-y-1 text-sm text-body">
                 <p>{t('score')}: <span className="font-bold">{score}</span></p>

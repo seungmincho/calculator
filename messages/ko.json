@@ -1833,7 +1833,7 @@
       "braces": "중괄호 형식",
       "urn": "URN 형식"
     },
-    "generate": "🎲 UUID 생성",
+    "generate": "UUID 생성",
     "generating": "생성 중...",
     "result": {
       "title": "생성된 UUID"
@@ -2366,7 +2366,7 @@
     "title": "JWT 디코더",
     "description": "JWT 토큰을 안전하게 디코드하고 분석하세요. Header, Payload, Signature를 명확히 분리하여 표시하고 토큰 유효성을 검증합니다.",
     "security": {
-      "title": "🔒 보안 안내",
+      "title": "보안 안내",
       "description": "이 도구는 브라우저에서 로컬로 동작하며, 토큰이 서버로 전송되지 않습니다. 하지만 프로덕션 환경의 실제 토큰은 신중하게 다루세요."
     },
     "input": {
@@ -3781,7 +3781,7 @@
       "mixed": "혼합 방식",
       "mixedDesc": "랜덤과 통계를 혼합하여 균형있게 선택"
     },
-    "generate": "🎲 번호 생성하기",
+    "generate": "번호 생성하기",
     "generating": "번호 생성 중...",
     "gameNumber": "게임",
     "result": {
@@ -3926,7 +3926,7 @@
         "fast": "빠름"
       }
     },
-    "generateLadder": "🪜 사다리 생성하기",
+    "generateLadder": "사다리 생성하기",
     "startGame": "▶️ 게임 시작!",
     "playing": "게임 진행 중...",
     "ladder": {
@@ -4006,11 +4006,11 @@
     "showResultsOnly": "결과만 보기",
     "presets": {
       "title": "빠른 시작 프리셋",
-      "lunch": "🍱 점심 메뉴",
-      "duty": "🧹 당번 정하기",
-      "gameOrder": "🎮 게임 순서",
-      "teams": "👥 팀 나누기",
-      "coffee": "☕ 커피 내기"
+      "lunch": "점심 메뉴",
+      "duty": "당번 정하기",
+      "gameOrder": "게임 순서",
+      "teams": "팀 나누기",
+      "coffee": "커피 내기"
     }
   },
   "regexExtractor": {
@@ -4720,7 +4720,7 @@
     "healthTools": "건강 도구",
     "mediaTools": "이미지/미디어 도구",
     "simpleGames": "간단 게임",
-    "financialTips": "💡 금융 팁",
+    "financialTips": "금융 팁",
     "algorithm": "알고리즘"
   },
   "mobileNav": {
@@ -13918,8 +13918,8 @@
     "resultWon": "정답!",
     "resultLost": "아쉽네요...",
     "answerWas": "정답은:",
-    "streakContinued": "🔥 {count}일 연속 성공!",
-    "streakLost": "😢 {count}일 연속 기록이 끊겼습니다...",
+    "streakContinued": "{count}일 연속 성공!",
+    "streakLost": "{count}일 연속 기록이 끊겼습니다...",
     "copyResult": "복사",
     "shareNative": "공유",
     "shareTwitter": "X 공유",
@@ -15660,7 +15660,7 @@
   "homePage": {
     "hero": {
       "title": "필요한 모든 도구, 한 곳에서",
-      "subtitle": "금융 계산기, 개발 도구, 이미지 편집, 건강 관리, 게임까지 126개 이상의 무료 온라인 도구를 제공합니다",
+      "subtitle": "금융 계산기, 개발 도구, 이미지 편집, 건강 관리, 게임까지 240개 이상의 무료 온라인 도구를 제공합니다",
       "searchPlaceholder": "도구를 검색하세요... (Ctrl+K)",
       "totalTools": "전체 도구"
     },
@@ -20781,10 +20781,10 @@
     },
     "presets": {
       "label": "프리셋",
-      "sports": { "label": "🏃 운동 경기", "names": ["민수", "지영", "현우", "서연", "도윤", "하은", "준호", "수빈", "태민", "유나"] },
-      "study": { "label": "📚 조별 과제", "names": ["김학생", "이학생", "박학생", "최학생", "정학생", "강학생"] },
-      "company": { "label": "🏢 회식 팀", "names": ["김대리", "이과장", "박사원", "최팀장", "정인턴", "강매니저", "조주임", "한부장"] },
-      "game": { "label": "🎮 게임 팀", "names": ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"] }
+      "sports": { "label": "운동 경기", "names": ["민수", "지영", "현우", "서연", "도윤", "하은", "준호", "수빈", "태민", "유나"] },
+      "study": { "label": "조별 과제", "names": ["김학생", "이학생", "박학생", "최학생", "정학생", "강학생"] },
+      "company": { "label": "회식 팀", "names": ["김대리", "이과장", "박사원", "최팀장", "정인턴", "강매니저", "조주임", "한부장"] },
+      "game": { "label": "게임 팀", "names": ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"] }
     },
     "guide": {
       "title": "가이드",

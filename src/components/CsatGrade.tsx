@@ -192,10 +192,10 @@ function getGradeColor(grade: number): string {
       return 'bg-orange-100 dark:bg-orange-900/40 border-orange-400 dark:border-orange-600 text-orange-800 dark:text-orange-200'
     case 4:
     case 5:
-      return 'bg-blue-50 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700 text-blue-800 dark:text-blue-200'
+      return 'bg-subtle border-line text-blue-800 dark:text-blue-200'
     case 6:
     case 7:
-      return 'bg-green-50 dark:bg-green-900/30 border-green-300 dark:border-green-700 text-green-800 dark:text-green-200'
+      return 'bg-subtle border-line text-green-800 dark:text-green-200'
     default:
       return 'bg-red-50 dark:bg-red-900/30 border-red-300 dark:border-red-700 text-red-800 dark:text-red-200'
   }
@@ -227,13 +227,13 @@ function getRowHighlight(grade: number): string {
     case 2:
       return 'bg-gray-50 dark:bg-gray-700/30'
     case 3:
-      return 'bg-orange-50 dark:bg-orange-900/20'
+      return 'bg-subtle'
     case 4:
     case 5:
-      return 'bg-blue-50 dark:bg-blue-900/20'
+      return 'bg-subtle'
     case 6:
     case 7:
-      return 'bg-green-50 dark:bg-green-900/20'
+      return 'bg-subtle'
     default:
       return 'bg-red-50 dark:bg-red-900/20'
   }
@@ -359,7 +359,7 @@ export default function CsatGrade() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="p-2 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg text-white">
+        <div className="p-2 bg-primary hover:bg-blue-700 rounded-lg text-white">
           <GraduationCap className="w-6 h-6" />
         </div>
         <div>
@@ -377,12 +377,11 @@ export default function CsatGrade() {
         <div className="lg:col-span-1 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Award className="w-5 h-5 text-blue-600" />
               {t('subject')}
             </h2>
 
             {/* Year badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 rounded-full text-sm font-medium text-blue-700 dark:text-blue-300">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-subtle rounded-full text-sm font-medium text-blue-700 dark:text-blue-300">
               <GraduationCap className="w-4 h-4" />
               {t('year')}
             </div>
@@ -431,8 +430,8 @@ export default function CsatGrade() {
               <span
                 className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                   subject.isAbsolute
-                    ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
-                    : 'bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300'
+                    ? 'bg-soft text-sub'
+                    : 'bg-soft text-sub'
                 }`}
               >
                 {subject.isAbsolute ? t('absoluteGrade') : t('relativeGrade')}
@@ -444,7 +443,7 @@ export default function CsatGrade() {
               <button
                 onClick={handleCalculate}
                 disabled={!rawScore}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 {t('calculate')}
               </button>
@@ -484,7 +483,6 @@ export default function CsatGrade() {
               {/* Grade result card */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-fg mb-6 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-blue-600" />
                   {t('result')}
                 </h2>
 
@@ -545,7 +543,7 @@ export default function CsatGrade() {
                     {!result.subject.isAbsolute && matchedCutoff && (
                       <div className="grid grid-cols-2 gap-4">
                         {matchedCutoff.standardScore != null && (
-                          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+                          <div className="bg-subtle rounded-lg p-3">
                             <div className="text-xs text-blue-600 dark:text-blue-400">
                               {t('standardScore')}
                             </div>
@@ -555,7 +553,7 @@ export default function CsatGrade() {
                           </div>
                         )}
                         {matchedCutoff.percentile != null && (
-                          <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3">
+                          <div className="bg-subtle rounded-lg p-3">
                             <div className="text-xs text-indigo-600 dark:text-indigo-400">
                               {t('percentile')}
                             </div>
@@ -569,7 +567,7 @@ export default function CsatGrade() {
 
                     {/* Absolute badge */}
                     {result.subject.isAbsolute && (
-                      <span className="inline-flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 font-medium">
+                      <span className="inline-flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-soft text-sub font-medium">
                         <Check className="w-3.5 h-3.5" />
                         {t('absoluteGrade')}
                       </span>
@@ -637,7 +635,6 @@ export default function CsatGrade() {
               className="w-full flex items-center justify-between p-6 text-left"
             >
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <GraduationCap className="w-5 h-5 text-blue-600" />
                 {t('gradeTable')} — {t(subject.detailKey)}
               </h2>
               {showTable ? (
@@ -744,7 +741,6 @@ export default function CsatGrade() {
           className="w-full flex items-center justify-between p-6 text-left"
         >
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-blue-600" />
             {t('guide.title')}
           </h2>
           {showGuide ? (

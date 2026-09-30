@@ -215,7 +215,7 @@ export default function AABBVisualizer() {
                   {visible && (
                     <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-medium ${
                       step.isSeparating
-                        ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400'
+                        ? 'bg-soft text-sub'
                         : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                     }`}>
                       {step.isSeparating ? t('projection.gap') : `${t('projection.overlap')} ${fmt(step.overlap)}px`}
@@ -281,11 +281,11 @@ export default function AABBVisualizer() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
+                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -299,10 +299,10 @@ export default function AABBVisualizer() {
                     <div
                       className={`p-2.5 rounded-lg border transition-all cursor-pointer ${
                         currentStep === 0
-                          ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20'
+                          ? 'border-blue-500/50 bg-subtle'
                           : currentStep > 0
-                            ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
-                            : 'border-gray-200/30 dark:border-gray-700/30 opacity-50'
+                            ? 'border-line bg-subtle'
+                            : 'border-line opacity-50'
                       }`}
                       onClick={() => setCurrentStep(0)}
                     >
@@ -310,7 +310,7 @@ export default function AABBVisualizer() {
                         <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
                           currentStep >= 0
                             ? fullResult.steps[0].isSeparating
-                              ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'
+                              ? 'bg-soft text-sub'
                               : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
                             : 'bg-track text-gray-500'
                         }`}>
@@ -322,7 +322,7 @@ export default function AABBVisualizer() {
                         {currentStep >= 0 && (
                           <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded-full ${
                             fullResult.steps[0].isSeparating
-                              ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400'
+                              ? 'bg-soft text-sub'
                               : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                           }`}>
                             {fullResult.steps[0].isSeparating ? t('stepsGuide.xSeparated') : t('stepsGuide.xOverlap')}
@@ -335,10 +335,10 @@ export default function AABBVisualizer() {
                     <div
                       className={`p-2.5 rounded-lg border transition-all cursor-pointer ${
                         currentStep === 1
-                          ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20'
+                          ? 'border-blue-500/50 bg-subtle'
                           : currentStep > 1
-                            ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
-                            : 'border-gray-200/30 dark:border-gray-700/30 opacity-50'
+                            ? 'border-line bg-subtle'
+                            : 'border-line opacity-50'
                       }`}
                       onClick={() => setCurrentStep(1)}
                     >
@@ -346,7 +346,7 @@ export default function AABBVisualizer() {
                         <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
                           currentStep >= 1
                             ? fullResult.steps[1].isSeparating
-                              ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'
+                              ? 'bg-soft text-sub'
                               : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
                             : 'bg-track text-gray-500'
                         }`}>
@@ -358,7 +358,7 @@ export default function AABBVisualizer() {
                         {currentStep >= 1 && (
                           <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded-full ${
                             fullResult.steps[1].isSeparating
-                              ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400'
+                              ? 'bg-soft text-sub'
                               : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                           }`}>
                             {fullResult.steps[1].isSeparating ? t('stepsGuide.ySeparated') : t('stepsGuide.yOverlap')}
@@ -372,7 +372,7 @@ export default function AABBVisualizer() {
                       <div className={`mt-3 p-3 rounded-lg border-2 text-center text-sm font-medium ${
                         fullResult.colliding
                           ? 'border-red-300 dark:border-red-700 bg-red-50/50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
-                          : 'border-emerald-300 dark:border-emerald-700 bg-emerald-50/50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400'
+                          : 'border-line bg-subtle text-emerald-700 dark:text-emerald-400'
                       }`}>
                         {t('stepsGuide.result')}: {
                           fullResult.colliding

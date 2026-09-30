@@ -366,9 +366,8 @@ const ExchangeRateCalculatorContent = () => {
 
             {/* 환율 정보 */}
             {!loading && Object.keys(exchangeRates).length > 0 && getExchangeRate() && (
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+              <div className="bg-subtle p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
-                  <Calculator className="w-4 h-4 inline mr-1" />
                   현재 환율
                 </h3>
                 <p className="text-blue-700 dark:text-blue-300">
@@ -400,7 +399,7 @@ const ExchangeRateCalculatorContent = () => {
             </div>
           ) : result !== null ? (
             <div className="space-y-6">
-              <div className="text-center p-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl text-white">
+              <div className="text-center p-6 bg-primary hover:bg-blue-700 rounded-xl text-white">
                 <div className="text-sm opacity-90 mb-1">환전 결과</div>
                 <div className="text-3xl font-bold mb-2">
                   {getCurrencyInfo(toCurrency).symbol} {formatNumber(result)}
@@ -461,7 +460,6 @@ const ExchangeRateCalculatorContent = () => {
 
               <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-2">
-                  <TrendingUp className="w-4 h-4 inline mr-1" />
                   참고사항
                 </h3>
                 <ul className="text-sm text-amber-700 dark:text-amber-300 space-y-1">

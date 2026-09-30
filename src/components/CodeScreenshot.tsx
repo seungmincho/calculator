@@ -710,7 +710,7 @@ export default function CodeScreenshot() {
                 onClick={() => setBgType('gradient')}
                 className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   bgType === 'gradient'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                    ? 'bg-primary hover:bg-blue-700 text-white'
                     : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
@@ -720,7 +720,7 @@ export default function CodeScreenshot() {
                 onClick={() => setBgType('solid')}
                 className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   bgType === 'solid'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                    ? 'bg-primary hover:bg-blue-700 text-white'
                     : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
@@ -963,7 +963,7 @@ export default function CodeScreenshot() {
               placeholder={t('codePlaceholder')}
               rows={10}
               spellCheck={false}
-              className="w-full px-4 py-3 border border-line-strong rounded-lg bg-gray-50 dark:bg-gray-900 text-fg focus:ring-2 focus:ring-blue-500 font-mono text-sm leading-relaxed resize-y"
+              className="w-full px-4 py-3 border border-line-strong rounded-lg bg-subtle text-fg focus:ring-2 focus:ring-blue-500 font-mono text-sm leading-relaxed resize-y"
             />
           </div>
 
@@ -1006,7 +1006,7 @@ export default function CodeScreenshot() {
               {/* Download PNG */}
               <button
                 onClick={downloadPNG}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
               >
                 <Download className="w-4 h-4" />
                 {t('exportPng')}
@@ -1015,7 +1015,7 @@ export default function CodeScreenshot() {
               {/* Copy to Clipboard */}
               <button
                 onClick={copyImageToClipboard}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-medium hover:from-green-700 hover:to-emerald-700 transition-all"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-green-700 hover:to-emerald-700 transition-all"
               >
                 {copiedId === 'image' ? (
                   <>

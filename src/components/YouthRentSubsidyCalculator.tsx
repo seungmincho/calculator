@@ -266,7 +266,7 @@ export default function YouthRentSubsidyCalculator() {
   return (
     <div className="space-y-8">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-800 dark:to-teal-800 rounded-2xl p-6 sm:p-8 text-white">
+      <div className="bg-primary hover:bg-blue-700 rounded-2xl p-6 sm:p-8 text-white">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2">{t('title')}</h1>
         <p className="text-emerald-100 text-sm sm:text-base mb-6">{t('description')}</p>
         <div className="grid grid-cols-3 gap-4">
@@ -291,7 +291,6 @@ export default function YouthRentSubsidyCalculator() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5 sticky top-24`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Search className="w-5 h-5 text-blue-600" />
               {t('inputTitle')}
             </h2>
 
@@ -491,7 +490,7 @@ export default function YouthRentSubsidyCalculator() {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={calculate}
-                className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg px-4 py-3 font-medium hover:from-emerald-700 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-emerald-700 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
               >
                 <ShieldCheck className="w-5 h-5" />
                 {t('checkButton')}
@@ -521,8 +520,8 @@ export default function YouthRentSubsidyCalculator() {
             <>
               {/* Eligibility Badge */}
               <div className={`rounded-xl shadow-lg p-6 ${result.eligible
-                ? 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/40 dark:to-emerald-950/40 border-2 border-green-200 dark:border-green-800'
-                : 'bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/40 dark:to-orange-950/40 border-2 border-red-200 dark:border-red-800'
+                ? 'bg-subtle border-2 border-line'
+                : 'bg-subtle border-2 border-red-200 dark:border-red-800'
               }`}>
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div className="flex items-center gap-3">
@@ -554,11 +553,10 @@ export default function YouthRentSubsidyCalculator() {
               {result.eligible && (
                 <div className={`${glassCard} ${glassInset} p-6`}>
                   <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                    <DollarSign className="w-5 h-5 text-emerald-600" />
                     {t('supportTitle')}
                   </h3>
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="bg-emerald-50 dark:bg-emerald-950/40 rounded-xl p-5 text-center">
+                    <div className="bg-subtle rounded-xl p-5 text-center">
                       <div className="text-sm text-emerald-600 dark:text-emerald-400 mb-1">{t('monthlySupport')}</div>
                       <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-300">
                         {(result.monthlySupport / 10000).toLocaleString('ko-KR')}{t('manwonUnit')}
@@ -567,7 +565,7 @@ export default function YouthRentSubsidyCalculator() {
                         ({result.monthlySupport.toLocaleString('ko-KR')}{t('wonUnit')})
                       </div>
                     </div>
-                    <div className="bg-blue-50 dark:bg-blue-950/40 rounded-xl p-5 text-center">
+                    <div className="bg-subtle rounded-xl p-5 text-center">
                       <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('totalSupport')}</div>
                       <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">
                         {(result.totalSupport / 10000).toLocaleString('ko-KR')}{t('manwonUnit')}
@@ -603,7 +601,6 @@ export default function YouthRentSubsidyCalculator() {
               {/* 7-item Checklist */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-blue-600" />
                   {t('checklistTitle')}
                 </h3>
                 <div className="space-y-3">
@@ -612,7 +609,7 @@ export default function YouthRentSubsidyCalculator() {
                       key={item.key}
                       className={`flex items-start gap-3 p-3 rounded-lg border ${
                         item.pass
-                          ? 'bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800'
+                          ? 'bg-subtle border-line'
                           : 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800'
                       }`}
                     >
@@ -646,7 +643,6 @@ export default function YouthRentSubsidyCalculator() {
                   className="w-full flex items-center justify-between p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                 >
                   <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
-                    <Building2 className="w-5 h-5 text-blue-600" />
                     {t('applyInfoTitle')}
                   </h3>
                   {showApplyInfo ? (
@@ -662,7 +658,7 @@ export default function YouthRentSubsidyCalculator() {
                       <ul className="space-y-2">
                         {(t.raw('applyMethods') as string[]).map((method, i) => (
                           <li key={i} className="flex items-start gap-2 text-sm text-body">
-                            <span className="w-5 h-5 flex-shrink-0 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full flex items-center justify-center text-xs font-bold mt-0.5">{i + 1}</span>
+                            <span className="w-5 h-5 flex-shrink-0 bg-soft text-sub rounded-full flex items-center justify-center text-xs font-bold mt-0.5">{i + 1}</span>
                             {method}
                           </li>
                         ))}
@@ -686,7 +682,6 @@ export default function YouthRentSubsidyCalculator() {
               {/* 중위소득 참고표 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  <Users className="w-5 h-5 text-blue-600" />
                   {t('medianTableTitle')}
                 </h3>
                 <div className="overflow-x-auto">
@@ -701,7 +696,7 @@ export default function YouthRentSubsidyCalculator() {
                     </thead>
                     <tbody>
                       {Object.entries(MEDIAN_INCOME_2026).map(([size, income]) => (
-                        <tr key={size} className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30">
+                        <tr key={size} className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/30">
                           <td className="py-2 px-3 text-fg font-medium">{t('medianTable.sizeUnit', { n: size })}</td>
                           <td className="py-2 px-3 text-right text-body">{income.toLocaleString('ko-KR')}{t('wonUnit')}</td>
                           <td className="py-2 px-3 text-right text-emerald-700 dark:text-emerald-300 font-medium">{Math.floor(income * 0.6).toLocaleString('ko-KR')}{t('wonUnit')}</td>

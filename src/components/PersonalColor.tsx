@@ -398,7 +398,7 @@ export default function PersonalColor() {
   if (phase === 'intro') {
     return (
       <div className="space-y-8">
-        <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl shadow-lg p-8 text-center text-white">
+        <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-8 text-center text-white">
           <div className="text-5xl mb-4">
             <Palette className="inline-block w-12 h-12" />
           </div>
@@ -506,7 +506,7 @@ export default function PersonalColor() {
             </div>
             <div className="w-full bg-track rounded-full h-2.5">
               <div
-                className="bg-gradient-to-r from-purple-500 to-pink-500 h-2.5 rounded-full transition-all duration-500 ease-out"
+                className="bg-primary hover:bg-blue-700 h-2.5 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -534,7 +534,7 @@ export default function PersonalColor() {
                     onClick={() => handleSelect(idx)}
                     className={`w-full text-left px-4 py-3.5 rounded-xl border-2 transition-all duration-200 ${
                       selected
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30 ring-2 ring-purple-300 dark:ring-purple-700'
+                        ? 'border-purple-500 bg-subtle ring-2 ring-purple-300 dark:ring-purple-700'
                         : 'border-line bg-field hover:border-purple-300 dark:hover:border-purple-600 hover:bg-purple-50/50 dark:hover:bg-purple-900/20'
                     }`}
                   >
@@ -566,7 +566,7 @@ export default function PersonalColor() {
             <button
               onClick={handleNext}
               disabled={answers[currentQ] === null}
-              className="flex items-center gap-1 px-6 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="flex items-center gap-1 px-6 py-2 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium hover:from-purple-700 hover:to-pink-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               {currentQ === 11 ? t('resultTitle') : t('nextButton')}
               <ChevronRight className="w-4 h-4" />
@@ -663,7 +663,6 @@ export default function PersonalColor() {
           {/* Best Colors */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-yellow-500" />
               {t('bestColors')}
             </h3>
             <div className="grid grid-cols-3 gap-3">
@@ -733,14 +732,14 @@ export default function PersonalColor() {
         <div className="flex flex-wrap justify-center gap-3">
           <button
             onClick={handleSaveImage}
-            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 font-medium transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 font-medium transition-all"
           >
             <Download className="w-4 h-4" />
             {t('saveImageButton')}
           </button>
           <button
             onClick={handleShare}
-            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 font-medium transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 font-medium transition-all"
           >
             <Share2 className="w-4 h-4" />
             {t('shareButton')}

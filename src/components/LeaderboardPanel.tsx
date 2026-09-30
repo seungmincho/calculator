@@ -35,7 +35,6 @@ export default function LeaderboardPanel({ leaderboard, className = '' }: Leader
     <div className={`${glassCard} ${glassInset} p-6 ${className}`}>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-bold text-fg flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-yellow-500" />
           {t('title')}
         </h2>
         <button
@@ -76,7 +75,7 @@ export default function LeaderboardPanel({ leaderboard, className = '' }: Leader
                   key={`${entry.player_id}-${index}`}
                   className={`grid grid-cols-12 gap-2 items-center px-3 py-2.5 rounded-lg transition-colors ${
                     isMe
-                      ? 'bg-blue-50 dark:bg-blue-900/30 ring-1 ring-blue-200 dark:ring-blue-800'
+                      ? 'bg-subtle ring-1 ring-blue-200 dark:ring-blue-800'
                       : rank <= 3
                         ? 'bg-subtle'
                         : 'hover:bg-gray-50 dark:hover:bg-gray-700/30'
@@ -109,7 +108,7 @@ export default function LeaderboardPanel({ leaderboard, className = '' }: Leader
           {/* Player's rank if outside top 10 */}
           {playerRank && playerRank > 10 && playerScore !== null && (
             <div className="mt-4 pt-3 border-t border-line">
-              <div className="grid grid-cols-12 gap-2 items-center px-3 py-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-lg ring-1 ring-blue-200 dark:ring-blue-800">
+              <div className="grid grid-cols-12 gap-2 items-center px-3 py-2.5 bg-subtle rounded-lg ring-1 ring-blue-200 dark:ring-blue-800">
                 <div className="col-span-2 text-center text-sm font-bold text-blue-600 dark:text-blue-400">
                   {playerRank}
                 </div>

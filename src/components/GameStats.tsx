@@ -87,7 +87,7 @@ export default function GameStats({ onClose }: GameStatsProps) {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* 헤더 */}
-      <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden">
+      <div className="bg-primary hover:bg-blue-700 rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
         </div>
         <div className="relative z-10">
@@ -107,7 +107,7 @@ export default function GameStats({ onClose }: GameStatsProps) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-surface rounded-2xl p-5 shadow-lg border border-line">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl text-white shadow-lg">
+            <div className="p-3 bg-primary hover:bg-blue-700 rounded-xl text-white shadow-lg">
               <Trophy className="w-6 h-6" />
             </div>
             <div>
@@ -118,7 +118,7 @@ export default function GameStats({ onClose }: GameStatsProps) {
         </div>
         <div className="bg-surface rounded-2xl p-5 shadow-lg border border-line">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl text-white shadow-lg">
+            <div className="p-3 bg-primary hover:bg-blue-700 rounded-xl text-white shadow-lg">
               <Gamepad2 className="w-6 h-6" />
             </div>
             <div>
@@ -129,7 +129,7 @@ export default function GameStats({ onClose }: GameStatsProps) {
         </div>
         <div className="bg-surface rounded-2xl p-5 shadow-lg border border-line">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl text-white shadow-lg">
+            <div className="p-3 bg-primary hover:bg-blue-700 rounded-xl text-white shadow-lg">
               <Users className="w-6 h-6" />
             </div>
             <div>
@@ -140,7 +140,7 @@ export default function GameStats({ onClose }: GameStatsProps) {
         </div>
         <div className="bg-surface rounded-2xl p-5 shadow-lg border border-line">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white shadow-lg">
+            <div className="p-3 bg-primary hover:bg-blue-700 rounded-xl text-white shadow-lg">
               <Clock className="w-6 h-6" />
             </div>
             <div>
@@ -220,7 +220,7 @@ export default function GameStats({ onClose }: GameStatsProps) {
 
       {/* 인기 게임 하이라이트 */}
       {topGame && topGame.gamesPlayed > 0 && (
-        <div className="bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-2xl p-6 border border-yellow-200 dark:border-yellow-800">
+        <div className="bg-subtle rounded-2xl p-6 border border-yellow-200 dark:border-yellow-800">
           <div className="flex items-center gap-4">
             <div className="text-5xl">{topGame.icon}</div>
             <div>

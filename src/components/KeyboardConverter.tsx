@@ -358,7 +358,7 @@ export default function KeyboardConverter() {
             onClick={handleToggleMode}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               mode === 'engToKor'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
             }`}
           >
@@ -368,7 +368,7 @@ export default function KeyboardConverter() {
             onClick={handleToggleMode}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               mode === 'korToEng'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
             }`}
           >
@@ -450,7 +450,7 @@ export default function KeyboardConverter() {
             value={output}
             readOnly
             rows={5}
-            className="w-full px-3 py-2 border border-line-strong rounded-lg bg-gray-50 dark:bg-gray-900 text-fg resize-none text-base"
+            className="w-full px-3 py-2 border border-line-strong rounded-lg bg-subtle text-fg resize-none text-base"
           />
         </div>
       </div>
@@ -484,7 +484,6 @@ export default function KeyboardConverter() {
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

@@ -32,8 +32,8 @@ const SPEED_COLORS: Record<SpeedClass, string> = {
 const SPEED_BG: Record<SpeedClass, string> = {
   slow: 'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800',
   moderate: 'bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800',
-  fast: 'bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800',
-  veryFast: 'bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800',
+  fast: 'bg-subtle border-line',
+  veryFast: 'bg-subtle border-line',
 }
 
 const SPEED_TEXT: Record<SpeedClass, string> = {
@@ -295,7 +295,7 @@ export default function SpeedTest() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white">
+          <div className="w-10 h-10 rounded-xl bg-primary hover:bg-blue-700 flex items-center justify-center text-white">
             <Wifi className="w-5 h-5" />
           </div>
           <div>
@@ -369,7 +369,7 @@ export default function SpeedTest() {
             <button
               onClick={() => runTest('quick')}
               disabled={testing}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               {testing ? t('testing') : t('quickTest')}
             </button>

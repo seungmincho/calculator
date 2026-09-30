@@ -340,7 +340,6 @@ export default function BoxShadow() {
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <Eye className="w-5 h-5" />
             {t('preview')}
           </h2>
           <button
@@ -377,7 +376,7 @@ export default function BoxShadow() {
           </h2>
           <button
             onClick={() => copyToClipboard(fullCssRule, 'css-main')}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
           >
             {copiedId === 'css-main' ? (
               <Check className="w-4 h-4" />
@@ -387,7 +386,7 @@ export default function BoxShadow() {
             {copiedId === 'css-main' ? t('copied') : t('copy')}
           </button>
         </div>
-        <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all">
+        <pre className="bg-subtle rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all">
           {fullCssRule}
         </pre>
 
@@ -406,7 +405,7 @@ export default function BoxShadow() {
           </button>
           {showVendorPrefix && (
             <div className="mt-2 relative">
-              <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
+              <pre className="bg-subtle rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
                 {vendorPrefixCss}
               </pre>
               <button
@@ -439,7 +438,7 @@ export default function BoxShadow() {
             </button>
             {showTailwind && (
               <div className="mt-2 relative">
-                <pre className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
+                <pre className="bg-subtle rounded-lg p-4 text-sm font-mono text-body overflow-x-auto whitespace-pre-wrap break-all pr-12">
                   {tailwindHint}
                 </pre>
                 <button
@@ -612,7 +611,6 @@ export default function BoxShadow() {
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-fg flex items-center gap-2">
-                <Layers className="w-4 h-4" />
                 {t('layers')}
                 <span className="text-xs text-muted font-normal">
                   ({layers.length}/{MAX_LAYERS})
@@ -621,7 +619,7 @@ export default function BoxShadow() {
               <button
                 onClick={addLayer}
                 disabled={layers.length >= MAX_LAYERS}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 {t('addLayer')}
@@ -644,8 +642,8 @@ export default function BoxShadow() {
                     key={layer.id}
                     className={`rounded-lg border transition-colors ${
                       isExpanded
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                        : 'border-line bg-gray-50 dark:bg-gray-900'
+                        ? 'border-blue-500 bg-subtle'
+                        : 'border-line bg-subtle'
                     }`}
                   >
                     {/* Layer header */}
@@ -668,7 +666,7 @@ export default function BoxShadow() {
                       </span>
                       {/* Inset badge */}
                       {layer.inset && (
-                        <span className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-1.5 py-0.5 rounded flex-shrink-0">
+                        <span className="text-xs bg-soft text-sub px-1.5 py-0.5 rounded flex-shrink-0">
                           inset
                         </span>
                       )}
@@ -885,7 +883,6 @@ export default function BoxShadow() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
         <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 

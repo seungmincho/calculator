@@ -143,7 +143,7 @@ export default function RaycastingVisualizer() {
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
         <div className="flex items-center gap-2 mt-2">
-          <span className="px-2 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400">
+          <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
             {tHub('categories.rendering')}
           </span>
           <span className="text-xs text-gray-400">★★☆</span>
@@ -187,12 +187,12 @@ export default function RaycastingVisualizer() {
             <div className="flex flex-wrap gap-2">
               <button onClick={() => setEditMode(!editMode)}
                 className={`px-3 py-1.5 text-xs rounded-lg ${editMode
-                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white'
-                  : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600'}`}>
+                  ? 'bg-primary hover:bg-blue-700 text-white'
+                  : 'bg-primary hover:bg-blue-700 text-white hover:from-blue-600 hover:to-indigo-600'}`}>
                 {editMode ? '🔒 ' + t('controls.stopEdit') : '✏️ ' + t('controls.editMap')}
               </button>
               <button onClick={handleResetMap}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-gray-500 to-gray-600 text-white hover:from-gray-600 hover:to-gray-700">
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-gray-600 hover:to-gray-700">
                 🔄 {t('controls.resetMap')}
               </button>
             </div>
@@ -247,10 +247,10 @@ export default function RaycastingVisualizer() {
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-indigo-50/50 dark:bg-indigo-900/20'
+                        ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}>
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -261,9 +261,9 @@ export default function RaycastingVisualizer() {
                     <p className="text-sm text-sub">{t('stepsGuide.description')}</p>
                     <div className="space-y-2">
                       {['step1', 'step2', 'step3', 'step4'].map((key, i) => (
-                        <div key={key} className="p-3 rounded-lg bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200/30 dark:border-gray-700/30">
+                        <div key={key} className="p-3 rounded-lg bg-subtle border border-line">
                           <div className="flex items-center gap-2">
-                            <span className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-xs font-bold flex items-center justify-center">{i + 1}</span>
+                            <span className="w-6 h-6 rounded-full bg-soft text-sub text-xs font-bold flex items-center justify-center">{i + 1}</span>
                             <span className="text-sm text-body">{t(`stepsGuide.${key}`)}</span>
                           </div>
                         </div>

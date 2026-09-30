@@ -376,7 +376,7 @@ export default function ColorPalette() {
             {/* Random Button */}
             <button
               onClick={randomColor}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg px-4 py-3 font-medium hover:from-purple-700 hover:to-pink-700 transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-purple-700 hover:to-pink-700 transition-colors flex items-center justify-center gap-2"
             >
               <Shuffle className="w-5 h-5" />
               {t('random')}
@@ -442,7 +442,7 @@ export default function ColorPalette() {
             {/* Save Palette */}
             <button
               onClick={savePalette}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
             >
               <Save className="w-5 h-5" />
               {t('savePalette')}
@@ -634,7 +634,7 @@ export default function ColorPalette() {
 
             {/* Color Info Panel */}
             {colorInfo && (
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6 mt-6">
+              <div className="bg-subtle rounded-xl p-6 mt-6">
                 <h3 className="text-lg font-semibold text-fg mb-4">
                   {t('colorInfo.title')}
                 </h3>
@@ -681,7 +681,6 @@ export default function ColorPalette() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
 

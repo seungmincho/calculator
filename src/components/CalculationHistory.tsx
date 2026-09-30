@@ -63,7 +63,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
             <History className="w-5 h-5 text-blue-600" />
             <h2 className="text-xl font-semibold text-fg">계산 이력</h2>
             {histories.length > 0 && (
-              <span className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 text-sm px-2 py-1 rounded-full">
+              <span className="bg-soft text-sub text-sm px-2 py-1 rounded-full">
                 {histories.length}개
               </span>
             )}

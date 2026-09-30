@@ -137,7 +137,7 @@ export default function NQueensVisualizer() {
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
         <div className="flex items-center gap-2 mt-2">
-          <span className="px-2 py-0.5 text-xs rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400">
+          <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
             {tHub('categories.backtracking')}
           </span>
           <span className="text-xs text-gray-400">★★☆</span>
@@ -182,7 +182,7 @@ export default function NQueensVisualizer() {
                 {t('stats.attempts')}: <strong className="text-yellow-600 dark:text-yellow-400">{attempts}</strong>
               </span>
               {isDone && (
-                <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium">
+                <span className="px-2 py-0.5 rounded-full bg-soft text-sub text-xs font-medium">
                   {t('stats.done')}
                 </span>
               )}
@@ -215,10 +215,10 @@ export default function NQueensVisualizer() {
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-rose-600 dark:text-rose-400 border-b-2 border-rose-500 bg-rose-50/50 dark:bg-rose-900/20'
+                        ? 'text-rose-600 dark:text-rose-400 border-b-2 border-rose-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}>
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -284,11 +284,11 @@ function NQueensStepsList({ steps, currentIndex, onStepClick, t }: {
     place: '👑', conflict: '❌', backtrack: '↩️', solution: '🎉', done: '✅',
   }
   const colorClasses: Record<string, string> = {
-    place: 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
+    place: 'bg-soft text-sub',
     conflict: 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
-    backtrack: 'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-400',
-    solution: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
-    done: 'bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-400',
+    backtrack: 'bg-soft text-sub',
+    solution: 'bg-soft text-sub',
+    done: 'bg-soft text-sub',
   }
 
   return (
@@ -301,9 +301,9 @@ function NQueensStepsList({ steps, currentIndex, onStepClick, t }: {
         return (
           <div key={i} data-active={isCurrent ? 'true' : undefined}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
-              isCurrent ? 'border-rose-500/50 bg-rose-50/50 dark:bg-rose-900/20'
-              : isActive ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
-              : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
+              isCurrent ? 'border-rose-500/50 bg-subtle'
+              : isActive ? 'border-line bg-subtle'
+              : 'border-line opacity-40'
             }`} onClick={() => onStepClick(step.originalIndex)}>
             <div className="flex items-center gap-2">
               <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${colorClasses[step.action] || ''}`}>

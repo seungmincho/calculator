@@ -181,7 +181,6 @@ export default function PenaltyRoulette() {
         {/* Header */}
         <div className="text-center">
           <h2 className="text-2xl font-bold text-fg flex items-center justify-center gap-2">
-            <Sparkles className="w-6 h-6 text-orange-500" />
             {t('title')}
           </h2>
           <p className="text-sm text-sub mt-1">{t('description')}</p>
@@ -324,7 +323,7 @@ export default function PenaltyRoulette() {
               className={`w-full max-w-[260px] py-3 rounded-2xl font-bold text-white text-lg transition-all duration-200 ${
                 spinning || activeItems.length < 2
                   ? 'opacity-50 cursor-not-allowed bg-gray-400'
-                  : 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 active:scale-95'
+                  : 'bg-primary hover:bg-blue-700 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 active:scale-95'
               }`}
             >
               {spinning ? (

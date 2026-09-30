@@ -469,7 +469,7 @@ export default function SvgEditor() {
           onDragLeave={handleDragLeave}
           className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors cursor-pointer ${
             isDragging
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+              ? 'border-blue-500 bg-subtle'
               : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
           }`}
           onClick={() => fileInputRef.current?.click()}
@@ -569,7 +569,7 @@ export default function SvgEditor() {
             <div className="relative">
               <div className="flex">
                 {/* Line numbers */}
-                <div className="flex-shrink-0 select-none text-right pr-3 pl-3 py-3 bg-gray-50 dark:bg-gray-900 border-r border-line text-xs text-gray-400 dark:text-gray-600 font-mono leading-5 overflow-hidden">
+                <div className="flex-shrink-0 select-none text-right pr-3 pl-3 py-3 bg-subtle border-r border-line text-xs text-gray-400 dark:text-gray-600 font-mono leading-5 overflow-hidden">
                   {Array.from({ length: lineCount || 1 }, (_, i) => (
                     <div key={i}>{i + 1}</div>
                   ))}
@@ -651,21 +651,21 @@ export default function SvgEditor() {
                 <span className="text-sm font-medium text-body">{t('statistics')}</span>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
+                <div className="bg-subtle rounded-lg p-3">
                   <div className="text-xs text-muted">{t('stats.elements')}</div>
                   <div className="text-lg font-semibold text-fg">{stats.elements}</div>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
+                <div className="bg-subtle rounded-lg p-3">
                   <div className="text-xs text-muted">{t('stats.originalSize')}</div>
                   <div className="text-lg font-semibold text-fg">{formatBytes(stats.originalSize)}</div>
                 </div>
                 {optimizedCode && (
                   <>
-                    <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
+                    <div className="bg-subtle rounded-lg p-3">
                       <div className="text-xs text-muted">{t('stats.optimizedSize')}</div>
                       <div className="text-lg font-semibold text-green-600 dark:text-green-400">{formatBytes(stats.optimizedSize)}</div>
                     </div>
-                    <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
+                    <div className="bg-subtle rounded-lg p-3">
                       <div className="text-xs text-muted">{t('stats.reduction')}</div>
                       <div className={`text-lg font-semibold ${stats.ratio > 0 ? 'text-green-600 dark:text-green-400' : 'text-fg'}`}>
                         {stats.ratio > 0 ? `-${stats.ratio}%` : `${stats.ratio}%`}
@@ -719,7 +719,7 @@ export default function SvgEditor() {
               <button
                 onClick={handleOptimize}
                 disabled={!svgCode.trim()}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Minimize2 className="w-4 h-4 inline mr-2" />
                 {t('optimize')}
@@ -810,13 +810,13 @@ export default function SvgEditor() {
                           setOptimizedCode('')
                           setShowOptimized(false)
                         }}
-                        className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+                        className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-soft text-sub hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
                       >
                         {t('applyToEditor')}
                       </button>
                     </div>
                   </div>
-                  <pre className="p-4 overflow-auto max-h-[400px] text-xs font-mono text-body bg-gray-50 dark:bg-gray-900">
+                  <pre className="p-4 overflow-auto max-h-[400px] text-xs font-mono text-body bg-subtle">
                     {optimizedCode}
                   </pre>
                 </div>
@@ -913,7 +913,7 @@ export default function SvgEditor() {
               <button
                 onClick={handleExport}
                 disabled={!isValidSvg}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Download className="w-4 h-4 inline mr-2" />
                 {t('download')} {exportFormat.toUpperCase()}
@@ -995,7 +995,7 @@ export default function SvgEditor() {
               <button
                 onClick={handleColorReplace}
                 disabled={!findColor.trim() || !isValidSvg}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Replace className="w-4 h-4 inline mr-2" />
                 {t('replaceAll')}
@@ -1013,7 +1013,7 @@ export default function SvgEditor() {
                     <button
                       key={`${entry.color}-${i}`}
                       onClick={() => setFindColor(entry.color)}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer text-left"
+                      className="flex items-center gap-3 p-3 rounded-lg bg-subtle hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer text-left"
                     >
                       <div
                         className="w-8 h-8 rounded border border-line flex-shrink-0"
@@ -1039,7 +1039,6 @@ export default function SvgEditor() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

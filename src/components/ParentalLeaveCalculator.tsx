@@ -536,7 +536,7 @@ export default function ParentalLeaveCalculator() {
 
               {/* Conditional 6+6 fields */}
               {isSixPlusSix && (
-                <div className="space-y-4 border-l-2 border-pink-300 dark:border-pink-700 pl-4">
+                <div className="space-y-4 border-l-2 border-line pl-4">
                   <div>
                     <label className="block text-sm font-medium text-body mb-1">
                       {t('inputs.childBirthMonth')}
@@ -655,7 +655,7 @@ export default function ParentalLeaveCalculator() {
                       </thead>
                       <tbody>
                         {individualResult.months.map((m) => (
-                          <tr key={m.month} className={`border-b border-line ${m.isEnhanced ? 'bg-pink-50 dark:bg-pink-950' : ''}`}>
+                          <tr key={m.month} className={`border-b border-line ${m.isEnhanced ? 'bg-subtle' : ''}`}>
                             <th scope="row" className="py-2 px-2 text-fg font-medium">
                               {m.month}{t('results.monthUnit')}
                             </th>
@@ -665,12 +665,12 @@ export default function ParentalLeaveCalculator() {
                             <td className="text-right py-2 px-2 text-body">{m.vsWage.toFixed(1)}%</td>
                             <td className="text-center py-2 px-2">
                               {m.isEnhanced && (
-                                <span className="inline-block text-xs bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300 rounded px-1.5 py-0.5">
+                                <span className="inline-block text-xs bg-soft text-sub rounded px-1.5 py-0.5">
                                   {t('results.enhanced')}
                                 </span>
                               )}
                               {m.isLowerLimit && (
-                                <span className="inline-block text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 rounded px-1.5 py-0.5">
+                                <span className="inline-block text-xs bg-soft text-sub rounded px-1.5 py-0.5">
                                   {t('results.lowerLimit')}
                                 </span>
                               )}
@@ -742,7 +742,7 @@ export default function ParentalLeaveCalculator() {
             {/* Father */}
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <span className="w-6 h-6 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full flex items-center justify-center text-xs font-bold">{t('couple.fatherShort')}</span>
+                <span className="w-6 h-6 bg-soft text-sub rounded-full flex items-center justify-center text-xs font-bold">{t('couple.fatherShort')}</span>
                 {t('couple.fatherSection')}
               </h2>
               <div>
@@ -788,7 +788,7 @@ export default function ParentalLeaveCalculator() {
             {/* Mother */}
             <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <span className="w-6 h-6 bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300 rounded-full flex items-center justify-center text-xs font-bold">{t('couple.motherShort')}</span>
+                <span className="w-6 h-6 bg-soft text-sub rounded-full flex items-center justify-center text-xs font-bold">{t('couple.motherShort')}</span>
                 {t('couple.motherSection')}
               </h2>
               <div>
@@ -1045,7 +1045,7 @@ export default function ParentalLeaveCalculator() {
             </div>
 
             {reducedResult && reducedResult.reducedHours > 0 && (
-              <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 space-y-3">
+              <div className="bg-subtle rounded-xl p-4 space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-sub">{t('reducedHours.reducedTime')}</span>
                   <span className="font-medium text-fg">{reducedResult.reducedHours}{t('reducedHours.hoursPerWeek')}</span>
@@ -1068,7 +1068,7 @@ export default function ParentalLeaveCalculator() {
                   <span className="text-sub">{t('reducedHours.companyPay')}</span>
                   <span className="font-medium text-fg">{formatNumber(Math.floor(reducedResult.companyPay))}{t('inputs.won')}</span>
                 </div>
-                <div className="border-t border-green-200 dark:border-green-800 pt-2 flex justify-between text-sm font-semibold">
+                <div className="border-t border-line pt-2 flex justify-between text-sm font-semibold">
                   <span className="text-body">{t('reducedHours.totalIncome')}</span>
                   <span className="text-green-700 dark:text-green-400">{formatNumber(Math.floor(reducedResult.totalIncome))}{t('inputs.won')}</span>
                 </div>
@@ -1081,7 +1081,6 @@ export default function ParentalLeaveCalculator() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">
@@ -1152,9 +1151,9 @@ export default function ParentalLeaveCalculator() {
 // ── Summary Card Component ──
 function SummaryCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color: 'blue' | 'green' | 'purple' | 'red' }) {
   const colorMap = {
-    blue: 'bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800',
-    green: 'bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800',
-    purple: 'bg-purple-50 dark:bg-purple-950 border-purple-200 dark:border-purple-800',
+    blue: 'bg-subtle border-line',
+    green: 'bg-subtle border-line',
+    purple: 'bg-subtle border-line',
     red: 'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800',
   }
 

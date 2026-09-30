@@ -125,7 +125,6 @@ export default function TextToSpeech() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Volume2 className="w-5 h-5" />
               {t('voice')}
             </h2>
 
@@ -246,7 +245,7 @@ export default function TextToSpeech() {
               <button
                 onClick={handlePlay}
                 disabled={!text.trim() || !selectedVoice}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 <Play className="w-5 h-5" />
                 {t('play')}
@@ -284,25 +283,24 @@ export default function TextToSpeech() {
           {/* Sample Presets */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <MessageSquare className="w-5 h-5" />
               {t('presets.title')}
             </h3>
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => handlePresetClick(t('presets.greeting'))}
-                className="bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg px-4 py-2 text-sm font-medium"
+                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg px-4 py-2 text-sm font-medium"
               >
                 {t('presets.greeting').substring(0, 20)}...
               </button>
               <button
                 onClick={() => handlePresetClick(t('presets.news'))}
-                className="bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg px-4 py-2 text-sm font-medium"
+                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg px-4 py-2 text-sm font-medium"
               >
                 {t('presets.news').substring(0, 20)}...
               </button>
               <button
                 onClick={() => handlePresetClick(t('presets.story'))}
-                className="bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg px-4 py-2 text-sm font-medium"
+                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg px-4 py-2 text-sm font-medium"
               >
                 {t('presets.story').substring(0, 20)}...
               </button>
@@ -314,7 +312,6 @@ export default function TextToSpeech() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 

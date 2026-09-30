@@ -264,7 +264,7 @@ export default function InstallmentCalc() {
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+                <div className="bg-subtle rounded-xl p-4">
                   <div className="text-sm text-sub mb-1">
                     {t('result.monthlyPayment')}
                   </div>
@@ -273,7 +273,7 @@ export default function InstallmentCalc() {
                   </div>
                 </div>
 
-                <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
+                <div className="bg-subtle rounded-xl p-4">
                   <div className="text-sm text-sub mb-1">
                     {t('result.totalPayment')}
                   </div>
@@ -282,7 +282,7 @@ export default function InstallmentCalc() {
                   </div>
                 </div>
 
-                <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-4">
+                <div className="bg-subtle rounded-xl p-4">
                   <div className="text-sm text-sub mb-1">
                     {t('result.totalInterest')}
                   </div>
@@ -291,7 +291,7 @@ export default function InstallmentCalc() {
                   </div>
                 </div>
 
-                <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-4">
+                <div className="bg-subtle rounded-xl p-4">
                   <div className="text-sm text-sub mb-1">
                     {t('result.effectiveRate')}
                   </div>

@@ -193,7 +193,7 @@ export default function ColorBlindTest() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4">
+            <div className="bg-subtle rounded-lg p-4">
               <div className="text-sm text-green-600 dark:text-green-400 mb-1">{t('result.correct')}</div>
               <div className="text-2xl font-bold text-green-700 dark:text-green-300">{results.correct}</div>
             </div>
@@ -205,13 +205,13 @@ export default function ColorBlindTest() {
               <div className="text-sm text-sub mb-1">{t('result.skipped')}</div>
               <div className="text-2xl font-bold text-body">{results.skipped}</div>
             </div>
-            <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+            <div className="bg-subtle rounded-lg p-4">
               <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('result.score')}</div>
               <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">{results.score}%</div>
             </div>
           </div>
 
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6 mb-6">
+          <div className="bg-subtle rounded-xl p-6 mb-6">
             <p className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
               {results.classification}
             </p>
@@ -233,7 +233,7 @@ export default function ColorBlindTest() {
                     isSkipped
                       ? 'bg-subtle'
                       : isCorrect
-                      ? 'bg-green-50 dark:bg-green-950'
+                      ? 'bg-subtle'
                       : 'bg-red-50 dark:bg-red-950'
                   }`}
                 >
@@ -257,7 +257,7 @@ export default function ColorBlindTest() {
 
           <button
             onClick={handleRestart}
-            className="w-full mt-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
+            className="w-full mt-6 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
           >
             <RotateCcw className="w-5 h-5" />
             {t('restart')}
@@ -266,7 +266,6 @@ export default function ColorBlindTest() {
 
         <div className={`${glassCard} ${glassInset} p-6`}>
           <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-            <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             {t('guide.title')}
           </h2>
           <div className="space-y-6">
@@ -360,7 +359,7 @@ export default function ColorBlindTest() {
 
             <button
               onClick={handleNext}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
+              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
             >
               {currentPlate === TEST_PLATES.length - 1 ? t('submit') : t('next')}
               {currentPlate < TEST_PLATES.length - 1 && <ChevronRight className="w-5 h-5" />}
@@ -371,7 +370,7 @@ export default function ColorBlindTest() {
         <div className="mt-6">
           <div className="w-full bg-track rounded-full h-2">
             <div
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-300"
+              className="bg-primary hover:bg-blue-700 h-2 rounded-full transition-all duration-300"
               style={{ width: `${((currentPlate + 1) / TEST_PLATES.length) * 100}%` }}
             />
           </div>
@@ -380,7 +379,6 @@ export default function ColorBlindTest() {
 
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

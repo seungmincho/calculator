@@ -195,7 +195,7 @@ export default function RentConverter() {
                 onClick={() => setMode('jeonseToWolse')}
                 className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                   mode === 'jeonseToWolse'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                    ? 'bg-primary hover:bg-blue-700 text-white'
                     : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
@@ -205,7 +205,7 @@ export default function RentConverter() {
                 onClick={() => setMode('wolseToJeonse')}
                 className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                   mode === 'wolseToJeonse'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                    ? 'bg-primary hover:bg-blue-700 text-white'
                     : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
@@ -407,7 +407,7 @@ export default function RentConverter() {
         <div className="lg:col-span-2 space-y-6">
           {/* Result Cards */}
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 rounded-xl shadow-lg p-6">
+            <div className="bg-subtle rounded-xl shadow-lg p-6">
               <div className="flex items-start justify-between mb-2">
                 <h3 className="text-sm font-medium text-blue-900 dark:text-blue-100">
                   {mode === 'jeonseToWolse'
@@ -447,7 +447,7 @@ export default function RentConverter() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 rounded-xl shadow-lg p-6">
+            <div className="bg-subtle rounded-xl shadow-lg p-6">
               <div className="flex items-start justify-between mb-2">
                 <h3 className="text-sm font-medium text-green-900 dark:text-green-100">
                   연간 월세 합계
@@ -473,7 +473,7 @@ export default function RentConverter() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 rounded-xl shadow-lg p-6">
+            <div className="bg-subtle rounded-xl shadow-lg p-6">
               <div className="flex items-start justify-between mb-2">
                 <h3 className="text-sm font-medium text-purple-900 dark:text-purple-100">
                   전환율
@@ -506,7 +506,7 @@ export default function RentConverter() {
                 계산 공식
               </h3>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+            <div className="bg-subtle rounded-lg p-4">
               <p className="text-sm font-mono text-body">
                 {mode === 'jeonseToWolse'
                   ? '월세 = (전세금 - 월세보증금) × 전환율 ÷ 12'
@@ -569,7 +569,7 @@ export default function RentConverter() {
                         key={rate}
                         className={`border-b border-line transition-colors ${
                           isActive
-                            ? 'bg-blue-50 dark:bg-blue-950'
+                            ? 'bg-subtle'
                             : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                         }`}
                       >
@@ -622,7 +622,7 @@ export default function RentConverter() {
                 </div>
                 <div className="w-full bg-track rounded-full h-4">
                   <div
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-4 rounded-full transition-all duration-300"
+                    className="bg-primary hover:bg-blue-700 h-4 rounded-full transition-all duration-300"
                     style={{
                       width: `${
                         Math.min(
@@ -651,7 +651,7 @@ export default function RentConverter() {
                 </div>
                 <div className="w-full bg-track rounded-full h-4">
                   <div
-                    className="bg-gradient-to-r from-green-500 to-green-600 h-4 rounded-full transition-all duration-300"
+                    className="bg-primary hover:bg-blue-700 h-4 rounded-full transition-all duration-300"
                     style={{
                       width: `${
                         Math.min(
@@ -669,7 +669,7 @@ export default function RentConverter() {
                 </div>
               </div>
 
-              <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
+              <div className="mt-4 p-4 bg-subtle rounded-lg">
                 <p className="text-sm text-blue-900 dark:text-blue-100">
                   {currentResult.jeonseOpportunityCost > currentResult.yearlyTotal
                     ? '전세 기회비용이 더 큽니다. 월세가 유리할 수 있습니다.'

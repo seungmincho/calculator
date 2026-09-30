@@ -251,8 +251,8 @@ const StockCalculatorContent = () => {
               </div>
             </div>
 
-            <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
-              <h3 className="font-medium text-blue-900 dark:text-blue-200 mb-2">💡 계산 방식</h3>
+            <div className="bg-subtle rounded-lg p-4">
+              <h3 className="font-medium text-blue-900 dark:text-blue-200 mb-2">계산 방식</h3>
               <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">
                 <li>• 수익률 = ((현재가 - 매수가) / 매수가) × 100</li>
                 <li>• 총 수익금 = (현재가 - 매수가) × 보유 주식 수</li>
@@ -270,7 +270,7 @@ const StockCalculatorContent = () => {
           {result ? (
             <div className="space-y-6">
               {/* Main Results */}
-              <div className={`rounded-xl p-6 text-white ${result.isProfit ? 'bg-gradient-to-r from-green-500 to-emerald-600' : 'bg-gradient-to-r from-red-500 to-rose-600'}`}>
+              <div className={`rounded-xl p-6 text-white ${result.isProfit ? 'bg-primary hover:bg-blue-700' : 'bg-red-500 hover:bg-red-600'}`}>
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-white/90">수익률</span>
                   {result.isProfit ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
@@ -358,22 +358,22 @@ const StockCalculatorContent = () => {
 
       {/* Tips Section */}
       <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
-        <h2 className="text-2xl font-semibold mb-6 text-fg">💡 주식 투자 팁</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-fg">주식 투자 팁</h2>
         <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
-            <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">📈 수익률 이해</h3>
+          <div className="bg-subtle rounded-lg p-6">
+            <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">수익률 이해</h3>
             <p className="text-green-800 dark:text-green-300 text-sm">
               단기적인 등락보다는 장기적인 관점에서 투자하세요. 수익률은 변동성이 있습니다.
             </p>
           </div>
-          <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">💰 분산 투자</h3>
+          <div className="bg-subtle rounded-lg p-6">
+            <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">분산 투자</h3>
             <p className="text-blue-800 dark:text-blue-300 text-sm">
               한 종목에만 집중하지 말고 여러 종목과 자산에 분산 투자하여 리스크를 관리하세요.
             </p>
           </div>
           <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-6">
-            <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">📊 기본 분석</h3>
+            <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">기본 분석</h3>
             <p className="text-amber-800 dark:text-amber-300 text-sm">
               주가뿐만 아니라 기업의 재무상태, 성장성, 업종 전망 등을 종합적으로 분석하세요.
             </p>

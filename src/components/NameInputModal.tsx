@@ -105,7 +105,7 @@ export default function NameInputModal({
           <button
             onClick={handleSubmit}
             disabled={!name.trim() || isSubmitting}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl px-4 py-3 font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-bold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             {isSubmitting ? t('submitting') : t('submit')}
           </button>

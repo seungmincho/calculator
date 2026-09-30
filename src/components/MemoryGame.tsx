@@ -403,7 +403,7 @@ export default function MemoryGame() {
                     onClick={() => setTheme(th)}
                     className={`p-3 rounded-xl border-2 transition-all duration-200 text-center ${
                       isSelected
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 ring-2 ring-blue-300 dark:ring-blue-700 scale-[1.02]'
+                        ? 'border-blue-500 bg-subtle ring-2 ring-blue-300 dark:ring-blue-700 scale-[1.02]'
                         : 'border-line bg-subtle hover:border-gray-400 dark:hover:border-gray-400'
                     }`}
                   >
@@ -435,7 +435,7 @@ export default function MemoryGame() {
           {/* Start button */}
           <button
             onClick={startGame}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl px-6 py-4 text-lg font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl active:scale-[0.98]"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-4 text-lg font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl active:scale-[0.98]"
           >
             {t('startGame')}
           </button>
@@ -462,7 +462,6 @@ export default function MemoryGame() {
         {/* Guide */}
         <div className="bg-surface rounded-xl shadow-lg p-6 max-w-xl mx-auto">
           <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <div className="space-y-4">
@@ -542,15 +541,15 @@ export default function MemoryGame() {
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-3">
+              <div className="bg-subtle rounded-xl p-3">
                 <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{moves}</div>
                 <div className="text-xs text-blue-500 dark:text-blue-400">{t('movesUnit')}</div>
               </div>
-              <div className="bg-green-50 dark:bg-green-900/30 rounded-xl p-3">
+              <div className="bg-subtle rounded-xl p-3">
                 <div className="text-2xl font-bold text-green-600 dark:text-green-400">{formatTime(timer)}</div>
                 <div className="text-xs text-green-500 dark:text-green-400">{t('timeLabel')}</div>
               </div>
-              <div className="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-3">
+              <div className="bg-subtle rounded-xl p-3">
                 <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{maxCombo}x</div>
                 <div className="text-xs text-purple-500 dark:text-purple-400">{t('maxCombo')}</div>
               </div>
@@ -570,7 +569,7 @@ export default function MemoryGame() {
             <div className="flex gap-3">
               <button
                 onClick={startGame}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl px-4 py-3 font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 active:scale-[0.98]"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 active:scale-[0.98]"
               >
                 {t('playAgain')}
               </button>
@@ -648,7 +647,7 @@ export default function MemoryGame() {
         {/* Progress bar */}
         <div className="mt-2 h-1.5 bg-track rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500 ease-out"
+            className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-500 ease-out"
             style={{ width: `${progressPct}%` }}
           />
         </div>
@@ -691,7 +690,7 @@ export default function MemoryGame() {
                 >
                   {/* Back (hidden state) */}
                   <div
-                    className="absolute inset-0 rounded-xl flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 shadow-md hover:shadow-lg transition-shadow"
+                    className="absolute inset-0 rounded-xl flex items-center justify-center bg-primary hover:bg-blue-700 shadow-md hover:shadow-lg transition-shadow"
                     style={{ backfaceVisibility: 'hidden' }}
                   >
                     <div className="text-white/30 text-3xl sm:text-4xl font-bold">?</div>
@@ -700,7 +699,7 @@ export default function MemoryGame() {
                   <div
                     className={`absolute inset-0 rounded-xl flex items-center justify-center shadow-md ${
                       card.matched
-                        ? 'bg-green-50 dark:bg-green-900/30 ring-2 ring-green-400 dark:ring-green-500'
+                        ? 'bg-subtle ring-2 ring-green-400 dark:ring-green-500'
                         : 'bg-field'
                     }`}
                     style={{

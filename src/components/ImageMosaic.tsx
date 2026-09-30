@@ -480,7 +480,7 @@ export default function ImageMosaic() {
                       onClick={() => setMode('rectangle')}
                       className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
                         mode === 'rectangle'
-                          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                          ? 'bg-primary hover:bg-blue-700 text-white'
                           : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
@@ -491,7 +491,7 @@ export default function ImageMosaic() {
                       onClick={() => setMode('brush')}
                       className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
                         mode === 'brush'
-                          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                          ? 'bg-primary hover:bg-blue-700 text-white'
                           : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
@@ -511,7 +511,7 @@ export default function ImageMosaic() {
                       onClick={() => setEffectType('mosaic')}
                       className={`px-4 py-3 rounded-lg font-medium transition-colors ${
                         effectType === 'mosaic'
-                          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                          ? 'bg-primary hover:bg-blue-700 text-white'
                           : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
@@ -521,7 +521,7 @@ export default function ImageMosaic() {
                       onClick={() => setEffectType('blur')}
                       className={`px-4 py-3 rounded-lg font-medium transition-colors ${
                         effectType === 'blur'
-                          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                          ? 'bg-primary hover:bg-blue-700 text-white'
                           : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
@@ -593,7 +593,7 @@ export default function ImageMosaic() {
                         onClick={() => setDownloadFormat('png')}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           downloadFormat === 'png'
-                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                            ? 'bg-soft text-sub'
                             : 'bg-soft text-body'
                         }`}
                       >
@@ -603,7 +603,7 @@ export default function ImageMosaic() {
                         onClick={() => setDownloadFormat('jpeg')}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           downloadFormat === 'jpeg'
-                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                            ? 'bg-soft text-sub'
                             : 'bg-soft text-body'
                         }`}
                       >
@@ -631,7 +631,7 @@ export default function ImageMosaic() {
 
                   <button
                     onClick={handleDownload}
-                    className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
                   >
                     <Download className="w-4 h-4" />
                     {t('download')}
@@ -680,7 +680,6 @@ export default function ImageMosaic() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <ImageIcon className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 

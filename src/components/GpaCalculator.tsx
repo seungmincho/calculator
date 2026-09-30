@@ -286,7 +286,7 @@ export default function GpaCalculator() {
                 onClick={() => setScale('4.5')}
                 className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
                   scale === '4.5'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                    ? 'bg-primary hover:bg-blue-700 text-white'
                     : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
@@ -296,7 +296,7 @@ export default function GpaCalculator() {
                 onClick={() => setScale('4.3')}
                 className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${
                   scale === '4.3'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                    ? 'bg-primary hover:bg-blue-700 text-white'
                     : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                 }`}
               >
@@ -315,7 +315,6 @@ export default function GpaCalculator() {
           {/* Target GPA Reverse Calculator */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-1 flex items-center gap-2">
-              <Target className="w-5 h-5 text-indigo-500" />
               {t('reverse.title')}
             </h2>
             <p className="text-xs text-muted mb-4">{t('reverse.description')}</p>
@@ -362,7 +361,7 @@ export default function GpaCalculator() {
                   reverseResult.impossible
                     ? 'bg-subtle text-sub'
                     : reverseResult.feasible
-                    ? 'bg-green-50 dark:bg-green-950 text-green-800 dark:text-green-200'
+                    ? 'bg-subtle text-green-800 dark:text-green-200'
                     : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200'
                 }`}>
                   {reverseResult.impossible ? (
@@ -386,9 +385,8 @@ export default function GpaCalculator() {
           </div>
 
           {/* Quick Guide */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
+          <div className="bg-subtle rounded-xl p-6">
             <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-3 flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
               {t('guide.howToUse.title')}
             </h3>
             <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
@@ -405,7 +403,7 @@ export default function GpaCalculator() {
         {/* Right Panel: Semesters & Results */}
         <div className="lg:col-span-2 space-y-6">
           {/* Cumulative Results */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
+          <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
             <h2 className="text-lg font-semibold mb-4">{t('result.cumulativeGpa')}</h2>
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-white/20 rounded-lg p-4">
@@ -549,7 +547,7 @@ export default function GpaCalculator() {
             {/* Add Semester Button */}
             <button
               onClick={addSemester}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2"
             >
               <Plus className="w-5 h-5" />
               {t('addSemester')}
@@ -561,7 +559,6 @@ export default function GpaCalculator() {
       {/* Comprehensive Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

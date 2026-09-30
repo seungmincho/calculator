@@ -304,7 +304,7 @@ export default function ImageWatermark() {
               <div
                 className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
                   isDragging
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                    ? 'border-blue-500 bg-subtle'
                     : 'border-line-strong hover:border-blue-500 dark:hover:border-blue-400'
                 }`}
                 onDrop={handleDrop}
@@ -339,7 +339,7 @@ export default function ImageWatermark() {
                       onClick={() => setWatermarkType('text')}
                       className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
                         watermarkType === 'text'
-                          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                          ? 'bg-primary hover:bg-blue-700 text-white'
                           : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
@@ -350,7 +350,7 @@ export default function ImageWatermark() {
                       onClick={() => setWatermarkType('image')}
                       className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
                         watermarkType === 'image'
-                          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                          ? 'bg-primary hover:bg-blue-700 text-white'
                           : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                       }`}
                     >
@@ -514,7 +514,7 @@ export default function ImageWatermark() {
                           disabled={tileMode}
                           className={`px-2 py-2 rounded text-xs font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                             position === pos && !tileMode
-                              ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 ring-2 ring-blue-500'
+                              ? 'bg-soft text-sub ring-2 ring-blue-500'
                               : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
                           }`}
                         >
@@ -588,7 +588,7 @@ export default function ImageWatermark() {
                 <div className="border-t border-line pt-4 space-y-2">
                   <button
                     onClick={handleDownload}
-                    className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors"
                   >
                     <Download className="w-4 h-4" />
                     {t('download')}
@@ -634,7 +634,6 @@ export default function ImageWatermark() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 

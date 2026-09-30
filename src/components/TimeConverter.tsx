@@ -374,7 +374,7 @@ const TimeConverter = () => {
           {/* 메인 컨버터 */}
           <div className="space-y-6">
             {/* 스마트 붙여넣기 도구 */}
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <div className="bg-subtle border border-line rounded-lg p-4">
               <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-300 mb-3 flex items-center gap-2">
                 🔮 {t('smartPaste')}
               </h3>
@@ -417,7 +417,7 @@ const TimeConverter = () => {
                     }
                   }}
                   placeholder={t('pasteTimeInfoPlaceholder')}
-                  className="w-full h-20 px-3 py-2 border border-blue-300 dark:border-blue-600 rounded-md shadow-sm bg-field text-fg placeholder-gray-500 dark:placeholder-gray-400 text-sm resize-none"
+                  className="w-full h-20 px-3 py-2 border border-line rounded-md shadow-sm bg-field text-fg placeholder-gray-500 dark:placeholder-gray-400 text-sm resize-none"
                 />
               </div>
 
@@ -761,7 +761,7 @@ const TimeConverter = () => {
                 🎫 {t('ticketingTools')}
               </h3>
               <div className="space-y-4">
-                <div className="bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                <div className="bg-subtle border border-red-200 dark:border-red-800 rounded-lg p-4">
                   <h4 className="font-semibold text-red-800 dark:text-red-300 mb-2">{t('concertTicketing')}</h4>
                   <p className="text-sm text-red-700 dark:text-red-400 mb-3">
                     {t('concertTicketingDesc')}
@@ -778,7 +778,7 @@ const TimeConverter = () => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <div className="bg-subtle border border-line rounded-lg p-4">
                   <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">{t('overseasEvents')}</h4>
                   <p className="text-sm text-blue-700 dark:text-blue-400 mb-3">
                     {t('overseasEventsDesc')}

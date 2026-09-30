@@ -229,19 +229,19 @@ export default function PresentationTimer() {
       stroke: '#22c55e',
       bg: '',
       text: 'text-green-500',
-      bgFull: 'bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800',
+      bgFull: 'bg-subtle',
     },
     warning: {
       stroke: '#eab308',
       bg: 'bg-yellow-50/50 dark:bg-yellow-950/20',
       text: 'text-yellow-500',
-      bgFull: 'bg-gradient-to-br from-yellow-50 to-amber-100 dark:from-yellow-950 dark:to-gray-800',
+      bgFull: 'bg-subtle',
     },
     danger: {
       stroke: '#ef4444',
       bg: 'bg-red-50/50 dark:bg-red-950/20',
       text: 'text-red-500',
-      bgFull: 'bg-gradient-to-br from-red-50 to-rose-100 dark:from-red-950 dark:to-gray-800',
+      bgFull: 'bg-subtle',
     },
     overtime: {
       stroke: '#ef4444',
@@ -452,10 +452,10 @@ export default function PresentationTimer() {
             onClick={handleStartPause}
             className={`flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-lg shadow-md transition-colors ${
               phase === 'danger' || phase === 'overtime'
-                ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700'
+                ? 'bg-red-500 hover:bg-red-600 text-white hover:from-red-600 hover:to-rose-700'
                 : phase === 'warning'
-                  ? 'bg-gradient-to-r from-yellow-500 to-amber-600 text-white hover:from-yellow-600 hover:to-amber-700'
-                  : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700'
+                  ? 'bg-primary hover:bg-blue-700 text-white hover:from-yellow-600 hover:to-amber-700'
+                  : 'bg-primary hover:bg-blue-700 text-white hover:from-blue-700 hover:to-indigo-700'
             }`}
             aria-label={isRunning ? t('pause') : t('start')}
           >
@@ -512,7 +512,7 @@ export default function PresentationTimer() {
               <ol className="space-y-2">
                 {(t.raw('guide.howto.items') as string[]).map((item, i) => (
                   <li key={i} className="flex gap-2 text-sm text-sub">
-                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-soft text-sub flex items-center justify-center text-xs font-bold">
                       {i + 1}
                     </span>
                     {item}

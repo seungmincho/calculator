@@ -694,7 +694,6 @@ export default function GovernmentSubsidyCalculator() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4 sticky top-24`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-blue-500" />
               {t('input.title')}
             </h2>
 
@@ -908,7 +907,7 @@ export default function GovernmentSubsidyCalculator() {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={handleCalculate}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
               >
                 <Calculator className="w-4 h-4" />
                 {t('input.calculate')}
@@ -943,19 +942,19 @@ export default function GovernmentSubsidyCalculator() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 text-center">
+                <div className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-sm text-green-600 dark:text-green-400 mb-1">{t('result.eligibleCount')}</div>
                   <div className="text-3xl font-bold text-green-700 dark:text-green-300">
                     {summary.eligibleCount}<span className="text-lg">{t('result.programs')}</span>
                   </div>
                 </div>
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 text-center">
+                <div className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('result.monthlyTotal')}</div>
                   <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">
                     {formatKoreanMoney(summary.totalMonthly)}
                   </div>
                 </div>
-                <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4 text-center">
+                <div className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">{t('result.yearlyTotal')}</div>
                   <div className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
                     {formatKoreanMoney(summary.totalYearly)}
@@ -995,7 +994,7 @@ export default function GovernmentSubsidyCalculator() {
                   ))}
                   {/* Income bar */}
                   <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500"
+                    className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-500"
                     style={{ width: `${Math.min(incomeRatio * 100, 100)}%` }}
                   />
                 </div>
@@ -1074,7 +1073,7 @@ export default function GovernmentSubsidyCalculator() {
 
                         {/* Amount breakdown for eligible */}
                         {result.status === 'eligible' && result.monthlyAmount > 0 && (
-                          <div className="bg-green-50 dark:bg-green-950 rounded-lg p-3">
+                          <div className="bg-subtle rounded-lg p-3">
                             <div className="flex justify-between text-sm">
                               <span className="text-green-700 dark:text-green-300">{t('result.monthlyEstimate')}</span>
                               <span className="font-bold text-green-800 dark:text-green-200">{formatKoreanMoney(result.monthlyAmount)}</span>

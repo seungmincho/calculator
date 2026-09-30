@@ -345,7 +345,7 @@ export default function DijkstraVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.search')}
             </span>
             <span className="text-xs text-gray-400">★★☆</span>
@@ -513,7 +513,7 @@ export default function DijkstraVisualizer() {
                         <span className="text-sub">
                           {t('stats.totalCost')}: <strong className="text-emerald-600 dark:text-emerald-400">{dijkstraResult.totalCost.toFixed(2)}</strong>
                         </span>
-                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium">
+                        <span className="px-2 py-0.5 rounded-full bg-soft text-sub text-xs font-medium">
                           {t('stats.found')}
                         </span>
                       </>
@@ -543,7 +543,7 @@ export default function DijkstraVisualizer() {
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   } disabled:opacity-40`}
                 >
-                  {dm.icon} {dm.label}
+                  {dm.label}
                 </button>
               ))}
               <div className="w-px h-6 bg-gray-300/50 dark:bg-gray-600/50 self-center" />
@@ -557,7 +557,7 @@ export default function DijkstraVisualizer() {
               <button
                 onClick={handleRandomMaze}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-purple-600 hover:to-pink-600 disabled:opacity-40"
               >
                 🎲 {t('controls.randomMaze')}
               </button>
@@ -595,7 +595,7 @@ export default function DijkstraVisualizer() {
                         : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     } disabled:opacity-40`}
                   >
-                    {wt.icon} {wt.label}
+                    {wt.label}
                   </button>
                 ))}
               </div>
@@ -656,11 +656,11 @@ export default function DijkstraVisualizer() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
+                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -766,25 +766,25 @@ function StepsList({
             data-active={isCurrent ? 'true' : undefined}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent
-                ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20'
+                ? 'border-blue-500/50 bg-subtle'
                 : isPath
                   ? isActive
-                    ? 'border-emerald-300/50 bg-emerald-50/30 dark:bg-emerald-900/10 dark:border-emerald-700/30'
-                    : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
+                    ? 'border-emerald-300/50 bg-subtle dark:border-emerald-700/30'
+                    : 'border-line opacity-40'
                   : isActive
-                    ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
-                    : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
+                    ? 'border-line bg-subtle'
+                    : 'border-line opacity-40'
             }`}
             onClick={() => onStepClick(step.originalIndex)}
           >
             <div className="flex items-center gap-2">
               <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${
                 isPath
-                  ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'
+                  ? 'bg-soft text-sub'
                   : isUpdate
                     ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
                     : isActive
-                      ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400'
+                      ? 'bg-soft text-sub'
                       : 'bg-track text-gray-500'
               }`}>
                 {isPath ? '→' : isUpdate ? '↻' : step.closedSetSize}

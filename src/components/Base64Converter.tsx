@@ -156,7 +156,6 @@ export default function Base64Converter() {
               {mode === 'encode' ? t('input.text') : t('input.base64')}
             </span>
             <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-medium bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-body transition-all">
-              <Upload className="w-4 h-4" />
               {t('actions.upload')}
               <input
                 type="file"

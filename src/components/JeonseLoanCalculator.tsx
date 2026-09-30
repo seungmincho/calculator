@@ -407,7 +407,7 @@ function JeonseLoanCalculatorContent() {
                   onClick={() => setLoanType(key)}
                   className={`p-4 rounded-xl border-2 transition-all text-left ${
                     loanType === key
-                      ? 'ring-2 ring-blue-500 border-blue-500 bg-blue-50 dark:bg-blue-950'
+                      ? 'ring-2 ring-blue-500 border-blue-500 bg-subtle'
                       : 'border-line bg-surface hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
@@ -531,7 +531,7 @@ function JeonseLoanCalculatorContent() {
 
             {/* 유형별 추가 입력 */}
             {loanType === 'youth' && (
-              <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-950 rounded-lg">
+              <div className="flex items-center gap-3 p-3 bg-subtle rounded-lg">
                 <input
                   type="checkbox"
                   id="smeWorker"
@@ -637,7 +637,7 @@ function JeonseLoanCalculatorContent() {
           {result ? (
             <>
               {/* 적용 금리 */}
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
+              <div className="bg-subtle rounded-xl p-6">
                 <h3 className="text-sm font-medium text-muted mb-1">
                   {t('result.appliedRate')}
                 </h3>
@@ -783,7 +783,7 @@ function JeonseLoanCalculatorContent() {
           )}
 
           {/* 면책 문구 */}
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
+          <div className="p-4 bg-subtle rounded-xl">
             <p className="text-xs text-faint leading-relaxed">
               {t('disclaimer')}
             </p>
@@ -794,7 +794,6 @@ function JeonseLoanCalculatorContent() {
       {/* 가이드 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-3 gap-6">

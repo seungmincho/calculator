@@ -85,3 +85,37 @@ for f in glob.glob('src/**/*.ts*', recursive=True):
         ef += 1
         open(f, 'w', encoding='utf-8', newline='').write(s)
 print('extra', ef, 'files', dict(e))
+
+# ── 4차: 장식용 틴트 박스·무지개 그라데이션 → 중립 (red/amber/yellow = 의미색이라 유지) ──
+DECOR = r'(?:blue|indigo|purple|violet|green|emerald|teal|cyan|sky|pink|rose|orange|gray|slate|lime|fuchsia)'
+TINT = [
+    (re.compile(B + r'bg-' + DECOR + r'-50(?:/\d+)? dark:bg-' + DECOR + r'-(?:9\d\d|800)(?:/[\d\[\].]+)?' + A), 'bg-subtle'),
+    (re.compile(B + r'border-' + DECOR + r'-(?:100|200|300)(?:/\d+)? dark:border-' + DECOR + r'-(?:[6-9]\d\d)(?:/[\d\[\].]+)?' + A), 'border-line'),
+    # 옅은 파스텔 그라데이션 박스
+    (re.compile(B + r'bg-gradient-to-\w+ from-\w+-50(?:/\d+)? (?:via-[^\s"`\x27]+ )?to-\w+-(?:50|100)(?:/\d+)?(?: dark:from-[^\s"`\x27]+)?(?: dark:via-[^\s"`\x27]+)?(?: dark:to-[^\s"`\x27]+)?' + A), 'bg-subtle'),
+    # 진한 그라데이션 버튼/배너: 빨강 계열은 danger, 나머지는 primary
+    (re.compile(B + r'bg-gradient-to-\w+ from-(?:red|rose)-[56]00 (?:via-[^\s"`\x27]+ )?to-(?:red|rose|pink)-[5-7]00(?: hover:from-[^\s"`\x27]+ hover:to-[^\s"`\x27]+)?' + A), 'bg-red-500 hover:bg-red-600'),
+    (re.compile(B + r'bg-gradient-to-\w+ from-\w+-[4-7]00 (?:via-\w+-[4-7]00 )?to-\w+-[4-7]00(?: hover:from-[^\s"`\x27]+ hover:to-[^\s"`\x27]+)?(?: dark:from-[^\s"`\x27]+)?(?: dark:to-[^\s"`\x27]+)?' + A), 'bg-primary hover:bg-blue-700'),
+]
+t = collections.Counter(); tf = 0
+for f in glob.glob('src/**/*.ts*', recursive=True):
+    s = open(f, encoding='utf-8').read(); o = s
+    for i, (rx, b) in enumerate(TINT):
+        s, n = rx.subn(b, s); t[i] += n
+    if s != o:
+        tf += 1
+        open(f, 'w', encoding='utf-8', newline='').write(s)
+print('tint', tf, 'files', dict(t))
+
+# ── 5차: 장식용 색 배지(번호 원·아이콘 원: bg-X-100 + text-X-600) → 무채색 ──
+BADGE = re.compile(B + r'bg-' + DECOR + r'-(?:100|200)(?:/\d+)? dark:bg-' + DECOR + r'-(?:[89]\d\d|700)(?:/[\d\[\].]+)? text-' + DECOR + r'-(?:[5-8]00) dark:text-' + DECOR + r'-(?:[2-4]00)' + A)
+BADGE2 = re.compile(B + r'bg-' + DECOR + r'-(?:500|600)/(?:10|15|20) dark:bg-' + DECOR + r'-(?:400|500)/(?:10|15|20|25)' + A)
+k = collections.Counter(); kf = 0
+for f in glob.glob('src/**/*.tsx', recursive=True):
+    s = open(f, encoding='utf-8').read(); o = s
+    s, n = BADGE.subn('bg-soft text-sub', s); k['badge'] += n
+    s, n = BADGE2.subn('bg-soft', s); k['tint-icon-bg'] += n
+    if s != o:
+        kf += 1
+        open(f, 'w', encoding='utf-8', newline='').write(s)
+print('badge', kf, 'files', dict(k))

@@ -1874,7 +1874,7 @@
       "braces": "Braces format",
       "urn": "URN format"
     },
-    "generate": "🎲 Generate UUIDs",
+    "generate": "Generate UUIDs",
     "generating": "Generating...",
     "result": {
       "title": "Generated UUIDs"
@@ -2065,7 +2065,7 @@
     "title": "JWT Decoder",
     "description": "Safely decode and analyze JWT tokens. Display Header, Payload, and Signature separately and validate token integrity.",
     "security": {
-      "title": "🔒 Security Notice",
+      "title": "Security Notice",
       "description": "This tool runs locally in your browser and tokens are not sent to any server. However, please handle production tokens with care."
     },
     "input": {
@@ -3781,7 +3781,7 @@
       "mixed": "Mixed Method",
       "mixedDesc": "Balanced selection combining random and statistical methods"
     },
-    "generate": "🎲 Generate Numbers",
+    "generate": "Generate Numbers",
     "generating": "Generating Numbers...",
     "gameNumber": "Game",
     "result": {
@@ -3926,7 +3926,7 @@
         "fast": "Fast"
       }
     },
-    "generateLadder": "🪜 Generate Ladder",
+    "generateLadder": "Generate Ladder",
     "startGame": "▶️ Start Game!",
     "playing": "Game in Progress...",
     "ladder": {
@@ -4006,11 +4006,11 @@
     "showResultsOnly": "Show Results Only",
     "presets": {
       "title": "Quick Start Presets",
-      "lunch": "🍱 Lunch Menu",
-      "duty": "🧹 Duty Assignment",
-      "gameOrder": "🎮 Game Order",
-      "teams": "👥 Team Division",
-      "coffee": "☕ Coffee Bet"
+      "lunch": "Lunch Menu",
+      "duty": "Duty Assignment",
+      "gameOrder": "Game Order",
+      "teams": "Team Division",
+      "coffee": "Coffee Bet"
     }
   },
   "regexExtractor": {
@@ -4720,7 +4720,7 @@
     "healthTools": "Health Tools",
     "mediaTools": "Image/Media Tools",
     "simpleGames": "Simple Games",
-    "financialTips": "💡 Financial Tips",
+    "financialTips": "Financial Tips",
     "algorithm": "Algorithms"
   },
   "mobileNav": {
@@ -13918,8 +13918,8 @@
     "resultWon": "Correct!",
     "resultLost": "Game over",
     "answerWas": "The answer was:",
-    "streakContinued": "🔥 {count} day streak!",
-    "streakLost": "😢 {count} day streak ended...",
+    "streakContinued": "{count} day streak!",
+    "streakLost": "{count} day streak ended...",
     "copyResult": "Copy",
     "shareNative": "Share",
     "shareTwitter": "Share on X",
@@ -15660,7 +15660,7 @@
   "homePage": {
     "hero": {
       "title": "All the tools you need, in one place",
-      "subtitle": "Financial calculators, developer tools, image editors, health tools, and games - 126+ free online tools",
+      "subtitle": "Financial calculators, developer tools, image editors, health tools, and games - 240+ free online tools",
       "searchPlaceholder": "Search for a tool... (Ctrl+K)",
       "totalTools": "Total Tools"
     },
@@ -20710,10 +20710,10 @@
     },
     "presets": {
       "label": "Presets",
-      "sports": { "label": "🏃 Sports", "names": ["Alex", "Jordan", "Taylor", "Morgan", "Casey", "Riley", "Sam", "Jamie", "Drew", "Quinn"] },
-      "study": { "label": "📚 Group Project", "names": ["Student A", "Student B", "Student C", "Student D", "Student E", "Student F"] },
-      "company": { "label": "🏢 Company Team", "names": ["Kim", "Lee", "Park", "Choi", "Jung", "Kang", "Jo", "Han"] },
-      "game": { "label": "🎮 Game Team", "names": ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"] }
+      "sports": { "label": "Sports", "names": ["Alex", "Jordan", "Taylor", "Morgan", "Casey", "Riley", "Sam", "Jamie", "Drew", "Quinn"] },
+      "study": { "label": "Group Project", "names": ["Student A", "Student B", "Student C", "Student D", "Student E", "Student F"] },
+      "company": { "label": "Company Team", "names": ["Kim", "Lee", "Park", "Choi", "Jung", "Kang", "Jo", "Han"] },
+      "game": { "label": "Game Team", "names": ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"] }
     },
     "guide": {
       "title": "Guide",

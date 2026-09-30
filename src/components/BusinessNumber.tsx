@@ -193,7 +193,7 @@ export default function BusinessNumber() {
               <button
                 onClick={handleVerify}
                 disabled={digits.length !== 10}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <Shield className="w-5 h-5" />
                 {t('verify')}
@@ -259,7 +259,7 @@ export default function BusinessNumber() {
             <div className={`${glassCard} ${glassInset} p-6`}>
               <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${
                 result.isValid
-                  ? 'bg-green-50 dark:bg-green-950 border-2 border-green-200 dark:border-green-800'
+                  ? 'bg-subtle border-2 border-line'
                   : 'bg-red-50 dark:bg-red-950 border-2 border-red-200 dark:border-red-800'
               }`}>
                 {result.isValid ? (
@@ -286,7 +286,7 @@ export default function BusinessNumber() {
               </div>
 
               <div className="space-y-4">
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                <div className="bg-subtle rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-body">
                       {t('formatted')}
@@ -314,7 +314,7 @@ export default function BusinessNumber() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <div className="text-sm text-blue-700 dark:text-blue-300 mb-1">
                       {t('digitCount')}
                     </div>
@@ -323,7 +323,7 @@ export default function BusinessNumber() {
                     </div>
                   </div>
 
-                  <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <div className="text-sm text-purple-700 dark:text-purple-300 mb-1">
                       {t('checkDigit')}
                     </div>
@@ -350,7 +350,6 @@ export default function BusinessNumber() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
 

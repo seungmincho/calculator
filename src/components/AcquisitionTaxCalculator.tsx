@@ -293,7 +293,6 @@ export default function AcquisitionTaxCalculator() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Calculator className="w-5 h-5" />
               {t('propertyType.label')}
             </h2>
 
@@ -471,7 +470,7 @@ export default function AcquisitionTaxCalculator() {
                 </div>
 
                 {/* 총 세금 강조 */}
-                <div className="text-center py-4 mb-4 bg-blue-50 dark:bg-blue-950 rounded-xl">
+                <div className="text-center py-4 mb-4 bg-subtle rounded-xl">
                   <p className="text-sm text-muted mb-1">{t('result.totalTax')}</p>
                   <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                     {formatWon(result.totalTax)}<span className="text-lg ml-1">{t('units.won')}</span>
@@ -582,7 +581,7 @@ export default function AcquisitionTaxCalculator() {
                   </div>
 
                   {/* 합계 */}
-                  <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <div className="flex items-center justify-between p-3 bg-subtle rounded-lg border border-line">
                     <p className="text-sm font-bold text-blue-700 dark:text-blue-300">{t('result.totalTax')}</p>
                     <p className="text-lg font-bold text-blue-700 dark:text-blue-300">
                       {formatWon(result.totalTax)}{t('units.won')}
@@ -654,7 +653,6 @@ export default function AcquisitionTaxCalculator() {
           aria-expanded={showGuide}
         >
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl">{showGuide ? '▲' : '▼'}</span>

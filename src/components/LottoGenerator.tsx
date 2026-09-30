@@ -723,7 +723,7 @@ export default function LottoGenerator() {
           <button
             onClick={generateLottoNumbers}
             disabled={isGenerating}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 px-4 rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex flex-col items-center gap-1"
+            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex flex-col items-center gap-1"
           >
             {isGenerating ? (
               <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -745,7 +745,7 @@ export default function LottoGenerator() {
               setGeneratedNumbers(hotNumbers)
               setShowSaveButton(true)
             }}
-            className="bg-gradient-to-r from-red-500 to-orange-500 text-white py-4 px-4 rounded-xl font-bold hover:from-red-600 hover:to-orange-600 transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
+            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold hover:from-red-600 hover:to-orange-600 transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
           >
             <Zap className="w-6 h-6" />
             <span className="text-sm">{t('hotNumbers')}</span>
@@ -763,7 +763,7 @@ export default function LottoGenerator() {
               setGeneratedNumbers(coldNumbers)
               setShowSaveButton(true)
             }}
-            className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white py-4 px-4 rounded-xl font-bold hover:from-blue-600 hover:to-cyan-600 transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
+            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold hover:from-blue-600 hover:to-cyan-600 transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
           >
             <Shield className="w-6 h-6" />
             <span className="text-sm">{t('coldNumbers')}</span>
@@ -781,7 +781,7 @@ export default function LottoGenerator() {
               setGeneratedNumbers(balancedNumbers)
               setShowSaveButton(true)
             }}
-            className="bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 px-4 rounded-xl font-bold hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
+            className="bg-primary hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-[1.02] shadow-lg flex flex-col items-center gap-1"
           >
             <BarChart3 className="w-6 h-6" />
             <span className="text-sm">{t('generateBalanced')}</span>
@@ -792,7 +792,7 @@ export default function LottoGenerator() {
         {generatedSets.length > 0 ? (
           <div className="space-y-4">
             {generatedSets.map((set, index) => (
-              <div key={index} className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl p-6 border border-purple-200 dark:border-purple-700">
+              <div key={index} className="bg-subtle rounded-xl p-6 border border-line">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
                     {numberOfSets > 1 ? `${index + 1}${t('gameNumber')}` : t('result.title')}
@@ -950,12 +950,11 @@ export default function LottoGenerator() {
       {/* 당첨 확인 섹션 */}
       <div className="bg-surface rounded-2xl shadow-lg p-6">
         <h2 className="text-lg font-bold text-fg mb-4 flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-yellow-500" />
           {t('winChecker.title')}
         </h2>
 
         {/* 비교 대상 당첨번호 - 상단에 표시 */}
-        <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-4 mb-4">
+        <div className="bg-subtle rounded-xl p-4 mb-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
               {searchResult ? (
@@ -1008,7 +1007,7 @@ export default function LottoGenerator() {
             <button
               onClick={checkWinningNumbers}
               disabled={checkNumbers.filter(n => n !== '').length !== 6}
-              className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2.5 px-5 rounded-lg hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-semibold transition-all whitespace-nowrap"
+              className="bg-primary hover:bg-blue-700 text-white py-2.5 px-5 rounded-lg hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-semibold transition-all whitespace-nowrap"
             >
               <Target className="w-4 h-4" />
               {t('winChecker.checkButton')}
@@ -1025,10 +1024,10 @@ export default function LottoGenerator() {
         {/* 확인 결과 */}
         {checkResult ? (
           <div className={`rounded-xl p-5 text-center ${
-            checkResult.prizeRank === 1 ? 'bg-gradient-to-r from-yellow-400 to-amber-500 text-white' :
+            checkResult.prizeRank === 1 ? 'bg-primary hover:bg-blue-700 text-white' :
             checkResult.prizeRank === 2 ? 'bg-gradient-to-r from-gray-300 to-gray-400 text-gray-800' :
-            checkResult.prizeRank === 3 ? 'bg-gradient-to-r from-orange-400 to-amber-600 text-white' :
-            checkResult.prizeRank >= 4 ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white' :
+            checkResult.prizeRank === 3 ? 'bg-primary hover:bg-blue-700 text-white' :
+            checkResult.prizeRank >= 4 ? 'bg-primary hover:bg-blue-700 text-white' :
             'bg-soft text-body'
           }`}>
             <div className="text-2xl font-bold mb-1">
@@ -1061,7 +1060,6 @@ export default function LottoGenerator() {
       {/* 당첨번호 조회 섹션 */}
       <div className="bg-surface rounded-2xl shadow-lg p-6">
         <h2 className="text-lg font-bold text-fg mb-4 flex items-center gap-2">
-          <Database className="w-5 h-5 text-green-600" />
           {t('winningNumbers')}
         </h2>
 
@@ -1152,7 +1150,7 @@ export default function LottoGenerator() {
             
             {/* 업데이트 상태 표시 */}
             {updateStatus && (
-              <div className="mb-3 p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+              <div className="mb-3 p-2 bg-subtle rounded-lg">
                 <div className="flex items-center space-x-2">
                   {isUpdating && <RefreshCw className="w-4 h-4 animate-spin text-blue-600" />}
                   <span className="text-sm text-blue-800 dark:text-blue-200">{updateStatus}</span>
@@ -1160,7 +1158,7 @@ export default function LottoGenerator() {
               </div>
             )}
             
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg p-4">
+            <div className="bg-subtle rounded-lg p-4">
               {latestWinning ? (
                 <>
                   <div className="text-sm text-purple-600 dark:text-purple-400 mb-2">
@@ -1236,7 +1234,7 @@ export default function LottoGenerator() {
                   ))}
                 </div>
               </div>
-              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+              <div className="bg-subtle rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-1">
                   <TrendingUp className="w-4 h-4 rotate-180" />
                   {t('coldNumbers')} 6
@@ -1277,7 +1275,7 @@ export default function LottoGenerator() {
       </div>
 
       {/* 이용 가이드 (간소화) */}
-      <details className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6">
+      <details className="bg-subtle rounded-2xl p-6">
         <summary className="cursor-pointer text-lg font-bold text-fg">
           🎯 {t('guide.title')}
         </summary>

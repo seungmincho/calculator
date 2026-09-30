@@ -1189,7 +1189,7 @@ export default function Viewer3D() {
                 onClick={() => setActiveTab('viewer')}
                 className={`flex-1 py-3 px-2 text-xs font-medium transition-colors ${
                   activeTab === 'viewer'
-                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-b-2 border-blue-600'
+                    ? 'bg-subtle text-blue-600 dark:text-blue-400 border-b-2 border-blue-600'
                     : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
@@ -1200,7 +1200,7 @@ export default function Viewer3D() {
                 onClick={() => setActiveTab('convert')}
                 className={`flex-1 py-3 px-2 text-xs font-medium transition-colors ${
                   activeTab === 'convert'
-                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-b-2 border-blue-600'
+                    ? 'bg-subtle text-blue-600 dark:text-blue-400 border-b-2 border-blue-600'
                     : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
@@ -1211,7 +1211,7 @@ export default function Viewer3D() {
                 onClick={() => setActiveTab('optimize')}
                 className={`flex-1 py-3 px-2 text-xs font-medium transition-colors ${
                   activeTab === 'optimize'
-                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-b-2 border-blue-600'
+                    ? 'bg-subtle text-blue-600 dark:text-blue-400 border-b-2 border-blue-600'
                     : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
@@ -1222,7 +1222,7 @@ export default function Viewer3D() {
                 onClick={() => setActiveTab('print')}
                 className={`flex-1 py-3 px-2 text-xs font-medium transition-colors ${
                   activeTab === 'print'
-                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-b-2 border-blue-600'
+                    ? 'bg-subtle text-blue-600 dark:text-blue-400 border-b-2 border-blue-600'
                     : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
@@ -1239,7 +1239,6 @@ export default function Viewer3D() {
                   {/* Model Info */}
                   <div>
                     <h3 className="text-sm font-semibold text-fg mb-2 flex items-center gap-2">
-                      <Box className="w-4 h-4" />
                       {t('info.title')}
                     </h3>
                     <div className="space-y-1.5 text-xs">
@@ -1298,7 +1297,6 @@ export default function Viewer3D() {
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-sm font-semibold text-fg mb-2 flex items-center gap-2">
-                      <FileType className="w-4 h-4" />
                       {t('export.title')}
                     </h3>
                     <p className="text-xs text-muted mb-3">
@@ -1354,7 +1352,6 @@ export default function Viewer3D() {
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-sm font-semibold text-fg mb-2 flex items-center gap-2">
-                      <Settings className="w-4 h-4" />
                       {t('optimize.title')}
                     </h3>
                     <p className="text-xs text-muted mb-3">
@@ -1445,7 +1442,6 @@ export default function Viewer3D() {
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-sm font-semibold text-fg mb-2 flex items-center gap-2">
-                      <Printer className="w-4 h-4" />
                       {t('print.title')}
                     </h3>
                     <p className="text-xs text-muted mb-3">
@@ -1540,7 +1536,7 @@ export default function Viewer3D() {
                       </div>
 
                       {/* Time Estimates */}
-                      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-xs space-y-1.5">
+                      <div className="bg-subtle rounded-lg p-3 text-xs space-y-1.5">
                         <div className="font-semibold text-fg mb-2">{t('print.timeEstimate')}</div>
                         <div className="flex justify-between">
                           <span className="text-gray-500">FDM (PLA/ABS)</span>
@@ -1553,7 +1549,7 @@ export default function Viewer3D() {
                       </div>
 
                       {/* Material Estimates */}
-                      <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 text-xs space-y-1.5">
+                      <div className="bg-subtle rounded-lg p-3 text-xs space-y-1.5">
                         <div className="font-semibold text-fg mb-2">{t('print.materialEstimate')}</div>
                         <div className="flex justify-between">
                           <span className="text-gray-500">PLA</span>
@@ -1586,7 +1582,6 @@ export default function Viewer3D() {
           {modelInfo && modelInfo.animations.length > 0 && (
             <div className="bg-surface rounded-xl p-4 shadow-lg">
               <h3 className="text-sm font-semibold text-fg mb-3 flex items-center gap-2">
-                <Film className="w-4 h-4" />
                 {t('animation.title')}
               </h3>
               <div className="space-y-3">
@@ -1654,7 +1649,6 @@ export default function Viewer3D() {
           {/* Viewer Settings (Environment, Lighting, Background) */}
           <div className="bg-surface rounded-xl p-4 shadow-lg">
             <h3 className="text-sm font-semibold text-fg mb-3 flex items-center gap-2">
-              <Layers className="w-4 h-4" />
               {t('controls.title')}
             </h3>
             <div className="space-y-3">

@@ -145,26 +145,26 @@ export default function CoinChangeVisualizer() {
   ]
 
   const ACTION_STYLE: Record<string, string> = {
-    init:             'bg-gray-50 dark:bg-gray-900/20 border-gray-300/50 dark:border-gray-700/40',
-    'try-coin':       'bg-blue-50 dark:bg-blue-900/20 border-blue-300/50 dark:border-blue-700/40',
-    update:           'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300/50 dark:border-emerald-700/40',
+    init:             'bg-subtle border-line',
+    'try-coin':       'bg-subtle border-line',
+    update:           'bg-subtle border-line',
     skip:             'bg-red-50 dark:bg-red-900/20 border-red-300/50 dark:border-red-700/40',
-    fill:             'bg-cyan-50 dark:bg-cyan-900/20 border-cyan-300/50 dark:border-cyan-700/40',
+    fill:             'bg-subtle border-line',
     'backtrack-pick': 'bg-amber-50 dark:bg-amber-900/20 border-amber-300/50 dark:border-amber-700/40',
-    'backtrack-skip': 'bg-gray-50 dark:bg-gray-900/20 border-gray-300/50 dark:border-gray-700/40',
-    'greedy-pick':    'bg-orange-50 dark:bg-orange-900/20 border-orange-300/50 dark:border-orange-700/40',
-    done:             'bg-purple-50 dark:bg-purple-900/20 border-purple-300/50 dark:border-purple-700/40',
+    'backtrack-skip': 'bg-subtle border-line',
+    'greedy-pick':    'bg-subtle border-line',
+    done:             'bg-subtle border-line',
   }
   const ACTION_BADGE: Record<string, string> = {
-    init:             'bg-gray-100 dark:bg-gray-900/40 text-gray-700 dark:text-gray-400',
-    'try-coin':       'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
-    update:           'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400',
+    init:             'bg-soft text-sub',
+    'try-coin':       'bg-soft text-sub',
+    update:           'bg-soft text-sub',
     skip:             'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400',
-    fill:             'bg-cyan-100 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-400',
+    fill:             'bg-soft text-sub',
     'backtrack-pick': 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400',
-    'backtrack-skip': 'bg-gray-100 dark:bg-gray-900/40 text-gray-700 dark:text-gray-400',
-    'greedy-pick':    'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-400',
-    done:             'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
+    'backtrack-skip': 'bg-soft text-sub',
+    'greedy-pick':    'bg-soft text-sub',
+    done:             'bg-soft text-sub',
   }
 
   return (
@@ -174,7 +174,7 @@ export default function CoinChangeVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.dp')}
             </span>
             <span className="text-xs text-gray-400">★☆☆</span>
@@ -263,7 +263,7 @@ export default function CoinChangeVisualizer() {
             </div>
 
             <button onClick={runAlgorithm}
-              className="w-full px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-lg font-medium hover:from-cyan-700 hover:to-blue-700 transition-colors">
+              className="w-full px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium hover:from-cyan-700 hover:to-blue-700 transition-colors">
               {t('run')}
             </button>
 
@@ -283,9 +283,9 @@ export default function CoinChangeVisualizer() {
                 {tabs.map(tab => (
                   <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
-                      activeTab === tab.key ? 'text-cyan-600 dark:text-cyan-400 border-b-2 border-cyan-500 bg-cyan-50/50 dark:bg-cyan-900/20'
+                      activeTab === tab.key ? 'text-cyan-600 dark:text-cyan-400 border-b-2 border-cyan-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
-                    }`}>{tab.icon} {tab.label}</button>
+                    }`}>{tab.label}</button>
                 ))}
               </div>
 
@@ -332,7 +332,7 @@ function StepsList({ steps, currentIndex, onStepClick, actionStyle, actionBadge 
         const idx = ws + wi; const isCur = idx === currentIndex; const isAct = idx <= currentIndex
         return (
           <div key={idx} data-active={isCur ? 'true' : undefined} onClick={() => onStepClick(idx)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-gray-50/30 dark:bg-gray-800/30' : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'}`}>
+            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-subtle' : 'border-line opacity-40'}`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${actionBadge[step.action] || ''}`}>{step.action}</span>
               <span className="text-sub truncate">{step.description}</span>

@@ -170,7 +170,7 @@ export default function SelectionSortVisualizer() {
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
         <div className="flex items-center gap-2 mt-2">
-          <span className="px-2 py-0.5 text-xs rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400">
+          <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
             {tHub('categories.sort')}
           </span>
           <span className="text-xs text-gray-400">★☆☆</span>
@@ -225,7 +225,7 @@ export default function SelectionSortVisualizer() {
                 {t('stats.swaps')}: <strong className="text-red-500 dark:text-red-400">{swaps}</strong>
               </span>
               {isDone && (
-                <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium">
+                <span className="px-2 py-0.5 rounded-full bg-soft text-sub text-xs font-medium">
                   {t('stats.done')}
                 </span>
               )}
@@ -239,21 +239,21 @@ export default function SelectionSortVisualizer() {
               <button
                 onClick={handleRandom}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-blue-600 hover:to-indigo-600 disabled:opacity-40"
               >
                 🎲 {t('controls.random')}
               </button>
               <button
                 onClick={handleNearlySorted}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-emerald-600 hover:to-teal-600 disabled:opacity-40"
               >
                 📈 {t('controls.nearlySorted')}
               </button>
               <button
                 onClick={handleReversed}
                 disabled={isRunning}
-                className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs rounded-lg bg-primary hover:bg-blue-700 text-white hover:from-orange-600 hover:to-red-600 disabled:opacity-40"
               >
                 📉 {t('controls.reversed')}
               </button>
@@ -318,11 +318,11 @@ export default function SelectionSortVisualizer() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-500 bg-purple-50/50 dark:bg-purple-900/20'
+                        ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -430,7 +430,7 @@ function SelectionStepsList({
         if (step.action === 'scan-start') {
           icon = '🔎'
           label = t('stepsGuide.scanStart', { i: String(step.current ?? 0) })
-          colorClass = 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400'
+          colorClass = 'bg-soft text-sub'
         } else if (step.action === 'new-min') {
           icon = '⭐'
           label = t('stepsGuide.newMin', { idx: String(step.minIndex ?? 0) })
@@ -447,7 +447,7 @@ function SelectionStepsList({
         } else if (step.action === 'done') {
           icon = '🎉'
           label = t('stats.done')
-          colorClass = 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400'
+          colorClass = 'bg-soft text-sub'
         }
 
         return (
@@ -456,10 +456,10 @@ function SelectionStepsList({
             data-active={isCurrent ? 'true' : undefined}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent
-                ? 'border-purple-500/50 bg-purple-50/50 dark:bg-purple-900/20'
+                ? 'border-purple-500/50 bg-subtle'
                 : isActive
-                  ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
-                  : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
+                  ? 'border-line bg-subtle'
+                  : 'border-line opacity-40'
             }`}
             onClick={() => onStepClick(step.originalIndex)}
           >

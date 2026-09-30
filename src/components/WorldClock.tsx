@@ -334,7 +334,7 @@ export default function WorldClock() {
       </div>
 
       {/* My Local Time */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 rounded-xl shadow-lg p-8">
+      <div className="bg-subtle rounded-xl shadow-lg p-8">
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
             <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -376,7 +376,6 @@ export default function WorldClock() {
       {/* Add City */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-          <Plus className="w-5 h-5" />
           {t('addCity')}
         </h2>
         <div className="flex gap-3">
@@ -395,7 +394,7 @@ export default function WorldClock() {
           <button
             onClick={handleAddCity}
             disabled={!selectedCityToAdd}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             {t('add')}
           </button>
@@ -493,7 +492,6 @@ export default function WorldClock() {
           className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <Users className="w-5 h-5" />
             {t('meetingPlanner.title')}
           </h2>
           <span className="text-sm text-muted">
@@ -610,7 +608,7 @@ export default function WorldClock() {
                   return (
                     <div className={`rounded-lg px-4 py-3 text-sm font-medium ${
                       overlapCount > 0
-                        ? 'bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300'
+                        ? 'bg-subtle text-green-700 dark:text-green-300'
                         : 'bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300'
                     }`}>
                       {overlapCount > 0
@@ -632,7 +630,6 @@ export default function WorldClock() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

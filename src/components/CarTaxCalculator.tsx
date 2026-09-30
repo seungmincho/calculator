@@ -420,7 +420,6 @@ export default function CarTaxCalculator() {
         {/* 입력 폼 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-            <Calculator className="w-6 h-6 mr-2 text-green-600" />
             차량 정보 입력
           </h2>
 
@@ -428,7 +427,6 @@ export default function CarTaxCalculator() {
             {/* 차량 가격 */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                <Car className="w-4 h-4 inline mr-1" />
                 차량 가격 (원)
               </label>
               <input
@@ -633,7 +631,7 @@ export default function CarTaxCalculator() {
             {/* 감면 혜택 */}
             <div className="border-t pt-6">
               <h3 className="text-lg font-semibold text-fg mb-4">
-                💰 감면 혜택 (해당사항 선택)
+                감면 혜택 (해당사항 선택)
               </h3>
               
               {/* 다자녀 가정 */}
@@ -698,7 +696,7 @@ export default function CarTaxCalculator() {
               </div>
 
               <div className="text-xs text-muted mt-2">
-                ⚠️ 전기차 혜택과 다자녀 혜택은 중복 적용되지 않습니다
+                전기차 혜택과 다자녀 혜택은 중복 적용되지 않습니다
               </div>
             </div>
           </div>
@@ -709,9 +707,8 @@ export default function CarTaxCalculator() {
           {result && (
             <>
               {/* 주요 결과 */}
-              <div className="bg-gradient-to-r from-green-600 to-teal-600 rounded-2xl shadow-lg p-8 text-white">
+              <div className="bg-primary hover:bg-blue-700 rounded-2xl shadow-lg p-8 text-white">
                 <h3 className="text-xl font-bold mb-6 flex items-center">
-                  <Receipt className="w-6 h-6 mr-2" />
                   취등록세 계산 결과
                 </h3>
                 
@@ -765,7 +762,7 @@ export default function CarTaxCalculator() {
                   {/* 적용된 감면 혜택 */}
                   {result.appliedBenefits.length > 0 && (
                     <div className="mt-4 p-3 bg-blue-500/20 rounded-lg">
-                      <h4 className="text-sm font-semibold mb-2">🎉 적용된 감면 혜택</h4>
+                      <h4 className="text-sm font-semibold mb-2">적용된 감면 혜택</h4>
                       <div className="space-y-1">
                         {result.appliedBenefits.map((benefit, index) => (
                           <div key={index} className="text-sm text-blue-100">
@@ -843,7 +840,7 @@ export default function CarTaxCalculator() {
 
               {/* 환경차 혜택 안내 */}
               {(fuelType === 'electric' || fuelType === 'hybrid') && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-6">
+                <div className="bg-subtle border border-line rounded-2xl p-6">
                   <div className="flex items-center mb-3">
                     <AlertCircle className="w-5 h-5 text-blue-600 mr-2" />
                     <h4 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
@@ -859,7 +856,7 @@ export default function CarTaxCalculator() {
           )}
 
           {!result && (
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center">
+            <div className="bg-subtle rounded-2xl p-8 text-center">
               <Receipt className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-sub">
                 차량 정보를 입력하면<br />
@@ -872,9 +869,9 @@ export default function CarTaxCalculator() {
 
 
       {/* 취등록세 가이드 */}
-      <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
+      <div className="bg-subtle rounded-2xl p-8">
         <h3 className="text-2xl font-bold text-fg mb-6">
-          💡 취등록세 안내
+          취등록세 안내
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">

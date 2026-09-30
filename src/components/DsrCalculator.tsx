@@ -728,7 +728,7 @@ export default function DsrCalculator() {
               <button
                 type="button"
                 onClick={addExistingLoan}
-                className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                className="flex items-center gap-1 px-3 py-1.5 text-sm bg-subtle text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 {t('existing.add')}
@@ -844,7 +844,7 @@ export default function DsrCalculator() {
             <button
               type="button"
               onClick={calculate}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
+              className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
             >
               <Calculator className="w-5 h-5" />
               {t('calculate')}
@@ -919,7 +919,7 @@ export default function DsrCalculator() {
                     </div>
                   ))}
                   {/* 합계 */}
-                  <div className="flex justify-between items-center py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg px-3">
+                  <div className="flex justify-between items-center py-2 bg-subtle rounded-lg px-3">
                     <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{t('result.totalAnnual')}</span>
                     <span className="text-sm font-bold text-blue-700 dark:text-blue-300">{formatCurrency(Math.round(result.totalAnnual))}</span>
                   </div>
@@ -933,12 +933,11 @@ export default function DsrCalculator() {
               {/* 대출한도 역산 */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
                   {t('limit.title')}
                 </h2>
                 {result.maxAdditionalLoan > 0 ? (
                   <div className="space-y-3">
-                    <div className="text-center bg-green-50 dark:bg-green-900/20 rounded-xl p-6">
+                    <div className="text-center bg-subtle rounded-xl p-6">
                       <p className="text-sm text-green-600 dark:text-green-400 mb-1">{t('limit.maxAdditional')}</p>
                       <p className="text-3xl font-bold text-green-700 dark:text-green-300">{formatCurrency(Math.round(result.maxAdditionalLoan))}</p>
                       <p className="text-xs text-green-500 dark:text-green-400 mt-2">{t('limit.basedOn')}</p>
@@ -961,25 +960,24 @@ export default function DsrCalculator() {
               {/* 스트레스 DSR */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="text-lg font-semibold text-fg mb-2 flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-purple-600" />
                   {t('stress.title')}
                 </h2>
                 <p className="text-xs text-muted mb-4">{t('stress.description')}</p>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.additionalRate')}</p>
                     <p className="text-xl font-bold text-purple-700 dark:text-purple-300">+{result.stressAdditional.toFixed(2)}%p</p>
                   </div>
-                  <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.appliedRate')}</p>
                     <p className="text-xl font-bold text-purple-700 dark:text-purple-300">{result.stressRate.toFixed(2)}%</p>
                   </div>
-                  <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.resultDsr')}</p>
                     <p className={`text-xl font-bold ${getDsrTextColor(result.stressDsr)}`}>{result.stressDsr.toFixed(1)}%</p>
                   </div>
-                  <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('stress.resultLimit')}</p>
                     <p className="text-xl font-bold text-purple-700 dark:text-purple-300">{formatCurrency(Math.round(result.stressMaxLoan))}</p>
                   </div>
@@ -996,7 +994,6 @@ export default function DsrCalculator() {
               {/* 면책문구 */}
               <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4">
                 <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-300 mb-1 flex items-center gap-1">
-                  <AlertTriangle className="w-4 h-4" />
                   {t('disclaimer.title')}
                 </h3>
                 <p className="text-xs text-yellow-700 dark:text-yellow-400 leading-relaxed">{t('disclaimer.text')}</p>
@@ -1014,7 +1011,6 @@ export default function DsrCalculator() {
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-3 gap-6">

@@ -131,7 +131,7 @@ export default function GameLobby({
         {!showCreateForm ? (
           <button
             onClick={() => setShowCreateForm(true)}
-            className="w-full flex items-center justify-center gap-2 py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-xl transition-all transform hover:scale-[1.02]"
+            className="w-full flex items-center justify-center gap-2 py-4 px-6 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl transition-all transform hover:scale-[1.02]"
           >
             <Plus className="w-5 h-5" />
             {t('createRoom')}
@@ -169,7 +169,7 @@ export default function GameLobby({
                   onClick={() => setIsPrivate(false)}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 transition-all ${
                     !isPrivate
-                      ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                      ? 'border-indigo-500 bg-subtle text-indigo-700 dark:text-indigo-300'
                       : 'border-line-strong bg-field text-body hover:border-gray-400'
                   }`}
                 >
@@ -184,7 +184,7 @@ export default function GameLobby({
                   onClick={() => setIsPrivate(true)}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 transition-all ${
                     isPrivate
-                      ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                      ? 'border-indigo-500 bg-subtle text-indigo-700 dark:text-indigo-300'
                       : 'border-line-strong bg-field text-body hover:border-gray-400'
                   }`}
                 >
@@ -201,7 +201,7 @@ export default function GameLobby({
               <button
                 onClick={handleCreateRoom}
                 disabled={!hostName.trim() || isCreating}
-                className="flex-1 py-3 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium rounded-xl transition-all disabled:cursor-not-allowed"
+                className="flex-1 py-3 px-6 bg-primary hover:bg-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium rounded-xl transition-all disabled:cursor-not-allowed"
               >
                 {isCreating ? t('creating') : t('create')}
               </button>
@@ -224,7 +224,6 @@ export default function GameLobby({
       <div className="bg-surface rounded-2xl shadow-lg p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <Users className="w-5 h-5 text-green-500" />
             {t('availableRooms')}
             <span className="text-sm font-normal text-muted">
               ({waitingRooms.length})
@@ -256,10 +255,10 @@ export default function GameLobby({
               <button
                 key={room.id}
                 onClick={() => onJoinRoom(room)}
-                className="w-full flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/40 border border-green-200 dark:border-green-800 hover:border-green-300 dark:hover:border-green-700 rounded-xl transition-all group"
+                className="w-full flex items-center justify-between p-4 bg-subtle hover:bg-green-100 dark:hover:bg-green-900/40 border border-line hover:border-green-300 dark:hover:border-green-700 rounded-xl transition-all group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-10 h-10 bg-primary hover:bg-blue-700 rounded-full flex items-center justify-center text-white font-bold">
                     {room.host_name.charAt(0).toUpperCase()}
                   </div>
                   <div className="text-left">
@@ -286,7 +285,6 @@ export default function GameLobby({
       {monthlyStats.length > 0 && (
         <div className="bg-surface rounded-2xl shadow-lg p-6">
           <h3 className="text-lg font-semibold text-fg flex items-center gap-2 mb-4">
-            <BarChart3 className="w-5 h-5 text-indigo-500" />
             {t('monthlyStats')}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
@@ -295,7 +293,7 @@ export default function GameLobby({
               return (
                 <div
                   key={stat.month}
-                  className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-4 text-center"
+                  className="bg-subtle rounded-xl p-4 text-center"
                 >
                   <div className="flex items-center justify-center gap-1 text-xs text-muted mb-2">
                     <Calendar className="w-3 h-3" />

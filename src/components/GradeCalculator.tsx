@@ -166,7 +166,6 @@ export default function GradeCalculator() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-blue-600" />
               {t('input.title')}
             </h2>
 
@@ -232,7 +231,7 @@ export default function GradeCalculator() {
             <div className="flex gap-3">
               <button
                 onClick={handleCalculate}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
               >
                 <Calculator className="w-4 h-4" />
                 {t('input.calculate')}
@@ -254,7 +253,6 @@ export default function GradeCalculator() {
           {result && (
             <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
               <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-blue-600" />
                 {t('result.title')}
               </h2>
 
@@ -269,15 +267,15 @@ export default function GradeCalculator() {
                   </span>
                 </div>
                 <div className="flex-1 grid grid-cols-2 gap-4 w-full">
-                  <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 text-center">
+                  <div className="bg-subtle rounded-xl p-4 text-center">
                     <p className="text-xs text-muted">{t('result.percentile')}</p>
                     <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{result.percentile.toFixed(1)}%</p>
                   </div>
-                  <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4 text-center">
+                  <div className="bg-subtle rounded-xl p-4 text-center">
                     <p className="text-xs text-muted">{t('result.topPercent')}</p>
                     <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{result.topPercent.toFixed(1)}%</p>
                   </div>
-                  <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 text-center col-span-2">
+                  <div className="bg-subtle rounded-xl p-4 text-center col-span-2">
                     <p className="text-xs text-muted">{t('result.rank')}</p>
                     <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                       {result.rank} / {result.totalStudents}
@@ -327,7 +325,6 @@ export default function GradeCalculator() {
           {/* Grade table */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-blue-600" />
               {t('table.title')}
             </h2>
             <div className="overflow-x-auto">
@@ -351,7 +348,7 @@ export default function GradeCalculator() {
                         key={i}
                         className={`border-b border-line transition-colors ${
                           isCurrentGrade
-                            ? 'bg-blue-50 dark:bg-blue-950 font-semibold'
+                            ? 'bg-subtle font-semibold'
                             : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                         }`}
                       >
@@ -386,7 +383,6 @@ export default function GradeCalculator() {
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-8">

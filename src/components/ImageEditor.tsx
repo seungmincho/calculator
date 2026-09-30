@@ -634,7 +634,6 @@ const ImageEditor = () => {
           <div className="lg:col-span-1">
             <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-xl font-semibold mb-4 text-fg">
-                <Upload className="w-5 h-5 inline mr-2" />
                 이미지 업로드
               </h2>
 
@@ -645,7 +644,7 @@ const ImageEditor = () => {
                   onDragLeave={handleDragLeave}
                   className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
                     dragOver
-                      ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                      ? 'border-purple-500 bg-subtle'
                       : 'border-line-strong hover:border-purple-400 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                   onClick={() => fileInputRef.current?.click()}
@@ -703,7 +702,7 @@ const ImageEditor = () => {
                     onClick={() => setCurrentTool('crop')}
                     className={`p-3 rounded-lg border transition-colors ${
                       currentTool === 'crop'
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
+                        ? 'border-purple-500 bg-subtle text-purple-600 dark:text-purple-400'
                         : 'border-line hover:border-purple-300'
                     }`}
                   >
@@ -714,7 +713,7 @@ const ImageEditor = () => {
                     onClick={() => setCurrentTool('rotate')}
                     className={`p-3 rounded-lg border transition-colors ${
                       currentTool === 'rotate'
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
+                        ? 'border-purple-500 bg-subtle text-purple-600 dark:text-purple-400'
                         : 'border-line hover:border-purple-300'
                     }`}
                   >
@@ -725,7 +724,7 @@ const ImageEditor = () => {
                     onClick={() => setCurrentTool('text')}
                     className={`p-3 rounded-lg border transition-colors ${
                       currentTool === 'text'
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
+                        ? 'border-purple-500 bg-subtle text-purple-600 dark:text-purple-400'
                         : 'border-line hover:border-purple-300'
                     }`}
                   >
@@ -736,7 +735,7 @@ const ImageEditor = () => {
                     onClick={() => setCurrentTool('filter')}
                     className={`p-3 rounded-lg border transition-colors ${
                       currentTool === 'filter'
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
+                        ? 'border-purple-500 bg-subtle text-purple-600 dark:text-purple-400'
                         : 'border-line hover:border-purple-300'
                     }`}
                   >
@@ -1046,8 +1045,8 @@ const ImageEditor = () => {
         <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-fg">이미지 편집기 사용법</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
-              <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">✅ 주요 기능</h3>
+            <div className="bg-subtle rounded-lg p-6">
+              <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2">주요 기능</h3>
               <ul className="text-green-800 dark:text-green-300 text-sm space-y-1">
                 <li>• 브라우저에서 직접 편집 (서버 업로드 없음)</li>
                 <li>• 이미지 크롭 및 회전</li>
@@ -1059,7 +1058,7 @@ const ImageEditor = () => {
               </ul>
             </div>
             <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-6">
-              <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">💡 사용 팁</h3>
+              <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-2">사용 팁</h3>
               <ul className="text-amber-800 dark:text-amber-300 text-sm space-y-1">
                 <li>• 편집 도구를 선택한 후 미리보기에서 작업하세요</li>
                 <li>• 텍스트 도구에서는 캔버스를 클릭하여 텍스트를 추가</li>

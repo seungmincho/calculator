@@ -1365,7 +1365,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
           <button
             onClick={() => setShowChat(!showChat)}
             className={`relative p-2 rounded-lg transition-all ${
-              showChat ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+              showChat ? 'bg-soft text-sub' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
             }`}
           >
             <MessageCircle className="w-5 h-5" />
@@ -1390,9 +1390,9 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
       {/* Result banner */}
       {isFinished && (
         <div className={`text-center py-4 px-6 rounded-2xl ${
-          iWon ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+          iWon ? 'bg-primary hover:bg-blue-700 text-white'
             : iLost ? 'bg-track text-body'
-              : 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+              : 'bg-soft text-sub'
         }`}>
           <Trophy className="w-8 h-8 mx-auto mb-2" />
           <p className="text-xl font-bold">
@@ -1408,7 +1408,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
       <div className={`${glassCard} ${glassInset} p-3`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-8 h-8 bg-primary hover:bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-sm">
               {(playerName || '?')[0].toUpperCase()}
             </div>
             <div>
@@ -1424,7 +1424,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
               <p className="font-medium text-fg text-sm text-right">{opponentName || '...'}</p>
               <p className="text-xs text-muted text-right">{t('multi.opponent')}</p>
             </div>
-            <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
               {(opponentName || '?')[0].toUpperCase()}
             </div>
           </div>
@@ -1506,7 +1506,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
           </div>
           {/* Combo */}
           {comboCount > 1 && (
-            <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-lg p-3 text-center text-white">
+            <div className="bg-primary hover:bg-blue-700 rounded-lg p-3 text-center text-white">
               <p className="text-xs font-bold uppercase">Combo</p>
               <p className="text-2xl font-bold">x{comboCount}</p>
             </div>
@@ -1576,7 +1576,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
           ))}
         </div>
         {comboCount > 1 && (
-          <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-lg p-2 text-center text-white">
+          <div className="bg-primary hover:bg-blue-700 rounded-lg p-2 text-center text-white">
             <span className="text-xs font-bold uppercase">Combo x{comboCount}</span>
           </div>
         )}
@@ -1587,7 +1587,7 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
         <div className="flex gap-3">
           <button
             onClick={handleRestart}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-xl transition-all"
+            className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl transition-all"
           >
             <RefreshCw className="w-5 h-5" />
             {t('multi.playAgain')}
@@ -1606,7 +1606,6 @@ export default function TetrisMultiplayer({ initialRoom, isHost: isHostProp, onB
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="p-3 border-b border-line">
             <h3 className="font-semibold text-fg flex items-center gap-2 text-sm">
-              <MessageCircle className="w-4 h-4" />
               {t('multi.chat')}
             </h3>
           </div>

@@ -753,7 +753,7 @@ export default function ImageScraper() {
           <button
             onClick={handleScan}
             disabled={scanning || !url.trim()}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 whitespace-nowrap"
+            className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 whitespace-nowrap"
           >
             {scanning ? (
               <><Loader2 className="w-5 h-5 animate-spin" /> {t('scanning')}</>
@@ -801,7 +801,7 @@ export default function ImageScraper() {
                 onClick={() => setDedup(v => !v)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                   dedup
-                    ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
+                    ? 'bg-soft text-sub'
                     : 'bg-soft text-muted'
                 }`}
               >
@@ -880,7 +880,7 @@ export default function ImageScraper() {
               <button
                 onClick={handleDownloadZip}
                 disabled={downloading || selectedImages.length === 0}
-                className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 flex items-center gap-2"
+                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 flex items-center gap-2"
               >
                 {downloading ? (
                   <><Loader2 className="w-4 h-4 animate-spin" /> {t('downloading')}</>
@@ -894,13 +894,13 @@ export default function ImageScraper() {
                   <button
                     onClick={openMergePanel}
                     disabled={selectedImages.length === 0}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-l-lg px-4 py-2 text-sm font-medium hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 flex items-center gap-2"
+                    className="bg-primary hover:bg-blue-700 text-white rounded-l-lg px-4 py-2 text-sm font-medium hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 flex items-center gap-2"
                   >
                     <Layers className="w-4 h-4" /> {t('downloadMerged')} ({selectedImages.length})
                   </button>
                   <button
                     onClick={() => setShowMergeOptions(v => !v)}
-                    className="bg-gradient-to-r from-purple-700 to-pink-700 text-white rounded-r-lg px-2 py-2 hover:from-purple-800 hover:to-pink-800 border-l border-purple-500"
+                    className="bg-primary hover:bg-blue-700 text-white rounded-r-lg px-2 py-2 hover:from-purple-800 hover:to-pink-800 border-l border-purple-500"
                   >
                     {showMergeOptions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                   </button>
@@ -960,7 +960,6 @@ export default function ImageScraper() {
             <div className={`${glassCard} ${glassInset} p-4`}>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-fg flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-purple-500" />
                   {t('mergeOrderTitle')} ({mergeOrder.length})
                 </h3>
                 <div className="flex items-center gap-2">
@@ -993,7 +992,7 @@ export default function ImageScraper() {
                   <button
                     onClick={() => { handleMergeVertical(); setShowMergePanel(false) }}
                     disabled={merging || mergeOrder.length === 0}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg px-4 py-1.5 text-xs font-medium hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 flex items-center gap-1"
+                    className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-1.5 text-xs font-medium hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 flex items-center gap-1"
                   >
                     {merging ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
                     {t('mergeAndDownload')}

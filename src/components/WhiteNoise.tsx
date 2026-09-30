@@ -229,7 +229,7 @@ export default function WhiteNoise() {
             className={`w-24 h-24 rounded-full flex items-center justify-center text-white shadow-xl transition-all ${
               isPlaying
                 ? 'bg-red-600 hover:bg-red-700 scale-105'
-                : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700'
+                : 'bg-primary hover:bg-blue-700'
             }`}
           >
             {isPlaying ? <Square className="w-10 h-10" /> : <Play className="w-10 h-10 ml-1" />}
@@ -256,7 +256,7 @@ export default function WhiteNoise() {
                 onClick={() => changeNoiseType(type)}
                 className={`py-3 px-2 rounded-xl text-center transition-colors ${
                   noiseType === type
-                    ? 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 ring-2 ring-indigo-300 dark:ring-indigo-600'
+                    ? 'bg-soft text-sub ring-2 ring-indigo-300 dark:ring-indigo-600'
                     : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                 }`}
               >
@@ -271,7 +271,6 @@ export default function WhiteNoise() {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-2">
             <label className="text-xs text-muted flex items-center gap-1">
-              <Volume2 className="w-3 h-3" />
               {t('volume')}
             </label>
             <span className="text-xs text-muted">{volume}%</span>
@@ -289,7 +288,6 @@ export default function WhiteNoise() {
         {/* Sleep timer */}
         <div>
           <label className="text-xs text-muted flex items-center gap-1 mb-2">
-            <Timer className="w-3 h-3" />
             {t('sleepTimer')}
           </label>
           <div className="flex gap-2 flex-wrap">
@@ -334,7 +332,6 @@ export default function WhiteNoise() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>

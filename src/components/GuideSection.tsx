@@ -109,13 +109,12 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
         aria-expanded={isOpen}
       >
         <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           {guideTitle}
         </h2>
         {isOpen ? (
-          <ChevronUp className="w-5 h-5 text-gray-400" />
+          <ChevronUp className="w-5 h-5 text-faint" />
         ) : (
-          <ChevronDown className="w-5 h-5 text-gray-400" />
+          <ChevronDown className="w-5 h-5 text-faint" />
         )}
       </button>
 
@@ -123,7 +122,7 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
         <div className="mt-6 space-y-6">
           {whatIs && (
             <div>
-              <h3 className="text-lg font-semibold text-fg mb-2">
+              <h3 className="text-base font-bold text-fg mb-2">
                 {whatIs.title}
               </h3>
               <p className="text-body leading-relaxed">
@@ -134,13 +133,13 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
 
           {howToUse && (
             <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">
+              <h3 className="text-base font-bold text-fg mb-3">
                 {howToUse.title}
               </h3>
               <ol className="space-y-2 text-body">
                 {howToUse.items.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-sm font-medium">
+                    <span className="flex-shrink-0 w-6 h-6 bg-soft text-sub rounded-full flex items-center justify-center text-sm font-medium">
                       {index + 1}
                     </span>
                     <span>{item}</span>
@@ -152,13 +151,13 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
 
           {howItWorks && (
             <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">
+              <h3 className="text-base font-bold text-fg mb-3">
                 {howItWorks.title}
               </h3>
               <ol className="space-y-2 text-body">
                 {howItWorks.items.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center text-sm font-medium">
+                    <span className="flex-shrink-0 w-6 h-6 bg-soft text-sub rounded-full flex items-center justify-center text-sm font-medium">
                       {index + 1}
                     </span>
                     <span>{item}</span>
@@ -170,13 +169,13 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
 
           {realWorld && (
             <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">
+              <h3 className="text-base font-bold text-fg mb-3">
                 {realWorld.title}
               </h3>
               <ul className="space-y-2 text-body">
                 {realWorld.items.map((item, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="text-blue-500 dark:text-blue-400 mt-1">▸</span>
+                    <span className="text-faint mt-1">•</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -186,13 +185,13 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
 
           {comparison && (
             <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">
+              <h3 className="text-base font-bold text-fg mb-3">
                 {comparison.title}
               </h3>
               <ul className="space-y-2 text-body">
                 {comparison.items.map((item, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="text-amber-500 dark:text-amber-400 mt-1">⟷</span>
+                    <span className="text-faint mt-1">•</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -202,13 +201,13 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
 
           {tips && (
             <div>
-              <h3 className="text-lg font-semibold text-fg mb-3">
+              <h3 className="text-base font-bold text-fg mb-3">
                 {tips.title}
               </h3>
               <ul className="space-y-2 text-body">
                 {tips.items.map((item, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="text-green-500 dark:text-green-400 mt-1">•</span>
+                    <span className="text-faint mt-1">•</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -218,7 +217,7 @@ export default function GuideSection({ namespace, defaultOpen = false }: GuideSe
 
           {faq && (
             <div>
-              <h3 className="text-lg font-semibold text-fg mb-4">
+              <h3 className="text-base font-bold text-fg mb-4">
                 {faq.title}
               </h3>
               <div className="space-y-4">

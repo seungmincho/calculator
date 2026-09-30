@@ -348,7 +348,7 @@ const UuidGenerator = () => {
             <button
               onClick={generateUuids}
               disabled={isGenerating}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium py-3 px-4 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >
               {isGenerating ? (
                 <RefreshCw className="w-5 h-5 animate-spin" />
@@ -360,7 +360,7 @@ const UuidGenerator = () => {
           </div>
 
           {/* Version Info */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6 mt-6">
+          <div className="bg-subtle rounded-xl p-6 mt-6">
             <div className="flex items-start space-x-3">
               <div className="flex-shrink-0">
                 <div className="w-10 h-10 bg-blue-200 dark:bg-blue-800 rounded-lg flex items-center justify-center">

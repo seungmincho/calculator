@@ -120,7 +120,7 @@ export default function TaxSeason() {
 
       {/* ── Section 1: Hero ── */}
       <section className="text-center space-y-6">
-        <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300 px-4 py-1.5 rounded-full text-sm font-medium">
+        <div className="inline-flex items-center gap-2 bg-soft text-sub px-4 py-1.5 rounded-full text-sm font-medium">
           <Calendar className="w-4 h-4" />
           {t('hero.badge')}
         </div>
@@ -150,7 +150,7 @@ export default function TaxSeason() {
                 ].map(({ value, label }) => (
                   <div
                     key={label}
-                    className="bg-orange-50 dark:bg-orange-900/30 rounded-xl p-3 text-center"
+                    className="bg-subtle rounded-xl p-3 text-center"
                   >
                     <div className="text-2xl font-bold text-orange-600 dark:text-orange-400 tabular-nums">
                       {String(value).padStart(2, '0')}
@@ -170,14 +170,14 @@ export default function TaxSeason() {
         <div className="flex flex-wrap justify-center gap-3">
           <Link
             href="/income-tax"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl font-medium hover:from-orange-600 hover:to-red-600 transition-all shadow-md hover:shadow-lg"
+            className="inline-flex items-center gap-2 bg-primary hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium hover:from-orange-600 hover:to-red-600 transition-all shadow-md hover:shadow-lg"
           >
             <Calculator className="w-4 h-4" />
             {t('hero.ctaPrimary')}
           </Link>
           <Link
             href="/freelancer-tax"
-            className="inline-flex items-center gap-2 bg-surface text-orange-600 dark:text-orange-400 border border-orange-300 dark:border-orange-700 px-6 py-3 rounded-xl font-medium hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all"
+            className="inline-flex items-center gap-2 bg-surface text-orange-600 dark:text-orange-400 border border-line px-6 py-3 rounded-xl font-medium hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all"
           >
             <Briefcase className="w-4 h-4" />
             {t('hero.ctaSecondary')}
@@ -226,11 +226,11 @@ export default function TaxSeason() {
             ] as const
           ).map(({ icon, color, titleKey, descKey }) => {
             const colorMap = {
-              blue: 'bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800',
+              blue: 'bg-subtle text-blue-600 dark:text-blue-400 border-line',
               purple:
-                'bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800',
+                'bg-subtle text-purple-600 dark:text-purple-400 border-line',
               green:
-                'bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800',
+                'bg-subtle text-green-600 dark:text-green-400 border-line',
               amber:
                 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800',
             }
@@ -253,7 +253,7 @@ export default function TaxSeason() {
           })}
         </div>
 
-        <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-xl p-4 flex items-start gap-3">
+        <div className="bg-subtle border border-line rounded-xl p-4 flex items-start gap-3">
           <CheckCircle className="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0 mt-0.5" />
           <p className="text-sm text-body">
             <strong className="text-green-700 dark:text-green-400">{t('targets.exempt.label')}</strong>{' '}
@@ -319,7 +319,7 @@ export default function TaxSeason() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-orange-50 dark:bg-orange-900/30 border-b border-line">
+                <tr className="bg-subtle border-b border-line">
                   <th className="text-left px-5 py-3 font-semibold text-body">
                     {t('taxRates.colRange')}
                   </th>
@@ -348,7 +348,7 @@ export default function TaxSeason() {
                           className={`inline-block px-2.5 py-0.5 rounded-full font-bold text-xs ${
                             highlight
                               ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300'
-                              : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                              : 'bg-soft text-sub'
                           }`}
                         >
                           {rate}
@@ -371,7 +371,7 @@ export default function TaxSeason() {
           </div>
         </div>
 
-        <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+        <div className="bg-subtle border border-line rounded-xl p-4">
           <p className="text-sm text-body">
             <strong className="text-blue-700 dark:text-blue-300">{t('taxRates.exampleLabel')}</strong>{' '}
             {t('taxRates.exampleText')}
@@ -391,19 +391,19 @@ export default function TaxSeason() {
             [
               {
                 icon: <PiggyBank className="w-5 h-5" />,
-                color: 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300',
+                color: 'bg-soft text-sub',
                 titleKey: 'tips.t1.title',
                 descKey: 'tips.t1.desc',
               },
               {
                 icon: <FileText className="w-5 h-5" />,
-                color: 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300',
+                color: 'bg-soft text-sub',
                 titleKey: 'tips.t2.title',
                 descKey: 'tips.t2.desc',
               },
               {
                 icon: <BarChart3 className="w-5 h-5" />,
-                color: 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300',
+                color: 'bg-soft text-sub',
                 titleKey: 'tips.t3.title',
                 descKey: 'tips.t3.desc',
               },
@@ -421,7 +421,7 @@ export default function TaxSeason() {
               },
               {
                 icon: <Lightbulb className="w-5 h-5" />,
-                color: 'bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300',
+                color: 'bg-soft text-sub',
                 titleKey: 'tips.t6.title',
                 descKey: 'tips.t6.desc',
               },
@@ -459,7 +459,7 @@ export default function TaxSeason() {
         </div>
 
         <div className={`${glassCard} ${glassInset} p-6`}>
-          <ol className="relative border-l-2 border-orange-200 dark:border-orange-800 space-y-8 ml-3">
+          <ol className="relative border-l-2 border-line space-y-8 ml-3">
             {(
               [
                 {
@@ -516,7 +516,7 @@ export default function TaxSeason() {
           </ol>
         </div>
 
-        <div className="bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800 rounded-xl p-4 flex items-start gap-3">
+        <div className="bg-subtle border border-line rounded-xl p-4 flex items-start gap-3">
           <Clock className="w-5 h-5 text-orange-500 dark:text-orange-400 flex-shrink-0 mt-0.5" />
           <p className="text-sm text-body">
             <strong className="text-orange-700 dark:text-orange-400">{t('timeline.penaltyLabel')}</strong>{' '}

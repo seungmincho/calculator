@@ -30,30 +30,30 @@ export default function CsVisualizerHub() {
   const categories = Object.keys(csCategoryLabels) as CsCategory[]
 
   const filterColorClasses: Record<string, string> = {
-    emerald: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
-    blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800',
-    rose: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800',
+    emerald: 'bg-soft text-sub border-line',
+    blue: 'bg-soft text-sub border-line',
+    rose: 'bg-soft text-sub border-line',
     amber: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800',
   }
 
   const chipColorClasses: Record<string, string> = {
-    emerald: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400',
-    blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
-    rose: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400',
+    emerald: 'bg-soft text-sub',
+    blue: 'bg-soft text-sub',
+    rose: 'bg-soft text-sub',
     amber: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',
   }
 
   const headerBgClasses: Record<string, string> = {
-    emerald: 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800',
-    blue: 'bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800',
-    rose: 'bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800',
+    emerald: 'bg-subtle border-line',
+    blue: 'bg-subtle border-line',
+    rose: 'bg-subtle border-line',
     amber: 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800',
   }
 
   const cardBorderClasses: Record<string, string> = {
-    emerald: 'border-emerald-200/50 dark:border-emerald-800/30 hover:shadow-emerald-500/20',
-    blue: 'border-blue-200/50 dark:border-blue-800/30 hover:shadow-blue-500/20',
-    rose: 'border-rose-200/50 dark:border-rose-800/30 hover:shadow-rose-500/20',
+    emerald: 'border-line hover:shadow-emerald-500/20',
+    blue: 'border-line hover:shadow-blue-500/20',
+    rose: 'border-line hover:shadow-rose-500/20',
     amber: 'border-amber-200/50 dark:border-amber-800/30 hover:shadow-amber-500/20',
   }
 
@@ -109,7 +109,7 @@ export default function CsVisualizerHub() {
             onClick={() => setViewMode('list')}
             className={`p-1.5 rounded-md transition-colors ${
               viewMode === 'list'
-                ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400'
+                ? 'bg-soft text-sub'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
           >
@@ -119,7 +119,7 @@ export default function CsVisualizerHub() {
             onClick={() => setViewMode('card')}
             className={`p-1.5 rounded-md transition-colors ${
               viewMode === 'card'
-                ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400'
+                ? 'bg-soft text-sub'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
           >
@@ -147,7 +147,7 @@ export default function CsVisualizerHub() {
                       key={item.id}
                       href={item.href}
                       className={`flex items-center gap-3 px-4 py-3 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors group ${
-                        i > 0 ? 'border-t border-gray-100 dark:border-gray-700/50' : ''
+                        i > 0 ? 'border-t border-line' : ''
                       }`}
                     >
                       <span className="text-xl w-8 text-center flex-shrink-0">{item.icon}</span>

@@ -314,7 +314,7 @@ export default function PensionCalculator() {
               <button
                 onClick={handleCalculate}
                 disabled={!isValidInput}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 {t('calculate')}
               </button>
@@ -333,7 +333,7 @@ export default function PensionCalculator() {
           {hasCalculated && result ? (
             <>
               {/* 메인 결과 카드 */}
-              <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
                 <p className="text-blue-100 text-sm font-medium mb-2">{t('resultTitle')}</p>
                 <p className="text-4xl font-bold mb-1">{formatWon(result.monthlyPension)}</p>
                 <p className="text-blue-200 text-sm">{t('monthlyPension')}</p>
@@ -380,7 +380,7 @@ export default function PensionCalculator() {
                       {formatWonExact(result.totalMonthlyContribution)}/월
                     </span>
                   </div>
-                  <div className="flex justify-between items-center bg-blue-50 dark:bg-blue-950 rounded-lg px-3 py-2">
+                  <div className="flex justify-between items-center bg-subtle rounded-lg px-3 py-2">
                     <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{t('totalContribution')}</span>
                     <span className="font-bold text-blue-700 dark:text-blue-300">
                       {formatWon(result.totalEmployeeContribution)}
@@ -402,7 +402,7 @@ export default function PensionCalculator() {
                   {/* 소득대체율 바 */}
                   <div className="mt-3 h-2 bg-track rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all"
+                      className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all"
                       style={{ width: `${Math.min(100, result.replacementRate / 70 * 100)}%` }}
                     />
                   </div>
@@ -429,7 +429,7 @@ export default function PensionCalculator() {
             </div>
           ) : (
             <div className={`${glassCard} ${glassInset} p-12 flex flex-col items-center justify-center text-center space-y-4`}>
-              <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-full">
+              <div className="p-4 bg-subtle rounded-full">
                 <Calculator className="w-12 h-12 text-blue-400 dark:text-blue-500" />
               </div>
               <div>

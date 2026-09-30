@@ -783,7 +783,7 @@ export default function SnakeGame() {
                     onClick={() => setMode(m)}
                     className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
                       mode === m
-                        ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 font-semibold'
+                        ? 'bg-soft text-sub font-semibold'
                         : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -803,7 +803,7 @@ export default function SnakeGame() {
                       onClick={() => setDifficulty(d)}
                       className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         difficulty === d
-                          ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
+                          ? 'bg-soft text-sub'
                           : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                       }`}
                     >
@@ -823,7 +823,7 @@ export default function SnakeGame() {
                       onClick={() => setSkin(s)}
                       className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         skin === s
-                          ? 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200'
+                          ? 'bg-soft text-sub'
                           : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
                       }`}
                     >
@@ -914,7 +914,7 @@ export default function SnakeGame() {
                   <p className="text-sm text-gray-200 max-w-xs">{t('startHint')}</p>
                   <button
                     onClick={startGame}
-                    className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl px-8 py-3 font-bold text-lg hover:from-green-600 hover:to-emerald-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="bg-primary hover:bg-blue-700 text-white rounded-xl px-8 py-3 font-bold text-lg hover:from-green-600 hover:to-emerald-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
                     {t('startGame')}
                   </button>
@@ -930,7 +930,7 @@ export default function SnakeGame() {
                   <h2 className="text-2xl font-bold text-white">{t('paused')}</h2>
                   <button
                     onClick={togglePause}
-                    className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl px-6 py-2.5 font-medium hover:from-blue-600 hover:to-indigo-700 transition-all"
+                    className="bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-2.5 font-medium hover:from-blue-600 hover:to-indigo-700 transition-all"
                   >
                     {t('resume')}
                   </button>
@@ -958,7 +958,7 @@ export default function SnakeGame() {
                   <div className="flex gap-3 justify-center">
                     <button
                       onClick={startGame}
-                      className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl px-6 py-2.5 font-medium hover:from-green-600 hover:to-emerald-700 transition-all"
+                      className="bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-2.5 font-medium hover:from-green-600 hover:to-emerald-700 transition-all"
                     >
                       {t('playAgain')}
                     </button>
@@ -1035,7 +1035,6 @@ export default function SnakeGame() {
       {/* Guide section */}
       <div className="bg-surface rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

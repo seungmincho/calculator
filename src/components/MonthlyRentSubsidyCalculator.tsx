@@ -338,7 +338,6 @@ const MonthlyRentSubsidyCalculatorContent = () => {
         <div className="lg:col-span-2">
           <div className={`${glassCard} ${glassInset} p-8`}>
             <h2 className="text-2xl font-bold text-fg mb-6 flex items-center">
-              <Calculator className="w-6 h-6 mr-2" />
               지원금 계산하기
             </h2>
 
@@ -353,7 +352,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                     onClick={() => setApplicantType('youth')}
                     className={`p-3 rounded-lg border-2 transition-colors ${
                       applicantType === 'youth'
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
+                        ? 'border-blue-500 bg-subtle'
                         : 'border-line-strong'
                     }`}
                   >
@@ -364,7 +363,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                     onClick={() => setApplicantType('newlywed')}
                     className={`p-3 rounded-lg border-2 transition-colors ${
                       applicantType === 'newlywed'
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
+                        ? 'border-blue-500 bg-subtle'
                         : 'border-line-strong'
                     }`}
                   >
@@ -375,7 +374,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
                     onClick={() => setApplicantType('general')}
                     className={`p-3 rounded-lg border-2 transition-colors ${
                       applicantType === 'general'
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
+                        ? 'border-blue-500 bg-subtle'
                         : 'border-line-strong'
                     }`}
                   >
@@ -490,7 +489,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
 
               {result.eligible ? (
                 <div className="space-y-4">
-                  <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/30 dark:to-green-900/30 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">월 지원금액</div>
                     <div className="text-3xl font-bold text-blue-900 dark:text-blue-100">
                       {formatNumber(result.subsidy)}원
@@ -588,13 +587,13 @@ const MonthlyRentSubsidyCalculatorContent = () => {
       />
 
       {/* 안내사항 */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-2xl p-8">
+      <div className="bg-subtle rounded-2xl p-8">
         <h3 className="text-xl font-bold text-fg mb-4">
-          📋 LH 월세지원 안내
+          LH 월세지원 안내
         </h3>
         <div className="grid md:grid-cols-2 gap-6 text-sm text-body">
           <div>
-            <h4 className="font-semibold mb-2">✅ 지원 대상</h4>
+            <h4 className="font-semibold mb-2">지원 대상</h4>
             <ul className="space-y-1 text-xs">
               <li>• 청년: 19~39세 무주택자</li>
               <li>• 신혼부부: 혼인 7년 이내</li>
@@ -602,7 +601,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-2">💰 지원 내용</h4>
+            <h4 className="font-semibold mb-2">지원 내용</h4>
             <ul className="space-y-1 text-xs">
               <li>• 월세의 20~40% 지원</li>
               <li>• 최대 2년간 지원</li>
@@ -610,7 +609,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-2">📍 지역별 상한액</h4>
+            <h4 className="font-semibold mb-2">지역별 상한액</h4>
             <ul className="space-y-1 text-xs">
               <li>• 서울: 월세 70만원</li>
               <li>• 경기/인천: 월세 60만원</li>
@@ -619,7 +618,7 @@ const MonthlyRentSubsidyCalculatorContent = () => {
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-2">⚠️ 주의사항</h4>
+            <h4 className="font-semibold mb-2">주의사항</h4>
             <ul className="space-y-1 text-xs">
               <li>• 소득 및 자산 심사</li>
               <li>• 실제 심사 결과와 상이할 수 있음</li>

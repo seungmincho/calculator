@@ -329,7 +329,7 @@ const DdayCalculator = () => {
             onClick={() => setMode(key)}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all ${
               mode === key
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                ? 'bg-primary hover:bg-blue-700 text-white shadow-md'
                 : 'text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >
@@ -345,7 +345,6 @@ const DdayCalculator = () => {
         <div className="lg:col-span-1 space-y-6">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Clock className="w-5 h-5 text-blue-600" />
               {mode === 'dday' && t('modes.dday')}
               {mode === 'diff' && t('modes.diff')}
               {mode === 'add' && t('modes.add')}
@@ -501,9 +500,8 @@ const DdayCalculator = () => {
           </div>
 
           {/* Presets */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
+          <div className="bg-subtle rounded-xl p-6">
             <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-3 flex items-center gap-2">
-              <Flag className="w-4 h-4" />
               {t('presets.title')}
             </h3>
             <div className="grid grid-cols-2 gap-2">
@@ -603,7 +601,6 @@ const DdayCalculator = () => {
               {ddayResult.holidaysInRange.length > 0 && (
                 <div>
                   <h3 className="text-sm font-semibold text-body mb-2 flex items-center gap-2">
-                    <Flag className="w-4 h-4 text-red-500" />
                     {t('result.holidaysInRange')} ({ddayResult.holidaysInRange.length})
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -690,7 +687,6 @@ const DdayCalculator = () => {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

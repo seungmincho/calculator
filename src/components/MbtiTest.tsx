@@ -259,7 +259,7 @@ export default function MbtiTest() {
 
           <div className="grid sm:grid-cols-3 gap-5">
             {/* What is MBTI */}
-            <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-5">
+            <div className="bg-subtle rounded-xl p-5">
               <h3 className="font-semibold text-purple-800 dark:text-purple-200 mb-3">{t('guide.what.title')}</h3>
               <ul className="space-y-2">
                 {guideWhat.map((item, i) => (
@@ -272,7 +272,7 @@ export default function MbtiTest() {
             </div>
 
             {/* How to */}
-            <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-5">
+            <div className="bg-subtle rounded-xl p-5">
               <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-3">{t('guide.howTo.title')}</h3>
               <ul className="space-y-2">
                 {guideHowTo.map((item, i) => (
@@ -285,7 +285,7 @@ export default function MbtiTest() {
             </div>
 
             {/* Axes */}
-            <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-5">
+            <div className="bg-subtle rounded-xl p-5">
               <h3 className="font-semibold text-indigo-800 dark:text-indigo-200 mb-3">{t('guide.axes.title')}</h3>
               <ul className="space-y-2">
                 {guideAxes.map((item, i) => (
@@ -300,7 +300,7 @@ export default function MbtiTest() {
 
           <button
             onClick={() => setScreen('test')}
-            className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl px-6 py-4 font-semibold text-lg hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
+            className="w-full bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-4 font-semibold text-lg hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
           >
             {t('startTest')} →
           </button>
@@ -332,7 +332,7 @@ export default function MbtiTest() {
           </div>
           <div className="w-full bg-track rounded-full h-2">
             <div
-              className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full transition-all duration-300"
+              className="bg-primary hover:bg-blue-700 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -365,7 +365,7 @@ export default function MbtiTest() {
               onClick={() => handleAnswer(currentQuestion.optionA.value)}
               className={`w-full text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-150 ${
                 currentAnswer === currentQuestion.optionA.value
-                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-200'
+                  ? 'border-purple-500 bg-subtle text-purple-700 dark:text-purple-200'
                   : 'border-line bg-field text-body hover:border-purple-300 dark:hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900'
               }`}
             >
@@ -395,7 +395,7 @@ export default function MbtiTest() {
               onClick={() => handleAnswer(currentQuestion.optionB.value)}
               className={`w-full text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-150 ${
                 currentAnswer === currentQuestion.optionB.value
-                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-200'
+                  ? 'border-indigo-500 bg-subtle text-indigo-700 dark:text-indigo-200'
                   : 'border-line bg-field text-body hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900'
               }`}
             >
@@ -431,7 +431,7 @@ export default function MbtiTest() {
           {allAnswered ? (
             <button
               onClick={handleSeeResult}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-blue-700 text-white font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md"
             >
               {t('seeResult')} 🎉
             </button>
@@ -461,7 +461,7 @@ export default function MbtiTest() {
                   i === currentQ
                     ? 'bg-purple-600 text-white scale-110'
                     : answers[q.id]
-                    ? 'bg-purple-200 dark:bg-purple-800 text-purple-800 dark:text-purple-200'
+                    ? 'bg-soft text-sub'
                     : 'bg-gray-200 dark:bg-gray-600 text-muted'
                 }`}
                 title={`Q${i + 1}`}
@@ -557,7 +557,7 @@ export default function MbtiTest() {
 
           {/* Strengths & weaknesses */}
           <div className="grid sm:grid-cols-2 gap-4">
-            <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
+            <div className="bg-subtle rounded-xl p-4">
               <h3 className="font-semibold text-green-800 dark:text-green-200 mb-3">{t('strengths')}</h3>
               <ul className="space-y-1.5">
                 {profile.strengths.map(s => (
@@ -617,7 +617,7 @@ export default function MbtiTest() {
               <h3 className="text-sm font-medium text-muted mb-2">한국인</h3>
               <div className="flex flex-wrap gap-2">
                 {profile.famousKoreans.map(p => (
-                  <span key={p} className="px-2.5 py-1 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-lg text-sm">
+                  <span key={p} className="px-2.5 py-1 bg-subtle text-blue-700 dark:text-blue-300 rounded-lg text-sm">
                     {p}
                   </span>
                 ))}
@@ -627,7 +627,7 @@ export default function MbtiTest() {
               <h3 className="text-sm font-medium text-muted mb-2">해외</h3>
               <div className="flex flex-wrap gap-2">
                 {profile.famousInternational.map(p => (
-                  <span key={p} className="px-2.5 py-1 bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 rounded-lg text-sm">
+                  <span key={p} className="px-2.5 py-1 bg-subtle text-purple-700 dark:text-purple-300 rounded-lg text-sm">
                     {p}
                   </span>
                 ))}
@@ -661,7 +661,7 @@ export default function MbtiTest() {
             {/* Download card */}
             <button
               onClick={handleDownloadCard}
-              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-medium transition-all text-sm col-span-2 sm:col-span-1"
+              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary hover:bg-blue-700 text-white font-medium transition-all text-sm col-span-2 sm:col-span-1"
             >
               <Download className="w-4 h-4" />
               {t('downloadCard')}

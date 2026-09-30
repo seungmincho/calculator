@@ -230,7 +230,7 @@ Device Type: ${deviceData.deviceType}
       <div className="flex flex-wrap gap-3">
         <button
           onClick={copyAllInfo}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+          className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
         >
           {copiedId === 'all' ? (
             <>
@@ -415,7 +415,6 @@ Device Type: ${deviceData.deviceType}
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

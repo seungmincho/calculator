@@ -541,7 +541,7 @@ export default function CpuSchedulingVisualizer() {
             <div className="grid grid-cols-2 gap-2">
               {PRESETS.map((pr, i) => (
                 <button key={i} onClick={() => loadPreset(i)}
-                  className="text-xs px-2 py-1.5 rounded-lg bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/50 transition-colors">
+                  className="text-xs px-2 py-1.5 rounded-lg bg-subtle text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/50 transition-colors">
                   {pr.label}
                 </button>
               ))}
@@ -634,7 +634,7 @@ export default function CpuSchedulingVisualizer() {
             )}
 
             <button onClick={runSimulation} disabled={processes.length === 0}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg px-4 py-2.5 font-medium hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 transition-all">
+              className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 transition-all">
               <Play size={16} /> 실행
             </button>
           </div>
@@ -649,7 +649,7 @@ export default function CpuSchedulingVisualizer() {
               {results.length > 0 && (
                 <div className="flex items-center gap-2">
                   <button onClick={togglePlay}
-                    className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-900/60 transition-colors">
+                    className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-soft text-sub hover:bg-violet-200 dark:hover:bg-violet-900/60 transition-colors">
                     {isPlaying ? <Pause size={12} /> : <Play size={12} />}
                     {isPlaying ? '일시정지' : '재생'}
                   </button>
@@ -697,7 +697,7 @@ export default function CpuSchedulingVisualizer() {
                     {results.map((r, ri) => (
                       <React.Fragment key={ri}>
                         {r.stats.map((s, si) => (
-                          <tr key={`${ri}-${si}`} className="border-b border-gray-100 dark:border-gray-700/50">
+                          <tr key={`${ri}-${si}`} className="border-b border-line">
                             {results.length > 1 && si === 0 && (
                               <td rowSpan={r.stats.length + 1} className="py-1.5 px-2 text-body font-medium align-top">
                                 {r.algorithm}
@@ -750,7 +750,7 @@ export default function CpuSchedulingVisualizer() {
               <div className="overflow-x-auto">
                 <table className="w-full text-xs border-collapse">
                   <thead>
-                    <tr className="bg-violet-50 dark:bg-violet-900/30">
+                    <tr className="bg-subtle">
                       <th className="border border-line px-3 py-2 text-left">알고리즘</th>
                       <th className="border border-line px-3 py-2 text-left">선점</th>
                       <th className="border border-line px-3 py-2 text-left">기준</th>
@@ -811,7 +811,7 @@ export default function CpuSchedulingVisualizer() {
                   { q: 'Round Robin의 시간 할당량은 어떻게 정하나요?', a: '할당량이 너무 크면 FCFS와 같아지고, 너무 작으면 문맥 교환 오버헤드가 커집니다. 일반적으로 CPU 버스트의 80%가 할당량 이내에 완료되도록 설정합니다. Linux CFS는 가변적인 타임슬라이스를 사용합니다.' },
                   { q: '기아(Starvation)란 무엇이며 어떻게 해결하나요?', a: '우선순위가 낮은 프로세스가 무한히 대기하는 현상입니다. 에이징(Aging) 기법으로 대기 시간이 길어질수록 우선순위를 높여 해결합니다. 또는 Round Robin을 혼합하는 방법도 있습니다.' },
                 ].map(({ q, a }, i) => (
-                  <div key={i} className="bg-violet-50 dark:bg-violet-900/20 rounded-lg p-3">
+                  <div key={i} className="bg-subtle rounded-lg p-3">
                     <p className="font-medium text-violet-800 dark:text-violet-200 mb-1">Q. {q}</p>
                     <p className="text-sub">{a}</p>
                   </div>

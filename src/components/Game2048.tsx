@@ -379,7 +379,7 @@ export default function Game2048() {
             </button>
             <button
               onClick={initializeGame}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+              className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
             >
               {t('newGame')}
             </button>
@@ -440,7 +440,7 @@ export default function Game2048() {
                   {won && !gameOver && (
                     <button
                       onClick={() => setKeepPlayingAfterWin(true)}
-                      className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                      className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
                     >
                       {t('keepPlaying')}
                     </button>
@@ -486,7 +486,6 @@ export default function Game2048() {
       {/* Guide Section */}
       <div className="bg-surface rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <Trophy className="w-5 h-5" />
           {t('guide.title')}
         </h2>
 

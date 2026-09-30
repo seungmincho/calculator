@@ -310,7 +310,7 @@ export default function InheritanceGiftTax() {
         <div className="space-y-4">
           {compareResult ? (
             <>
-              <div className="bg-purple-50 dark:bg-purple-950/30 rounded-xl p-4 flex items-center gap-2 text-sm text-purple-700 dark:text-purple-300">
+              <div className="bg-subtle rounded-xl p-4 flex items-center gap-2 text-sm text-purple-700 dark:text-purple-300">
                 <GitCompare className="w-4 h-4 shrink-0" />
                 <span>{t('compareNote')}</span>
               </div>
@@ -320,7 +320,7 @@ export default function InheritanceGiftTax() {
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-fg">{t('inheritanceTab')}</h3>
                     {compareResult.lowerIs === 'inheritance' && (
-                      <span className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full font-medium">{t('lower')}</span>
+                      <span className="text-xs bg-soft text-sub px-2 py-0.5 rounded-full font-medium">{t('lower')}</span>
                     )}
                   </div>
                   <p className="text-xs text-muted mb-1">{t('compareAssumption.inheritance')}</p>
@@ -335,7 +335,7 @@ export default function InheritanceGiftTax() {
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-fg">{t('giftTab')}</h3>
                     {compareResult.lowerIs === 'gift' && (
-                      <span className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full font-medium">{t('lower')}</span>
+                      <span className="text-xs bg-soft text-sub px-2 py-0.5 rounded-full font-medium">{t('lower')}</span>
                     )}
                   </div>
                   <p className="text-xs text-muted mb-1">{t('compareAssumption.gift')}</p>
@@ -478,7 +478,7 @@ export default function InheritanceGiftTax() {
                 </div>
               )}
 
-              <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-3">
+              <div className="bg-subtle rounded-lg p-3">
                 <p className="text-xs text-blue-700 dark:text-blue-300">
                   <AlertCircle className="w-3.5 h-3.5 inline mr-1" />
                   {t('giftPeriodNote')}
@@ -515,13 +515,13 @@ export default function InheritanceGiftTax() {
                       {formatWon(currentResult.tax)}
                     </p>
                   </div>
-                  <div className="bg-blue-50 dark:bg-blue-950/30 rounded-xl p-4 text-center">
+                  <div className="bg-subtle rounded-xl p-4 text-center">
                     <p className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('taxableAmount')}</p>
                     <p className="text-xl font-bold text-blue-700 dark:text-blue-400">
                       {formatWon(currentResult.taxable)}
                     </p>
                   </div>
-                  <div className="bg-green-50 dark:bg-green-950/30 rounded-xl p-4 text-center">
+                  <div className="bg-subtle rounded-xl p-4 text-center">
                     <p className="text-xs text-green-600 dark:text-green-400 mb-1">{t('effectiveRate')}</p>
                     <p className="text-xl font-bold text-green-700 dark:text-green-400">
                       {currentResult.effectiveRate.toFixed(1)}%
@@ -597,7 +597,7 @@ export default function InheritanceGiftTax() {
                           ? false : false // We'll use bracket index
                         const prev = i > 0 ? TAX_BRACKETS[i - 1].upTo : 0
                         return (
-                          <tr key={i} className={calcTax(currentResult?.taxable ?? 0).bracket === i && (currentResult?.taxable ?? 0) > 0 ? 'bg-blue-50 dark:bg-blue-950/30' : ''}>
+                          <tr key={i} className={calcTax(currentResult?.taxable ?? 0).bracket === i && (currentResult?.taxable ?? 0) > 0 ? 'bg-subtle' : ''}>
                             <td className="px-3 py-2 text-fg">
                               {b.upTo === Infinity
                                 ? `${formatNumber(prev)}원 초과`
@@ -631,7 +631,6 @@ export default function InheritanceGiftTax() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>

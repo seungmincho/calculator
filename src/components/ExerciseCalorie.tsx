@@ -287,7 +287,7 @@ export default function ExerciseCalorie() {
                         <button
                           key={m}
                           onClick={() => updateEntry(entry.id, 'duration', m)}
-                          className={`px-2 py-0.5 text-xs rounded ${entry.duration === m ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300' : 'bg-soft text-muted hover:bg-gray-200 dark:hover:bg-gray-600'} transition-colors`}
+                          className={`px-2 py-0.5 text-xs rounded ${entry.duration === m ? 'bg-soft text-sub' : 'bg-soft text-muted hover:bg-gray-200 dark:hover:bg-gray-600'} transition-colors`}
                         >
                           {m}
                         </button>
@@ -319,22 +319,22 @@ export default function ExerciseCalorie() {
 
                 {/* 핵심 숫자 */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                  <div className="bg-orange-50 dark:bg-orange-950/30 rounded-xl p-4 text-center">
+                  <div className="bg-subtle rounded-xl p-4 text-center">
                     <p className="text-xs text-orange-600 dark:text-orange-400 mb-1">{t('totalCalories')}</p>
                     <p className="text-2xl font-bold text-orange-700 dark:text-orange-400">{results.totalCalories.toLocaleString()}</p>
                     <p className="text-xs text-orange-500">kcal</p>
                   </div>
-                  <div className="bg-blue-50 dark:bg-blue-950/30 rounded-xl p-4 text-center">
+                  <div className="bg-subtle rounded-xl p-4 text-center">
                     <p className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('totalTime')}</p>
                     <p className="text-2xl font-bold text-blue-700 dark:text-blue-400">{results.totalMinutes}</p>
                     <p className="text-xs text-blue-500">{t('minutes')}</p>
                   </div>
-                  <div className="bg-green-50 dark:bg-green-950/30 rounded-xl p-4 text-center">
+                  <div className="bg-subtle rounded-xl p-4 text-center">
                     <p className="text-xs text-green-600 dark:text-green-400 mb-1">{t('riceBowls')}</p>
                     <p className="text-2xl font-bold text-green-700 dark:text-green-400">{results.riceBowls.toFixed(1)}</p>
                     <p className="text-xs text-green-500">{t('bowls')}</p>
                   </div>
-                  <div className="bg-purple-50 dark:bg-purple-950/30 rounded-xl p-4 text-center">
+                  <div className="bg-subtle rounded-xl p-4 text-center">
                     <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('fatBurn')}</p>
                     <p className="text-2xl font-bold text-purple-700 dark:text-purple-400">{results.fatGrams.toFixed(0)}</p>
                     <p className="text-xs text-purple-500">g</p>
@@ -356,7 +356,7 @@ export default function ExerciseCalorie() {
                             </div>
                             <div className="h-2 bg-soft rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full transition-all"
+                                className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all"
                                 style={{ width: `${Math.min(pct, 100)}%` }}
                               />
                             </div>
@@ -392,7 +392,6 @@ export default function ExerciseCalorie() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>

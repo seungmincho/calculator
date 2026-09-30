@@ -392,7 +392,7 @@ export default function ComprehensivePropertyTax() {
             {properties.length < 10 && (
               <button
                 onClick={addProperty}
-                className="w-full flex items-center justify-center gap-1 py-2 text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
+                className="w-full flex items-center justify-center gap-1 py-2 text-sm text-blue-600 dark:text-blue-400 bg-subtle rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 {t('property.add')}
@@ -450,7 +450,7 @@ export default function ComprehensivePropertyTax() {
         <div className="lg:col-span-2 space-y-6">
           {/* Not subject message */}
           {result && result.taxBase <= 0 && (
-            <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-xl p-6 text-center">
+            <div className="bg-subtle border border-line rounded-xl p-6 text-center">
               <p className="text-lg font-semibold text-green-700 dark:text-green-300">
                 {t('result.notSubject')}
               </p>
@@ -475,7 +475,7 @@ export default function ComprehensivePropertyTax() {
           {/* Summary Card */}
           {result && result.taxBase > 0 && (
             <>
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
                 <h2 className="text-lg font-semibold mb-4">{t('result.title')}</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -640,14 +640,14 @@ export default function ComprehensivePropertyTax() {
                                 key={idx}
                                 className={`border-b border-line ${
                                   idx === result.appliedBracketIndex
-                                    ? 'bg-blue-50 dark:bg-blue-950 font-semibold'
+                                    ? 'bg-subtle font-semibold'
                                     : ''
                                 }`}
                               >
                                 <td className="py-2 px-3 text-body">
                                   {bracket.label}
                                   {idx === result.appliedBracketIndex && (
-                                    <span className="ml-2 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">
+                                    <span className="ml-2 text-xs bg-soft text-sub px-2 py-0.5 rounded-full">
                                       {t('rateTable.current')}
                                     </span>
                                   )}
@@ -672,7 +672,6 @@ export default function ComprehensivePropertyTax() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
@@ -712,7 +711,7 @@ function StepItem({
 }) {
   return (
     <div className={`flex items-start gap-3 p-3 rounded-lg ${
-      highlight ? 'bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800' : 'bg-subtle'
+      highlight ? 'bg-subtle border border-line' : 'bg-subtle'
     }`}>
       <span className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${
         highlight ? 'bg-blue-600 text-white' : 'bg-gray-300 dark:bg-gray-600 text-body'
@@ -725,8 +724,8 @@ function StepItem({
           {badge && (
             <span className={`text-xs px-2 py-0.5 rounded-full ${
               badgeColor === 'green'
-                ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
-                : 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300'
+                ? 'bg-soft text-sub'
+                : 'bg-soft text-sub'
             }`}>
               {badge}
             </span>

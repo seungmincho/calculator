@@ -111,8 +111,8 @@ export default function RootLayout({
 
         {/* Additional SEO Meta Tags */}
         <meta name="color-scheme" content="light dark" />
-        <meta name="theme-color" content="#f2f4f6" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#101114" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#0f1012" media="(prefers-color-scheme: dark)" />
         <meta name="msapplication-TileColor" content="#2563eb" />
         <meta name="msapplication-TileImage" content="/android-chrome-192x192.png" />
         <meta name="application-name" content="툴허브" />

@@ -475,7 +475,7 @@ export default function ColorBlindnessSimulator() {
         <div
           className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-colors ${
             isDraggingFile
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+              ? 'border-blue-500 bg-subtle'
               : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500 bg-surface'
           }`}
           onClick={() => fileInputRef.current?.click()}
@@ -537,7 +537,7 @@ export default function ColorBlindnessSimulator() {
                 onClick={() => setSelectedType(type)}
                 className={`text-left p-2.5 rounded-lg border-2 transition-all ${
                   selectedType === type
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                    ? 'border-blue-500 bg-subtle'
                     : 'border-line hover:border-blue-300 dark:hover:border-blue-700 bg-surface'
                 }`}
               >
@@ -574,7 +574,7 @@ export default function ColorBlindnessSimulator() {
               />
             </div>
             <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-              <div className="px-4 py-2 bg-blue-50 dark:bg-blue-950 text-xs font-semibold text-blue-700 dark:text-blue-300 border-b border-blue-200 dark:border-blue-800">
+              <div className="px-4 py-2 bg-subtle text-xs font-semibold text-blue-700 dark:text-blue-300 border-b border-line">
                 {t('simulated')} — {t(`types.${selectedType}.name`)}
               </div>
               <canvas
@@ -645,7 +645,7 @@ export default function ColorBlindnessSimulator() {
           <div className="flex justify-end">
             <button
               onClick={handleDownload}
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
             >
               <Download className="w-4 h-4" />
               {t('download')}

@@ -431,7 +431,7 @@ export default function AnnualLeave() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   {/* Work Period */}
-                  <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <div className="text-sm text-sub mb-1">{t('result.workPeriod')}</div>
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                       {calculateLeave.years}{t('result.years')} {calculateLeave.months}{t('result.months')}
@@ -439,7 +439,7 @@ export default function AnnualLeave() {
                   </div>
 
                   {/* Total Earned */}
-                  <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <div className="text-sm text-sub mb-1">{t('result.totalEarned')}</div>
                     <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                       {calculateLeave.totalEarned}{t('result.days')}
@@ -447,7 +447,7 @@ export default function AnnualLeave() {
                   </div>
 
                   {/* Used */}
-                  <div className="bg-orange-50 dark:bg-orange-950 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <div className="text-sm text-sub mb-1">{t('result.used')}</div>
                     <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
                       {calculateLeave.used}{t('result.days')}
@@ -455,7 +455,7 @@ export default function AnnualLeave() {
                   </div>
 
                   {/* Remaining */}
-                  <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <div className="text-sm text-sub mb-1">{t('result.remaining')}</div>
                     <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                       {calculateLeave.remaining}{t('result.days')}
@@ -463,7 +463,7 @@ export default function AnnualLeave() {
                   </div>
 
                   {/* Current Year Earned */}
-                  <div className="bg-indigo-50 dark:bg-indigo-950 rounded-lg p-4">
+                  <div className="bg-subtle rounded-lg p-4">
                     <div className="text-sm text-sub mb-1">{t('result.currentYearEarned')}</div>
                     <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                       {calculateLeave.currentYearEarned}{t('result.days')}
@@ -472,7 +472,7 @@ export default function AnnualLeave() {
 
                   {/* Next Earned Date */}
                   {calculateLeave.nextEarnedDate && (
-                    <div className="bg-teal-50 dark:bg-teal-950 rounded-lg p-4">
+                    <div className="bg-subtle rounded-lg p-4">
                       <div className="text-sm text-sub mb-1">{t('result.nextEarned')}</div>
                       <div className="text-xl font-bold text-teal-600 dark:text-teal-400">
                         {calculateLeave.nextEarnedDate}
@@ -511,7 +511,7 @@ export default function AnnualLeave() {
                   <div className="relative mt-6 mb-10">
                     <div className="h-3 bg-track rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500"
+                        className="h-full bg-primary hover:bg-blue-700 rounded-full transition-all duration-500"
                         style={{ width: `${Math.min((timelineData.workedYears / timelineData.maxYear) * 100, 100)}%` }}
                       />
                     </div>

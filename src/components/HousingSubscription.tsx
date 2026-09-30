@@ -352,7 +352,7 @@ export default function HousingSubscription() {
           {/* A. 무주택기간 */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-bold">A</span>
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-soft text-sub text-xs font-bold">A</span>
               <h2 className="font-semibold text-fg text-sm">{t('sectionA')}</h2>
               <span className="ml-auto text-xs text-gray-400">{t('maxA')}</span>
             </div>
@@ -401,7 +401,7 @@ export default function HousingSubscription() {
           {/* B. 부양가족 */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 text-xs font-bold">B</span>
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-soft text-sub text-xs font-bold">B</span>
               <h2 className="font-semibold text-fg text-sm">{t('sectionB')}</h2>
               <span className="ml-auto text-xs text-gray-400">{t('maxB')}</span>
             </div>
@@ -426,7 +426,7 @@ export default function HousingSubscription() {
             <p className="text-xs text-muted">{t('dependentNote')}</p>
 
             {/* Score preview for B */}
-            <div className="flex justify-between items-center text-xs bg-emerald-50 dark:bg-emerald-950 rounded-lg px-3 py-2">
+            <div className="flex justify-between items-center text-xs bg-subtle rounded-lg px-3 py-2">
               <span className="text-emerald-700 dark:text-emerald-300">{t('expectedScore')}</span>
               <span className="font-bold text-emerald-700 dark:text-emerald-300">{scoreB}점</span>
             </div>
@@ -435,7 +435,7 @@ export default function HousingSubscription() {
           {/* C. 청약통장 가입기간 */}
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
             <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 text-xs font-bold">C</span>
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-soft text-sub text-xs font-bold">C</span>
               <h2 className="font-semibold text-fg text-sm">{t('sectionC')}</h2>
               <span className="ml-auto text-xs text-gray-400">{t('maxC')}</span>
             </div>
@@ -496,7 +496,7 @@ export default function HousingSubscription() {
           </div>
 
           {/* Percentile estimate */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-5 flex gap-4 items-start">
+          <div className="bg-subtle rounded-xl p-5 flex gap-4 items-start">
             <Info size={18} className="text-blue-500 flex-shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-blue-800 dark:text-blue-200 text-sm">{t('percentileTitle')}</p>
@@ -601,7 +601,7 @@ export default function HousingSubscription() {
               <h3 className="font-semibold text-amber-700 dark:text-amber-300 text-sm">{t('guideCautionTitle')}</h3>
               <ul className="space-y-1 text-sm text-sub">
                 {(t.raw('guideCautionItems') as string[]).map((item, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-amber-400 flex-shrink-0">⚠</span>{item}</li>
+                  <li key={i} className="flex gap-2">{item}</li>
                 ))}
               </ul>
             </div>

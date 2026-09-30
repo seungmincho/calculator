@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Home, Star, Clock, Search, X } from 'lucide-react'
+import ToolIcon from './ToolIcon'
 import { useTranslations } from '@/lib/i18n'
 import { usePathname, useRouter } from 'next/navigation'
 import { getFavorites } from '@/utils/favorites'
@@ -220,9 +221,7 @@ export default function MobileBottomNav() {
                       onClick={() => handleToolClick(item.href)}
                       className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 transition-colors text-left"
                     >
-                      <span className="text-xl flex-shrink-0 w-8 text-center">
-                        {item.icon}
-                      </span>
+                      <ToolIcon href={item.href} size="sm" />
                       <span className="text-sm text-fg truncate">
                         {item.label}
                       </span>

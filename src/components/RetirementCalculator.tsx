@@ -323,9 +323,8 @@ const RetirementCalculatorContent = () => {
               </div>
             </div>
 
-            <div className="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg">
+            <div className="bg-subtle p-4 rounded-lg">
               <h3 className="text-sm font-medium text-orange-800 dark:text-orange-200 mb-2">
-                <Calculator className="w-4 h-4 inline mr-1" />
                 계산 기준
               </h3>
               <ul className="text-sm text-orange-700 dark:text-orange-300 space-y-1">
@@ -344,7 +343,7 @@ const RetirementCalculatorContent = () => {
           
           {result ? (
             <div className="space-y-6">
-              <div className="text-center p-6 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl text-white">
+              <div className="text-center p-6 bg-primary hover:bg-blue-700 rounded-xl text-white">
                 <div className="text-sm opacity-90 mb-1">세후 퇴직금</div>
                 <div className="text-3xl font-bold">{formatNumber(result.netRetirementPay)}원</div>
                 <div className="flex space-x-2 mt-4">
@@ -423,9 +422,8 @@ const RetirementCalculatorContent = () => {
                 </div>
               </div>
 
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+              <div className="bg-subtle p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
-                  <TrendingUp className="w-4 h-4 inline mr-1" />
                   참고사항
                 </h3>
                 <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">

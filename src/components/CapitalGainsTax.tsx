@@ -490,7 +490,7 @@ export default function CapitalGainsTax() {
             <>
               {/* 비과세 뱃지 */}
               {result.isExempt ? (
-                <div className="flex items-center gap-3 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-xl p-4">
+                <div className="flex items-center gap-3 bg-subtle border border-line rounded-xl p-4">
                   <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400 shrink-0" />
                   <div>
                     <p className="font-semibold text-green-800 dark:text-green-300">{t('exemptBadge')}</p>
@@ -498,7 +498,7 @@ export default function CapitalGainsTax() {
                   </div>
                 </div>
               ) : result.taxableRatio < 1 && result.taxableRatio > 0 ? (
-                <div className="flex items-center gap-3 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                <div className="flex items-center gap-3 bg-subtle border border-line rounded-xl p-4">
                   <Info className="w-6 h-6 text-blue-600 dark:text-blue-400 shrink-0" />
                   <div>
                     <p className="font-semibold text-blue-800 dark:text-blue-300">{t('partialExemptBadge')}</p>
@@ -510,7 +510,7 @@ export default function CapitalGainsTax() {
               ) : null}
 
               {/* 총 납부세액 요약 */}
-              <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-primary hover:bg-blue-700 rounded-xl shadow-lg p-6 text-white">
                 <p className="text-blue-200 text-sm font-medium">{t('totalTaxLabel')}</p>
                 <p className="text-4xl font-bold mt-1">
                   {formatWon(result.totalTax)}<span className="text-xl ml-1">{t('wonUnit')}</span>
@@ -588,7 +588,7 @@ export default function CapitalGainsTax() {
                       {formatWon(result.localIncomeTax)}{t('wonUnit')}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center py-3 font-bold bg-blue-50 dark:bg-blue-950 rounded-lg px-2 mt-1">
+                  <div className="flex justify-between items-center py-3 font-bold bg-subtle rounded-lg px-2 mt-1">
                     <span className="text-base text-fg">{t('totalTaxLabel')}</span>
                     <span className="text-base text-blue-700 dark:text-blue-300 tabular-nums">
                       {formatWon(result.totalTax)}{t('wonUnit')}
@@ -604,7 +604,7 @@ export default function CapitalGainsTax() {
                   <div className="flex items-center gap-3">
                     <div className="flex-1 bg-track rounded-full h-4 overflow-hidden">
                       <div
-                        className="h-4 rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500"
+                        className="h-4 rounded-full bg-primary hover:bg-blue-700 transition-all duration-500"
                         style={{ width: `${(result.lthdRate * 100).toFixed(0)}%` }}
                       />
                     </div>
@@ -652,12 +652,11 @@ export default function CapitalGainsTax() {
       {/* 가이드 섹션 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <Info className="w-5 h-5 text-blue-500" />
           {t('guideTitle')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {/* 계산 순서 */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-3">{t('guideStepsTitle')}</h3>
             <ol className="space-y-2">
               {(t.raw('guideSteps') as string[]).map((step, i) => (
@@ -670,7 +669,7 @@ export default function CapitalGainsTax() {
           </div>
 
           {/* 1세대1주택 비과세 */}
-          <div className="bg-green-50 dark:bg-green-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="font-semibold text-green-900 dark:text-green-200 mb-3">{t('guideExemptTitle')}</h3>
             <ul className="space-y-2">
               {(t.raw('guideExemptItems') as string[]).map((item, i) => (
@@ -683,7 +682,7 @@ export default function CapitalGainsTax() {
           </div>
 
           {/* 장기보유특별공제 */}
-          <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="font-semibold text-purple-900 dark:text-purple-200 mb-3">{t('guideLthdTitle')}</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
@@ -703,7 +702,7 @@ export default function CapitalGainsTax() {
                     ['10년+', '20%', '최대 80%'],
                     ['15년+', '30%', '최대 80%'],
                   ].map(([period, gen, one], i) => (
-                    <tr key={i} className="border-t border-purple-200 dark:border-purple-800">
+                    <tr key={i} className="border-t border-line">
                       <td className="py-1">{period}</td>
                       <td className="text-right py-1">{gen}</td>
                       <td className="text-right py-1">{one}</td>
@@ -715,7 +714,7 @@ export default function CapitalGainsTax() {
           </div>
 
           {/* 세율표 */}
-          <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-5">
+          <div className="bg-subtle rounded-xl p-5">
             <h3 className="font-semibold text-orange-900 dark:text-orange-200 mb-3">{t('guideTaxRateTitle')}</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
@@ -736,7 +735,7 @@ export default function CapitalGainsTax() {
                     ['5~10억', '42%'],
                     ['10억 초과', '45%'],
                   ].map(([range, rate], i) => (
-                    <tr key={i} className="border-t border-orange-200 dark:border-orange-800">
+                    <tr key={i} className="border-t border-line">
                       <td className="py-1">{range}</td>
                       <td className="text-right py-1 font-medium">{rate}</td>
                     </tr>

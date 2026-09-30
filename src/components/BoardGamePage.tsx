@@ -60,7 +60,7 @@ export default function BoardGamePage({ gameKey, icon, name, description }: Boar
 
   // 모드 선택 화면
   const difficultyOptions: { value: Difficulty; emoji: string; label: string; desc: string; color: string; activeColor: string }[] = [
-    { value: 'easy',   emoji: '😊', label: t('easy') || '쉬움',   desc: t('easyDesc') || 'AI가 느리게 반응',   color: 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400',   activeColor: 'border-green-500 bg-green-500 text-white' },
+    { value: 'easy',   emoji: '😊', label: t('easy') || '쉬움',   desc: t('easyDesc') || 'AI가 느리게 반응',   color: 'border-line bg-subtle text-green-700 dark:text-green-400',   activeColor: 'border-green-500 bg-green-500 text-white' },
     { value: 'normal', emoji: '🎯', label: t('normal') || '보통',   desc: t('normalDesc') || '기본 전략 사용',     color: 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400',   activeColor: 'border-amber-500 bg-amber-500 text-white' },
     { value: 'hard',   emoji: '🔥', label: t('hard') || '어려움', desc: t('hardDesc') || '최적의 수 계산',     color: 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400',             activeColor: 'border-red-500 bg-red-500 text-white' },
   ]
@@ -118,7 +118,7 @@ export default function BoardGamePage({ gameKey, icon, name, description }: Boar
               </div>
               <button
                 onClick={() => setMode('ai')}
-                className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2"
+                className="w-full py-3 bg-primary hover:bg-blue-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2"
               >
                 <Monitor className="w-4 h-4" />
                 {t('startAI') || 'AI와 대전 시작'}

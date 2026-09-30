@@ -259,8 +259,8 @@ export default function OvulationCalculator() {
             let cellClass = 'text-body'
             if (type === 'period') cellClass = 'bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200'
             else if (type === 'ovulation') cellClass = 'bg-purple-500 text-white font-bold'
-            else if (type === 'fertile') cellClass = 'bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200'
-            else if (type === 'safe') cellClass = 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+            else if (type === 'fertile') cellClass = 'bg-soft text-sub'
+            else if (type === 'safe') cellClass = 'bg-soft text-sub'
 
             return (
               <div
@@ -294,7 +294,6 @@ export default function OvulationCalculator() {
         {/* Last period date */}
         <div>
           <label className="block text-sm font-medium text-body mb-1">
-            <Calendar className="w-4 h-4 inline mr-1" />
             {t('lastPeriod')}
           </label>
           <input
@@ -379,7 +378,7 @@ export default function OvulationCalculator() {
         <div className="flex gap-3">
           <button
             onClick={handleCalculate}
-            className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg px-4 py-3 font-medium hover:from-pink-600 hover:to-purple-600 transition-colors flex items-center justify-center gap-2"
+            className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-pink-600 hover:to-purple-600 transition-colors flex items-center justify-center gap-2"
           >
             <Calendar className="w-5 h-5" />
             {t('calculate')}
@@ -404,7 +403,7 @@ export default function OvulationCalculator() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Ovulation */}
-              <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-5 text-center">
+              <div className="bg-subtle rounded-xl p-5 text-center">
                 <div className="text-3xl mb-2">🥚</div>
                 <div className="text-sm text-purple-600 dark:text-purple-400 font-medium mb-1">
                   {t('ovulationDate')}
@@ -418,7 +417,7 @@ export default function OvulationCalculator() {
               </div>
 
               {/* Fertile Window */}
-              <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-5 text-center">
+              <div className="bg-subtle rounded-xl p-5 text-center">
                 <div className="text-3xl mb-2">🔥</div>
                 <div className="text-sm text-orange-600 dark:text-orange-400 font-medium mb-1">
                   {t('fertileWindow')}
@@ -443,7 +442,7 @@ export default function OvulationCalculator() {
               </div>
 
               {/* Safe Periods */}
-              <div className="bg-green-50 dark:bg-green-950 rounded-xl p-5 text-center">
+              <div className="bg-subtle rounded-xl p-5 text-center">
                 <div className="text-3xl mb-2">🛡️</div>
                 <div className="text-sm text-green-600 dark:text-green-400 font-medium mb-1">
                   {t('safeEarly')}
@@ -493,7 +492,6 @@ export default function OvulationCalculator() {
           {/* 3-Month Calendar */}
           <div>
             <h2 className="text-xl font-bold text-fg mb-4 flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-pink-500" />
               {t('calendar')}
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

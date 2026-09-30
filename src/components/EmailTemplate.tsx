@@ -623,7 +623,7 @@ export default function EmailTemplate() {
               onClick={() => handleCategoryChange(cat)}
               className={`text-left transition-all ${
                 category === cat
-                  ? 'border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4'
+                  ? 'border-2 border-blue-500 bg-subtle rounded-xl p-4'
                   : 'border-2 border-line rounded-xl p-4 cursor-pointer hover:border-blue-300'
               }`}
             >
@@ -744,7 +744,6 @@ export default function EmailTemplate() {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-base font-semibold text-fg flex items-center gap-2">
-                <FileText className="w-5 h-5 text-blue-600" />
                 {t('preview')}
               </h3>
               <div className="flex items-center gap-2 text-xs text-muted">
@@ -773,7 +772,7 @@ export default function EmailTemplate() {
             <div className="flex flex-wrap gap-3 mt-4">
               <button
                 onClick={() => copyToClipboard(fullEmail, 'full')}
-                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all text-sm"
+                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all text-sm"
               >
                 {copiedId === 'full' ? (
                   <Check className="w-4 h-4" />
@@ -812,7 +811,6 @@ export default function EmailTemplate() {
       {/* Guide section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

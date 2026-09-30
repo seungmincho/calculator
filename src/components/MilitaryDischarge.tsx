@@ -222,12 +222,12 @@ export default function MilitaryDischarge() {
 
       {/* Celebration banners */}
       {result?.isAlreadyDischarged && (
-        <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-xl p-4 text-center">
+        <div className="bg-subtle border border-line rounded-xl p-4 text-center">
           <p className="text-blue-700 dark:text-blue-300 font-bold text-lg">{t('celebrationMessage')}</p>
         </div>
       )}
       {isNearDischarge && (
-        <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-xl p-4 text-center">
+        <div className="bg-subtle border border-line rounded-xl p-4 text-center">
           <p className="text-green-700 dark:text-green-300 font-bold text-lg">{t('nearDischargeMessage')}</p>
         </div>
       )}
@@ -341,7 +341,7 @@ export default function MilitaryDischarge() {
                   </div>
                   <div className="w-full bg-track rounded-full h-4 overflow-hidden">
                     <div
-                      className="h-4 rounded-full transition-all duration-700 bg-gradient-to-r from-green-400 to-emerald-600"
+                      className="h-4 rounded-full transition-all duration-700 bg-primary hover:bg-blue-700"
                       style={{ width: `${result.progressPct}%` }}
                     />
                   </div>
@@ -389,7 +389,7 @@ export default function MilitaryDischarge() {
                       <div key={i} className="flex items-center gap-3">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
                           m.isPast
-                            ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                            ? 'bg-soft text-sub'
                             : 'bg-soft text-gray-400'
                         }`}>
                           {i + 1}
@@ -406,12 +406,12 @@ export default function MilitaryDischarge() {
                               {t(m.rank)}
                             </span>
                             {m.isCurrent && (
-                              <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-1.5 py-0.5 rounded-full">
+                              <span className="text-xs bg-soft text-sub px-1.5 py-0.5 rounded-full">
                                 {t('current')}
                               </span>
                             )}
                             {m.isPast && !m.isCurrent && (
-                              <span className="text-xs bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 px-1.5 py-0.5 rounded-full">
+                              <span className="text-xs bg-soft text-sub px-1.5 py-0.5 rounded-full">
                                 {t('completed')}
                               </span>
                             )}

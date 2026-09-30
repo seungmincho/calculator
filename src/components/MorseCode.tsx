@@ -210,7 +210,6 @@ export default function MorseCode() {
             {/* Mode Selection */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-body">
-                <Radio className="inline w-4 h-4 mr-1" />
                 {t('mode.textToMorse')}
               </label>
               <div className="flex gap-2">
@@ -218,7 +217,7 @@ export default function MorseCode() {
                   onClick={() => setMode('textToMorse')}
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     mode === 'textToMorse'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -228,7 +227,7 @@ export default function MorseCode() {
                   onClick={() => setMode('morseToText')}
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     mode === 'morseToText'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -276,7 +275,7 @@ export default function MorseCode() {
                     onClick={() => setSpeed(s)}
                     className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       speed === s
-                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700'
+                        ? 'bg-soft text-sub border border-line'
                         : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -310,7 +309,7 @@ export default function MorseCode() {
                 <button
                   onClick={isPlaying ? stopPlayback : playMorse}
                   disabled={!result && mode === 'textToMorse'}
-                  className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg px-4 py-2 font-medium hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {isPlaying ? (
                     <>
@@ -327,7 +326,7 @@ export default function MorseCode() {
                 <button
                   onClick={() => copyToClipboard(result, 'result')}
                   disabled={!result}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {copiedId === 'result' ? (
                     <>
@@ -343,7 +342,7 @@ export default function MorseCode() {
                 </button>
               </div>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 min-h-[200px]">
+            <div className="bg-subtle rounded-lg p-4 min-h-[200px]">
               <pre className="text-fg font-mono text-lg whitespace-pre-wrap break-words">
                 {result || (mode === 'textToMorse' ? t('textPlaceholder') : t('morsePlaceholder'))}
               </pre>
@@ -364,7 +363,7 @@ export default function MorseCode() {
                   {letters.map(([letter, morse]) => (
                     <div
                       key={letter}
-                      className="bg-gray-50 dark:bg-gray-900 rounded-lg px-3 py-2 flex items-center justify-between"
+                      className="bg-subtle rounded-lg px-3 py-2 flex items-center justify-between"
                     >
                       <span className="font-bold text-fg">{letter}</span>
                       <span className="font-mono text-blue-600 dark:text-blue-400">{morse}</span>
@@ -380,7 +379,7 @@ export default function MorseCode() {
                   {numbers.map(([number, morse]) => (
                     <div
                       key={number}
-                      className="bg-gray-50 dark:bg-gray-900 rounded-lg px-3 py-2 flex items-center justify-between"
+                      className="bg-subtle rounded-lg px-3 py-2 flex items-center justify-between"
                     >
                       <span className="font-bold text-fg">{number}</span>
                       <span className="font-mono text-blue-600 dark:text-blue-400">{morse}</span>
@@ -396,7 +395,6 @@ export default function MorseCode() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

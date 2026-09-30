@@ -651,7 +651,7 @@ export default function Checkers({ initialRoom, isHost: isHostProp, hostPeerId, 
 
           {/* 턴/캡처 표시 */}
           {!gameState.winner && (
-            <div className={`text-center py-2 px-4 rounded-xl ${gameState.currentTurn === myColor ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-soft text-sub'}`}>
+            <div className={`text-center py-2 px-4 rounded-xl ${gameState.currentTurn === myColor ? 'bg-soft text-sub' : 'bg-soft text-sub'}`}>
               {gameState.currentTurn === myColor ? t('yourTurn') : t('opponentTurn')}
               {gameState.mustCapture && gameState.currentTurn === myColor && (
                 <span className="ml-2 text-amber-600 font-medium">({t('mustContinueCapture') || 'Continue capturing!'})</span>
@@ -661,7 +661,7 @@ export default function Checkers({ initialRoom, isHost: isHostProp, hostPeerId, 
 
           {/* 승리 메시지 */}
           {gameState.winner && (
-            <div className={`text-center py-4 px-6 rounded-2xl ${gameState.winner === myColor ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white' : 'bg-track text-body'}`}>
+            <div className={`text-center py-4 px-6 rounded-2xl ${gameState.winner === myColor ? 'bg-primary hover:bg-blue-700 text-white' : 'bg-track text-body'}`}>
               <Trophy className="w-8 h-8 mx-auto mb-2" />
               <p className="text-xl font-bold">{getWinnerMessage()}</p>
             </div>
@@ -689,7 +689,7 @@ export default function Checkers({ initialRoom, isHost: isHostProp, hostPeerId, 
           {/* 게임 종료 버튼 */}
           {gamePhase === 'finished' && (
             <div className="flex gap-3">
-              <button onClick={handleRestart} className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium rounded-xl">
+              <button onClick={handleRestart} className="flex-1 flex items-center justify-center gap-2 py-3 px-6 bg-primary hover:bg-blue-700 text-white font-medium rounded-xl">
                 <RefreshCw className="w-5 h-5" />
                 {t('playAgain')}
               </button>
@@ -706,7 +706,6 @@ export default function Checkers({ initialRoom, isHost: isHostProp, hostPeerId, 
             <div className="bg-surface rounded-2xl shadow-lg h-[500px] flex flex-col">
               <div className="p-4 border-b border-line">
                 <h3 className="font-semibold text-fg flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5" />
                   {t('chat') || 'Chat'}
                 </h3>
               </div>

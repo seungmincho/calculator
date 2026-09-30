@@ -456,13 +456,13 @@ export default function GradientDescentVisualizer() {
       {/* Presets */}
       <div className="flex flex-wrap gap-2">
         <span className="text-xs font-medium text-muted self-center">프리셋:</span>
-        <button onClick={() => applyPreset(0, [4, 3], 0.05, true)} className="px-3 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800 transition">
+        <button onClick={() => applyPreset(0, [4, 3], 0.05, true)} className="px-3 py-1 text-xs rounded-full bg-soft text-sub hover:bg-blue-200 dark:hover:bg-blue-800 transition">
           간단한 볼록 함수 비교
         </button>
-        <button onClick={() => applyPreset(1, [4, 3], 0.02, true)} className="px-3 py-1 text-xs rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800 transition">
+        <button onClick={() => applyPreset(1, [4, 3], 0.02, true)} className="px-3 py-1 text-xs rounded-full bg-soft text-sub hover:bg-green-200 dark:hover:bg-green-800 transition">
           긴 타원 (느린 수렴)
         </button>
-        <button onClick={() => applyPreset(2, [-3, -3], 0.005, false)} className="px-3 py-1 text-xs rounded-full bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-800 transition">
+        <button onClick={() => applyPreset(2, [-3, -3], 0.005, false)} className="px-3 py-1 text-xs rounded-full bg-soft text-sub hover:bg-purple-200 dark:hover:bg-purple-800 transition">
           Himmelblau (다중 최솟값)
         </button>
         <button onClick={() => applyPreset(3, [3, 3], 0.05, true)} className="px-3 py-1 text-xs rounded-full bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-800 transition">
@@ -544,7 +544,7 @@ export default function GradientDescentVisualizer() {
             <div className="flex gap-2">
               <button
                 onClick={() => setRunning(r => !r)}
-                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-lg transition"
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-primary hover:bg-blue-700 rounded-lg transition"
               >
                 {running ? <><Pause size={14} /> 일시정지</> : <><Play size={14} /> 시작</>}
               </button>
@@ -633,7 +633,7 @@ export default function GradientDescentVisualizer() {
                 {/* Mini loss chart */}
                 <div>
                   <div className="text-[10px] text-faint mb-1">손실 히스토리 (최근 100회)</div>
-                  <div className="h-20 bg-gray-50 dark:bg-gray-900 rounded-lg p-1 relative overflow-hidden">
+                  <div className="h-20 bg-subtle rounded-lg p-1 relative overflow-hidden">
                     {lossChartData.length > 1 && (
                       <svg viewBox={`0 0 ${lossChartData.length - 1} 100`} className="w-full h-full" preserveAspectRatio="none">
                         <polyline
@@ -781,7 +781,7 @@ export default function GradientDescentVisualizer() {
                   <div className="text-sm font-medium text-red-700 dark:text-red-400 mb-1">너무 크면</div>
                   <p className="text-xs text-red-600 dark:text-red-400">최솟값을 지나쳐 발산하거나, 값이 튀어 수렴하지 못합니다.</p>
                 </div>
-                <div className="bg-green-50 dark:bg-green-950 rounded-lg p-3">
+                <div className="bg-subtle rounded-lg p-3">
                   <div className="text-sm font-medium text-green-700 dark:text-green-400 mb-1">적절하면</div>
                   <p className="text-xs text-green-600 dark:text-green-400">안정적으로 최솟값에 수렴합니다. 함수와 옵티마이저에 따라 달라집니다.</p>
                 </div>

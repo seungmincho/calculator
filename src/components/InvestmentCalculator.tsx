@@ -352,26 +352,26 @@ export default function InvestmentCalculator() {
         <h3 className="text-lg font-semibold text-fg">{label}</h3>
       )}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+        <div className="bg-subtle rounded-xl p-4">
           <p className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('totalInvested')}</p>
           <p className="text-lg font-bold text-blue-900 dark:text-blue-100">{formatKRW(res.totalInvested)}<span className="text-sm font-normal">{t('won')}</span></p>
         </div>
-        <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4">
+        <div className="bg-subtle rounded-xl p-4">
           <p className="text-xs text-green-600 dark:text-green-400 mb-1">{t('finalAmount')}</p>
           <p className="text-lg font-bold text-green-900 dark:text-green-100">{formatKRW(res.finalAmount)}<span className="text-sm font-normal">{t('won')}</span></p>
         </div>
-        <div className={`rounded-xl p-4 ${res.profit >= 0 ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-red-50 dark:bg-red-950'}`}>
+        <div className={`rounded-xl p-4 ${res.profit >= 0 ? 'bg-subtle' : 'bg-red-50 dark:bg-red-950'}`}>
           <p className={`text-xs mb-1 ${res.profit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>{t('profit')}</p>
           <p className={`text-lg font-bold flex items-center gap-1 ${res.profit >= 0 ? 'text-emerald-900 dark:text-emerald-100' : 'text-red-900 dark:text-red-100'}`}>
             {res.profit >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             {formatKRW(Math.abs(res.profit))}<span className="text-sm font-normal">{t('won')}</span>
           </p>
         </div>
-        <div className="bg-purple-50 dark:bg-purple-950 rounded-xl p-4">
+        <div className="bg-subtle rounded-xl p-4">
           <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">{t('totalReturn')}</p>
           <p className="text-lg font-bold text-purple-900 dark:text-purple-100">{res.totalReturnPct.toFixed(2)}%</p>
         </div>
-        <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4">
+        <div className="bg-subtle rounded-xl p-4">
           <p className="text-xs text-indigo-600 dark:text-indigo-400 mb-1">{t('cagr')}</p>
           <p className="text-lg font-bold text-indigo-900 dark:text-indigo-100">{res.cagr.toFixed(2)}%</p>
         </div>
@@ -421,7 +421,7 @@ export default function InvestmentCalculator() {
             }}
             className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
               investmentType === type
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                ? 'bg-primary hover:bg-blue-700 text-white'
                 : 'text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >
@@ -436,7 +436,6 @@ export default function InvestmentCalculator() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
             <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-blue-600" />
               {t('investmentType')}
             </h2>
 
@@ -544,7 +543,7 @@ export default function InvestmentCalculator() {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={handleCalculate}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2"
               >
                 <Calculator className="w-4 h-4" />
                 {t('calculate')}
@@ -560,7 +559,7 @@ export default function InvestmentCalculator() {
 
             {/* Comparison mode explanation */}
             {investmentType === 'comparison' && (
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3">
+              <div className="bg-subtle rounded-lg p-3">
                 <p className="text-xs text-blue-700 dark:text-blue-300">
                   {t('vs.title')}
                 </p>
@@ -581,7 +580,6 @@ export default function InvestmentCalculator() {
               {/* Chart */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5 text-blue-600" />
                   {t('chartTitle')}
                 </h3>
                 <ReactECharts option={chartOption} style={{ height: '350px' }} />
@@ -591,7 +589,6 @@ export default function InvestmentCalculator() {
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
-                    <BarChart3 className="w-5 h-5 text-indigo-600" />
                     {t('tableTitle')}
                   </h3>
                   <button
@@ -615,7 +612,7 @@ export default function InvestmentCalculator() {
                       </thead>
                       <tbody>
                         {displayData.map((row) => (
-                          <tr key={row.year} className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30">
+                          <tr key={row.year} className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/30">
                             <td className="py-2 px-3 text-fg">{row.year}{t('yearLabel')}</td>
                             <td className="py-2 px-3 text-right text-body">{formatKRW(row.cumInvested)}</td>
                             <td className={`py-2 px-3 text-right font-medium ${row.yearProfit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
@@ -638,15 +635,14 @@ export default function InvestmentCalculator() {
             <>
               <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
                 <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5 text-blue-600" />
                   {t('vs.title')}
                 </h3>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                  <div className="border border-line rounded-xl p-4">
                     {renderResultCard(comparisonResult.lumpSum, t('vs.lumpSumResult'))}
                   </div>
-                  <div className="border border-green-200 dark:border-green-800 rounded-xl p-4">
+                  <div className="border border-line rounded-xl p-4">
                     {renderResultCard(comparisonResult.dca, t('vs.dcaResult'))}
                   </div>
                 </div>
@@ -678,7 +674,6 @@ export default function InvestmentCalculator() {
               {/* Comparison Chart */}
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5 text-blue-600" />
                   {t('chartTitle')}
                 </h3>
                 <ReactECharts option={comparisonChartOption} style={{ height: '350px' }} />
@@ -699,7 +694,6 @@ export default function InvestmentCalculator() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
           {t('guide.title')}
         </h2>
 

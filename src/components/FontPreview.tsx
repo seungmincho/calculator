@@ -172,7 +172,6 @@ background-color: ${bgColor};`
       {/* Sample Text Input */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <label className="block text-sm font-medium text-body mb-2">
-          <Type className="inline w-4 h-4 mr-1" />
           {t('sampleText')}
         </label>
         <textarea
@@ -325,7 +324,7 @@ background-color: ${bgColor};`
             {/* Copy CSS Button */}
             <button
               onClick={copyCSS}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2"
             >
               {copiedId === 'css' ? (
                 <>
@@ -379,10 +378,9 @@ background-color: ${bgColor};`
 
           {/* Compare Mode */}
           {compareList.length > 0 && (
-            <div className="bg-blue-50 dark:bg-blue-950 rounded-xl shadow-lg p-6">
+            <div className="bg-subtle rounded-xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-fg flex items-center gap-2">
-                  <Columns className="w-4 h-4" />
                   {t('compare')} ({compareList.length}/4)
                 </h3>
                 <button
@@ -427,7 +425,7 @@ background-color: ${bgColor};`
                       key={font.name}
                       className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
                         selectedFont.name === font.name
-                          ? 'border-blue-600 bg-blue-50 dark:bg-blue-950'
+                          ? 'border-blue-600 bg-subtle'
                           : 'border-line hover:border-gray-300 dark:hover:border-gray-600'
                       }`}
                     >
@@ -443,7 +441,7 @@ background-color: ${bgColor};`
                             {t(font.category)}
                           </span>
                           {!font.google && (
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300">
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-soft text-sub">
                               System
                             </span>
                           )}
@@ -473,7 +471,6 @@ background-color: ${bgColor};`
               /* Compare View */
               <>
                 <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  <Columns className="w-5 h-5" />
                   비교 보기
                 </h2>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -516,7 +513,6 @@ background-color: ${bgColor};`
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="space-y-6">

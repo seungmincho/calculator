@@ -350,7 +350,7 @@ export default function NutritionCalculator() {
                         </p>
                       </div>
                       <button
-                        className="shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="shrink-0 w-6 h-6 rounded-full bg-soft text-sub flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                         aria-hidden="true"
                         tabIndex={-1}
                       >
@@ -484,7 +484,7 @@ export default function NutritionCalculator() {
               </div>
 
               {/* 총 칼로리 */}
-              <div className="bg-orange-50 dark:bg-orange-950/30 rounded-xl p-3 text-center mb-3">
+              <div className="bg-subtle rounded-xl p-3 text-center mb-3">
                 <p className="text-xs text-orange-600 dark:text-orange-400">{t('summary.totalCal')}</p>
                 <p className="text-3xl font-bold text-orange-700 dark:text-orange-400">{formatNumber(totals.cal)}</p>
                 <p className="text-xs text-orange-500">kcal</p>
@@ -535,7 +535,6 @@ export default function NutritionCalculator() {
           aria-expanded={showGuide}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
             {t('guide.title')}
           </h2>
           <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>

@@ -253,12 +253,12 @@ export default function ChildBenefitCalculator() {
 
       {/* 히어로 통계 카드 3개 */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-5 text-center">
+        <div className="bg-subtle rounded-xl p-5 text-center">
           <div className="text-xs text-indigo-600 dark:text-indigo-400 font-medium mb-1">{t('hero.parentPay')}</div>
           <div className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">{t('hero.parentPayAmount')}</div>
           <div className="text-xs text-indigo-500 dark:text-indigo-400 mt-1">{t('hero.parentPaySub')}</div>
         </div>
-        <div className="bg-green-50 dark:bg-green-950 rounded-xl p-5 text-center">
+        <div className="bg-subtle rounded-xl p-5 text-center">
           <div className="text-xs text-green-600 dark:text-green-400 font-medium mb-1">{t('hero.childAllowance')}</div>
           <div className="text-2xl font-bold text-green-700 dark:text-green-300">{t('hero.childAllowanceAmount')}</div>
           <div className="text-xs text-green-500 dark:text-green-400 mt-1">{t('hero.childAllowanceSub')}</div>
@@ -348,7 +348,7 @@ export default function ChildBenefitCalculator() {
             {children.length < 5 && (
               <button
                 onClick={addChild}
-                className="w-full flex items-center justify-center gap-2 py-2 border-2 border-dashed border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400 rounded-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors text-sm"
+                className="w-full flex items-center justify-center gap-2 py-2 border-2 border-dashed border-line text-blue-600 dark:text-blue-400 rounded-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors text-sm"
               >
                 <Plus className="w-4 h-4" />
                 {t('addChild')}
@@ -360,7 +360,7 @@ export default function ChildBenefitCalculator() {
               <button
                 onClick={handleCalculate}
                 disabled={!allValid}
-                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Calculator className="w-4 h-4" />
                 {t('calculate')}
@@ -384,14 +384,14 @@ export default function ChildBenefitCalculator() {
               <div className={`${glassCard} ${glassInset} p-6`}>
                 <h2 className="font-semibold text-fg mb-4">{t('summaryTitle')}</h2>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 text-center">
+                  <div className="bg-subtle rounded-xl p-4 text-center">
                     <div className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('monthlyTotal')}</div>
                     <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">
                       {formatKRW(monthlyTotal)}
                     </div>
                     <div className="text-xs text-blue-500 dark:text-blue-400 mt-1">{t('perMonth')}</div>
                   </div>
-                  <div className="bg-indigo-50 dark:bg-indigo-950 rounded-xl p-4 text-center">
+                  <div className="bg-subtle rounded-xl p-4 text-center">
                     <div className="text-xs text-indigo-600 dark:text-indigo-400 mb-1">{t('yearlyTotal')}</div>
                     <div className="text-3xl font-bold text-indigo-700 dark:text-indigo-300">
                       {formatKRW(yearlyTotal)}
@@ -462,7 +462,7 @@ export default function ChildBenefitCalculator() {
                   <ul className="mt-4 space-y-2">
                     {applyMethods.map((method, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-body">
-                        <span className="mt-0.5 w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">
+                        <span className="mt-0.5 w-5 h-5 rounded-full bg-soft text-sub flex items-center justify-center text-xs font-bold shrink-0">
                           {i + 1}
                         </span>
                         {method}
@@ -518,7 +518,7 @@ export default function ChildBenefitCalculator() {
           </div>
 
           {/* 총 누적 수령액 */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-6 text-white">
+          <div className="bg-primary hover:bg-blue-700 rounded-xl p-6 text-white">
             <h2 className="font-semibold mb-3">{t('cumulativeTitle')}</h2>
             <div className="text-4xl font-bold mb-1">
               {formatKRW(cumulativeNoDay)}

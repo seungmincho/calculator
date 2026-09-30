@@ -573,7 +573,7 @@ const CronTester = () => {
           </div>
 
           {/* Cron Format Guide */}
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6">
+          <div className="bg-subtle rounded-xl p-6">
             <div className="flex items-center space-x-2 mb-4">
               <Timer className="w-5 h-5 text-blue-600" />
               <h2 className="text-xl font-semibold text-blue-900 dark:text-blue-100">

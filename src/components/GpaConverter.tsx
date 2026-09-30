@@ -263,7 +263,7 @@ export default function GpaConverter() {
             <div className="space-y-2 pt-2">
               <button
                 onClick={() => copyToClipboard(window.location.href, 'link')}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
               >
                 {copiedId === 'link' ? <><Check className="w-4 h-4" />{t('copyLinkDone')}</> : <><LinkIcon className="w-4 h-4" />{t('copyLink')}</>}
               </button>
@@ -299,7 +299,7 @@ export default function GpaConverter() {
                   ] as const).map((tile) => (
                     <div
                       key={tile.key}
-                      className={`rounded-xl p-4 text-center ${scale === tile.key ? 'bg-blue-600 text-white' : 'bg-blue-50 dark:bg-blue-950'}`}
+                      className={`rounded-xl p-4 text-center ${scale === tile.key ? 'bg-blue-600 text-white' : 'bg-subtle'}`}
                     >
                       <p className={`text-xs ${scale === tile.key ? 'text-blue-100' : 'text-muted'}`}>{tile.label}</p>
                       <p className={`text-2xl font-bold ${scale === tile.key ? 'text-white' : 'text-blue-700 dark:text-blue-300'}`}>{tile.val}</p>
@@ -310,7 +310,7 @@ export default function GpaConverter() {
                 <div className="mt-4 flex items-center justify-between flex-wrap gap-3">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-sub">{t('result.grade')}</span>
-                    <span className="inline-flex items-center justify-center min-w-[3rem] px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-lg font-bold">{result.grade}</span>
+                    <span className="inline-flex items-center justify-center min-w-[3rem] px-3 py-1 rounded-lg bg-soft text-sub text-lg font-bold">{result.grade}</span>
                   </div>
                   <button
                     onClick={() => copyToClipboard(resultText, 'result')}
@@ -356,14 +356,14 @@ export default function GpaConverter() {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4">{t('crossLinks.title')}</h2>
             <div className="grid sm:grid-cols-2 gap-3">
-              <NextLink href="/gpa-calculator/" className="flex items-start gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <NextLink href="/gpa-calculator/" className="flex items-start gap-3 p-4 rounded-xl bg-subtle hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                 <Calculator className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
                 <span>
                   <span className="block font-medium text-fg">{t('crossLinks.calc.label')}</span>
                   <span className="block text-xs text-muted mt-0.5">{t('crossLinks.calc.desc')}</span>
                 </span>
               </NextLink>
-              <NextLink href="/grade-calculator/" className="flex items-start gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <NextLink href="/grade-calculator/" className="flex items-start gap-3 p-4 rounded-xl bg-subtle hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                 <Award className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mt-0.5 shrink-0" />
                 <span>
                   <span className="block font-medium text-fg">{t('crossLinks.grade.label')}</span>
@@ -378,14 +378,12 @@ export default function GpaConverter() {
       {/* 가이드 */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {guideSections.map((section, idx) => (
             <div key={idx}>
               <h3 className="font-medium text-fg mb-2 flex items-center gap-2">
-                <GraduationCap className="w-4 h-4 text-blue-500" />
                 {section.title}
               </h3>
               <ul className="space-y-1">

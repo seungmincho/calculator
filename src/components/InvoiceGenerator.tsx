@@ -620,7 +620,7 @@ export default function InvoiceGenerator() {
           </button>
           <button
             onClick={exportPDF}
-            className="flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg px-3 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 text-sm transition-colors"
+            className="flex items-center gap-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg px-3 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 text-sm transition-colors"
           >
             <Download className="w-4 h-4" />
             {t('exportPDF')}
@@ -784,7 +784,7 @@ export default function InvoiceGenerator() {
 
             <button
               onClick={addItem}
-              className="mt-4 flex items-center gap-2 px-4 py-2 border-2 border-dashed border-blue-300 dark:border-blue-700 rounded-lg text-blue-600 dark:text-blue-400 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-sm font-medium w-full justify-center"
+              className="mt-4 flex items-center gap-2 px-4 py-2 border-2 border-dashed border-line rounded-lg text-blue-600 dark:text-blue-400 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-sm font-medium w-full justify-center"
             >
               <Plus className="w-4 h-4" />
               {t('items.add')}
@@ -831,7 +831,6 @@ export default function InvoiceGenerator() {
           aria-expanded={guideOpen}
         >
           <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             {t('guide.title')}
           </h2>
           {guideOpen ? (
@@ -844,7 +843,7 @@ export default function InvoiceGenerator() {
         {guideOpen && (
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             {(t.raw('guide.sections') as Array<{ title: string; items: string[] }>).map((section) => (
-              <div key={section.title} className="bg-blue-50 dark:bg-blue-950 rounded-xl p-5">
+              <div key={section.title} className="bg-subtle rounded-xl p-5">
                 <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-3">{section.title}</h3>
                 <ul className="space-y-1.5">
                   {section.items.map((item: string) => (

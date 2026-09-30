@@ -155,10 +155,10 @@ export default function NumberToKorean() {
   ]
 
   const cards: { id: string; label: string; value: string; accent: string; border: string }[] = [
-    { id: 'formal', label: t('koreanFormal'), value: koreanFormal, accent: 'text-blue-700 dark:text-blue-300', border: 'border-blue-500 bg-blue-50 dark:bg-blue-950' },
-    { id: 'reading', label: t('koreanInformal'), value: koreanReading, accent: 'text-green-700 dark:text-green-300', border: 'border-green-500 bg-green-50 dark:bg-green-950' },
-    { id: 'english', label: t('englishNum'), value: englishFormat, accent: 'text-indigo-700 dark:text-indigo-300', border: 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950' },
-    { id: 'chinese', label: t('chineseNum'), value: chineseFormat, accent: 'text-orange-700 dark:text-orange-300', border: 'border-orange-500 bg-orange-50 dark:bg-orange-950' },
+    { id: 'formal', label: t('koreanFormal'), value: koreanFormal, accent: 'text-blue-700 dark:text-blue-300', border: 'border-blue-500 bg-subtle' },
+    { id: 'reading', label: t('koreanInformal'), value: koreanReading, accent: 'text-green-700 dark:text-green-300', border: 'border-green-500 bg-subtle' },
+    { id: 'english', label: t('englishNum'), value: englishFormat, accent: 'text-indigo-700 dark:text-indigo-300', border: 'border-indigo-500 bg-subtle' },
+    { id: 'chinese', label: t('chineseNum'), value: chineseFormat, accent: 'text-orange-700 dark:text-orange-300', border: 'border-orange-500 bg-subtle' },
   ]
 
   return (
@@ -259,7 +259,6 @@ export default function NumberToKorean() {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          <BookOpen className="w-6 h-6" />
           {t('guide.title')}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">

@@ -303,7 +303,7 @@ export default function SignatureGenerator() {
                   onClick={() => setBackgroundColor('transparent')}
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     backgroundColor === 'transparent'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
@@ -313,7 +313,7 @@ export default function SignatureGenerator() {
                   onClick={() => setBackgroundColor('white')}
                   className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                     backgroundColor === 'white'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      ? 'bg-primary hover:bg-blue-700 text-white'
                       : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
                   }`}
                 >
@@ -343,7 +343,7 @@ export default function SignatureGenerator() {
 
               <button
                 onClick={handleDownload}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg px-4 py-3 font-medium transition-colors"
+                className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 <Download className="w-5 h-5" />
                 {t('downloadPNG')}
@@ -351,7 +351,7 @@ export default function SignatureGenerator() {
 
               <button
                 onClick={copyToClipboard}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg px-4 py-3 font-medium transition-colors"
+                className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-colors"
               >
                 {copiedId === 'signature' ? (
                   <>

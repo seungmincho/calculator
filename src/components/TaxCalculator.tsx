@@ -716,9 +716,8 @@ const TaxCalculatorContent = () => {
           
           {renderInputSection()}
 
-          <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg mt-6">
+          <div className="bg-subtle p-4 rounded-lg mt-6">
             <h3 className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
-              <Calculator className="w-4 h-4 inline mr-1" />
               계산 기준
             </h3>
             <ul className="text-sm text-green-700 dark:text-green-300 space-y-1">
@@ -753,7 +752,7 @@ const TaxCalculatorContent = () => {
           
           {result ? (
             <div className="space-y-6">
-              <div className="text-center p-6 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl text-white">
+              <div className="text-center p-6 bg-primary hover:bg-blue-700 rounded-xl text-white">
                 <div className="text-sm opacity-90 mb-1">
                   {activeTab === 'vat' ? '부가세 포함 금액' : '세후 금액'}
                 </div>
@@ -871,9 +870,8 @@ const TaxCalculatorContent = () => {
                 </div>
               </div>
 
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+              <div className="bg-subtle p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
-                  <TrendingUp className="w-4 h-4 inline mr-1" />
                   참고사항
                 </h3>
                 <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">

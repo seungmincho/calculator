@@ -282,7 +282,7 @@ export default function FloodFillVisualizer() {
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+            <span className="px-2 py-0.5 text-xs rounded-full bg-soft text-sub">
               {tHub('categories.search')}
             </span>
             <span className="text-xs text-gray-400">★☆☆</span>
@@ -367,7 +367,7 @@ export default function FloodFillVisualizer() {
                 </strong>
               </span>
               {isDone && (
-                <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium">
+                <span className="px-2 py-0.5 rounded-full bg-soft text-sub text-xs font-medium">
                   {t('stats.done')} ({visual.filledCount} {t('stats.cells')})
                 </span>
               )}
@@ -411,7 +411,7 @@ export default function FloodFillVisualizer() {
                       : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
                   } disabled:opacity-40`}
                 >
-                  {p.icon} {p.label}
+                  {p.label}
                 </button>
               ))}
             </div>
@@ -465,11 +465,11 @@ export default function FloodFillVisualizer() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`flex-1 px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors ${
                       activeTab === tab.key
-                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
+                        ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-subtle'
                         : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                   >
-                    {tab.icon} {tab.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -571,10 +571,10 @@ function StepsList({
         const isFill = step.action === 'fill'
 
         const actionColor = isDone
-          ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'
+          ? 'bg-soft text-sub'
           : isFill
-            ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400'
-            : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400'
+            ? 'bg-soft text-sub'
+            : 'bg-soft text-sub'
 
         return (
           <div
@@ -582,10 +582,10 @@ function StepsList({
             data-active={isCurrent ? 'true' : undefined}
             className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent
-                ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20'
+                ? 'border-blue-500/50 bg-subtle'
                 : isActive
-                  ? 'border-line bg-gray-50/30 dark:bg-gray-800/30'
-                  : 'border-gray-200/30 dark:border-gray-700/30 opacity-40'
+                  ? 'border-line bg-subtle'
+                  : 'border-line opacity-40'
             }`}
             onClick={() => onStepClick(step.originalIndex)}
           >

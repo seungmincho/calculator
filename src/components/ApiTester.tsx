@@ -632,7 +632,7 @@ export default function ApiTester() {
             <History size={14} />
             <span className="hidden sm:inline">{t('history')}</span>
             {history.length > 0 && (
-              <span className="ml-1 px-1.5 py-0.5 text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full">
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-soft text-sub rounded-full">
                 {history.length}
               </span>
             )}
@@ -797,7 +797,7 @@ export default function ApiTester() {
             <button
               onClick={sendRequest}
               disabled={!url.trim()}
-              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm whitespace-nowrap"
+              className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm whitespace-nowrap"
             >
               <Send size={16} />
               {t('send')}
@@ -892,7 +892,7 @@ export default function ApiTester() {
                 </div>
 
                 {auth.type === 'basic' && (
-                  <div className="space-y-3 pl-4 border-l-2 border-blue-200 dark:border-blue-800">
+                  <div className="space-y-3 pl-4 border-l-2 border-line">
                     <div>
                       <label className="block text-xs text-muted mb-1">{t('username')}</label>
                       <input
@@ -917,7 +917,7 @@ export default function ApiTester() {
                 )}
 
                 {auth.type === 'bearer' && (
-                  <div className="pl-4 border-l-2 border-blue-200 dark:border-blue-800">
+                  <div className="pl-4 border-l-2 border-line">
                     <label className="block text-xs text-muted mb-1">{t('bearerToken')}</label>
                     <input
                       type="text"
@@ -938,7 +938,7 @@ export default function ApiTester() {
           <div className={`${glassCard} ${glassInset} overflow-hidden`}>
             {/* Status bar */}
             {loading && (
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-line bg-blue-50 dark:bg-blue-950">
+              <div className="flex items-center gap-3 px-4 py-3 border-b border-line bg-subtle">
                 <Loader2 size={16} className="animate-spin text-blue-600 dark:text-blue-400" />
                 <span className="text-sm text-blue-700 dark:text-blue-300">{t('sending')}</span>
               </div>
@@ -1005,14 +1005,14 @@ export default function ApiTester() {
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => setResponseViewMode('pretty')}
-                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'pretty' ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'pretty' ? 'bg-soft text-sub' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                           >
                             <Eye size={12} className="inline mr-1" />
                             {t('prettyView')}
                           </button>
                           <button
                             onClick={() => setResponseViewMode('raw')}
-                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'raw' ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'raw' ? 'bg-soft text-sub' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                           >
                             <Code size={12} className="inline mr-1" />
                             {t('rawView')}
@@ -1020,7 +1020,7 @@ export default function ApiTester() {
                           {isHtmlResponse(response.headers) && (
                             <button
                               onClick={() => setResponseViewMode('preview')}
-                              className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'preview' ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                              className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'preview' ? 'bg-soft text-sub' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                             >
                               <Globe size={12} className="inline mr-1" />
                               {t('previewView')}
@@ -1043,7 +1043,7 @@ export default function ApiTester() {
                           title={t('htmlPreview')}
                         />
                       ) : (
-                        <pre className="w-full p-4 text-sm font-mono bg-gray-50 dark:bg-gray-900 text-body rounded-lg overflow-x-auto max-h-96 overflow-y-auto whitespace-pre-wrap break-words border border-line">
+                        <pre className="w-full p-4 text-sm font-mono bg-subtle text-body rounded-lg overflow-x-auto max-h-96 overflow-y-auto whitespace-pre-wrap break-words border border-line">
                           {responseViewMode === 'pretty' ? tryPrettyJson(response.body) : response.body}
                         </pre>
                       )}
@@ -1083,7 +1083,7 @@ export default function ApiTester() {
                               onClick={() => setCodeGenLang(lang)}
                               className={`px-3 py-1.5 text-xs rounded-lg font-medium ${
                                 codeGenLang === lang
-                                  ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                  ? 'bg-soft text-sub'
                                   : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'
                               }`}
                             >
@@ -1099,7 +1099,7 @@ export default function ApiTester() {
                           {copiedId === 'code-gen' ? t('copied') : t('copy')}
                         </button>
                       </div>
-                      <pre className="w-full p-4 text-sm font-mono bg-gray-50 dark:bg-gray-900 text-body rounded-lg overflow-x-auto whitespace-pre-wrap break-words border border-line">
+                      <pre className="w-full p-4 text-sm font-mono bg-subtle text-body rounded-lg overflow-x-auto whitespace-pre-wrap break-words border border-line">
                         {generateCode()}
                       </pre>
                     </div>
@@ -1128,7 +1128,7 @@ export default function ApiTester() {
                       onClick={() => setCodeGenLang(lang)}
                       className={`px-3 py-1.5 text-xs rounded-lg font-medium ${
                         codeGenLang === lang
-                          ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                          ? 'bg-soft text-sub'
                           : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'
                       }`}
                     >
@@ -1144,7 +1144,7 @@ export default function ApiTester() {
                   {copiedId === 'code-gen-pre' ? t('copied') : t('copy')}
                 </button>
               </div>
-              <pre className="w-full p-4 text-sm font-mono bg-gray-50 dark:bg-gray-900 text-body rounded-lg overflow-x-auto whitespace-pre-wrap break-words border border-line">
+              <pre className="w-full p-4 text-sm font-mono bg-subtle text-body rounded-lg overflow-x-auto whitespace-pre-wrap break-words border border-line">
                 {generateCode()}
               </pre>
             </div>
