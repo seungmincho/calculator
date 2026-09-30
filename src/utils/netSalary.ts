@@ -11,6 +11,8 @@ export interface NetSalaryInput {
   dependents?: number
   /** 8세 이상 20세 이하 자녀 수 (dependents에 포함된 인원). 기본 0 */
   children?: number
+  /** 실제 납부한 연 국민연금(연금보험료공제). 생략 시 과세급여 × 요율(상한 적용). 성과급처럼 기준소득월액에 안 잡히는 소득용 */
+  nationalPensionAnnual?: number
 }
 
 export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}) {
@@ -23,7 +25,7 @@ export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}
   const taxableAnnual = Math.max(0, grossAnnual - nonTaxableAnnual)
 
   // 4대보험 (근로자 부담) — 요율·상한은 insuranceRates.ts 단일 관리
-  const nationalPension = Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate)
+  const nationalPension = opt.nationalPensionAnnual ?? Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate)
   const healthInsurance = Math.floor(taxableAnnual * INSURANCE.healthRate)
   const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate)
   const employmentInsurance = Math.floor(taxableAnnual * INSURANCE.employmentRate)

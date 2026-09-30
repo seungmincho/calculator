@@ -1,271 +1,130 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo, Suspense } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
-import { Calculator, RotateCcw, Copy, Check, ChevronDown, ChevronUp, TrendingUp, AlertTriangle } from 'lucide-react'
+import { RotateCcw, Copy, Check } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import GuideSection from '@/components/GuideSection'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
-import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
+import { calculateBonusTax, type BonusDeductions } from '@/utils/bonusTax'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
-// ── Tax calculation engine (2025 Korean tax law) ──
+type Method = 'monthly' | 'percent' | 'amount' // 월급 대비 % | 연봉 대비 % | 금액
+const METHODS: Method[] = ['monthly', 'percent', 'amount']
+const PRESETS: Record<Exclude<Method, 'amount'>, number[]> = { monthly: [50, 100, 200, 300, 500], percent: [5, 10, 20, 30, 50] }
+const COMPARE_RATIOS = [50, 100, 200, 300, 500] // 월급 대비 %
+const DEFAULTS = { salary: '50,000,000', method: 'monthly' as Method, percent: 100, period: 1 }
 
-interface DeductionBreakdown {
-  nationalPension: number
-  healthInsurance: number
-  longTermCare: number
-  employmentInsurance: number
-  incomeTax: number
-  localIncomeTax: number
-  total: number
+const fmt = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const parseNum = (s: string) => parseInt(s.replace(/,/g, ''), 10) || 0
+const formatInput = (v: string) => {
+  const num = v.replace(/[^\d]/g, '')
+  return num ? parseInt(num, 10).toLocaleString('en-US') : ''
 }
 
-interface TaxResult {
-  gross: number
-  taxableIncome: number
-  workIncomeDeduction: number
-  personalDeduction: number
-  deductions: DeductionBreakdown
-  netAnnual: number
-  effectiveTaxRate: number
-  marginalRate: number
-  bracketLabel: string
-}
-
-function calcWorkIncomeDeduction(gross: number): number {
-  let d = 0
-  if (gross <= 5_000_000) {
-    d = gross * 0.7
-  } else if (gross <= 15_000_000) {
-    d = 3_500_000 + (gross - 5_000_000) * 0.4
-  } else if (gross <= 45_000_000) {
-    d = 7_500_000 + (gross - 15_000_000) * 0.15
-  } else if (gross <= 100_000_000) {
-    d = 12_000_000 + (gross - 45_000_000) * 0.05
-  } else {
-    d = 14_750_000 + (gross - 100_000_000) * 0.02
-  }
-  return Math.min(d, 20_000_000)
-}
-
-const TAX_BRACKETS = [
-  { limit: 14_000_000, rate: 0.06, cumulative: 0, label: 'b1' },
-  { limit: 50_000_000, rate: 0.15, cumulative: 840_000, label: 'b2' },
-  { limit: 88_000_000, rate: 0.24, cumulative: 6_240_000, label: 'b3' },
-  { limit: 150_000_000, rate: 0.35, cumulative: 15_360_000, label: 'b4' },
-  { limit: 300_000_000, rate: 0.38, cumulative: 37_060_000, label: 'b5' },
-  { limit: 500_000_000, rate: 0.40, cumulative: 94_060_000, label: 'b6' },
-  { limit: 1_000_000_000, rate: 0.42, cumulative: 174_060_000, label: 'b7' },
-  { limit: Infinity, rate: 0.45, cumulative: 384_060_000, label: 'b8' },
+const ROWS: [keyof BonusDeductions, string][] = [
+  ['nationalPension', 'result.nationalPension'],
+  ['healthInsurance', 'result.healthInsurance'],
+  ['longTermCare', 'result.longTermCare'],
+  ['employmentInsurance', 'result.employmentInsurance'],
+  ['incomeTax', 'result.incomeTax'],
+  ['localIncomeTax', 'result.localTax'],
 ]
 
-function calcIncomeTax(taxableIncome: number): { tax: number; marginalRate: number; bracketLabel: string } {
-  if (taxableIncome <= 0) return { tax: 0, marginalRate: 0.06, bracketLabel: 'b1' }
-  let tax = 0
-  let marginalRate = 0.06
-  let bracketLabel = 'b1'
-  let prev = 0
-  for (const b of TAX_BRACKETS) {
-    if (taxableIncome <= b.limit) {
-      tax = b.cumulative + (taxableIncome - prev) * b.rate
-      marginalRate = b.rate
-      bracketLabel = b.label
-      break
-    }
-    prev = b.limit
-  }
-  return { tax: Math.floor(tax), marginalRate, bracketLabel }
-}
-
-function calculateTax(grossAnnual: number, nonTaxableAnnual: number, dependents: number, children: number): TaxResult {
-  const taxableAnnual = Math.max(0, grossAnnual - nonTaxableAnnual)
-
-  // 4대보험
-  const nationalPension = Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate)
-  const healthInsurance = Math.floor(taxableAnnual * INSURANCE.healthRate)
-  const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate)
-  const employmentInsurance = Math.floor(taxableAnnual * INSURANCE.employmentRate)
-
-  // 소득공제
-  const workIncomeDeduction = calcWorkIncomeDeduction(grossAnnual)
-  const personalDeduction = 1_500_000 + Math.max(0, dependents - 1) * 1_500_000 + children * 1_500_000
-  const workIncome = grossAnnual - workIncomeDeduction
-  const totalDeduction = nationalPension + personalDeduction
-  const taxableIncome = Math.max(0, workIncome - totalDeduction)
-
-  const { tax: incomeTax, marginalRate, bracketLabel } = calcIncomeTax(taxableIncome)
-  const localIncomeTax = Math.floor(incomeTax * 0.1)
-
-  const totalDeductions = nationalPension + healthInsurance + longTermCare + employmentInsurance + incomeTax + localIncomeTax
-
-  return {
-    gross: grossAnnual,
-    taxableIncome,
-    workIncomeDeduction,
-    personalDeduction,
-    deductions: {
-      nationalPension,
-      healthInsurance,
-      longTermCare,
-      employmentInsurance,
-      incomeTax,
-      localIncomeTax,
-      total: totalDeductions,
-    },
-    netAnnual: grossAnnual - totalDeductions,
-    effectiveTaxRate: grossAnnual > 0 ? (totalDeductions / grossAnnual) * 100 : 0,
-    marginalRate,
-    bracketLabel,
-  }
-}
-
-// ── Helpers ──
-
-function formatNumber(n: number): string {
-  return Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
-
-function parseFormatted(s: string): number {
-  return parseInt(s.replace(/,/g, ''), 10) || 0
-}
-
-function formatInputValue(value: string): string {
-  const num = value.replace(/[^\d]/g, '')
-  if (!num) return ''
-  return parseInt(num, 10).toLocaleString('en-US')
-}
-
-// ── Component ──
-
-function BonusCalculatorContent() {
+export default function BonusCalculator() {
   const searchParams = useSearchParams()
   const t = useTranslations('bonusCalculator')
 
-  // Input state
-  const [salary, setSalary] = useState('')
+  const [salary, setSalary] = useState(DEFAULTS.salary)
   const [bonusType, setBonusType] = useState('ps')
-  const [bonusMethod, setBonusMethod] = useState<'percent' | 'amount'>('percent')
-  const [bonusPercent, setBonusPercent] = useState(100)
+  const [method, setMethod] = useState<Method>(DEFAULTS.method)
+  const [percent, setPercent] = useState(DEFAULTS.percent)
   const [bonusAmount, setBonusAmount] = useState('')
+  const [period, setPeriod] = useState(DEFAULTS.period)
   const [dependents, setDependents] = useState(1)
   const [children, setChildren] = useState(0)
   const [nonTaxable, setNonTaxable] = useState('200,000')
   const [activeTab, setActiveTab] = useState(0)
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [showDetail, setShowDetail] = useState(false)
+  const [copied, setCopied] = useState(false)
 
-  // URL params → state (on mount)
+  // URL → state (구 링크 호환: bonusPercent만 있으면 연봉 대비 %)
   useEffect(() => {
-    const s = searchParams.get('salary')
-    const bp = searchParams.get('bonusPercent')
-    const ba = searchParams.get('bonusAmount')
-    const bt = searchParams.get('bonusType')
-    const d = searchParams.get('dependents')
-    const c = searchParams.get('children')
-    const nt = searchParams.get('nonTaxable')
-    const bm = searchParams.get('bonusMethod')
-
-    if (s) setSalary(formatInputValue(s))
-    if (bp) { setBonusPercent(parseInt(bp) || 100); setBonusMethod('percent') }
-    if (ba) { setBonusAmount(formatInputValue(ba)); setBonusMethod('amount') }
-    if (bm === 'amount') setBonusMethod('amount')
-    if (bt) setBonusType(bt)
-    if (d) setDependents(parseInt(d) || 1)
-    if (c) setChildren(parseInt(c) || 0)
-    if (nt) setNonTaxable(formatInputValue(nt))
+    const g = (k: string) => searchParams.get(k)
+    if (g('salary')) setSalary(formatInput(g('salary')!))
+    const bm = g('bonusMethod')
+    if (g('bonusPercent')) { setPercent(parseFloat(g('bonusPercent')!) || 0); setMethod('percent') }
+    if (g('bonusAmount')) { setBonusAmount(formatInput(g('bonusAmount')!)); setMethod('amount') }
+    if (bm && (METHODS as string[]).includes(bm)) setMethod(bm as Method)
+    if (g('bonusType')) setBonusType(g('bonusType')!)
+    if (g('period')) setPeriod(Math.min(12, Math.max(1, parseInt(g('period')!) || 1)))
+    if (g('dependents')) setDependents(parseInt(g('dependents')!) || 1)
+    if (g('children')) setChildren(parseInt(g('children')!) || 0)
+    if (g('nonTaxable')) setNonTaxable(formatInput(g('nonTaxable')!))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // State → URL params
-  const syncURL = useCallback(() => {
-    const url = new URL(window.location.href)
-    url.search = ''
-    if (salary) url.searchParams.set('salary', salary.replace(/,/g, ''))
-    url.searchParams.set('bonusMethod', bonusMethod)
-    if (bonusMethod === 'percent') url.searchParams.set('bonusPercent', String(bonusPercent))
-    else if (bonusAmount) url.searchParams.set('bonusAmount', bonusAmount.replace(/,/g, ''))
-    if (bonusType !== 'ps') url.searchParams.set('bonusType', bonusType)
-    if (dependents !== 1) url.searchParams.set('dependents', String(dependents))
-    if (children !== 0) url.searchParams.set('children', String(children))
-    const ntVal = nonTaxable.replace(/,/g, '')
-    if (ntVal !== '200000') url.searchParams.set('nonTaxable', ntVal)
-    window.history.replaceState({}, '', url.toString())
-  }, [salary, bonusMethod, bonusPercent, bonusAmount, bonusType, dependents, children, nonTaxable])
-
+  // state → URL
   useEffect(() => {
-    const timer = setTimeout(syncURL, 300)
+    const timer = setTimeout(() => {
+      const url = new URL(window.location.href)
+      url.search = ''
+      const p = url.searchParams
+      if (salary) p.set('salary', salary.replace(/,/g, ''))
+      p.set('bonusMethod', method)
+      if (method === 'amount') { if (bonusAmount) p.set('bonusAmount', bonusAmount.replace(/,/g, '')) }
+      else p.set('bonusPercent', String(percent))
+      if (bonusType !== 'ps') p.set('bonusType', bonusType)
+      if (period !== 1) p.set('period', String(period))
+      if (dependents !== 1) p.set('dependents', String(dependents))
+      if (children !== 0) p.set('children', String(children))
+      if (nonTaxable.replace(/,/g, '') !== '200000') p.set('nonTaxable', nonTaxable.replace(/,/g, ''))
+      window.history.replaceState({}, '', url.toString())
+    }, 300)
     return () => clearTimeout(timer)
-  }, [syncURL])
+  }, [salary, method, percent, bonusAmount, bonusType, period, dependents, children, nonTaxable])
 
-  // ── Calculations ──
+  const annualSalary = parseNum(salary)
+  const monthlySalary = Math.floor(annualSalary / 12)
+  // 8~20세 자녀는 공제대상가족(본인 포함)에 포함된 인원 → 가족 수 − 1 이하
+  const safeChildren = Math.min(children, dependents - 1)
+  const taxOpt = { nonTaxableMonthly: parseNum(nonTaxable), dependents, children: safeChildren, period }
 
-  const annualSalary = parseFormatted(salary)
-  const nonTaxableAnnual = parseFormatted(nonTaxable) * 12
+  const bonusGross =
+    method === 'amount' ? parseNum(bonusAmount)
+    : Math.floor((method === 'monthly' ? monthlySalary : annualSalary) * (percent / 100))
 
-  const bonusGross = useMemo(() => {
-    if (bonusMethod === 'percent') return Math.floor(annualSalary * (bonusPercent / 100))
-    return parseFormatted(bonusAmount)
-  }, [bonusMethod, annualSalary, bonusPercent, bonusAmount])
+  const r = useMemo(
+    () => calculateBonusTax({ salary: annualSalary, bonus: bonusGross, ...taxOpt }),
+    [annualSalary, bonusGross, taxOpt.nonTaxableMonthly, dependents, safeChildren, period], // eslint-disable-line react-hooks/exhaustive-deps
+  )
 
-  const salaryOnlyResult = useMemo(() => {
-    if (annualSalary <= 0) return null
-    return calculateTax(annualSalary, nonTaxableAnnual, dependents, children)
-  }, [annualSalary, nonTaxableAnnual, dependents, children])
+  // 여러 성과급 비교 (월급 대비 %) + 현재 입력값
+  const compareRows = useMemo(() => {
+    if (monthlySalary <= 0) return []
+    const rows = COMPARE_RATIOS.map(ratio => ({ ratio, gross: Math.floor(monthlySalary * ratio / 100) }))
+    if (bonusGross > 0 && !rows.some(x => x.gross === bonusGross)) rows.push({ ratio: (bonusGross / monthlySalary) * 100, gross: bonusGross })
+    return rows
+      .sort((a, b) => a.gross - b.gross)
+      .map(row => ({ ...row, res: calculateBonusTax({ salary: annualSalary, bonus: row.gross, ...taxOpt }), isCurrent: row.gross === bonusGross }))
+      .filter(row => row.res)
+  }, [annualSalary, monthlySalary, bonusGross, taxOpt.nonTaxableMonthly, dependents, safeChildren, period]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const withBonusResult = useMemo(() => {
-    if (annualSalary <= 0 || bonusGross <= 0) return null
-    return calculateTax(annualSalary + bonusGross, nonTaxableAnnual, dependents, children)
-  }, [annualSalary, bonusGross, nonTaxableAnnual, dependents, children])
+  const chartOption = useMemo(() => ({
+    tooltip: { trigger: 'axis', valueFormatter: (v: number) => `${fmt(v)}${t('chart.won')}` },
+    legend: { bottom: 0, textStyle: { color: '#8B95A1' } },
+    grid: { top: 20, right: 16, bottom: 40, left: 64 },
+    xAxis: { type: 'category', data: compareRows.map(x => `${Math.round(x.ratio)}%`), axisLabel: { color: '#8B95A1' } },
+    yAxis: { type: 'value', axisLabel: { color: '#8B95A1', formatter: (v: number) => `${Math.floor(v / 10000)}${t('chart.manwon')}` } },
+    series: [
+      { name: t('simulation.grossBonus'), type: 'bar', data: compareRows.map(x => x.gross), itemStyle: { color: '#B0B8C1' } },
+      { name: t('simulation.netBonus'), type: 'bar', data: compareRows.map(x => x.res!.final.net), itemStyle: { color: '#3182F6' } },
+    ],
+  }), [compareRows, t])
 
-  const bonusDeductions = useMemo(() => {
-    if (!salaryOnlyResult || !withBonusResult) return null
-    const diff = (key: keyof DeductionBreakdown) => withBonusResult.deductions[key] - salaryOnlyResult.deductions[key]
-    const totalDiff = diff('total')
-    return {
-      nationalPension: diff('nationalPension'),
-      healthInsurance: diff('healthInsurance'),
-      longTermCare: diff('longTermCare'),
-      employmentInsurance: diff('employmentInsurance'),
-      incomeTax: diff('incomeTax'),
-      localIncomeTax: diff('localIncomeTax'),
-      total: totalDiff,
-      net: bonusGross - totalDiff,
-      takeHomeRate: bonusGross > 0 ? ((bonusGross - totalDiff) / bonusGross) * 100 : 0,
-      effectiveRate: bonusGross > 0 ? (totalDiff / bonusGross) * 100 : 0,
-    }
-  }, [salaryOnlyResult, withBonusResult, bonusGross])
-
-  // Simulation data
-  const simulationData = useMemo(() => {
-    if (annualSalary <= 0) return []
-    const ratios = [50, 100, 150, 200, 300, 500]
-    return ratios.map(ratio => {
-      const gross = Math.floor(annualSalary * (ratio / 100))
-      const base = calculateTax(annualSalary, nonTaxableAnnual, dependents, children)
-      const combined = calculateTax(annualSalary + gross, nonTaxableAnnual, dependents, children)
-      const totalDed = combined.deductions.total - base.deductions.total
-      const net = gross - totalDed
-      return {
-        ratio,
-        gross,
-        deductions: totalDed,
-        net,
-        netRate: gross > 0 ? (net / gross) * 100 : 0,
-        isCurrent: bonusMethod === 'percent' && ratio === bonusPercent,
-      }
-    })
-  }, [annualSalary, nonTaxableAnnual, dependents, children, bonusPercent, bonusMethod])
-
-  const bracketChanged = salaryOnlyResult && withBonusResult && salaryOnlyResult.bracketLabel !== withBonusResult.bracketLabel
-
-  // Copy URL
-  const copyToClipboard = useCallback(async () => {
+  const copyLink = useCallback(async () => {
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(window.location.href)
-      } else {
+      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(window.location.href)
+      else {
         const ta = document.createElement('textarea')
         ta.value = window.location.href
         ta.style.position = 'fixed'
@@ -275,619 +134,281 @@ function BonusCalculatorContent() {
         document.execCommand('copy')
         document.body.removeChild(ta)
       }
-      setCopiedId('url')
-      setTimeout(() => setCopiedId(null), 2000)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
     } catch { /* ignore */ }
   }, [])
 
-  const handleReset = useCallback(() => {
-    setSalary('')
-    setBonusType('ps')
-    setBonusMethod('percent')
-    setBonusPercent(100)
-    setBonusAmount('')
-    setDependents(1)
-    setChildren(0)
-    setNonTaxable('200,000')
-    window.history.replaceState({}, '', window.location.pathname)
-  }, [])
+  const reset = () => {
+    setSalary(DEFAULTS.salary); setBonusType('ps'); setMethod(DEFAULTS.method); setPercent(DEFAULTS.percent)
+    setBonusAmount(''); setPeriod(DEFAULTS.period); setDependents(1); setChildren(0); setNonTaxable('200,000')
+  }
 
-  const tabs = ['result', 'simulation', 'taxAnalysis']
-
-  // ── Chart options ──
-
-  const simulationChartOption = useMemo(() => {
-    if (simulationData.length === 0) return {}
-    return {
-      tooltip: {
-        trigger: 'axis',
-        formatter: (params: Array<{ name: string; seriesName: string; value: number }>) => {
-          const items = params.map(p => `${p.seriesName}: ${formatNumber(p.value)}${t('chart.won') || '원'}`)
-          return `${params[0].name}<br/>${items.join('<br/>')}`
-        },
-      },
-      legend: { bottom: 0, textStyle: { color: '#9CA3AF' } },
-      grid: { top: 20, right: 20, bottom: 40, left: 80 },
-      xAxis: {
-        type: 'category',
-        data: simulationData.map(d => `${d.ratio}%`),
-        axisLabel: { color: '#9CA3AF' },
-      },
-      yAxis: {
-        type: 'value',
-        axisLabel: {
-          color: '#9CA3AF',
-          formatter: (v: number) => `${Math.floor(v / 10000)}${t('chart.manwon') || '만'}`,
-        },
-      },
-      series: [
-        {
-          name: t('simulation.grossBonus'),
-          type: 'bar',
-          data: simulationData.map(d => d.gross),
-          itemStyle: { color: '#3B82F6' },
-        },
-        {
-          name: t('simulation.netBonus'),
-          type: 'bar',
-          data: simulationData.map(d => d.net),
-          itemStyle: { color: '#10B981' },
-        },
-      ],
-    }
-  }, [simulationData, t])
-
-  const deductionPieOption = useMemo(() => {
-    if (!bonusDeductions) return {}
-    const items = [
-      { name: t('result.nationalPension'), value: bonusDeductions.nationalPension },
-      { name: t('result.healthInsurance'), value: bonusDeductions.healthInsurance },
-      { name: t('result.longTermCare'), value: bonusDeductions.longTermCare },
-      { name: t('result.employmentInsurance'), value: bonusDeductions.employmentInsurance },
-      { name: t('result.incomeTax'), value: bonusDeductions.incomeTax },
-      { name: t('result.localTax'), value: bonusDeductions.localIncomeTax },
-    ].filter(i => i.value > 0)
-    return {
-      tooltip: {
-        trigger: 'item',
-        formatter: (p: { name: string; value: number; percent: number }) => `${p.name}: ${formatNumber(p.value)}${t('chart.won') || '원'} (${p.percent.toFixed(1)}%)`,
-      },
-      legend: { bottom: 0, textStyle: { color: '#9CA3AF' } },
-      series: [
-        {
-          type: 'pie',
-          radius: ['40%', '70%'],
-          center: ['50%', '45%'],
-          data: items,
-          label: { show: false },
-          emphasis: {
-            label: { show: true, fontWeight: 'bold' },
-          },
-          itemStyle: {
-            borderRadius: 4,
-            borderColor: 'transparent',
-            borderWidth: 2,
-          },
-          color: ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', '#EC4899'],
-        },
-      ],
-    }
-  }, [bonusDeductions, t])
-
-  const hasResult = !!(salaryOnlyResult && bonusDeductions)
+  const label = 'block text-sm font-medium text-body mb-1.5'
+  const seg = (on: boolean) => `flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${on ? 'bg-primary text-white' : 'text-sub hover:bg-subtle'}`
+  const chip = (on: boolean) => `px-3 py-1.5 text-sm rounded-full transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const bracketChanged = r && r.salaryOnly.bracket !== r.withBonusTax.bracket
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Calculator className="w-7 h-7 text-blue-600" />
-          {t('title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* ── Input Panel (1/3) ── */}
+        {/* 입력 */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5 sticky top-24`}>
-            {/* Annual salary */}
+          <div className="ui-card p-6 space-y-5 lg:sticky lg:top-24">
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('annualSalary')}
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                value={salary}
-                onChange={e => setSalary(formatInputValue(e.target.value))}
-                placeholder={t('annualSalaryPlaceholder')}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right`}
-              />
+              <label className={label}>{t('annualSalary')}</label>
+              <input type="text" inputMode="numeric" value={salary} onChange={e => setSalary(formatInput(e.target.value))}
+                placeholder={t('annualSalaryPlaceholder')} className="ui-field w-full px-4 py-3 text-right tabular-nums" />
+              {monthlySalary > 0 && <p className="text-xs text-muted mt-1">{t('monthlySalaryHint', { amount: fmt(monthlySalary) })}</p>}
             </div>
 
-            {/* Bonus type */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('bonusType')}
-              </label>
-              <select
-                value={bonusType}
-                onChange={e => setBonusType(e.target.value)}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-              >
-                {['ps', 'pi', 'management', 'individual', 'custom'].map(key => (
-                  <option key={key} value={key}>{t(`bonusTypes.${key}`)}</option>
-                ))}
+              <label className={label}>{t('bonusType')}</label>
+              <select value={bonusType} onChange={e => setBonusType(e.target.value)} className="ui-field w-full px-4 py-3">
+                {['ps', 'pi', 'management', 'individual', 'custom'].map(k => <option key={k} value={k}>{t(`bonusTypes.${k}`)}</option>)}
               </select>
             </div>
 
-            {/* Bonus input method toggle */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('bonusInput')}
-              </label>
-              <div className="flex rounded-lg overflow-hidden border border-line-strong">
-                <button
-                  onClick={() => setBonusMethod('percent')}
-                  className={`flex-1 py-2 text-sm font-medium transition-colors ${
-                    bonusMethod === 'percent'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  {t('byPercent')}
-                </button>
-                <button
-                  onClick={() => setBonusMethod('amount')}
-                  className={`flex-1 py-2 text-sm font-medium transition-colors ${
-                    bonusMethod === 'amount'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  {t('byAmount')}
-                </button>
+              <label className={label}>{t('bonusInput')}</label>
+              <div className="flex gap-1 p-1 bg-soft rounded-xl">
+                {METHODS.map(m => (
+                  <button key={m} type="button" onClick={() => { setMethod(m); if (m !== 'amount') setPercent(m === 'monthly' ? 100 : 10) }} className={seg(method === m)}>
+                    {t(m === 'monthly' ? 'byMonthlyPercent' : m === 'percent' ? 'byPercent' : 'byAmount')}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Bonus percent slider OR amount input */}
-            {bonusMethod === 'percent' ? (
+            {method === 'amount' ? (
               <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('bonusPercent')}: <span className="text-blue-600 dark:text-blue-400 font-bold">{bonusPercent}%</span>
-                </label>
-                <input
-                  type="range"
-                  min={0}
-                  max={500}
-                  step={10}
-                  value={bonusPercent}
-                  onChange={e => setBonusPercent(parseInt(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-                <div className="flex justify-between text-xs text-gray-400 mt-1">
-                  <span>0%</span>
-                  <span>100%</span>
-                  <span>200%</span>
-                  <span>300%</span>
-                  <span>500%</span>
-                </div>
-                {annualSalary > 0 && (
-                  <p className="text-xs text-muted mt-1">
-                    = {formatNumber(bonusGross)}{t('chart.won')}
-                  </p>
-                )}
+                <label className={label}>{t('bonusAmount')}</label>
+                <input type="text" inputMode="numeric" value={bonusAmount} onChange={e => setBonusAmount(formatInput(e.target.value))}
+                  placeholder={t('bonusAmountPlaceholder')} className="ui-field w-full px-4 py-3 text-right tabular-nums" />
               </div>
             ) : (
               <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('bonusAmount')}
-                </label>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  value={bonusAmount}
-                  onChange={e => setBonusAmount(formatInputValue(e.target.value))}
-                  placeholder={t('bonusAmountPlaceholder')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right`}
-                />
+                <label className={label}>{t(method === 'monthly' ? 'bonusMonthlyPercent' : 'bonusPercent')}</label>
+                <div className="relative">
+                  <input type="number" inputMode="decimal" min={0} value={percent} onChange={e => setPercent(Math.max(0, parseFloat(e.target.value) || 0))}
+                    className="ui-field w-full px-4 py-3 pr-10 text-right tabular-nums" />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">%</span>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {PRESETS[method].map(p => <button key={p} type="button" onClick={() => setPercent(p)} className={chip(percent === p)}>{p}%</button>)}
+                </div>
+                {bonusGross > 0 && <p className="text-xs text-muted mt-2 tabular-nums">= {fmt(bonusGross)}{t('chart.won')}</p>}
               </div>
             )}
 
-            {/* Dependents */}
+            <div>
+              <label className={label}>{t('period')}</label>
+              <select value={period} onChange={e => setPeriod(parseInt(e.target.value))} className="ui-field w-full px-4 py-3">
+                {Array.from({ length: 12 }, (_, i) => i + 1).map(n => <option key={n} value={n}>{t(n === 1 ? 'periodOne' : 'periodN', { n })}</option>)}
+              </select>
+              <p className="text-xs text-muted mt-1">{t('periodHint')}</p>
+            </div>
+
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('dependents')}
-                </label>
-                <select
-                  value={dependents}
-                  onChange={e => setDependents(parseInt(e.target.value))}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                >
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
-                    <option key={n} value={n}>{n}</option>
-                  ))}
+                <label className={label}>{t('dependents')}</label>
+                <select value={dependents} onChange={e => setDependents(parseInt(e.target.value))} className="ui-field w-full px-4 py-3">
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('childrenUnder20')}
-                </label>
-                <select
-                  value={children}
-                  onChange={e => setChildren(parseInt(e.target.value))}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                >
-                  {[0, 1, 2, 3, 4, 5].map(n => (
-                    <option key={n} value={n}>{n}</option>
-                  ))}
+                <label className={label}>{t('childrenUnder20')}</label>
+                <select value={safeChildren} onChange={e => setChildren(parseInt(e.target.value))} className="ui-field w-full px-4 py-3">
+                  {Array.from({ length: dependents }, (_, i) => i).map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
               </div>
             </div>
 
-            {/* Non-taxable */}
             <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('nonTaxable')}
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                value={nonTaxable}
-                onChange={e => setNonTaxable(formatInputValue(e.target.value))}
-                placeholder={t('nonTaxablePlaceholder')}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right`}
-              />
+              <label className={label}>{t('nonTaxable')}</label>
+              <input type="text" inputMode="numeric" value={nonTaxable} onChange={e => setNonTaxable(formatInput(e.target.value))}
+                placeholder={t('nonTaxablePlaceholder')} className="ui-field w-full px-4 py-3 text-right tabular-nums" />
             </div>
 
-            {/* Buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={copyToClipboard}
-                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center gap-2 transition-all"
-              >
-                {copiedId === 'url' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copiedId === 'url' ? t('share.copied') : t('share.copy')}
+            <div className="flex gap-2">
+              <button type="button" onClick={copyLink} className="ui-btn flex-1 px-4 py-3">
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {copied ? t('share.copied') : t('share.copy')}
               </button>
-              <button
-                onClick={handleReset}
-                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium flex items-center gap-2 transition-colors"
-              >
-                <RotateCcw className="w-4 h-4" />
-                {t('reset')}
+              <button type="button" onClick={reset} className="ui-btn-soft px-4 py-3 flex items-center gap-2">
+                <RotateCcw className="w-4 h-4" />{t('reset')}
               </button>
             </div>
           </div>
         </div>
 
-        {/* ── Result Panel (2/3) ── */}
+        {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          {!hasResult ? (
-            <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-              <Calculator className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-muted text-lg">{t('description')}</p>
-            </div>
+          {!r ? (
+            <div className="ui-card p-12 text-center text-muted">{t('emptyHint')}</div>
           ) : (
             <>
-              {/* Tabs */}
-              <div className="border-b border-line">
-                <nav className="flex gap-6">
-                  {tabs.map((tab, idx) => (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(idx)}
-                      className={`pb-3 px-1 text-sm font-medium transition-colors ${
-                        activeTab === idx
-                          ? 'border-b-2 border-blue-600 text-blue-600 dark:text-blue-400'
-                          : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
-                      }`}
-                    >
-                      {t(`${tab}.title`)}
-                    </button>
-                  ))}
-                </nav>
+              {/* 핵심 결과: 이번 달 vs 최종 */}
+              <div className="ui-hero p-6">
+                <p className="text-sm text-white/70">{t('result.bonusGross')} {fmt(r.bonus)}{t('chart.won')}</p>
+                <div className="grid sm:grid-cols-2 gap-6 mt-4">
+                  <div>
+                    <p className="text-sm text-white/70">{t('result.nowNet')}</p>
+                    <p className="text-3xl font-bold tabular-nums mt-1">{fmt(r.now.net)}{t('chart.won')}</p>
+                    <p className="text-sm text-white/70 mt-1 tabular-nums">{t('result.deducted', { amount: fmt(r.now.total), rate: ((r.now.net / r.bonus) * 100).toFixed(1) })}</p>
+                  </div>
+                  <div className="sm:border-l sm:border-white/20 sm:pl-6">
+                    <p className="text-sm text-white/70">{t('result.finalNet')}</p>
+                    <p className="text-3xl font-bold tabular-nums mt-1">{fmt(r.final.net)}{t('chart.won')}</p>
+                    <p className="text-sm text-white/70 mt-1 tabular-nums">{t('result.deducted', { amount: fmt(r.final.total), rate: ((r.final.net / r.bonus) * 100).toFixed(1) })}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-white/70 mt-5 pt-4 border-t border-white/20 tabular-nums">
+                  {t('result.monthTotal', { amount: fmt(r.baseMonthlyNet + r.now.net) })}
+                </p>
               </div>
 
-              {/* Tab 0: Result */}
-              {activeTab === 0 && bonusDeductions && salaryOnlyResult && withBonusResult && (
-                <div className="space-y-6">
-                  {/* Hero card */}
-                  <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
-                    <p className="text-sm opacity-80">{t('result.bonusNet')}</p>
-                    <p className="text-3xl font-bold mt-1">
-                      {formatNumber(bonusDeductions.net)}{t('chart.won')}
-                    </p>
-                    <div className="flex gap-6 mt-3 text-sm opacity-90">
-                      <span>{t('result.bonusGross')}: {formatNumber(bonusGross)}{t('chart.won')}</span>
-                      <span>{t('result.totalDeduction')}: {formatNumber(bonusDeductions.total)}{t('chart.won')}</span>
-                    </div>
-                    <div className="flex gap-6 mt-2 text-sm">
-                      <span className="bg-white/20 rounded-full px-3 py-0.5">
-                        {t('result.effectiveRate')}: {bonusDeductions.effectiveRate.toFixed(1)}%
-                      </span>
-                      <span className="bg-white/20 rounded-full px-3 py-0.5">
-                        {t('simulation.netRate')}: {bonusDeductions.takeHomeRate.toFixed(1)}%
-                      </span>
-                    </div>
-                  </div>
+              {/* 정산 설명 */}
+              <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-1.5 tabular-nums">
+                <p>{t(r.settlement <= 0 ? 'result.settlementRefund' : 'result.settlementPay', { amount: fmt(Math.abs(r.settlement)) })}</p>
+                <p>{t('result.healthLater', { amount: fmt(r.healthLater) })}</p>
+                <p>{t('result.pensionNote')}</p>
+              </div>
 
-                  {/* Before / After comparison cards */}
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className={`${glassCard} ${glassInset} p-5`}>
-                      <p className="text-sm text-muted">{t('result.salaryOnly')}</p>
-                      <p className="text-xl font-bold text-fg mt-1">
-                        {formatNumber(salaryOnlyResult.netAnnual)}{t('chart.won')}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        {t('result.totalAnnual')}: {formatNumber(salaryOnlyResult.gross)}{t('chart.won')}
-                      </p>
-                    </div>
-                    <div className={`${glassCard} ${glassInset} p-5`}>
-                      <p className="text-sm text-muted">{t('result.withBonus')}</p>
-                      <p className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-1">
-                        {formatNumber(withBonusResult.netAnnual)}{t('chart.won')}
-                      </p>
-                      <div className="flex items-center gap-1 text-xs mt-1">
-                        <TrendingUp className="w-3 h-3 text-green-500" />
-                        <span className="text-green-600 dark:text-green-400">
-                          +{formatNumber(withBonusResult.netAnnual - salaryOnlyResult.netAnnual)}{t('chart.won')}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+              <div className="flex gap-1 p-1 bg-soft rounded-xl">
+                {['result', 'simulation', 'taxAnalysis'].map((tab, i) => (
+                  <button key={tab} type="button" onClick={() => setActiveTab(i)} className={seg(activeTab === i)}>
+                    {t(tab === 'result' ? 'result.breakdownTitle' : `${tab}.title`)}
+                  </button>
+                ))}
+              </div>
 
-                  {/* Deduction breakdown */}
-                  <div className={`${glassCard} ${glassInset} p-6`}>
-                    <button
-                      onClick={() => setShowDetail(!showDetail)}
-                      className="w-full flex items-center justify-between text-left"
-                    >
-                      <h3 className="text-lg font-semibold text-fg">
-                        {t('chart.deductionBreakdown')}
-                      </h3>
-                      {showDetail ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-                    </button>
-
-                    {showDetail && (
-                      <div className="mt-4 overflow-x-auto">
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="border-b border-line text-muted">
-                              <th className="text-left py-2 pr-4"></th>
-                              <th className="text-right py-2 px-2">{t('result.salaryOnly')}</th>
-                              <th className="text-right py-2 px-2">{t('result.withBonus')}</th>
-                              <th className="text-right py-2 pl-2">{t('taxAnalysis.difference')}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {([
-                              ['nationalPension', 'result.nationalPension'],
-                              ['healthInsurance', 'result.healthInsurance'],
-                              ['longTermCare', 'result.longTermCare'],
-                              ['employmentInsurance', 'result.employmentInsurance'],
-                              ['incomeTax', 'result.incomeTax'],
-                              ['localIncomeTax', 'result.localTax'],
-                            ] as const).map(([key, label]) => (
-                              <tr key={key} className="border-b border-line">
-                                <td className="py-2 pr-4 text-body">{t(label)}</td>
-                                <td className="py-2 px-2 text-right text-sub">
-                                  {formatNumber(salaryOnlyResult.deductions[key])}
-                                </td>
-                                <td className="py-2 px-2 text-right text-sub">
-                                  {formatNumber(withBonusResult.deductions[key])}
-                                </td>
-                                <td className="py-2 pl-2 text-right font-medium text-red-600 dark:text-red-400">
-                                  +{formatNumber(bonusDeductions[key])}
-                                </td>
-                              </tr>
-                            ))}
-                            <tr className="font-bold">
-                              <td className="py-2 pr-4 text-fg">{t('result.totalDeduction')}</td>
-                              <td className="py-2 px-2 text-right text-fg">
-                                {formatNumber(salaryOnlyResult.deductions.total)}
-                              </td>
-                              <td className="py-2 px-2 text-right text-fg">
-                                {formatNumber(withBonusResult.deductions.total)}
-                              </td>
-                              <td className="py-2 pl-2 text-right text-red-600 dark:text-red-400">
-                                +{formatNumber(bonusDeductions.total)}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* Tab 1: Simulation */}
-              {activeTab === 1 && simulationData.length > 0 && (
-                <div className="space-y-6">
-                  <div className={`${glassCard} ${glassInset} p-6`}>
-                    <h3 className="text-lg font-semibold text-fg mb-1">
-                      {t('simulation.title')}
-                    </h3>
-                    <p className="text-sm text-muted mb-4">{t('simulation.description')}</p>
-
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="border-b border-line text-muted">
-                            <th className="text-left py-2">{t('simulation.ratio')}</th>
-                            <th className="text-right py-2">{t('simulation.grossBonus')}</th>
-                            <th className="text-right py-2">{t('simulation.tax')}</th>
-                            <th className="text-right py-2">{t('simulation.netBonus')}</th>
-                            <th className="text-right py-2">{t('simulation.netRate')}</th>
+              {activeTab === 0 && (
+                <div className="ui-card p-6 space-y-4">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm tabular-nums">
+                      <thead>
+                        <tr className="border-b border-line text-muted">
+                          <th className="text-left py-2 pr-4 font-medium"></th>
+                          <th className="text-right py-2 px-2 font-medium">{t('result.nowColumn')}</th>
+                          <th className="text-right py-2 pl-2 font-medium">{t('result.finalColumn')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {ROWS.map(([key, lbl]) => (
+                          <tr key={key} className="border-b border-line">
+                            <td className="py-2.5 pr-4 text-body">{t(lbl)}</td>
+                            <td className="py-2.5 px-2 text-right text-sub">{fmt(r.now[key])}</td>
+                            <td className="py-2.5 pl-2 text-right text-sub">{fmt(r.final[key])}</td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {simulationData.map(row => (
-                            <tr
-                              key={row.ratio}
-                              className={`border-b border-line ${
-                                row.isCurrent
-                                  ? 'bg-primary-soft text-primary font-semibold'
-                                  : ''
-                              }`}
-                            >
-                              <td className="py-2 text-body">
-                                {row.ratio}%
-                                {row.isCurrent && (
-                                  <span className="ml-2 text-xs bg-soft text-sub px-2 py-0.5 rounded-full">
-                                    {t('simulation.current')}
-                                  </span>
-                                )}
-                              </td>
-                              <td className="py-2 text-right text-sub">
-                                {formatNumber(row.gross)}
-                              </td>
-                              <td className="py-2 text-right text-red-600 dark:text-red-400">
-                                {formatNumber(row.deductions)}
-                              </td>
-                              <td className="py-2 text-right text-blue-600 dark:text-blue-400 font-medium">
-                                {formatNumber(row.net)}
-                              </td>
-                              <td className="py-2 text-right text-sub">
-                                {row.netRate.toFixed(1)}%
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                        ))}
+                        <tr className="border-b border-line font-semibold">
+                          <td className="py-2.5 pr-4 text-fg">{t('result.totalDeduction')}</td>
+                          <td className="py-2.5 px-2 text-right text-fg">{fmt(r.now.total)}</td>
+                          <td className="py-2.5 pl-2 text-right text-fg">{fmt(r.final.total)}</td>
+                        </tr>
+                        <tr className="font-bold">
+                          <td className="py-2.5 pr-4 text-fg">{t('result.bonusNet')}</td>
+                          <td className="py-2.5 px-2 text-right text-primary">{fmt(r.now.net)}</td>
+                          <td className="py-2.5 pl-2 text-right text-primary">{fmt(r.final.net)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
+                  <ul className="text-xs text-muted space-y-1 list-disc pl-4">
+                    {(t.raw('result.notes') as string[]).map((n, i) => <li key={i}>{n}</li>)}
+                  </ul>
 
-                  {/* Bar chart */}
-                  <div className={`${glassCard} ${glassInset} p-6`}>
-                    <ReactECharts option={simulationChartOption} style={{ height: 320 }} />
+                  <div className="grid sm:grid-cols-2 gap-4 pt-2">
+                    <div className="bg-subtle rounded-xl p-4">
+                      <p className="text-sm text-muted">{t('result.salaryOnly')}</p>
+                      <p className="text-xl font-bold text-fg mt-1 tabular-nums">{fmt(r.baseNetAnnual)}{t('chart.won')}</p>
+                      <p className="text-xs text-muted mt-1">{t('result.totalAnnualNet')}</p>
+                    </div>
+                    <div className="bg-subtle rounded-xl p-4">
+                      <p className="text-sm text-muted">{t('result.withBonus')}</p>
+                      <p className="text-xl font-bold text-fg mt-1 tabular-nums">{fmt(r.withNetAnnual)}{t('chart.won')}</p>
+                      <p className="text-xs text-primary mt-1 tabular-nums">+{fmt(r.final.net)}{t('chart.won')}</p>
+                    </div>
                   </div>
                 </div>
               )}
 
-              {/* Tab 2: Tax Analysis */}
-              {activeTab === 2 && salaryOnlyResult && withBonusResult && bonusDeductions && (
-                <div className="space-y-6">
-                  <div className={`${glassCard} ${glassInset} p-6`}>
-                    <h3 className="text-lg font-semibold text-fg mb-1">
-                      {t('taxAnalysis.title')}
-                    </h3>
-                    <p className="text-sm text-muted mb-4">{t('taxAnalysis.description')}</p>
-
-                    {/* Bracket warning */}
-                    {bracketChanged && (
-                      <div className="flex items-start gap-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-6">
-                        <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-                        <p className="text-sm text-amber-800 dark:text-amber-200">{t('taxAnalysis.bracketWarning')}</p>
-                      </div>
-                    )}
-
-                    {/* Side by side */}
-                    <div className="grid sm:grid-cols-2 gap-6">
-                      {/* Without bonus */}
-                      <div className="border border-line rounded-xl p-5 space-y-3">
-                        <h4 className="font-semibold text-fg">{t('taxAnalysis.withoutBonus')}</h4>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-muted">{t('taxAnalysis.taxBracket')}</span>
-                            <span className="text-fg font-medium">
-                              {t(`taxAnalysis.brackets.${salaryOnlyResult.bracketLabel}`)}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted">{t('taxAnalysis.marginalRate')}</span>
-                            <span className="text-fg font-medium">
-                              {(salaryOnlyResult.marginalRate * 100).toFixed(0)}%
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted">{t('taxAnalysis.totalIncomeTax')}</span>
-                            <span className="text-fg font-medium">
-                              {formatNumber(salaryOnlyResult.deductions.incomeTax + salaryOnlyResult.deductions.localIncomeTax)}{t('chart.won')}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted">{t('result.effectiveRate')}</span>
-                            <span className="text-fg font-medium">
-                              {salaryOnlyResult.effectiveTaxRate.toFixed(1)}%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* With bonus */}
-                      <div className="border-2 border-line rounded-xl p-5 space-y-3 bg-subtle">
-                        <h4 className="font-semibold text-sub">{t('taxAnalysis.withBonus')}</h4>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-muted">{t('taxAnalysis.taxBracket')}</span>
-                            <span className={`font-medium ${bracketChanged ? 'text-red-600 dark:text-red-400' : 'text-fg'}`}>
-                              {t(`taxAnalysis.brackets.${withBonusResult.bracketLabel}`)}
-                              {bracketChanged && <TrendingUp className="w-3 h-3 inline ml-1" />}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted">{t('taxAnalysis.marginalRate')}</span>
-                            <span className={`font-medium ${bracketChanged ? 'text-red-600 dark:text-red-400' : 'text-fg'}`}>
-                              {(withBonusResult.marginalRate * 100).toFixed(0)}%
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted">{t('taxAnalysis.totalIncomeTax')}</span>
-                            <span className="text-sub font-medium">
-                              {formatNumber(withBonusResult.deductions.incomeTax + withBonusResult.deductions.localIncomeTax)}{t('chart.won')}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted">{t('result.effectiveRate')}</span>
-                            <span className="text-sub font-medium">
-                              {withBonusResult.effectiveTaxRate.toFixed(1)}%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Difference summary */}
-                    <div className="mt-6 bg-subtle rounded-xl p-5">
-                      <h4 className="font-semibold text-fg mb-3">{t('taxAnalysis.difference')}</h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-                        <div>
-                          <p className="text-xs text-muted">{t('result.incomeTax')}</p>
-                          <p className="text-lg font-bold text-red-600 dark:text-red-400">
-                            +{formatNumber(bonusDeductions.incomeTax)}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-muted">{t('result.localTax')}</p>
-                          <p className="text-lg font-bold text-red-600 dark:text-red-400">
-                            +{formatNumber(bonusDeductions.localIncomeTax)}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-muted">{t('result.totalDeduction')}</p>
-                          <p className="text-lg font-bold text-red-600 dark:text-red-400">
-                            +{formatNumber(bonusDeductions.total)}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-muted">{t('result.bonusNet')}</p>
-                          <p className="text-lg font-bold text-green-600 dark:text-green-400">
-                            {formatNumber(bonusDeductions.net)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+              {activeTab === 1 && (
+                <div className="ui-card p-6 space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-fg">{t('simulation.title')}</h3>
+                    <p className="text-sm text-muted mt-1">{t('simulation.description')}</p>
                   </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm tabular-nums">
+                      <thead>
+                        <tr className="border-b border-line text-muted">
+                          <th className="text-left py-2 font-medium">{t('simulation.ratio')}</th>
+                          <th className="text-right py-2 px-2 font-medium">{t('simulation.grossBonus')}</th>
+                          <th className="text-right py-2 px-2 font-medium">{t('result.nowColumn')}</th>
+                          <th className="text-right py-2 px-2 font-medium">{t('result.finalColumn')}</th>
+                          <th className="text-right py-2 font-medium">{t('simulation.netRate')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {compareRows.map(row => (
+                          <tr key={row.gross} className={`border-b border-line ${row.isCurrent ? 'bg-primary-soft text-primary font-semibold' : 'text-sub'}`}>
+                            <td className="py-2.5 whitespace-nowrap">
+                              {Math.round(row.ratio)}%
+                              {row.isCurrent && <span className="ml-2 text-xs bg-primary text-white px-2 py-0.5 rounded-full">{t('simulation.current')}</span>}
+                            </td>
+                            <td className="py-2.5 px-2 text-right">{fmt(row.gross)}</td>
+                            <td className="py-2.5 px-2 text-right">{fmt(row.res!.now.net)}</td>
+                            <td className="py-2.5 px-2 text-right">{fmt(row.res!.final.net)}</td>
+                            <td className="py-2.5 text-right">{((row.res!.final.net / row.gross) * 100).toFixed(1)}%</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <ReactECharts option={chartOption} style={{ height: 300 }} />
+                </div>
+              )}
 
-                  {/* Pie chart */}
-                  <div className={`${glassCard} ${glassInset} p-6`}>
-                    <h3 className="text-base font-semibold text-fg mb-4">
-                      {t('chart.deductionBreakdown')}
-                    </h3>
-                    <ReactECharts option={deductionPieOption} style={{ height: 300 }} />
+              {activeTab === 2 && (
+                <div className="ui-card p-6 space-y-5">
+                  <div>
+                    <h3 className="text-lg font-semibold text-fg">{t('taxAnalysis.title')}</h3>
+                    <p className="text-sm text-muted mt-1">{t('taxAnalysis.description')}</p>
+                  </div>
+                  {bracketChanged && (
+                    <div className="bg-amber-50 text-amber-800 rounded-xl p-4 text-sm">{t('taxAnalysis.bracketWarning')}</div>
+                  )}
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {([['withoutBonus', r.salaryOnly], ['withBonus', r.withBonusTax]] as const).map(([k, s]) => (
+                      <div key={k} className="border border-line rounded-xl p-5 space-y-2 text-sm">
+                        <h4 className="font-semibold text-fg mb-1">{t(`taxAnalysis.${k}`)}</h4>
+                        <div className="flex justify-between"><span className="text-muted">{t('taxAnalysis.taxBase')}</span><span className="text-fg tabular-nums">{fmt(s.taxBase)}</span></div>
+                        <div className="flex justify-between"><span className="text-muted">{t('taxAnalysis.taxBracket')}</span><span className="text-fg">{t(`taxAnalysis.brackets.b${s.bracket + 1}`)}</span></div>
+                        <div className="flex justify-between"><span className="text-muted">{t('taxAnalysis.marginalRate')}</span><span className="text-fg">{(s.marginalRate * 100).toFixed(0)}%</span></div>
+                        <div className="flex justify-between"><span className="text-muted">{t('taxAnalysis.totalIncomeTax')}</span><span className="text-fg tabular-nums">{fmt(s.totalTax)}{t('chart.won')}</span></div>
+                        <div className="flex justify-between"><span className="text-muted">{t('result.effectiveRate')}</span><span className="text-fg">{s.effectiveRate.toFixed(1)}%</span></div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="bg-subtle rounded-xl p-5 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center tabular-nums">
+                    {[
+                      ['result.incomeTax', r.final.incomeTax],
+                      ['result.localTax', r.final.localIncomeTax],
+                      ['result.totalDeduction', r.final.total],
+                      ['result.bonusNet', r.final.net],
+                    ].map(([k, v]) => (
+                      <div key={k as string}>
+                        <p className="text-xs text-muted">{t(k as string)}</p>
+                        <p className="text-lg font-bold text-fg">{fmt(v as number)}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
@@ -896,16 +417,7 @@ function BonusCalculatorContent() {
         </div>
       </div>
 
-      {/* Guide */}
       <GuideSection namespace="bonusCalculator" />
     </div>
-  )
-}
-
-export default function BonusCalculator() {
-  return (
-    <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
-      <BonusCalculatorContent />
-    </Suspense>
   )
 }

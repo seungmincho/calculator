@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default function PyeongCalculatorPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '평수 계산기', description: '평(坪)↔제곱미터(m²) 면적 변환', url: 'https://toolhub.ai.kr/pyeong-calculator', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['평→m² 변환', 'm²→평 변환', 'ft² 변환', '아파트 면적 참고'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '평수 계산기', description: '평(坪)↔제곱미터(m²) 면적 변환', url: 'https://toolhub.ai.kr/pyeong-calculator', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['평↔m² 실시간 변환', 'ft² 변환', '가로×세로 면적 계산', '전용률로 전용↔공급면적 환산', '인기 아파트 면적표(59㎡·84㎡ 등)', '평당가 계산', '공유 링크'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -23,7 +23,7 @@ export default function PyeongCalculatorPage() {
         name: '1평은 몇 제곱미터(m²)인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '1평은 약 3.3058㎡입니다. 정확하게는 1평 = 400/121 ㎡ ≈ 3.305785㎡입니다. 반대로 1㎡는 약 0.3025평입니다. 예를 들어 아파트 전용면적 84㎡는 약 25.4평(84 × 0.3025)이며, 실생활에서는 "25평형"이라고 부릅니다.',
+          text: '1평은 약 3.3058㎡입니다. 정확하게는 1평 = 400/121 ㎡ ≈ 3.305785㎡입니다. 반대로 1㎡는 약 0.3025평입니다. 예를 들어 아파트 전용면적 84㎡는 약 25.4평(84 × 0.3025)이며, 공급면적(약 110~115㎡) 기준으로는 흔히 "33~35평형(34평형)"이라고 부릅니다.',
         },
       },
       {

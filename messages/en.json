@@ -9049,6 +9049,53 @@
     }
   },
   "pyeongCalculator": {
+    "inputMethod": "Input method",
+    "methodArea": "Area",
+    "methodDim": "Width × Depth",
+    "width": "Width (m)",
+    "depth": "Depth (m)",
+    "areaType": "Entered area is",
+    "exclusive": "Exclusive area",
+    "supply": "Supply area",
+    "pyeongType": " pyeong type",
+    "formulaTitle": "Formula",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied",
+    "heroSupply": "Supply area ≈ {m2} m² · ≈ {pyeong} pyeong type (assuming {ratio}% ratio)",
+    "heroExclusive": "Exclusive area ≈ {m2} m² · ≈ {pyeong} pyeong (assuming {ratio}% ratio)",
+    "ratio": {
+      "title": "Exclusive ↔ Supply Area",
+      "label": "Exclusive ratio",
+      "estimated": "estimated",
+      "note": "The exclusive ratio (exclusive ÷ supply area) varies by complex and unit type — typically 70–80% for apartments and 50–60% for officetels. Results are estimates; check the sales notice or building register for exact figures."
+    },
+    "price": {
+      "title": "Price per Pyeong",
+      "label": "Sale price (10,000 KRW)",
+      "placeholder": "e.g. 90,000 (900M KRW)",
+      "perSupplyPyeong": "Per supply pyeong",
+      "perExclusivePyeong": "Per exclusive pyeong",
+      "perM2": "Per exclusive m²",
+      "manwon": "×10,000 KRW",
+      "empty": "Enter a sale price to calculate price per pyeong.",
+      "note": "Market reports usually quote price per supply-area pyeong. Supply area is based on the ratio set above.",
+      "link": "Calculate acquisition tax & brokerage fee"
+    },
+    "popular": {
+      "title": "Popular Apartment Sizes",
+      "desc": "Based on exclusive area. Supply area and pyeong type assume a {min}–{max}% exclusive ratio and are approximate. Click a row to calculate.",
+      "colExclusive": "Exclusive",
+      "colExclusivePyeong": "Exclusive pyeong",
+      "colSupply": "Supply (approx.)",
+      "colType": "Pyeong type (approx.)"
+    },
+    "visual": {
+      "title": "Area Visualization",
+      "desc": "Current area vs. 33 pyeong (≈109 m²)",
+      "current": "Current",
+      "ref": "Reference",
+      "ratio": "of 33 pyeong"
+    },
     "title": "Pyeong Calculator",
     "description": "Convert between Pyeong (坪) and square meters (m²). Useful for real estate and interior design.",
     "pyeongToSqm": "Pyeong → m²",
@@ -9071,7 +9118,7 @@
       "medium": "Medium Apt (25-34 pyeong)",
       "large": "Large Apt (40-60 pyeong)"
     },
-    "formula": "1 Pyeong = 3.305785 m² = 35.5832 ft²",
+    "formula": "1 pyeong = 400/121 m² ≈ 3.305785 m² ≈ 35.5832 ft²",
     "guide": {
       "title": "Pyeong Calculator Guide",
       "what": {
@@ -11375,6 +11422,36 @@
     }
   },
   "taxiFare": {
+    "typesShort": {
+      "regular": "Regular",
+      "deluxe": "Deluxe",
+      "jumbo": "Jumbo"
+    },
+    "traffic": {
+      "label": "Traffic",
+      "smooth": "Light",
+      "normal": "Normal",
+      "heavy": "Heavy",
+      "autoHint": "Estimated from traffic. You can type your own.",
+      "manualHint": "Using your time. Tap a traffic option to estimate again."
+    },
+    "timeline": {
+      "hint": "Tap an hour to set boarding time; blue cells have a night surcharge"
+    },
+    "split": {
+      "title": "Split the fare",
+      "personUnit": "",
+      "perPerson": "Per person ({n})",
+      "dutchPayLink": "Split in detail with Dutch Pay"
+    },
+    "regionCompare": {
+      "title": "Same trip in other regions",
+      "subtitle": "Regular taxi · same distance, time, hour and out-of-city · tap a row to switch",
+      "region": "Region",
+      "base": "Base fare",
+      "fare": "Estimate",
+      "diff": "vs selected"
+    },
     "title": "Taxi Fare Calculator",
     "description": "Enter region, distance, time and boarding hour to estimate taxi fare including late-night and out-of-city surcharges.",
     "distance": "Distance (km)",
@@ -11469,7 +11546,7 @@
         "items": [
           "Total = base fare + distance fare + time fare + surcharge",
           "Distance fare: excess over base distance charged per unit (e.g. Seoul 131m = ₩100)",
-          "Time fare: added per unit time when slow/stopped (below ~15km/h)",
+          "Time fare: added per time unit (e.g. 30 s) when moving slower than about 15 km/h. This calculator treats the time beyond an average 30 km/h trip as slow driving.",
           "Night surcharge: 20–40% during each region's late-night window (Seoul 40% at 23:00–02:00)",
           "Out-of-city surcharge: 20–30% when crossing boundaries; up to 60% combined with night"
         ]
@@ -11492,10 +11569,10 @@
         "title": "How to Use",
         "items": [
           "1. Select your region (17 regions such as Seoul/Gyeonggi/Busan) and taxi type (regular/deluxe/jumbo).",
-          "2. Enter the estimated trip distance (km) and expected travel time (minutes).",
-          "3. Set the boarding hour with the slider to auto-apply the night surcharge (use 'Now' for the current time).",
+          "2. Enter the distance (km) or tap 3/5/10/20/30 km, then pick the traffic level to estimate the travel time (you can also type it).",
+          "3. Tap your boarding hour in the 24-hour grid; night surcharges apply automatically (blue cells, 'Now' button available).",
           "4. Check the out-of-city box if you cross city limits.",
-          "5. Review the fare breakdown, type comparison, and save the result image or share the link."
+          "5. Use the fare breakdown, vehicle and region comparison, per-person split, image save and link sharing."
         ]
       },
       "faq": {
@@ -23675,6 +23752,37 @@
     "copied": "Copied"
   },
   "pcElectricity": {
+    "sections": {
+      "parts": "Components"
+    },
+    "gpuIntegrated": "Integrated graphics",
+    "psu": {
+      "title": "PSU efficiency",
+      "none": "Ignore (100%)",
+      "bronze": "80 PLUS Bronze (~85%)",
+      "gold": "80 PLUS Gold (~88%)",
+      "platinum": "80 PLUS Platinum (~91%)"
+    },
+    "household": {
+      "title": "Household monthly usage (excluding PC)",
+      "hint": "Use the kWh from your bill for accurate tiers. 1-2 people ~200, 3-4 people ~300-400 kWh"
+    },
+    "season": {
+      "title": "Season",
+      "normal": "Other months",
+      "summer": "Summer (Jul-Aug)"
+    },
+    "compare": {
+      "title": "GPU swap comparison",
+      "saving": "Savings after swap",
+      "extra": "Extra cost after swap",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "share": {
+      "copy": "Copy link",
+      "copied": "Copied"
+    },
     "title": "PC Electricity Calculator",
     "description": "Calculate monthly/yearly electricity cost from PC component power consumption",
     "components": {
@@ -23714,6 +23822,14 @@
     "custom": "Custom",
     "watt": "W",
     "usage": {
+      "month": "mo",
+      "profileHint": "Split daily hours by load (total {h} h)",
+      "over24": "Daily total exceeds 24 hours",
+      "preset": {
+        "gamer": "Gamer (4h game + 2h work)",
+        "office": "Home office (8h work + 2h idle)",
+        "server": "Always on (24h)"
+      },
       "title": "Usage Pattern",
       "hoursPerDay": "Hours per Day",
       "daysPerMonth": "Days per Month",
@@ -23729,8 +23845,10 @@
       "percent": "%"
     },
     "tariff": {
+      "tierRange": "Tiers: up to {a} kWh 120 KRW · up to {b} kWh 214.6 KRW · above 307.3 KRW (base 910 / 1,600 / 7,300 KRW)",
+      "extras": "Includes climate charge 9 KRW and fuel adjustment 5 KRW per kWh, 10% VAT, 2.7% power industry fund",
       "title": "Electricity Rate",
-      "progressive": "2025 KEPCO Progressive",
+      "progressive": "KEPCO residential tiers",
       "custom": "Custom Rate",
       "wonPerKwh": "KRW/kWh",
       "tier1": "~200kWh: 120 KRW",
@@ -23738,6 +23856,23 @@
       "tier3": "400kWh~: 307.3 KRW"
     },
     "result": {
+      "addedMonthly": "Added monthly cost from PC",
+      "flatMonthly": "Monthly cost (flat rate)",
+      "yearlyShort": "{v} KRW / year",
+      "yearlyNote": "Yearly = 2 summer months + 10 other months",
+      "avgWatt": "Average power draw",
+      "unitCost": "Actual added cost per kWh",
+      "tierMove": "Tier",
+      "tierLabel": "Tier {n}",
+      "householdBill": "Household bill (before → after PC)",
+      "tierUpWarning": "Your PC pushes the household from tier {from} to tier {to}; both base charge and unit rate go up.",
+      "breakdown": "Added cost breakdown",
+      "base": "Base charge",
+      "energy": "Energy charge",
+      "climate": "Climate & environment charge",
+      "fuel": "Fuel cost adjustment",
+      "vat": "VAT",
+      "fund": "Power industry fund",
       "title": "Results",
       "totalWatt": "Total Power",
       "actualWatt": "Actual Power",
@@ -23752,6 +23887,15 @@
       "title": "Component Power Ratio"
     },
     "guide": {
+      "section3": {
+        "title": "Progressive tiers and added cost",
+        "items": [
+          "PC usage is added on top of your household's existing usage, so heavy-usage homes pay the pricier tier per kWh.",
+          "Above 200 kWh (300 in summer) you move to tier 2, above 400 kWh (450 in summer) to tier 3; base charge and unit rate both rise.",
+          "In tier 3, each PC kWh adds about 360 KRW including taxes and fund.",
+          "Find your household usage on your electricity bill or the KEPCO ON app."
+        ]
+      },
       "title": "PC Electricity Guide",
       "section1": {
         "title": "Power Consumption Basis",
@@ -23802,7 +23946,7 @@
             },
             {
               "q": "Does the result include VAT?",
-              "a": "Yes. The calculated cost includes VAT (10%) and the electricity industry infrastructure fund (3.7%), representing the final amount you would pay on your bill."
+              "a": "Yes. Results include the climate and fuel adjustment charges, 10% VAT and the 2.7% power industry fund."
             },
             {
               "q": "Can I calculate electricity costs for a crypto mining rig?",
@@ -23842,7 +23986,7 @@
           },
           {
             "q": "Does the result include VAT?",
-            "a": "Yes. The calculated cost includes VAT (10%) and the electricity industry infrastructure fund (3.7%), representing the final amount you would pay on your bill."
+            "a": "Yes. Results include the climate and fuel adjustment charges, 10% VAT and the 2.7% power industry fund."
           },
           {
             "q": "Can I calculate electricity costs for a crypto mining rig?",
@@ -29390,6 +29534,14 @@
     }
   },
   "bonusCalculator": {
+    "byMonthlyPercent": "% of monthly pay",
+    "bonusMonthlyPercent": "Bonus as % of monthly pay",
+    "monthlySalaryHint": "Monthly pay (annual ÷ 12): {amount} KRW",
+    "period": "Withholding period",
+    "periodOne": "1 month (combined with this month's pay)",
+    "periodN": "{n} months",
+    "periodHint": "Bonuses without a set period are withheld over January through the payment month (e.g., paid in March → 3 months). Payroll practice may vary.",
+    "emptyHint": "Enter salary and bonus to see your take-home",
     "title": "Bonus Calculator",
     "description": "Calculate the after-tax take-home amount for performance bonuses and incentives",
     "annualSalary": "Annual Salary (Pre-tax)",
@@ -29409,12 +29561,28 @@
     "bonusAmount": "Bonus Amount",
     "bonusAmountPlaceholder": "e.g., 10,000,000",
     "dependents": "Number of Dependents (incl. self)",
-    "childrenUnder20": "Children Under 20",
+    "childrenUnder20": "Children aged 8-20 (included in family count)",
     "nonTaxable": "Non-taxable Amount (Monthly)",
     "nonTaxablePlaceholder": "Meal allowance, etc. (default 200,000)",
     "calculate": "Calculate",
     "reset": "Reset",
     "result": {
+      "nowNet": "Deposited this month (withholding)",
+      "finalNet": "Final take-home (after year-end settlement)",
+      "deducted": "Deductions {amount} KRW · {rate}% kept",
+      "monthTotal": "Total deposit in bonus month (pay + bonus) ≈ {amount} KRW",
+      "settlementRefund": "A lot is withheld in the bonus month, but about {amount} KRW comes back at year-end settlement.",
+      "settlementPay": "You will pay about {amount} KRW more at year-end settlement.",
+      "healthLater": "Health/long-term care insurance of {amount} KRW is charged at next April's settlement, not in the bonus month.",
+      "pensionNote": "National pension uses a fixed monthly base set from last year's income, so nothing extra is deducted in the bonus month.",
+      "breakdownTitle": "Deductions",
+      "nowColumn": "This month",
+      "finalColumn": "Year-end",
+      "notes": [
+        "This month: simplified withholding table (approximation) plus 0.9% employment insurance.",
+        "Year-end: annual tax on salary + bonus minus tax on salary alone — the real added burden.",
+        "Personal deductions (medical, cards, pension savings, etc.) are not included."
+      ],
       "title": "Bonus Take-Home Amount",
       "bonusGross": "Gross Bonus (Pre-tax)",
       "incomeTax": "Income Tax",
@@ -29434,8 +29602,8 @@
       "bonusMonth": "Bonus Payment Month"
     },
     "simulation": {
-      "title": "Bonus Ratio Simulation",
-      "description": "Compare take-home amounts at different bonus ratios",
+      "title": "Compare bonus amounts",
+      "description": "This month's deposit and final take-home by bonus as % of monthly pay",
       "ratio": "Ratio",
       "grossBonus": "Gross Bonus",
       "tax": "Tax & Deductions",
@@ -29444,6 +29612,7 @@
       "current": "Current"
     },
     "taxAnalysis": {
+      "taxBase": "Tax base",
       "title": "Tax Structure Analysis",
       "description": "Adding a bonus increases total income, which may push you into a higher tax bracket",
       "withoutBonus": "Without Bonus",
@@ -29506,7 +29675,7 @@
         "items": [
           {
             "q": "Are social insurance contributions applied to bonuses?",
-            "a": "Yes, bonuses are considered earned income, so national pension, health insurance, and employment insurance apply. However, national pension has a monthly cap (5.9M KRW), limiting the additional burden for high earners."
+            "a": "In the bonus month only employment insurance (0.9%) and income tax are withheld. National pension uses a fixed monthly base, and health insurance on the bonus is charged at next April's settlement. The 2026 pension monthly cap is 6.59M KRW."
           },
           {
             "q": "Why does the tax rate on bonuses seem higher than regular salary?",

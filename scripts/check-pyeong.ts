@@ -1,0 +1,21 @@
+// 평수 계산 회귀 체크: node scripts/check-pyeong.ts
+import { toPyeong, toM2, parseNum, splitArea, popularSizes, perPyeong } from '../src/utils/pyeong.ts'
+let fail = 0
+const near = (a: number, b: number, eps = 0.01) => Math.abs(a - b) < eps
+const ok = (cond: boolean, msg: string) => { if (!cond) { fail++; console.log('FAIL', msg) } }
+ok(near(toM2(1), 3.3058), '1평 = 3.3058㎡')
+ok(near(toPyeong(84), 25.41), '84㎡ = 25.41평')
+ok(near(toPyeong(59), 17.85), '59㎡ = 17.85평')
+ok(near(toM2(33), 109.09), '33평 = 109.09㎡')
+ok(near(toPyeong(toM2(34)), 34, 1e-9), '왕복 변환')
+ok(parseNum('1,234.5') === 1234.5 && parseNum('-3') === 0 && parseNum('abc') === 0 && parseNum('') === 0, 'parseNum')
+const s = splitArea(84, 'exclusive', 0.75)
+ok(near(s.supply, 112) && s.exclusive === 84, '전용84 → 공급112 @75%')
+const e = splitArea(toM2(34), 'supply', 0.75)
+ok(near(e.exclusive, 84.3, 0.1), '34평형 공급 → 전용 약 84㎡')
+const rows = Object.fromEntries(popularSizes().map((r) => [r.exclusive, r]))
+ok(rows[84].typeMin === 33 && rows[84].typeMax === 35, `84㎡ → 33~35평형 (${rows[84].typeMin}~${rows[84].typeMax})`)
+ok(rows[59].typeMin >= 23 && rows[59].typeMax <= 25, `59㎡ → 23~25평형 (${rows[59].typeMin}~${rows[59].typeMax})`)
+ok(near(perPyeong(100000, toM2(34)), 2941.18), '10억 / 34평 = 2941만원')
+ok(perPyeong(100, 0) === 0, '면적 0')
+console.log(fail ? `${fail} failed` : 'all passed'); if (fail) process.exit(1)

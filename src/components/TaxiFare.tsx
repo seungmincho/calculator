@@ -1,194 +1,107 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, usePathname } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Car, Moon, Sun, BookOpen, MapPin, Link, Check, BarChart2, Clock, Navigation, Download } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { Link as LinkIcon, Check, Download } from 'lucide-react'
+import {
+  REGION_RATES, PREMIUM, REGION_GROUPS, REGION_KEYS, TAXI_TYPES,
+  getSchedule, nightRateFor, computeFare, estimateMinutes, perPerson,
+  type RegionKey, type TaxiType, type Traffic,
+} from '@/utils/taxiFare'
 
-type RegionKey =
-  | 'seoul' | 'gyeonggi' | 'incheon'
-  | 'busan' | 'daegu' | 'daejeon' | 'gwangju' | 'ulsan'
-  | 'sejong' | 'gangwon' | 'chungbuk' | 'chungnam'
-  | 'jeonbuk' | 'jeonnam' | 'gyeongbuk' | 'gyeongnam' | 'jeju'
-type TaxiType = 'regular' | 'deluxe' | 'jumbo'
+const DISTANCE_PRESETS = [3, 5, 10, 20, 30]
+const TRAFFICS: Traffic[] = ['smooth', 'normal', 'heavy']
+const PEOPLE = [1, 2, 3, 4]
+const HOURS = Array.from({ length: 24 }, (_, i) => i)
 
-interface RegionRate {
-  base: number        // 기본요금 (원)
-  baseDist: number    // 기본거리 (m)
-  unitDist: number    // 거리요금 단위거리 (m)
-  unitFare: number    // 거리요금 (원)
-  timeUnit: number    // 시간요금 단위 (초)
-  timeFare: number    // 시간요금 (원)
-  nightStart: number  // 심야 시작 시각 (시)
-  nightEnd: number    // 심야 종료 시각 (시, 익일)
-  deepStart: number | null // 최고할증 구간 시작 (시)
-  deepEnd: number | null   // 최고할증 구간 종료 (시, 익일)
-  nightRate: number   // 일반 심야할증율
-  deepRate: number    // 최고 심야할증율
-  outRate: number     // 시계외 할증율
-}
-
-// 2026년 9월 기준 시도별 중형택시 요율 (지자체별 변동 가능 — 실제 요율은 관할 시·도 확인)
-// 검증: 서울 4,800/1.6km(2023.2~) · 대구 4,500/1.7km/125m(2025.1~) · 제주 4,300/2km(2024.7~) · 전남 4,300/2km
-// 예정: 전남 22개 시군 4,800/1.7km(2026.11~12 시행 추진), 대구 5,200~5,600(2027 초 용역안)
-const REGION_RATES: Record<RegionKey, RegionRate> = {
-  seoul:     { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: 23, deepEnd: 2, nightRate: 0.2, deepRate: 0.4, outRate: 0.2 },
-  gyeonggi:  { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.3, deepRate: 0.3, outRate: 0.2 },
-  incheon:   { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: 23, deepEnd: 2, nightRate: 0.2, deepRate: 0.4, outRate: 0.3 },
-  busan:     { base: 4800, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 23, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.3 },
-  daegu:     { base: 4500, baseDist: 1700, unitDist: 125, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  daejeon:   { base: 4300, baseDist: 1800, unitDist: 133, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.3 },
-  gwangju:   { base: 4300, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  ulsan:     { base: 4300, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  sejong:    { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  gangwon:   { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  chungbuk:  { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  chungnam:  { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  jeonbuk:   { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  jeonnam:   { base: 4300, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  gyeongbuk: { base: 4500, baseDist: 1700, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  gyeongnam: { base: 4000, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-  jeju:      { base: 4300, baseDist: 2000, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.2 },
-}
-
-// 모범/대형 택시 프리미엄 요율 (전국 유사 — 지역별 세부 요율은 관할 확인)
-const PREMIUM = { base: 7000, baseDist: 3000, unitDist: 151, unitFare: 200, timeUnit: 36, timeFare: 200 }
-
-const REGION_GROUPS: { groupKey: string; regions: RegionKey[] }[] = [
-  { groupKey: 'metro', regions: ['seoul', 'gyeonggi', 'incheon'] },
-  { groupKey: 'city', regions: ['busan', 'daegu', 'daejeon', 'gwangju', 'ulsan'] },
-  { groupKey: 'province', regions: ['sejong', 'gangwon', 'chungbuk', 'chungnam', 'jeonbuk', 'jeonnam', 'gyeongbuk', 'gyeongnam', 'jeju'] },
-]
-
-// 선택 지역·차종에 적용되는 유효 요율 스케줄 반환
-function getSchedule(region: RegionKey, type: TaxiType): RegionRate {
-  const r = REGION_RATES[region]
-  if (type === 'regular') return r
-  const sched: RegionRate = {
-    ...r,
-    base: PREMIUM.base,
-    baseDist: PREMIUM.baseDist,
-    unitDist: PREMIUM.unitDist,
-    unitFare: PREMIUM.unitFare,
-    timeUnit: PREMIUM.timeUnit,
-    timeFare: PREMIUM.timeFare,
-  }
-  // 모범택시는 심야할증 없음
-  if (type === 'deluxe') {
-    sched.nightRate = 0
-    sched.deepRate = 0
-    sched.deepStart = null
-    sched.deepEnd = null
-  }
-  return sched
-}
-
-function inWindow(start: number, end: number, h: number): boolean {
-  return start < end ? h >= start && h < end : h >= start || h < end
-}
-
-// 탑승 시각에 적용되는 심야할증율
-function nightRateFor(hour: number, s: RegionRate): number {
-  if (s.nightRate === 0 && s.deepRate === 0) return 0
-  if (!inWindow(s.nightStart, s.nightEnd, hour)) return 0
-  if (s.deepStart != null && s.deepEnd != null && inWindow(s.deepStart, s.deepEnd, hour)) return s.deepRate
-  return s.nightRate
-}
-
-interface FareResult {
-  base: number
-  distanceFare: number
-  timeFare: number
-  metered: number
-  nightRate: number
-  nightSurcharge: number
-  outRate: number
-  outSurcharge: number
-  total: number
-}
-
-function computeFare(distanceKm: number, timeMin: number, hour: number, region: RegionKey, type: TaxiType, outOfCity: boolean): FareResult {
-  const s = getSchedule(region, type)
-  const meters = distanceKm * 1000
-  const extraDist = Math.max(0, meters - s.baseDist)
-  const distanceFare = Math.floor(extraDist / s.unitDist) * s.unitFare
-  const stoppedSec = timeMin * 60 * 0.4 // 저속·정차 구간 가정치(40%)
-  const timeFare = Math.floor(stoppedSec / s.timeUnit) * s.timeFare
-  const metered = s.base + distanceFare + timeFare
-  const nightRate = nightRateFor(hour, s)
-  const outRate = outOfCity ? s.outRate : 0
-  const nightSurcharge = Math.floor(metered * nightRate)
-  const outSurcharge = Math.floor(metered * outRate)
-  const total = metered + nightSurcharge + outSurcharge
-  return { base: s.base, distanceFare, timeFare, metered, nightRate, nightSurcharge, outRate, outSurcharge, total }
-}
+const seg = (on: boolean) =>
+  `rounded-xl text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
 export default function TaxiFare() {
   const t = useTranslations('taxiFare')
   const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
 
-  const initRegion = (searchParams.get('region') as RegionKey) || 'seoul'
   const [distance, setDistance] = useState<string>(() => searchParams.get('distance') ?? '5')
   const [time, setTime] = useState<string>(() => searchParams.get('time') ?? '15')
-  const [region, setRegion] = useState<RegionKey>(REGION_RATES[initRegion] ? initRegion : 'seoul')
-  const [taxiType, setTaxiType] = useState<TaxiType>(() => (searchParams.get('type') as TaxiType) ?? 'regular')
+  const [timeAuto, setTimeAuto] = useState<boolean>(() => !searchParams.get('time'))
+  const [traffic, setTraffic] = useState<Traffic>(() => {
+    const p = searchParams.get('traffic') as Traffic
+    return TRAFFICS.includes(p) ? p : 'normal'
+  })
+  const [region, setRegion] = useState<RegionKey>(() => {
+    const p = searchParams.get('region') as RegionKey
+    return REGION_KEYS.includes(p) ? p : 'seoul'
+  })
+  const [taxiType, setTaxiType] = useState<TaxiType>(() => {
+    const p = searchParams.get('type') as TaxiType
+    return TAXI_TYPES.includes(p) ? p : 'regular'
+  })
   const [hour, setHour] = useState<number>(() => {
     const h = parseInt(searchParams.get('hour') ?? '', 10)
     return Number.isFinite(h) && h >= 0 && h <= 23 ? h : 14
   })
   const [outOfCity, setOutOfCity] = useState<boolean>(() => searchParams.get('out') === '1')
+  const [people, setPeople] = useState<number>(() => {
+    const n = parseInt(searchParams.get('n') ?? '', 10)
+    return PEOPLE.includes(n) ? n : 1
+  })
   const [copied, setCopied] = useState(false)
   const [saved, setSaved] = useState(false)
 
-  // URL 동기화
-  useEffect(() => {
-    const params = new URLSearchParams()
-    params.set('distance', distance)
-    params.set('time', time)
-    params.set('region', region)
-    params.set('type', taxiType)
-    params.set('hour', String(hour))
-    params.set('out', outOfCity ? '1' : '0')
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
-  }, [distance, time, region, taxiType, hour, outOfCity, pathname, router])
+  const distanceNum = Math.max(0, parseFloat(distance) || 0)
 
-  const distanceNum = parseFloat(distance) || 0
-  const timeNum = parseFloat(time) || 0
+  // 소요 시간 자동 추정: 사용자가 직접 입력하기 전까지 거리·교통 상황을 따라감
+  useEffect(() => {
+    if (timeAuto) setTime(String(estimateMinutes(distanceNum, traffic)))
+  }, [timeAuto, distanceNum, traffic])
+
+  // URL 동기화 (공유 링크)
+  useEffect(() => {
+    const params = new URLSearchParams({
+      distance, region, type: taxiType, hour: String(hour), out: outOfCity ? '1' : '0', traffic,
+    })
+    if (!timeAuto) params.set('time', time)
+    if (people > 1) params.set('n', String(people))
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params}`)
+  }, [distance, time, timeAuto, traffic, region, taxiType, hour, outOfCity, people])
+
+  const timeNum = Math.max(0, parseFloat(time) || 0)
 
   const schedule = useMemo(() => getSchedule(region, taxiType), [region, taxiType])
-  const activeNightRate = useMemo(() => nightRateFor(hour, schedule), [hour, schedule])
+  const activeNightRate = nightRateFor(hour, schedule)
 
   const fare = useMemo(
     () => computeFare(distanceNum, timeNum, hour, region, taxiType, outOfCity),
     [distanceNum, timeNum, hour, region, taxiType, outOfCity]
   )
 
-  // 차종별 비교 (동일 지역·시각·시외 조건)
-  const comparisonFares = useMemo(() => ({
-    regular: computeFare(distanceNum, timeNum, hour, region, 'regular', outOfCity).total,
-    deluxe: computeFare(distanceNum, timeNum, hour, region, 'deluxe', outOfCity).total,
-    jumbo: computeFare(distanceNum, timeNum, hour, region, 'jumbo', outOfCity).total,
-  }), [distanceNum, timeNum, hour, region, outOfCity])
-
+  const comparisonFares = useMemo(() => Object.fromEntries(
+    TAXI_TYPES.map((ty) => [ty, computeFare(distanceNum, timeNum, hour, region, ty, outOfCity).total])
+  ) as Record<TaxiType, number>, [distanceNum, timeNum, hour, region, outOfCity])
   const maxFare = Math.max(...Object.values(comparisonFares))
 
+  // 같은 거리·시간·시각·시외 조건의 지역별 일반택시 요금
+  const regionFares = useMemo(() => REGION_KEYS.map((rk) => ({
+    rk, total: computeFare(distanceNum, timeNum, hour, rk, 'regular', outOfCity).total,
+  })), [distanceNum, timeNum, hour, outOfCity])
+  const selectedRegular = regionFares.find((r) => r.rk === region)!.total
+
   const regionRate = REGION_RATES[region]
+  const won = t('result.won')
+  const hh = (h: number | null) => String(h).padStart(2, '0')
+  const split = perPerson(fare.total, people)
 
   const handleReset = () => {
     setDistance('5')
-    setTime('15')
+    setTraffic('normal')
+    setTimeAuto(true)
     setRegion('seoul')
     setTaxiType('regular')
     setHour(14)
     setOutOfCity(false)
-  }
-
-  const setNow = () => {
-    setHour(new Date().getHours())
+    setPeople(1)
   }
 
   const copyLink = useCallback(async () => {
@@ -220,74 +133,62 @@ export default function TaxiFare() {
     canvas.height = H
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+    const font = (s: string) => `${s} Pretendard, system-ui, -apple-system, sans-serif`
 
-    // 배경
-    const grad = ctx.createLinearGradient(0, 0, 0, H)
-    grad.addColorStop(0, '#0f172a')
-    grad.addColorStop(1, '#1e293b')
-    ctx.fillStyle = grad
+    ctx.fillStyle = '#ffffff'
     ctx.fillRect(0, 0, W, H)
-
-    // 상단 바
-    ctx.fillStyle = '#facc15'
-    ctx.fillRect(0, 0, W, 8)
-
     ctx.textBaseline = 'top'
-    ctx.fillStyle = '#e2e8f0'
-    ctx.font = 'bold 30px system-ui, -apple-system, sans-serif'
-    ctx.fillText('🚕 ' + t('title'), 40, 40)
+    ctx.fillStyle = '#191f28'
+    ctx.font = font('bold 30px')
+    ctx.fillText(t('title'), 40, 40)
 
-    ctx.fillStyle = '#94a3b8'
-    ctx.font = '17px system-ui, -apple-system, sans-serif'
+    ctx.fillStyle = '#8b95a1'
+    ctx.font = font('17px')
     const meta = `${t(`regions.${region}`)} · ${t(`types.${taxiType}`)} · ${distanceNum}km / ${timeNum}${t('minUnit')} · ${hour}${t('hourUnit')}${outOfCity ? ' · ' + t('outOfCity.short') : ''}`
     ctx.fillText(meta, 40, 86)
 
-    // 구분선
-    ctx.strokeStyle = 'rgba(148,163,184,0.25)'
+    ctx.strokeStyle = '#e5e8eb'
     ctx.beginPath()
     ctx.moveTo(40, 128)
     ctx.lineTo(W - 40, 128)
     ctx.stroke()
 
     const rows: [string, string][] = [
-      [t('result.baseFare'), fare.base.toLocaleString() + t('result.won')],
-      [t('result.distanceFare'), fare.distanceFare.toLocaleString() + t('result.won')],
-      [t('result.timeFare'), fare.timeFare.toLocaleString() + t('result.won')],
+      [t('result.baseFare'), fare.base.toLocaleString() + won],
+      [t('result.distanceFare'), fare.distanceFare.toLocaleString() + won],
+      [t('result.timeFare'), fare.timeFare.toLocaleString() + won],
     ]
-    if (fare.nightSurcharge > 0) rows.push([`${t('result.nightSurcharge')} (${Math.round(fare.nightRate * 100)}%)`, '+' + fare.nightSurcharge.toLocaleString() + t('result.won')])
-    if (fare.outSurcharge > 0) rows.push([`${t('result.outSurcharge')} (${Math.round(fare.outRate * 100)}%)`, '+' + fare.outSurcharge.toLocaleString() + t('result.won')])
+    if (fare.nightSurcharge > 0) rows.push([`${t('result.nightSurcharge')} (${Math.round(fare.nightRate * 100)}%)`, '+' + fare.nightSurcharge.toLocaleString() + won])
+    if (fare.outSurcharge > 0) rows.push([`${t('result.outSurcharge')} (${Math.round(fare.outRate * 100)}%)`, '+' + fare.outSurcharge.toLocaleString() + won])
 
     let y = 150
-    ctx.font = '18px system-ui, -apple-system, sans-serif'
+    ctx.font = font('18px')
     rows.forEach(([label, val]) => {
-      ctx.fillStyle = '#cbd5e1'
+      ctx.fillStyle = '#4e5968'
       ctx.textAlign = 'left'
       ctx.fillText(label, 40, y)
-      ctx.fillStyle = '#f1f5f9'
+      ctx.fillStyle = '#191f28'
       ctx.textAlign = 'right'
       ctx.fillText(val, W - 40, y)
       y += 36
     })
-    ctx.textAlign = 'left'
 
-    // 총액 박스
     const boxY = y + 12
-    ctx.fillStyle = 'rgba(16,185,129,0.12)'
-    ctx.fillRect(40, boxY, W - 80, 74)
-    ctx.strokeStyle = 'rgba(16,185,129,0.5)'
-    ctx.strokeRect(40, boxY, W - 80, 74)
-    ctx.fillStyle = '#e2e8f0'
-    ctx.font = 'bold 22px system-ui, -apple-system, sans-serif'
-    ctx.fillText(t('result.total'), 60, boxY + 24)
-    ctx.fillStyle = '#34d399'
-    ctx.font = 'bold 34px system-ui, -apple-system, sans-serif'
-    ctx.textAlign = 'right'
-    ctx.fillText(fare.total.toLocaleString() + t('result.won'), W - 60, boxY + 18)
-
-    // 푸터
+    ctx.fillStyle = '#3182f6'
+    ctx.beginPath()
+    ctx.roundRect(40, boxY, W - 80, 74, 16)
+    ctx.fill()
+    ctx.fillStyle = '#ffffff'
     ctx.textAlign = 'left'
-    ctx.fillStyle = '#64748b'
-    ctx.font = '14px system-ui, -apple-system, sans-serif'
+    ctx.font = font('bold 22px')
+    ctx.fillText(t('result.total'), 60, boxY + 24)
+    ctx.font = font('bold 34px')
+    ctx.textAlign = 'right'
+    ctx.fillText(fare.total.toLocaleString() + won, W - 60, boxY + 18)
+
+    ctx.textAlign = 'left'
+    ctx.fillStyle = '#8b95a1'
+    ctx.font = font('14px')
     ctx.fillText('toolhub.ai.kr · ' + t('imageFooter'), 40, H - 34)
 
     const link = document.createElement('a')
@@ -297,42 +198,28 @@ export default function TaxiFare() {
 
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
-  }, [fare, region, taxiType, distanceNum, timeNum, hour, outOfCity, t])
+  }, [fare, region, taxiType, distanceNum, timeNum, hour, outOfCity, t, won])
 
-  const barColors: Record<TaxiType, string> = {
-    regular: 'bg-blue-500',
-    deluxe: 'bg-purple-500',
-    jumbo: 'bg-emerald-500',
-  }
-
-  const typeLabels: Record<TaxiType, string> = {
-    regular: t('types.regular'),
-    deluxe: t('types.deluxe'),
-    jumbo: t('types.jumbo'),
-  }
+  const labelCls = 'block text-sm font-medium text-body mb-2'
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Settings Panel */}
+        {/* 입력 */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            {/* Region Selector */}
+          <div className="ui-card p-6 space-y-6">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('region')}
-              </label>
+              <label htmlFor="taxi-region" className={labelCls}>{t('region')}</label>
               <select
+                id="taxi-region"
                 value={region}
                 onChange={(e) => setRegion(e.target.value as RegionKey)}
-                className={`${glassInput} px-3 py-2`}
+                className="ui-field px-4 py-3"
               >
                 {REGION_GROUPS.map((g) => (
                   <optgroup key={g.groupKey} label={t(`regionGroups.${g.groupKey}`)}>
@@ -344,281 +231,280 @@ export default function TaxiFare() {
               </select>
             </div>
 
-            {/* Distance Input + Slider */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('distance')}
-              </label>
+              <label htmlFor="taxi-distance" className={labelCls}>{t('distance')}</label>
               <div className="flex items-center gap-2 mb-2">
                 <input
+                  id="taxi-distance"
                   type="number"
+                  inputMode="decimal"
                   value={distance}
                   onChange={(e) => setDistance(e.target.value)}
                   placeholder={t('distancePlaceholder')}
                   step="0.1"
                   min="0"
-                  max="50"
-                  className={`${glassInput} px-3 py-2`}
+                  className="ui-field px-4 py-3"
                 />
                 <span className="text-sm text-muted whitespace-nowrap">km</span>
               </div>
-              <input
-                type="range"
-                min="1"
-                max="50"
-                step="0.5"
-                value={Math.min(Math.max(parseFloat(distance) || 1, 1), 50)}
-                onChange={(e) => setDistance(e.target.value)}
-                className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-blue-600"
-              />
-              <div className="flex justify-between text-xs text-faint mt-1">
-                <span>1km</span>
-                <span>25km</span>
-                <span>50km</span>
-              </div>
-            </div>
-
-            {/* Time Input */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('time')}
-              </label>
-              <input
-                type="number"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                placeholder={t('timePlaceholder')}
-                step="1"
-                min="0"
-                className={`${glassInput} px-3 py-2`}
-              />
-            </div>
-
-            {/* Boarding Hour */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-body">
-                  {activeNightRate > 0 ? <Moon className="w-4 h-4 inline mr-1 text-indigo-500" /> : <Sun className="w-4 h-4 inline mr-1 text-yellow-500" />}
-                  {t('boardingTime')}
-                </label>
-                <button
-                  onClick={setNow}
-                  className="text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded px-2 py-1 transition-colors"
-                >
-                  {t('nowButton')}
-                </button>
-              </div>
-              <div className="flex items-center gap-2 mb-2">
-                <input
-                  type="range"
-                  min="0"
-                  max="23"
-                  step="1"
-                  value={hour}
-                  onChange={(e) => setHour(parseInt(e.target.value, 10))}
-                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-                />
-                <span className="text-sm font-semibold text-fg whitespace-nowrap w-12 text-right">
-                  {String(hour).padStart(2, '0')}{t('hourUnit')}
-                </span>
-              </div>
-              <div className={`text-xs font-medium px-2 py-1 rounded inline-block ${activeNightRate > 0 ? 'bg-primary-soft text-primary' : 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300'}`}>
-                {activeNightRate > 0 ? `${t('tier.night')} +${Math.round(activeNightRate * 100)}%` : t('tier.day')}
-              </div>
-            </div>
-
-            {/* Taxi Type */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-3">
-                {t('taxiType')}
-              </label>
-              <div className="space-y-2">
-                {(['regular', 'deluxe', 'jumbo'] as TaxiType[]).map((type) => (
-                  <label key={type} className="flex items-center space-x-3 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="taxiType"
-                      value={type}
-                      checked={taxiType === type}
-                      onChange={(e) => setTaxiType(e.target.value as TaxiType)}
-                      className="w-4 h-4 accent-blue-600"
-                    />
-                    <span className="text-body">{t(`types.${type}`)}</span>
-                  </label>
+              <div className="grid grid-cols-5 gap-1.5">
+                {DISTANCE_PRESETS.map((km) => (
+                  <button key={km} type="button" onClick={() => setDistance(String(km))} className={`${seg(distanceNum === km)} py-2`}>
+                    {km}km
+                  </button>
                 ))}
               </div>
             </div>
 
-            {/* Out of City */}
             <div>
-              <label className="flex items-start space-x-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={outOfCity}
-                  onChange={(e) => setOutOfCity(e.target.checked)}
-                  className="w-4 h-4 mt-0.5 accent-blue-600"
-                />
-                <span>
-                  <span className="text-body font-medium">{t('outOfCity.label')}</span>
-                  <span className="block text-xs text-muted">{t('outOfCity.desc', { rate: Math.round(REGION_RATES[region].outRate * 100) })}</span>
-                </span>
-              </label>
+              <span className={labelCls}>{t('traffic.label')}</span>
+              <div className="grid grid-cols-3 gap-1.5">
+                {TRAFFICS.map((tr) => (
+                  <button
+                    key={tr}
+                    type="button"
+                    onClick={() => { setTraffic(tr); setTimeAuto(true) }}
+                    className={`${seg(timeAuto && traffic === tr)} py-2`}
+                  >
+                    {t(`traffic.${tr}`)}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Action Buttons */}
+            <div>
+              <label htmlFor="taxi-time" className={labelCls}>{t('time')}</label>
+              <input
+                id="taxi-time"
+                type="number"
+                inputMode="numeric"
+                value={time}
+                onChange={(e) => { setTime(e.target.value); setTimeAuto(false) }}
+                placeholder={t('timePlaceholder')}
+                step="1"
+                min="0"
+                className="ui-field px-4 py-3"
+              />
+              <p className="text-xs text-muted mt-1.5">{timeAuto ? t('traffic.autoHint') : t('traffic.manualHint')}</p>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-body">
+                  {t('boardingTime')} <span className="text-fg font-semibold tabular-nums">{hh(hour)}{t('hourUnit')}</span>
+                </span>
+                <button type="button" onClick={() => setHour(new Date().getHours())} className="ui-btn-soft text-xs px-2.5 py-1">
+                  {t('nowButton')}
+                </button>
+              </div>
+              <div className="grid grid-cols-8 gap-1" role="radiogroup" aria-label={t('boardingTime')}>
+                {HOURS.map((h) => {
+                  const r = nightRateFor(h, schedule)
+                  const on = h === hour
+                  return (
+                    <button
+                      key={h}
+                      type="button"
+                      role="radio"
+                      aria-checked={on}
+                      onClick={() => setHour(h)}
+                      title={r > 0 ? `+${Math.round(r * 100)}%` : undefined}
+                      className={`rounded-lg py-1.5 text-xs tabular-nums leading-tight transition-colors ${
+                        on ? 'bg-primary text-white' : r > 0 ? 'bg-primary-soft text-primary' : 'bg-soft text-sub hover:bg-subtle'
+                      }`}
+                    >
+                      {h}
+                      {r > 0 && <span className={`block text-[10px] ${on ? 'text-white/70' : ''}`}>+{Math.round(r * 100)}</span>}
+                    </button>
+                  )
+                })}
+              </div>
+              <p className="text-xs text-muted mt-2">
+                {activeNightRate > 0 ? `${t('tier.night')} +${Math.round(activeNightRate * 100)}%` : t('tier.day')} · {t('timeline.hint')}
+              </p>
+            </div>
+
+            <div>
+              <span className={labelCls}>{t('taxiType')}</span>
+              <div className="grid grid-cols-3 gap-1.5">
+                {TAXI_TYPES.map((type) => (
+                  <button key={type} type="button" onClick={() => setTaxiType(type)} className={`${seg(taxiType === type)} py-2.5 px-1`}>
+                    {t(`typesShort.${type}`)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={outOfCity}
+                onChange={(e) => setOutOfCity(e.target.checked)}
+                className="w-4 h-4 mt-0.5 accent-blue-600"
+              />
+              <span>
+                <span className="text-body font-medium">{t('outOfCity.label')}</span>
+                <span className="block text-xs text-muted">{t('outOfCity.desc', { rate: Math.round(regionRate.outRate * 100) })}</span>
+              </span>
+            </label>
+
             <div className="space-y-2">
-              <button
-                onClick={copyLink}
-                className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
-              >
-                {copied ? <><Check className="w-4 h-4" />{t('copyLinkDone')}</> : <><Link className="w-4 h-4" />{t('copyLink')}</>}
+              <button type="button" onClick={copyLink} className="ui-btn w-full px-4 py-3">
+                {copied ? <><Check className="w-4 h-4" />{t('copyLinkDone')}</> : <><LinkIcon className="w-4 h-4" />{t('copyLink')}</>}
               </button>
-              <button
-                onClick={saveAsImage}
-                className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
-              >
+              <button type="button" onClick={saveAsImage} className="ui-btn-soft w-full px-4 py-3 inline-flex items-center justify-center gap-2">
                 {saved ? <><Check className="w-4 h-4" />{t('saveImageDone')}</> : <><Download className="w-4 h-4" />{t('saveImage')}</>}
               </button>
-              <button
-                onClick={handleReset}
-                className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium transition-colors"
-              >
+              <button type="button" onClick={handleReset} className="ui-btn-soft w-full px-4 py-3">
                 {t('reset')}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Result Panel */}
+        {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Fare Breakdown */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-semibold text-fg mb-6 flex items-center">
-              {t('result.title')}
-            </h2>
+          <div className="ui-hero p-6">
+            <p className="text-sm text-white/70">{t('result.total')}</p>
+            <p className="text-4xl font-bold tabular-nums mt-1" aria-live="polite">
+              {fare.total.toLocaleString()}<span className="text-2xl ml-1">{won}</span>
+            </p>
+            <p className="text-sm text-white/70 mt-2">
+              {t(`regions.${region}`)} · {t(`types.${taxiType}`)} · {distanceNum}km · {timeNum}{t('minUnit')} · {hh(hour)}{t('hourUnit')}
+              {fare.nightRate > 0 && ` · ${t('result.nightSurcharge')} +${Math.round(fare.nightRate * 100)}%`}
+              {fare.outRate > 0 && ` · ${t('outOfCity.short')} +${Math.round(fare.outRate * 100)}%`}
+            </p>
+            {people > 1 && (
+              <p className="text-sm text-white mt-3 font-medium">
+                {t('split.perPerson', { n: people })} {split.toLocaleString()}{won}
+              </p>
+            )}
+          </div>
 
-            <div className="space-y-1">
-              <div className="flex justify-between items-center py-3 border-b border-line">
-                <span className="text-body">{t('result.baseFare')}</span>
-                <span className="text-lg font-semibold text-fg">
-                  {fare.base.toLocaleString()} {t('result.won')}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-3 border-b border-line">
-                <span className="text-body">{t('result.distanceFare')}</span>
-                <span className="text-lg font-semibold text-fg">
-                  {fare.distanceFare.toLocaleString()} {t('result.won')}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-3 border-b border-line">
-                <span className="text-body">{t('result.timeFare')}</span>
-                <span className="text-lg font-semibold text-fg">
-                  {fare.timeFare.toLocaleString()} {t('result.won')}
-                </span>
-              </div>
-
-              {fare.nightSurcharge > 0 && (
-                <div className="flex justify-between items-center py-3 border-b border-line">
-                  <span className="text-body flex items-center">
-                    <Moon className="w-4 h-4 mr-2 text-indigo-500" />
-                    {t('result.nightSurcharge')} <span className="ml-1 text-xs text-indigo-500">({Math.round(fare.nightRate * 100)}%)</span>
-                  </span>
-                  <span className="text-lg font-semibold text-indigo-600 dark:text-indigo-400">
-                    +{fare.nightSurcharge.toLocaleString()} {t('result.won')}
-                  </span>
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg mb-3">{t('result.title')}</h2>
+            <dl>
+              {([
+                [t('result.baseFare'), fare.base, false],
+                [t('result.distanceFare'), fare.distanceFare, false],
+                [t('result.timeFare'), fare.timeFare, false],
+                ...(fare.nightSurcharge > 0 ? [[`${t('result.nightSurcharge')} (${Math.round(fare.nightRate * 100)}%)`, fare.nightSurcharge, true]] : []),
+                ...(fare.outSurcharge > 0 ? [[`${t('result.outSurcharge')} (${Math.round(fare.outRate * 100)}%)`, fare.outSurcharge, true]] : []),
+              ] as [string, number, boolean][]).map(([label, v, plus]) => (
+                <div key={label} className="flex justify-between items-center py-3 border-b border-line last:border-0">
+                  <dt className="text-body">{label}</dt>
+                  <dd className={`font-semibold tabular-nums ${plus ? 'text-primary' : 'text-fg'}`}>
+                    {plus ? '+' : ''}{v.toLocaleString()} {won}
+                  </dd>
                 </div>
-              )}
-
-              {fare.outSurcharge > 0 && (
-                <div className="flex justify-between items-center py-3 border-b border-line">
-                  <span className="text-body flex items-center">
-                    <Navigation className="w-4 h-4 mr-2 text-amber-500" />
-                    {t('result.outSurcharge')} <span className="ml-1 text-xs text-amber-500">({Math.round(fare.outRate * 100)}%)</span>
-                  </span>
-                  <span className="text-lg font-semibold text-amber-600 dark:text-amber-400">
-                    +{fare.outSurcharge.toLocaleString()} {t('result.won')}
-                  </span>
-                </div>
-              )}
-
-              <div className="flex justify-between items-center py-4 ui-hero !rounded-xl px-4 mt-4">
-                <span className="text-xl font-bold text-white">{t('result.total')}</span>
-                <span className="text-3xl font-bold text-white">
-                  {fare.total.toLocaleString()} {t('result.won')}
-                </span>
-              </div>
-            </div>
-
+              ))}
+            </dl>
             <p className="text-xs text-muted mt-4">{t('result.note')}</p>
           </div>
 
-          {/* Fare Comparison Chart */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-semibold text-fg mb-6 flex items-center">
-              {t('comparison.title')}
-            </h2>
-            <p className="text-sm text-muted mb-5">{t('comparison.subtitle')}</p>
+          {/* 더치페이 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg mb-3">{t('split.title')}</h2>
+            <div className="grid grid-cols-4 gap-1.5 mb-4">
+              {PEOPLE.map((n) => (
+                <button key={n} type="button" onClick={() => setPeople(n)} className={`${seg(people === n)} py-2`}>
+                  {n}{t('split.personUnit')}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-baseline justify-between">
+              <span className="text-body">{t('split.perPerson', { n: people })}</span>
+              <span className="text-2xl font-bold text-fg tabular-nums">{split.toLocaleString()}{won}</span>
+            </div>
+            <Link
+              href={`/dutch-pay/?mode=equal&total=${fare.total}&people=${people}`}
+              className="inline-block text-sm text-primary font-medium mt-3 hover:underline"
+            >
+              {t('split.dutchPayLink')}
+            </Link>
+          </div>
 
+          {/* 차종 비교 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('comparison.title')}</h2>
+            <p className="text-sm text-muted mt-1 mb-5">{t('comparison.subtitle')}</p>
             <div className="space-y-4">
-              {(['regular', 'deluxe', 'jumbo'] as TaxiType[]).map((type) => {
+              {TAXI_TYPES.map((type) => {
                 const f = comparisonFares[type]
                 const pct = maxFare > 0 ? Math.round((f / maxFare) * 100) : 0
-                const isSelected = taxiType === type
+                const on = taxiType === type
                 return (
-                  <div key={type}>
+                  <button key={type} type="button" onClick={() => setTaxiType(type)} className="block w-full text-left">
                     <div className="flex justify-between items-center mb-1">
-                      <span className={`text-sm font-medium ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-body'}`}>
-                        {typeLabels[type]}
-                        {isSelected && (
-                          <span className="ml-2 text-xs bg-soft text-sub px-1.5 py-0.5 rounded">
-                            {t('comparison.selected')}
-                          </span>
-                        )}
-                      </span>
-                      <span className={`text-sm font-bold ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-fg'}`}>
-                        {f.toLocaleString()}{t('result.won')}
-                      </span>
+                      <span className={`text-sm font-medium ${on ? 'text-primary' : 'text-body'}`}>{t(`types.${type}`)}</span>
+                      <span className={`text-sm font-bold tabular-nums ${on ? 'text-primary' : 'text-fg'}`}>{f.toLocaleString()}{won}</span>
                     </div>
-                    <div className="w-full bg-soft rounded-full h-6 overflow-hidden">
-                      <div
-                        className={`h-6 rounded-full transition-all duration-500 flex items-center justify-end pr-2 ${barColors[type]} ${isSelected ? 'opacity-100' : 'opacity-60'}`}
-                        style={{ width: `${Math.max(pct, 4)}%` }}
-                      >
-                        {pct >= 20 && <span className="text-xs text-white font-medium">{pct}%</span>}
-                      </div>
+                    <div className="w-full bg-soft rounded-full h-2.5 overflow-hidden">
+                      <div className={`h-2.5 rounded-full transition-all duration-500 ${on ? 'bg-primary' : 'bg-line-strong'}`} style={{ width: `${Math.max(pct, 4)}%` }} />
                     </div>
-                  </div>
+                  </button>
                 )
               })}
             </div>
-
             <p className="text-xs text-muted mt-4">{t('comparison.note')}</p>
           </div>
 
-          {/* Region Fare Info */}
-          <div className="bg-subtle rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-fg mb-4 flex items-center">
+          {/* 지역별 비교 */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('regionCompare.title')}</h2>
+            <p className="text-sm text-muted mt-1 mb-4">{t('regionCompare.subtitle')}</p>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-muted text-left">
+                  <th className="font-medium py-2 pl-3">{t('regionCompare.region')}</th>
+                  <th className="font-medium py-2 text-right">{t('regionCompare.base')}</th>
+                  <th className="font-medium py-2 text-right">{t('regionCompare.fare')}</th>
+                  <th className="font-medium py-2 pr-3 text-right">{t('regionCompare.diff')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {regionFares.map(({ rk, total }) => {
+                  const on = rk === region
+                  const d = total - selectedRegular
+                  return (
+                    <tr
+                      key={rk}
+                      onClick={() => setRegion(rk)}
+                      className={`cursor-pointer border-t border-line tabular-nums ${on ? 'bg-primary-soft text-primary font-semibold' : 'text-body hover:bg-subtle'}`}
+                    >
+                      <td className="py-2 pl-3">
+                        <button type="button" onClick={() => setRegion(rk)} className="text-left">{t(`regions.${rk}`)}</button>
+                      </td>
+                      <td className="py-2 text-right">{REGION_RATES[rk].base.toLocaleString()}</td>
+                      <td className={`py-2 text-right ${on ? '' : 'text-fg font-medium'}`}>{total.toLocaleString()}{won}</td>
+                      <td className="py-2 pr-3 text-right">{on || d === 0 ? '-' : `${d > 0 ? '+' : ''}${d.toLocaleString()}`}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* 지역 요금 기준 */}
+          <div className="bg-subtle rounded-2xl p-6">
+            <h3 className="text-lg font-semibold text-fg mb-4">
               {t(`regions.${region}`)} {t('fareInfo.title')}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-              <div className="bg-surface rounded-lg p-3 space-y-1">
+              <div className="bg-surface rounded-xl p-4 space-y-1">
                 <p className="font-semibold text-fg mb-1">{t('types.regular')}</p>
-                <p className="text-body">{t('fareInfo.base')}: {regionRate.base.toLocaleString()}{t('result.won')} ({(regionRate.baseDist / 1000).toFixed(1)}km)</p>
-                <p className="text-body">{t('fareInfo.distance')}: {regionRate.unitDist}{t('fareInfo.perMeter')} {regionRate.unitFare}{t('result.won')}</p>
-                <p className="text-body">{t('fareInfo.time')}: {regionRate.timeUnit}{t('fareInfo.perSec')} {regionRate.timeFare}{t('result.won')}</p>
+                <p className="text-body">{t('fareInfo.base')}: {regionRate.base.toLocaleString()}{won} ({(regionRate.baseDist / 1000).toFixed(1)}km)</p>
+                <p className="text-body">{t('fareInfo.distance')}: {regionRate.unitDist}{t('fareInfo.perMeter')} {regionRate.unitFare}{won}</p>
+                <p className="text-body">{t('fareInfo.time')}: {regionRate.timeUnit}{t('fareInfo.perSec')} {regionRate.timeFare}{won}</p>
               </div>
-              <div className="bg-surface rounded-lg p-3 space-y-1">
+              <div className="bg-surface rounded-xl p-4 space-y-1">
                 <p className="font-semibold text-fg mb-1">{t('fareInfo.surchargeTitle')}</p>
                 <p className="text-body">
-                  <Moon className="w-4 h-4 inline mr-1 text-indigo-500" />
-                  {t('fareInfo.night')}: {String(regionRate.nightStart).padStart(2, '0')}~{String(regionRate.nightEnd).padStart(2, '0')}{t('hourUnit')} {Math.round(regionRate.nightRate * 100)}%
-                  {regionRate.deepStart != null && ` (${String(regionRate.deepStart).padStart(2, '0')}~${String(regionRate.deepEnd).padStart(2, '0')}${t('hourUnit')} ${Math.round(regionRate.deepRate * 100)}%)`}
+                  {t('fareInfo.night')}: {hh(regionRate.nightStart)}~{hh(regionRate.nightEnd)}{t('hourUnit')} {Math.round(regionRate.nightRate * 100)}%
+                  {regionRate.deepStart != null && ` (${hh(regionRate.deepStart)}~${hh(regionRate.deepEnd)}${t('hourUnit')} ${Math.round(regionRate.deepRate * 100)}%)`}
                 </p>
-                <p className="text-body">
-                  <Navigation className="w-4 h-4 inline mr-1 text-amber-500" />
-                  {t('fareInfo.outOfCity')}: {Math.round(regionRate.outRate * 100)}%
-                </p>
-                <p className="text-body">{t('fareInfo.premium')}: {PREMIUM.base.toLocaleString()}{t('result.won')} (3km)</p>
+                <p className="text-body">{t('fareInfo.outOfCity')}: {Math.round(regionRate.outRate * 100)}%</p>
+                <p className="text-body">{t('fareInfo.premium')}: {PREMIUM.base.toLocaleString()}{won} ({(PREMIUM.baseDist / 1000).toFixed(1)}km)</p>
               </div>
             </div>
             <p className="text-xs text-muted mt-3">{t('fareInfo.sourceNote')}</p>
@@ -626,27 +512,19 @@ export default function TaxiFare() {
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center">
-          {t('guide.title')}
-        </h2>
-
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.calculation.title')}</h3>
             <ul className="list-disc list-inside space-y-2 text-body">
-              {(t.raw('guide.calculation.items') as string[]).map((item, idx) => (
-                <li key={idx}>{item}</li>
-              ))}
+              {(t.raw('guide.calculation.items') as string[]).map((item, idx) => <li key={idx}>{item}</li>)}
             </ul>
           </div>
           <div>
             <h3 className="text-lg font-semibold text-fg mb-3">{t('guide.tips.title')}</h3>
             <ul className="list-disc list-inside space-y-2 text-body">
-              {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
-                <li key={idx}>{item}</li>
-              ))}
+              {(t.raw('guide.tips.items') as string[]).map((item, idx) => <li key={idx}>{item}</li>)}
             </ul>
           </div>
         </div>

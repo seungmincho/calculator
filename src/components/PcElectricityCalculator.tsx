@@ -1,613 +1,420 @@
 /**
- * PcElectricityCalculator - 컴퓨터 전기세 계산기
- * 번역 네임스페이스: pcElectricity
- *
- * 사용되는 번역 키:
- * - title, description
- * - components.cpu, components.gpu, components.ram, components.storage, components.monitor, components.etc
- * - components.cpuLabel, components.gpuLabel, components.ramLabel, components.storageLabel, components.monitorLabel, components.etcLabel
- * - cpu.presets (65W, 105W, 125W, 170W, 250W)
- * - gpu.presets (75W, 150W, 200W, 300W, 350W, 450W)
- * - ram.slots, ram.perSlot
- * - storage.ssd, storage.hdd, storage.count
- * - monitor.presets (24인치 30W, 27인치 40W, 32인치 50W)
- * - monitor.dual
- * - custom, watt
- * - usage.title, usage.hoursPerDay, usage.daysPerMonth, usage.hours, usage.days
- * - load.title, load.gaming, load.normal, load.idle, load.custom, load.percent
- * - tariff.title, tariff.progressive, tariff.custom, tariff.wonPerKwh
- * - tariff.tier1, tariff.tier2, tariff.tier3
- * - result.title, result.totalWatt, result.actualWatt, result.monthlyKwh, result.yearlyKwh
- * - result.monthlyCost, result.yearlyCost, result.won, result.kwh
- * - ratio.title
- * - guide.title, guide.section1.title, guide.section1.items
- * - guide.section2.title, guide.section2.items
+ * PcElectricityCalculator - 컴퓨터 전기세 계산기 (번역 네임스페이스: pcElectricity)
+ * 요금 로직: src/utils/pcElectricity.ts (한전 주택용 저압 누진제, 한계비용)
  */
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Cpu, Monitor, HardDrive, Zap, Calculator, BookOpen } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { marginalCost, yearlyMarginal, pcMonthlyKwh, TARIFF, type Season, type Bill } from '@/utils/pcElectricity'
 
-type LoadType = 'gaming' | 'normal' | 'idle' | 'custom'
-type TariffType = 'progressive' | 'custom'
-
-interface ComponentPower {
-  cpu: number
-  gpu: number
-  ram: number
-  storage: number
-  monitor: number
-  etc: number
-}
-
-const CPU_PRESETS = [65, 105, 125, 170, 250]
-const GPU_PRESETS = [75, 150, 200, 300, 350, 450]
+// 제조사 공식 TDP/PBP·TBP 대략값 (W). 같은 W는 한 줄로 묶어 선택 표시가 겹치지 않게 함
+const CPU_MODELS: [string, number][] = [
+  ['Ryzen 5 7600 / Core i5-14400F', 65],
+  ['Ryzen 7 7700X', 105],
+  ['Ryzen 7 7800X3D / 9800X3D', 120],
+  ['Core i5-14600K / i7-14700K / Ultra 7 265K', 125],
+  ['Ryzen 9 9950X', 170],
+  ['Core i9-14900K (MTP)', 253],
+]
+const GPU_MODELS: [string, number][] = [
+  ['RTX 4060', 115],
+  ['RTX 5060', 145],
+  ['RTX 4060 Ti', 160],
+  ['RTX 4070', 200],
+  ['RTX 4070 SUPER', 220],
+  ['RTX 5070', 250],
+  ['RX 7800 XT', 263],
+  ['RTX 5070 Ti', 300],
+  ['RX 9070 XT', 304],
+  ['RTX 4080 SUPER', 320],
+  ['RTX 5080', 360],
+  ['RTX 4090', 450],
+  ['RTX 5090', 575],
+]
 const MONITOR_PRESETS = [
   { size: 24, watt: 30 },
   { size: 27, watt: 40 },
   { size: 32, watt: 50 },
 ]
+const PSU_OPTIONS: [string, number][] = [['none', 1], ['bronze', 0.85], ['gold', 0.88], ['platinum', 0.91]]
+const HOUSEHOLD_PRESETS = [200, 300, 400]
 
-const LOAD_RATES: Record<Exclude<LoadType, 'custom'>, number> = {
-  gaming: 85,
-  normal: 50,
-  idle: 20,
+const DEFAULTS = {
+  cpu: 125, gpu: 200, cmp: 115, ram: 2, ssd: 1, hdd: 0, mon: 40, dual: 0, etc: 20,
+  g: 3, w: 2, i: 0, d: 30, hh: 300, psu: 0.88, rate: 0,
 }
-
-// 2025 한전 주택용 전기요금 누진제
-const PROGRESSIVE_TIERS = [
-  { limit: 200, rate: 120 },
-  { limit: 400, rate: 214.6 },
-  { limit: Infinity, rate: 307.3 },
-]
-
-function calculateProgressiveCost(monthlyKwh: number): number {
-  let remaining = monthlyKwh
-  let cost = 0
-  let prevLimit = 0
-  for (const tier of PROGRESSIVE_TIERS) {
-    const tierKwh = Math.min(remaining, tier.limit - prevLimit)
-    if (tierKwh <= 0) break
-    cost += tierKwh * tier.rate
-    remaining -= tierKwh
-    prevLimit = tier.limit
-  }
-  return cost
+type State = typeof DEFAULTS
+const LIMITS: Record<keyof State, [number, number]> = {
+  cpu: [0, 1000], gpu: [0, 1500], cmp: [0, 1500], ram: [1, 4], ssd: [0, 4], hdd: [0, 4], mon: [0, 500], dual: [0, 1], etc: [0, 1000],
+  g: [0, 24], w: [0, 24], i: [0, 24], d: [0, 31], hh: [0, 2000], psu: [0.5, 1], rate: [0, 2000],
 }
+const clamp = (k: keyof State, v: number) => Math.min(LIMITS[k][1], Math.max(LIMITS[k][0], Number.isFinite(v) ? v : 0))
 
-const COMPONENT_COLORS: Record<keyof ComponentPower, string> = {
-  cpu: 'bg-blue-500',
-  gpu: 'bg-red-500',
-  ram: 'bg-green-500',
-  storage: 'bg-yellow-500',
-  monitor: 'bg-purple-500',
-  etc: 'bg-gray-400',
-}
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const fmt = (n: number, d = 1) => n.toLocaleString('ko-KR', { maximumFractionDigits: d })
+
+const seg = (active: boolean) =>
+  `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${active ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
 export default function PcElectricityCalculator() {
   const t = useTranslations('pcElectricity')
+  const [s, setS] = useState<State>(DEFAULTS)
+  const [season, setSeason] = useState<Season>('normal')
+  const [loaded, setLoaded] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const set = (k: keyof State, v: number) => setS((p) => ({ ...p, [k]: clamp(k, v) }))
 
-  // Component power states
-  const [cpuPreset, setCpuPreset] = useState<number | null>(125)
-  const [cpuCustom, setCpuCustom] = useState('')
-  const [gpuPreset, setGpuPreset] = useState<number | null>(200)
-  const [gpuCustom, setGpuCustom] = useState('')
-  const [ramSlots, setRamSlots] = useState(2)
-  const [ssdCount, setSsdCount] = useState(1)
-  const [hddCount, setHddCount] = useState(0)
-  const [monitorPreset, setMonitorPreset] = useState<number | null>(40)
-  const [monitorCustom, setMonitorCustom] = useState('')
-  const [isDualMonitor, setIsDualMonitor] = useState(false)
-  const [etcWatt, setEtcWatt] = useState(20)
-
-  // Usage pattern states
-  const [hoursPerDay, setHoursPerDay] = useState(5)
-  const [daysPerMonth, setDaysPerMonth] = useState(30)
-  const [loadType, setLoadType] = useState<LoadType>('normal')
-  const [customLoad, setCustomLoad] = useState(50)
-
-  // Tariff states
-  const [tariffType, setTariffType] = useState<TariffType>('progressive')
-  const [customTariff, setCustomTariff] = useState(200)
-
-  const cpuWatt = cpuPreset ?? (parseFloat(cpuCustom) || 0)
-  const gpuWatt = gpuPreset ?? (parseFloat(gpuCustom) || 0)
-  const ramWatt = ramSlots * 10
-  const storageWatt = ssdCount * 5 + hddCount * 10
-  const monitorWatt = (monitorPreset ?? (parseFloat(monitorCustom) || 0)) * (isDualMonitor ? 2 : 1)
-
-  const componentPower: ComponentPower = useMemo(() => ({
-    cpu: cpuWatt,
-    gpu: gpuWatt,
-    ram: ramWatt,
-    storage: storageWatt,
-    monitor: monitorWatt,
-    etc: etcWatt,
-  }), [cpuWatt, gpuWatt, ramWatt, storageWatt, monitorWatt, etcWatt])
-
-  const loadRate = loadType === 'custom' ? customLoad : LOAD_RATES[loadType]
-
-  const result = useMemo(() => {
-    const totalWatt = Object.values(componentPower).reduce((s, v) => s + v, 0)
-    const actualWatt = totalWatt * (loadRate / 100)
-    const monthlyKwh = (actualWatt * hoursPerDay * daysPerMonth) / 1000
-    const yearlyKwh = monthlyKwh * 12
-    const monthlyCost = tariffType === 'progressive'
-      ? calculateProgressiveCost(monthlyKwh)
-      : monthlyKwh * customTariff
-    const yearlyCost = monthlyCost * 12
-
-    return { totalWatt, actualWatt, monthlyKwh, yearlyKwh, monthlyCost, yearlyCost }
-  }, [componentPower, loadRate, hoursPerDay, daysPerMonth, tariffType, customTariff])
-
-  const componentEntries = useMemo(() => {
-    const total = result.totalWatt || 1
-    return (Object.keys(componentPower) as (keyof ComponentPower)[])
-      .map((key) => ({
-        key,
-        watt: componentPower[key],
-        percent: (componentPower[key] / total) * 100,
-      }))
-      .filter((e) => e.watt > 0)
-  }, [componentPower, result.totalWatt])
-
-  const formatNumber = useCallback((n: number, decimals = 0) => {
-    return n.toLocaleString('ko-KR', { maximumFractionDigits: decimals })
+  // 공유 링크 복원 → 이후 상태를 URL에 동기화
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const next = { ...DEFAULTS }
+    for (const k of Object.keys(DEFAULTS) as (keyof State)[]) {
+      const v = params.get(k)
+      if (v !== null && v !== '') next[k] = clamp(k, parseFloat(v))
+    }
+    setS(next)
+    if (params.get('s') === 'summer') setSeason('summer')
+    else if (!params.get('s') && [6, 7].includes(new Date().getMonth())) setSeason('summer')
+    setLoaded(true)
   }, [])
 
-  const handleCpuPreset = (w: number) => {
-    setCpuPreset(w)
-    setCpuCustom('')
-  }
-  const handleCpuCustom = (v: string) => {
-    setCpuCustom(v)
-    setCpuPreset(null)
-  }
-  const handleGpuPreset = (w: number) => {
-    setGpuPreset(w)
-    setGpuCustom('')
-  }
-  const handleGpuCustom = (v: string) => {
-    setGpuCustom(v)
-    setGpuPreset(null)
-  }
-  const handleMonitorPreset = (w: number) => {
-    setMonitorPreset(w)
-    setMonitorCustom('')
-  }
-  const handleMonitorCustom = (v: string) => {
-    setMonitorCustom(v)
-    setMonitorPreset(null)
-  }
-
-  const componentLabelKey = (key: keyof ComponentPower): string => {
-    const map: Record<keyof ComponentPower, string> = {
-      cpu: 'components.cpuLabel',
-      gpu: 'components.gpuLabel',
-      ram: 'components.ramLabel',
-      storage: 'components.storageLabel',
-      monitor: 'components.monitorLabel',
-      etc: 'components.etcLabel',
+  useEffect(() => {
+    if (!loaded) return
+    const url = new URL(window.location.href)
+    for (const k of Object.keys(DEFAULTS) as (keyof State)[]) {
+      if (s[k] === DEFAULTS[k]) url.searchParams.delete(k)
+      else url.searchParams.set(k, String(s[k]))
     }
-    return map[key]
+    url.searchParams.set('s', season)
+    window.history.replaceState(window.history.state, '', url)
+  }, [loaded, s, season])
+
+  const flat = s.rate > 0
+  const parts = useMemo(() => ({
+    cpu: s.cpu,
+    gpu: s.gpu,
+    ram: s.ram * 10,
+    storage: s.ssd * 5 + s.hdd * 10,
+    monitor: s.mon * (s.dual ? 2 : 1),
+    etc: s.etc,
+  }), [s])
+  const baseWatt = parts.cpu + parts.ram + parts.storage + parts.monitor + parts.etc
+  const totalWatt = baseWatt + parts.gpu
+  const usage = { gaming: s.g, work: s.w, idle: s.i, days: s.d }
+  const hoursPerDay = s.g + s.w + s.i
+
+  const cost = (watt: number) => {
+    const kwh = pcMonthlyKwh(watt, usage, s.psu)
+    if (flat) return { kwh, monthly: kwh * s.rate, yearly: kwh * s.rate * 12 }
+    return { kwh, monthly: marginalCost(s.hh, kwh, season).added, yearly: yearlyMarginal(s.hh, kwh) }
   }
 
-  const presetBtnClass = (active: boolean) =>
-    `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-      active
-        ? 'bg-blue-600 text-white'
-        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-    }`
+  const cur = cost(totalWatt)
+  const cmp = cost(baseWatt + s.cmp)
+  const m = marginalCost(s.hh, cur.kwh, season)
+  const avgWatt = hoursPerDay > 0 && s.d > 0 ? (cur.kwh * 1000) / (hoursPerDay * s.d) : 0
+  const saving = cur.monthly - cmp.monthly
+  const saveYear = cur.yearly - cmp.yearly
 
-  const inputClass =
-    'w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none'
+  const breakdown: [string, number][] = (['base', 'energy', 'climate', 'fuel', 'vat', 'fund'] as (keyof Bill)[]).map(
+    (k) => [k, (m.after[k] as number) - (m.before[k] as number)]
+  )
+  const partEntries = (Object.keys(parts) as (keyof typeof parts)[]).filter((k) => parts[k] > 0)
+
+  const copyLink = async () => {
+    try { await navigator.clipboard.writeText(window.location.href) } catch { /* 클립보드 차단 */ }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const modelSelect = (label: string, models: [string, number][], value: number, onChange: (w: number) => void, extra?: [string, number]) => {
+    const list = extra ? [extra, ...models] : models
+    const match = list.find(([, w]) => w === value)
+    return (
+      <div>
+        <label className="block text-sm font-medium text-body mb-2">{label}</label>
+        <div className="flex flex-wrap items-center gap-2">
+          <select
+            className="ui-field px-3 py-2 flex-1 min-w-[200px]"
+            value={match ? String(match[1]) : 'custom'}
+            onChange={(e) => e.target.value !== 'custom' && onChange(Number(e.target.value))}
+          >
+            {list.map(([name, w]) => <option key={name} value={w}>{name} ({w}W)</option>)}
+            <option value="custom">{t('custom')}</option>
+          </select>
+          <input
+            type="number"
+            inputMode="numeric"
+            className="ui-field px-3 py-2 w-24"
+            value={value}
+            min={0}
+            onChange={(e) => onChange(Number(e.target.value))}
+            aria-label={`${label} (W)`}
+          />
+          <span className="text-sm text-muted">{t('watt')}</span>
+        </div>
+      </div>
+    )
+  }
+
+  const numRow = (label: string, k: keyof State, unit: string, step = 1) => (
+    <div>
+      <label className="block text-sm font-medium text-body mb-1">{label}</label>
+      <div className="flex items-center gap-2">
+        <input type="number" inputMode="decimal" step={step} className="ui-field px-3 py-2 w-full" value={s[k]} min={LIMITS[k][0]} max={LIMITS[k][1]} onChange={(e) => set(k, Number(e.target.value))} />
+        <span className="text-sm text-muted whitespace-nowrap">{unit}</span>
+      </div>
+    </div>
+  )
+
+  const partLabel: Record<keyof typeof parts, string> = {
+    cpu: t('components.cpuLabel'), gpu: t('components.gpuLabel'), ram: t('components.ramLabel'),
+    storage: t('components.storageLabel'), monitor: t('components.monitorLabel'), etc: t('components.etcLabel'),
+  }
+  const limits = TARIFF.limits[season]
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Zap className="w-7 h-7 text-yellow-500" />
-          {t('title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left: Inputs */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Components */}
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              {t('components.cpu')}
-            </h2>
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* 결과 — 모바일에서 먼저 보이도록 DOM 앞쪽, 데스크톱에선 오른쪽 열 */}
+        <div className="space-y-4 lg:col-start-3 lg:row-start-1">
+          <div className="ui-hero p-6">
+            <p className="text-sm text-white/70">{flat ? t('result.flatMonthly') : t('result.addedMonthly')}</p>
+            <p className="text-3xl font-bold tabular-nums mt-1">{won(cur.monthly)}{t('result.won')}</p>
+            <p className="text-sm text-white/70 mt-2 tabular-nums">
+              {t('result.yearlyShort', { v: won(cur.yearly) })} · {fmt(cur.kwh)} {t('result.kwh')}/{t('usage.month')}
+            </p>
+            {!flat && <p className="text-xs text-white/70 mt-1">{t('result.yearlyNote')}</p>}
+          </div>
 
-            {/* CPU */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('components.cpuLabel')}
-              </label>
-              <div className="flex flex-wrap gap-2 mb-2">
-                {CPU_PRESETS.map((w) => (
-                  <button key={w} className={presetBtnClass(cpuPreset === w)} onClick={() => handleCpuPreset(w)}>
-                    {w}W
-                  </button>
+          <div className="ui-card p-5 space-y-3 text-sm">
+            <Row label={t('result.totalWatt')} value={`${won(totalWatt)}W`} />
+            <Row label={t('result.avgWatt')} value={`${fmt(avgWatt)}W`} />
+            <Row label={t('result.monthlyKwh')} value={`${fmt(cur.kwh)} ${t('result.kwh')}`} />
+            <Row label={t('result.yearlyKwh')} value={`${fmt(cur.kwh * 12)} ${t('result.kwh')}`} />
+            {!flat && cur.kwh > 0 && (
+              <Row label={t('result.unitCost')} value={`${fmt(cur.monthly / cur.kwh)}${t('tariff.wonPerKwh')}`} />
+            )}
+          </div>
+
+          {!flat && (
+            <div className="ui-card p-5 space-y-3 text-sm">
+              <Row
+                label={t('result.tierMove')}
+                value={`${t('result.tierLabel', { n: m.before.tier })} → ${t('result.tierLabel', { n: m.after.tier })}`}
+              />
+              <Row label={t('result.householdBill')} value={`${won(m.before.total)} → ${won(m.after.total)}${t('result.won')}`} />
+              {m.after.tier > m.before.tier && (
+                <p className="rounded-xl bg-amber-50 text-amber-800 p-3 text-xs">
+                  {t('result.tierUpWarning', { from: m.before.tier, to: m.after.tier })}
+                </p>
+              )}
+              <div className="border-t border-line pt-3 space-y-2">
+                <p className="font-medium text-fg">{t('result.breakdown')}</p>
+                {breakdown.map(([k, v]) => (
+                  <Row key={k} label={t(`result.${k}`)} value={`${won(v)}${t('result.won')}`} muted />
                 ))}
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted">{t('custom')}</span>
-                <input
-                  type="number"
-                  className={inputClass + ' max-w-[120px]'}
-                  placeholder="W"
-                  value={cpuCustom}
-                  onChange={(e) => handleCpuCustom(e.target.value)}
-                  min={0}
-                />
-                <span className="text-sm text-muted">{t('watt')}</span>
-              </div>
             </div>
+          )}
 
-            {/* GPU */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('components.gpuLabel')}
-              </label>
-              <div className="flex flex-wrap gap-2 mb-2">
-                {GPU_PRESETS.map((w) => (
-                  <button key={w} className={presetBtnClass(gpuPreset === w)} onClick={() => handleGpuPreset(w)}>
-                    {w}W
-                  </button>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted">{t('custom')}</span>
-                <input
-                  type="number"
-                  className={inputClass + ' max-w-[120px]'}
-                  placeholder="W"
-                  value={gpuCustom}
-                  onChange={(e) => handleGpuCustom(e.target.value)}
-                  min={0}
-                />
-                <span className="text-sm text-muted">{t('watt')}</span>
-              </div>
-            </div>
+          <div className="ui-card p-5 space-y-3">
+            <h3 className="text-sm font-semibold text-fg">{t('compare.title')}</h3>
+            <select className="ui-field px-3 py-2 w-full text-sm" value={s.cmp} onChange={(e) => set('cmp', Number(e.target.value))}>
+              {!GPU_MODELS.some(([, w]) => w === s.cmp) && s.cmp !== 0 && <option value={s.cmp}>{s.cmp}W</option>}
+              <option value={0}>{t('gpuIntegrated')} (0W)</option>
+              {GPU_MODELS.map(([name, w]) => <option key={name} value={w}>{name} ({w}W)</option>)}
+            </select>
+            <p className="text-sm text-sub">
+              {s.gpu}W → {s.cmp}W · {saving >= 0 ? t('compare.saving') : t('compare.extra')}
+            </p>
+            <p className="text-xl font-bold text-fg tabular-nums">
+              {t('compare.monthly')} {won(Math.abs(saving))}{t('result.won')}
+              <span className="text-sm font-medium text-muted ml-2">{t('compare.yearly')} {won(Math.abs(saveYear))}{t('result.won')}</span>
+            </p>
+          </div>
 
-            {/* RAM */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('components.ramLabel')} ({t('ram.perSlot')})
-              </label>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted">{t('ram.slots')}</span>
-                <select
-                  className={inputClass + ' max-w-[100px]'}
-                  value={ramSlots}
-                  onChange={(e) => setRamSlots(Number(e.target.value))}
-                >
-                  {[1, 2, 3, 4].map((n) => (
-                    <option key={n} value={n}>{n}</option>
-                  ))}
+          <button type="button" onClick={copyLink} className="ui-btn-soft w-full px-4 py-2 text-sm">
+            {copied ? t('share.copied') : t('share.copy')}
+          </button>
+        </div>
+
+        {/* 입력 */}
+        <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1 space-y-6">
+          <div className="ui-card p-6 space-y-5">
+            <h2 className="text-lg font-semibold text-fg">{t('sections.parts')}</h2>
+            {modelSelect(t('components.cpuLabel'), CPU_MODELS, s.cpu, (w) => set('cpu', w))}
+            {modelSelect(t('components.gpuLabel'), GPU_MODELS, s.gpu, (w) => set('gpu', w), [t('gpuIntegrated'), 0])}
+
+            <div className="grid sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-body mb-1">{t('components.ramLabel')} ({t('ram.perSlot')})</label>
+                <select className="ui-field px-3 py-2 w-full" value={s.ram} onChange={(e) => set('ram', Number(e.target.value))}>
+                  {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{t('ram.slots')} {n}</option>)}
                 </select>
-                <span className="text-sm text-muted">= {ramWatt}W</span>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-body mb-1">{t('storage.ssd')}</label>
+                <select className="ui-field px-3 py-2 w-full" value={s.ssd} onChange={(e) => set('ssd', Number(e.target.value))}>
+                  {[0, 1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}{t('storage.count')}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-body mb-1">{t('storage.hdd')}</label>
+                <select className="ui-field px-3 py-2 w-full" value={s.hdd} onChange={(e) => set('hdd', Number(e.target.value))}>
+                  {[0, 1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}{t('storage.count')}</option>)}
+                </select>
               </div>
             </div>
 
-            {/* Storage */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('components.storageLabel')}
-              </label>
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-sub">{t('storage.ssd')}</span>
-                  <select
-                    className={inputClass + ' max-w-[80px]'}
-                    value={ssdCount}
-                    onChange={(e) => setSsdCount(Number(e.target.value))}
-                  >
-                    {[0, 1, 2, 3, 4].map((n) => (
-                      <option key={n} value={n}>{n}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-sub">{t('storage.hdd')}</span>
-                  <select
-                    className={inputClass + ' max-w-[80px]'}
-                    value={hddCount}
-                    onChange={(e) => setHddCount(Number(e.target.value))}
-                  >
-                    {[0, 1, 2, 3, 4].map((n) => (
-                      <option key={n} value={n}>{n}</option>
-                    ))}
-                  </select>
-                </div>
-                <span className="text-sm text-muted">= {storageWatt}W</span>
-              </div>
-            </div>
-
-            {/* Monitor */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('components.monitorLabel')}
-              </label>
-              <div className="flex flex-wrap gap-2 mb-2">
-                {MONITOR_PRESETS.map((m) => (
-                  <button
-                    key={m.size}
-                    className={presetBtnClass(monitorPreset === m.watt)}
-                    onClick={() => handleMonitorPreset(m.watt)}
-                  >
-                    {m.size}{t('monitor.inch')} ({m.watt}W)
+              <label className="block text-sm font-medium text-body mb-2">{t('components.monitorLabel')}</label>
+              <div className="flex flex-wrap items-center gap-2">
+                {MONITOR_PRESETS.map((p) => (
+                  <button key={p.size} type="button" className={seg(s.mon === p.watt)} onClick={() => set('mon', p.watt)}>
+                    {p.size}{t('monitor.inch')} ({p.watt}W)
                   </button>
                 ))}
-              </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted">{t('custom')}</span>
-                  <input
-                    type="number"
-                    className={inputClass + ' max-w-[100px]'}
-                    placeholder="W"
-                    value={monitorCustom}
-                    onChange={(e) => handleMonitorCustom(e.target.value)}
-                    min={0}
-                  />
-                </div>
-                <label className="flex items-center gap-1.5 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="accent-blue-600 w-4 h-4"
-                    checked={isDualMonitor}
-                    onChange={(e) => setIsDualMonitor(e.target.checked)}
-                  />
+                <input type="number" inputMode="numeric" className="ui-field px-3 py-1.5 w-20" value={s.mon} min={0} onChange={(e) => set('mon', Number(e.target.value))} aria-label={`${t('components.monitorLabel')} (W)`} />
+                <span className="text-sm text-muted">{t('watt')}</span>
+                <label className="flex items-center gap-1.5 cursor-pointer ml-2">
+                  <input type="checkbox" className="accent-blue-600 w-4 h-4" checked={!!s.dual} onChange={(e) => set('dual', e.target.checked ? 1 : 0)} />
                   <span className="text-sm text-body">{t('monitor.dual')}</span>
                 </label>
               </div>
             </div>
 
-            {/* Etc */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('components.etcLabel')}
-              </label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  className={inputClass + ' max-w-[120px]'}
-                  value={etcWatt}
-                  onChange={(e) => setEtcWatt(Math.max(0, Number(e.target.value)))}
-                  min={0}
-                />
-                <span className="text-sm text-muted">{t('watt')}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Usage Pattern */}
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              {t('usage.title')}
-            </h2>
-
             <div className="grid sm:grid-cols-2 gap-4">
+              {numRow(t('components.etc'), 'etc', t('watt'))}
               <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('usage.hoursPerDay')}
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    className={inputClass}
-                    value={hoursPerDay}
-                    onChange={(e) => setHoursPerDay(Math.min(24, Math.max(0, Number(e.target.value))))}
-                    min={0}
-                    max={24}
-                  />
-                  <span className="text-sm text-muted whitespace-nowrap">{t('usage.hours')}</span>
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('usage.daysPerMonth')}
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    className={inputClass}
-                    value={daysPerMonth}
-                    onChange={(e) => setDaysPerMonth(Math.min(31, Math.max(0, Number(e.target.value))))}
-                    min={0}
-                    max={31}
-                  />
-                  <span className="text-sm text-muted whitespace-nowrap">{t('usage.days')}</span>
-                </div>
+                <label className="block text-sm font-medium text-body mb-1">{t('psu.title')}</label>
+                <select className="ui-field px-3 py-2 w-full" value={s.psu} onChange={(e) => set('psu', Number(e.target.value))}>
+                  {PSU_OPTIONS.map(([k, v]) => <option key={k} value={v}>{t(`psu.${k}`)}</option>)}
+                </select>
               </div>
             </div>
+          </div>
 
-            {/* Load type */}
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('load.title')}
-              </label>
-              <div className="flex flex-wrap gap-2 mb-2">
-                {(['gaming', 'normal', 'idle', 'custom'] as LoadType[]).map((lt) => (
-                  <button
-                    key={lt}
-                    className={presetBtnClass(loadType === lt)}
-                    onClick={() => setLoadType(lt)}
-                  >
-                    {t(`load.${lt}`)}
-                    {lt !== 'custom' && ` (${LOAD_RATES[lt]}%)`}
+              <h2 className="text-lg font-semibold text-fg">{t('usage.title')}</h2>
+              <p className="text-xs text-muted mt-1">{t('usage.profileHint', { h: fmt(hoursPerDay) })}</p>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {numRow(t('load.gaming'), 'g', t('usage.hours'), 0.5)}
+              {numRow(t('load.normal'), 'w', t('usage.hours'), 0.5)}
+              {numRow(t('load.idle'), 'i', t('usage.hours'), 0.5)}
+            </div>
+            {hoursPerDay > 24 && <p className="text-xs text-red-600">{t('usage.over24')}</p>}
+            <div className="flex flex-wrap gap-2">
+              {(['gamer', 'office', 'server'] as const).map((p) => {
+                const v = { gamer: [4, 2, 0], office: [0, 8, 2], server: [0, 0, 24] }[p]
+                const active = s.g === v[0] && s.w === v[1] && s.i === v[2]
+                return (
+                  <button key={p} type="button" className={seg(active)} onClick={() => setS((o) => ({ ...o, g: v[0], w: v[1], i: v[2] }))}>
+                    {t(`usage.preset.${p}`)}
                   </button>
-                ))}
-              </div>
-              {loadType === 'custom' && (
-                <div className="flex items-center gap-2 mt-2">
-                  <input
-                    type="number"
-                    className={inputClass + ' max-w-[100px]'}
-                    value={customLoad}
-                    onChange={(e) => setCustomLoad(Math.min(100, Math.max(0, Number(e.target.value))))}
-                    min={0}
-                    max={100}
-                  />
-                  <span className="text-sm text-muted">{t('load.percent')}</span>
-                </div>
-              )}
+                )
+              })}
             </div>
-
-            {/* Tariff */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('tariff.title')}
-              </label>
-              <div className="flex flex-wrap gap-2 mb-2">
-                <button
-                  className={presetBtnClass(tariffType === 'progressive')}
-                  onClick={() => setTariffType('progressive')}
-                >
-                  {t('tariff.progressive')}
-                </button>
-                <button
-                  className={presetBtnClass(tariffType === 'custom')}
-                  onClick={() => setTariffType('custom')}
-                >
-                  {t('tariff.custom')}
-                </button>
-              </div>
-              {tariffType === 'progressive' ? (
-                <div className="text-xs text-muted space-y-0.5 mt-1">
-                  <p>{t('tariff.tier1')}</p>
-                  <p>{t('tariff.tier2')}</p>
-                  <p>{t('tariff.tier3')}</p>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2 mt-2">
-                  <input
-                    type="number"
-                    className={inputClass + ' max-w-[120px]'}
-                    value={customTariff}
-                    onChange={(e) => setCustomTariff(Math.max(0, Number(e.target.value)))}
-                    min={0}
-                  />
-                  <span className="text-sm text-muted">{t('tariff.wonPerKwh')}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Results */}
-        <div className="lg:col-span-1 space-y-6">
-          {/* Result cards */}
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              {t('result.title')}
-            </h2>
-
-            <div className="grid grid-cols-2 gap-3">
-              <ResultCard label={t('result.totalWatt')} value={`${formatNumber(result.totalWatt)}W`} />
-              <ResultCard label={t('result.actualWatt')} value={`${formatNumber(result.actualWatt, 1)}W`} />
-              <ResultCard label={t('result.monthlyKwh')} value={`${formatNumber(result.monthlyKwh, 1)} ${t('result.kwh')}`} />
-              <ResultCard label={t('result.yearlyKwh')} value={`${formatNumber(result.yearlyKwh, 1)} ${t('result.kwh')}`} />
-            </div>
-
-            <div className="border-t border-line pt-4 space-y-3">
-              <div className="bg-subtle rounded-xl p-4">
-                <p className="text-sm text-sub">{t('result.monthlyCost')}</p>
-                <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                  {formatNumber(Math.round(result.monthlyCost))}{t('result.won')}
-                </p>
-              </div>
-              <div className="bg-subtle rounded-xl p-4">
-                <p className="text-sm text-sub">{t('result.yearlyCost')}</p>
-                <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                  {formatNumber(Math.round(result.yearlyCost))}{t('result.won')}
-                </p>
-              </div>
-            </div>
+            <div className="sm:w-1/3">{numRow(t('usage.daysPerMonth'), 'd', t('usage.days'))}</div>
           </div>
 
-          {/* Component ratio bar */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-sm font-semibold text-fg mb-4 flex items-center gap-2">
-              {t('ratio.title')}
-            </h3>
-
-            {/* Stacked bar */}
-            <div className="w-full h-6 rounded-full overflow-hidden flex">
-              {componentEntries.map((entry) => (
-                <div
-                  key={entry.key}
-                  className={`${COMPONENT_COLORS[entry.key]} h-full transition-all`}
-                  style={{ width: `${entry.percent}%` }}
-                  title={`${t(componentLabelKey(entry.key))}: ${entry.watt}W (${entry.percent.toFixed(1)}%)`}
-                />
-              ))}
+          <div className="ui-card p-6 space-y-5">
+            <h2 className="text-lg font-semibold text-fg">{t('tariff.title')}</h2>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" className={seg(!flat)} onClick={() => set('rate', 0)}>{t('tariff.progressive')}</button>
+              <button type="button" className={seg(flat)} onClick={() => set('rate', 200)}>{t('tariff.custom')}</button>
             </div>
 
-            {/* Legend */}
-            <div className="mt-4 space-y-2">
-              {componentEntries.map((entry) => (
-                <div key={entry.key} className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className={`w-3 h-3 rounded-sm ${COMPONENT_COLORS[entry.key]}`} />
-                    <span className="text-body">{t(componentLabelKey(entry.key))}</span>
+            {flat ? (
+              <div className="flex items-center gap-2">
+                <input type="number" inputMode="decimal" className="ui-field px-3 py-2 w-32" value={s.rate} min={1} onChange={(e) => set('rate', Math.max(1, Number(e.target.value)))} />
+                <span className="text-sm text-muted">{t('tariff.wonPerKwh')}</span>
+              </div>
+            ) : (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-body mb-1">{t('household.title')}</label>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <input type="number" inputMode="numeric" className="ui-field px-3 py-2 w-28" value={s.hh} min={0} onChange={(e) => set('hh', Number(e.target.value))} />
+                    <span className="text-sm text-muted">{t('result.kwh')}</span>
+                    {HOUSEHOLD_PRESETS.map((v) => (
+                      <button key={v} type="button" className={seg(s.hh === v)} onClick={() => set('hh', v)}>{v}kWh</button>
+                    ))}
                   </div>
-                  <span className="text-muted">
-                    {entry.watt}W ({entry.percent.toFixed(1)}%)
-                  </span>
+                  <p className="text-xs text-muted mt-1">{t('household.hint')}</p>
                 </div>
-              ))}
+                <div>
+                  <label className="block text-sm font-medium text-body mb-2">{t('season.title')}</label>
+                  <div className="flex flex-wrap gap-2">
+                    {(['normal', 'summer'] as Season[]).map((v) => (
+                      <button key={v} type="button" className={seg(season === v)} onClick={() => setSeason(v)}>{t(`season.${v}`)}</button>
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-subtle rounded-2xl p-4 text-xs text-sub space-y-1">
+                  <p>{t('tariff.tierRange', { a: limits[0], b: limits[1] })}</p>
+                  <p>{t('tariff.extras')}</p>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="ui-card p-6">
+            <h3 className="text-sm font-semibold text-fg mb-4">{t('ratio.title')}</h3>
+            <div className="space-y-3">
+              {partEntries.map((k) => {
+                const pct = (parts[k] / (totalWatt || 1)) * 100
+                return (
+                  <div key={k}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-body">{partLabel[k]}</span>
+                      <span className="text-muted tabular-nums">{parts[k]}W ({pct.toFixed(1)}%)</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-track overflow-hidden">
+                      <div className="h-full bg-primary rounded-full" style={{ width: `${pct}%` }} />
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Guide */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <h3 className="font-medium text-fg mb-3">{t('guide.section1.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.section1.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-sub flex items-start gap-2">
-                  <span className="text-blue-500 mt-0.5">&#8226;</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-medium text-fg mb-3">{t('guide.section2.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.section2.items') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-sub flex items-start gap-2">
-                  <span className="text-blue-500 mt-0.5">&#8226;</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {(['section3', 'section1', 'section2'] as const).map((sec) => {
+            const items = t.raw(`guide.${sec}.items`)
+            if (!Array.isArray(items)) return null
+            return (
+              <div key={sec}>
+                <h3 className="font-medium text-fg mb-3">{t(`guide.${sec}.title`)}</h3>
+                <ul className="space-y-2 list-disc pl-4">
+                  {(items as string[]).map((item, i) => <li key={i} className="text-sm text-sub">{item}</li>)}
+                </ul>
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>
   )
 }
 
-function ResultCard({ label, value }: { label: string; value: string }) {
+function Row({ label, value, muted }: { label: string; value: string; muted?: boolean }) {
   return (
-    <div className="bg-subtle rounded-lg p-3">
-      <p className="text-xs text-muted">{label}</p>
-      <p className="text-lg font-semibold text-fg">{value}</p>
+    <div className="flex justify-between gap-3">
+      <span className={muted ? 'text-muted' : 'text-sub'}>{label}</span>
+      <span className="text-fg font-medium tabular-nums text-right">{value}</span>
     </div>
   )
 }

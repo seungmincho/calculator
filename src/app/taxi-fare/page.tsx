@@ -30,7 +30,7 @@ export default function TaxiFarePage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['17개 시·도 지역별 요금', '탑승 시각별 심야할증(20~40%)', '시외(시계외) 할증', '일반/모범/대형 비교', '결과 이미지 저장', '링크 공유'],
+    featureList: ['17개 시·도 지역별 요금', '탑승 시각별 심야할증(20~40%)', '시외(시계외) 할증', '일반/모범/대형 비교', '17개 시·도 같은 거리 요금 비교', '교통 상황별 소요 시간 자동 추정', 'N명 더치페이 1인당 금액', '결과 이미지 저장', '링크 공유'],
   }
   const faqJsonLd = {
     '@context': 'https://schema.org',
