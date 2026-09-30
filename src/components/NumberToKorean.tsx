@@ -1,127 +1,71 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Hash, Copy, Check, RotateCcw, BookOpen } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { Copy, Check } from 'lucide-react'
+import {
+  parseAmount, toKoreanReading, toKoreanFormal, toHanja, toMixed, toEnglish,
+  commafy, canonical, addDigits, type ParsedNum,
+} from '@/utils/numberToKorean'
 
-// ── Korean / Chinese numerals ────────────────────────────────────────────────
-const KO_DIGITS = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
-const KO_SMALL = ['', '십', '백', '천']
-const KO_LARGE = ['', '만', '억', '조', '경'] // 4-digit groups: 10^0,10^4,10^8,10^12,10^16
-
-const CN_DIGITS = ['', '壹', '貳', '參', '四', '五', '六', '七', '八', '九']
-const CN_SMALL = ['', '拾', '百', '千']
-const CN_LARGE = ['', '萬', '億', '兆', '京']
-
-// ── English numerals ─────────────────────────────────────────────────────────
-const EN_ONES = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
-const EN_TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
-const EN_SCALES = ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion']
-
-// Convert a ≤4-digit group to Korean/Chinese (string-safe, no big-number arithmetic)
-function group4(num: number, digits: string[], small: string[]): string {
-  let result = ''
-  const th = Math.floor(num / 1000)
-  const hu = Math.floor((num % 1000) / 100)
-  const te = Math.floor((num % 100) / 10)
-  const on = num % 10
-  if (th > 0) result += digits[th] + small[3]
-  if (hu > 0) result += digits[hu] + small[2]
-  if (te > 0) result += digits[te] + small[1]
-  if (on > 0) result += digits[on]
-  return result
+// 숫자형 입력이면 천 단위 쉼표로 재포맷, 한글이 섞였으면 그대로 둔다 (역변환용)
+// ponytail: 중간 편집 시 커서가 끝으로 이동 — 불편 신고 오면 selection 보정 추가
+function formatInput(raw: string): string {
+  const s = raw.replace(/[\s,₩원정]/g, '').replace(/^(일금|금)/, '')
+  const m = s.match(/^([-−]?)(\d*)(\.\d*)?$/)
+  if (!m || !/\d/.test(s)) return raw
+  return m[1] + (m[2] ? commafy(m[2]) : '') + (m[3] ?? '')
 }
 
-// Split a numeric string into groups of `size` from the right
-function groupsOf(numStr: string, size: number): string[] {
-  const s = numStr.replace(/^0+/, '')
-  if (!s) return []
-  const out: string[] = []
-  for (let i = s.length; i > 0; i -= size) out.unshift(s.slice(Math.max(0, i - size), i))
-  return out
-}
+const QUICK_ADD = [
+  { label: '+1천', value: '1000' },
+  { label: '+1만', value: '10000' },
+  { label: '+10만', value: '100000' },
+  { label: '+100만', value: '1000000' },
+  { label: '+1000만', value: '10000000' },
+  { label: '+1억', value: '100000000' },
+]
 
-function toKorean(numStr: string, digits: string[], small: string[], large: string[], spacing: boolean): string {
-  const groups = groupsOf(numStr, 4)
-  if (!groups.length) return ''
-  const parts: string[] = []
-  groups.forEach((g, idx) => {
-    const gv = parseInt(g, 10) // g ≤ 4 digits → always safe
-    if (gv > 0) {
-      const largeIdx = groups.length - 1 - idx
-      parts.push(group4(gv, digits, small) + (large[largeIdx] ?? ''))
-    }
-  })
-  return parts.join(spacing ? ' ' : '')
-}
-
-function group3English(n: number): string {
-  let r = ''
-  const h = Math.floor(n / 100)
-  const rest = n % 100
-  if (h) r += EN_ONES[h] + ' hundred' + (rest ? ' ' : '')
-  if (rest) {
-    if (rest < 20) r += EN_ONES[rest]
-    else r += EN_TENS[Math.floor(rest / 10)] + (rest % 10 ? '-' + EN_ONES[rest % 10] : '')
-  }
-  return r
-}
-
-function toEnglish(numStr: string): string {
-  const groups = groupsOf(numStr, 3)
-  if (!groups.length) return ''
-  const parts: string[] = []
-  groups.forEach((g, idx) => {
-    const gv = parseInt(g, 10)
-    if (gv > 0) {
-      const scaleIdx = groups.length - 1 - idx
-      if (scaleIdx >= EN_SCALES.length) return
-      parts.push(group3English(gv) + (EN_SCALES[scaleIdx] ? ' ' + EN_SCALES[scaleIdx] : ''))
-    }
-  })
-  const joined = parts.join(' ')
-  return joined ? joined.charAt(0).toUpperCase() + joined.slice(1) : ''
-}
-
-// Insert thousands separators without parseInt (precision-safe for 20 digits)
-function commafy(numStr: string): string {
-  const s = numStr.replace(/^0+/, '') || '0'
-  return s.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
+const PREFIXES = [
+  { id: 'geum', value: '금 ', label: '금' },
+  { id: 'ilgeum', value: '일금 ', label: '일금' },
+  { id: 'none', value: '', label: '' },
+]
 
 export default function NumberToKorean() {
   const t = useTranslations('numberToKorean')
-  const [inputValue, setInputValue] = useState<string>('')
+  const [input, setInput] = useState('')
   const [spacing, setSpacing] = useState(false)
+  const [prefix, setPrefix] = useState('금 ')
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
-  const hasValue = inputValue !== '' && inputValue !== '0' && /[1-9]/.test(inputValue)
-
-  const formattedNumber = useMemo(() => commafy(inputValue), [inputValue])
-  const koreanReading = useMemo(() => (hasValue ? toKorean(inputValue, KO_DIGITS, KO_SMALL, KO_LARGE, spacing) : ''), [inputValue, spacing, hasValue])
-  const koreanFormal = useMemo(() => (koreanReading ? `금 ${koreanReading}원정` : ''), [koreanReading])
-  const chineseFormat = useMemo(() => {
-    if (!hasValue) return ''
-    const cn = toKorean(inputValue, CN_DIGITS, CN_SMALL, CN_LARGE, false)
-    return cn ? `金 ${cn}圓整` : ''
-  }, [inputValue, hasValue])
-  const englishFormat = useMemo(() => (hasValue ? toEnglish(inputValue) : ''), [inputValue, hasValue])
-
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '')
-    if (value.length > 20) return
-    setInputValue(value)
+  // 공유 링크 복원 (?n=1234500)
+  useEffect(() => {
+    const n = new URLSearchParams(window.location.search).get('n')
+    if (n) setInput(formatInput(n))
   }, [])
 
-  const handleQuickAmount = useCallback((amount: number) => {
-    setInputValue(amount.toString())
-  }, [])
+  const parsed: ParsedNum | null = useMemo(() => (input.trim() ? parseAmount(input) : null), [input])
 
-  const handleReset = useCallback(() => {
-    setInputValue('')
-    setCopiedId(null)
-  }, [])
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    if (parsed) url.searchParams.set('n', canonical(parsed))
+    else url.searchParams.delete('n')
+    window.history.replaceState(window.history.state, '', url)
+  }, [parsed])
+
+  const numberDisplay = parsed ? `${parsed.neg ? '-' : ''}${commafy(parsed.int)}${parsed.frac ? '.' + parsed.frac : ''}` : ''
+  const formal = parsed ? toKoreanFormal(parsed, prefix, spacing) : ''
+  const hanja = parsed ? toHanja(parsed) : ''
+  const notAmount = !!parsed && !formal
+
+  const rows = [
+    { id: 'contract', label: t('contractFormat'), value: formal ? `${formal}(₩${commafy(parsed!.int)})` : '' },
+    { id: 'chinese', label: t('chineseNum'), value: hanja },
+    { id: 'mixed', label: t('mixedNum'), value: parsed ? toMixed(parsed) : '' },
+    { id: 'reading', label: t('koreanInformal'), value: parsed ? toKoreanReading(parsed, spacing) : '' },
+    { id: 'english', label: t('englishNum'), value: parsed ? toEnglish(parsed) : '' },
+  ]
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -137,153 +81,139 @@ export default function NumberToKorean() {
         document.execCommand('copy')
         document.body.removeChild(ta)
       }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
+    } catch { /* 복사 실패해도 상태 표시는 동일 */ }
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
   }, [])
 
-  const quickAmounts = [
-    { label: '1만', value: 10000 },
-    { label: '10만', value: 100000 },
-    { label: '100만', value: 1000000 },
-    { label: '1000만', value: 10000000 },
-    { label: '1억', value: 100000000 },
-    { label: '10억', value: 1000000000 },
-  ]
+  const handleAdd = (amount: string) => {
+    const base = parsed && !parsed.neg ? parsed.int : '0'
+    const next = addDigits(base, amount)
+    if (next.length <= 20) setInput(commafy(next) + (parsed && !parsed.neg && parsed.frac ? '.' + parsed.frac : ''))
+  }
 
-  const cards: { id: string; label: string; value: string; accent: string; border: string }[] = [
-    { id: 'formal', label: t('koreanFormal'), value: koreanFormal, accent: 'text-sub', border: 'border-blue-500 bg-subtle' },
-    { id: 'reading', label: t('koreanInformal'), value: koreanReading, accent: 'text-sub', border: 'border-green-500 bg-subtle' },
-    { id: 'english', label: t('englishNum'), value: englishFormat, accent: 'text-sub', border: 'border-indigo-500 bg-subtle' },
-    { id: 'chinese', label: t('chineseNum'), value: chineseFormat, accent: 'text-sub', border: 'border-orange-500 bg-subtle' },
-  ]
+  const CopyButton = ({ id, value, label }: { id: string; value: string; label?: string }) => (
+    <button
+      onClick={() => value && copyToClipboard(value, id)}
+      disabled={!value}
+      className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium bg-soft hover:bg-subtle text-body rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+      aria-label={`${label ?? ''} ${t('copy')}`.trim()}
+    >
+      {copiedId === id ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+      {copiedId === id ? t('copied') : t('copy')}
+    </button>
+  )
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Hash className="w-7 h-7" />
-          {t('title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Panel */}
+        {/* 입력 */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
+          <div className="ui-card p-6 space-y-6">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">{t('inputNumber')}</label>
+              <label htmlFor="ntk-input" className="block text-sm font-medium text-body mb-2">{t('inputNumber')}</label>
               <input
+                id="ntk-input"
                 type="text"
-                inputMode="numeric"
-                value={inputValue}
-                onChange={handleInputChange}
+                inputMode="decimal"
+                autoComplete="off"
+                autoFocus
+                value={input}
+                onChange={(e) => setInput(formatInput(e.target.value))}
                 placeholder={t('placeholder')}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-lg`}
-                maxLength={20}
+                className="ui-field px-4 py-3 text-lg tabular-nums"
               />
-              <p className="text-xs text-muted mt-1">{t('maxNumber')}</p>
+              <p className="text-xs text-muted mt-2">{t('inputHint')}</p>
+              {!parsed && /[\d가-힣]/.test(input) && <p className="text-xs text-red-600 mt-1">{t('invalidNumber')} · {t('maxNumber')}</p>}
             </div>
 
-            {/* Spacing toggle */}
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={spacing} onChange={(e) => setSpacing(e.target.checked)} className="w-4 h-4 accent-blue-600" />
-              <span className="text-sm text-body">{t('spacing')}</span>
-            </label>
-
-            {/* Quick Amount Buttons */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">{t('quickAmounts')}</label>
+              <div className="block text-sm font-medium text-body mb-2">{t('quickAmounts')}</div>
               <div className="grid grid-cols-3 gap-2">
-                {quickAmounts.map((item) => (
-                  <button
-                    key={item.value}
-                    onClick={() => handleQuickAmount(item.value)}
-                    className="px-2 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded transition-colors"
-                  >
-                    {item.label}
+                {QUICK_ADD.map((q) => (
+                  <button key={q.value} onClick={() => handleAdd(q.value)} className="px-2 py-2 text-sm bg-soft hover:bg-subtle text-body rounded-xl transition-colors tabular-nums">
+                    {q.label}
                   </button>
                 ))}
               </div>
             </div>
 
-            <button
-              onClick={handleReset}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-            >
-              <RotateCcw className="w-4 h-4" />
-              {t('reset')}
-            </button>
+            <div>
+              <div className="block text-sm font-medium text-body mb-2">{t('prefixLabel')}</div>
+              <div className="grid grid-cols-3 gap-2" role="radiogroup">
+                {PREFIXES.map((p) => (
+                  <button
+                    key={p.id}
+                    role="radio"
+                    aria-checked={prefix === p.value}
+                    onClick={() => setPrefix(p.value)}
+                    className={`px-2 py-2 text-sm rounded-xl transition-colors ${prefix === p.value ? 'bg-primary text-white' : 'bg-soft hover:bg-subtle text-body'}`}
+                  >
+                    {p.label || t('prefixNone')}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked={spacing} onChange={(e) => setSpacing(e.target.checked)} className="w-4 h-4 accent-blue-600" />
+              <span className="text-sm text-body">{t('spacing')}</span>
+            </label>
+
+            <div className="grid grid-cols-2 gap-2">
+              <button onClick={() => { setInput(''); setCopiedId(null) }} className="ui-btn-soft px-4 py-2">{t('reset')}</button>
+              <button onClick={() => copyToClipboard(window.location.href, 'link')} disabled={!parsed} className="ui-btn-soft px-4 py-2 disabled:opacity-40">
+                {copiedId === 'link' ? t('copied') : t('copyLink')}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Right Panel */}
-        <div className="lg:col-span-2">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            {/* Number display */}
-            <div className="text-center pb-5 border-b border-line">
-              <div className="text-sm font-medium text-muted mb-2">{t('numberDisplay')}</div>
-              <div className="text-3xl sm:text-4xl font-bold text-fg break-all">{formattedNumber}</div>
-            </div>
-
-            {cards.map((card) => (
-              <div key={card.id} className={`rounded-xl p-4 border-l-4 ${card.border}`}>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className={`text-sm font-medium mb-2 ${card.accent}`}>{card.label}</div>
-                    <div className="text-xl font-medium text-fg break-words">
-                      {card.value || t('inputPrompt')}
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => card.value && copyToClipboard(card.value, card.id)}
-                    disabled={!card.value}
-                    className="flex-shrink-0 p-2 hover:bg-soft rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    title={t('copy')}
-                  >
-                    {copiedId === card.id ? <Check className="w-5 h-5 text-green-600 dark:text-green-400" /> : <Copy className={`w-5 h-5 ${card.accent}`} />}
-                  </button>
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-4">
+          <div className="ui-card p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <div className="text-sm font-medium text-muted mb-1">{t('koreanFormal')}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-fg break-all">
+                  {formal || <span className="text-faint font-medium text-xl">{notAmount ? t('integerOnly') : t('inputPrompt')}</span>}
                 </div>
+                <div className="text-sm text-muted mt-2 tabular-nums break-all">{numberDisplay && `${numberDisplay}${t('wonUnit')}`}</div>
+              </div>
+              <CopyButton id="formal" value={formal} label={t('koreanFormal')} />
+            </div>
+          </div>
+
+          <div className="ui-card divide-y divide-line">
+            {rows.map((r) => (
+              <div key={r.id} className="flex items-center justify-between gap-4 px-6 py-4">
+                <div className="min-w-0">
+                  <div className="text-xs font-medium text-muted mb-1">{r.label}</div>
+                  <div className="text-lg font-medium text-fg break-all">{r.value || <span className="text-faint">-</span>}</div>
+                </div>
+                <CopyButton id={r.id} value={r.value} label={r.label} />
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="font-semibold text-fg mb-3">{t('guide.usage.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.usage.items') as string[]).map((item, index) => (
-                <li key={index} className="text-sm text-sub flex gap-2">
-                  <span className="text-blue-600 dark:text-blue-400">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-fg mb-3">{t('guide.rules.title')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.rules.items') as string[]).map((item, index) => (
-                <li key={index} className="text-sm text-sub flex gap-2">
-                  <span className="text-blue-600 dark:text-blue-400">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {(['usage', 'rules'] as const).map((sec) => (
+            <div key={sec}>
+              <h3 className="font-semibold text-fg mb-3">{t(`guide.${sec}.title`)}</h3>
+              <ul className="space-y-2 list-disc pl-5 text-sm text-sub">
+                {(t.raw(`guide.${sec}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </div>

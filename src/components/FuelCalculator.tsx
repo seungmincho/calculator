@@ -5,17 +5,9 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import {
   Car,
-  Fuel,
-  Calculator,
-  MapPin,
-  DollarSign,
-  TrendingDown,
   Copy,
   Check,
   Download,
-  Clock,
-  Zap,
-  Edit3,
   Save,
   X,
   FileText,
@@ -28,7 +20,10 @@ import {
   Trash2,
   Upload,
   Link,
-  BarChart3
+  Edit3,
+  RefreshCw,
+  Fuel,
+  Calculator
 } from 'lucide-react'
 import { PieChart, Pie, Cell as PieCell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
@@ -37,13 +32,17 @@ import { safeStorage, STORAGE_KEYS } from '@/utils/localStorage'
 import DatePicker from '@/components/ui/DatePicker'
 import GuideSection from '@/components/GuideSection'
 
+type FuelType = 'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg'
+
 interface FuelCalculation {
   distance: number
   fuelConsumption: number
   fuelCost: number
+  settlement: number // 정산 유류비 = 연료비 × 감가비 계수
   depreciationCost: number
-  totalCost: number
+  totalCost: number // 운행 원가(참고) = 연료비 + 감가상각비
   costPerKm: number
+  settlementPerKm: number
 }
 
 interface VehicleType {
@@ -55,18 +54,64 @@ interface VehicleType {
 
 interface VehicleSettings {
   vehicleType: string
-  fuelType: 'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg'
+  fuelType: FuelType
   customEfficiency: number
   useCustomEfficiency: boolean
-  fuelPrices: {
-    gasoline: number
-    premium_gasoline: number
-    diesel: number
-    lpg: number
-  }
+  fuelPrices: Record<FuelType, number>
   depreciationMultiplier: number
   selectedSido: string
   savedAt: string
+}
+
+// 차종별 연비 및 감가상각비 데이터
+const VEHICLE_TYPES: Record<string, VehicleType> = {
+  light: { id: 'light', category: '경차', efficiency: 16.0, depreciation: 80 },
+  compact: { id: 'compact', category: '소형차', efficiency: 14.5, depreciation: 100 },
+  midsize: { id: 'midsize', category: '중형차', efficiency: 12.0, depreciation: 130 },
+  fullsize: { id: 'fullsize', category: '대형차', efficiency: 10.5, depreciation: 160 },
+  suv: { id: 'suv', category: 'SUV', efficiency: 9.5, depreciation: 180 },
+  van: { id: 'van', category: '승합차', efficiency: 8.5, depreciation: 200 },
+  truck: { id: 'truck', category: '화물차', efficiency: 7.0, depreciation: 250 }
+}
+
+const FUEL_TYPES: FuelType[] = ['gasoline', 'premium_gasoline', 'diesel', 'lpg']
+const isFuelType = (v: unknown): v is FuelType => FUEL_TYPES.includes(v as FuelType)
+const isVehicleType = (v: unknown): v is string => typeof v === 'string' && v in VEHICLE_TYPES
+
+// 연료별 연비 보정 (차종 기준 연비는 휘발유)
+const getAdjustedEfficiency = (baseEfficiency: number, fuel: FuelType): number =>
+  fuel === 'diesel' ? baseEfficiency * 1.18 : fuel === 'lpg' ? baseEfficiency * 0.9 : baseEfficiency
+
+// 로컬(KST) 기준 YYYY-MM-DD — toISOString()은 UTC라 오전 9시 전엔 전날이 됨
+const localDate = (d = new Date()) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+// OPINET/Supabase 날짜(YYYYMMDD 또는 YYYY-MM-DD…) → YYYY-MM-DD
+const normDate = (s?: string) => {
+  const digits = (s ?? '').replace(/\D/g, '').slice(0, 8)
+  return digits.length === 8 ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6)}` : ''
+}
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+
+async function copyText(text: string) {
+  if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text)
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.style.position = 'fixed'
+  textarea.style.left = '-999999px'
+  document.body.appendChild(textarea)
+  textarea.select()
+  document.execCommand('copy')
+  document.body.removeChild(textarea)
+}
+
+function downloadFile(content: string, filename: string, type: string) {
+  const blob = new Blob([content], { type })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.click()
+  URL.revokeObjectURL(url)
 }
 
 // OPINET 시도 코드 매핑
@@ -94,17 +139,18 @@ const SIDO_OPTIONS = [
 interface DrivingLogEntry {
   id: string
   date: string
-  distance: number
+  distance: number // 편도(또는 입력한) 거리
+  roundTrip?: boolean // true면 distance × 2
   tollFee: number
   parkingFee: number
   memo: string
 }
 
+const logKm = (log: DrivingLogEntry) => log.distance * (log.roundTrip ? 2 : 1)
+
 const FuelCalculator = () => {
   const t = useTranslations('fuelCalculator')
   const tc = useTranslations('common')
-  const glassCard = 'bg-surface border border-line rounded-xl shadow-[0_18px_50px_rgba(16,185,129,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
-  const glassInset = 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.24),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]'
   const searchParams = useSearchParams()
   const [linkCopied, setLinkCopied] = useState(false)
 
@@ -112,42 +158,50 @@ const FuelCalculator = () => {
   const [activeTab, setActiveTab] = useState<'calculator' | 'drivingLog'>('calculator')
 
   // Calculator state
-  const [distance, setDistance] = useState<number>(() => parseInt(searchParams.get('distance') || '') || 100) // 기본 100km: 첫 화면부터 결과 노출
-  const [vehicleType, setVehicleType] = useState<string>(() => searchParams.get('vehicleType') || 'compact')
-  const [fuelType, setFuelType] = useState<'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg'>(() => {
+  const [distance, setDistance] = useState<number>(() => parseFloat(searchParams.get('distance') || '') || 100) // 기본 100km: 첫 화면(서버 HTML 포함)부터 결과 노출
+  const [roundTrip, setRoundTrip] = useState<boolean>(() => searchParams.get('rt') === '1')
+  const [vehicleType, setVehicleType] = useState<string>(() => {
+    const p = searchParams.get('vehicleType')
+    return isVehicleType(p) ? p : 'compact'
+  })
+  const [fuelType, setFuelType] = useState<FuelType>(() => {
     const p = searchParams.get('fuelType')
-    return (p === 'gasoline' || p === 'premium_gasoline' || p === 'diesel' || p === 'lpg') ? p : 'gasoline'
+    return isFuelType(p) ? p : 'gasoline'
   })
   const [customEfficiency, setCustomEfficiency] = useState<number>(0)
   const [useCustomEfficiency, setUseCustomEfficiency] = useState(false)
-  const [calculation, setCalculation] = useState<FuelCalculation | null>(null)
   const [isCopied, setIsCopied] = useState(false)
   const [isSaved, setIsSaved] = useState(false)
-  const [fuelPrices, setFuelPrices] = useState({
+  const [fuelPrices, setFuelPrices] = useState<Record<FuelType, number>>({
     gasoline: 1600,
     premium_gasoline: 1800,
     diesel: 1400,
     lpg: 900
   })
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null) // 서버 렌더 시각 ≠ 클라이언트 시각 → hydration mismatch 방지
   const [isEditingPrices, setIsEditingPrices] = useState(false)
   const [tempPrices, setTempPrices] = useState(fuelPrices)
-  const [priceSource, setPriceSource] = useState<'manual' | 'opinet'>('manual')
+  // default = 조회 전/실패 시 내장 기본값, manual = 사용자가 직접 수정, opinet = 조회 성공
+  const [priceSource, setPriceSource] = useState<'default' | 'manual' | 'opinet'>('default')
+  const [priceDate, setPriceDate] = useState<string>('') // 적용 유가의 기준일 (YYYY-MM-DD)
+  const [priceNoData, setPriceNoData] = useState(false) // 요청한 날짜 데이터 없음 → 기존 가격 유지
   const [priceLoading, setPriceLoading] = useState(false)
   const [selectedSido, setSelectedSido] = useState<string>('')
   const [selectedDate, setSelectedDate] = useState<string>('') // YYYY-MM-DD, 빈 값이면 실시간
-  const [depreciationMultiplier, setDepreciationMultiplier] = useState<number>(1.0) // 감가비 계수
+  const [depreciationMultiplier, setDepreciationMultiplier] = useState<number>(1.0) // 감가비 계수 (유류비에 곱함)
 
   // Vehicle settings state
   const [hasVehicleSettings, setHasVehicleSettings] = useState(false)
   const [settingsFeedback, setSettingsFeedback] = useState<string | null>(null)
+  const [logFeedback, setLogFeedback] = useState<string | null>(null)
+  const [logCopied, setLogCopied] = useState(false)
 
   // Driving log state
   const [drivingLogs, setDrivingLogs] = useState<DrivingLogEntry[]>([])
-  const [dateFilter, setDateFilter] = useState<'thisMonth' | 'last3Months' | 'all'>('all')
+  const [dateFilter, setDateFilter] = useState<'thisMonth' | 'last3Months' | 'all'>('thisMonth')
   const [newLogEntry, setNewLogEntry] = useState<Omit<DrivingLogEntry, 'id'>>({
-    date: new Date().toISOString().slice(0, 10),
+    date: '', // 마운트 후 오늘 날짜로 채움 (빌드 시각 고정 방지)
     distance: 0,
+    roundTrip: false,
     tollFee: 0,
     parkingFee: 0,
     memo: ''
@@ -163,66 +217,33 @@ const FuelCalculator = () => {
     loadFromHistory
   } = useCalculationHistory('fuel')
 
-  // 차종별 연비 및 감가상각비 데이터
-  const vehicleTypes: Record<string, VehicleType> = useMemo(() => ({
-    light: {
-      id: 'light',
-      category: '경차',
-      efficiency: 16.0,
-      depreciation: 80
-    },
-    compact: {
-      id: 'compact',
-      category: '소형차',
-      efficiency: 14.5,
-      depreciation: 100
-    },
-    midsize: {
-      id: 'midsize',
-      category: '중형차',
-      efficiency: 12.0,
-      depreciation: 130
-    },
-    fullsize: {
-      id: 'fullsize',
-      category: '대형차',
-      efficiency: 10.5,
-      depreciation: 160
-    },
-    suv: {
-      id: 'suv',
-      category: 'SUV',
-      efficiency: 9.5,
-      depreciation: 180
-    },
-    van: {
-      id: 'van',
-      category: '승합차',
-      efficiency: 8.5,
-      depreciation: 200
-    },
-    truck: {
-      id: 'truck',
-      category: '화물차',
-      efficiency: 7.0,
-      depreciation: 250
-    }
-  }), [])
-
   // Load vehicle settings and driving logs on mount
   useEffect(() => {
-    // Load vehicle settings
+    setNewLogEntry(prev => ({ ...prev, date: prev.date || localDate() }))
+
     const savedSettings = safeStorage.getItem(STORAGE_KEYS.VEHICLE_SETTINGS)
     if (savedSettings) {
       setHasVehicleSettings(true)
+      // 공유 링크로 차종/연료가 지정되지 않았으면 내 차량(연비·계수) 자동 적용 — 유가는 OPINET 최신값 유지
+      const qs = new URLSearchParams(window.location.search)
+      if (!qs.get('vehicleType') && !qs.get('fuelType')) {
+        try {
+          const s: Partial<VehicleSettings> = JSON.parse(savedSettings)
+          if (isVehicleType(s.vehicleType)) setVehicleType(s.vehicleType)
+          if (isFuelType(s.fuelType)) setFuelType(s.fuelType)
+          if (s.customEfficiency) setCustomEfficiency(s.customEfficiency)
+          if (s.useCustomEfficiency !== undefined) setUseCustomEfficiency(s.useCustomEfficiency)
+        } catch {
+          // ignore invalid vehicle settings data
+        }
+      }
     }
 
-    // Load driving logs
     const savedLogs = safeStorage.getItem(STORAGE_KEYS.DRIVING_LOG)
     if (savedLogs) {
       try {
         const parsed = JSON.parse(savedLogs)
-        setDrivingLogs(parsed)
+        if (Array.isArray(parsed)) setDrivingLogs(parsed)
       } catch {
         // ignore invalid driving log data
       }
@@ -232,6 +253,17 @@ const FuelCalculator = () => {
   // ── OPINET 유가 가져오기 (실시간 또는 과거 날짜) ──
   const fetchOpinetPrices = useCallback(async (sido?: string, date?: string) => {
     setPriceLoading(true)
+    setPriceNoData(false)
+    const apply = (p: Partial<Record<FuelType, number>>, basis: string) => {
+      setFuelPrices(prev => ({
+        gasoline: p.gasoline || prev.gasoline,
+        premium_gasoline: p.premium_gasoline || prev.premium_gasoline,
+        diesel: p.diesel || prev.diesel,
+        lpg: p.lpg || prev.lpg,
+      }))
+      setPriceDate(basis)
+      setPriceSource('opinet')
+    }
     try {
       const params = new URLSearchParams()
       if (sido) params.set('sido', sido)
@@ -244,8 +276,8 @@ const FuelCalculator = () => {
       // Supabase 과거 데이터 응답
       if (data.source === 'supabase' && Array.isArray(data.data)) {
         const rows = data.data as Array<{ gasoline?: number; premium_gasoline?: number; diesel?: number; lpg?: number; trade_date?: string; sido_nm?: string }>
+        let gasoline = 0, premiumGasoline = 0, diesel = 0, lpg = 0
         if (rows.length > 0) {
-          let gasoline = 0, premiumGasoline = 0, diesel = 0, lpg = 0
           if (sido) {
             gasoline = Math.round(Number(rows[0].gasoline ?? 0))
             premiumGasoline = Math.round(Number(rows[0].premium_gasoline ?? 0))
@@ -264,18 +296,11 @@ const FuelCalculator = () => {
             if (dCount) diesel = Math.round(diesel / dCount)
             if (lCount) lpg = Math.round(lpg / lCount)
           }
-          if (gasoline || diesel) {
-            const newPrices = {
-              gasoline: gasoline || fuelPrices.gasoline,
-              premium_gasoline: premiumGasoline || fuelPrices.premium_gasoline,
-              diesel: diesel || fuelPrices.diesel,
-              lpg: lpg || fuelPrices.lpg,
-            }
-            setFuelPrices(newPrices)
-            setTempPrices(newPrices)
-            setLastUpdated(new Date())
-            setPriceSource('opinet')
-          }
+        }
+        if (gasoline || diesel) {
+          apply({ gasoline, premium_gasoline: premiumGasoline, diesel, lpg }, normDate(rows[0].trade_date) || date || localDate())
+        } else {
+          setPriceNoData(true)
         }
         return
       }
@@ -283,28 +308,21 @@ const FuelCalculator = () => {
       // OPINET 실시간 응답 (전국 또는 시도별)
       const oils = data?.RESULT?.OIL
       if (Array.isArray(oils)) {
-        const priceMap: Record<string, number> = {}
+        const priceMap: Partial<Record<FuelType, number>> = {}
+        let tradeDate = ''
         for (const oil of oils) {
           if (oil.PRODCD === 'B027') priceMap.gasoline = Math.round(Number(oil.PRICE))
           if (oil.PRODCD === 'B034') priceMap.premium_gasoline = Math.round(Number(oil.PRICE))
           if (oil.PRODCD === 'D047') priceMap.diesel = Math.round(Number(oil.PRICE))
           if (oil.PRODCD === 'K015') priceMap.lpg = Math.round(Number(oil.PRICE))
+          tradeDate ||= normDate(oil.TRADE_DT)
         }
-        if (priceMap.gasoline || priceMap.diesel) {
-          const newPrices = {
-            gasoline: priceMap.gasoline || fuelPrices.gasoline,
-            premium_gasoline: priceMap.premium_gasoline || fuelPrices.premium_gasoline,
-            diesel: priceMap.diesel || fuelPrices.diesel,
-            lpg: priceMap.lpg || fuelPrices.lpg,
-          }
-          setFuelPrices(newPrices)
-          setTempPrices(newPrices)
-          setLastUpdated(new Date())
-          setPriceSource('opinet')
-        }
+        if (priceMap.gasoline || priceMap.diesel) apply(priceMap, tradeDate || localDate())
+        else if (date) setPriceNoData(true)
       }
     } catch {
-      // 실패 시 기존 수동 가격 유지
+      // 실패 시 기존 가격 유지 (출처 표시는 그대로)
+      if (date) setPriceNoData(true)
     } finally {
       setPriceLoading(false)
     }
@@ -322,11 +340,15 @@ const FuelCalculator = () => {
   // ── URL sync ──
   useEffect(() => {
     const url = new URL(window.location.href)
-    if (distance > 0) url.searchParams.set('distance', String(distance)); else url.searchParams.delete('distance')
-    url.searchParams.set('vehicleType', vehicleType)
-    url.searchParams.set('fuelType', fuelType)
+    // 기본값은 URL에서 뺌 → 새로고침 시 쿼리 없는 깨끗한 URL(서버 HTML과 일치, hydration 경고 없음)
+    const setOrDelete = (key: string, value: string, isDefault: boolean) =>
+      isDefault ? url.searchParams.delete(key) : url.searchParams.set(key, value)
+    setOrDelete('distance', String(distance), distance === 100 || distance <= 0)
+    setOrDelete('rt', '1', !roundTrip)
+    setOrDelete('vehicleType', vehicleType, vehicleType === 'compact')
+    setOrDelete('fuelType', fuelType, fuelType === 'gasoline')
     window.history.replaceState({}, '', url)
-  }, [distance, vehicleType, fuelType])
+  }, [distance, roundTrip, vehicleType, fuelType])
 
   const copyLink = useCallback(() => {
     navigator.clipboard?.writeText(window.location.href).then(() => {
@@ -335,48 +357,36 @@ const FuelCalculator = () => {
     })
   }, [])
 
-  // 연비 조정
-  const getAdjustedEfficiency = useCallback((baseEfficiency: number, fuel: string): number => {
-    switch (fuel) {
-      case 'diesel':
-        return baseEfficiency * 1.18
-      case 'lpg':
-        return baseEfficiency * 0.9
-      default:
-        return baseEfficiency
-    }
-  }, [])
+  const efficiency = useCustomEfficiency && customEfficiency > 0
+    ? customEfficiency
+    : getAdjustedEfficiency(VEHICLE_TYPES[vehicleType].efficiency, fuelType)
+  const tripKm = distance > 0 ? distance * (roundTrip ? 2 : 1) : 0
 
-  // 유류비 계산
-  const calculateFuelCost = useCallback(() => {
-    if (distance <= 0) {
-      setCalculation(null)
-      return
-    }
-
-    const selectedVehicle = vehicleTypes[vehicleType]
-    const efficiency = useCustomEfficiency && customEfficiency > 0
-      ? customEfficiency
-      : getAdjustedEfficiency(selectedVehicle.efficiency, fuelType)
-
-    const fuelPrice = fuelPrices[fuelType]
-    const fuelConsumption = distance / efficiency
-    const fuelCost = fuelConsumption * fuelPrice
-    const depreciationCost = distance * selectedVehicle.depreciation * depreciationMultiplier
+  // 유류비 계산 — 렌더 중 계산(useMemo)이라 서버 HTML에도 기본값(100km) 결과가 들어감
+  const calculation = useMemo<FuelCalculation | null>(() => {
+    if (tripKm <= 0) return null
+    const fuelConsumption = tripKm / efficiency
+    const fuelCost = fuelConsumption * fuelPrices[fuelType]
+    const settlement = fuelCost * depreciationMultiplier
+    const depreciationCost = tripKm * VEHICLE_TYPES[vehicleType].depreciation
     const totalCost = fuelCost + depreciationCost
-    const costPerKm = totalCost / distance
-
-    const result: FuelCalculation = {
-      distance,
+    return {
+      distance: tripKm,
       fuelConsumption,
       fuelCost,
+      settlement,
       depreciationCost,
       totalCost,
-      costPerKm
+      costPerKm: totalCost / tripKm,
+      settlementPerKm: settlement / tripKm
     }
+  }, [tripKm, efficiency, fuelPrices, fuelType, depreciationMultiplier, vehicleType])
 
-    setCalculation(result)
-  }, [distance, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, vehicleTypes, getAdjustedEfficiency, depreciationMultiplier])
+  // 유가 출처 문구 (예: "OPINET 서울 · 2026-09-30 기준")
+  const sidoName = selectedSido ? SIDO_OPTIONS.find(s => s.code === selectedSido)?.name ?? '' : t('priceSource.nationwide')
+  const priceSourceLabel = priceSource === 'opinet'
+    ? t('priceSource.opinet', { region: sidoName, date: priceDate })
+    : priceSource === 'manual' ? t('priceSource.manual') : t('priceSource.default')
 
   // Manual fuel price editing
   const startEditingPrices = useCallback(() => {
@@ -386,7 +396,8 @@ const FuelCalculator = () => {
 
   const savePrices = useCallback(() => {
     setFuelPrices(tempPrices)
-    setLastUpdated(new Date())
+    setPriceSource('manual')
+    setPriceNoData(false)
     setIsEditingPrices(false)
   }, [tempPrices])
 
@@ -421,11 +432,14 @@ const FuelCalculator = () => {
     if (savedSettings) {
       try {
         const settings: VehicleSettings = JSON.parse(savedSettings)
-        setVehicleType(settings.vehicleType)
-        setFuelType(settings.fuelType)
+        if (isVehicleType(settings.vehicleType)) setVehicleType(settings.vehicleType)
+        if (isFuelType(settings.fuelType)) setFuelType(settings.fuelType)
         setCustomEfficiency(settings.customEfficiency)
         setUseCustomEfficiency(settings.useCustomEfficiency)
-        setFuelPrices(settings.fuelPrices)
+        if (settings.fuelPrices) {
+          setFuelPrices(settings.fuelPrices)
+          setPriceSource('manual')
+        }
         if (settings.depreciationMultiplier) setDepreciationMultiplier(settings.depreciationMultiplier)
         if (settings.selectedSido !== undefined) setSelectedSido(settings.selectedSido)
         setSettingsFeedback(t('vehicleSettings.loaded'))
@@ -453,28 +467,31 @@ const FuelCalculator = () => {
     const inputs = loadFromHistory(historyId)
     if (inputs) {
       setDistance(inputs.distance || 0)
-      setVehicleType(inputs.vehicleType || 'compact')
-      setFuelType(inputs.fuelType || 'gasoline')
+      setRoundTrip(!!inputs.roundTrip)
+      setVehicleType(isVehicleType(inputs.vehicleType) ? inputs.vehicleType : 'compact')
+      setFuelType(isFuelType(inputs.fuelType) ? inputs.fuelType : 'gasoline')
       setCustomEfficiency(inputs.customEfficiency || 0)
       setUseCustomEfficiency(inputs.useCustomEfficiency || false)
       if (inputs.fuelPrices) {
         setFuelPrices(inputs.fuelPrices)
+        setPriceSource('manual')
       }
     }
   }, [loadFromHistory])
 
   // Format history result for display
   const formatHistoryResult = useCallback((result: Record<string, unknown>) => {
-    const totalCost = result.totalCost as number | undefined
-    return `총 비용: ${totalCost?.toLocaleString() || '0'}원`
+    const amount = (result.settlement ?? result.totalCost) as number | undefined
+    return `${won(amount ?? 0)}원`
   }, [])
 
   // Manual save calculation
   const handleSaveCalculation = useCallback(() => {
-    if (!calculation || distance <= 0) return
+    if (!calculation) return
 
     const inputs = {
       distance,
+      roundTrip,
       vehicleType,
       fuelType,
       customEfficiency: useCustomEfficiency ? customEfficiency : 0,
@@ -484,6 +501,7 @@ const FuelCalculator = () => {
     }
 
     const resultData = {
+      settlement: calculation.settlement,
       totalCost: calculation.totalCost,
       fuelCost: calculation.fuelCost,
       depreciationCost: calculation.depreciationCost,
@@ -496,36 +514,46 @@ const FuelCalculator = () => {
       setIsSaved(true)
       setTimeout(() => setIsSaved(false), 2000)
     }
-  }, [calculation, distance, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, saveCalculation])
+  }, [calculation, distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, saveCalculation])
+
+  const persistLogs = useCallback((logs: DrivingLogEntry[]) => {
+    setDrivingLogs(logs)
+    safeStorage.setItem(STORAGE_KEYS.DRIVING_LOG, JSON.stringify(logs))
+  }, [])
 
   // Driving log functions
   const addDrivingLogEntry = useCallback(() => {
     if (newLogEntry.distance <= 0) return
-
     const entry: DrivingLogEntry = {
       ...newLogEntry,
-      id: Date.now().toString() + Math.random().toString(36).substr(2, 9)
+      date: newLogEntry.date || localDate(),
+      id: Date.now().toString() + Math.random().toString(36).slice(2, 11)
     }
+    persistLogs([entry, ...drivingLogs])
+    // Reset form (날짜·왕복 여부는 유지 → 연속 입력이 빠름)
+    setNewLogEntry(prev => ({ ...prev, distance: 0, tollFee: 0, parkingFee: 0, memo: '' }))
+  }, [newLogEntry, drivingLogs, persistLogs])
 
-    const updatedLogs = [entry, ...drivingLogs]
-    setDrivingLogs(updatedLogs)
-    safeStorage.setItem(STORAGE_KEYS.DRIVING_LOG, JSON.stringify(updatedLogs))
-
-    // Reset form
-    setNewLogEntry({
-      date: new Date().toISOString().slice(0, 10),
-      distance: 0,
+  // 계산기 결과를 주행일지에 바로 추가 (출장일 선택 시 그 날짜로)
+  const addCurrentTripToLog = useCallback(() => {
+    if (distance <= 0) return
+    const entry: DrivingLogEntry = {
+      id: Date.now().toString() + Math.random().toString(36).slice(2, 11),
+      date: selectedDate || localDate(),
+      distance,
+      roundTrip,
       tollFee: 0,
       parkingFee: 0,
       memo: ''
-    })
-  }, [newLogEntry, drivingLogs])
+    }
+    persistLogs([entry, ...drivingLogs])
+    setLogFeedback(t('trip.addedToLog', { date: entry.date }))
+    setTimeout(() => setLogFeedback(null), 2500)
+  }, [distance, roundTrip, selectedDate, drivingLogs, persistLogs, t])
 
   const removeDrivingLogEntry = useCallback((id: string) => {
-    const updatedLogs = drivingLogs.filter(log => log.id !== id)
-    setDrivingLogs(updatedLogs)
-    safeStorage.setItem(STORAGE_KEYS.DRIVING_LOG, JSON.stringify(updatedLogs))
-  }, [drivingLogs])
+    persistLogs(drivingLogs.filter(log => log.id !== id))
+  }, [drivingLogs, persistLogs])
 
   const clearAllDrivingLogs = useCallback(() => {
     if (window.confirm(t('drivingLog.export.confirmClear'))) {
@@ -534,183 +562,160 @@ const FuelCalculator = () => {
     }
   }, [t])
 
-  // Calculate fuel cost for a driving log entry
-  const calculateLogFuelCost = useCallback((logDistance: number): number => {
-    const selectedVehicle = vehicleTypes[vehicleType]
-    const efficiency = useCustomEfficiency && customEfficiency > 0
-      ? customEfficiency
-      : getAdjustedEfficiency(selectedVehicle.efficiency, fuelType)
-    const fuelConsumption = logDistance / efficiency
-    return Math.round(fuelConsumption * fuelPrices[fuelType])
-  }, [vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, vehicleTypes, getAdjustedEfficiency])
+  // 주행일지 한 건의 정산 유류비 (현재 차량·유가·감가비 계수 적용)
+  const calculateLogFuelCost = useCallback((km: number): number =>
+    Math.round((km / efficiency) * fuelPrices[fuelType] * depreciationMultiplier),
+  [efficiency, fuelPrices, fuelType, depreciationMultiplier])
 
-  // Calculate driving log summary
+  // Filtered logs by date (문자열 비교 — 타임존 영향 없음)
+  const filteredLogs = useMemo(() => {
+    if (dateFilter === 'all') return drivingLogs
+    const now = new Date()
+    if (dateFilter === 'thisMonth') {
+      const month = localDate(now).slice(0, 7)
+      return drivingLogs.filter(log => log.date.slice(0, 7) === month)
+    }
+    const cutoff = localDate(new Date(now.getFullYear(), now.getMonth() - 2, 1)).slice(0, 7)
+    return drivingLogs.filter(log => log.date.slice(0, 7) >= cutoff)
+  }, [drivingLogs, dateFilter])
+
+  // 합계는 현재 필터(기본: 이번 달) 기준
   const logSummary = useMemo(() => {
-    const totalDistance = drivingLogs.reduce((sum, log) => sum + log.distance, 0)
-    const totalTollFee = drivingLogs.reduce((sum, log) => sum + log.tollFee, 0)
-    const totalParkingFee = drivingLogs.reduce((sum, log) => sum + log.parkingFee, 0)
-    const totalFuelCost = drivingLogs.reduce((sum, log) => sum + calculateLogFuelCost(log.distance), 0)
-    const grandTotal = totalTollFee + totalParkingFee + totalFuelCost
-
+    const totalDistance = filteredLogs.reduce((sum, log) => sum + logKm(log), 0)
+    const totalTollFee = filteredLogs.reduce((sum, log) => sum + log.tollFee, 0)
+    const totalParkingFee = filteredLogs.reduce((sum, log) => sum + log.parkingFee, 0)
+    const totalFuelCost = filteredLogs.reduce((sum, log) => sum + calculateLogFuelCost(logKm(log)), 0)
     return {
       totalDistance,
       totalTollFee,
       totalParkingFee,
       totalFuelCost,
-      grandTotal
+      grandTotal: totalTollFee + totalParkingFee + totalFuelCost
+    }
+  }, [filteredLogs, calculateLogFuelCost])
+
+  // 계산기 탭에 보여줄 이번 달 누적 (필터와 무관)
+  const monthSummary = useMemo(() => {
+    const month = localDate().slice(0, 7)
+    const logs = drivingLogs.filter(log => log.date.slice(0, 7) === month)
+    return {
+      count: logs.length,
+      total: logs.reduce((sum, log) => sum + calculateLogFuelCost(logKm(log)) + log.tollFee + log.parkingFee, 0)
     }
   }, [drivingLogs, calculateLogFuelCost])
 
-  // Filtered logs by date
-  const filteredLogs = useMemo(() => {
-    const now = new Date()
-    if (dateFilter === 'thisMonth') {
-      return drivingLogs.filter(log => {
-        const d = new Date(log.date)
-        return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()
-      })
-    }
-    if (dateFilter === 'last3Months') {
-      const cutoff = new Date(now.getFullYear(), now.getMonth() - 2, 1)
-      return drivingLogs.filter(log => new Date(log.date) >= cutoff)
-    }
-    return drivingLogs
-  }, [drivingLogs, dateFilter])
+  const filterLabel = t(`drivingLog.filter.${dateFilter}`)
+  const conditionLine = t('settlement.condition', {
+    vehicle: VEHICLE_TYPES[vehicleType].category,
+    fuel: t(`fuelTypes.${fuelType}`),
+    efficiency: efficiency.toFixed(1),
+    price: won(fuelPrices[fuelType]),
+    multiplier: depreciationMultiplier.toFixed(2),
+    source: priceSourceLabel
+  })
 
-  // Export driving logs to CSV
+  // Export driving logs (현재 필터) to CSV
   const exportToCSV = useCallback(() => {
-    if (drivingLogs.length === 0) return
-
-    const headers = ['날짜', '거리(km)', '통행료(원)', '주차비(원)', '연료비(원)', '총비용(원)', '메모']
-    const rows = drivingLogs.map(log => {
-      const fuelCost = calculateLogFuelCost(log.distance)
-      const total = log.tollFee + log.parkingFee + fuelCost
-      return [
-        log.date,
-        log.distance.toString(),
-        log.tollFee.toString(),
-        log.parkingFee.toString(),
-        fuelCost.toString(),
-        total.toString(),
-        `"${log.memo.replace(/"/g, '""')}"`
-      ]
+    if (filteredLogs.length === 0) return
+    const q = (s: string) => `"${s.replace(/"/g, '""')}"`
+    const headers = [t('drivingLog.date'), t('drivingLog.distance'), t('trip.roundTrip'), t('settlement.km'), t('drivingLog.tollFee'), t('drivingLog.parkingFee'), t('drivingLog.fuelCost'), t('drivingLog.totalCost'), t('drivingLog.routeMemo')]
+    const rows = filteredLogs.map(log => {
+      const fuelCost = calculateLogFuelCost(logKm(log))
+      return [log.date, log.distance, log.roundTrip ? 'Y' : '', logKm(log), log.tollFee, log.parkingFee, fuelCost, log.tollFee + log.parkingFee + fuelCost, q(log.memo)].join(',')
     })
+    rows.push([t('drivingLog.summary.title'), '', '', logSummary.totalDistance, logSummary.totalTollFee, logSummary.totalParkingFee, logSummary.totalFuelCost, logSummary.grandTotal, q(conditionLine)].join(','))
+    downloadFile('﻿' + [headers.map(q).join(','), ...rows].join('\n'), `주행일지_${localDate()}.csv`, 'text/csv;charset=utf-8')
+  }, [filteredLogs, logSummary, calculateLogFuelCost, conditionLine, t])
 
-    // Add summary row
-    rows.push([
-      '합계',
-      logSummary.totalDistance.toString(),
-      logSummary.totalTollFee.toString(),
-      logSummary.totalParkingFee.toString(),
-      logSummary.totalFuelCost.toString(),
-      logSummary.grandTotal.toString(),
-      ''
-    ])
-
-    const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(row => row.join(','))].join('\n')
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `주행일지_${new Date().toISOString().slice(0, 10)}.csv`
-    link.click()
-    URL.revokeObjectURL(url)
-  }, [drivingLogs, logSummary, calculateLogFuelCost])
-
-  // 거리나 차종이 변경될 때마다 자동 계산
-  useEffect(() => {
-    calculateFuelCost()
-  }, [calculateFuelCost])
-
-  // 결과 복사
-  const copyResult = useCallback(async () => {
-    if (!calculation) return
-
-    const selectedVehicle = vehicleTypes[vehicleType]
-    const efficiency = useCustomEfficiency && customEfficiency > 0
-      ? customEfficiency
-      : getAdjustedEfficiency(selectedVehicle.efficiency, fuelType)
-
-    const resultText = `
-${t('title')} 결과
-
-📍 주행거리: ${distance.toLocaleString()}km
-🚗 차종: ${selectedVehicle.category} (${efficiency.toFixed(1)}km/L)
-⛽ 연료: ${t(`fuelTypes.${fuelType}`)} (${fuelPrices[fuelType].toLocaleString()}원/L)
-
-💰 계산 결과:
-- 연료 소모량: ${calculation.fuelConsumption.toFixed(2)}L
-- 연료비: ${calculation.fuelCost.toLocaleString()}원
-- 감가상각비: ${calculation.depreciationCost.toLocaleString()}원
-- 총 비용: ${calculation.totalCost.toLocaleString()}원
-- km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
-
-생성일시: ${new Date().toLocaleString('ko-KR')}
-출처: 툴허브 (https://toolhub.ai.kr/fuel-calculator)
-    `.trim()
-
+  // 주행일지 정산서 텍스트 (결재·메신저 붙여넣기용)
+  const copyLogSettlement = useCallback(async () => {
+    if (filteredLogs.length === 0) return
+    const lines = [...filteredLogs].sort((a, b) => a.date.localeCompare(b.date)).map(log => {
+      const fuelCost = calculateLogFuelCost(logKm(log))
+      return t('settlement.logLine', {
+        date: log.date,
+        memo: log.memo || '-',
+        km: logKm(log).toLocaleString('ko-KR'),
+        trip: log.roundTrip ? t('trip.roundTrip') : t('trip.oneWay'),
+        fuel: won(fuelCost),
+        extra: won(log.tollFee + log.parkingFee),
+        total: won(fuelCost + log.tollFee + log.parkingFee)
+      })
+    })
+    const text = [
+      t('settlement.logTitle', { period: filterLabel }),
+      conditionLine,
+      '',
+      ...lines,
+      '',
+      t('settlement.logSummary', {
+        count: filteredLogs.length,
+        km: logSummary.totalDistance.toLocaleString('ko-KR'),
+        fuel: won(logSummary.totalFuelCost),
+        toll: won(logSummary.totalTollFee),
+        parking: won(logSummary.totalParkingFee)
+      }),
+      t('settlement.logTotal', { total: won(logSummary.grandTotal) })
+    ].join('\n')
     try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(resultText)
-        setIsCopied(true)
-        setTimeout(() => setIsCopied(false), 2000)
-      } else {
-        const textArea = document.createElement('textarea')
-        textArea.value = resultText
-        document.body.appendChild(textArea)
-        textArea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textArea)
-        setIsCopied(true)
-        setTimeout(() => setIsCopied(false), 2000)
-      }
+      await copyText(text)
+      setLogCopied(true)
+      setTimeout(() => setLogCopied(false), 2000)
     } catch (error) {
       console.error('Failed to copy:', error)
     }
-  }, [calculation, distance, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, vehicleTypes, getAdjustedEfficiency, t])
+  }, [filteredLogs, logSummary, calculateLogFuelCost, conditionLine, filterLabel, t])
 
-  // 결과 다운로드
+  // 단건 정산서 텍스트
+  const settlementText = useMemo(() => {
+    if (!calculation) return ''
+    return [
+      t('settlement.title'),
+      t('settlement.distanceLine', {
+        km: distance.toLocaleString('ko-KR'),
+        trip: roundTrip ? t('trip.roundTripX2') : t('trip.oneWay'),
+        total: tripKm.toLocaleString('ko-KR')
+      }),
+      conditionLine,
+      t('settlement.formula', {
+        km: tripKm.toLocaleString('ko-KR'),
+        efficiency: efficiency.toFixed(1),
+        price: won(fuelPrices[fuelType]),
+        multiplier: depreciationMultiplier.toFixed(2),
+        liters: calculation.fuelConsumption.toFixed(2)
+      }),
+      t('settlement.amount', { amount: won(calculation.settlement) }),
+      '',
+      t('settlement.footer')
+    ].join('\n')
+  }, [calculation, distance, roundTrip, tripKm, conditionLine, efficiency, fuelPrices, fuelType, depreciationMultiplier, t])
+
+  // 결과 복사
+  const copyResult = useCallback(async () => {
+    if (!settlementText) return
+    try {
+      await copyText(settlementText)
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch (error) {
+      console.error('Failed to copy:', error)
+    }
+  }, [settlementText])
+
+  // 결과 다운로드 (정산서 + 참고 원가)
   const downloadResult = useCallback(() => {
     if (!calculation) return
-
-    const selectedVehicle = vehicleTypes[vehicleType]
-    const efficiency = useCustomEfficiency && customEfficiency > 0
-      ? customEfficiency
-      : getAdjustedEfficiency(selectedVehicle.efficiency, fuelType)
-
-    const content = `유류비 계산서
-
-계산 일시: ${new Date().toLocaleString('ko-KR')}
-
-=== 입력 정보 ===
-주행거리: ${distance.toLocaleString()}km
-차종: ${selectedVehicle.category}
-연비: ${efficiency.toFixed(1)}km/L
-연료종류: ${t(`fuelTypes.${fuelType}`)}
-연료단가: ${fuelPrices[fuelType].toLocaleString()}원/L
-
-=== 계산 결과 ===
-연료 소모량: ${calculation.fuelConsumption.toFixed(2)}L
-연료비: ${calculation.fuelCost.toLocaleString()}원
-감가상각비: ${calculation.depreciationCost.toLocaleString()}원
-총 비용: ${calculation.totalCost.toLocaleString()}원
-km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
-
-=== 비고 ===
-- 연료비는 ${(lastUpdated ?? new Date()).toLocaleDateString('ko-KR')} 기준 유가 적용
-- 감가상각비는 차종별 평균값 적용
-- 실제 비용과 차이가 있을 수 있음
-
-출처: 툴허브 유류비 계산기 (https://toolhub.ai.kr/fuel-calculator)`
-
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `유류비계산서_${new Date().toISOString().slice(0, 10)}.txt`
-    link.click()
-    URL.revokeObjectURL(url)
-  }, [calculation, distance, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, vehicleTypes, getAdjustedEfficiency, lastUpdated, t])
+    const content = [
+      settlementText,
+      '',
+      t('settlement.reference', {
+        depreciation: won(calculation.depreciationCost),
+        total: won(calculation.totalCost),
+        perKm: won(calculation.costPerKm)
+      })
+    ].join('\n')
+    downloadFile(content, `유류비정산_${localDate()}.txt`, 'text/plain;charset=utf-8')
+  }, [calculation, settlementText, t])
 
   return (
     <div className="space-y-8">
@@ -780,42 +785,54 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
           {/* 입력 패널 */}
           <div className="lg:col-span-1 space-y-6">
             {/* 주행 정보 */}
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <div className="flex items-center space-x-2 mb-4">
-                <MapPin className="w-5 h-5 text-blue-600" />
-                <h2 className="text-xl font-semibold text-fg">
-                  {t('input.tripInfo')}
-                </h2>
-              </div>
+            <div className={`ui-card p-6`}>
+              <h2 className="text-xl font-semibold text-fg mb-4">
+                {t('input.tripInfo')}
+              </h2>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-body mb-2">
-                    {t('input.distance')} (km)
+                  <label htmlFor="fuel-distance" className="block text-sm font-medium text-body mb-2">
+                    {roundTrip ? t('trip.oneWayDistance') : t('input.distance')} (km)
                   </label>
                   <input
+                    id="fuel-distance"
                     type="number"
+                    inputMode="decimal"
                     value={distance || ''}
                     onChange={(e) => setDistance(Number(e.target.value))}
                     placeholder="100"
                     min="0"
                     step="0.1"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full ui-field px-3 py-2"
                   />
                 </div>
+                <div className="grid grid-cols-2 gap-1 p-1 bg-soft rounded-xl" role="group" aria-label={t('trip.mode')}>
+                  {([false, true] as const).map(rt => (
+                    <button
+                      key={String(rt)}
+                      type="button"
+                      onClick={() => setRoundTrip(rt)}
+                      aria-pressed={roundTrip === rt}
+                      className={`py-2 text-sm font-medium rounded-lg transition-colors ${roundTrip === rt ? 'bg-surface text-fg shadow-sm' : 'text-muted hover:text-body'}`}
+                    >
+                      {rt ? t('trip.roundTrip') : t('trip.oneWay')}
+                    </button>
+                  ))}
+                </div>
+                {roundTrip && distance > 0 && (
+                  <p className="text-xs text-muted tabular-nums">
+                    {t('trip.roundTripHint', { km: distance.toLocaleString('ko-KR'), total: tripKm.toLocaleString('ko-KR') })}
+                  </p>
+                )}
               </div>
             </div>
 
             {/* 차량 정보 */}
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-2">
-                  <Car className="w-5 h-5 text-green-600" />
-                  <h2 className="text-xl font-semibold text-fg">
-                    {t('input.vehicleInfo')}
-                  </h2>
-                </div>
-              </div>
+            <div className={`ui-card p-6`}>
+              <h2 className="text-xl font-semibold text-fg mb-4">
+                {t('input.vehicleInfo')}
+              </h2>
 
               <div className="space-y-4">
                 <div>
@@ -825,9 +842,9 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   <select
                     value={vehicleType}
                     onChange={(e) => setVehicleType(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full ui-field px-3 py-2"
                   >
-                    {Object.entries(vehicleTypes).map(([key, vehicle]) => (
+                    {Object.entries(VEHICLE_TYPES).map(([key, vehicle]) => (
                       <option key={key} value={key}>
                         {vehicle.category} ({vehicle.efficiency}km/L)
                       </option>
@@ -841,8 +858,8 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   </label>
                   <select
                     value={fuelType}
-                    onChange={(e) => setFuelType(e.target.value as 'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    onChange={(e) => setFuelType(e.target.value as FuelType)}
+                    className="w-full ui-field px-3 py-2"
                   >
                     <option value="gasoline">{t('fuelTypes.gasoline')} ({fuelPrices.gasoline.toLocaleString()}원/L)</option>
                     <option value="premium_gasoline">{t('fuelTypes.premium_gasoline')} ({fuelPrices.premium_gasoline.toLocaleString()}원/L)</option>
@@ -873,7 +890,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       min="1"
                       max="30"
                       step="0.1"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      className="w-full ui-field px-3 py-2"
                     />
                   )}
                 </div>
@@ -883,14 +900,14 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={saveVehicleSettings}
-                      className="flex items-center space-x-1 px-3 py-1.5 text-xs bg-green-100 text-green-700 rounded-lg hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800 transition-colors"
+                      className="ui-btn-soft flex items-center gap-1 px-3 py-1.5 text-xs"
                     >
                       <Save className="w-3 h-3" />
                       <span>{t('vehicleSettings.save')}</span>
                     </button>
                     <button
                       onClick={loadVehicleSettings}
-                      className="flex items-center space-x-1 px-3 py-1.5 text-xs bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800 transition-colors"
+                      className="ui-btn-soft flex items-center gap-1 px-3 py-1.5 text-xs"
                     >
                       <Upload className="w-3 h-3" />
                       <span>{t('vehicleSettings.load')}</span>
@@ -898,50 +915,47 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                     {hasVehicleSettings && (
                       <button
                         onClick={deleteVehicleSettings}
-                        className="flex items-center space-x-1 px-3 py-1.5 text-xs bg-red-100 text-red-700 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300 dark:hover:bg-red-800 transition-colors"
+                        className="flex items-center gap-1 px-3 py-1.5 text-xs text-muted hover:text-red-600 rounded-lg transition-colors"
                       >
                         <Trash2 className="w-3 h-3" />
                         <span>{t('vehicleSettings.delete')}</span>
                       </button>
                     )}
                   </div>
-                  {settingsFeedback && (
-                    <p className="mt-2 text-xs text-green-600 dark:text-green-400">{settingsFeedback}</p>
-                  )}
+                  <p className="mt-2 text-xs text-muted" aria-live="polite">
+                    {settingsFeedback ?? t('vehicleSettings.autoApplyHint')}
+                  </p>
                 </div>
               </div>
             </div>
 
             {/* 유가 정보 (지역/날짜/가격) */}
-            <div className={`${glassCard} ${glassInset} p-6`}>
+            <div className={`ui-card p-6`}>
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-2">
-                  <Fuel className="w-5 h-5 text-orange-600" />
-                  <h2 className="text-xl font-semibold text-fg">
-                    {t('opinet.title')}
-                  </h2>
-                </div>
+                <h2 className="text-xl font-semibold text-fg">
+                  {t('opinet.title')}
+                </h2>
                 {!isEditingPrices ? (
                   <button
                     onClick={startEditingPrices}
-                    className="p-2 text-gray-500 hover:text-blue-600 transition-colors"
-                    title="유가 수정"
+                    className="flex items-center gap-1 px-2 py-1.5 text-xs text-muted hover:text-primary rounded-lg transition-colors"
                   >
-                    <Edit3 className="w-4 h-4" />
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>{t('priceSource.edit')}</span>
                   </button>
                 ) : (
                   <div className="flex space-x-1">
                     <button
                       onClick={savePrices}
-                      className="p-2 text-green-600 hover:text-green-700 transition-colors"
-                      title="저장"
+                      className="p-2 text-primary hover:opacity-80 transition-colors"
+                      aria-label={tc('save')}
                     >
                       <Save className="w-4 h-4" />
                     </button>
                     <button
                       onClick={cancelEditingPrices}
-                      className="p-2 text-red-600 hover:text-red-700 transition-colors"
-                      title="취소"
+                      className="p-2 text-muted hover:text-body transition-colors"
+                      aria-label={tc('cancel')}
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -963,7 +977,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       safeStorage.setItem('fuel_selected_sido', sido)
                       fetchOpinetPrices(sido || undefined, selectedDate || undefined)
                     }}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full ui-field px-3 py-2 text-sm"
                   >
                     {SIDO_OPTIONS.map(s => (
                       <option key={s.code} value={s.code}>{s.name}</option>
@@ -993,16 +1007,15 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                           setSelectedDate('')
                           fetchOpinetPrices(selectedSido || undefined)
                         }}
-                        className="px-2 py-2 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded-lg transition-colors shrink-0"
-                        title="실시간으로 전환"
+                        className="ui-btn-soft px-2 py-2 text-xs shrink-0"
                       >
                         {t('region.today')}
                       </button>
                     )}
                   </div>
-                  {selectedDate && (
-                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-                      {selectedDate} 기준 유가 적용
+                  {priceNoData && (
+                    <p className="text-xs mt-2 px-3 py-2 rounded-lg bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200">
+                      {t('priceSource.noData')}
                     </p>
                   )}
                 </div>
@@ -1010,86 +1023,37 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                 <div className="pt-2 border-t border-line" />
 
                 {/* 유가 표시 */}
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-sub">{t('fuelTypes.gasoline')}</span>
-                  {isEditingPrices ? (
-                    <input
-                      type="number"
-                      value={tempPrices.gasoline}
-                      onChange={(e) => setTempPrices(prev => ({ ...prev, gasoline: Number(e.target.value) }))}
-                      className="w-24 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                      min="1000"
-                      max="3000"
-                    />
-                  ) : (
-                    <span className="font-medium">{fuelPrices.gasoline.toLocaleString()}원/L</span>
-                  )}
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-sub">{t('fuelTypes.premium_gasoline')}</span>
-                  {isEditingPrices ? (
-                    <input
-                      type="number"
-                      value={tempPrices.premium_gasoline}
-                      onChange={(e) => setTempPrices(prev => ({ ...prev, premium_gasoline: Number(e.target.value) }))}
-                      className="w-24 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                      min="1000"
-                      max="3000"
-                    />
-                  ) : (
-                    <span className="font-medium">{fuelPrices.premium_gasoline.toLocaleString()}원/L</span>
-                  )}
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-sub">{t('fuelTypes.diesel')}</span>
-                  {isEditingPrices ? (
-                    <input
-                      type="number"
-                      value={tempPrices.diesel}
-                      onChange={(e) => setTempPrices(prev => ({ ...prev, diesel: Number(e.target.value) }))}
-                      className="w-24 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                      min="1000"
-                      max="3000"
-                    />
-                  ) : (
-                    <span className="font-medium">{fuelPrices.diesel.toLocaleString()}원/L</span>
-                  )}
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-sub">{t('fuelTypes.lpg')}</span>
-                  {isEditingPrices ? (
-                    <input
-                      type="number"
-                      value={tempPrices.lpg}
-                      onChange={(e) => setTempPrices(prev => ({ ...prev, lpg: Number(e.target.value) }))}
-                      className="w-24 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                      min="500"
-                      max="2000"
-                    />
-                  ) : (
-                    <span className="font-medium">{fuelPrices.lpg.toLocaleString()}원/L</span>
-                  )}
-                </div>
+                {FUEL_TYPES.map(ft => (
+                  <div key={ft} className="flex justify-between items-center">
+                    <span className={`text-sm ${ft === fuelType ? 'text-fg font-medium' : 'text-sub'}`}>{t(`fuelTypes.${ft}`)}</span>
+                    {isEditingPrices ? (
+                      <input
+                        type="number"
+                        inputMode="numeric"
+                        aria-label={t(`fuelTypes.${ft}`)}
+                        value={tempPrices[ft] || ''}
+                        onChange={(e) => setTempPrices(prev => ({ ...prev, [ft]: Number(e.target.value) }))}
+                        className="w-24 ui-field px-2 py-1 text-sm text-right"
+                        min="0"
+                      />
+                    ) : (
+                      <span className={`tabular-nums ${ft === fuelType ? 'font-semibold text-fg' : 'font-medium text-body'}`}>{won(fuelPrices[ft])}원/L</span>
+                    )}
+                  </div>
+                ))}
 
                 <div className="pt-3 border-t border-line">
-                  <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
-                    <div className="flex items-center space-x-1">
-                      <Clock className="w-3 h-3" />
-                      <span>
-                        {priceSource === 'opinet' ? (
-                          <span className="text-green-600 dark:text-green-400">
-                            OPINET {selectedSido ? SIDO_OPTIONS.find(s => s.code === selectedSido)?.name : '전국'}
-                          </span>
-                        ) : '수동 입력'}{lastUpdated && ` · ${lastUpdated.toLocaleTimeString('ko-KR')}`}
-                      </span>
-                    </div>
+                  <div className="flex items-center justify-between gap-2 text-xs mb-3">
+                    <span className={priceSource === 'default' ? 'text-amber-700 dark:text-amber-300' : 'text-muted'} aria-live="polite">
+                      {priceLoading ? tc('loading') : priceSourceLabel}
+                    </span>
                     <button
                       onClick={() => fetchOpinetPrices(selectedSido || undefined, selectedDate || undefined)}
                       disabled={priceLoading}
-                      className="text-blue-500 hover:text-blue-700 disabled:opacity-50"
-                      title="OPINET 가격 새로고침"
+                      className="p-1 text-muted hover:text-primary disabled:opacity-50 shrink-0"
+                      aria-label={t('fuelPrices.update')}
                     >
-                      {priceLoading ? '...' : '↻'}
+                      <RefreshCw className={`w-3.5 h-3.5 ${priceLoading ? 'animate-spin' : ''}`} />
                     </button>
                   </div>
 
@@ -1098,7 +1062,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                     href="https://www.opinet.co.kr/user/dopospdrg/dopOsPdrgSelect.do"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center space-x-2 w-full px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 transition-colors"
+                    className="ui-btn-soft flex items-center justify-center gap-2 w-full px-4 py-2"
                   >
                     <ExternalLink className="w-4 h-4" />
                     <span className="text-sm font-medium">{t('opinet.checkPrice')}</span>
@@ -1111,13 +1075,10 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
             </div>
 
             {/* 감가비 계수 설정 */}
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <div className="flex items-center space-x-2 mb-4">
-                <Wrench className="w-5 h-5 text-purple-600" />
-                <h2 className="text-lg font-semibold text-fg">
-                  {t('depreciation.title')}
-                </h2>
-              </div>
+            <div className={`ui-card p-6`}>
+              <h2 className="text-lg font-semibold text-fg mb-4">
+                {t('depreciation.title')}
+              </h2>
               <div className="space-y-3">
                 <div>
                   <label className="block text-xs font-medium text-sub mb-1">
@@ -1135,13 +1096,14 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                         setDepreciationMultiplier(val)
                         safeStorage.setItem('fuel_depreciation_multiplier', String(val))
                       }}
-                      className="flex-1 accent-purple-600"
+                      className="flex-1 accent-blue-600"
+                      aria-label={t('depreciation.multiplier')}
                     />
-                    <span className="text-sm font-bold text-sub w-12 text-right">
+                    <span className="text-sm font-bold text-fg w-12 text-right tabular-nums">
                       ×{depreciationMultiplier.toFixed(2)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-xs text-gray-400 mt-1">
+                  <div className="flex justify-between text-xs text-faint mt-1">
                     <span>×1.00</span>
                     <span>×1.50</span>
                   </div>
@@ -1155,7 +1117,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       setDepreciationMultiplier(1.0)
                       safeStorage.setItem('fuel_depreciation_multiplier', '1.0')
                     }}
-                    className="text-xs text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300"
+                    className="text-xs text-primary hover:underline"
                   >
                     {t('depreciation.reset')}
                   </button>
@@ -1168,140 +1130,114 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
           <div className="lg:col-span-2 space-y-6">
             {calculation ? (
               <>
-                {/* 계산 결과 */}
-                <div className={`${glassCard} ${glassInset} p-6`}>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-2">
-                      <Calculator className="w-5 h-5 text-purple-600" />
-                      <h2 className="text-xl font-semibold text-fg">
-                        {t('result.title')}
-                      </h2>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={handleSaveCalculation}
-                        className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                          isSaved
-                            ? 'bg-green-600 hover:bg-green-700 text-white'
-                            : 'bg-purple-600 hover:bg-purple-700 text-white'
-                        }`}
-                      >
-                        {isSaved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
-                        <span>{isSaved ? '저장완료' : tc('save')}</span>
-                      </button>
-                      <button
-                        onClick={copyResult}
-                        className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                          isCopied
-                            ? 'bg-green-600 hover:bg-green-700 text-white'
-                            : 'bg-blue-600 hover:bg-blue-700 text-white'
-                        }`}
-                      >
-                        {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                        <span>{tc('copy')}</span>
-                      </button>
-                      <button
-                        onClick={downloadResult}
-                        className="flex items-center space-x-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                      >
-                        <Download className="w-4 h-4" />
-                        <span>{tc('export')}</span>
-                      </button>
-                    </div>
+                {/* 정산 결과 */}
+                <div className="ui-card p-6">
+                  <p className="text-sm font-medium text-muted">
+                    {roundTrip ? t('result.settlementRoundTrip') : t('result.settlement')}
+                  </p>
+                  <p className="text-4xl font-bold text-fg tabular-nums mt-1" aria-live="polite">
+                    {won(calculation.settlement)}<span className="text-2xl ml-0.5">원</span>
+                  </p>
+                  <p className="text-sm text-sub mt-2 tabular-nums">
+                    {t('result.summaryLine', {
+                      km: tripKm.toLocaleString('ko-KR'),
+                      liters: calculation.fuelConsumption.toFixed(2),
+                      perKm: won(calculation.settlementPerKm)
+                    })}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mt-5">
+                    <button onClick={copyResult} className="ui-btn flex items-center gap-1.5 px-4 py-2.5 text-sm">
+                      {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      <span>{isCopied ? tc('copied') : t('settlement.copy')}</span>
+                    </button>
+                    <button onClick={addCurrentTripToLog} className="ui-btn-soft flex items-center gap-1.5 px-4 py-2.5 text-sm">
+                      <Plus className="w-4 h-4" />
+                      <span>{t('trip.addToLog')}</span>
+                    </button>
+                    <button onClick={handleSaveCalculation} className="ui-btn-soft flex items-center gap-1.5 px-3 py-2.5 text-sm">
+                      {isSaved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
+                      <span>{tc('save')}</span>
+                    </button>
+                    <button onClick={downloadResult} className="ui-btn-soft flex items-center gap-1.5 px-3 py-2.5 text-sm">
+                      <Download className="w-4 h-4" />
+                      <span>{tc('export')}</span>
+                    </button>
                   </div>
+                  {(logFeedback || monthSummary.count > 0) && (
+                    <p className="text-xs text-muted mt-3" aria-live="polite">
+                      {logFeedback && <span className="text-fg font-medium mr-2">{logFeedback}</span>}
+                      {monthSummary.count > 0 && (
+                        <button onClick={() => { setDateFilter('thisMonth'); setActiveTab('drivingLog') }} className="text-primary hover:underline tabular-nums">
+                          {t('trip.monthSummary', { count: monthSummary.count, total: won(monthSummary.total) })}
+                        </button>
+                      )}
+                    </p>
+                  )}
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-4">
-                      <div className="bg-subtle p-4 rounded-lg">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <DollarSign className="w-5 h-5 text-blue-600" />
-                          <span className="text-sm font-medium text-fg">
-                            {t('result.totalCost')}
-                          </span>
-                        </div>
-                        <p className="text-2xl font-bold text-fg">
-                          {Math.round(calculation.totalCost).toLocaleString()}원
-                        </p>
-                      </div>
-
-                      <div className="bg-subtle p-4 rounded-lg">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Fuel className="w-5 h-5 text-green-600" />
-                          <span className="text-sm font-medium text-fg">
-                            {t('result.fuelCost')}
-                          </span>
-                        </div>
-                        <p className="text-xl font-bold text-fg">
-                          {Math.round(calculation.fuelCost).toLocaleString()}원
-                        </p>
-                        <p className="text-sm text-sub">
-                          {calculation.fuelConsumption.toFixed(2)}L
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div className="bg-subtle p-4 rounded-lg">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <TrendingDown className="w-5 h-5 text-orange-600" />
-                          <span className="text-sm font-medium text-fg">
-                            {t('result.depreciationCost')}
-                          </span>
-                        </div>
-                        <p className="text-xl font-bold text-fg">
-                          {Math.round(calculation.depreciationCost).toLocaleString()}원
-                        </p>
-                      </div>
-
-                      <div className="bg-subtle p-4 rounded-lg">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Zap className="w-5 h-5 text-purple-600" />
-                          <span className="text-sm font-medium text-fg">
-                            {t('result.costPerKm')}
-                          </span>
-                        </div>
-                        <p className="text-xl font-bold text-fg">
-                          {calculation.costPerKm.toFixed(0)}원/km
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 상세 내역 */}
-                <div className="bg-subtle rounded-xl p-6">
-                  <h3 className="text-lg font-semibold text-fg mb-4">
-                    {t('result.breakdown')}
-                  </h3>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between">
+                  {/* 산식 + 유가 출처 */}
+                  <div className="bg-subtle rounded-2xl p-4 mt-5 text-sm space-y-2">
+                    <div className="flex justify-between gap-3">
                       <span className="text-sub">{t('result.distance')}</span>
-                      <span className="font-medium">{calculation.distance.toLocaleString()}km</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sub">{t('result.efficiency')}</span>
-                      <span className="font-medium">
-                        {(useCustomEfficiency && customEfficiency > 0
-                          ? customEfficiency
-                          : getAdjustedEfficiency(vehicleTypes[vehicleType].efficiency, fuelType)
-                        ).toFixed(1)}km/L
+                      <span className="font-medium text-fg tabular-nums text-right">
+                        {roundTrip ? t('trip.roundTripHint', { km: distance.toLocaleString('ko-KR'), total: tripKm.toLocaleString('ko-KR') }) : `${tripKm.toLocaleString('ko-KR')}km`}
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sub">{t('result.fuelPrice')}</span>
-                      <span className="font-medium">{fuelPrices[fuelType].toLocaleString()}원/L</span>
+                    <div className="flex justify-between gap-3">
+                      <span className="text-sub">{t('result.efficiency')}</span>
+                      <span className="font-medium text-fg tabular-nums">{efficiency.toFixed(1)}km/L</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sub">{t('result.depreciationRate')}</span>
-                      <span className="font-medium">{vehicleTypes[vehicleType].depreciation.toLocaleString()}원/km</span>
+                    <div className="flex justify-between gap-3">
+                      <span className="text-sub">{t('result.fuelPrice')}</span>
+                      <span className="font-medium text-fg tabular-nums text-right">
+                        {won(fuelPrices[fuelType])}원/L
+                        <span className="block text-xs font-normal text-muted">{priceSourceLabel}</span>
+                      </span>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <span className="text-sub">{t('result.fuelCost')}</span>
+                      <span className="font-medium text-fg tabular-nums">{won(calculation.fuelCost)}원</span>
+                    </div>
+                    {depreciationMultiplier !== 1 && (
+                      <div className="flex justify-between gap-3">
+                        <span className="text-sub">{t('depreciation.title')}</span>
+                        <span className="font-medium text-fg tabular-nums">×{depreciationMultiplier.toFixed(2)}</span>
+                      </div>
+                    )}
+                    <p className="pt-2 border-t border-line text-xs text-muted tabular-nums">
+                      {t('settlement.formula', {
+                        km: tripKm.toLocaleString('ko-KR'),
+                        efficiency: efficiency.toFixed(1),
+                        price: won(fuelPrices[fuelType]),
+                        multiplier: depreciationMultiplier.toFixed(2),
+                        liters: calculation.fuelConsumption.toFixed(2)
+                      })}
+                    </p>
+                  </div>
+
+                  {/* 참고: 감가상각 포함 운행 원가 */}
+                  <div className="grid grid-cols-3 gap-3 mt-4 text-center">
+                    <div className="rounded-xl border border-line p-3">
+                      <p className="text-xs text-muted">{t('result.depreciationCost')}</p>
+                      <p className="text-base font-semibold text-fg tabular-nums mt-1">{won(calculation.depreciationCost)}원</p>
+                      <p className="text-[11px] text-faint">{VEHICLE_TYPES[vehicleType].depreciation}원/km</p>
+                    </div>
+                    <div className="rounded-xl border border-line p-3">
+                      <p className="text-xs text-muted">{t('result.totalCost')}</p>
+                      <p className="text-base font-semibold text-fg tabular-nums mt-1">{won(calculation.totalCost)}원</p>
+                    </div>
+                    <div className="rounded-xl border border-line p-3">
+                      <p className="text-xs text-muted">{t('result.costPerKm')}</p>
+                      <p className="text-base font-semibold text-fg tabular-nums mt-1">{won(calculation.costPerKm)}원</p>
                     </div>
                   </div>
+                  <p className="text-xs text-faint mt-2">{t('result.referenceNote')}</p>
                 </div>
 
                 {/* 비용 구성 파이차트 + 연료별 비교 */}
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* 비용 구성 */}
-                  <div className={`${glassCard} ${glassInset} p-6`}>
+                  <div className={`ui-card p-6`}>
                     <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">
                       비용 구성
                     </h3>
@@ -1331,20 +1267,19 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   </div>
 
                   {/* 연료별 비교 */}
-                  <div className={`${glassCard} ${glassInset} p-6`}>
+                  <div className={`ui-card p-6`}>
                     <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">
                       연료별 비용 비교
                     </h3>
                     {(() => {
-                      const selectedVehicle = vehicleTypes[vehicleType]
-                      const fuelTypes: ('gasoline' | 'premium_gasoline' | 'diesel' | 'lpg')[] = ['gasoline', 'premium_gasoline', 'diesel', 'lpg']
+                      const selectedVehicle = VEHICLE_TYPES[vehicleType]
                       const fuelLabels = { gasoline: '일반', premium_gasoline: '고급', diesel: '경유', lpg: 'LPG' }
                       const fuelColors = { gasoline: '#3b82f6', premium_gasoline: '#8b5cf6', diesel: '#10b981', lpg: '#f59e0b' }
-                      const compData = fuelTypes.map(ft => {
+                      const compData = FUEL_TYPES.map(ft => {
                         const eff = useCustomEfficiency && customEfficiency > 0
                           ? customEfficiency
                           : getAdjustedEfficiency(selectedVehicle.efficiency, ft)
-                        const cost = (distance / eff) * fuelPrices[ft]
+                        const cost = (tripKm / eff) * fuelPrices[ft]
                         return { name: fuelLabels[ft], cost: Math.round(cost), fill: fuelColors[ft], isCurrent: ft === fuelType }
                       })
                       return (
@@ -1366,13 +1301,13 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                       )
                     })()}
                     <p className="text-xs text-gray-400 mt-2 text-center">
-                      {distance.toLocaleString()}km 기준 · 굵은 바 = 현재 선택 연료
+                      {tripKm.toLocaleString()}km 기준 · 굵은 바 = 현재 선택 연료
                     </p>
                   </div>
                 </div>
               </>
             ) : (
-              <div className={`${glassCard} ${glassInset} p-12 text-center`}>
+              <div className={`ui-card p-12 text-center`}>
                 <Car className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-muted">
                   {t('placeholder')}
@@ -1397,7 +1332,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
       {activeTab === 'drivingLog' && (
         <div className="space-y-6">
           {/* Add Entry Form */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
+          <div className={`ui-card p-6`}>
             <h2 className="text-xl font-semibold text-fg mb-4">
               {t('drivingLog.addEntry')}
             </h2>
@@ -1410,7 +1345,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   type="date"
                   value={newLogEntry.date}
                   onChange={(e) => setNewLogEntry(prev => ({ ...prev, date: e.target.value }))}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="w-full ui-field px-3 py-2 text-sm"
                 />
               </div>
               <div>
@@ -1424,7 +1359,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   placeholder={t('drivingLog.form.placeholder.distance')}
                   min="0"
                   step="0.1"
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="w-full ui-field px-3 py-2 text-sm"
                 />
               </div>
               <div>
@@ -1438,7 +1373,7 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   placeholder={t('drivingLog.form.placeholder.tollFee')}
                   min="0"
                   step="100"
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="w-full ui-field px-3 py-2 text-sm"
                 />
               </div>
               <div>
@@ -1452,27 +1387,40 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   placeholder={t('drivingLog.form.placeholder.parkingFee')}
                   min="0"
                   step="100"
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="w-full ui-field px-3 py-2 text-sm"
                 />
               </div>
               <div>
                 <label className="block text-xs font-medium text-sub mb-1">
-                  {t('drivingLog.memo')}
+                  {t('drivingLog.routeMemo')}
                 </label>
                 <input
                   type="text"
                   value={newLogEntry.memo}
                   onChange={(e) => setNewLogEntry(prev => ({ ...prev, memo: e.target.value }))}
-                  placeholder={t('drivingLog.form.placeholder.memo')}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  onKeyDown={(e) => { if (e.key === 'Enter') addDrivingLogEntry() }}
+                  placeholder={t('drivingLog.form.placeholder.route')}
+                  className="w-full ui-field px-3 py-2 text-sm"
                 />
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              <label className="flex items-center gap-2 text-sm text-body">
+                <input
+                  type="checkbox"
+                  checked={!!newLogEntry.roundTrip}
+                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, roundTrip: e.target.checked }))}
+                  className="accent-blue-600"
+                />
+                {t('trip.roundTripX2')}
+                {newLogEntry.roundTrip && newLogEntry.distance > 0 && (
+                  <span className="text-muted tabular-nums">= {(newLogEntry.distance * 2).toLocaleString('ko-KR')}km</span>
+                )}
+              </label>
               <button
                 onClick={addDrivingLogEntry}
                 disabled={newLogEntry.distance <= 0}
-                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                className="ui-btn flex items-center gap-2 px-4 py-2"
               >
                 <Plus className="w-4 h-4" />
                 <span>{t('drivingLog.addEntry')}</span>
@@ -1481,119 +1429,107 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
           </div>
 
           {/* Log Table */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="flex items-center justify-between mb-4">
+          <div className="ui-card p-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
               <h2 className="text-xl font-semibold text-fg">
                 {t('drivingLog.title')}
               </h2>
-              <div className="flex space-x-2">
-                {drivingLogs.length > 0 && (
-                  <>
+              {drivingLogs.length > 0 && (
+                <div className="grid grid-cols-3 gap-1 p-1 bg-soft rounded-xl" role="group">
+                  {(['thisMonth', 'last3Months', 'all'] as const).map(f => (
                     <button
-                      onClick={exportToCSV}
-                      className="flex items-center space-x-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                      key={f}
+                      onClick={() => setDateFilter(f)}
+                      aria-pressed={dateFilter === f}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                        dateFilter === f ? 'bg-surface text-fg shadow-sm' : 'text-muted hover:text-body'
+                      }`}
                     >
-                      <Download className="w-4 h-4" />
-                      <span>{t('drivingLog.export.csv')}</span>
+                      {t(`drivingLog.filter.${f}`)}
                     </button>
-                    <button
-                      onClick={clearAllDrivingLogs}
-                      className="flex items-center space-x-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      <span>{t('drivingLog.export.clear')}</span>
-                    </button>
-                  </>
-                )}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* 날짜 필터 */}
-            {drivingLogs.length > 0 && (
-              <div className="flex gap-2 mb-4 flex-wrap">
-                {(['all', 'thisMonth', 'last3Months'] as const).map(f => (
-                  <button
-                    key={f}
-                    onClick={() => setDateFilter(f)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                      dateFilter === f
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                    }`}
-                  >
-                    {f === 'all' ? '전체' : f === 'thisMonth' ? '이번 달' : '최근 3개월'}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* 요약 카드 */}
+            {/* 정산 합계 (현재 필터 기준) */}
             {filteredLogs.length > 0 && (
-              <div className="grid grid-cols-3 gap-3 mb-4">
-                <div className="bg-subtle rounded-lg p-3 text-center">
-                  <div className="text-xs text-muted mb-1">총 주행거리</div>
-                  <div className="text-sm font-bold text-sub">
-                    {filteredLogs.reduce((sum, l) => sum + l.distance, 0).toLocaleString()} km
-                  </div>
-                </div>
-                <div className="bg-subtle rounded-lg p-3 text-center">
-                  <div className="text-xs text-muted mb-1">총 연료비</div>
-                  <div className="text-sm font-bold text-sub">
-                    {filteredLogs.reduce((sum, l) => sum + calculateLogFuelCost(l.distance), 0).toLocaleString()} 원
-                  </div>
-                </div>
-                <div className="bg-subtle rounded-lg p-3 text-center">
-                  <div className="text-xs text-muted mb-1">기록 수</div>
-                  <div className="text-sm font-bold text-sub">
-                    {filteredLogs.length}건
-                  </div>
+              <div className="bg-subtle rounded-2xl p-5 mb-4">
+                <p className="text-sm text-muted">{t('drivingLog.periodTotal', { period: filterLabel })}</p>
+                <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(logSummary.grandTotal)}원</p>
+                <p className="text-sm text-sub mt-2 tabular-nums">
+                  {t('settlement.logSummary', {
+                    count: filteredLogs.length,
+                    km: logSummary.totalDistance.toLocaleString('ko-KR'),
+                    fuel: won(logSummary.totalFuelCost),
+                    toll: won(logSummary.totalTollFee),
+                    parking: won(logSummary.totalParkingFee)
+                  })}
+                </p>
+                <p className="text-xs text-muted mt-1">{conditionLine}</p>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <button onClick={copyLogSettlement} className="ui-btn flex items-center gap-1.5 px-4 py-2 text-sm">
+                    {logCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                    <span>{logCopied ? tc('copied') : t('settlement.copy')}</span>
+                  </button>
+                  <button onClick={exportToCSV} className="ui-btn-soft flex items-center gap-1.5 px-4 py-2 text-sm">
+                    <Download className="w-4 h-4" />
+                    <span>{t('drivingLog.export.csv')}</span>
+                  </button>
+                  <button onClick={clearAllDrivingLogs} className="flex items-center gap-1.5 px-3 py-2 text-sm text-muted hover:text-red-600 rounded-lg transition-colors ml-auto">
+                    <Trash2 className="w-4 h-4" />
+                    <span>{t('drivingLog.export.clear')}</span>
+                  </button>
                 </div>
               </div>
             )}
 
             {drivingLogs.length === 0 ? (
               <div className="text-center py-12">
-                <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-muted">{t('drivingLog.noEntries')}</p>
                 <p className="text-sm text-faint mt-1">{t('drivingLog.addFirst')}</p>
               </div>
             ) : filteredLogs.length === 0 ? (
               <div className="text-center py-12">
-                <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-muted">해당 기간의 주행 기록이 없습니다.</p>
+                <p className="text-muted">{t('drivingLog.noEntriesInPeriod')}</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+                <table className="w-full text-sm tabular-nums">
                   <thead>
                     <tr className="border-b border-line">
                       <th className="text-left py-3 px-2 font-medium text-sub">{t('drivingLog.date')}</th>
+                      <th className="text-left py-3 px-2 font-medium text-sub">{t('drivingLog.routeMemo')}</th>
                       <th className="text-right py-3 px-2 font-medium text-sub">{t('drivingLog.distance')}</th>
+                      <th className="text-right py-3 px-2 font-medium text-sub">{t('drivingLog.fuelCost')}</th>
                       <th className="text-right py-3 px-2 font-medium text-sub">{t('drivingLog.tollFee')}</th>
                       <th className="text-right py-3 px-2 font-medium text-sub">{t('drivingLog.parkingFee')}</th>
-                      <th className="text-right py-3 px-2 font-medium text-sub">{t('drivingLog.fuelCost')}</th>
                       <th className="text-right py-3 px-2 font-medium text-sub">{t('drivingLog.totalCost')}</th>
-                      <th className="text-left py-3 px-2 font-medium text-sub">{t('drivingLog.memo')}</th>
                       <th className="py-3 px-2"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredLogs.map((log) => {
-                      const fuelCost = calculateLogFuelCost(log.distance)
+                      const km = logKm(log)
+                      const fuelCost = calculateLogFuelCost(km)
                       const total = log.tollFee + log.parkingFee + fuelCost
                       return (
-                        <tr key={log.id} className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                          <td className="py-3 px-2">{log.date}</td>
-                          <td className="py-3 px-2 text-right">{log.distance.toLocaleString()}km</td>
-                          <td className="py-3 px-2 text-right">{log.tollFee.toLocaleString()}원</td>
-                          <td className="py-3 px-2 text-right">{log.parkingFee.toLocaleString()}원</td>
-                          <td className="py-3 px-2 text-right text-green-600 dark:text-green-400">{fuelCost.toLocaleString()}원</td>
-                          <td className="py-3 px-2 text-right font-medium">{total.toLocaleString()}원</td>
-                          <td className="py-3 px-2 text-muted max-w-[150px] truncate">{log.memo}</td>
+                        <tr key={log.id} className="border-b border-line hover:bg-subtle">
+                          <td className="py-3 px-2 whitespace-nowrap">{log.date}</td>
+                          <td className="py-3 px-2 text-body max-w-[180px] truncate">{log.memo}</td>
+                          <td className="py-3 px-2 text-right whitespace-nowrap">
+                            {km.toLocaleString('ko-KR')}km
+                            {log.roundTrip && <span className="block text-xs text-muted">{t('trip.roundTrip')}</span>}
+                          </td>
+                          <td className="py-3 px-2 text-right">{won(fuelCost)}원</td>
+                          <td className="py-3 px-2 text-right">{won(log.tollFee)}원</td>
+                          <td className="py-3 px-2 text-right">{won(log.parkingFee)}원</td>
+                          <td className="py-3 px-2 text-right font-medium text-fg">{won(total)}원</td>
                           <td className="py-3 px-2">
                             <button
                               onClick={() => removeDrivingLogEntry(log.id)}
-                              className="p-1 text-red-500 hover:text-red-700 transition-colors"
+                              className="p-1 text-faint hover:text-red-600 transition-colors"
+                              aria-label={t('drivingLog.delete')}
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -1604,48 +1540,19 @@ km당 비용: ${calculation.costPerKm.toFixed(0)}원/km
                   </tbody>
                   <tfoot>
                     <tr className="bg-subtle font-medium">
-                      <td className="py-3 px-2">{t('drivingLog.summary.title')}</td>
-                      <td className="py-3 px-2 text-right">{logSummary.totalDistance.toLocaleString()}km</td>
-                      <td className="py-3 px-2 text-right">{logSummary.totalTollFee.toLocaleString()}원</td>
-                      <td className="py-3 px-2 text-right">{logSummary.totalParkingFee.toLocaleString()}원</td>
-                      <td className="py-3 px-2 text-right text-green-600 dark:text-green-400">{logSummary.totalFuelCost.toLocaleString()}원</td>
-                      <td className="py-3 px-2 text-right text-blue-600 dark:text-blue-400 font-bold">{logSummary.grandTotal.toLocaleString()}원</td>
-                      <td colSpan={2}></td>
+                      <td className="py-3 px-2" colSpan={2}>{t('drivingLog.summary.title')}</td>
+                      <td className="py-3 px-2 text-right">{logSummary.totalDistance.toLocaleString('ko-KR')}km</td>
+                      <td className="py-3 px-2 text-right">{won(logSummary.totalFuelCost)}원</td>
+                      <td className="py-3 px-2 text-right">{won(logSummary.totalTollFee)}원</td>
+                      <td className="py-3 px-2 text-right">{won(logSummary.totalParkingFee)}원</td>
+                      <td className="py-3 px-2 text-right font-bold text-fg">{won(logSummary.grandTotal)}원</td>
+                      <td></td>
                     </tr>
                   </tfoot>
                 </table>
               </div>
             )}
           </div>
-
-          {/* Summary Card */}
-          {drivingLogs.length > 0 && (
-            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
-              <h3 className="text-lg font-semibold mb-4">{t('drivingLog.summary.title')}</h3>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div>
-                  <p className="text-blue-100 text-sm">{t('drivingLog.summary.totalDistance')}</p>
-                  <p className="text-2xl font-bold">{logSummary.totalDistance.toLocaleString()}km</p>
-                </div>
-                <div>
-                  <p className="text-blue-100 text-sm">{t('drivingLog.summary.totalTollFee')}</p>
-                  <p className="text-2xl font-bold">{logSummary.totalTollFee.toLocaleString()}원</p>
-                </div>
-                <div>
-                  <p className="text-blue-100 text-sm">{t('drivingLog.summary.totalParkingFee')}</p>
-                  <p className="text-2xl font-bold">{logSummary.totalParkingFee.toLocaleString()}원</p>
-                </div>
-                <div>
-                  <p className="text-blue-100 text-sm">{t('drivingLog.summary.totalFuelCost')}</p>
-                  <p className="text-2xl font-bold">{logSummary.totalFuelCost.toLocaleString()}원</p>
-                </div>
-                <div>
-                  <p className="text-blue-100 text-sm">{t('drivingLog.summary.grandTotal')}</p>
-                  <p className="text-3xl font-bold">{logSummary.grandTotal.toLocaleString()}원</p>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
 

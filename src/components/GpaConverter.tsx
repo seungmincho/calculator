@@ -3,106 +3,113 @@
 /**
  * GpaConverter — 학점 변환기 (4.5 / 4.3 / 4.0 / 백분율 동시 변환)
  * 번역 네임스페이스: gpaConverterCalc
+ *
+ * 두 가지 방법을 나란히 보여준다.
+ *  - 비례 환산: 값 ÷ 내 만점 × 목표 만점 (모든 칸 채움)
+ *  - 등급표 기준(참고): 4.5 만점 일반 등급 구간(A+ 95~100 …)으로 묶어 옮김 (4.5 / 100점 칸만)
+ * 학교·기업별 공식 환산표는 검증된 출처가 없어 넣지 않았다 (지원처 공식 우선 안내).
  */
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, usePathname } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Copy, Check, BookOpen, Link as LinkIcon, Download, Calculator, Award, GraduationCap } from 'lucide-react'
+import { Copy, Check, Link as LinkIcon, Download } from 'lucide-react'
 import NextLink from 'next/link'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 type Scale = '4.5' | '4.3' | '4.0' | '100'
-
-interface GradeRow {
-  grade: string
-  gpa45: string
-  gpa43: string
-  percent: string
-}
 
 interface GuideSection {
   title: string
   items: string[]
 }
 
+const SCALES: Scale[] = ['4.5', '4.3', '4.0', '100']
 const SCALE_MAX: Record<Scale, number> = { '4.5': 4.5, '4.3': 4.3, '4.0': 4.0, '100': 100 }
 
-// 학점(4.5 기준) → 등급 / 백분위 매핑
-const GPA45_TO_PERCENT: { min: number; max: number; percentMin: number; percentMax: number; grade: string }[] = [
-  { min: 4.25, max: 4.5, percentMin: 95, percentMax: 100, grade: 'A+' },
-  { min: 3.75, max: 4.24, percentMin: 90, percentMax: 94, grade: 'A0' },
-  { min: 3.25, max: 3.74, percentMin: 85, percentMax: 89, grade: 'B+' },
-  { min: 2.75, max: 3.24, percentMin: 80, percentMax: 84, grade: 'B0' },
-  { min: 2.25, max: 2.74, percentMin: 75, percentMax: 79, grade: 'C+' },
-  { min: 1.75, max: 2.24, percentMin: 70, percentMax: 74, grade: 'C0' },
-  { min: 1.25, max: 1.74, percentMin: 65, percentMax: 69, grade: 'D+' },
-  { min: 0.75, max: 1.24, percentMin: 60, percentMax: 64, grade: 'D0' },
-  { min: 0, max: 0.74, percentMin: 0, percentMax: 59, grade: 'F' },
+// 4.5 만점 → 등급 / 백분위 (일반 참고 구간, min 내림차순 — find(g >= min)로 구간 사이 틈 없음)
+const GPA45_BANDS = [
+  { min: 4.25, percent: '95~100', grade: 'A+' },
+  { min: 3.75, percent: '90~94', grade: 'A0' },
+  { min: 3.25, percent: '85~89', grade: 'B+' },
+  { min: 2.75, percent: '80~84', grade: 'B0' },
+  { min: 2.25, percent: '75~79', grade: 'C+' },
+  { min: 1.75, percent: '70~74', grade: 'C0' },
+  { min: 1.25, percent: '65~69', grade: 'D+' },
+  { min: 0.75, percent: '60~64', grade: 'D0' },
+  { min: 0, percent: '0~59', grade: 'F' },
 ]
 
-// 백분위 → 학점(4.5 기준)
-const PERCENT_TO_GPA45: { min: number; max: number; gpa: number; grade: string }[] = [
-  { min: 95, max: 100, gpa: 4.5, grade: 'A+' },
-  { min: 90, max: 94, gpa: 4.0, grade: 'A0' },
-  { min: 85, max: 89, gpa: 3.5, grade: 'B+' },
-  { min: 80, max: 84, gpa: 3.0, grade: 'B0' },
-  { min: 75, max: 79, gpa: 2.5, grade: 'C+' },
-  { min: 70, max: 74, gpa: 2.0, grade: 'C0' },
-  { min: 65, max: 69, gpa: 1.5, grade: 'D+' },
-  { min: 60, max: 64, gpa: 1.0, grade: 'D0' },
-  { min: 0, max: 59, gpa: 0.0, grade: 'F' },
+// 백분율 → 4.5 만점 (같은 참고 구간의 역방향)
+const PERCENT_BANDS = [
+  { min: 95, gpa: 4.5, grade: 'A+' },
+  { min: 90, gpa: 4.0, grade: 'A0' },
+  { min: 85, gpa: 3.5, grade: 'B+' },
+  { min: 80, gpa: 3.0, grade: 'B0' },
+  { min: 75, gpa: 2.5, grade: 'C+' },
+  { min: 70, gpa: 2.0, grade: 'C0' },
+  { min: 65, gpa: 1.5, grade: 'D+' },
+  { min: 60, gpa: 1.0, grade: 'D0' },
+  { min: 0, gpa: 0.0, grade: 'F' },
 ]
 
-interface Converted {
-  g45: number
-  g43: number
-  g40: number
-  percentMin: number
-  percentMax: number
-  percentExact: number | null
+// 등급 참고표. 4.3 만점은 +/0/- 체계(A- 3.7, B+ 3.3 …), 4.5 만점은 +/0 체계.
+// 기존 messages의 grades 표는 4.3 열이 4.5와 같게(B+ 3.5) 잘못 들어가 있어 여기서 직접 관리.
+const GRADE_TABLE: { grade: string; g45: number | null; g43: number; percent: string | null }[] = [
+  { grade: 'A+', g45: 4.5, g43: 4.3, percent: '95~100' },
+  { grade: 'A0', g45: 4.0, g43: 4.0, percent: '90~94' },
+  { grade: 'A-', g45: null, g43: 3.7, percent: null },
+  { grade: 'B+', g45: 3.5, g43: 3.3, percent: '85~89' },
+  { grade: 'B0', g45: 3.0, g43: 3.0, percent: '80~84' },
+  { grade: 'B-', g45: null, g43: 2.7, percent: null },
+  { grade: 'C+', g45: 2.5, g43: 2.3, percent: '75~79' },
+  { grade: 'C0', g45: 2.0, g43: 2.0, percent: '70~74' },
+  { grade: 'C-', g45: null, g43: 1.7, percent: null },
+  { grade: 'D+', g45: 1.5, g43: 1.3, percent: '65~69' },
+  { grade: 'D0', g45: 1.0, g43: 1.0, percent: '60~64' },
+  { grade: 'D-', g45: null, g43: 0.7, percent: null },
+  { grade: 'F', g45: 0, g43: 0, percent: '0~59' },
+]
+
+export interface Converted {
+  ratio: Record<Scale, number>
+  /** 등급표 기준 4.5 환산 (백분율 입력일 때만) */
+  bandG45: number | null
+  /** 등급표 기준 백분위 구간 (학점 입력일 때만) */
+  bandPercent: string | null
   grade: string
 }
 
-function round2(n: number): number {
-  return Math.round(n * 100) / 100
-}
+const round = (n: number, d: number) => Math.round(n * 10 ** d) / 10 ** d
 
-function convert(val: number, scale: Scale): Converted | null {
-  if (isNaN(val) || val < 0 || val > SCALE_MAX[scale]) return null
-
-  let g45: number
-  let percentExact: number | null = null
-  let gradeFromPercent: string | null = null
+export function convert(val: number, scale: Scale): Converted | null {
+  if (!Number.isFinite(val) || val < 0 || val > SCALE_MAX[scale]) return null
+  const frac = val / SCALE_MAX[scale]
+  const ratio = {
+    '4.5': round(frac * 4.5, 2),
+    '4.3': round(frac * 4.3, 2),
+    '4.0': round(frac * 4.0, 2),
+    '100': round(frac * 100, 1),
+  } as Record<Scale, number>
+  ratio[scale] = val
 
   if (scale === '100') {
-    percentExact = val
-    const band = PERCENT_TO_GPA45.find((r) => val >= r.min && val <= r.max)
-    g45 = band ? band.gpa : 0
-    gradeFromPercent = band ? band.grade : 'F'
-  } else {
-    g45 = val * (4.5 / SCALE_MAX[scale])
+    const b = PERCENT_BANDS.find((r) => val >= r.min)!
+    return { ratio, bandG45: b.gpa, bandPercent: null, grade: b.grade }
   }
-
-  const band = GPA45_TO_PERCENT.find((r) => g45 >= r.min && g45 <= r.max) ?? GPA45_TO_PERCENT[GPA45_TO_PERCENT.length - 1]
-
-  return {
-    g45: scale === '4.5' ? val : round2(g45),
-    g43: scale === '4.3' ? val : round2(g45 * (4.3 / 4.5)),
-    g40: scale === '4.0' ? val : round2(g45 * (4.0 / 4.5)),
-    percentMin: band.percentMin,
-    percentMax: band.percentMax,
-    percentExact,
-    grade: gradeFromPercent ?? band.grade,
-  }
+  const b = GPA45_BANDS.find((r) => frac * 4.5 >= r.min)!
+  // 4.3 입력은 4.3 체계 등급(A- 등)으로: 가장 가까운 등급점, 동점이면 위 등급
+  const grade =
+    scale === '4.3'
+      ? GRADE_TABLE.reduce((best, r) => (Math.abs(val - r.g43) < Math.abs(val - best.g43) ? r : best)).grade
+      : b.grade
+  return { ratio, bandG45: null, bandPercent: b.percent, grade }
 }
+
+const fmt = (s: Scale, n: number) => (s === '100' ? `${n}%` : n.toFixed(2))
 
 export default function GpaConverter() {
   const t = useTranslations('gpaConverterCalc')
   const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
 
   const [scale, setScale] = useState<Scale>(() => {
     const s = searchParams.get('scale') as Scale
@@ -112,20 +119,22 @@ export default function GpaConverter() {
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [saved, setSaved] = useState(false)
 
+  // URL 공유: 기본값(4.5·빈 값)은 쿼리에서 빼서 깨끗한 URL 유지
   useEffect(() => {
-    const params = new URLSearchParams()
-    params.set('scale', scale)
-    if (inputValue) params.set('v', inputValue)
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
-  }, [scale, inputValue, pathname, router])
+    const p = new URLSearchParams()
+    if (scale !== '4.5') p.set('scale', scale)
+    if (inputValue) p.set('v', inputValue)
+    const qs = p.toString()
+    window.history.replaceState(window.history.state, '', qs ? `?${qs}` : window.location.pathname)
+  }, [scale, inputValue])
 
-  const result = useMemo(() => {
-    if (!inputValue) return null
-    const val = parseFloat(inputValue)
-    if (isNaN(val)) return null
-    if (val < 0 || val > SCALE_MAX[scale]) return 'invalid' as const
-    return convert(val, scale)
-  }, [inputValue, scale])
+  const num = inputValue.trim() === '' ? NaN : Number(inputValue)
+  const result = useMemo(() => (Number.isNaN(num) ? null : convert(num, scale)), [num, scale])
+  const invalid = inputValue.trim() !== '' && !result
+  // 만점 초과 입력 → 담을 수 있는 가장 작은 만점 제안 (예: 4.3 선택 후 4.4 입력, 4.5 선택 후 88 입력)
+  const suggest = invalid && num > SCALE_MAX[scale]
+    ? SCALES.slice().sort((a, b) => SCALE_MAX[a] - SCALE_MAX[b]).find((s) => SCALE_MAX[s] >= num)
+    : undefined
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -146,59 +155,56 @@ export default function GpaConverter() {
     setTimeout(() => setCopiedId(null), 2000)
   }, [])
 
-  const grades = t.raw('grades') as GradeRow[]
   const guideSections = t.raw('guide.sections') as GuideSection[]
+  const faq = t.raw('guide.faq.items') as { q: string; a: string }[] | undefined
 
-  const percentText = (r: Converted) =>
-    r.percentExact != null ? `${r.percentExact}%` : `${r.percentMin}~${r.percentMax}%`
+  const scaleLabel = (s: Scale) => t(`scales.${scaleKey(s)}`)
 
   const resultText = useMemo(() => {
-    if (!result || result === 'invalid') return ''
-    return `4.5→${result.g45} / 4.3→${result.g43} / 4.0→${result.g40} / ${percentText(result)} (${result.grade})`
-  }, [result])
+    if (!result) return ''
+    const others = SCALES.filter((s) => s !== scale).map((s) => `${scaleLabel(s)} ${fmt(s, result.ratio[s])}`)
+    const band = result.bandG45 != null
+      ? `${scaleLabel('4.5')} ${result.bandG45.toFixed(1)}`
+      : `${t('result.percent')} ${result.bandPercent}%`
+    return [
+      `${scaleLabel(scale)} ${inputValue}`,
+      `${t('result.method.ratio')}: ${others.join(' / ')}`,
+      `${t('result.method.band')}: ${result.grade} · ${band}`,
+      'toolhub.ai.kr/gpa-converter/',
+    ].join('\n')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result, scale, inputValue, t])
 
   const saveAsImage = useCallback(() => {
-    if (!result || result === 'invalid') return
-    const W = 660, H = 420
+    if (!result) return
+    const W = 660, H = 380
     const canvas = document.createElement('canvas')
     canvas.width = W; canvas.height = H
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    const grad = ctx.createLinearGradient(0, 0, 0, H)
-    grad.addColorStop(0, '#0f172a'); grad.addColorStop(1, '#1e293b')
-    ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H)
-    ctx.fillStyle = '#818cf8'; ctx.fillRect(0, 0, W, 8)
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H)
     ctx.textBaseline = 'top'
-    ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 28px system-ui, sans-serif'
-    ctx.fillText('🎓 ' + t('title'), 40, 40)
-    ctx.fillStyle = '#94a3b8'; ctx.font = '16px system-ui, sans-serif'
-    ctx.fillText(`${t('input.label')}: ${inputValue} (${t(`scales.${scaleKey(scale)}`)})`, 40, 82)
+    ctx.fillStyle = '#191f28'; ctx.font = 'bold 28px system-ui, sans-serif'
+    ctx.fillText(t('title'), 40, 40)
+    ctx.fillStyle = '#6b7684'; ctx.font = '16px system-ui, sans-serif'
+    ctx.fillText(`${t('input.label')}: ${inputValue} (${scaleLabel(scale)}) · ${t('result.method.ratio')}`, 40, 82)
 
-    const tiles: [string, string][] = [
-      ['4.5', String(result.g45)],
-      ['4.3', String(result.g43)],
-      ['4.0*', String(result.g40)],
-      [t('result.percent'), percentText(result)],
-    ]
     const tw = (W - 80 - 30) / 4
-    tiles.forEach(([label, val], i) => {
+    SCALES.forEach((s, i) => {
       const x = 40 + i * (tw + 10)
-      ctx.fillStyle = 'rgba(129,140,248,0.12)'
-      ctx.fillRect(x, 140, tw, 110)
-      ctx.strokeStyle = 'rgba(129,140,248,0.4)'
-      ctx.strokeRect(x, 140, tw, 110)
+      ctx.fillStyle = s === scale ? '#e8f3ff' : '#f2f4f6'
+      ctx.fillRect(x, 130, tw, 110)
       ctx.textAlign = 'center'
-      ctx.fillStyle = '#94a3b8'; ctx.font = '14px system-ui, sans-serif'
-      ctx.fillText(label, x + tw / 2, 158)
-      ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 24px system-ui, sans-serif'
-      ctx.fillText(val, x + tw / 2, 190)
+      ctx.fillStyle = '#6b7684'; ctx.font = '14px system-ui, sans-serif'
+      ctx.fillText(scaleLabel(s), x + tw / 2, 150)
+      ctx.fillStyle = s === scale ? '#3182f6' : '#191f28'; ctx.font = 'bold 26px system-ui, sans-serif'
+      ctx.fillText(fmt(s, result.ratio[s]), x + tw / 2, 185)
     })
-    ctx.textAlign = 'center'
-    ctx.fillStyle = '#34d399'; ctx.font = 'bold 30px system-ui, sans-serif'
-    ctx.fillText(`${t('result.grade')}  ${result.grade}`, W / 2, 290)
     ctx.textAlign = 'left'
-    ctx.fillStyle = '#64748b'; ctx.font = '13px system-ui, sans-serif'
-    ctx.fillText('toolhub.ai.kr · ' + t('note40'), 40, H - 34)
+    ctx.fillStyle = '#333d4b'; ctx.font = 'bold 20px system-ui, sans-serif'
+    ctx.fillText(`${t('result.grade')} ${result.grade}`, 40, 270)
+    ctx.fillStyle = '#8b95a1'; ctx.font = '13px system-ui, sans-serif'
+    ctx.fillText('toolhub.ai.kr · ' + t('note40'), 40, H - 40)
 
     const link = document.createElement('a')
     link.download = `gpa-${inputValue}-${scale}.png`
@@ -206,9 +212,8 @@ export default function GpaConverter() {
     link.click()
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result, inputValue, scale, t])
-
-  const scales: Scale[] = ['4.5', '4.3', '4.0', '100']
 
   return (
     <div className="space-y-8">
@@ -221,56 +226,57 @@ export default function GpaConverter() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* 좌: 입력 */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            {/* 만점 기준 */}
+          <div className="ui-card p-6 space-y-5">
             <div>
               <label className="block text-sm font-medium text-body mb-2">{t('scaleLabel')}</label>
               <div className="grid grid-cols-2 gap-2">
-                {scales.map((s) => (
+                {SCALES.map((s) => (
                   <button
                     key={s}
                     onClick={() => setScale(s)}
+                    aria-pressed={scale === s}
                     className={`px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                      scale === s ? 'bg-blue-600 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                      scale === s ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
                     }`}
                   >
-                    {t(`scales.${scaleKey(s)}`)}
+                    {scaleLabel(s)}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* 입력값 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">{t('input.label')}</label>
+              <label htmlFor="gpa-input" className="block text-sm font-medium text-body mb-2">{t('input.label')}</label>
               <div className="flex items-center gap-2">
                 <input
+                  id="gpa-input"
                   type="number"
-                  step={scale === '100' ? '1' : '0.01'}
+                  inputMode="decimal"
+                  step="any"
                   min="0"
                   max={SCALE_MAX[scale]}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder={t('input.placeholder')}
-                  className={`${glassInput} px-3 py-2`}
+                  placeholder={scale === '100' ? '88' : t('input.placeholder')}
+                  aria-invalid={invalid}
+                  className="ui-field px-4 py-3 w-full text-lg tabular-nums"
                 />
                 <span className="text-sm text-muted whitespace-nowrap">/ {SCALE_MAX[scale]}</span>
               </div>
               <p className="text-xs text-faint mt-1">{t('input.help')}</p>
             </div>
 
-            {/* 액션 */}
             <div className="space-y-2 pt-2">
               <button
                 onClick={() => copyToClipboard(window.location.href, 'link')}
-                className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                className="ui-btn w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm"
               >
                 {copiedId === 'link' ? <><Check className="w-4 h-4" />{t('copyLinkDone')}</> : <><LinkIcon className="w-4 h-4" />{t('copyLink')}</>}
               </button>
               <button
                 onClick={saveAsImage}
-                disabled={!result || result === 'invalid'}
-                className="w-full flex items-center justify-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5 text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                disabled={!result}
+                className="ui-btn-soft w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {saved ? <><Check className="w-4 h-4" />{t('saveImageDone')}</> : <><Download className="w-4 h-4" />{t('saveImage')}</>}
               </button>
@@ -280,45 +286,79 @@ export default function GpaConverter() {
 
         {/* 우: 결과 + 참고표 */}
         <div className="lg:col-span-2 space-y-6">
-          {/* 변환 결과 */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-4">{t('result.title')}</h2>
+          <div className="ui-card p-6" aria-live="polite">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <h2 className="text-lg font-semibold text-fg">{t('result.title')}</h2>
+              {result && (
+                <button
+                  onClick={() => copyToClipboard(resultText, 'result')}
+                  className="ui-btn-soft inline-flex items-center gap-1.5 px-3 py-1.5 text-xs"
+                >
+                  {copiedId === 'result' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copiedId === 'result' ? t('copied') : t('copyResult')}
+                </button>
+              )}
+            </div>
 
-            {!inputValue || !result ? (
+            {!inputValue.trim() ? (
               <p className="text-faint text-sm">{t('result.empty')}</p>
-            ) : result === 'invalid' ? (
-              <p className="text-red-500 text-sm">{t('result.invalidRange')}</p>
-            ) : (
+            ) : invalid ? (
+              <div className="text-sm space-y-2">
+                <p className="text-red-600 dark:text-red-400">
+                  {t('result.invalidRange')} — {t('result.rangeHint', { max: SCALE_MAX[scale] })}
+                </p>
+                {suggest && (
+                  <button onClick={() => setScale(suggest)} className="ui-btn-soft px-3 py-1.5 text-sm">
+                    {t('result.switchScale', { scale: scaleLabel(suggest) })}
+                  </button>
+                )}
+              </div>
+            ) : result && (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {([
-                    { key: '4.5', label: t('scales.s45'), val: result.g45 },
-                    { key: '4.3', label: t('scales.s43'), val: result.g43 },
-                    { key: '4.0', label: t('scales.s40'), val: result.g40 },
-                    { key: '100', label: t('result.percent'), val: percentText(result) },
-                  ] as const).map((tile) => (
-                    <div
-                      key={tile.key}
-                      className={`rounded-xl p-4 text-center ${scale === tile.key ? 'bg-blue-600 text-white' : 'bg-subtle'}`}
-                    >
-                      <p className={`text-xs ${scale === tile.key ? 'text-blue-100' : 'text-muted'}`}>{tile.label}</p>
-                      <p className={`text-2xl font-bold ${scale === tile.key ? 'text-white' : 'text-sub'}`}>{tile.val}</p>
-                    </div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-line">
+                        <th className="text-left py-2 pr-3 font-medium text-sub">{t('result.scaleCol')}</th>
+                        <th className="text-right py-2 px-3 font-medium text-sub">{t('result.method.ratio')}</th>
+                        <th className="text-right py-2 pl-3 font-medium text-sub">{t('result.method.band')}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {SCALES.map((s) => {
+                        const mine = s === scale
+                        const band = mine ? null
+                          : s === '4.5' && result.bandG45 != null ? result.bandG45.toFixed(1)
+                          : s === '100' && result.bandPercent ? `${result.bandPercent}%`
+                          : null
+                        return (
+                          <tr key={s} className="border-b border-line last:border-0">
+                            <td className="py-3 pr-3 text-body">
+                              {scaleLabel(s)}
+                              {mine && <span className="ml-2 text-xs text-muted">{t('result.input')}</span>}
+                            </td>
+                            <td className={`py-3 px-3 text-right tabular-nums text-xl font-bold ${mine ? 'text-muted' : 'text-fg'}`}>
+                              {fmt(s, result.ratio[s])}
+                            </td>
+                            <td className="py-3 pl-3 text-right tabular-nums text-body">{band ?? <span className="text-faint">—</span>}</td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between flex-wrap gap-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-sub">{t('result.grade')}</span>
-                    <span className="inline-flex items-center justify-center min-w-[3rem] px-3 py-1 rounded-lg bg-soft text-sub text-lg font-bold">{result.grade}</span>
-                  </div>
-                  <button
-                    onClick={() => copyToClipboard(resultText, 'result')}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-field border border-line rounded-lg text-sub hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-                  >
-                    {copiedId === 'result' ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
-                    {copiedId === 'result' ? t('copied') : t('copyResult')}
-                  </button>
+                <div className="mt-4 flex items-center gap-2">
+                  <span className="text-sm text-sub">{t('result.grade')}</span>
+                  <span className="inline-flex items-center justify-center min-w-[3rem] px-3 py-1 rounded-lg bg-soft text-fg text-lg font-bold">{result.grade}</span>
+                  <span className="text-xs text-muted">{scale === '4.3' ? t('scales.s43') : t('result.gradeRef')}</span>
+                </div>
+
+                <div className="mt-4 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+                  <p className="font-medium text-fg">{t('methods.title')}</p>
+                  <p>{t('methods.ratio')}</p>
+                  <p>{t('methods.band')}</p>
+                  <p>{t('methods.official')}</p>
                 </div>
                 <p className="text-xs text-faint mt-3">{t('note40')}</p>
               </>
@@ -326,7 +366,7 @@ export default function GpaConverter() {
           </div>
 
           {/* 등급 참고표 */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
+          <div className="ui-card p-6">
             <h2 className="text-lg font-semibold text-fg mb-4">{t('table.title')}</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -339,36 +379,31 @@ export default function GpaConverter() {
                   </tr>
                 </thead>
                 <tbody>
-                  {grades.map((row, idx) => (
-                    <tr key={idx} className="border-b border-line last:border-0">
+                  {GRADE_TABLE.map((row) => (
+                    <tr key={row.grade} className={`border-b border-line last:border-0 ${result?.grade === row.grade ? 'bg-subtle' : ''}`}>
                       <td className="py-2 px-3 font-semibold text-fg">{row.grade}</td>
-                      <td className="py-2 px-3 text-center text-body">{row.gpa45}</td>
-                      <td className="py-2 px-3 text-center text-body">{row.gpa43}</td>
-                      <td className="py-2 px-3 text-center text-body">{row.percent}</td>
+                      <td className="py-2 px-3 text-center text-body tabular-nums">{row.g45 != null ? row.g45.toFixed(1) : '—'}</td>
+                      <td className="py-2 px-3 text-center text-body tabular-nums">{row.g43.toFixed(1)}</td>
+                      <td className="py-2 px-3 text-center text-body tabular-nums">{row.percent ?? '—'}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+            <p className="text-xs text-faint mt-3">{t('table.note')}</p>
           </div>
 
           {/* 관련 도구 */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
+          <div className="ui-card p-6">
             <h2 className="text-lg font-semibold text-fg mb-4">{t('crossLinks.title')}</h2>
             <div className="grid sm:grid-cols-2 gap-3">
-              <NextLink href="/gpa-calculator/" className="flex items-start gap-3 p-4 rounded-xl bg-subtle hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                <Calculator className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
-                <span>
-                  <span className="block font-medium text-fg">{t('crossLinks.calc.label')}</span>
-                  <span className="block text-xs text-muted mt-0.5">{t('crossLinks.calc.desc')}</span>
-                </span>
+              <NextLink href="/gpa-calculator/" className="block p-4 rounded-xl bg-subtle hover:bg-soft transition-colors">
+                <span className="block font-medium text-fg">{t('crossLinks.calc.label')}</span>
+                <span className="block text-xs text-muted mt-0.5">{t('crossLinks.calc.desc')}</span>
               </NextLink>
-              <NextLink href="/grade-calculator/" className="flex items-start gap-3 p-4 rounded-xl bg-subtle hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                <Award className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mt-0.5 shrink-0" />
-                <span>
-                  <span className="block font-medium text-fg">{t('crossLinks.grade.label')}</span>
-                  <span className="block text-xs text-muted mt-0.5">{t('crossLinks.grade.desc')}</span>
-                </span>
+              <NextLink href="/grade-calculator/" className="block p-4 rounded-xl bg-subtle hover:bg-soft transition-colors">
+                <span className="block font-medium text-fg">{t('crossLinks.grade.label')}</span>
+                <span className="block text-xs text-muted mt-0.5">{t('crossLinks.grade.desc')}</span>
               </NextLink>
             </div>
           </div>
@@ -376,20 +411,16 @@ export default function GpaConverter() {
       </div>
 
       {/* 가이드 */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           {guideSections.map((section, idx) => (
             <div key={idx}>
-              <h3 className="font-medium text-fg mb-2 flex items-center gap-2">
-                {section.title}
-              </h3>
+              <h3 className="font-medium text-fg mb-2">{section.title}</h3>
               <ul className="space-y-1">
                 {section.items.map((item, jdx) => (
                   <li key={jdx} className="text-sm text-sub flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span className="text-faint mt-0.5">•</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -397,6 +428,19 @@ export default function GpaConverter() {
             </div>
           ))}
         </div>
+        {Array.isArray(faq) && faq.length > 0 && (
+          <div className="mt-8 border-t border-line pt-6">
+            <h3 className="font-medium text-fg mb-3">{t('guide.faq.title')}</h3>
+            <dl className="space-y-4">
+              {faq.map((f, i) => (
+                <div key={i}>
+                  <dt className="text-sm font-medium text-body">{f.q}</dt>
+                  <dd className="text-sm text-sub mt-1">{f.a}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
       </div>
     </div>
   )

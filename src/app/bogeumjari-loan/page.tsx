@@ -4,7 +4,7 @@ import BogeumjariLoanCalculator from '@/components/BogeumjariLoanCalculator';
 
 export const metadata: Metadata = {
   title: '보금자리론 계산기 - 생애최초·신혼부부·다자녀 금리 비교 | 툴허브',
-  description: '2026년 최신 보금자리론 계산기. 생애최초 보금자리론(LTV 80%·4.2억·0.2%p 우대), 신혼부부(소득 8.5천만·0.3%p 우대), 다자녀(한도 4억) 유형별 금리·대출한도·월상환액 즉시 계산.',
+  description: '2026년 최신 보금자리론 계산기. 생애최초(LTV 80%·4.2억), 신혼부부(소득 8.5천만·0.3%p 우대), 다자녀(한도 4억·0.5~0.7%p 우대) 자격·한도·우대금리·월상환액 즉시 계산.',
   keywords: '생애최초보금자리론, 생애최초보금자리론금리, 생애최초보금자리론자격, 보금자리론계산기, 생애최초보금자리론계산기, 2026보금자리론, LH보금자리론, 신혼부부보금자리론, 다자녀보금자리론, 보금자리론금리, 보금자리론한도, 주택담보대출계산기, 보금자리론금리계산기',
   openGraph: {
     title: '보금자리론 계산기 2026 — 생애최초·신혼부부·다자녀 금리 즉시 계산',
@@ -59,7 +59,7 @@ export default function BogeumjariLoanPage() {
       {
         '@type': 'HowToStep',
         name: '소득 요건 확인',
-        text: '부부합산 연소득을 입력하여 일반(7천만원), 신혼부부(8.5천만원), 다자녀(9천만원) 중 해당 유형의 자격 요건을 확인합니다.',
+        text: '부부합산 연소득을 입력하여 일반(7천만원), 신혼부부(8.5천만원), 자녀 1명(9천만원), 다자녀(1억원) 중 해당 유형의 자격 요건을 확인합니다.',
       },
       {
         '@type': 'HowToStep',
@@ -88,7 +88,7 @@ export default function BogeumjariLoanPage() {
         name: '2026년 보금자리론 금리는 얼마인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '2026년 9월 기준 아낌e 보금자리론 기준금리는 10년 4.90% ~ 50년 5.20%입니다(8·9월 연속 동결). 생애최초(0.2%p), 신혼부부(0.3%p), 다자녀(0.2%p), 저소득 추가(0.1%p) 등 최대 1.0%p 우대 적용 시 최저 3.90~4.20%까지 낮아집니다. 고정금리로 만기까지 동일하게 적용됩니다. 금리는 매월 변동되므로 한국주택금융공사에서 최신 금리를 확인하세요.',
+          text: '2026년 9월 기준 아낌e 보금자리론 기준금리는 10년 4.90% ~ 50년 5.20%입니다(8·9월 연속 동결). 신혼가구(0.3%p), 다자녀(2자녀 0.5%p·3자녀 이상 0.7%p), 신생아출산가구(0.2%p), 저소득청년(0.1%p), 한부모·장애인·다문화가구(각 0.7%p) 등 최대 1.0%p 우대 적용 시 최저 3.90~4.20%까지 낮아집니다. 고정금리로 만기까지 동일하게 적용됩니다. 금리는 매월 변동되므로 한국주택금융공사에서 최신 금리를 확인하세요.',
         },
       },
       {
@@ -96,7 +96,7 @@ export default function BogeumjariLoanPage() {
         name: '보금자리론 자격조건은 어떻게 되나요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '무주택자(또는 1주택자 처분 조건), 부부합산 연소득 7천만원 이하(신혼부부 8.5천만, 다자녀 9천만), 6억원 이하 주택, 전용면적 85㎡ 이하, DTI 60% 이하가 기본 조건입니다. 생애최초 구입자는 LTV가 70%→80%로 확대되고 한도도 3.6억→4.2억으로 늘어납니다.',
+          text: '무주택자(또는 1주택자 처분 조건), 부부합산 연소득 7천만원 이하(신혼부부 8.5천만, 자녀 1명 9천만, 다자녀 1억), 6억원 이하 주택, 전용면적 85㎡ 이하, DTI 60% 이하가 기본 조건입니다. 생애최초 구입자는 LTV가 70%→80%로 확대되고 한도도 3.6억→4.2억으로 늘어납니다.',
         },
       },
       {
@@ -128,7 +128,7 @@ export default function BogeumjariLoanPage() {
         name: '생애최초 보금자리론 자격 조건은?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '생애최초 보금자리론을 받으려면 본인과 배우자 모두 과거에 주택을 소유한 이력이 없어야 합니다(세대원 전원 무주택 이력 없음). 부부합산 연소득 7천만원 이하, 주택가격 6억원 이하, 전용면적 85㎡ 이하, DTI 60% 이하 조건도 동일하게 적용됩니다. 자격 충족 시 LTV가 70%→80%로 확대되고 대출한도도 3.6억→4.2억으로 늘어나며, 금리 우대 0.2%p도 추가 적용됩니다.',
+          text: '생애최초 보금자리론을 받으려면 본인과 배우자 모두 과거에 주택을 소유한 이력이 없어야 합니다(세대원 전원 무주택 이력 없음). 부부합산 연소득 7천만원 이하, 주택가격 6억원 이하, 전용면적 85㎡ 이하, DTI 60% 이하 조건도 동일하게 적용됩니다. 자격 충족 시 LTV가 70%→80%로 확대되고 대출한도도 3.6억→4.2억으로 늘어납니다. 생애최초 자체 우대금리는 없으며, 신혼·다자녀 등 해당 우대금리는 별도로 적용됩니다.',
         },
       },
       {
@@ -136,7 +136,7 @@ export default function BogeumjariLoanPage() {
         name: '생애최초 보금자리론 금리는 얼마인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '2026년 기준 생애최초 보금자리론 금리는 기준금리(30년 기준 5.10%)에서 생애최초 우대금리 0.2%p를 차감한 연 4.90% 수준입니다. 신혼부부 조건도 동시에 해당되면 0.3%p 우대가 추가되어 연 4.60%까지 낮아질 수 있습니다. 저소득 청년 등 추가 우대항목 포함 시 최대 1.0%p까지 차감되어 3%대 초반 금리도 가능합니다.',
+          text: '생애최초 보금자리론은 금리가 아니라 LTV(80%)와 한도(4.2억)를 우대하는 유형으로, 금리는 일반과 같은 기준금리(2026년 9월 30년 5.10%)가 적용됩니다. 신혼가구(0.3%p), 다자녀(0.5~0.7%p), 저소득청년(0.1%p) 등 해당 우대금리를 합산해 최대 1.0%p까지 차감되며, 30년 만기 기준 최저 4.10%입니다.',
         },
       },
       {
@@ -209,13 +209,13 @@ export default function BogeumjariLoanPage() {
             <p className="text-sm text-body leading-relaxed mb-4">
               생애최초 보금자리론은 본인과 배우자 모두 과거에 주택을 소유한 적이 없는 경우에 적용되는 우대 유형입니다.
               일반 보금자리론 대비 LTV가 70%에서 <strong className="text-sub">80%로 확대</strong>되고 대출 한도도 3.6억에서 <strong className="text-sub">최대 4.2억원</strong>으로 늘어납니다.
-              금리도 기준금리에서 <strong className="text-sub">0.2%p 추가 우대</strong>가 적용되어 실수요 1주택 취득자에게 가장 유리한 정책 모기지 중 하나입니다.
+              금리 자체 우대는 없지만 신혼·다자녀 등 해당 우대금리는 그대로 받을 수 있어, 첫 집 구입자에게 한도가 가장 넉넉한 정책 모기지입니다.
             </p>
             <div className="grid sm:grid-cols-3 gap-4 mb-4">
               {[
                 { label: '최대 대출 한도', value: '4억 2천만원', sub: '일반(3.6억) 대비 +6천만원', color: 'blue' },
                 { label: 'LTV (담보인정비율)', value: '80%', sub: '일반(70%) 대비 +10%p', color: 'green' },
-                { label: '금리 우대', value: '0.2%p', sub: '기준금리에서 자동 차감', color: 'purple' },
+                { label: '금리 우대', value: '별도', sub: '신혼·다자녀 등 해당 시 적용', color: 'purple' },
               ].map((item) => (
                 <div key={item.label} className="bg-subtle rounded-xl p-4 text-center">
                   <div className="text-xs text-muted mb-1">{item.label}</div>
@@ -265,10 +265,10 @@ export default function BogeumjariLoanPage() {
                 <tbody>
                   {[
                     { type: '일반', income: '7천만원 이하', limit: '3.6억원', ltv: '70%', discount: '없음', bg: false },
-                    { type: '생애최초', income: '7천만원 이하', limit: '4.2억원', ltv: '80%', discount: '0.2%p', bg: true },
+                    { type: '생애최초', income: '7천만원 이하', limit: '4.2억원', ltv: '80%', discount: '없음', bg: true },
                     { type: '신혼부부', income: '8.5천만원 이하', limit: '3.6억원', ltv: '70%', discount: '0.3%p', bg: false },
-                    { type: '다자녀 (2명+)', income: '9천만원 이하', limit: '4억원', ltv: '70%', discount: '0.2%p', bg: true },
-                    { type: '다자녀 (3명+)', income: '1억원 이하', limit: '4억원', ltv: '70%', discount: '0.2%p', bg: false },
+                    { type: '다자녀 (2명)', income: '1억원 이하', limit: '4억원', ltv: '70%', discount: '0.5%p', bg: true },
+                    { type: '다자녀 (3명+)', income: '1억원 이하', limit: '4억원', ltv: '70%', discount: '0.7%p', bg: false },
                   ].map((row) => (
                     <tr key={row.type} className={`border-b border-line ${row.bg ? 'bg-subtle' : 'bg-white dark:bg-gray-900'}`}>
                       <td className="px-4 py-3 font-medium text-fg">{row.type}</td>
@@ -297,17 +297,17 @@ export default function BogeumjariLoanPage() {
                   <tr className="bg-gray-100 dark:bg-gray-800 text-body">
                     <th className="px-4 py-3 text-left">대출 기간</th>
                     <th className="px-4 py-3 text-center">기준금리</th>
-                    <th className="px-4 py-3 text-center">신혼·생애최초 후</th>
+                    <th className="px-4 py-3 text-center">신혼가구 우대 후 (0.3%p)</th>
                     <th className="px-4 py-3 text-center">최대우대 후 (1.0%p)</th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
-                    { period: '10년', base: '4.90%', mid: '4.60~4.70%', max: '3.90%' },
-                    { period: '20년', base: '5.05%', mid: '4.75~4.85%', max: '4.05%' },
-                    { period: '30년', base: '5.10%', mid: '4.80~4.90%', max: '4.10%' },
-                    { period: '40년', base: '5.15%', mid: '4.85~4.95%', max: '4.15%' },
-                    { period: '50년', base: '5.20%', mid: '4.90~5.00%', max: '4.20%' },
+                    { period: '10년', base: '4.90%', mid: '4.60%', max: '3.90%' },
+                    { period: '20년', base: '5.05%', mid: '4.75%', max: '4.05%' },
+                    { period: '30년', base: '5.10%', mid: '4.80%', max: '4.10%' },
+                    { period: '40년', base: '5.15%', mid: '4.85%', max: '4.15%' },
+                    { period: '50년', base: '5.20%', mid: '4.90%', max: '4.20%' },
                   ].map((row, i) => (
                     <tr key={row.period} className={`border-b border-line ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-subtle'}`}>
                       <td className="px-4 py-3 font-medium text-fg">{row.period}</td>
@@ -325,18 +325,19 @@ export default function BogeumjariLoanPage() {
           </section>
 
           {/* 4. 우대금리 체계 */}
+          {/* 출처: https://www.hf.go.kr/ko/sub01/sub01_01_01.do (2026-09-30 확인) — 생애최초 자체 우대금리 없음 */}
           <section>
             <h2 className="text-xl font-bold text-fg mb-4">
               우대금리 체계 (최대 1.0%p 한도)
             </h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {[
-                { label: '신혼부부 우대', rate: '최대 0.3%p', desc: '혼인 7년 이내 또는 3개월 내 결혼 예정자', color: 'pink' },
-                { label: '생애최초 우대', rate: '최대 0.2%p', desc: '생애 처음으로 주택을 구입하는 경우', color: 'blue' },
-                { label: '다자녀 우대', rate: '최대 0.2%p', desc: '미성년 자녀 2명 이상 보유 가구', color: 'green' },
-                { label: '저소득 청년 우대', rate: '최대 0.5%p', desc: '만 39세 이하, 소득 기준 70% 이하 등 요건 충족 시', color: 'purple' },
-                { label: '사회적 배려층', rate: '최대 0.4%p', desc: '장애인, 국가유공자, 다문화가족, 한부모가족 등', color: 'orange' },
-                { label: '전세사기 피해자', rate: '별도 우대', desc: '전세사기피해지원법 상 피해자 인정 시 별도 적용', color: 'red' },
+                { label: '신혼가구', rate: '0.3%p', desc: '혼인신고 7년 이내 (신생아출산가구와 중복 불가)', color: 'pink' },
+                { label: '신생아출산가구', rate: '0.2%p', desc: '신혼가구 우대와 중복 불가', color: 'blue' },
+                { label: '다자녀가구', rate: '0.5~0.7%p', desc: '미성년 자녀 2명 0.5%p, 3명 이상 0.7%p', color: 'green' },
+                { label: '저소득청년', rate: '0.1%p', desc: '청년·소득 요건 충족 시', color: 'purple' },
+                { label: '사회적 배려층', rate: '각 0.7%p', desc: '한부모·장애인·다문화가구 (최대 2가지 중복)', color: 'orange' },
+                { label: '전세사기 피해자', rate: '1.0%p', desc: '전세사기피해지원법 상 피해자 결정 시 (한도 4억)', color: 'red' },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-3 bg-subtle rounded-xl p-4">
                   <div className="flex-shrink-0 bg-soft text-sub font-bold text-xs px-2 py-1 rounded-lg min-w-[60px] text-center">
@@ -457,13 +458,13 @@ export default function BogeumjariLoanPage() {
             <div className="bg-subtle rounded-xl p-6 space-y-3">
               {[
                 { check: '무주택자이거나, 1주택 보유자로 3년 내 처분 예정인가?', important: true },
-                { check: '부부합산 연소득이 7천만원 이하인가? (신혼은 8.5천만, 다자녀는 9천만)', important: true },
+                { check: '부부합산 연소득이 7천만원 이하인가? (신혼 8.5천만, 자녀 1명 9천만, 다자녀 1억)', important: true },
                 { check: '구매하려는 주택 가격이 6억원 이하인가?', important: true },
                 { check: '주택 전용면적이 85㎡ 이하인가?', important: true },
                 { check: 'DTI(월 상환액/월 소득)가 60% 이하로 예상되는가?', important: true },
                 { check: '생애 처음 주택 구입이라면 → LTV 80%, 한도 4.2억 우대 적용', important: false },
                 { check: '혼인 7년 이내 신혼부부라면 → 소득기준 8.5천만, 금리 0.3%p 우대', important: false },
-                { check: '자녀 2명 이상이라면 → 한도 4억, 소득기준 9천만(3명+ 1억)', important: false },
+                { check: '자녀 2명 이상이라면 → 한도 4억, 소득기준 1억, 우대 0.5%p(3명+ 0.7%p)', important: false },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <span className={`flex-shrink-0 mt-0.5 text-sm ${item.important ? 'text-blue-500' : 'text-green-500'}`}>
@@ -533,7 +534,7 @@ export default function BogeumjariLoanPage() {
                 },
                 {
                   q: '생애최초 보금자리론 금리는 일반과 얼마나 차이나나요?',
-                  a: '생애최초 유형에는 기준금리에서 0.2%p 우대금리가 자동 적용됩니다. 30년 기준으로 일반 5.10% → 생애최초 4.90%입니다. 신혼부부 조건도 함께 해당되면 0.3%p를 추가 적용하여 4.60%까지 낮아집니다. LTV가 80%로 확대되어 같은 주택에서도 더 많은 대출이 가능한 것이 핵심 혜택입니다.',
+                  a: '생애최초 유형 자체의 우대금리는 없고 기준금리(30년 5.10%)가 그대로 적용됩니다. 신혼가구 조건도 해당되면 0.3%p 우대로 4.80%, 다자녀·저소득청년 등이 겹치면 최대 1.0%p까지 낮아집니다. 핵심 혜택은 LTV 80%·한도 4.2억으로 같은 주택에서 더 많이 빌릴 수 있다는 점입니다.',
                 },
                 {
                   q: '생애최초 보금자리론은 어떤 서류를 준비해야 하나요?',

@@ -4428,6 +4428,40 @@
     "placeholder": "데이터를 입력하면 QR 코드가 자동으로 생성됩니다"
   },
   "fuelCalculator": {
+    "trip": {
+      "mode": "편도/왕복",
+      "oneWay": "편도",
+      "roundTrip": "왕복",
+      "roundTripX2": "왕복 (×2)",
+      "oneWayDistance": "편도 거리",
+      "roundTripHint": "{km}km × 2 = {total}km",
+      "addToLog": "주행일지에 추가",
+      "addedToLog": "{date} 주행일지에 추가됨",
+      "monthSummary": "이번 달 {count}건 · 합계 {total}원 보기"
+    },
+    "priceSource": {
+      "nationwide": "전국",
+      "opinet": "OPINET {region} · {date} 기준",
+      "manual": "직접 입력한 유가",
+      "default": "기본값(추정) — 실시간 유가를 불러오지 못했습니다",
+      "edit": "직접 수정",
+      "noData": "선택한 날짜의 유가 데이터가 없어 기존 가격을 그대로 사용합니다."
+    },
+    "settlement": {
+      "copy": "정산서 복사",
+      "title": "[유류비 정산]",
+      "distanceLine": "주행거리: {km}km {trip} = {total}km",
+      "condition": "차량 {vehicle} · {fuel} · 연비 {efficiency}km/L · 유가 {price}원/L · 계수 ×{multiplier} ({source})",
+      "formula": "산식: {km}km ÷ {efficiency}km/L × {price}원/L × {multiplier} (연료 {liters}L)",
+      "amount": "정산 금액: {amount}원",
+      "footer": "툴허브 유류비 계산기 https://toolhub.ai.kr/fuel-calculator/",
+      "reference": "참고: 감가상각비 {depreciation}원 · 총 운행원가 {total}원 · km당 {perKm}원",
+      "km": "적용 거리(km)",
+      "logTitle": "[주행일지 유류비 정산] {period}",
+      "logLine": "{date} | {memo} | {km}km({trip}) | 유류비 {fuel}원 · 통행료/주차비 {extra}원 | 계 {total}원",
+      "logSummary": "{count}건 · {km}km · 유류비 {fuel}원 · 통행료 {toll}원 · 주차비 {parking}원",
+      "logTotal": "정산 합계: {total}원"
+    },
     "title": "유류비 계산기",
     "description": "회사 업무용 차량의 연료비와 감가상각비를 정확하게 계산하세요. 차종별 연비와 실시간 유가 정보를 기반으로 경비 정산에 필요한 비용을 자동 계산합니다.",
     "input": {
@@ -4450,6 +4484,10 @@
       "lastUpdated": "최종 업데이트"
     },
     "result": {
+      "settlement": "정산 유류비",
+      "settlementRoundTrip": "왕복 출장 유류비",
+      "summaryLine": "{km}km · {liters}L · km당 {perKm}원",
+      "referenceNote": "감가상각비·총 비용은 차량 운행 원가 참고값이며 정산 금액에 포함되지 않습니다.",
       "title": "계산 결과",
       "totalCost": "총 비용",
       "fuelCost": "연료비",
@@ -4672,6 +4710,7 @@
       "reset": "기본값 (×1.00)으로 초기화"
     },
     "vehicleSettings": {
+      "autoApplyHint": "저장하면 다음 방문 때 차종·연비가 자동 적용됩니다.",
       "title": "내 차량 설정",
       "save": "내 차량 저장",
       "load": "내 차량 불러오기",
@@ -4687,6 +4726,14 @@
       "drivingLog": "주행일지"
     },
     "drivingLog": {
+      "routeMemo": "구간/메모",
+      "filter": {
+        "thisMonth": "이번 달",
+        "last3Months": "최근 3개월",
+        "all": "전체"
+      },
+      "periodTotal": "{period} 정산 합계",
+      "noEntriesInPeriod": "해당 기간의 주행 기록이 없습니다.",
       "title": "주행일지",
       "description": "일별 주행 기록을 관리하고 비용을 한눈에 확인하세요",
       "addEntry": "항목 추가",
@@ -4715,6 +4762,7 @@
       },
       "form": {
         "placeholder": {
+          "route": "예: 본사→수원 고객사",
           "distance": "주행거리 입력",
           "tollFee": "통행료",
           "parkingFee": "주차비",
@@ -8730,6 +8778,14 @@
     }
   },
   "numberToKorean": {
+    "inputHint": "1,234,500원 · 3억 5천만 · 일억이천만원 모두 인식합니다",
+    "contractFormat": "계약서 병기",
+    "mixedNum": "숫자+한글 혼용",
+    "prefixLabel": "금액 앞 표기",
+    "prefixNone": "없음",
+    "integerOnly": "금액 표기는 양의 정수만 지원합니다",
+    "copyLink": "링크 복사",
+    "wonUnit": "원",
     "title": "숫자 한글 변환",
     "description": "숫자를 한글 금액 표기로 변환합니다. 수표, 계약서, 영수증 작성 시 유용합니다.",
     "inputNumber": "숫자 입력",
@@ -8776,7 +8832,7 @@
         "items": [
           "'일'은 만 단위 이상에서만 생략 가능 (일백 → 백, 일만 → 만)",
           "공식 문서에서는 '금 OOO원정'으로 표기합니다",
-          "한자 숫자: 壹(일) 貳(이) 參(삼) 四(사) 五(오) 六(육) 七(칠) 八(팔) 九(구) 拾(십)",
+          "한자 숫자(갖은자): 壹(일) 貳(이) 參(삼) 肆(사) 伍(오) 陸(육) 柒(칠) 捌(팔) 玖(구) 拾(십) 佰(백) 仟(천)",
           "금융기관에서는 위조 방지를 위해 한자 금액을 사용합니다"
         ]
       },
@@ -23271,6 +23327,12 @@
     }
   },
   "gpaConverterCalc": {
+    "methods": {
+      "title": "왜 방법마다 값이 다른가요?",
+      "ratio": "비례 환산: 내 학점 ÷ 내 만점 × 목표 만점. 모든 체계를 같은 비율로 옮겨 일관되지만, 등급 구간은 반영하지 않습니다.",
+      "band": "등급표 기준: 학점을 A+~F 등급으로 먼저 묶은 뒤 그 등급의 일반적인 백분위 구간(또는 학점)으로 옮깁니다. 등급 경계에서 값이 계단식으로 바뀌고, 구간은 학교마다 다릅니다.",
+      "official": "지원처(기업·대학원)가 정한 환산 공식이나 성적증명서에 적힌 공식 백분율이 있으면 그 값이 우선입니다."
+    },
     "title": "학점 변환기",
     "description": "4.5·4.3·4.0 만점 학점과 백분율(100점)을 한 번에 상호 변환하고 등급까지 확인합니다.",
     "scaleLabel": "만점 기준 (내 성적표)",
@@ -23310,6 +23372,15 @@
       "help": "성적표의 평점(예: 3.85) 또는 백분율(예: 88)을 입력하세요."
     },
     "result": {
+      "method": {
+        "ratio": "비례 환산",
+        "band": "등급표 기준(참고)"
+      },
+      "scaleCol": "만점 기준",
+      "input": "입력값",
+      "gradeRef": "4.5 만점 일반 기준",
+      "rangeHint": "0 ~ {max} 사이 값을 입력하세요",
+      "switchScale": "{scale} 기준으로 계산하기",
       "title": "변환 결과",
       "converted": "변환 학점",
       "grade": "등급",
@@ -23320,6 +23391,7 @@
       "invalidRange": "유효 범위를 벗어났습니다"
     },
     "table": {
+      "note": "4.3 만점은 A-·B- 같은 마이너스 등급이 있어 4.5 만점과 1:1로 대응하지 않습니다. 백분위는 4.5 만점 기준의 일반 참고 구간입니다.",
       "title": "학점-등급 참고표",
       "grade": "등급",
       "gpa45": "4.5 만점",
