@@ -23,13 +23,43 @@ function formatDate(d: Date): string {
   return `${y}-${m}-${day}`
 }
 
+// 'YYYY-MM-DD' 문자열을 UTC로 다뤄 브라우저 시간대와 무관하게 계산
 function addDaysToDate(dateStr: string, days: number): string {
-  const d = new Date(dateStr + 'T00:00:00')
-  d.setDate(d.getDate() + days)
-  return formatDate(d)
+  const [y, m, d] = dateStr.split('-').map(Number)
+  return new Date(Date.UTC(y, m - 1, d + days)).toISOString().slice(0, 10)
 }
 
+/** 0=일 … 6=토 */
+function dow(dateStr: string): number {
+  const [y, m, d] = dateStr.split('-').map(Number)
+  return new Date(Date.UTC(y, m - 1, d)).getUTCDay()
+}
+
+// 선거일(공직선거법 제34조, 임기만료 선거) · 임시공휴일(국무회의 지정).
+// ponytail: 임시공휴일·재보궐 아닌 조기선거는 지정될 때마다 여기 추가해야 함
+const EXTRA: Record<string, { name: string; nameKey: string }> = {
+  '2024-04-10': { name: '제22대 국회의원 선거일', nameKey: 'election' },
+  '2024-10-01': { name: '국군의 날 임시공휴일', nameKey: 'tempHoliday' },
+  '2025-01-27': { name: '임시공휴일', nameKey: 'tempHoliday' },
+  '2025-06-03': { name: '제21대 대통령 선거일', nameKey: 'election' },
+  '2026-06-03': { name: '제9회 전국동시지방선거일', nameKey: 'election' },
+  // 공직선거법 제34조 산정(임기만료일 전 50일 이후 첫 수요일). 법 개정 시 바뀔 수 있음
+  '2028-04-12': { name: '제23대 국회의원 선거일', nameKey: 'election' },
+}
+
+// 관공서의 공휴일에 관한 규정 제3조 (2026-04-28 개정: 노동절·제헌절 공휴일 + 대체공휴일 대상)
+// 토·일 또는 다른 공휴일과 겹치면 대체: 국경일·부처님오신날·어린이날·성탄절·노동절
+// 설·추석 연휴: 일요일 또는 다른 공휴일과 겹치면 연휴 다음 첫 평일 (토요일은 대체 없음)
+// 대체 없음: 1월 1일, 현충일, 선거일, 임시공휴일
+const SAT_SUN = new Set(['marchFirst', 'constitutionDay', 'liberationDay', 'nationalFoundation', 'hangeulDay', 'buddhasBirthday', 'childrensDay', 'christmas', 'laborDay'])
+const BLOCK = new Set(['seollalEve', 'seollal', 'seollalAfter', 'chuseokEve', 'chuseok', 'chuseokAfter'])
+
+const cache = new Map<number, KoreanHoliday[]>()
+
+/** 해당 연도 관공서 공휴일 (대체공휴일 포함, 날짜순). 음력 공휴일은 2024~2030만 */
 export function getKoreanHolidays(year: number): KoreanHoliday[] {
+  const hit = cache.get(year)
+  if (hit) return hit
   const holidays: KoreanHoliday[] = [
     { date: `${year}-01-01`, name: '새해', nameKey: 'newYear', isLunar: false },
     { date: `${year}-03-01`, name: '삼일절', nameKey: 'marchFirst', isLunar: false },
@@ -40,6 +70,15 @@ export function getKoreanHolidays(year: number): KoreanHoliday[] {
     { date: `${year}-10-09`, name: '한글날', nameKey: 'hangeulDay', isLunar: false },
     { date: `${year}-12-25`, name: '크리스마스', nameKey: 'christmas', isLunar: false },
   ]
+  if (year >= 2026) {
+    holidays.push(
+      { date: `${year}-05-01`, name: '노동절', nameKey: 'laborDay', isLunar: false },
+      { date: `${year}-07-17`, name: '제헌절', nameKey: 'constitutionDay', isLunar: false },
+    )
+  }
+  for (const [date, h] of Object.entries(EXTRA)) {
+    if (date.startsWith(`${year}-`)) holidays.push({ date, ...h, isLunar: false })
+  }
 
   const lunar = LUNAR_HOLIDAYS[year]
   if (lunar) {
@@ -54,33 +93,34 @@ export function getKoreanHolidays(year: number): KoreanHoliday[] {
     )
   }
 
-  // Add substitute holidays (대체공휴일): if a holiday falls on Sunday, next Monday is observed
-  const holidayDates = new Set(holidays.map(h => h.date))
+  const byDate = new Map<string, KoreanHoliday[]>()
+  for (const h of holidays) byDate.set(h.date, [...(byDate.get(h.date) ?? []), h])
+  const taken = new Set(byDate.keys())
   const substitutes: KoreanHoliday[] = []
-
-  for (const h of holidays) {
-    const d = new Date(h.date + 'T00:00:00')
-    if (d.getDay() === 0) { // Sunday
-      let sub = new Date(d)
-      sub.setDate(sub.getDate() + 1)
-      // Find next available weekday not already a holiday
-      while (holidayDates.has(formatDate(sub)) || sub.getDay() === 0 || sub.getDay() === 6) {
-        sub.setDate(sub.getDate() + 1)
-      }
-      const subDate = formatDate(sub)
-      if (!holidayDates.has(subDate)) {
-        substitutes.push({
-          date: subDate,
-          name: `대체공휴일 (${h.name})`,
-          nameKey: 'substituteHoliday',
-          isLunar: false,
-        })
-        holidayDates.add(subDate)
-      }
-    }
+  // "다음의 첫 번째 비공휴일" (토요일이면 그다음 비공휴일)
+  const place = (after: string, name: string) => {
+    let d = addDaysToDate(after, 1)
+    while (taken.has(d) || dow(d) === 0 || dow(d) === 6) d = addDaysToDate(d, 1)
+    taken.add(d)
+    substitutes.push({ date: d, name: `대체공휴일 (${name})`, nameKey: 'substituteHoliday', isLunar: false })
   }
 
-  return [...holidays, ...substitutes].sort((a, b) => a.date.localeCompare(b.date))
+  // 설·추석 연휴는 3일 묶음: 일요일 또는 다른 공휴일과 겹치면 연휴 끝 다음 첫 평일
+  for (const [pre, name] of [['seollal', '설날'], ['chuseok', '추석']]) {
+    const days = holidays.filter(h => BLOCK.has(h.nameKey) && h.nameKey.startsWith(pre)).map(h => h.date).sort()
+    if (days.some(d => dow(d) === 0 || byDate.get(d)!.length > 1)) place(days[days.length - 1], name)
+  }
+  // 그 밖: 대상 공휴일이 토·일 또는 (연휴가 아닌) 다른 공휴일과 겹치면 날짜당 하루
+  for (const [d, hs] of [...byDate].sort(([a], [b]) => a.localeCompare(b))) {
+    const eligible = hs.filter(h => SAT_SUN.has(h.nameKey))
+    if (!eligible.length) continue
+    const overlap = hs.length > 1 && !hs.some(h => BLOCK.has(h.nameKey))
+    if (dow(d) === 0 || dow(d) === 6 || overlap) place(d, hs.map(h => h.name).join('·'))
+  }
+
+  const out = [...holidays, ...substitutes].sort((a, b) => a.date.localeCompare(b.date))
+  cache.set(year, out)
+  return out
 }
 
 export function isHoliday(dateStr: string, holidays: KoreanHoliday[]): boolean {
@@ -127,6 +167,20 @@ export function getHolidaysInRange(start: Date, end: Date): KoreanHoliday[] {
   return allHolidays.filter(h => h.date >= startStr && h.date <= endStr)
 }
 
+// 수능 시행일 (교육부·평가원 발표). 없는 해는 11월 셋째 목요일로 추정.
+export const CSAT: Record<number, string> = {
+  2024: '2024-11-14', // 2025학년도
+  2025: '2025-11-13', // 2026학년도
+  2026: '2026-11-19', // 2027학년도 (평가원 시행 기본계획, 2026-03)
+  2027: '2027-11-18', // 2028학년도 (교육부 2028 대입 안내)
+}
+
+export function csatDate(year: number): { date: string; estimated: boolean } {
+  if (CSAT[year]) return { date: CSAT[year], estimated: false }
+  const first = 1 + ((4 - dow(`${year}-11-01`) + 7) % 7)
+  return { date: `${year}-11-${String(first + 14).padStart(2, '0')}`, estimated: true }
+}
+
 // Popular D-Day presets
 export function getPresetDates(year: number): { key: string; date: string; name: string }[] {
   const presets: { key: string; date: string; name: string }[] = []
@@ -162,15 +216,11 @@ export function getPresetDates(year: number): { key: string; date: string; name:
     presets.push({ key: 'liberationDay', date: `${year + 1}-08-15`, name: '광복절' })
   }
 
-  // CSAT (수능) - November, third Thursday
+  // CSAT (수능)
   for (const y of [year, year + 1]) {
-    const nov1 = new Date(y, 10, 1) // November 1
-    let day = nov1.getDay()
-    let firstThursday = day <= 4 ? 1 + (4 - day) : 1 + (11 - day)
-    const thirdThursday = firstThursday + 14
-    const csatDate = `${y}-11-${String(thirdThursday).padStart(2, '0')}`
-    if (new Date(csatDate + 'T00:00:00') >= new Date(new Date().toDateString())) {
-      presets.push({ key: 'csat', date: csatDate, name: '수능' })
+    const csat = csatDate(y).date
+    if (new Date(csat + 'T00:00:00') >= new Date(new Date().toDateString())) {
+      presets.push({ key: 'csat', date: csat, name: '수능' })
       break
     }
   }

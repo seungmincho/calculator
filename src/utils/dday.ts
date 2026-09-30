@@ -1,7 +1,8 @@
 // 디데이 계산 순수 로직. 날짜는 전부 'YYYY-MM-DD' 문자열 + UTC 일련번호로 다뤄
 // 브라우저 시간대·서머타임과 무관하게 하루 단위가 정확하다. "오늘"만 KST(UTC+9)로 구한다.
 // 검증: node scripts/check-dday.ts
-import type { KoreanHoliday } from './koreanHolidays'
+import { csatDate, type KoreanHoliday } from './koreanHolidays.ts'
+export { CSAT, csatDate } from './koreanHolidays.ts'
 
 const DAY = 86400000
 
@@ -65,58 +66,11 @@ export function ymd(a: string, b: string): { years: number; months: number; days
 }
 
 // ── 공휴일 ─────────────────────────────────────────────
-// koreanHolidays.ts의 기본 공휴일을 쓰되, 대체공휴일은 법령 기준으로 다시 계산하고
-// 누락된 공휴일(노동절·제헌절 2026~, 선거일·임시공휴일)을 보탠다.
-// ponytail: 임시공휴일은 지정될 때마다 EXTRA에 추가해야 함
+// 공휴일·대체공휴일 규칙은 koreanHolidays.ts가 단일 출처 (getBase = getKoreanHolidays)
 export interface Holiday { date: string; key: string }
 
-const EXTRA: Record<string, string> = {
-  '2024-04-10': 'election',
-  '2024-10-01': 'tempHoliday',
-  '2025-01-27': 'tempHoliday',
-  '2025-06-03': 'election',
-  '2026-06-03': 'election',
-  '2028-04-12': 'election',
-}
-const BLOCK = new Set(['seollalEve', 'seollal', 'seollalAfter', 'chuseokEve', 'chuseok', 'chuseokAfter'])
-// 토·일과 겹치면 대체 (공휴일에 관한 법률, 관공서의 공휴일에 관한 규정 제3조)
-const SAT_SUN = new Set(['marchFirst', 'childrensDay', 'liberationDay', 'nationalFoundation', 'hangeulDay', 'buddhasBirthday', 'christmas', 'laborDay', 'constitutionDay'])
-
-const holidayCache = new Map<number, Holiday[]>()
-
 export function holidaysOfYear(year: number, getBase: (y: number) => KoreanHoliday[]): Holiday[] {
-  const hit = holidayCache.get(year)
-  if (hit) return hit
-  const list: Holiday[] = getBase(year).filter(h => h.nameKey !== 'substituteHoliday').map(h => ({ date: h.date, key: h.nameKey }))
-  if (year >= 2026) list.push({ date: `${year}-05-01`, key: 'laborDay' }, { date: `${year}-07-17`, key: 'constitutionDay' })
-  for (const [d, k] of Object.entries(EXTRA)) if (d.startsWith(`${year}-`)) list.push({ date: d, key: k })
-
-  const byDate = new Map<string, string[]>()
-  for (const h of list) byDate.set(h.date, [...(byDate.get(h.date) ?? []), h.key])
-  const taken = new Set(byDate.keys())
-  const subs: Holiday[] = []
-  const place = (after: string) => {
-    let d = addDays(after, 1)
-    while (taken.has(d) || weekday(d) === 0 || weekday(d) === 6) d = addDays(d, 1)
-    taken.add(d)
-    subs.push({ date: d, key: 'substituteHoliday' })
-  }
-  // 설·추석 연휴: 일요일 또는 다른 공휴일과 겹치면 연휴 다음 첫 평일
-  for (const pre of ['seollal', 'chuseok']) {
-    const days = list.filter(h => h.key.startsWith(pre) && BLOCK.has(h.key)).map(h => h.date).sort()
-    if (days.length && days.some(d => weekday(d) === 0 || byDate.get(d)!.length > 1)) place(days[days.length - 1])
-  }
-  // 그 밖: 토·일 또는 다른 공휴일과 겹치면 날짜당 하루 (연휴 블록끼리 겹침은 위에서 처리)
-  for (const [d, keys] of [...byDate].sort()) {
-    const eligible = keys.filter(k => SAT_SUN.has(k))
-    if (!eligible.length) continue
-    const wd = weekday(d)
-    const overlap = keys.length > 1 && !keys.some(k => BLOCK.has(k))
-    if (wd === 0 || wd === 6 || overlap) place(d)
-  }
-  const out = [...list, ...subs].sort((a, b) => a.date.localeCompare(b.date))
-  holidayCache.set(year, out)
-  return out
+  return getBase(year).map(h => ({ date: h.date, key: h.nameKey }))
 }
 
 /** from..to (양끝 포함) 사이 공휴일 */
@@ -159,20 +113,6 @@ export function addBusinessDays(s: string, n: number, getBase: (y: number) => Ko
 }
 
 // ── 프리셋 ─────────────────────────────────────────────
-// 수능 시행일 (교육부·평가원 발표). 없는 해는 11월 셋째 목요일로 추정.
-export const CSAT: Record<number, string> = {
-  2024: '2024-11-14', // 2025학년도
-  2025: '2025-11-13', // 2026학년도
-  2026: '2026-11-19', // 2027학년도 (평가원 시행 기본계획, 2026-03)
-  2027: '2027-11-18', // 2028학년도 (교육부 2028 대입 안내)
-}
-
-export function csatDate(year: number): { date: string; estimated: boolean } {
-  if (CSAT[year]) return { date: CSAT[year], estimated: false }
-  const first = 1 + ((4 - weekday(`${year}-11-01`) + 7) % 7)
-  return { date: `${year}-11-${String(first + 14).padStart(2, '0')}`, estimated: true }
-}
-
 export interface Preset { key: string; date: string; estimated?: boolean }
 
 /** 오늘 이후(당일 포함) 가장 가까운 날짜로 계산한 프리셋, 가까운 순 */

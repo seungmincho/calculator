@@ -1,1765 +1,612 @@
 'use client'
 
-import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { BarChart3, HelpCircle, Share2, Check, X, Copy, Twitter } from 'lucide-react'
+import { BarChart3, HelpCircle, Copy, Check, X, Delete, RotateCcw } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
+import GameConfetti from '@/components/GameConfetti'
+import ShareResult from '@/components/ShareResult'
+import {
+  MAX_GUESSES, VALID, KEY_ROWS, type WordLen, type Tile, type DailyRecords, type LegacyStats,
+  compose, score, keyStatuses, hardModeError, statusOf, isSyllable, syllableKeys,
+  dayNumber, msToNextDay, dayFromDate, dailyAnswer, randomAnswer, computeStats, shareText, keyToJamo,
+} from '@/utils/koreanWordle'
 
-// ═══════════════════════════════════════════════════════════
-// Types
-// ═══════════════════════════════════════════════════════════
+type Mode = 'daily' | 'practice'
+interface Game { answer: string; len: WordLen; guesses: string[]; hard: boolean }
 
-type JamoStatus = 'correct' | 'present' | 'absent' | 'empty'
-type GameStatus = 'playing' | 'won' | 'lost'
+const STORE = 'koreanWordle-daily-v1'
+const SETTINGS = 'koreanWordle-settings-v1'
+const FLIP_STEP = 250 // 음절마다 뒤집기 지연(ms)
+const FLIP_MS = 500
 
-interface JamoCell {
-  jamo: string
-  status: JamoStatus
+// 게임 고유 색(초록/노랑) + 색약 모드(주황/파랑). 라이트/다크 공통
+const COLORS: Record<'normal' | 'contrast', Record<Tile, string>> = {
+  normal: { correct: 'bg-green-600 text-white', present: 'bg-yellow-500 text-white', absent: 'bg-gray-500 text-white' },
+  contrast: { correct: 'bg-orange-500 text-white', present: 'bg-sky-500 text-white', absent: 'bg-gray-500 text-white' },
 }
 
-interface GuessRow {
-  word: string
-  syllables: {
-    char: string
-    jamos: JamoCell[]
-  }[]
-  revealed: boolean
+function readJSON<T>(key: string, fallback: T): T {
+  try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) as T : fallback } catch { return fallback }
+}
+function writeJSON(key: string, v: unknown) {
+  try { localStorage.setItem(key, JSON.stringify(v)) } catch { /* 저장 불가: 이번 세션만 */ }
 }
 
-interface GameStats {
-  gamesPlayed: number
-  gamesWon: number
-  currentStreak: number
-  maxStreak: number
-  guessDistribution: number[] // index 0 = 1st try, ..., index 5 = 6th try
-  lastPlayedDate: string
-}
-
-// ═══════════════════════════════════════════════════════════
-// Constants
-// ═══════════════════════════════════════════════════════════
-
-const MAX_GUESSES = 6
-type WordLength = 2 | 3 | 4
-
-function getStatsKey(len: WordLength): string {
-  return `koreanWordle_stats_${len}`
-}
-function getGameStateKey(len: WordLength): string {
-  return `koreanWordle_gameState_${len}`
-}
-
-// Korean jamo tables
-const CHOSUNG = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
-const JUNGSUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ']
-const JONGSUNG = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
-
-// Compound vowel combos
-const COMPOUND_VOWELS: Record<string, Record<string, string>> = {
-  'ㅗ': { 'ㅏ': 'ㅘ', 'ㅐ': 'ㅙ', 'ㅣ': 'ㅚ' },
-  'ㅜ': { 'ㅓ': 'ㅝ', 'ㅔ': 'ㅞ', 'ㅣ': 'ㅟ' },
-  'ㅡ': { 'ㅣ': 'ㅢ' },
-}
-
-// Compound jongseong combos
-const COMPOUND_JONG: Record<string, Record<string, string>> = {
-  'ㄱ': { 'ㅅ': 'ㄳ' },
-  'ㄴ': { 'ㅈ': 'ㄵ', 'ㅎ': 'ㄶ' },
-  'ㄹ': { 'ㄱ': 'ㄺ', 'ㅁ': 'ㄻ', 'ㅂ': 'ㄼ', 'ㅅ': 'ㄽ', 'ㅌ': 'ㄾ', 'ㅍ': 'ㄿ', 'ㅎ': 'ㅀ' },
-  'ㅂ': { 'ㅅ': 'ㅄ' },
-}
-
-// Decompose compound jongseong
-const DECOMPOSE_JONG: Record<string, [string, string]> = {
-  'ㄳ': ['ㄱ', 'ㅅ'], 'ㄵ': ['ㄴ', 'ㅈ'], 'ㄶ': ['ㄴ', 'ㅎ'],
-  'ㄺ': ['ㄹ', 'ㄱ'], 'ㄻ': ['ㄹ', 'ㅁ'], 'ㄼ': ['ㄹ', 'ㅂ'],
-  'ㄽ': ['ㄹ', 'ㅅ'], 'ㄾ': ['ㄹ', 'ㅌ'], 'ㄿ': ['ㄹ', 'ㅍ'],
-  'ㅀ': ['ㄹ', 'ㅎ'], 'ㅄ': ['ㅂ', 'ㅅ'],
-}
-
-// Keyboard layout
-const KEYBOARD_ROW_1 = ['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ']
-const KEYBOARD_ROW_2 = ['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ']
-const KEYBOARD_ROW_3_JAMO = ['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ']
-
-// Shift jamo (doubled consonants + compound vowels)
-const SHIFT_MAP: Record<string, string> = {
-  'ㅂ': 'ㅃ', 'ㅈ': 'ㅉ', 'ㄷ': 'ㄸ', 'ㄱ': 'ㄲ', 'ㅅ': 'ㅆ',
-  'ㅐ': 'ㅒ', 'ㅔ': 'ㅖ',
-}
-
-// consonant/vowel classification
-const CHO_SET = new Set(CHOSUNG)
-const JUNG_SET = new Set(JUNGSUNG)
-const JONG_MAP: Record<string, number> = {}
-JONGSUNG.forEach((j, i) => { JONG_MAP[j] = i })
-const CHO_MAP: Record<string, number> = {}
-CHOSUNG.forEach((c, i) => { CHO_MAP[c] = i })
-const JUNG_MAP: Record<string, number> = {}
-JUNGSUNG.forEach((v, i) => { JUNG_MAP[v] = i })
-
-function isConsonant(jamo: string): boolean { return CHO_SET.has(jamo) }
-function isVowel(jamo: string): boolean { return JUNG_SET.has(jamo) }
-
-// ═══════════════════════════════════════════════════════════
-// Korean character utilities
-// ═══════════════════════════════════════════════════════════
-
-function isHangulSyllable(ch: string): boolean {
-  const code = ch.charCodeAt(0)
-  return code >= 0xAC00 && code <= 0xD7A3
-}
-
-function decomposeKorean(char: string): string[] {
-  const code = char.charCodeAt(0) - 0xAC00
-  if (code < 0 || code > 11171) return [char]
-  const cho = Math.floor(code / (21 * 28))
-  const jung = Math.floor((code % (21 * 28)) / 28)
-  const jong = code % 28
-  const result = [CHOSUNG[cho], JUNGSUNG[jung]]
-  if (jong > 0) result.push(JONGSUNG[jong])
-  return result
-}
-
-function composeHangul(cho: number, jung: number, jong: number): string {
-  return String.fromCharCode(0xAC00 + (cho * 21 + jung) * 28 + jong)
-}
-
-function decomposeWord(word: string): string[] {
-  const result: string[] = []
-  for (const ch of word) {
-    result.push(...decomposeKorean(ch))
-  }
-  return result
-}
-
-/** Decompose word into per-syllable jamo arrays */
-function decomposeWordBySyllable(word: string): string[][] {
-  const result: string[][] = []
-  for (const ch of word) {
-    result.push(decomposeKorean(ch))
-  }
-  return result
-}
-
-// ═══════════════════════════════════════════════════════════
-// Hangul virtual keyboard input state machine
-// ═══════════════════════════════════════════════════════════
-
-interface HangulState {
-  chars: string[]   // completed characters
-  cho: number       // current chosung index, -1 if none
-  jung: number      // current jungseong index, -1 if none
-  jong: number      // current jongseong index, -1 if none
-  jongJamo: string  // actual jamo string of current jongseong
-}
-
-function createEmptyHangulState(): HangulState {
-  return { chars: [], cho: -1, jung: -1, jong: -1, jongJamo: '' }
-}
-
-function flushHangulState(state: HangulState): HangulState {
-  const newChars = [...state.chars]
-  if (state.cho >= 0 && state.jung >= 0) {
-    newChars.push(composeHangul(state.cho, state.jung, state.jong >= 0 ? state.jong : 0))
-  } else if (state.cho >= 0) {
-    newChars.push(CHOSUNG[state.cho])
-  } else if (state.jung >= 0) {
-    newChars.push(JUNGSUNG[state.jung])
-  }
-  return { chars: newChars, cho: -1, jung: -1, jong: -1, jongJamo: '' }
-}
-
-function getCurrentText(state: HangulState): string {
-  let text = state.chars.join('')
-  if (state.cho >= 0 && state.jung >= 0) {
-    text += composeHangul(state.cho, state.jung, state.jong >= 0 ? state.jong : 0)
-  } else if (state.cho >= 0) {
-    text += CHOSUNG[state.cho]
-  } else if (state.jung >= 0) {
-    text += JUNGSUNG[state.jung]
-  }
-  return text
-}
-
-function addJamo(state: HangulState, jamo: string): HangulState {
-  const s = { ...state, chars: [...state.chars] }
-
-  if (isConsonant(jamo)) {
-    if (s.cho < 0) {
-      s.cho = CHO_MAP[jamo] ?? -1
-    } else if (s.jung < 0) {
-      // Previous chosung is standalone
-      s.chars.push(CHOSUNG[s.cho])
-      s.cho = CHO_MAP[jamo] ?? -1
-    } else if (s.jong < 0) {
-      // Have cho+jung, add jong
-      if (JONG_MAP[jamo] !== undefined && JONG_MAP[jamo] > 0) {
-        s.jong = JONG_MAP[jamo]
-        s.jongJamo = jamo
-      } else {
-        const flushed = flushHangulState(s)
-        return { ...flushed, cho: CHO_MAP[jamo] ?? -1 }
-      }
-    } else {
-      // Already have jong - try compound
-      if (COMPOUND_JONG[s.jongJamo]?.[jamo]) {
-        const compound = COMPOUND_JONG[s.jongJamo][jamo]
-        s.jong = JONG_MAP[compound]
-        s.jongJamo = compound
-      } else {
-        const flushed = flushHangulState(s)
-        return { ...flushed, cho: CHO_MAP[jamo] ?? -1 }
-      }
-    }
-  } else if (isVowel(jamo)) {
-    if (s.cho < 0 && s.jung < 0) {
-      // Standalone vowel
-      s.chars.push(jamo)
-    } else if (s.cho >= 0 && s.jung < 0) {
-      s.jung = JUNG_MAP[jamo]
-    } else if (s.cho >= 0 && s.jung >= 0 && s.jong < 0) {
-      // Try compound vowel
-      const curVowel = JUNGSUNG[s.jung]
-      if (COMPOUND_VOWELS[curVowel]?.[jamo]) {
-        s.jung = JUNG_MAP[COMPOUND_VOWELS[curVowel][jamo]]
-      } else {
-        const flushed = flushHangulState(s)
-        flushed.chars.push(jamo)
-        return flushed
-      }
-    } else if (s.cho >= 0 && s.jung >= 0 && s.jong >= 0) {
-      // Split jongseong
-      if (DECOMPOSE_JONG[s.jongJamo]) {
-        const [first, second] = DECOMPOSE_JONG[s.jongJamo]
-        s.jong = JONG_MAP[first]
-        s.jongJamo = first
-        const flushed = flushHangulState(s)
-        return { ...flushed, cho: CHO_MAP[second] ?? -1, jung: JUNG_MAP[jamo] }
-      } else {
-        const prevJong = s.jongJamo
-        s.jong = -1
-        s.jongJamo = ''
-        const flushed = flushHangulState(s)
-        return { ...flushed, cho: CHO_MAP[prevJong] ?? -1, jung: JUNG_MAP[jamo] }
-      }
-    } else {
-      const flushed = flushHangulState(s)
-      flushed.chars.push(jamo)
-      return flushed
+/** 구버전(날짜별 기록 없이 누적만 저장) 통계를 새 통계에 합산 */
+function loadLegacy(): LegacyStats | null {
+  for (const key of ['koreanWordle_stats_2', 'koreanWordle_stats']) {
+    const s = readJSON<{ gamesPlayed?: number; gamesWon?: number; guessDistribution?: number[]; maxStreak?: number; currentStreak?: number; lastPlayedDate?: string } | null>(key, null)
+    if (!s?.gamesPlayed) continue
+    return {
+      played: s.gamesPlayed,
+      wins: s.gamesWon ?? 0,
+      dist: Array.from({ length: MAX_GUESSES }, (_, i) => Number(s.guessDistribution?.[i]) || 0),
+      maxStreak: s.maxStreak ?? 0,
+      streak: s.currentStreak ?? 0,
+      lastDay: s.lastPlayedDate ? dayFromDate(s.lastPlayedDate) : -1,
     }
   }
-  return s
-}
-
-function removeLastJamo(state: HangulState): HangulState {
-  const s = { ...state, chars: [...state.chars] }
-
-  // If we have a composing syllable, peel back one layer
-  if (s.jong >= 0) {
-    // Remove jongseong (or decompose compound)
-    if (DECOMPOSE_JONG[s.jongJamo]) {
-      const [first] = DECOMPOSE_JONG[s.jongJamo]
-      s.jong = JONG_MAP[first]
-      s.jongJamo = first
-    } else {
-      s.jong = -1
-      s.jongJamo = ''
-    }
-    return s
-  }
-  if (s.jung >= 0) {
-    // Try decomposing compound vowel
-    const curVowel = JUNGSUNG[s.jung]
-    // Check if it's a compound vowel that can be reduced
-    for (const [base, combos] of Object.entries(COMPOUND_VOWELS)) {
-      for (const [, compound] of Object.entries(combos)) {
-        if (compound === curVowel) {
-          s.jung = JUNG_MAP[base]
-          return s
-        }
-      }
-    }
-    s.jung = -1
-    return s
-  }
-  if (s.cho >= 0) {
-    s.cho = -1
-    return s
-  }
-  // Remove last completed char
-  if (s.chars.length > 0) {
-    const lastChar = s.chars[s.chars.length - 1]
-    s.chars.pop()
-    // Decompose the last char back into the composing state
-    if (isHangulSyllable(lastChar)) {
-      const jamos = decomposeKorean(lastChar)
-      s.cho = CHO_MAP[jamos[0]] ?? -1
-      s.jung = JUNG_MAP[jamos[1]] ?? -1
-      if (jamos.length > 2) {
-        s.jong = JONG_MAP[jamos[2]] ?? 0
-        s.jongJamo = jamos[2]
-      }
-    }
-    return s
-  }
-  return s
-}
-
-// ═══════════════════════════════════════════════════════════
-// Word list (~300 common 2-syllable Korean words)
-// ═══════════════════════════════════════════════════════════
-
-const WORD_LIST: string[] = [
-  // Emotions & Abstract
-  '사랑','행복','우정','희망','자유','평화','건강','미래','감사','용기',
-  '지혜','인내','노력','열정','보람','감동','기쁨','슬픔','분노','공포',
-  '걱정','설렘','그리','외로','허무','겸손','성실','정직','배려','존경',
-  // Family & People
-  '가족','친구','이웃','동생','언니','오빠','누나','아빠','엄마','부모',
-  '아들','딸내','형제','자매','부부','선생','학생','아기','어른','사람',
-  // Nature
-  '하늘','구름','바람','나무','강물','산길','들판','꽃잎','바다','태양',
-  '달빛','별빛','눈꽃','비옷','안개','무지','번개','폭풍','이슬','서리',
-  // Seasons & Time
-  '아침','저녁','오늘','내일','어제','새벽','봄날','여름','가을','겨울',
-  '시간','세월','낮잠','밤길','주말','휴일','계절','올해','작년','순간',
-  // Mind & Thought
-  '마음','생각','감정','기억','추억','꿈속','상상','의지','신념','양심',
-  '고민','판단','결심','직감','영감','통찰','깨달','반성','명상','집중',
-  // Achievement
-  '성공','도전','변화','성장','목표','최선','결과','실력','능력','재능',
-  '발전','진보','혁신','창조','업적','승리','달성','완성','극복','돌파',
-  // Places
-  '서울','부산','대구','인천','광주','대전','울산','제주','수원','전주',
-  '경주','춘천','포항','거제','여수','속초','강릉','안동','목포','통영',
-  // Food & Drink
-  '커피','국수','김치','된장','라면','치킨','피자','사과','딸기','포도',
-  '수박','참외','바나','귤빛','호박','감자','고구','양파','당근','시금',
-  // Education & Study
-  '학교','교실','공부','시험','성적','과목','수업','숙제','독서','글자',
-  '문장','단어','질문','답변','선택','토론','발표','논문','연구','실험',
-  // Activities
-  '여행','음악','영화','운동','요리','산책','등산','수영','축구','야구',
-  '농구','테니','골프','달리','춤추','노래','그림','사진','낚시','캠핑',
-  // Home & Life
-  '공원','거리','마을','도시','시장','병원','약국','은행','우체','경찰',
-  '소방','도서','미술','박물','놀이','식당','카페','백화','편의','슈퍼',
-  // Work & Career
-  '직장','회사','사무','업무','회의','출근','퇴근','월급','보너','연봉',
-  '취업','면접','이력','경력','승진','부서','팀장','사장','직원','동료',
-  // Technology
-  '컴퓨','휴대','인터','게임','로봇','과학','기술','발명','디자','프로',
-  '소프','하드','데이','네트','보안','코딩','앱개','웹사','클라','서버',
-  // Body & Health
-  '머리','가슴','허리','어깨','무릎','발목','손목','눈동','입술','볼빛',
-  // Space & Universe
-  '우주','지구','은하','행성','위성','혜성','소행','천체','궤도','광년',
-  // Misc Common Words
-  '소리','빛깔','향기','맛집','온기','냉기','습기','전기','자기','물결',
-  '파도','해변','석양','일출','황혼','여명','노을','새싹','열매','뿌리',
-  '줄기','가지','잔디','이끼','숲길','계곡','폭포','동굴','절벽','봉우',
-  '언덕','평야','초원','사막','오아','빙하','화산','온천','해류','조류',
-]
-
-// Build a Set for O(1) validity check
-const WORD_SET = new Set(WORD_LIST)
-
-// ═══════════════════════════════════════════════════════════
-// 3-syllable word list (~200 common Korean words)
-// ═══════════════════════════════════════════════════════════
-
-const WORD_LIST_3: string[] = [
-  // Family & People
-  '어머니','아버지','할머니','할아범','아이들','사람들','선생님','어린이','청소년','직장인',
-  '대학생','고등생','운전사','의사들','간호사','소방관','경찰관','요리사','연예인','정치인',
-  // Places & Buildings
-  '도서관','병원장','유치원','초등학','중학교','고등학','대학교','경복궁','광화문','남산탑',
-  '편의점','미용실','세탁소','운동장','수영장','놀이터','사무실','아파트','경찰서','소방서',
-  // Technology
-  '컴퓨터','인터넷','스마트','프로그','소프트','하드웨','모니터','키보드','마우스','프린터',
-  '데이터','서버실','네트워','블로그','유튜브','인스타','카메라','배터리','충전기','이어폰',
-  // Transportation
-  '자동차','비행기','기차역','버스정','지하철','오토바','자전거','택시비','고속도','주차장',
-  // Food & Drink
-  '삼겹살','비빔밥','냉면집','김밥집','떡볶이','치킨집','피자집','햄버거','아이스','초콜릿',
-  '라면집','돈까스','칼국수','된장찌','김치찌','부대찌','만두국','떡국집','삼계탕','갈비탕',
-  // Nature & Weather
-  '해바라','민들레','소나무','벚꽃잎','진달래','무궁화','개나리','장미꽃','국화꽃','연꽃잎',
-  '태풍이','장마철','가뭄이','폭설이','일출때','일몰때','무지개','번개가','안개가','이슬비',
-  // Body & Health
-  '손가락','발가락','팔꿈치','무릎뼈','어깨뼈','등뼈가','심장이','위장병','두통약','감기약',
-  // Objects & Daily Life
-  '거울앞','우산꽂','지갑속','가방끈','시계탑','냉장고','세탁기','에어컨','전자레','식기세',
-  '청소기','텔레비','다리미','가습기','선풍기','전기밥','정수기','공기청','건조기','믹서기',
-  // Abstract & Emotions
-  '행복감','외로움','그리움','설레임','즐거움','괴로움','두려움','자신감','자존심','성취감',
-  '소속감','안정감','불안감','긴장감','기대감','만족감','허탈감','배신감','책임감','정의감',
-  // Culture & Activities
-  '음악회','영화관','미술관','박물관','전시회','콘서트','동물원','식물원','수족관','테마파',
-  '도자기','캘리그','수공예','바느질','뜨개질','독서실','스터디','동아리','봉사활','체험학',
-  // Society
-  '대통령','국회의','시청역','구청앞','동사무','우체국','세무서','법원앞','검찰청','국방부',
-  // Misc
-  '고양이','강아지','토끼굴','햄스터','거북이','금붕어','앵무새','다람쥐','고슴도','카멜레',
-]
-
-const WORD_SET_3 = new Set(WORD_LIST_3)
-
-// ═══════════════════════════════════════════════════════════
-// 4-syllable word list (~150 common Korean words)
-// ═══════════════════════════════════════════════════════════
-
-const WORD_LIST_4: string[] = [
-  // Nation & Society
-  '대한민국','인공지능','가상현실','증강현실','사물인터','블록체인','빅데이터','클라우드',
-  '자율주행','전기자동','하이브리','소셜미디','온라인쇼','전자상거','모바일앱','운영체제',
-  // Education
-  '초등학교','중학교생','고등학교','대학교수','대학원생','입학시험','졸업논문','장학금제',
-  '교육과정','학습목표','수행평가','중간고사','기말고사','방과후활','특별활동','학교생활',
-  // Occupations
-  '소프트웨','프로그래','웹디자인','데이터분','시스템관','프로젝트','마케팅팀','영업사원',
-  '회계사무','건축설계','인테리어','그래픽디','애니메이','방송작가','신문기자','사진작가',
-  // Food & Culture
-  '불고기집','순두부찌','해물파전','김치볶음','제육볶음','오징어볶','잡채만들','닭갈비집',
-  '부침개집','감자탕집','청국장찌','미역국집','설렁탕집','곰탕한그','추어탕집','매운탕집',
-  // Places
-  '국립공원','자연휴양','해수욕장','스키리조','워터파크','백화점앞','대형마트','전통시장',
-  '재래시장','지하상가','아울렛몰','쇼핑센터','문화센터','복지센터','체육센터','건강센터',
-  // Daily Life
-  '출퇴근길','주말여행','가족여행','해외여행','신혼여행','배낭여행','자유여행','패키지여',
-  '생일파티','결혼식장','돌잔치집','환갑잔치','졸업파티','송년회장','신년회장','동창회모',
-  // Health & Wellness
-  '건강검진','종합병원','응급실앞','수술실앞','진료예약','건강보험','의료보험','실손보험',
-  '치과진료','안과진료','피부과진','정형외과','내과진료','외과수술','재활치료','물리치료',
-  // Nature
-  '봄꽃소풍','여름바다','가을단풍','겨울눈꽃','벚꽃축제','단풍구경','눈꽃축제','해돋이산',
-  // Finance
-  '신용카드','체크카드','통장개설','적금통장','예금이자','주식투자','부동산투','펀드투자',
-  '보험가입','연금저축','퇴직연금','국민연금','건강보험','고용보험','산재보험','기본급여',
-  // Transportation
-  '고속버스','시외버스','마을버스','공항버스','택시승강','기차예매','비행기표','선박운항',
-  '내비게이','교통카드','정기권구','자유이용','환승할인','주차요금','통행요금','교통정보',
-  // Sports & Leisure
-  '축구경기','야구경기','농구경기','배구경기','테니스장','골프연습','수영강습','요가교실',
-  '헬스장앞','등산동호','자전거길','마라톤대','태권도장','유도교실','검도수련','볼링장앞',
-]
-
-const WORD_SET_4 = new Set(WORD_LIST_4)
-
-// Word lists and sets by length
-function getWordList(len: WordLength): string[] {
-  if (len === 3) return WORD_LIST_3
-  if (len === 4) return WORD_LIST_4
-  return WORD_LIST
-}
-
-function getWordSet(len: WordLength): Set<string> {
-  if (len === 3) return WORD_SET_3
-  if (len === 4) return WORD_SET_4
-  return WORD_SET
-}
-
-// ═══════════════════════════════════════════════════════════
-// Daily word selection (deterministic based on date)
-// ═══════════════════════════════════════════════════════════
-
-function getDailyWord(len: WordLength): string {
-  const list = getWordList(len)
-  const today = new Date()
-  const epoch = new Date(2024, 0, 1) // Jan 1, 2024
-  const dayIndex = Math.floor((today.getTime() - epoch.getTime()) / (1000 * 60 * 60 * 24))
-  // Different seed multiplier per word length for different daily words
-  const seed = len === 2 ? 2654435761 : len === 3 ? 1597334677 : 3266489917
-  const hash = ((dayIndex * seed) >>> 0) % list.length
-  return list[hash]
-}
-
-function getTodayKey(): string {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-}
-
-// ═══════════════════════════════════════════════════════════
-// Jamo-level feedback algorithm
-// ═══════════════════════════════════════════════════════════
-
-/**
- * Evaluates a guess against the answer at the jamo level.
- * Returns an array of JamoCell per syllable.
- *
- * Algorithm:
- * 1. Decompose both answer and guess into flat jamo arrays with positional indices.
- * 2. First pass: mark exact matches (correct).
- * 3. Second pass: for unmatched guess jamo, check if they exist in unmatched answer jamo (present).
- * 4. Remaining are absent.
- */
-function evaluateGuess(guess: string, answer: string): JamoCell[][] {
-  const guessSyllables = decomposeWordBySyllable(guess)
-  const answerSyllables = decomposeWordBySyllable(answer)
-
-  // Flatten with position indices
-  const guessFlat: { jamo: string; syllIdx: number; jamoIdx: number }[] = []
-  const answerFlat: { jamo: string; syllIdx: number; jamoIdx: number }[] = []
-
-  guessSyllables.forEach((jamos, si) => {
-    jamos.forEach((j, ji) => {
-      guessFlat.push({ jamo: j, syllIdx: si, jamoIdx: ji })
-    })
-  })
-  answerSyllables.forEach((jamos, si) => {
-    jamos.forEach((j, ji) => {
-      answerFlat.push({ jamo: j, syllIdx: si, jamoIdx: ji })
-    })
-  })
-
-  // Result statuses for each guess jamo (by flat index)
-  const statuses: JamoStatus[] = new Array(guessFlat.length).fill('absent')
-  const answerUsed: boolean[] = new Array(answerFlat.length).fill(false)
-  const guessUsed: boolean[] = new Array(guessFlat.length).fill(false)
-
-  // Pass 1: Exact matches (same syllable position and jamo position)
-  for (let gi = 0; gi < guessFlat.length; gi++) {
-    for (let ai = 0; ai < answerFlat.length; ai++) {
-      if (
-        !answerUsed[ai] && !guessUsed[gi] &&
-        guessFlat[gi].jamo === answerFlat[ai].jamo &&
-        guessFlat[gi].syllIdx === answerFlat[ai].syllIdx &&
-        guessFlat[gi].jamoIdx === answerFlat[ai].jamoIdx
-      ) {
-        statuses[gi] = 'correct'
-        answerUsed[ai] = true
-        guessUsed[gi] = true
-      }
-    }
-  }
-
-  // Pass 2: Present (jamo exists but wrong position)
-  for (let gi = 0; gi < guessFlat.length; gi++) {
-    if (guessUsed[gi]) continue
-    for (let ai = 0; ai < answerFlat.length; ai++) {
-      if (!answerUsed[ai] && guessFlat[gi].jamo === answerFlat[ai].jamo) {
-        statuses[gi] = 'present'
-        answerUsed[ai] = true
-        guessUsed[gi] = true
-        break
-      }
-    }
-  }
-
-  // Map flat statuses back to per-syllable structure
-  const result: JamoCell[][] = []
-  let flatIdx = 0
-  guessSyllables.forEach((jamos) => {
-    const syllResult: JamoCell[] = []
-    jamos.forEach((j) => {
-      syllResult.push({ jamo: j, status: statuses[flatIdx] })
-      flatIdx++
-    })
-    result.push(syllResult)
-  })
-
-  return result
-}
-
-// ═══════════════════════════════════════════════════════════
-// Stats persistence
-// ═══════════════════════════════════════════════════════════
-
-const DEFAULT_STATS: GameStats = { gamesPlayed: 0, gamesWon: 0, currentStreak: 0, maxStreak: 0, guessDistribution: [0,0,0,0,0,0], lastPlayedDate: '' }
-
-function loadStats(len: WordLength): GameStats {
-  if (typeof window === 'undefined') return { ...DEFAULT_STATS }
-  try {
-    // Try new key first, fall back to legacy key for 2-syllable
-    const key = getStatsKey(len)
-    const raw = localStorage.getItem(key)
-    if (raw) return JSON.parse(raw)
-    // Migrate legacy stats for 2-syllable mode
-    if (len === 2) {
-      const legacy = localStorage.getItem('koreanWordle_stats')
-      if (legacy) {
-        const parsed = JSON.parse(legacy)
-        localStorage.setItem(key, legacy)
-        return parsed
-      }
-    }
-  } catch { /* ignore */ }
-  return { ...DEFAULT_STATS }
-}
-
-function saveStats(stats: GameStats, len: WordLength) {
-  try { localStorage.setItem(getStatsKey(len), JSON.stringify(stats)) } catch { /* ignore */ }
-}
-
-interface SavedGameState {
-  date: string
-  guesses: string[]
-  gameStatus: GameStatus
-  answer: string
-  hardMode: boolean
-}
-
-function loadGameState(len: WordLength): SavedGameState | null {
-  if (typeof window === 'undefined') return null
-  try {
-    const key = getGameStateKey(len)
-    const raw = localStorage.getItem(key)
-    if (raw) {
-      const parsed = JSON.parse(raw)
-      if (parsed.date === getTodayKey()) return parsed
-    }
-    // Migrate legacy game state for 2-syllable mode
-    if (len === 2) {
-      const legacy = localStorage.getItem('koreanWordle_gameState')
-      if (legacy) {
-        const parsed = JSON.parse(legacy)
-        if (parsed.date === getTodayKey()) {
-          localStorage.setItem(key, legacy)
-          return parsed
-        }
-      }
-    }
-  } catch { /* ignore */ }
   return null
 }
 
-function saveGameState(state: SavedGameState, len: WordLength) {
-  try { localStorage.setItem(getGameStateKey(len), JSON.stringify(state)) } catch { /* ignore */ }
+const pad = (n: number) => String(n).padStart(2, '0')
+const fmtCountdown = (ms: number) => {
+  const s = Math.floor(ms / 1000)
+  return `${pad(Math.floor(s / 3600))}:${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}`
 }
-
-// ═══════════════════════════════════════════════════════════
-// Component
-// ═══════════════════════════════════════════════════════════
 
 export default function KoreanWordle() {
   const t = useTranslations('koreanWordle')
 
-  // Word length mode
-  const [wordLength, setWordLength] = useState<WordLength>(2)
+  const [mounted, setMounted] = useState(false)
+  const [now, setNow] = useState(0)
+  const [mode, setMode] = useState<Mode>('daily')
+  const [records, setRecords] = useState<DailyRecords>({})
+  const [legacy, setLegacy] = useState<LegacyStats | null>(null)
+  const [practice, setPractice] = useState<Game | null>(null)
+  const [practiceLen, setPracticeLen] = useState<WordLen>(2)
+  const [keys, setKeys] = useState<string[]>([])
+  const [hardSetting, setHardSetting] = useState(false)
+  const [contrast, setContrast] = useState(false)
 
-  // Game state
-  const [answer, setAnswer] = useState<string>(() => getDailyWord(2))
-  const [guesses, setGuesses] = useState<string[]>([])
-  const [gameStatus, setGameStatus] = useState<GameStatus>('playing')
-  const [hardMode, setHardMode] = useState(false)
-  const [hangulState, setHangulState] = useState<HangulState>(createEmptyHangulState())
-
-  // UI state
   const [showHelp, setShowHelp] = useState(false)
   const [showStats, setShowStats] = useState(false)
-  const [stats, setStats] = useState<GameStats>(() => loadStats(2))
   const [toast, setToast] = useState<string | null>(null)
-  const [copiedShare, setCopiedShare] = useState(false)
-  const [shakeRow, setShakeRow] = useState(-1)
-  const [revealingRow, setRevealingRow] = useState(-1)
+  const [shake, setShake] = useState(false)
+  const [revealRow, setRevealRow] = useState(-1)
   const [bounceRow, setBounceRow] = useState(-1)
-  // Streak at the moment the game ended (before reset on loss)
-  const [endStreak, setEndStreak] = useState<{ value: number; wasLost: boolean } | null>(null)
-
-  const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const boardRef = useRef<HTMLDivElement>(null)
-
-  const leaderboard = useLeaderboard('koreanWordle', undefined)
+  const [celebrate, setCelebrate] = useState(false)
+  const [copied, setCopied] = useState(false)
   const [showNameModal, setShowNameModal] = useState(false)
-  const gameStartTimeRef = useRef<number>(Date.now())
+
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const startTime = useRef(0)
+  const leaderboard = useLeaderboard('koreanWordle', undefined)
   const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
-  const resultRecordedRef = useRef(false)
 
-  // Active word set for current mode
-  const activeWordSet = useMemo(() => getWordSet(wordLength), [wordLength])
-
-  // Mode switch handler
-  const switchMode = useCallback((newLen: WordLength) => {
-    if (newLen === wordLength) return
-    setWordLength(newLen)
-    const newAnswer = getDailyWord(newLen)
-    setAnswer(newAnswer)
-    setHangulState(createEmptyHangulState())
-    setRevealingRow(-1)
-    setBounceRow(-1)
-    setShakeRow(-1)
-    setEndStreak(null)
-    gameStartTimeRef.current = Date.now()
-
-    // Load saved state for this mode
-    const saved = loadGameState(newLen)
-    const s = loadStats(newLen)
-    if (saved && saved.answer === newAnswer) {
-      setGuesses(saved.guesses)
-      setGameStatus(saved.gameStatus)
-      setHardMode(saved.hardMode)
-      if (saved.gameStatus === 'won') {
-        setEndStreak({ value: s.currentStreak, wasLost: false })
-      } else if (saved.gameStatus === 'lost') {
-        setEndStreak({ value: 0, wasLost: false })
-      }
-    } else {
-      setGuesses([])
-      setGameStatus('playing')
-      setHardMode(false)
-    }
-    setStats(s)
-  }, [wordLength])
-
-  // Current input text from hangul state machine
-  const currentInput = getCurrentText(hangulState)
-
-  // Detect if current input has incomplete jamo (standalone consonants/vowels)
-  const hasIncompleteJamo = useMemo(() => {
-    if (!currentInput) return false
-    for (const ch of currentInput) {
-      if (!isHangulSyllable(ch)) return true
-    }
-    return false
-  }, [currentInput])
-
-  // ── Load saved game state on mount ──
-  useEffect(() => {
-    const saved = loadGameState(wordLength)
-    const s = loadStats(wordLength)
-    if (saved) {
-      setGuesses(saved.guesses)
-      setGameStatus(saved.gameStatus)
-      setHardMode(saved.hardMode)
-      if (saved.gameStatus === 'won') {
-        setEndStreak({ value: s.currentStreak, wasLost: false })
-      } else if (saved.gameStatus === 'lost') {
-        setEndStreak({ value: 0, wasLost: false })
-      }
-    } else {
-      if (s.gamesPlayed === 0) {
-        setShowHelp(true)
-      }
-    }
-    setStats(s)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const newPractice = useCallback((len: WordLen) => {
+    setPractice({ answer: randomAnswer(len), len, guesses: [], hard: false })
+    setKeys([])
+    setCelebrate(false)
+    startTime.current = Date.now()
   }, [])
 
-  // ── Save game state on changes ──
+  // 오늘의 단어·기록은 마운트 후에만 계산 (정답이 정적 HTML에 없고 hydration 불일치 없음)
   useEffect(() => {
-    if (guesses.length > 0 || gameStatus !== 'playing') {
-      saveGameState({
-        date: getTodayKey(),
-        guesses,
-        gameStatus,
-        answer,
-        hardMode,
-      }, wordLength)
-    }
-  }, [guesses, gameStatus, answer, hardMode, wordLength])
+    setMounted(true)
+    setNow(Date.now())
+    const recs = readJSON<DailyRecords>(STORE, {})
+    const leg = loadLegacy()
+    setRecords(recs)
+    setLegacy(leg)
+    const s = readJSON<{ hard?: boolean; contrast?: boolean }>(SETTINGS, {})
+    setHardSetting(!!s.hard)
+    setContrast(!!s.contrast)
+    newPractice(2)
+    startTime.current = Date.now()
+    if (!Object.keys(recs).length && !leg) setShowHelp(true)
+    const id = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(id)
+  }, [newPractice])
 
-  // ── Win detection for leaderboard ──
-  useEffect(() => {
-    if (gameStatus === 'won') {
-      if (leaderboard.checkQualifies(guesses.length)) {
-        setShowNameModal(true)
+  const saveSettings = (hard: boolean, cb: boolean) => writeJSON(SETTINGS, { hard, contrast: cb })
+
+  const today = now ? dayNumber(now) : 0
+  const daily = records[today]
+  const game: Game | null = !mounted ? null
+    : mode === 'daily'
+      ? { answer: dailyAnswer(today), len: 2, guesses: daily?.guesses ?? [], hard: daily?.guesses.length ? !!daily.hard : hardSetting }
+      : practice && { ...practice, hard: practice.guesses.length ? practice.hard : hardSetting }
+  const len: WordLen = game?.len ?? 2
+  const guesses = game?.guesses ?? []
+  const status = game ? statusOf(guesses, game.answer) : 'playing'
+  // 마지막 줄이 뒤집히는 동안에는 결과를 숨김 (스포일러 방지)
+  const settled = revealRow >= 0 ? 'playing' : status
+  const input = compose(keys)
+
+  // 자정이 지나거나 모드가 바뀌면 입력 초기화
+  useEffect(() => { setKeys([]) }, [today, mode])
+
+  const showToast = useCallback((msg: string, ms = 2000) => {
+    setToast(msg)
+    if (toastTimer.current) clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => setToast(null), ms)
+  }, [])
+
+  const reject = (msg: string) => {
+    showToast(msg)
+    setShake(true)
+    setTimeout(() => setShake(false), 500)
+  }
+
+  const submit = () => {
+    if (!game || status !== 'playing' || revealRow >= 0) return
+    const chars = [...input]
+    if (chars.length < game.len) return reject(t('notEnoughLetters'))
+    if (!chars.every(isSyllable)) return reject(t('needVowelHint'))
+    if (!VALID[game.len].has(input)) return reject(t('notInList'))
+    if (game.hard && guesses.length) {
+      const err = hardModeError(guesses[guesses.length - 1], game.answer, input)
+      if (err) return reject(t(err.kind === 'correct' ? 'hardModeCorrect' : 'hardModePresent', { jamo: err.jamo }))
+    }
+
+    const next = [...guesses, input]
+    if (mode === 'daily') {
+      setRecords(prev => {
+        const r = { ...prev, [today]: { guesses: next, hard: game.hard } }
+        writeJSON(STORE, r)
+        return r
+      })
+    } else {
+      setPractice({ ...game, guesses: next })
+    }
+    setKeys([])
+
+    const row = next.length - 1
+    setRevealRow(row)
+    setTimeout(() => {
+      setRevealRow(-1)
+      const st = statusOf(next, game.answer)
+      if (st === 'playing') return
+      if (st === 'won') {
+        setBounceRow(row)
+        setTimeout(() => setBounceRow(-1), 1000)
+        setCelebrate(true)
+        setTimeout(() => setCelebrate(false), 3000)
+        showToast(t(`winMessages.${row}`), 2500)
+      } else {
+        showToast(game.answer, 4000)
       }
-      leaderboard.fetchLeaderboard()
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameStatus])
+      recordGameResult({
+        gameType: 'koreanWordle',
+        result: st === 'won' ? 'win' : 'loss',
+        difficulty: mode === 'daily' ? 'daily' : game.hard ? 'hard' : game.len === 3 ? 'normal' : 'easy',
+        moves: next.length,
+      })
+      if (mode === 'daily') {
+        if (st === 'won' && leaderboard.checkQualifies(next.length)) setShowNameModal(true)
+        leaderboard.fetchLeaderboard()
+        setTimeout(() => setShowStats(true), 1500)
+      }
+    }, FLIP_STEP * (game.len - 1) + FLIP_MS)
+  }
 
-  // ── Achievement recording ──
-  useEffect(() => {
-    if (gameStatus === 'playing') {
-      resultRecordedRef.current = false
+  const press = (k: string) => {
+    if (k === 'Enter') {
+      if (mode === 'practice' && settled !== 'playing') newPractice(practiceLen)
+      else submit()
       return
     }
-    if (resultRecordedRef.current) return
-    resultRecordedRef.current = true
-    const difficulty = wordLength === 2 ? 'easy' : wordLength === 3 ? 'normal' : 'hard'
-    if (gameStatus === 'won') {
-      recordGameResult({ gameType: 'koreanWordle', result: 'win', difficulty, moves: guesses.length })
-    } else if (gameStatus === 'lost') {
-      recordGameResult({ gameType: 'koreanWordle', result: 'loss', difficulty, moves: guesses.length })
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameStatus])
+    if (!game || status !== 'playing' || revealRow >= 0) return
+    if (k === 'Backspace') { setKeys(p => p.slice(0, -1)); return }
+    const nextKeys = [...keys, k]
+    if ([...compose(nextKeys)].length > game.len) return
+    setKeys(nextKeys)
+  }
 
-  const handleLeaderboardSubmit = useCallback(async (name: string) => {
-    const duration = Date.now() - gameStartTimeRef.current
-    await leaderboard.submitScore(guesses.length, name, duration)
+  // 물리 키보드: 한글 IME 켜짐/꺼짐 모두 두벌식으로 입력
+  const pressRef = useRef(press)
+  pressRef.current = press
+  const modalOpen = showHelp || showStats || showNameModal
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      if (e.key === 'Escape') { setShowHelp(false); setShowStats(false); return }
+      if (modalOpen) return
+      const el = e.target as HTMLElement
+      if (el.closest('input, textarea, select, [contenteditable="true"]')) return
+      if (e.key === 'Enter') { if (el.tagName !== 'BUTTON') { e.preventDefault(); pressRef.current('Enter') } return }
+      if (e.key === 'Backspace') { e.preventDefault(); pressRef.current('Backspace'); return }
+      const j = keyToJamo(e.key, e.code, e.shiftKey)
+      if (j) { e.preventDefault(); pressRef.current(j) }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [modalOpen])
+
+  const switchMode = (m: Mode) => { setMode(m); setShake(false); setRevealRow(-1) }
+
+  // ── 파생 값 ──
+  const stats = computeStats(records, today, legacy)
+  const dailyDone = mode === 'daily' && settled !== 'playing'
+  const dailyStatus = mounted && !(mode === 'daily' && revealRow >= 0) ? statusOf(daily?.guesses ?? [], dailyAnswer(today)) : 'playing'
+  const shareUrl = mounted ? `${window.location.origin}/korean-wordle/` : ''
+  const shareTitle = t('shareTitle')
+  const dailyText = mounted && dailyStatus !== 'playing'
+    ? shareText(shareTitle, today, daily!.guesses, dailyAnswer(today), { hard: !!daily!.hard, contrast, url: shareUrl })
+    : ''
+  const colors = COLORS[contrast ? 'contrast' : 'normal']
+  const keyMap = game ? keyStatuses(revealRow >= 0 ? guesses.slice(0, -1) : guesses, game.answer) : {}
+  const maxDist = Math.max(1, ...stats.dist)
+
+  const copyResult = async () => {
+    try { await navigator.clipboard.writeText(dailyText) } catch {
+      const ta = document.createElement('textarea')
+      ta.value = dailyText; ta.style.position = 'fixed'; ta.style.left = '-9999px'
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta)
+    }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleLeaderboardSubmit = async (name: string) => {
+    await leaderboard.submitScore(guesses.length, name, Date.now() - startTime.current)
     leaderboard.savePlayerName(name)
     setShowNameModal(false)
-  }, [leaderboard, guesses.length])
-
-  // ── Toast helper ──
-  const showToast = useCallback((msg: string, duration = 2000) => {
-    setToast(msg)
-    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current)
-    toastTimeoutRef.current = setTimeout(() => setToast(null), duration)
-  }, [])
-
-  // ── Keyboard status map (for coloring keyboard keys) ──
-  const keyboardStatuses = useMemo(() => {
-    const map: Record<string, JamoStatus> = {}
-    guesses.forEach(guess => {
-      const evaluation = evaluateGuess(guess, answer)
-      evaluation.forEach(syllJamos => {
-        syllJamos.forEach(({ jamo, status }) => {
-          const existing = map[jamo]
-          // Priority: correct > present > absent
-          if (!existing || status === 'correct' || (status === 'present' && existing !== 'correct')) {
-            map[jamo] = status
-          }
-        })
-      })
-    })
-    return map
-  }, [guesses, answer])
-
-  // ── Hard mode validation ──
-  const validateHardMode = useCallback((word: string): string | null => {
-    if (!hardMode || guesses.length === 0) return null
-
-    // Get the last guess's evaluation
-    const lastGuess = guesses[guesses.length - 1]
-    const lastEval = evaluateGuess(lastGuess, answer)
-    const wordJamos = decomposeWordBySyllable(word)
-
-    // Check all 'correct' jamo are in the same position
-    let flatIdx = 0
-    const lastSyllables = decomposeWordBySyllable(lastGuess)
-    for (let si = 0; si < lastSyllables.length; si++) {
-      for (let ji = 0; ji < lastEval[si].length; ji++) {
-        if (lastEval[si][ji].status === 'correct') {
-          if (!wordJamos[si] || wordJamos[si][ji] !== lastEval[si][ji].jamo) {
-            return t('hardModeCorrect', { jamo: lastEval[si][ji].jamo })
-          }
-        }
-        flatIdx++
-      }
-    }
-
-    // Check all 'present' jamo are used somewhere
-    for (let si = 0; si < lastEval.length; si++) {
-      for (const cell of lastEval[si]) {
-        if (cell.status === 'present') {
-          const allJamos = decomposeWord(word)
-          if (!allJamos.includes(cell.jamo)) {
-            return t('hardModePresent', { jamo: cell.jamo })
-          }
-        }
-      }
-    }
-
-    return null
-  }, [hardMode, guesses, answer, t])
-
-  // ── Submit guess ──
-  const submitGuess = useCallback(() => {
-    if (gameStatus !== 'playing') return
-
-    // Flush current hangul state to get final text
-    const flushed = flushHangulState(hangulState)
-    const word = flushed.chars.join('')
-
-    if (word.length !== wordLength) {
-      showToast(t('notEnoughLetters'))
-      setShakeRow(guesses.length)
-      setTimeout(() => setShakeRow(-1), 600)
-      return
-    }
-
-    // Check all chars are valid Hangul syllables
-    for (const ch of word) {
-      if (!isHangulSyllable(ch)) {
-        showToast(t('invalidChars'))
-        setShakeRow(guesses.length)
-        setTimeout(() => setShakeRow(-1), 600)
-        return
-      }
-    }
-
-    // Check word is in list
-    if (!activeWordSet.has(word)) {
-      showToast(t('notInList'))
-      setShakeRow(guesses.length)
-      setTimeout(() => setShakeRow(-1), 600)
-      return
-    }
-
-    // Hard mode check
-    const hardModeError = validateHardMode(word)
-    if (hardModeError) {
-      showToast(hardModeError)
-      setShakeRow(guesses.length)
-      setTimeout(() => setShakeRow(-1), 600)
-      return
-    }
-
-    const rowIdx = guesses.length
-    const newGuesses = [...guesses, word]
-    setGuesses(newGuesses)
-    setHangulState(createEmptyHangulState())
-
-    // Reveal animation
-    setRevealingRow(rowIdx)
-    const revealDuration = 600 // ms for flip
-
-    setTimeout(() => {
-      setRevealingRow(-1)
-
-      // Check win/loss
-      if (word === answer) {
-        setBounceRow(rowIdx)
-        setTimeout(() => setBounceRow(-1), 1500)
-
-        setGameStatus('won')
-        const newStats = { ...stats }
-        newStats.gamesPlayed++
-        newStats.gamesWon++
-        newStats.currentStreak++
-        if (newStats.currentStreak > newStats.maxStreak) {
-          newStats.maxStreak = newStats.currentStreak
-        }
-        newStats.guessDistribution[rowIdx]++
-        newStats.lastPlayedDate = getTodayKey()
-        setStats(newStats)
-        saveStats(newStats, wordLength)
-        setEndStreak({ value: newStats.currentStreak, wasLost: false })
-
-        setTimeout(() => {
-          showToast(t('winMessages.' + Math.min(rowIdx, 5)), 3000)
-          setTimeout(() => setShowStats(true), 1500)
-        }, 300)
-      } else if (newGuesses.length >= MAX_GUESSES) {
-        setGameStatus('lost')
-        const prevStreak = stats.currentStreak
-        const newStats = { ...stats }
-        newStats.gamesPlayed++
-        newStats.currentStreak = 0
-        newStats.lastPlayedDate = getTodayKey()
-        setStats(newStats)
-        saveStats(newStats, wordLength)
-        setEndStreak({ value: prevStreak, wasLost: true })
-
-        setTimeout(() => {
-          showToast(answer, 4000)
-          setTimeout(() => setShowStats(true), 2000)
-        }, 300)
-      }
-    }, revealDuration)
-  }, [hangulState, guesses, gameStatus, answer, stats, showToast, validateHardMode, t, wordLength, activeWordSet])
-
-  // ── Handle virtual keyboard press ──
-  const handleKeyPress = useCallback((key: string) => {
-    if (gameStatus !== 'playing') return
-
-    if (key === 'Enter') {
-      submitGuess()
-      return
-    }
-    if (key === 'Backspace') {
-      setHangulState(prev => removeLastJamo(prev))
-      return
-    }
-
-    // Check if adding this jamo would exceed the max character length
-    const nextState = addJamo(hangulState, key)
-    const nextText = getCurrentText(nextState)
-    if (nextText.length > wordLength) {
-      return
-    }
-
-    setHangulState(nextState)
-  }, [gameStatus, hangulState, submitGuess, wordLength])
-
-  // ── Physical keyboard support ──
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (showHelp || showStats) return
-      if (gameStatus !== 'playing') return
-
-      if (e.key === 'Enter') {
-        e.preventDefault()
-        submitGuess()
-        return
-      }
-      if (e.key === 'Backspace') {
-        e.preventDefault()
-        setHangulState(prev => removeLastJamo(prev))
-        return
-      }
-
-      // Map physical keyboard to jamo
-      const ENG_TO_KOR: Record<string, string> = {
-        'q': 'ㅂ', 'w': 'ㅈ', 'e': 'ㄷ', 'r': 'ㄱ', 't': 'ㅅ',
-        'y': 'ㅛ', 'u': 'ㅕ', 'i': 'ㅑ', 'o': 'ㅐ', 'p': 'ㅔ',
-        'a': 'ㅁ', 's': 'ㄴ', 'd': 'ㅇ', 'f': 'ㄹ', 'g': 'ㅎ',
-        'h': 'ㅗ', 'j': 'ㅓ', 'k': 'ㅏ', 'l': 'ㅣ',
-        'z': 'ㅋ', 'x': 'ㅌ', 'c': 'ㅊ', 'v': 'ㅍ',
-        'b': 'ㅠ', 'n': 'ㅜ', 'm': 'ㅡ',
-        'Q': 'ㅃ', 'W': 'ㅉ', 'E': 'ㄸ', 'R': 'ㄲ', 'T': 'ㅆ',
-        'O': 'ㅒ', 'P': 'ㅖ',
-      }
-
-      const jamo = ENG_TO_KOR[e.key]
-      if (jamo) {
-        e.preventDefault()
-        handleKeyPress(jamo)
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [gameStatus, showHelp, showStats, submitGuess, handleKeyPress])
-
-  // ── Build share text ──
-  const buildShareText = useCallback((): string => {
-    const dayNumber = Math.floor((new Date().getTime() - new Date(2024, 0, 1).getTime()) / (1000 * 60 * 60 * 24))
-    const guessCount = gameStatus === 'won' ? guesses.length : 'X'
-    const modeLabel = wordLength > 2 ? ` (${wordLength}글자)` : ''
-    let text = `${t('shareTitle')}${modeLabel} #${dayNumber} ${guessCount}/${MAX_GUESSES}\n\n`
-    guesses.forEach(guess => {
-      const evaluation = evaluateGuess(guess, answer)
-      const line = evaluation.map(syllJamos =>
-        syllJamos.map(({ status }) => {
-          if (status === 'correct') return '🟩'
-          if (status === 'present') return '🟨'
-          return '⬛'
-        }).join('')
-      ).join(' ')
-      text += line + '\n'
-    })
-    text += `\ntoolhub.ai.kr/korean-wordle`
-    return text
-  }, [gameStatus, guesses, answer, t, wordLength])
-
-  // ── Build emoji grid only (for display) ──
-  const buildEmojiGrid = useCallback((): string => {
-    return guesses.map(guess => {
-      const evaluation = evaluateGuess(guess, answer)
-      return evaluation.map(syllJamos =>
-        syllJamos.map(({ status }) => {
-          if (status === 'correct') return '🟩'
-          if (status === 'present') return '🟨'
-          return '⬛'
-        }).join('')
-      ).join(' ')
-    }).join('\n')
-  }, [guesses, answer])
-
-  // ── Copy to clipboard ──
-  const copyToClipboard = useCallback(async (text: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      return true
-    } catch {
-      return false
-    }
-  }, [])
-
-  // ── Share results ──
-  const shareResults = useCallback(async () => {
-    if (gameStatus === 'playing') return
-    const shareText = buildShareText()
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ text: shareText })
-        return
-      } catch {
-        // user cancelled or share failed — fall through to clipboard
-      }
-    }
-
-    const ok = await copyToClipboard(shareText)
-    setCopiedShare(true)
-    setTimeout(() => setCopiedShare(false), 2000)
-    showToast(ok ? t('shared') : t('copyFailed'))
-  }, [gameStatus, buildShareText, copyToClipboard, showToast, t])
-
-  // ── Copy only (explicit clipboard button) ──
-  const copyShare = useCallback(async () => {
-    if (gameStatus === 'playing') return
-    const shareText = buildShareText()
-    const ok = await copyToClipboard(shareText)
-    setCopiedShare(true)
-    setTimeout(() => setCopiedShare(false), 2000)
-    showToast(ok ? t('shared') : t('copyFailed'))
-  }, [gameStatus, buildShareText, copyToClipboard, showToast, t])
-
-  // ── Share on X/Twitter ──
-  const shareOnTwitter = useCallback(() => {
-    if (gameStatus === 'playing') return
-    const shareText = buildShareText()
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }, [gameStatus, buildShareText])
-
-  // ── Share on KakaoTalk ──
-  const shareOnKakao = useCallback(() => {
-    const url = `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent('https://toolhub.ai.kr/korean-wordle')}`
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }, [])
-
-  // ── Build display rows ──
-  const displayRows = useMemo(() => {
-    const rows: GuessRow[] = []
-
-    // Completed guesses
-    guesses.forEach((guess, idx) => {
-      const evaluation = evaluateGuess(guess, answer)
-      const syllables = [...guess].map((ch, si) => ({
-        char: ch,
-        jamos: evaluation[si] || [],
-      }))
-      rows.push({ word: guess, syllables, revealed: idx !== revealingRow })
-    })
-
-    // Current input row
-    if (guesses.length < MAX_GUESSES && gameStatus === 'playing') {
-      const inputText = currentInput
-      const syllables: GuessRow['syllables'] = []
-
-      for (let i = 0; i < wordLength; i++) {
-        if (i < inputText.length) {
-          const ch = inputText[i]
-          const jamos = isHangulSyllable(ch)
-            ? decomposeKorean(ch).map(j => ({ jamo: j, status: 'empty' as JamoStatus }))
-            : [{ jamo: ch, status: 'empty' as JamoStatus }]
-          syllables.push({ char: ch, jamos })
-        } else {
-          syllables.push({ char: '', jamos: [] })
-        }
-      }
-      rows.push({ word: inputText, syllables, revealed: false })
-    }
-
-    // Empty remaining rows
-    const remaining = MAX_GUESSES - rows.length
-    for (let i = 0; i < remaining; i++) {
-      const syllables: GuessRow['syllables'] = []
-      for (let j = 0; j < wordLength; j++) {
-        syllables.push({ char: '', jamos: [] })
-      }
-      rows.push({ word: '', syllables, revealed: false })
-    }
-
-    return rows
-  }, [guesses, answer, currentInput, revealingRow, gameStatus, wordLength])
-
-  // ── Render ──
-
-  const getStatusColor = (status: JamoStatus, isText = false): string => {
-    switch (status) {
-      case 'correct':
-        return isText ? 'text-white' : 'bg-green-500 dark:bg-green-600'
-      case 'present':
-        return isText ? 'text-white' : 'bg-yellow-500 dark:bg-yellow-600'
-      case 'absent':
-        return isText ? 'text-white' : 'bg-gray-500 dark:bg-gray-600'
-      default:
-        return isText ? 'text-fg' : 'bg-field'
-    }
   }
 
-  const getStatusBorder = (status: JamoStatus): string => {
-    switch (status) {
-      case 'correct': return 'border-green-500 dark:border-green-600'
-      case 'present': return 'border-yellow-500 dark:border-yellow-600'
-      case 'absent': return 'border-gray-500 dark:border-gray-600'
-      default: return 'border-line-strong'
-    }
+  // ── 렌더 조각 ──
+  const tileSize = len === 2 ? 'w-16 h-16 sm:w-20 sm:h-20 text-3xl' : 'w-14 h-14 sm:w-16 sm:h-16 text-2xl'
+  const chip = (on: boolean) =>
+    `px-3.5 py-2 rounded-full text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`
+
+  const renderRow = (r: number) => {
+    const guessed = r < guesses.length
+    const current = r === guesses.length && status === 'playing'
+    const word = guessed ? guesses[r] : current ? input : ''
+    const chars = [...word]
+    const sc = guessed && game ? score(word, game.answer) : null
+    const revealing = r === revealRow
+    return (
+      <div
+        key={r}
+        className={`flex justify-center gap-3 ${current && shake ? 'kw-shake' : ''} ${r === bounceRow ? 'kw-bounce' : ''}`}
+      >
+        {Array.from({ length: len }, (_, si) => {
+          const ch = chars[si] ?? ''
+          const jamos = ch ? (isSyllable(ch) ? syllableKeys(ch) : [ch]) : []
+          const exact = !!sc && sc[si].every(s => s === 'correct')
+          const incomplete = current && !!ch && !isSyllable(ch)
+          const tile = sc
+            ? exact ? colors.correct : 'bg-surface border-2 border-line-strong text-fg'
+            : ch ? `bg-surface border-2 ${incomplete ? 'border-amber-500' : 'border-sub'} text-fg` : 'bg-surface border-2 border-line'
+          const anim = revealing ? { animationDelay: `${si * FLIP_STEP}ms` } : undefined
+          return (
+            <div key={si} className="flex flex-col items-center gap-1">
+              <div className={`${tileSize} ${tile} ${revealing ? 'kw-flip' : ''} flex items-center justify-center rounded-xl font-bold`} style={anim}>
+                {ch}
+              </div>
+              <div className="flex gap-0.5 h-6">
+                {jamos.map((j, ji) => (
+                  <span
+                    key={ji}
+                    className={`w-5 h-6 sm:w-6 flex items-center justify-center rounded text-xs font-bold ${sc ? colors[sc[si][ji]] : 'bg-soft text-muted'} ${revealing ? 'kw-flip' : ''}`}
+                    style={anim}
+                  >
+                    {j}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )
   }
 
-  const getKeyColor = (jamo: string): string => {
-    const status = keyboardStatuses[jamo]
-    switch (status) {
-      case 'correct': return 'bg-green-500 dark:bg-green-600 text-white border-green-500'
-      case 'present': return 'bg-yellow-500 dark:bg-yellow-600 text-white border-yellow-500'
-      case 'absent': return 'bg-gray-400 dark:bg-gray-700 text-white border-gray-400 dark:border-gray-700'
-      default: return 'bg-gray-200 dark:bg-gray-600 text-fg border-gray-300 dark:border-gray-500'
-    }
+  const keyClass = (k: string) => {
+    const s = keyMap[k]
+    return s ? colors[s] : 'bg-soft text-fg hover:bg-track'
   }
-
-  // Win rate percentage
-  const winRate = stats.gamesPlayed > 0 ? Math.round((stats.gamesWon / stats.gamesPlayed) * 100) : 0
-  const maxDistribution = Math.max(...stats.guessDistribution, 1)
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-surface rounded-xl shadow-lg p-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl sm:text-2xl font-bold text-fg">
-            {t('title')}
-          </h1>
-          <div className="flex items-center gap-2">
-            {/* Hard mode toggle */}
-            <label className="flex items-center gap-1.5 cursor-pointer text-xs">
-              <input
-                type="checkbox"
-                checked={hardMode}
-                onChange={(e) => {
-                  if (guesses.length > 0 && e.target.checked) {
-                    showToast(t('hardModeAfterStart'))
-                    return
-                  }
-                  setHardMode(e.target.checked)
-                }}
-                className="accent-blue-600 w-4 h-4"
-                disabled={guesses.length > 0 && !hardMode}
-              />
-              <span className="text-sub">{t('hardMode')}</span>
-            </label>
-            <button
-              onClick={() => setShowHelp(true)}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              aria-label={t('howToPlay')}
-            >
-              <HelpCircle className="w-5 h-5 text-sub" />
-            </button>
-            <button
-              onClick={() => setShowStats(true)}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              aria-label={t('statistics')}
-            >
-              <BarChart3 className="w-5 h-5 text-sub" />
-            </button>
-          </div>
-        </div>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
+      <GameConfetti active={celebrate} />
 
-        {/* Word Length Mode Selector */}
-        <div className="flex gap-2 mt-3">
-          {([2, 3, 4] as WordLength[]).map(len => (
-            <button
-              key={len}
-              onClick={() => switchMode(len)}
-              className={`
-                flex-1 py-2 rounded-lg text-sm font-bold transition-all
-                ${wordLength === len
-                  ? 'bg-primary hover:bg-blue-700 text-white shadow-md'
-                  : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
-                }
-              `}
-            >
-              {len}글자
+      {/* 헤더 */}
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
+        </div>
+        <div className="flex gap-2 shrink-0">
+          <button onClick={() => setShowHelp(true)} aria-label={t('howToPlay')} title={t('howToPlay')} className="p-2.5 rounded-xl bg-soft text-body hover:bg-track">
+            <HelpCircle className="w-5 h-5" />
+          </button>
+          <button onClick={() => setShowStats(true)} aria-label={t('statistics')} title={t('statistics')} className="p-2.5 rounded-xl bg-soft text-body hover:bg-track">
+            <BarChart3 className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+
+      {/* 모드 */}
+      <div role="tablist" className="grid grid-cols-2 gap-1 p-1 bg-soft rounded-2xl">
+        {(['daily', 'practice'] as const).map(m => (
+          <button
+            key={m}
+            role="tab"
+            aria-selected={mode === m}
+            onClick={e => { e.currentTarget.blur(); switchMode(m) }}
+            className={`py-2.5 rounded-xl text-sm font-semibold transition-colors ${mode === m ? 'bg-primary text-white' : 'text-body hover:bg-track'}`}
+          >
+            {m === 'daily' ? (today ? t('dailyLabel', { day: today }) : t('modeDaily')) : t('modePractice')}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        {mode === 'practice' && ([2, 3] as WordLen[]).map(n => (
+          <button key={n} onClick={e => { e.currentTarget.blur(); setPracticeLen(n); newPractice(n) }} className={chip(practiceLen === n)}>
+            {t('practiceLen', { n })}
+          </button>
+        ))}
+        <div className="flex gap-4 ml-auto text-sm text-body">
+          <label className="flex items-center gap-1.5 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={game?.hard ?? hardSetting}
+              disabled={guesses.length > 0}
+              title={guesses.length > 0 ? t('hardModeAfterStart') : undefined}
+              onChange={e => { setHardSetting(e.target.checked); saveSettings(e.target.checked, contrast) }}
+              className="accent-blue-500 w-4 h-4"
+            />
+            {t('hardMode')}
+          </label>
+          <label className="flex items-center gap-1.5 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={contrast}
+              onChange={e => { setContrast(e.target.checked); saveSettings(hardSetting, e.target.checked) }}
+              className="accent-blue-500 w-4 h-4"
+            />
+            {t('colorblind')}
+          </label>
+        </div>
+      </div>
+
+      {/* 토스트 */}
+      {toast && (
+        <div role="status" className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-fg text-canvas px-5 py-3 rounded-xl shadow-lg font-semibold text-sm">
+          {toast}
+        </div>
+      )}
+
+      {/* 보드 */}
+      <div className="ui-card p-4 sm:p-6">
+        <div className="flex flex-col gap-2" aria-label={t('title')}>
+          {Array.from({ length: MAX_GUESSES }, (_, r) => renderRow(r))}
+        </div>
+        {status === 'playing' && [...input].some(ch => !isSyllable(ch)) && (
+          <p className="text-center text-sm text-muted mt-3">{t('needVowelHint')}</p>
+        )}
+      </div>
+
+      {/* 결과 */}
+      {game && settled !== 'playing' && (
+        <div className="ui-card p-5 sm:p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-fg">{status === 'won' ? t('resultWon') : t('resultLost')}</h2>
+            <span className="text-3xl font-bold text-fg tabular-nums">
+              {status === 'won' ? guesses.length : 'X'}/{MAX_GUESSES}{game.hard ? '*' : ''}
+            </span>
+          </div>
+          {status === 'lost' && (
+            <p className="text-sm text-sub">{t('answerWas')} <span className="font-bold text-fg text-base">{game.answer}</span></p>
+          )}
+
+          {dailyDone ? (
+            <>
+              <pre className="font-sans text-base leading-relaxed bg-subtle rounded-2xl p-4 text-center whitespace-pre-wrap">{dailyText}</pre>
+              {stats.current >= 2 && <p className="text-sm text-sub text-center">{t('streakContinued', { count: stats.current })}</p>}
+              <div className="flex flex-wrap gap-2">
+                <button onClick={copyResult} className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold ui-btn">
+                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {copied ? t('shared') : t('copyResult')}
+                </button>
+              </div>
+              <ShareResult
+                url={shareUrl}
+                text={dailyText.replace(/\n\n[^\n]*$/, '')}
+                fileName={`korean-wordle-${today}`}
+                card={{
+                  tool: t('title'),
+                  label: t('cardLabel', { day: today }),
+                  headline: status === 'won' ? t('cardWon', { n: guesses.length, max: MAX_GUESSES }) : t('cardLost', { max: MAX_GUESSES }),
+                  sub: t('cardStreak', { n: stats.current }),
+                }}
+              />
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-line">
+                <p className="text-sm text-sub">
+                  {t('nextWord')} <span className="font-bold text-fg tabular-nums">{fmtCountdown(msToNextDay(now))}</span>
+                </p>
+                <button onClick={() => switchMode('practice')} className="ui-btn-soft px-4 py-2 rounded-xl text-sm font-semibold">
+                  {t('playPractice')}
+                </button>
+              </div>
+            </>
+          ) : (
+            <button onClick={() => newPractice(practiceLen)} className="ui-btn px-4 py-3 rounded-xl w-full inline-flex items-center justify-center gap-2 font-semibold">
+              <RotateCcw className="w-4 h-4" /> {t('newGame')}
             </button>
+          )}
+        </div>
+      )}
+
+      {/* 화면 키보드 (두벌식) */}
+      <div className="ui-card p-2 sm:p-4 select-none">
+        <div className="flex flex-col items-center gap-1.5">
+          {KEY_ROWS.map((row, ri) => (
+            <div key={ri} className="flex gap-1 sm:gap-1.5 w-full justify-center">
+              {ri === 2 && (
+                <button onClick={e => { e.currentTarget.blur(); press('Enter') }} className="px-2 sm:px-4 h-12 rounded-lg text-sm font-bold bg-primary text-white">
+                  {t('enter')}
+                </button>
+              )}
+              {row.map(k => (
+                <button
+                  key={k}
+                  onClick={e => { e.currentTarget.blur(); press(k) }}
+                  className={`flex-1 max-w-11 ${ri === 3 ? 'h-10' : 'h-12'} rounded-lg text-base font-bold transition-colors ${keyClass(k)}`}
+                >
+                  {k}
+                </button>
+              ))}
+              {ri === 2 && (
+                <button onClick={e => { e.currentTarget.blur(); press('Backspace') }} aria-label={t('delete')} className="px-2 sm:px-4 h-12 rounded-lg bg-soft text-fg hover:bg-track flex items-center">
+                  <Delete className="w-5 h-5" />
+                </button>
+              )}
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Toast */}
-      {toast && (
-        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 animate-fade-in">
-          <div className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-lg shadow-xl font-bold text-sm">
-            {toast}
-          </div>
-        </div>
-      )}
-
-      {/* Game Board */}
-      <div ref={boardRef} className="bg-surface rounded-xl shadow-lg p-4 sm:p-6">
-        <div className="flex flex-col items-center gap-2">
-          {displayRows.map((row, rowIdx) => {
-            const isRevealing = revealingRow === rowIdx
-            const isShaking = shakeRow === rowIdx
-            const isBouncing = bounceRow === rowIdx
-
-            return (
-              <div
-                key={rowIdx}
-                className={`flex ${wordLength <= 2 ? 'gap-3 sm:gap-4' : wordLength === 3 ? 'gap-2 sm:gap-3' : 'gap-1.5 sm:gap-2'} ${isShaking ? 'animate-shake' : ''} ${isBouncing ? 'animate-bounce-cells' : ''}`}
-              >
-                {row.syllables.map((syll, cellIdx) => {
-                  const hasContent = syll.char !== ''
-                  const isGuessed = rowIdx < guesses.length
-                  const overallStatus: JamoStatus = isGuessed && syll.jamos.length > 0
-                    ? (syll.jamos.every(j => j.status === 'correct') ? 'correct'
-                      : syll.jamos.some(j => j.status === 'correct' || j.status === 'present') ? 'present'
-                      : 'absent')
-                    : 'empty'
-
-                  const isIncompleteJamo = !isGuessed && hasContent && !isHangulSyllable(syll.char)
-
-                  return (
-                    <div key={cellIdx} className="flex flex-col items-center gap-1">
-                      {/* Main syllable cell */}
-                      <div
-                        className={`
-                          ${wordLength <= 2 ? 'w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl' : wordLength === 3 ? 'w-14 h-14 sm:w-16 sm:h-16 text-xl sm:text-2xl' : 'w-12 h-12 sm:w-14 sm:h-14 text-lg sm:text-xl'}
-                          flex items-center justify-center
-                          border-2 rounded-lg font-bold
-                          transition-all duration-300
-                          ${isIncompleteJamo ? 'border-amber-400 dark:border-amber-500 scale-105' : ''}
-                          ${hasContent && !isGuessed && !isIncompleteJamo ? 'border-gray-500 dark:border-gray-400 scale-105' : ''}
-                          ${isGuessed && row.revealed
-                            ? `${getStatusColor(overallStatus)} ${getStatusBorder(overallStatus)} text-white`
-                            : `${hasContent ? (isIncompleteJamo ? 'border-amber-400 dark:border-amber-500' : 'border-gray-400 dark:border-gray-500') : 'border-line'} text-fg`
-                          }
-                          ${isRevealing ? 'animate-flip-cell' : ''}
-                        `}
-                        style={isRevealing ? { animationDelay: `${cellIdx * 300}ms` } : undefined}
-                      >
-                        {syll.char}
-                      </div>
-
-                      {/* Jamo breakdown below the cell */}
-                      {isGuessed && row.revealed && syll.jamos.length > 0 && (
-                        <div className="flex gap-0.5">
-                          {syll.jamos.map((jamoCell, ji) => (
-                            <div
-                              key={ji}
-                              className={`
-                                w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center
-                                rounded text-[10px] sm:text-xs font-bold
-                                ${getStatusColor(jamoCell.status)} ${jamoCell.status !== 'empty' ? 'text-white' : ''}
-                              `}
-                            >
-                              {jamoCell.jamo}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Preview jamo for current input (not yet guessed) */}
-                      {!isGuessed && hasContent && syll.jamos.length > 0 && (
-                        <div className="flex gap-0.5">
-                          {syll.jamos.map((jamoCell, ji) => (
-                            <div
-                              key={ji}
-                              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded text-[10px] sm:text-xs font-medium bg-soft text-muted"
-                            >
-                              {jamoCell.jamo}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-            )
-          })}
-        </div>
-
-        {/* Hint for incomplete jamo */}
-        {hasIncompleteJamo && gameStatus === 'playing' && (
-          <p className="text-center text-sm text-amber-600 dark:text-amber-400 mt-3 animate-pulse">
-            {t('needVowelHint')}
-          </p>
-        )}
-      </div>
-
-      {/* Result Card — shown when game ends */}
-      {gameStatus !== 'playing' && (
-        <div className="bg-surface rounded-xl shadow-lg p-5 sm:p-6 space-y-4">
-          {/* Header row: result label + guess count */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-fg">
-              {gameStatus === 'won' ? t('resultWon') : t('resultLost')}
-            </h2>
-            <span className="text-2xl font-bold text-muted">
-              {gameStatus === 'won' ? guesses.length : 'X'}/{MAX_GUESSES}
-            </span>
-          </div>
-
-          {/* Emoji grid */}
-          <div className="font-mono text-base leading-relaxed whitespace-pre bg-subtle rounded-lg p-3 text-center">
-            {buildEmojiGrid()}
-          </div>
-
-          {/* Answer reveal on loss */}
-          {gameStatus === 'lost' && (
-            <p className="text-center text-sm text-sub">
-              {t('answerWas')} <span className="font-bold text-fg text-base">{answer}</span>
-            </p>
-          )}
-
-          {/* Streak emphasis */}
-          {endStreak && endStreak.wasLost && endStreak.value >= 2 && (
-            <div className="bg-subtle border border-line rounded-lg px-4 py-3 text-center text-sm font-medium text-sub">
-              {t('streakLost', { count: endStreak.value })}
-            </div>
-          )}
-          {endStreak && !endStreak.wasLost && endStreak.value >= 2 && (
-            <div className="bg-subtle border border-line rounded-lg px-4 py-3 text-center text-sm font-medium text-sub">
-              {t('streakContinued', { count: endStreak.value })}
-            </div>
-          )}
-
-          {/* Share buttons row */}
-          <div className="flex flex-wrap gap-2 justify-center">
-            {/* Copy to clipboard */}
-            <button
-              onClick={copyShare}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body text-sm font-medium transition-colors"
-            >
-              {copiedShare ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-              {copiedShare ? t('shared') : t('copyResult')}
-            </button>
-
-            {/* Web Share API (mobile native) */}
-            {typeof navigator !== 'undefined' && !!navigator.share && (
-              <button
-                onClick={shareResults}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue-100 dark:bg-blue-900/50 hover:bg-blue-200 dark:hover:bg-blue-900 text-sub text-sm font-medium transition-colors"
-              >
-                <Share2 className="w-4 h-4" />
-                {t('shareNative')}
-              </button>
-            )}
-
-            {/* X/Twitter */}
-            <button
-              onClick={shareOnTwitter}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-black dark:bg-gray-900 hover:bg-gray-800 dark:hover:bg-black text-white text-sm font-medium transition-colors"
-            >
-              <Twitter className="w-4 h-4" />
-              {t('shareTwitter')}
-            </button>
-
-            {/* KakaoTalk */}
-            <button
-              onClick={shareOnKakao}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-sm font-medium transition-colors"
-            >
-              <span className="text-base leading-none font-bold">K</span>
-              {t('shareKakao')}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Virtual Keyboard */}
-      <div className="bg-surface rounded-xl shadow-lg p-3 sm:p-4">
-        <div className="flex flex-col items-center gap-1.5">
-          {/* Row 1 */}
-          <div className="flex gap-1 sm:gap-1.5">
-            {KEYBOARD_ROW_1.map(jamo => (
-              <button
-                key={jamo}
-                onClick={() => handleKeyPress(jamo)}
-                className={`
-                  w-8 h-10 sm:w-10 sm:h-12 flex items-center justify-center
-                  rounded-md text-sm sm:text-base font-bold
-                  border transition-colors duration-150
-                  active:scale-95
-                  ${getKeyColor(jamo)}
-                `}
-              >
-                {jamo}
-              </button>
-            ))}
-          </div>
-
-          {/* Row 2 */}
-          <div className="flex gap-1 sm:gap-1.5">
-            {KEYBOARD_ROW_2.map(jamo => (
-              <button
-                key={jamo}
-                onClick={() => handleKeyPress(jamo)}
-                className={`
-                  w-8 h-10 sm:w-10 sm:h-12 flex items-center justify-center
-                  rounded-md text-sm sm:text-base font-bold
-                  border transition-colors duration-150
-                  active:scale-95
-                  ${getKeyColor(jamo)}
-                `}
-              >
-                {jamo}
-              </button>
-            ))}
-          </div>
-
-          {/* Row 3 */}
-          <div className="flex gap-1 sm:gap-1.5">
-            <button
-              onClick={() => handleKeyPress('Enter')}
-              className="px-2 sm:px-4 h-10 sm:h-12 flex items-center justify-center rounded-md text-xs sm:text-sm font-bold bg-primary hover:bg-blue-700 text-white border-none active:scale-95 transition-transform"
-            >
-              {t('enter')}
-            </button>
-            {KEYBOARD_ROW_3_JAMO.map(jamo => (
-              <button
-                key={jamo}
-                onClick={() => handleKeyPress(jamo)}
-                className={`
-                  w-8 h-10 sm:w-10 sm:h-12 flex items-center justify-center
-                  rounded-md text-sm sm:text-base font-bold
-                  border transition-colors duration-150
-                  active:scale-95
-                  ${getKeyColor(jamo)}
-                `}
-              >
-                {jamo}
-              </button>
-            ))}
-            <button
-              onClick={() => handleKeyPress('Backspace')}
-              className="px-2 sm:px-4 h-10 sm:h-12 flex items-center justify-center rounded-md text-sm font-bold bg-gray-200 dark:bg-gray-600 text-fg border border-gray-300 dark:border-gray-500 active:scale-95 transition-transform"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />
-                <line x1="18" y1="9" x2="12" y2="15" />
-                <line x1="12" y1="9" x2="18" y2="15" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Shift keys row (doubled consonants) */}
-          <div className="flex gap-1 sm:gap-1.5 mt-1">
-            <span className="text-[10px] text-faint flex items-center mr-1">Shift</span>
-            {Object.entries(SHIFT_MAP).map(([base, shifted]) => (
-              <button
-                key={shifted}
-                onClick={() => handleKeyPress(shifted)}
-                className={`
-                  w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center
-                  rounded-md text-xs sm:text-sm font-bold
-                  border transition-colors duration-150
-                  active:scale-95
-                  ${getKeyColor(shifted)}
-                `}
-                title={`Shift+${base}`}
-              >
-                {shifted}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Help Modal */}
+      {/* 게임 방법 */}
       {showHelp && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowHelp(false)}>
-          <div className="bg-surface rounded-xl shadow-2xl max-w-md w-full max-h-[80vh] overflow-y-auto p-6" onClick={e => e.stopPropagation()}>
+          <div role="dialog" aria-modal="true" aria-label={t('helpTitle')} className="bg-surface rounded-2xl shadow-xl max-w-md w-full max-h-[85vh] overflow-y-auto p-6" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-fg">{t('helpTitle')}</h2>
-              <button onClick={() => setShowHelp(false)} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+              <button onClick={() => setShowHelp(false)} aria-label={t('close')} className="p-1 rounded-lg hover:bg-soft">
                 <X className="w-5 h-5 text-sub" />
               </button>
             </div>
-
             <div className="space-y-4 text-sm text-body">
               <p>{t('helpDesc')}</p>
-
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <h3 className="font-semibold text-fg">{t('helpExampleTitle')}</h3>
-
-                {/* Example: correct */}
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 flex items-center justify-center rounded bg-green-500 text-white text-xs font-bold">ㄱ</div>
-                  <span>{t('helpCorrect')}</span>
-                </div>
-
-                {/* Example: present */}
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 flex items-center justify-center rounded bg-yellow-500 text-white text-xs font-bold">ㅏ</div>
-                  <span>{t('helpPresent')}</span>
-                </div>
-
-                {/* Example: absent */}
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 flex items-center justify-center rounded bg-gray-500 text-white text-xs font-bold">ㅎ</div>
-                  <span>{t('helpAbsent')}</span>
-                </div>
+                {(['correct', 'present', 'absent'] as Tile[]).map((s, i) => (
+                  <div key={s} className="flex items-center gap-2">
+                    <span className={`w-7 h-7 flex items-center justify-center rounded text-xs font-bold ${colors[s]}`}>{['ㄱ', 'ㅏ', 'ㅎ'][i]}</span>
+                    <span>{t(s === 'correct' ? 'helpCorrect' : s === 'present' ? 'helpPresent' : 'helpAbsent')}</span>
+                  </div>
+                ))}
               </div>
-
-              {/* Input guide */}
-              <div className="bg-amber-50 dark:bg-amber-950 rounded-lg p-3 space-y-2">
-                <p className="font-semibold text-amber-800 dark:text-amber-300">{t('helpInputTitle')}</p>
-                <p className="text-amber-700 dark:text-amber-400">{t('helpInputDesc')}</p>
-                <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400">
-                  <span className="font-mono bg-amber-100 dark:bg-amber-900 px-1.5 py-0.5 rounded text-xs">ㅅ</span>
-                  <span>+</span>
-                  <span className="font-mono bg-amber-100 dark:bg-amber-900 px-1.5 py-0.5 rounded text-xs">ㅏ</span>
-                  <span>=</span>
-                  <span className="font-mono bg-amber-100 dark:bg-amber-900 px-1.5 py-0.5 rounded text-xs font-bold">사</span>
-                  <span className="text-xs ml-1">{t('helpInputExample')}</span>
-                </div>
+              <div className="bg-subtle rounded-2xl p-4 space-y-1">
+                <p className="font-semibold text-fg">{t('helpJamoTitle')}</p>
+                <p className="text-sub">{t('helpJamo')}</p>
               </div>
-
-              <div className="bg-subtle rounded-lg p-3 space-y-1">
-                <p className="font-semibold text-sub">{t('helpJamoTitle')}</p>
-                <p className="text-blue-700 dark:text-blue-400">{t('helpJamo')}</p>
+              <div className="bg-subtle rounded-2xl p-4 space-y-1">
+                <p className="font-semibold text-fg">{t('helpInputTitle')}</p>
+                <p className="text-sub">{t('helpInputDesc')}</p>
               </div>
-
               <p className="text-muted text-xs">{t('helpKeyboard')}</p>
             </div>
           </div>
         </div>
       )}
 
-      {/* Stats Modal */}
+      {/* 통계 */}
       {showStats && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowStats(false)}>
-          <div className="bg-surface rounded-xl shadow-2xl max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
+          <div role="dialog" aria-modal="true" aria-label={t('statistics')} className="bg-surface rounded-2xl shadow-xl max-w-sm w-full max-h-[85vh] overflow-y-auto p-6" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-fg">{t('statistics')}</h2>
-              <button onClick={() => setShowStats(false)} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+              <button onClick={() => setShowStats(false)} aria-label={t('close')} className="p-1 rounded-lg hover:bg-soft">
                 <X className="w-5 h-5 text-sub" />
               </button>
             </div>
-
-            {/* Stats grid */}
-            <div className="grid grid-cols-4 gap-3 mb-6">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-fg">{stats.gamesPlayed}</div>
-                <div className="text-[10px] text-muted">{t('played')}</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-fg">{winRate}</div>
-                <div className="text-[10px] text-muted">{t('winRate')}</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-fg">{stats.currentStreak}</div>
-                <div className="text-[10px] text-muted">{t('currentStreak')}</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-fg">{stats.maxStreak}</div>
-                <div className="text-[10px] text-muted">{t('maxStreak')}</div>
-              </div>
+            <div className="grid grid-cols-4 gap-2 mb-6 text-center">
+              {([
+                [stats.played, t('played')],
+                [stats.winRate, t('winRate')],
+                [stats.current, t('currentStreak')],
+                [stats.maxStreak, t('maxStreak')],
+              ] as const).map(([v, label]) => (
+                <div key={label}>
+                  <div className="text-2xl font-bold text-fg tabular-nums">{v}</div>
+                  <div className="text-xs text-muted">{label}</div>
+                </div>
+              ))}
             </div>
-
-            {/* Guess distribution */}
             <h3 className="text-sm font-semibold text-fg mb-3">{t('guessDistribution')}</h3>
-            <div className="space-y-1 mb-6">
-              {stats.guessDistribution.map((count, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-sub w-3">{idx + 1}</span>
-                  <div className="flex-1 flex items-center">
+            <div className="space-y-1.5 mb-4">
+              {stats.dist.map((count, i) => {
+                const mine = dailyStatus === 'won' && daily?.guesses.length === i + 1
+                return (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="text-xs text-sub w-3 tabular-nums">{i + 1}</span>
                     <div
-                      className={`h-5 rounded-sm flex items-center justify-end px-1.5 text-xs font-bold text-white ${
-                        gameStatus === 'won' && guesses.length === idx + 1
-                          ? 'bg-green-500 dark:bg-green-600'
-                          : 'bg-gray-400 dark:bg-gray-600'
-                      }`}
-                      style={{ width: `${Math.max((count / maxDistribution) * 100, count > 0 ? 8 : 4)}%`, minWidth: count > 0 ? '24px' : '8px' }}
+                      className={`h-5 rounded flex items-center justify-end px-1.5 text-xs font-bold ${mine ? colors.correct : 'bg-track text-body'}`}
+                      style={{ width: `${Math.max(8, (count / maxDist) * 100)}%` }}
                     >
                       {count}
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
-
-            {/* Share button */}
-            {gameStatus !== 'playing' && (
-              <button
-                onClick={shareResults}
-                className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-bold hover:from-green-600 hover:to-emerald-700 transition-all"
-              >
-                {copiedShare ? <Check className="w-5 h-5" /> : <Share2 className="w-5 h-5" />}
-                {copiedShare ? t('shared') : t('share')}
+            <p className="text-xs text-muted mb-4">{t('statsDailyOnly')}</p>
+            {dailyStatus !== 'playing' ? (
+              <div className="space-y-3 border-t border-line pt-4">
+                <p className="text-sm text-sub text-center">
+                  {t('nextWord')} <span className="font-bold text-fg tabular-nums">{fmtCountdown(msToNextDay(now))}</span>
+                </p>
+                <button onClick={copyResult} className="w-full inline-flex items-center justify-center gap-2 ui-btn px-4 py-3 rounded-xl font-semibold">
+                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {copied ? t('shared') : t('copyResult')}
+                </button>
+              </div>
+            ) : mode === 'practice' && (
+              <button onClick={() => { setShowStats(false); switchMode('daily') }} className="w-full ui-btn-soft px-4 py-2.5 rounded-xl text-sm font-semibold">
+                {t('playDaily')}
               </button>
             )}
           </div>
         </div>
       )}
 
-      {/* Leaderboard */}
       <LeaderboardPanel leaderboard={leaderboard} />
       <NameInputModal
         isOpen={showNameModal}
         onSubmit={handleLeaderboardSubmit}
         onClose={() => setShowNameModal(false)}
         score={guesses.length}
-        formatScore={leaderboard.config?.formatScore ?? ((s) => `${s}/6`)}
+        formatScore={leaderboard.config?.formatScore ?? ((s) => `${s}/${MAX_GUESSES}`)}
         defaultName={leaderboard.savedPlayerName}
       />
+      <GameAchievements achievements={achievements} unlockedCount={unlockedCount} totalCount={totalCount} />
 
-      <GameAchievements
-        achievements={achievements}
-        unlockedCount={unlockedCount}
-        totalCount={totalCount}
-      />
-
-      {/* Guide Section */}
-      <div className="bg-surface rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-fg mb-4 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
+      {/* 가이드 */}
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-4">{t('guide.title')}</h2>
         <div className="grid sm:grid-cols-2 gap-4">
-          <div className="bg-subtle rounded-lg p-4">
-            <h3 className="font-semibold text-fg mb-2">{t('guide.rules.title')}</h3>
-            <ul className="space-y-1 text-sm text-sub">
-              {(t.raw('guide.rules.items') as string[]).map((item, i) => (
-                <li key={i} className="flex gap-2">
-                  <span className="text-blue-500 shrink-0">{'>'}</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="bg-subtle rounded-lg p-4">
-            <h3 className="font-semibold text-fg mb-2">{t('guide.tips.title')}</h3>
-            <ul className="space-y-1 text-sm text-sub">
-              {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                <li key={i} className="flex gap-2">
-                  <span className="text-green-500 shrink-0">{'>'}</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {(['rules', 'tips'] as const).map(sec => (
+            <div key={sec} className="bg-subtle rounded-2xl p-5">
+              <h3 className="font-semibold text-fg mb-2">{t(`guide.${sec}.title`)}</h3>
+              <ul className="space-y-1.5 text-sm text-sub list-disc pl-4">
+                {(t.raw(`guide.${sec}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* CSS Animations */}
-      <style jsx global>{`
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-          20%, 40%, 60%, 80% { transform: translateX(4px); }
-        }
-        .animate-shake {
-          animation: shake 0.5s ease-in-out;
-        }
-
-        @keyframes flip-cell {
-          0% { transform: rotateX(0deg); }
-          45% { transform: rotateX(90deg); }
-          55% { transform: rotateX(90deg); }
-          100% { transform: rotateX(0deg); }
-        }
-        .animate-flip-cell {
-          animation: flip-cell 0.6s ease-in-out both;
-        }
-
-        @keyframes bounce-cells {
-          0%, 20% { transform: translateY(0); }
-          40% { transform: translateY(-20px); }
-          50% { transform: translateY(5px); }
-          60% { transform: translateY(-10px); }
-          80% { transform: translateY(2px); }
-          100% { transform: translateY(0); }
-        }
-        .animate-bounce-cells {
-          animation: bounce-cells 1s ease;
-        }
-
-        @keyframes fade-in {
-          from { opacity: 0; transform: translate(-50%, -10px); }
-          to { opacity: 1; transform: translate(-50%, 0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.2s ease-out;
-        }
+      <style>{`
+        @keyframes kw-shake { 0%,100% { transform: translateX(0) } 20%,60% { transform: translateX(-6px) } 40%,80% { transform: translateX(6px) } }
+        .kw-shake { animation: kw-shake .4s ease-in-out }
+        @keyframes kw-flip { 0% { transform: rotateX(90deg) } 100% { transform: rotateX(0) } }
+        .kw-flip { animation: kw-flip ${FLIP_MS}ms ease-out both }
+        @keyframes kw-bounce { 0%,100% { transform: translateY(0) } 40% { transform: translateY(-14px) } 70% { transform: translateY(3px) } }
+        .kw-bounce { animation: kw-bounce .8s ease }
+        @media (prefers-reduced-motion: reduce) { .kw-shake, .kw-flip, .kw-bounce { animation: none } }
       `}</style>
-      <AchievementToast
-        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
-        onDismiss={dismissNewAchievements}
-      />
+      <AchievementToast achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null} onDismiss={dismissNewAchievements} />
     </div>
   )
 }

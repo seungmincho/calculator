@@ -11746,8 +11746,85 @@
     }
   },
   "textToSpeech": {
+    "loadingVoices": "Loading voices…",
+    "online": "online",
+    "voiceGroups": {
+      "korean": "Korean",
+      "other": "Other languages"
+    },
+    "noKoreanVoice": {
+      "title": "No Korean voice on this device",
+      "windows": "Go to Windows Settings > Time & language > Speech > Add voices, install Korean, then reopen the browser. Microsoft Edge also offers natural Korean online voices (SunHi, InJoon).",
+      "mac": "Go to System Settings > Accessibility > Read & Speak > System voice > Manage voices, download a Korean voice (e.g. Yuna), then reopen the browser.",
+      "ios": "Go to Settings > Accessibility > Read & Speak > Voices > Korean, download a voice, then reopen Safari.",
+      "android": "Go to Settings > General management (or System) > Text-to-speech, set the engine to Google Speech Services and install Korean voice data.",
+      "other": "This browser has no Korean voice. Try Chrome or Edge."
+    },
+    "speedPresets": {
+      "title": "Speed presets",
+      "slow": "Slow (study)",
+      "normal": "Normal",
+      "fast": "Fast"
+    },
+    "settingsNote": "Speed, pitch and volume changes during playback apply from the next sentence.",
+    "resetSettings": "Reset",
+    "tools": {
+      "paste": "Paste",
+      "tidy": "Clean line breaks/spaces",
+      "clear": "Clear",
+      "pasteFailed": "Could not read the clipboard. Paste into the text box with Ctrl+V (⌘+V)."
+    },
+    "stats": {
+      "charsNoSpace": "Without spaces",
+      "sentences": "Sentences",
+      "about": "about {time}"
+    },
+    "samples": {
+      "title": "Samples",
+      "items": [
+        {
+          "label": "Study",
+          "text": "원주율은 약 3.14입니다. 원의 둘레는 지름에 원주율을 곱해서 구합니다. 선생님은 \"공식을 외우기보다 이해하는 게 중요해요!\"라고 말씀하셨습니다. 오늘 배운 내용을 소리 내어 다시 들어 보세요."
+        },
+        {
+          "label": "Presentation",
+          "text": "Good morning, everyone. This quarter, revenue grew 12% compared with last quarter. The main driver was new customers. Let me walk you through the details in three parts."
+        },
+        {
+          "label": "YouTube narration",
+          "text": "How much water do you drink every day? Experts recommend about 1.5 to 2 liters. But sipping often is better than drinking a lot at once. In this video, I will share three ways to build a water habit."
+        }
+      ]
+    },
+    "remaining": "{time} left",
+    "progress": "Sentence {current} / {total}",
+    "progressLabel": "Playback position (sentence)",
+    "error": "A speech error occurred ({code}). Pick another voice and try again.",
+    "reader": {
+      "hint": "The current sentence and word are highlighted. Click a sentence to start reading from there.",
+      "clickHint": "Read from this sentence",
+      "empty": "Enter text and it will appear here sentence by sentence."
+    },
+    "shortcuts": "Shortcuts: Space play/pause (when not typing) · Esc stop · Resuming restarts the current sentence.",
+    "share": {
+      "title": "Share as a link",
+      "copy": "Copy text link",
+      "copied": "Copied",
+      "hint": "The link opens this tool with the same text and speed.",
+      "tooLong": "Links can hold up to {max} characters. Please shorten the text."
+    },
+    "recording": {
+      "title": "Can I save it as MP3?",
+      "body": "No. Browser speech synthesis plays straight to your speakers, so a web page cannot capture it as a file. That is why there is no download button. If you need a file, try one of these:",
+      "items": [
+        "Windows: record the browser window with sound using Win+Alt+R (Xbox Game Bar)",
+        "macOS: built-in screen recording (Shift+⌘+5) does not capture system audio, so a separate audio capture tool is needed",
+        "Phones: enable internal/media sound in screen recording",
+        "For YouTube narration, use this tool to time your script, then record your own voice for the most natural result"
+      ]
+    },
     "title": "Text to Speech (TTS)",
-    "description": "Enter text and have it read aloud. Supports multiple languages and voices.",
+    "description": "Reads text aloud sentence by sentence without cut-offs. Highlights the current sentence, lets you click any sentence to start there, and adjusts speed for study, presentation practice and narration drafts.",
     "textInput": "Text to Read",
     "textPlaceholder": "Enter text to be read aloud...",
     "voice": "Select Voice",
@@ -11762,7 +11839,7 @@
     "charCount": "Character Count",
     "estimatedTime": "Estimated Duration",
     "seconds": "seconds",
-    "speaking": "Speaking...",
+    "speaking": "Playing",
     "paused": "Paused",
     "stopped": "Stopped",
     "notSupported": "This browser does not support TTS",
@@ -11786,39 +11863,44 @@
       "tips": {
         "title": "Usage Tips",
         "items": [
-          "Useful for checking foreign language pronunciation",
-          "Great for accessibility testing",
-          "Use for presentation practice",
-          "Helpful as a language learning aid"
+          "Study: listen at 'Slow (0.8x)' and shadow the audio to practice pronunciation.",
+          "Presentations: check the estimated duration to time your talk. People usually speak a little slower.",
+          "Narration drafts: if a sentence spans more than two lines in the reader, consider splitting it.",
+          "On Windows, Microsoft Edge's online (Natural) voices sound the most natural; in Chrome, the Google voices are a good choice."
         ]
       },
       "whatIs": {
         "title": "What is Text-to-Speech (TTS)?",
-        "description": "Text-to-Speech (TTS) converts typed text into spoken audio using the browser's built-in speech synthesis engine. You can choose from multiple languages and voices, and adjust reading speed and pitch. It is useful for checking foreign language pronunciation, reviewing documents by ear, assisting visually impaired users, and creating learning materials for children."
+        "description": "Text to Speech reads text aloud with your browser's built-in speech engine (Web Speech API). Long text is split into sentences so it plays without cut-offs, and the current sentence and word are highlighted. Your text is never sent to a server and no sign-up is needed."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Type or paste the text you want to hear into the input field.",
-          "2. Select a language and voice from the list — available voices are loaded automatically from your browser.",
-          "3. Adjust the playback speed (0.5×–2×) and pitch using the sliders.",
-          "4. Press Play to start playback; use Pause and Stop to control the audio."
+          "1. Type or paste text. For text copied from a PDF with broken lines, use 'Clean line breaks/spaces'.",
+          "2. Choose a voice. Korean voices are listed first, and your voice and speed are remembered.",
+          "3. Press play to highlight each sentence and word. Click any sentence to start from there.",
+          "4. Space plays/pauses and Esc stops. Drag the progress bar to jump to a sentence.",
+          "5. Use 'Copy text link' to share the same text and speed."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Does it work without an internet connection?",
-            "a": "Yes, in most cases. Basic voices built into the browser and OS work offline. Some high-quality voices may require an internet connection."
+            "q": "Can it read long text without stopping?",
+            "a": "Yes. Text is split into sentences (up to 140 characters each) and read in order, avoiding Chrome's cut-off at around 15 seconds. Online voices are also kept awake periodically."
           },
           {
-            "q": "How many languages are supported?",
-            "a": "The number varies by browser and OS, but typically includes 20+ languages such as Korean, English, Japanese, and Chinese."
+            "q": "Can I save it as an MP3?",
+            "a": "Browser speech synthesis plays straight to the speakers, so a web page cannot save it as a file. Use screen recording with sound (Win+Alt+R on Windows, phone screen recording) if you need one."
           },
           {
-            "q": "Can it handle very long texts?",
-            "a": "Due to Web Speech API limitations, very long texts may be interrupted. For best results, split the text into paragraph-sized chunks before inputting."
+            "q": "There is no Korean voice in the list.",
+            "a": "Voices come from your OS and browser. When no Korean voice exists, the tool shows device-specific install steps. On Windows, add Korean under Settings > Time & language > Speech."
+          },
+          {
+            "q": "Does it work offline?",
+            "a": "Voices installed on your device work offline. Voices marked 'online' need an internet connection."
           }
         ]
       }
@@ -14757,8 +14839,20 @@
     }
   },
   "koreanWordle": {
+    "modeDaily": "Daily word",
+    "dailyLabel": "Daily #{day}",
+    "modePractice": "Unlimited practice",
+    "practiceLen": "{n} syllables",
+    "colorblind": "High contrast",
+    "cardLabel": "Korean Wordle #{day}",
+    "cardWon": "Solved in {n}/{max}",
+    "cardLost": "X/{max}",
+    "cardStreak": "{n}-day streak",
+    "playPractice": "Keep playing in practice",
+    "playDaily": "Play today's word",
+    "statsDailyOnly": "Stats count daily words only. Practice games are not included.",
     "title": "Korean Wordle",
-    "description": "Guess the 2-character Korean word in 6 tries!",
+    "description": "Everyone gets the same 2-syllable Korean word at midnight KST. Solve it in 6 tries and share your grid.",
     "howToPlay": "How to Play",
     "statistics": "Statistics",
     "played": "Played",
@@ -14780,18 +14874,18 @@
     "present": "Wrong position",
     "absent": "Not in word",
     "helpTitle": "How to Play",
-    "helpDesc": "Guess the 2-character Korean word in 6 tries.",
-    "helpCorrect": "Green means the jamo is in the correct position.",
-    "helpPresent": "Yellow means the jamo is in the word but wrong position.",
-    "helpAbsent": "Gray means the jamo is not in the word.",
-    "helpJamo": "Each character is decomposed into initial/vowel/final consonants for individual hints.",
+    "helpDesc": "Guess the 2-syllable word in 6 tries. Only dictionary words are accepted, and each guess colors every jamo.",
+    "helpCorrect": "This color means the jamo is in the same syllable and position.",
+    "helpPresent": "This color means the jamo is in the word but in a different spot.",
+    "helpAbsent": "This color means the jamo is not in the word (or no more copies).",
+    "helpJamo": "Each syllable is split into jamo in typing order: 과 = ㄱ·ㅗ·ㅏ, 닭 = ㄷ·ㅏ·ㄹ·ㄱ. Repeated jamo are colored only as many times as they appear in the answer.",
     "close": "Close",
     "attempt": "attempt",
     "hardMode": "Hard Mode",
     "hardModeAfterStart": "Hard mode cannot be changed after game starts",
     "invalidChars": "Only Korean characters are allowed",
-    "needVowelHint": "Add a vowel (ㅏ, ㅓ, etc.) to complete the character",
-    "shareTitle": "Korean Wordle",
+    "needVowelHint": "Add a vowel to complete the syllable",
+    "shareTitle": "ToolHub Korean Wordle",
     "copyFailed": "Failed to copy",
     "resultWon": "Correct!",
     "resultLost": "Game over",
@@ -14804,10 +14898,10 @@
     "shareKakao": "KakaoTalk",
     "helpExampleTitle": "Example",
     "helpInputTitle": "How to Input",
-    "helpInputDesc": "Press consonants and vowels in order to form characters. Consonants alone won't complete a character.",
+    "helpInputDesc": "Type consonants and vowels with the on-screen keyboard or your PC keyboard (Dubeolsik layout, Korean IME on or off). Backspace removes the last jamo.",
     "helpInputExample": "consonant + vowel → complete character",
     "helpJamoTitle": "Jamo Analysis",
-    "helpKeyboard": "Keyboard colors indicate the status of each jamo",
+    "helpKeyboard": "Keyboard colors show what you have learned so far. In hard mode, revealed hints must be used in later guesses.",
     "hardModeCorrect": "{jamo} must be in the correct position",
     "hardModePresent": "{jamo} must be included",
     "winMessages": {
@@ -14823,20 +14917,20 @@
       "rules": {
         "title": "Game Rules",
         "items": [
-          "A new 2-character Korean word is chosen daily",
-          "You have 6 attempts to guess the correct word",
-          "Each character is decomposed into jamo for individual hints",
-          "🟩 Green: correct position / 🟨 Yellow: wrong position / ⬛ Gray: not in word",
-          "Share your results with friends by copying"
+          "The daily word changes at midnight KST and is the same for everyone (one play per day)",
+          "Guess it in 6 tries using 2-syllable dictionary words",
+          "Each syllable is split into jamo: green = right spot, yellow = elsewhere, gray = not in the word",
+          "Copy a spoiler-free 🟩🟨⬜ grid to share with friends",
+          "Practice mode offers unlimited 2- and 3-syllable words"
         ]
       },
       "tips": {
         "title": "Strategy Tips",
         "items": [
-          "Start with words containing diverse jamo characters",
-          "Words with final consonants give more information",
-          "Use yellow hints to narrow down positions",
-          "Check common initial consonants (ㅅ, ㄱ, ㅈ) first"
+          "Start with words that have varied vowels and final consonants (e.g. 강물, 햇살)",
+          "Words can repeat a jamo; gray next to a green copy means it appears only once",
+          "Compound vowels (ㅘ, ㅟ) and double finals (ㄺ) are scored as two keys",
+          "Turn on high contrast mode (orange/blue) if colors are hard to tell apart"
         ]
       },
       "guide": {
@@ -24757,8 +24851,196 @@
     }
   },
   "salesCommissionCalc": {
+    "mode": {
+      "commission": "Sales commission",
+      "market": "Marketplace fees"
+    },
+    "sc": {
+      "intentNote": "Looking for tax and take-home on a company bonus?",
+      "link": {
+        "bonus": "Bonus calculator",
+        "salary": "Salary calculator",
+        "freelancer": "Freelancer tax calculator"
+      },
+      "sales": "Monthly sales",
+      "slider": "Adjust monthly sales",
+      "presetMan": "₩{m}M",
+      "vat": {
+        "title": "VAT in sales amount",
+        "excl": "VAT excluded",
+        "incl": "VAT included",
+        "hint": "If included, commission is calculated on sales ÷ 1.1 (supply value)."
+      },
+      "tax": {
+        "title": "Income type",
+        "freelance": "Freelance 3.3%",
+        "employee": "Employee",
+        "none": "Business",
+        "freelanceHint": "3% business income withholding + 0.3% local income tax, each truncated below ₩10. Settled in the May income tax return.",
+        "employeeHint": "Employee incentives are wage income (bonus), withheld together with salary. Only the pre-tax amount is shown here.",
+        "noneHint": "No withholding when you issue a tax invoice as a registered business (file VAT and income tax yourself)."
+      },
+      "plan": {
+        "title": "Pay plan",
+        "a": "Plan A",
+        "b": "Plan B",
+        "addB": "Compare plan B",
+        "removeB": "Remove plan B"
+      },
+      "structure": {
+        "title": "Commission type",
+        "flat": "Flat %",
+        "tiered": "Tiered",
+        "target": "Quota-based",
+        "perDeal": "Per deal",
+        "flatDesc": "One rate applied to all sales.",
+        "tieredDesc": "The rate rises with sales tiers. Choose marginal (excess only) or whole-amount.",
+        "targetDesc": "Base rate up to quota; sales above quota earn the base rate × accelerator.",
+        "perDealDesc": "A fixed amount per closed deal. Deals = sales ÷ average deal size."
+      },
+      "field": {
+        "rate": "Commission rate (%)",
+        "marginal": "Marginal (excess)",
+        "whole": "Whole amount",
+        "marginalHint": "Each tier's rate applies only to the portion inside that tier. No jumps at boundaries.",
+        "wholeHint": "The reached tier's rate applies to all sales. Commission jumps when you cross a boundary.",
+        "tierFrom": "Sales from (₩)",
+        "tierRate": "Rate %",
+        "removeTier": "Remove tier",
+        "addTier": "Add tier",
+        "target": "Monthly quota",
+        "targetRate": "Base rate %",
+        "accel": "Accelerator ×",
+        "threshold": "Minimum attainment %",
+        "thresholdHint": "Commission is ₩0 below this attainment (0 = no condition)",
+        "perDeal": "Pay per deal",
+        "avgDeal": "Average deal size",
+        "avgDealHint": "Sales divided by this amount (rounded down) is the deal count.",
+        "base": "Base pay (monthly, fixed)",
+        "baseHint": "For base + commission plans. Leave 0 if none.",
+        "split": "Team split — my share %",
+        "splitHint": "Your share of the commission when selling jointly (not applied to base pay)"
+      },
+      "reset": "Reset",
+      "hero": {
+        "label": "Monthly sales ₩{sales} · {plan}",
+        "net": "Take-home after 3.3%",
+        "gross": "Pre-tax payout",
+        "grossWithTax": "Pre-tax ₩{gross} − withholding ₩{tax}",
+        "eff": "Effective rate {rate}%",
+        "attainment": "Quota attainment {pct}%",
+        "deals": "{n} deals",
+        "annual": "12-month total ₩{amount}",
+        "same": "Same as {name}",
+        "moreThan": "₩{diff} more than {name}",
+        "lessThan": "₩{diff} less than {name}"
+      },
+      "share": "With ₩{sales} monthly sales, my commission is ₩{amount}",
+      "insight": {
+        "title": "If you sell more",
+        "step": "Selling ₩{step} more adds ₩{gain} in commission.",
+        "next": "₩{left} to the next tier. Passing ₩{at} in sales adds ₩{gain} in commission.",
+        "noNext": "No more rate changes ahead — commission grows in proportion to sales.",
+        "cliff": "With whole-amount tiers, commission jumps sharply at boundaries. Landing just above a boundary pays off."
+      },
+      "table": {
+        "title": "{plan} breakdown",
+        "item": "Item",
+        "monthly": "Monthly",
+        "yearly": "Yearly (×12)",
+        "supply": "Supply value (sales ÷ 1.1)",
+        "raw": "Commission",
+        "mine": "My share ({split}%)",
+        "base": "Base pay",
+        "gross": "Pre-tax total",
+        "incomeTax": "Income tax 3%",
+        "localTax": "Local income tax (10% of income tax)",
+        "net": "Take-home",
+        "withholding": "Withholding 3.3%",
+        "annual": "Yearly (×12)",
+        "tierRange": "Tier",
+        "tierBase": "Sales in tier",
+        "tierAmount": "Commission",
+        "range": "₩{from} – under ₩{to}",
+        "rangeOver": "₩{from} and above",
+        "note": "Yearly figures assume the same sales for 12 months. Amounts below ₩1 are truncated."
+      },
+      "compare": {
+        "title": "Plan A vs Plan B",
+        "crossover": "From ₩{sales} in monthly sales, {name} pays more.",
+        "noCrossover": "Within the chart range, one plan always pays more."
+      },
+      "chart": {
+        "title": "Commission curve by sales",
+        "desc": "Pre-tax payout (base pay + your share of commission). The dashed line marks current sales.",
+        "man": " (×₩10k)",
+        "tooltipSales": "Sales {n} (×₩10k)",
+        "axis": "X: monthly sales (₩10k) · Y: pre-tax payout (₩10k)"
+      },
+      "employeeNote": "Employee incentives are wage income (bonus): withheld with that month's salary via the simplified tax table, plus social insurance. Check take-home in the dedicated calculators.",
+      "market": {
+        "heroLabel": "Cheapest: {platform} ({rate}%) · expected settlement"
+      },
+      "guide": {
+        "title": "Sales commission guide",
+        "structures": {
+          "title": "Commission types at a glance",
+          "items": [
+            "Flat: sales × rate. Most common in insurance, rental and ad sales.",
+            "Tiered: the rate rises as sales grow. Check whether your contract says 'excess only' or 'whole amount'.",
+            "Quota-based (accelerator): base rate up to 100% of quota, then an accelerated rate (e.g. 1.5×) on the excess. A minimum-attainment gate is common.",
+            "Base + commission: fixed pay plus commission. Enter base pay to combine it with any type.",
+            "Per deal: a fixed amount per contract, as in real-estate or staffing brokerage.",
+            "Team split: with joint sales you receive only your share %."
+          ]
+        },
+        "tiered": {
+          "title": "Marginal vs whole-amount — example",
+          "intro": "Tiers 'under ₩10M 3%, ₩10M–30M 5%, ₩30M+ 7%' with ₩25M monthly sales:",
+          "example": [
+            "Marginal: ₩10M × 3% + ₩15M × 5% = ₩300k + ₩750k = ₩1.05M",
+            "Whole amount: ₩25M × 5% = ₩1.25M",
+            "Whole-amount jumps at boundaries: ₩29.99M in sales → about ₩1.5M, ₩30M → ₩2.1M (₩10k more sales, ₩600k more pay).",
+            "Marginal grows smoothly across boundaries, so there is little incentive to game month-end numbers."
+          ]
+        },
+        "tax": {
+          "title": "Tax: 3.3% vs wage income",
+          "items": [
+            "Commission earned without employment (insurance agents, door-to-door sales, freelance sales) is business income; the payer withholds 3% (Income Tax Act Art. 129(1)).",
+            "Local income tax is 10% of the withheld income tax (0.3%), for 3.3% in total.",
+            "Income tax and local income tax are each truncated below ₩10 (National Treasury Management Act Art. 47). E.g. ₩1,234,567 → ₩37,030 + ₩3,700.",
+            "Since July 1, 2024, continuous personal-service business income is withheld even when the tax is under ₩1,000 (excluded from the small-amount exemption, Income Tax Act Art. 86).",
+            "3.3% is a prepayment. The May comprehensive income tax return settles it with expenses — refund or additional payment.",
+            "Employee incentives are wage income (bonus), withheld together with salary and subject to social insurance."
+          ],
+          "sources": "Sources:",
+          "lawIncome": "Income Tax Act Art. 86 & 129",
+          "lawTreasury": "National Treasury Management Act Art. 47",
+          "nts": "National Tax Service"
+        },
+        "faq": {
+          "title": "FAQ",
+          "items": [
+            {
+              "q": "My sales figure includes VAT. Can I enter it as is?",
+              "a": "If commission is based on supply value, choose 'VAT included' and sales are converted by ÷ 1.1. If your contract uses VAT-inclusive sales, choose 'excluded'."
+            },
+            {
+              "q": "Can I get the 3.3% back?",
+              "a": "With low annual income or high expenses you may get a refund in the May income tax return. Try the freelancer tax calculator."
+            },
+            {
+              "q": "How is commission calculated when I beat quota?",
+              "a": "Base rate up to quota, base rate × accelerator on the excess. Quota ₩20M, 4%, 1.5× with ₩30M sales: ₩800k + ₩10M × 6% = ₩1.4M."
+            }
+          ]
+        },
+        "related": "Related calculators:"
+      }
+    },
     "title": "Sales Commission Calculator",
-    "description": "Compare Coupang, SmartStore, and 11st commission rates by category",
+    "description": "Calculate sales commission (flat, tiered, quota accelerator, per deal), take-home after 3.3% withholding, and compare two pay plans. Also compares Coupang, Smart Store and 11st marketplace fees.",
     "input": {
       "sellingPrice": "Selling Price",
       "sellingPricePlaceholder": "Enter selling price",

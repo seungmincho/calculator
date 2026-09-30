@@ -1,111 +1,292 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Volume2, Play, Pause, Square, BookOpen, MessageSquare } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { Play, Pause, Square, ClipboardPaste, WrapText, Eraser, Link2, Check } from 'lucide-react'
+import {
+  chunkText, estimateSeconds, formatDuration, tidyText, wordRange, sortVoices, pickVoice,
+  isKoreanVoice, detectPlatform, URL_TEXT_LIMIT, type Platform,
+} from '@/utils/tts'
 
 type Status = 'stopped' | 'speaking' | 'paused'
+interface Sample { label: string; text: string }
+
+const VOICE_KEY = 'tts.voice'
+const SETTINGS_KEY = 'tts.settings'
+const SPEED_PRESETS = [
+  { key: 'slow', rate: 0.8 },
+  { key: 'normal', rate: 1 },
+  { key: 'fast', rate: 1.3 },
+] as const
 
 export default function TextToSpeech() {
   const t = useTranslations('textToSpeech')
+  const searchParams = useSearchParams()
+  const samples = (t.raw('samples.items') as Sample[] | undefined) ?? []
 
-  const [text, setText] = useState('')
+  const [text, setText] = useState(() => samples[0]?.text ?? '')
+  const [supported, setSupported] = useState(true)
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
-  const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null)
+  const [voicesLoaded, setVoicesLoaded] = useState(false)
+  const [voiceName, setVoiceName] = useState<string | null>(null)
   const [rate, setRate] = useState(1)
   const [pitch, setPitch] = useState(1)
   const [volume, setVolume] = useState(1)
   const [status, setStatus] = useState<Status>('stopped')
-  const [isSupported, setIsSupported] = useState(true)
+  const [cur, setCur] = useState(-1)
+  const [word, setWord] = useState<[number, number] | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
+  const [copied, setCopied] = useState(false)
+  const [platform, setPlatform] = useState<Platform>('other')
 
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null)
+  const segments = useMemo(() => chunkText(text), [text])
+  const voice = voices.find((v) => v.name === voiceName) ?? null
 
-  // Load voices
+  // 재생 루프는 콜백 체인이라 최신 값을 ref로 읽는다
+  const session = useRef(0)
+  const idx = useRef(0)
+  const uttRef = useRef<SpeechSynthesisUtterance | null>(null) // GC로 onend가 안 오는 Chrome 버그 방지
+  const live = useRef({ segments, voice, rate, pitch, volume })
+  live.current = { segments, voice, rate, pitch, volume }
+  const settingsLoaded = useRef(false)
+  const readerRef = useRef<HTMLDivElement>(null)
+
+  // ── 음성 목록 (voiceschanged는 비동기, Safari는 이벤트가 없을 때가 있어 몇 번 더 조회) ──
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.speechSynthesis) {
-      setIsSupported(false)
-      return
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) { setSupported(false); return }
+    const synth = window.speechSynthesis
+    synth.cancel() // 새로고침 전 발화가 남아 있는 Chrome 대비
+    setPlatform(detectPlatform(navigator.userAgent))
+    let saved: string | null = null
+    try { saved = localStorage.getItem(VOICE_KEY) } catch { /* 저장소 차단 */ }
+    try {
+      const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? 'null')
+      if (s) { setRate(s.rate ?? 1); setPitch(s.pitch ?? 1); setVolume(s.volume ?? 1) }
+    } catch { /* 무시 */ }
+    settingsLoaded.current = true
+
+    const load = () => {
+      const vs = synth.getVoices()
+      if (!vs.length) return
+      setVoices(sortVoices(vs))
+      setVoiceName((prev) => (prev && vs.some((v) => v.name === prev) ? prev : pickVoice(vs, saved)?.name ?? null))
+      setVoicesLoaded(true)
     }
-
-    const loadVoices = () => {
-      const availableVoices = speechSynthesis.getVoices()
-      if (availableVoices.length > 0) {
-        setVoices(availableVoices)
-
-        // Prefer Korean voices
-        const koreanVoice = availableVoices.find(v => v.lang.startsWith('ko'))
-        setSelectedVoice(koreanVoice || availableVoices[0])
-      }
-    }
-
-    loadVoices()
-    speechSynthesis.onvoiceschanged = loadVoices
-
+    load()
+    synth.addEventListener('voiceschanged', load)
+    const timers = [250, 1000, 2500].map((ms) => setTimeout(load, ms))
+    const giveUp = setTimeout(() => setVoicesLoaded(true), 3000)
     return () => {
-      speechSynthesis.cancel()
+      synth.removeEventListener('voiceschanged', load)
+      timers.forEach(clearTimeout)
+      clearTimeout(giveUp)
+      session.current++
+      synth.cancel()
     }
   }, [])
 
-  const handlePlay = useCallback(() => {
-    if (!text.trim() || !selectedVoice) return
+  // URL ?t=텍스트&r=속도 복원
+  useEffect(() => {
+    const q = searchParams.get('t')
+    if (q) setText(q.slice(0, URL_TEXT_LIMIT))
+    const r = Number(searchParams.get('r'))
+    if (r >= 0.5 && r <= 2) setRate(r)
+  }, [searchParams])
 
-    speechSynthesis.cancel()
+  useEffect(() => {
+    if (!settingsLoaded.current) return
+    try { localStorage.setItem(SETTINGS_KEY, JSON.stringify({ rate, pitch, volume })) } catch { /* 무시 */ }
+  }, [rate, pitch, volume])
 
-    const utterance = new SpeechSynthesisUtterance(text)
-    utterance.voice = selectedVoice
-    utterance.rate = rate
-    utterance.pitch = pitch
-    utterance.volume = volume
+  // ── 재생 엔진: 문장(최대 140자) 단위로 이어 읽기 ──
+  const speakFrom = useCallback((start: number) => {
+    const synth = window.speechSynthesis
+    const id = ++session.current
+    synth.cancel()
+    setError(null)
 
-    utterance.onstart = () => setStatus('speaking')
-    utterance.onend = () => setStatus('stopped')
-    utterance.onerror = () => setStatus('stopped')
+    const run = (k: number) => {
+      if (id !== session.current) return
+      const { segments: segs, voice: v, rate: r, pitch: p, volume: vol } = live.current
+      if (k >= segs.length) {
+        session.current++
+        idx.current = 0
+        setStatus('stopped'); setCur(-1); setWord(null)
+        return
+      }
+      idx.current = k
+      setCur(k); setWord(null)
+      const seg = segs[k]
+      const u = new SpeechSynthesisUtterance(seg.text)
+      if (v) { u.voice = v; u.lang = v.lang } else u.lang = 'ko-KR'
+      u.rate = r; u.pitch = p; u.volume = vol
+      u.onboundary = (e) => {
+        if (id !== session.current || (e.name && e.name !== 'word')) return
+        const [a, b] = wordRange(seg.text, e.charIndex, e.charLength)
+        if (b > a) setWord([seg.start + a, seg.start + b])
+      }
+      u.onend = () => run(k + 1)
+      u.onerror = (e) => {
+        if (id !== session.current || e.error === 'interrupted' || e.error === 'canceled') return
+        session.current++
+        setStatus('stopped'); setWord(null)
+        setError(t('error', { code: e.error }))
+      }
+      uttRef.current = u
+      synth.speak(u)
+    }
+    setStatus('speaking')
+    run(Math.max(0, Math.min(start, live.current.segments.length - 1)))
+  }, [t])
 
-    utteranceRef.current = utterance
-    speechSynthesis.speak(utterance)
-  }, [text, selectedVoice, rate, pitch, volume])
+  // 일시정지 = 현재 문장에서 멈추고, 계속 = 그 문장 처음부터. (브라우저 pause()는 Android에서 취소로 동작하고
+  // Chrome 온라인 음성에선 재개가 멈추는 버그가 있어 모든 환경에서 같은 동작을 보장하려고 이 방식을 쓴다)
+  const pause = useCallback(() => {
+    session.current++
+    window.speechSynthesis.cancel()
+    setStatus('paused'); setWord(null)
+  }, [])
 
-  const handlePause = useCallback(() => {
+  const stop = useCallback(() => {
+    session.current++
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) window.speechSynthesis.cancel()
+    idx.current = 0
+    setStatus('stopped'); setCur(-1); setWord(null)
+  }, [])
+
+  const toggle = useCallback(() => {
+    if (status === 'speaking') pause()
+    else if (status === 'paused') speakFrom(idx.current)
+    else speakFrom(0)
+  }, [status, pause, speakFrom])
+
+  // Chrome 온라인(Google) 음성은 ~15초 넘게 말하면 끊긴다 → 주기적 pause/resume으로 깨워 둔다 (Android 제외: pause가 cancel로 동작)
+  useEffect(() => {
+    if (status !== 'speaking' || !voice || voice.localService || platform === 'android') return
+    const synth = window.speechSynthesis
+    const timer = setInterval(() => {
+      if (synth.speaking && !synth.paused) { synth.pause(); synth.resume() }
+    }, 10000)
+    return () => clearInterval(timer)
+  }, [status, voice, platform])
+
+  // 단축키: Space 재생/일시정지(입력 중이 아닐 때), Esc 정지
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { if (status !== 'stopped') stop(); return }
+      if (e.code !== 'Space' || e.ctrlKey || e.metaKey || e.altKey) return
+      const el = e.target as HTMLElement | null
+      if (el?.closest('input, textarea, select, button, a, [contenteditable="true"]')) return
+      e.preventDefault()
+      if (live.current.segments.length) toggle()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [status, stop, toggle])
+
+  // 현재 문장이 읽기 화면 밖이면 스크롤(페이지는 건드리지 않음)
+  useEffect(() => {
+    const box = readerRef.current
+    const el = box?.querySelector<HTMLElement>(`[data-i="${cur}"]`)
+    if (!box || !el) return
+    if (el.offsetTop < box.scrollTop || el.offsetTop + el.offsetHeight > box.scrollTop + box.clientHeight) {
+      box.scrollTop = el.offsetTop - box.clientHeight / 3
+    }
+  }, [cur])
+
+  const changeText = useCallback((next: string) => {
+    stop()
+    setText(next)
+  }, [stop])
+
+  const changeVoice = (name: string) => {
+    setVoiceName(name)
+    try { localStorage.setItem(VOICE_KEY, name) } catch { /* 무시 */ }
     if (status === 'speaking') {
-      speechSynthesis.pause()
-      setStatus('paused')
+      live.current.voice = voices.find((v) => v.name === name) ?? null
+      speakFrom(idx.current)
     }
-  }, [status])
+  }
 
-  const handleResume = useCallback(() => {
-    if (status === 'paused') {
-      speechSynthesis.resume()
-      setStatus('speaking')
+  const flash = (msg: string) => { setNotice(msg); setTimeout(() => setNotice(null), 3000) }
+
+  const pasteClipboard = async () => {
+    try {
+      const clip = await navigator.clipboard.readText()
+      if (clip.trim()) changeText(clip)
+    } catch {
+      flash(t('tools.pasteFailed'))
     }
-  }, [status])
+  }
 
-  const handleStop = useCallback(() => {
-    speechSynthesis.cancel()
-    setStatus('stopped')
-  }, [])
+  const shareUrl = useMemo(() => {
+    if (typeof window === 'undefined') return ''
+    const u = new URL(window.location.pathname, window.location.origin)
+    u.searchParams.set('t', text)
+    if (rate !== 1) u.searchParams.set('r', String(rate))
+    return u.toString()
+  }, [text, rate])
 
-  const handleVoiceChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    const voice = voices.find(v => v.name === e.target.value)
-    if (voice) setSelectedVoice(voice)
-  }, [voices])
+  const copyLink = async () => {
+    try { await navigator.clipboard.writeText(shareUrl) } catch { /* 권한 없음 */ }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
-  const handlePresetClick = useCallback((presetText: string) => {
-    setText(presetText)
-  }, [])
+  // ── 표시용 계산 ──
+  const totalSec = estimateSeconds(text, rate)
+  const pos = cur >= 0 && segments[cur] ? (word?.[0] ?? segments[cur].start) : -1
+  const remainSec = pos >= 0 ? estimateSeconds(text.slice(pos), rate) : totalSec
+  const koVoices = voices.filter(isKoreanVoice)
+  const otherVoices = voices.filter((v) => !isKoreanVoice(v))
+  const noKorean = voicesLoaded && koVoices.length === 0
+  const canPlay = segments.length > 0 && supported
+  const tooLongForUrl = text.length > URL_TEXT_LIMIT
+  const voiceLabel = (v: SpeechSynthesisVoice) => `${v.name} (${v.lang})${v.localService ? '' : ` · ${t('online')}`}`
 
-  const charCount = text.length
-  const estimatedTime = Math.ceil((text.split(/\s+/).length / (rate * 150)) * 60)
+  const renderReader = () => {
+    const parts: React.ReactNode[] = []
+    let last = 0
+    segments.forEach((s, i) => {
+      if (s.start > last) parts.push(text.slice(last, s.start))
+      const active = i === cur
+      const w = active && word && word[0] >= s.start && word[1] <= s.end ? word : null
+      parts.push(
+        <span
+          key={i}
+          data-i={i}
+          onClick={() => speakFrom(i)}
+          title={t('reader.clickHint')}
+          className={`cursor-pointer rounded px-0.5 -mx-0.5 transition-colors ${
+            active ? 'bg-primary-soft text-primary' : 'hover:bg-soft'
+          }`}
+        >
+          {w ? (
+            <>
+              {text.slice(s.start, w[0])}
+              <span className="bg-primary text-white rounded px-0.5">{text.slice(w[0], w[1])}</span>
+              {text.slice(w[1], s.end)}
+            </>
+          ) : s.text}
+        </span>,
+      )
+      last = s.end
+    })
+    if (last < text.length) parts.push(text.slice(last))
+    return parts
+  }
 
-  if (!isSupported) {
+  if (!supported) {
     return (
       <div className="space-y-8">
         <div>
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-        <div className="bg-red-50 dark:bg-red-950 rounded-xl p-6">
-          <p className="text-red-700 dark:text-red-300">{t('notSupported')}</p>
+        <div className="bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-amber-200 rounded-2xl p-5">
+          {t('notSupported')}
         </div>
       </div>
     )
@@ -113,237 +294,229 @@ export default function TextToSpeech() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Main Grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Settings Panel */}
-        <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              {t('voice')}
-            </h2>
-
-            {/* Voice Selector */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('voice')}
-              </label>
-              {voices.length > 0 ? (
-                <select
-                  value={selectedVoice?.name || ''}
-                  onChange={handleVoiceChange}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
-                >
-                  {voices.map((voice) => (
-                    <option key={voice.name} value={voice.name}>
-                      {voice.name} ({voice.lang})
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <p className="text-sm text-muted">{t('noVoices')}</p>
-              )}
+      <div className="grid lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          {/* 텍스트 입력 */}
+          <div className="ui-card p-6 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <label htmlFor="tts-text" className="text-sm font-semibold text-body">{t('textInput')}</label>
+              <div className="flex flex-wrap gap-2">
+                <button onClick={pasteClipboard} className="bg-soft hover:bg-subtle text-body rounded-xl px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5">
+                  <ClipboardPaste className="w-4 h-4" />{t('tools.paste')}
+                </button>
+                <button onClick={() => changeText(tidyText(text))} disabled={!text} className="bg-soft hover:bg-subtle text-body rounded-xl px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5 disabled:opacity-45">
+                  <WrapText className="w-4 h-4" />{t('tools.tidy')}
+                </button>
+                <button onClick={() => changeText('')} disabled={!text} className="bg-soft hover:bg-subtle text-body rounded-xl px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5 disabled:opacity-45">
+                  <Eraser className="w-4 h-4" />{t('tools.clear')}
+                </button>
+              </div>
             </div>
-
-            {/* Rate Slider */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('rate')}: {rate.toFixed(1)}x
-              </label>
-              <input
-                type="range"
-                min="0.5"
-                max="2"
-                step="0.1"
-                value={rate}
-                onChange={(e) => setRate(Number(e.target.value))}
-                className="w-full accent-blue-600"
-              />
+            <textarea
+              id="tts-text"
+              value={text}
+              onChange={(e) => changeText(e.target.value)}
+              placeholder={t('textPlaceholder')}
+              className="ui-field px-4 py-3 min-h-[180px] leading-relaxed"
+            />
+            {notice && <p className="text-sm text-amber-700 dark:text-amber-300">{notice}</p>}
+            <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-sub tabular-nums">
+              <span>{t('charCount')} {text.length.toLocaleString()}</span>
+              <span>{t('stats.charsNoSpace')} {text.replace(/\s/g, '').length.toLocaleString()}</span>
+              <span>{t('stats.sentences')} {segments.length.toLocaleString()}</span>
+              <span>{t('estimatedTime')} {t('stats.about', { time: formatDuration(totalSec) })}</span>
             </div>
-
-            {/* Pitch Slider */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('pitch')}: {pitch.toFixed(1)}
-              </label>
-              <input
-                type="range"
-                min="0.5"
-                max="2"
-                step="0.1"
-                value={pitch}
-                onChange={(e) => setPitch(Number(e.target.value))}
-                className="w-full accent-blue-600"
-              />
-            </div>
-
-            {/* Volume Slider */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('volume')}: {Math.round(volume * 100)}%
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.1"
-                value={volume}
-                onChange={(e) => setVolume(Number(e.target.value))}
-                className="w-full accent-blue-600"
-              />
-            </div>
-
-            {/* Status Display */}
-            <div className="pt-4 border-t border-line">
-              <div className="flex items-center gap-2">
-                <div className={`w-3 h-3 rounded-full ${
-                  status === 'speaking' ? 'bg-green-500 animate-pulse' :
-                  status === 'paused' ? 'bg-yellow-500' :
-                  'bg-gray-400'
-                }`} />
-                <span className="text-sm font-medium text-body">
-                  {status === 'speaking' ? t('speaking') :
-                   status === 'paused' ? t('paused') :
-                   t('stopped')}
-                </span>
+              <p className="text-xs text-muted mb-2">{t('samples.title')}</p>
+              <div className="flex flex-wrap gap-2">
+                {samples.map((s) => (
+                  <button
+                    key={s.label}
+                    onClick={() => changeText(s.text)}
+                    className={`rounded-full px-3 py-1.5 text-sm font-medium ${
+                      text === s.text ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
+                    }`}
+                  >
+                    {s.label}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
+
+          {/* 플레이어 + 읽기 화면 */}
+          <div className="ui-card p-6 space-y-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <button onClick={toggle} disabled={!canPlay} className="ui-btn px-5 py-3 min-w-[128px]">
+                {status === 'speaking' ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                {status === 'speaking' ? t('pause') : status === 'paused' ? t('resume') : t('play')}
+              </button>
+              <button onClick={stop} disabled={status === 'stopped'} className="bg-soft hover:bg-subtle text-body rounded-xl px-4 py-3 font-semibold inline-flex items-center gap-2 disabled:opacity-45">
+                <Square className="w-4 h-4" />{t('stop')}
+              </button>
+              <div className="text-sm text-sub ml-auto tabular-nums" aria-live="polite">
+                {status === 'speaking' ? t('speaking') : status === 'paused' ? t('paused') : t('stopped')}
+                {status !== 'stopped' && ` · ${t('remaining', { time: formatDuration(remainSec) })}`}
+              </div>
+            </div>
+
+            {segments.length > 1 && (
+              <div>
+                <input
+                  type="range"
+                  min={0}
+                  max={segments.length - 1}
+                  value={Math.max(cur, 0)}
+                  onChange={(e) => speakFrom(Number(e.target.value))}
+                  aria-label={t('progressLabel')}
+                  className="w-full accent-blue-600"
+                />
+                <div className="flex justify-between text-xs text-muted tabular-nums">
+                  <span>{t('progress', { current: Math.max(cur, 0) + 1, total: segments.length })}</span>
+                  <span>{formatDuration(totalSec)}</span>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div className="bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-amber-200 rounded-2xl p-4 text-sm">{error}</div>
+            )}
+
+            <div>
+              <p className="text-xs text-muted mb-2">{t('reader.hint')}</p>
+              <div
+                ref={readerRef}
+                className="relative bg-subtle rounded-2xl p-5 max-h-80 overflow-y-auto whitespace-pre-wrap leading-8 text-body"
+              >
+                {segments.length ? renderReader() : <span className="text-faint">{t('reader.empty')}</span>}
+              </div>
+            </div>
+            <p className="text-xs text-muted">{t('shortcuts')}</p>
+          </div>
         </div>
 
-        {/* Text Input & Controls */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Text Input */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <label className="block text-sm font-medium text-body mb-2">
-              {t('textInput')}
-            </label>
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder={t('textPlaceholder')}
-              className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 min-h-[200px]`}
-            />
-
-            {/* Info */}
-            <div className="flex flex-wrap gap-4 mt-4 text-sm text-sub">
-              <span>{t('charCount')}: {charCount}</span>
-              {charCount > 0 && (
-                <span>{t('estimatedTime')}: {estimatedTime} {t('seconds')}</span>
+        {/* 설정 */}
+        <div className="space-y-6">
+          <div className="ui-card p-6 space-y-5">
+            <div>
+              <label htmlFor="tts-voice" className="block text-sm font-semibold text-body mb-2">{t('voice')}</label>
+              {voices.length > 0 ? (
+                <select id="tts-voice" value={voiceName ?? ''} onChange={(e) => changeVoice(e.target.value)} className="ui-field px-3 py-2.5 text-sm">
+                  {koVoices.length > 0 && (
+                    <optgroup label={t('voiceGroups.korean')}>
+                      {koVoices.map((v) => <option key={v.name} value={v.name}>{voiceLabel(v)}</option>)}
+                    </optgroup>
+                  )}
+                  <optgroup label={t('voiceGroups.other')}>
+                    {otherVoices.map((v) => <option key={v.name} value={v.name}>{voiceLabel(v)}</option>)}
+                  </optgroup>
+                </select>
+              ) : (
+                <p className="text-sm text-muted">{voicesLoaded ? t('noVoices') : t('loadingVoices')}</p>
+              )}
+              {noKorean && (
+                <div className="mt-3 bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-amber-200 rounded-2xl p-4 text-sm space-y-1">
+                  <p className="font-semibold">{t('noKoreanVoice.title')}</p>
+                  <p>{t(`noKoreanVoice.${platform}`)}</p>
+                </div>
               )}
             </div>
-          </div>
 
-          {/* Playback Controls */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={handlePlay}
-                disabled={!text.trim() || !selectedVoice}
-                className="bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-              >
-                <Play className="w-5 h-5" />
-                {t('play')}
-              </button>
+            <div>
+              <p className="text-sm font-semibold text-body mb-2">{t('speedPresets.title')}</p>
+              <div className="grid grid-cols-3 gap-2">
+                {SPEED_PRESETS.map((p) => (
+                  <button
+                    key={p.key}
+                    onClick={() => setRate(p.rate)}
+                    className={`rounded-xl px-2 py-2 text-sm font-medium ${
+                      rate === p.rate ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
+                    }`}
+                  >
+                    {t(`speedPresets.${p.key}`)}
+                  </button>
+                ))}
+              </div>
+            </div>
 
+            {([
+              ['rate', rate, setRate, 0.5, 2, 0.05, `${rate.toFixed(2)}x`],
+              ['pitch', pitch, setPitch, 0.5, 2, 0.1, pitch.toFixed(1)],
+              ['volume', volume, setVolume, 0, 1, 0.05, `${Math.round(volume * 100)}%`],
+            ] as const).map(([key, value, set, min, max, step, shown]) => (
+              <div key={key}>
+                <label htmlFor={`tts-${key}`} className="flex justify-between text-sm font-medium text-body mb-1">
+                  <span>{t(key)}</span><span className="tabular-nums text-sub">{shown}</span>
+                </label>
+                <input
+                  id={`tts-${key}`}
+                  type="range" min={min} max={max} step={step} value={value}
+                  onChange={(e) => set(Number(e.target.value))}
+                  className="w-full accent-blue-600"
+                />
+              </div>
+            ))}
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-xs text-muted">{t('settingsNote')}</p>
               <button
-                onClick={handlePause}
-                disabled={status !== 'speaking'}
-                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                onClick={() => { setRate(1); setPitch(1); setVolume(1) }}
+                className="bg-soft hover:bg-subtle text-body rounded-xl px-3 py-1.5 text-xs font-medium shrink-0"
               >
-                <Pause className="w-5 h-5" />
-                {t('pause')}
-              </button>
-
-              <button
-                onClick={handleResume}
-                disabled={status !== 'paused'}
-                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-              >
-                <Play className="w-5 h-5" />
-                {t('resume')}
-              </button>
-
-              <button
-                onClick={handleStop}
-                disabled={status === 'stopped'}
-                className="bg-red-100 dark:bg-red-900 hover:bg-red-200 dark:hover:bg-red-800 text-red-700 dark:text-red-300 rounded-lg px-4 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-              >
-                <Square className="w-5 h-5" />
-                {t('stop')}
+                {t('resetSettings')}
               </button>
             </div>
           </div>
 
-          {/* Sample Presets */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              {t('presets.title')}
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => handlePresetClick(t('presets.greeting'))}
-                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-sub rounded-lg px-4 py-2 text-sm font-medium"
-              >
-                {t('presets.greeting').substring(0, 20)}...
-              </button>
-              <button
-                onClick={() => handlePresetClick(t('presets.news'))}
-                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-sub rounded-lg px-4 py-2 text-sm font-medium"
-              >
-                {t('presets.news').substring(0, 20)}...
-              </button>
-              <button
-                onClick={() => handlePresetClick(t('presets.story'))}
-                className="bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900 text-sub rounded-lg px-4 py-2 text-sm font-medium"
-              >
-                {t('presets.story').substring(0, 20)}...
-              </button>
-            </div>
+          <div className="ui-card p-6 space-y-3">
+            <p className="text-sm font-semibold text-body">{t('share.title')}</p>
+            <button onClick={copyLink} disabled={!text || tooLongForUrl} className="ui-btn-soft w-full px-4 py-2.5 text-sm">
+              {copied ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
+              {copied ? t('share.copied') : t('share.copy')}
+            </button>
+            <p className="text-xs text-muted">
+              {tooLongForUrl ? t('share.tooLong', { max: URL_TEXT_LIMIT.toLocaleString() }) : t('share.hint')}
+            </p>
+          </div>
+
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-semibold text-body">{t('recording.title')}</p>
+            <p>{t('recording.body')}</p>
+            <ul className="list-disc pl-5 space-y-1">
+              {((t.raw('recording.items') as string[] | undefined) ?? []).map((item) => <li key={item}>{item}</li>)}
+            </ul>
           </div>
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-
-        <div className="space-y-6">
-          {/* Usage Section */}
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.usage.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.usage.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-body">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <div>
+          <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.whatIs.title')}</h3>
+          <p className="text-body leading-relaxed">{t('guide.whatIs.description')}</p>
+        </div>
+        {(['howToUse', 'tips'] as const).map((sec) => (
+          <div key={sec}>
+            <h3 className="text-lg font-semibold text-fg mb-2">{t(`guide.${sec}.title`)}</h3>
+            <ul className="list-disc pl-5 space-y-1.5 text-body">
+              {(t.raw(`guide.${sec}.items`) as string[]).map((item) => <li key={item}>{item}</li>)}
             </ul>
           </div>
-
-          {/* Tips Section */}
-          <div>
-            <h3 className="text-lg font-semibold text-fg mb-3">
-              {t('guide.tips.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-body">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+        ))}
+        <div>
+          <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.faq.title')}</h3>
+          <div className="space-y-3">
+            {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((f) => (
+              <div key={f.q} className="bg-subtle rounded-2xl p-4">
+                <p className="font-semibold text-fg">{f.q}</p>
+                <p className="text-sub mt-1">{f.a}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
