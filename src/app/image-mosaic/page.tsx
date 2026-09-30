@@ -5,8 +5,8 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '얼굴 블러 처리 · 사진 모자이크 - 무료 온라인 | 툴허브',
-  description: '사진 속 얼굴·번호판·개인정보를 블러 또는 모자이크로 가리기. 브러시·영역 선택, 강도 조절, 설치 없이 브라우저에서 처리 후 바로 저장.',
-  keywords: '모자이크, 블러, 사진 모자이크, 이미지 블러, 얼굴 모자이크, 개인정보 보호, 사진 편집',
+  description: '스크린샷·사진 속 얼굴, 번호판, 이름, 주소를 모자이크·블러·검정 박스로 가리기. Ctrl+V 붙여넣기, 여러 영역 편집, EXIF(GPS) 제거 저장. 서버 전송 없이 브라우저에서 처리.',
+  keywords: '모자이크, 블러, 사진 모자이크, 이미지 블러, 얼굴 모자이크, 번호판 가리기, 스크린샷 개인정보 가리기, 캡처 모자이크, EXIF 제거, 개인정보 보호',
   openGraph: {
     title: '사진 모자이크/블러 | 툴허브',
     description: '사진에 모자이크/블러를 간편하게 적용하세요!',
@@ -25,20 +25,15 @@ export default function ImageMosaicPage() {
     url: 'https://toolhub.ai.kr/image-mosaic', applicationCategory: 'MultimediaApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['영역 선택 모자이크', '브러시 모자이크', '블러 효과', '강도 조절', '되돌리기', 'PNG/JPEG 다운로드'],
+    featureList: ['Ctrl+V 스크린샷 붙여넣기', '사각형·원형·브러시 영역', '모자이크·블러·검정/흰색 박스', '영역 이동·크기 조절·삭제', '되돌리기/다시 실행', '확대/축소', 'EXIF(GPS) 제거 PNG/JPG 저장', '클립보드 복사'],
   }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
-      {
-        '@type': 'Question',
-        name: '이미지 모자이크란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '이미지 모자이크(Pixelation)는 이미지의 특정 영역을 블록화하여 식별할 수 없게 만드는 기법입니다. 개인정보 보호를 위해 얼굴, 차량 번호판, 주소 등을 가릴 때 사용합니다. 원리: 선택 영역을 큰 픽셀 블록으로 분할하고 각 블록의 평균 색상으로 채워 세부 정보를 제거합니다. 이 도구는 브라우저에서 Canvas API로 처리하므로 서버에 이미지가 전송되지 않습니다.',
-        },
-      },
+      { '@type': 'Question', name: '이미지 모자이크란 무엇인가요?', acceptedAnswer: { '@type': 'Answer', text: '이미지 모자이크(픽셀화)는 특정 영역을 큰 블록으로 바꿔 알아볼 수 없게 만드는 기법입니다. 얼굴, 번호판, 주소 등을 가릴 때 쓰며, 이 도구는 브라우저에서 처리하므로 이미지가 서버로 전송되지 않습니다.' } },
+      { '@type': 'Question', name: '모자이크한 글자를 복원할 수 있나요?', acceptedAnswer: { '@type': 'Answer', text: '블록이 작은 모자이크나 약한 블러는 글자 형태가 남아 추정될 수 있습니다. 이름·전화번호·주소·번호판 같은 텍스트는 검정 또는 흰색 박스로 가리는 것이 가장 안전합니다.' } },
+      { '@type': 'Question', name: '저장하면 사진의 GPS 위치 정보도 지워지나요?', acceptedAnswer: { '@type': 'Answer', text: '네. 저장·복사 시 픽셀만 새로 인코딩하므로 원본의 EXIF(GPS 위치, 촬영 기기, 날짜) 정보는 결과 파일에 포함되지 않습니다.' } },
     ],
   }
   return (
@@ -47,10 +42,12 @@ export default function ImageMosaicPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <I18nWrapper><ImageMosaic />  <div className="mt-8">
-    <RelatedTools />
-  </div>
-</I18nWrapper>
+          <I18nWrapper>
+            <ImageMosaic />
+            <div className="mt-8">
+              <RelatedTools />
+            </div>
+          </I18nWrapper>
         </div>
       </div>
       {/* SEO 콘텐츠 */}
@@ -67,8 +64,9 @@ export default function ImageMosaicPage() {
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>얼굴 모자이크:</strong> 사진에 찍힌 타인의 얼굴을 SNS나 블로그 업로드 전에 모자이크 처리하여 초상권을 보호하세요.</li>
-            <li><strong>번호판 블러:</strong> 차량 사고 사진이나 블랙박스 영상 캡처 공유 시 번호판을 흐릿하게 처리하는 것이 중요합니다.</li>
-            <li><strong>문서 개인정보 가리기:</strong> 공문서, 영수증, 계약서 등에 포함된 주민등록번호나 계좌번호를 블러 처리한 후 공유하세요.</li>
+            <li><strong>스크린샷 붙여넣기:</strong> 캡처 후 Ctrl+V만 누르면 바로 불러와집니다. 카톡·문자 캡처 속 이름과 전화번호를 가리고 클립보드로 복사해 그대로 붙여넣으세요.</li>
+            <li><strong>번호판·글자는 단색 박스:</strong> 약한 모자이크나 블러는 글자가 복원될 수 있으니 번호판, 주민등록번호, 계좌번호는 검정 박스로 완전히 덮으세요.</li>
+            <li><strong>위치 정보 제거:</strong> 저장할 때 새로 인코딩되어 사진의 EXIF(GPS 위치·촬영 기기) 정보가 함께 지워집니다.</li>
             <li><strong>브러시 모드 활용:</strong> 복잡한 형태의 영역은 브러시 모드로 자유롭게 칠하여 정밀하게 처리할 수 있습니다.</li>
             <li><strong>강도 조절:</strong> 모자이크 블록 크기나 블러 강도를 조절하여 자연스러운 결과물을 만드세요.</li>
           </ul>

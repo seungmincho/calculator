@@ -1,666 +1,441 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Keyboard, Play, RotateCcw, Square, Trophy, Clock, BookOpen, Trash2 } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { RotateCcw, Shuffle, Copy, Check, Trash2 } from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import ShareResult from '@/components/ShareResult'
+import {
+  TEXTS, type Lang, type CharStatus, diffTyped, correctKeystrokes, perMinute, wpm,
+  accuracy, topMissed, gradeLevel, vsAverage, dayNumber, dailyIndex, streamText,
+} from '@/utils/typingTest'
 
-type Language = 'korean' | 'english'
-type Difficulty = 'easy' | 'medium' | 'hard'
-type Duration = 30 | 60 | 120 | 300
+type Mode = 'daily' | 'short' | 'long' | 'time'
+const MODES: Mode[] = ['daily', 'short', 'long', 'time']
+const SECS = [30, 60] as const
+type Sec = (typeof SECS)[number]
 
-interface TestResult {
-  wpm: number
-  cpm: number
-  accuracy: number
-  correct: number
-  wrong: number
-  total: number
+interface Entry { ts: number; lang: Lang; mode: Mode; speed: number; acc: number }
+interface DayRec { best: number; acc: number; tries: number }
+interface Result extends Entry {
+  ms: number; keys: number; errors: number; missed: [string, number][]; newBest: boolean; day?: number
 }
 
-interface HistoryEntry {
-  id: string
-  date: string
-  language: Language
-  difficulty: Difficulty
-  duration: Duration
-  wpm: number
-  cpm: number
-  accuracy: number
+const HISTORY_KEY = 'typing-test-history-v2'
+const DAILY_KEY = 'typing-test-daily-v1'
+const load = <T,>(k: string, d: T): T => { try { return JSON.parse(localStorage.getItem(k) || '') ?? d } catch { return d } }
+const save = (k: string, v: unknown) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch { /* 저장 불가: 이번 세션만 */ } }
+const fmtTime = (ms: number) => { const s = Math.max(0, Math.round(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}` }
+
+function streak(recs: Record<number, DayRec>, today: number) {
+  let d = recs[today] ? today : today - 1, n = 0
+  while (recs[d]) { n++; d-- }
+  return n
 }
 
-const SAMPLE_TEXTS = {
-  korean: {
-    easy: [
-      "하늘은 맑고 바람은 시원합니다.",
-      "오늘은 좋은 하루가 될 것입니다.",
-      "봄이 오면 꽃이 피고 새가 노래합니다.",
-      "맛있는 음식을 먹으면 행복합니다.",
-      "운동을 하면 건강해집니다."
-    ],
-    medium: [
-      "대한민국은 아시아 대륙의 동쪽에 위치한 나라로, 반도 국가입니다.",
-      "인공지능 기술의 발전은 우리 생활에 많은 변화를 가져오고 있습니다."
-    ],
-    hard: [
-      "양자 컴퓨팅은 기존의 이진 비트 대신 큐비트를 활용하여 병렬 연산을 수행하는 차세대 컴퓨팅 패러다임입니다.",
-      "블록체인 기술은 분산 원장 시스템을 기반으로 하여 데이터의 무결성과 투명성을 보장하는 혁신적인 기술입니다."
-    ]
-  },
-  english: {
-    easy: [
-      "The quick brown fox jumps over the lazy dog.",
-      "Today is a beautiful day to learn something new.",
-      "Practice makes perfect in everything you do."
-    ],
-    medium: [
-      "The development of technology has significantly changed the way we communicate and interact with each other in our daily lives.",
-      "Climate change is one of the most pressing issues facing our planet today requiring immediate global action."
-    ],
-    hard: [
-      "Quantum computing leverages the principles of quantum mechanics including superposition and entanglement to perform computations that would be practically impossible for classical computers.",
-      "Artificial intelligence and machine learning algorithms are revolutionizing industries from healthcare to finance by processing vast amounts of data and identifying patterns invisible to human analysis."
-    ]
-  }
+const CHAR_CLASS: Record<CharStatus, string> = {
+  correct: 'text-fg',
+  wrong: 'text-red-500 underline decoration-red-500 decoration-2 underline-offset-4',
+  composing: 'text-primary underline decoration-primary decoration-2 underline-offset-4',
+  pending: 'text-faint',
 }
 
 export default function TypingTest() {
   const t = useTranslations('typingTest')
 
-  const [language, setLanguage] = useState<Language>('korean')
-  const [difficulty, setDifficulty] = useState<Difficulty>('easy')
-  const [duration, setDuration] = useState<Duration>(60)
-  const [isRunning, setIsRunning] = useState(false)
-  const [timeLeft, setTimeLeft] = useState<number>(duration)
-  const [currentText, setCurrentText] = useState('')
-  const [userInput, setUserInput] = useState('')
-  const [charStatuses, setCharStatuses] = useState<('correct' | 'wrong' | 'pending')[]>([])
-  const [results, setResults] = useState<TestResult | null>(null)
-  const [history, setHistory] = useState<HistoryEntry[]>([])
-  const [showResults, setShowResults] = useState(false)
+  const [mode, setMode] = useState<Mode>('daily')
+  const [lang, setLang] = useState<Lang>('ko')
+  const [sec, setSec] = useState<Sec>(60)
+  const [idx, setIdx] = useState(0)
+  const [today, setToday] = useState(0)
+  const [typed, setTyped] = useState('')
+  const [startAt, setStartAt] = useState<number | null>(null)
+  const [now, setNow] = useState(0)
+  const [result, setResult] = useState<Result | null>(null)
+  const [history, setHistory] = useState<Entry[]>([])
+  const [daily, setDaily] = useState<Record<number, DayRec>>({})
+  const [copied, setCopied] = useState(false)
 
+  const errorsRef = useRef(new Map<number, string>())
+  const reachedRef = useRef(0)
   const inputRef = useRef<HTMLTextAreaElement>(null)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const boxRef = useRef<HTMLDivElement>(null)
+  const caretRef = useRef<HTMLSpanElement>(null)
+  const typedRef = useRef('')
 
-  // Load history from localStorage
+  const L: Lang = mode === 'daily' ? 'ko' : lang
+  const target = useMemo(() => {
+    if (mode === 'daily') return TEXTS.ko.short[dailyIndex(today || 1)]
+    if (mode === 'time') return streamText(lang, idx)
+    const pool = TEXTS[lang][mode]
+    return pool[idx % pool.length]
+  }, [mode, lang, idx, today])
+  const T = useMemo(() => [...target], [target])
+
+  // ── 마운트: 기록·오늘 회차·공유 링크 파라미터 ─────────────────────────────
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('typingTestHistory')
-      if (saved) {
-        setHistory(JSON.parse(saved))
-      }
-    } catch {
-      // Ignore errors
-    }
+    setToday(dayNumber(Date.now()))
+    setHistory(load<Entry[]>(HISTORY_KEY, []))
+    setDaily(load<Record<number, DayRec>>(DAILY_KEY, {}))
+    const q = new URLSearchParams(window.location.search)
+    const m = q.get('mode') as Mode
+    if (MODES.includes(m)) setMode(m)
+    if (q.get('lang') === 'en') setLang('en')
+    const i = Number(q.get('i'))
+    if (Number.isInteger(i) && i >= 0) setIdx(i)
+    else setIdx(Math.floor(Math.random() * 1000))
+    if (q.get('sec') === '30') setSec(30)
   }, [])
 
-  // Save history to localStorage
-  const saveHistory = useCallback((entry: HistoryEntry) => {
-    const newHistory = [entry, ...history].slice(0, 50) // Keep last 50
-    setHistory(newHistory)
-    try {
-      localStorage.setItem('typingTestHistory', JSON.stringify(newHistory))
-    } catch {
-      // Ignore errors
-    }
-  }, [history])
-
-  // Clear history
-  const clearHistory = useCallback(() => {
-    setHistory([])
-    try {
-      localStorage.removeItem('typingTestHistory')
-    } catch {
-      // Ignore errors
-    }
+  const reset = useCallback(() => {
+    setTyped(''); setStartAt(null); setResult(null)
+    errorsRef.current = new Map(); reachedRef.current = 0
+    if (boxRef.current) boxRef.current.scrollTop = 0
   }, [])
+  // 버튼을 누른 뒤에만 입력칸으로 포커스 (첫 방문 시 모바일 키보드가 뜨지 않게)
+  const focusInput = () => setTimeout(() => inputRef.current?.focus(), 0)
 
-  // Get random text
-  const getRandomText = useCallback(() => {
-    const texts = SAMPLE_TEXTS[language][difficulty]
-    return texts[Math.floor(Math.random() * texts.length)]
-  }, [language, difficulty])
-
-  // Initialize test
-  const initializeTest = useCallback(() => {
-    const text = getRandomText()
-    setCurrentText(text)
-    setUserInput('')
-    setCharStatuses(new Array(text.length).fill('pending'))
-    setTimeLeft(duration)
-    setResults(null)
-    setShowResults(false)
-  }, [getRandomText, duration])
-
-  // Start test
-  const startTest = useCallback(() => {
-    initializeTest()
-    setIsRunning(true)
-    inputRef.current?.focus()
-  }, [initializeTest])
-
-  // Stop test
-  const stopTest = useCallback(() => {
-    setIsRunning(false)
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-  }, [])
-
-  // Calculate results
-  const calculateResults = useCallback(() => {
-    const correct = charStatuses.filter(s => s === 'correct').length
-    const wrong = charStatuses.filter(s => s === 'wrong').length
-    const total = correct + wrong
-    const accuracy = total > 0 ? (correct / total) * 100 : 0
-
-    const timeElapsed = (duration - timeLeft) / 60 // minutes
-    const cpm = timeElapsed > 0 ? Math.round(correct / timeElapsed) : 0
-    const wpm = language === 'korean'
-      ? Math.round(cpm / 2) // Korean: ~2 chars per word
-      : Math.round(cpm / 5) // English: ~5 chars per word
-
-    const result: TestResult = {
-      wpm,
-      cpm,
-      accuracy: Math.round(accuracy * 10) / 10,
-      correct,
-      wrong,
-      total
-    }
-
-    setResults(result)
-    setShowResults(true)
-
-    // Save to history
-    const entry: HistoryEntry = {
-      id: Date.now().toString(),
-      date: new Date().toISOString(),
-      language,
-      difficulty,
-      duration,
-      wpm: result.wpm,
-      cpm: result.cpm,
-      accuracy: result.accuracy
-    }
-    saveHistory(entry)
-
-    stopTest()
-  }, [charStatuses, timeLeft, duration, language, difficulty, saveHistory, stopTest])
-
-  // Timer countdown
+  // 설정이 바뀌면 새 판 + URL 동기화 (공유 링크 = 같은 글로 도전)
   useEffect(() => {
-    if (isRunning && timeLeft > 0) {
-      intervalRef.current = setInterval(() => {
-        setTimeLeft(prev => {
-          if (prev <= 1) {
-            calculateResults()
-            return 0
-          }
-          return prev - 1
-        })
-      }, 1000)
-    } else if (timeLeft === 0 && isRunning) {
-      calculateResults()
+    reset()
+    if (!today) return
+    const url = new URL(window.location.href)
+    url.search = ''
+    if (mode !== 'daily') {
+      url.searchParams.set('mode', mode)
+      url.searchParams.set('lang', lang)
+      url.searchParams.set('i', String(idx))
+      if (mode === 'time') url.searchParams.set('sec', String(sec))
     }
+    window.history.replaceState(null, '', url)
+  }, [mode, lang, idx, sec, today, reset])
 
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
+  const statuses = useMemo(() => diffTyped(target, typed), [target, typed])
+  typedRef.current = typed
+
+  const finish = useCallback((value: string, end: number) => {
+    if (startAt === null) return
+    const ms = mode === 'time' ? sec * 1000 : Math.max(1, end - startAt)
+    const st = diffTyped(target, value)
+    const keys = correctKeystrokes(target, value, st)
+    const speed = L === 'ko' ? perMinute(keys, ms) : wpm(st.filter(s => s === 'correct').length, ms)
+    const acc = accuracy(reachedRef.current, errorsRef.current.size)
+    const entry: Entry = { ts: end, lang: L, mode, speed, acc }
+    const prevBest = Math.max(0, ...history.filter(h => h.lang === L).map(h => h.speed))
+    const nextHistory = [...history, entry].slice(-100)
+    setHistory(nextHistory); save(HISTORY_KEY, nextHistory)
+    if (mode === 'daily' && today) {
+      const r = daily[today]
+      const rec: DayRec = !r || speed > r.best ? { best: speed, acc, tries: (r?.tries ?? 0) + 1 } : { ...r, tries: r.tries + 1 }
+      const next = { ...daily, [today]: rec }
+      setDaily(next); save(DAILY_KEY, next)
     }
-  }, [isRunning, timeLeft, calculateResults])
-
-  // Handle input change
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (!isRunning) return
-
-    const value = e.target.value
-    setUserInput(value)
-
-    const newStatuses = currentText.split('').map((char, idx) => {
-      if (idx >= value.length) return 'pending'
-      return value[idx] === char ? 'correct' : 'wrong'
+    setResult({
+      ...entry, ms, keys, errors: errorsRef.current.size,
+      missed: topMissed([...errorsRef.current].map(([i, u]) => [T[i], u])),
+      newBest: history.some(h => h.lang === L) && speed > prevBest,
+      day: mode === 'daily' ? today : undefined,
     })
-    setCharStatuses(newStatuses)
+  }, [startAt, mode, sec, target, T, L, history, daily, today])
 
-    // Auto-complete if typed entire text correctly
-    if (value.length === currentText.length && newStatuses.every(s => s === 'correct')) {
-      calculateResults()
+  // 진행 중 시계 (시간제는 여기서 종료 판정)
+  useEffect(() => {
+    if (startAt === null || result) return
+    const id = setInterval(() => {
+      const n = Date.now()
+      setNow(n)
+      if (mode === 'time' && n - startAt >= sec * 1000) finish(typedRef.current, n)
+    }, 200)
+    return () => clearInterval(id)
+  }, [startAt, result, mode, sec, finish])
+
+  // 긴 글/시간제: 캐럿이 보이도록 박스 스크롤
+  useEffect(() => {
+    const box = boxRef.current, c = caretRef.current
+    if (box && c && (c.offsetTop < box.scrollTop || c.offsetTop > box.scrollTop + box.clientHeight - 40)) {
+      box.scrollTop = c.offsetTop - 40
     }
-  }, [isRunning, currentText, calculateResults])
+  }, [typed])
 
-  // Restart test
-  const restartTest = useCallback(() => {
-    stopTest()
-    initializeTest()
-  }, [stopTest, initializeTest])
-
-  // Calculate current live stats
-  const currentStats = useCallback(() => {
-    const correct = charStatuses.filter(s => s === 'correct').length
-    const wrong = charStatuses.filter(s => s === 'wrong').length
-    const total = correct + wrong
-    const accuracy = total > 0 ? (correct / total) * 100 : 0
-
-    const timeElapsed = (duration - timeLeft) / 60
-    const cpm = timeElapsed > 0 ? Math.round(correct / timeElapsed) : 0
-    const wpm = language === 'korean' ? Math.round(cpm / 2) : Math.round(cpm / 5)
-
-    return { wpm, cpm, accuracy: Math.round(accuracy * 10) / 10 }
-  }, [charStatuses, timeLeft, duration, language])
-
-  // Get speed rating
-  const getSpeedRating = (wpm: number): { label: string; color: string } => {
-    if (language === 'korean') {
-      if (wpm >= 200) return { label: t('excellent'), color: 'bg-primary hover:bg-blue-700' }
-      if (wpm >= 150) return { label: t('fast'), color: 'bg-primary hover:bg-blue-700' }
-      if (wpm >= 100) return { label: t('average'), color: 'bg-primary hover:bg-blue-700' }
-      return { label: t('slow'), color: 'bg-primary hover:bg-blue-700' }
-    } else {
-      if (wpm >= 80) return { label: t('excellent'), color: 'bg-primary hover:bg-blue-700' }
-      if (wpm >= 60) return { label: t('fast'), color: 'bg-primary hover:bg-blue-700' }
-      if (wpm >= 40) return { label: t('average'), color: 'bg-primary hover:bg-blue-700' }
-      return { label: t('slow'), color: 'bg-primary hover:bg-blue-700' }
-    }
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (result) return
+    const value = [...e.target.value.replace(/[\r\n]/g, '')].slice(0, T.length).join('')
+    const n = Date.now()
+    if (startAt === null && value) { setStartAt(n); setNow(n) }
+    const st = diffTyped(target, value)
+    const U = [...value]
+    st.forEach((s, i) => { if (s === 'wrong' && !errorsRef.current.has(i)) errorsRef.current.set(i, U[i]) })
+    reachedRef.current = Math.max(reachedRef.current, st.filter(s => s === 'correct' || s === 'wrong').length)
+    setTyped(value)
+    const last = st[T.length - 1]
+    if (mode !== 'time' && U.length === T.length && last !== 'composing' && startAt !== null) finish(value, n)
   }
 
-  // History stats
-  const historyStats = useCallback(() => {
-    if (history.length === 0) return null
-    const bestWpm = Math.max(...history.map(h => h.wpm))
-    const avgWpm = Math.round(history.reduce((sum, h) => sum + h.wpm, 0) / history.length)
-    const totalTests = history.length
-    return { bestWpm, avgWpm, totalTests }
-  }, [history])
+  // ── 표시용 값 ──────────────────────────────────────────────────────────────
+  const elapsed = startAt === null ? 0 : (result ? result.ms : now - startAt)
+  const liveSpeed = elapsed < 1000 ? 0
+    : L === 'ko' ? perMinute(correctKeystrokes(target, typed, statuses), elapsed)
+      : wpm(statuses.filter(s => s === 'correct').length, elapsed)
+  const liveAcc = accuracy(reachedRef.current, errorsRef.current.size)
+  const unit = (n: number, l: Lang = L) => t(l === 'ko' ? 'unit.ko' : 'unit.en', { n: n.toLocaleString() })
+  const caretAt = statuses.includes('composing') ? -1 : [...typed].length
+  const done = statuses.filter(s => s === 'correct').length
 
-  const stats = historyStats()
-  const liveStats = currentStats()
+  const langHistory = history.filter(h => h.lang === L)
+  const best = langHistory.length ? Math.max(...langHistory.map(h => h.speed)) : 0
+  const recent = langHistory.slice(-20)
+  const avg = recent.length ? Math.round(recent.reduce((s, h) => s + h.speed, 0) / recent.length) : 0
+  const chartData = recent.map((h, i) => ({ n: i + 1, speed: h.speed, acc: h.acc }))
+  const todayRec = daily[today]
+  const grades = t.raw('grade') as string[]
 
-  // Initialize on mount
-  useEffect(() => {
-    initializeTest()
-  }, []) // Only run once on mount
+  const shareText = result ? [
+    t('share.text', { lang: t(`language.${result.lang === 'ko' ? 'korean' : 'english'}`), speed: unit(result.speed, result.lang), acc: result.acc }),
+    result.day ? t('daily.label', { n: result.day }) : '',
+  ].filter(Boolean).join(' · ') : ''
+  const copyText = async () => {
+    try { await navigator.clipboard.writeText(`${shareText}\n${window.location.href}`) } catch { /* 권한 없음 */ }
+    setCopied(true); setTimeout(() => setCopied(false), 2000)
+  }
+
+  const seg = (on: boolean) => `px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <Keyboard className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-        <div>
-          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Settings Bar */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <div className="space-y-4">
-          {/* Language Selection */}
-          <div>
-            <label className="block text-sm font-medium text-body mb-2">
-              언어
-            </label>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setLanguage('korean')
-                  if (!isRunning) initializeTest()
-                }}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  language === 'korean'
-                    ? 'bg-primary hover:bg-blue-700 text-white'
-                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-                disabled={isRunning}
-              >
-                {t('language.korean')}
-              </button>
-              <button
-                onClick={() => {
-                  setLanguage('english')
-                  if (!isRunning) initializeTest()
-                }}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  language === 'english'
-                    ? 'bg-primary hover:bg-blue-700 text-white'
-                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-                disabled={isRunning}
-              >
-                {t('language.english')}
-              </button>
-            </div>
-          </div>
-
-          {/* Difficulty Selection */}
-          <div>
-            <label className="block text-sm font-medium text-body mb-2">
-              {t('difficulty.title')}
-            </label>
-            <div className="flex gap-2">
-              {(['easy', 'medium', 'hard'] as Difficulty[]).map(level => (
-                <button
-                  key={level}
-                  onClick={() => {
-                    setDifficulty(level)
-                    if (!isRunning) initializeTest()
-                  }}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    difficulty === level
-                      ? 'bg-primary hover:bg-blue-700 text-white'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                  disabled={isRunning}
-                >
-                  {t(`difficulty.${level}`)}
+      {/* 설정 */}
+      <div className="ui-card p-6 space-y-4">
+        <div className="flex flex-wrap gap-2" role="group" aria-label={t('modeLabel')}>
+          {MODES.map(m => (
+            <button key={m} onClick={() => { setMode(m); focusInput() }} className={seg(mode === m)} aria-pressed={mode === m}>{t(`mode.${m}`)}</button>
+          ))}
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          {mode !== 'daily' && (
+            <div className="flex gap-2" role="group" aria-label={t('languageLabel')}>
+              {(['ko', 'en'] as Lang[]).map(l => (
+                <button key={l} onClick={() => { setLang(l); focusInput() }} className={seg(lang === l)} aria-pressed={lang === l}>
+                  {t(`language.${l === 'ko' ? 'korean' : 'english'}`)}
                 </button>
               ))}
-            </div>
-          </div>
-
-          {/* Duration Selection */}
-          <div>
-            <label className="block text-sm font-medium text-body mb-2">
-              {t('duration.title')}
-            </label>
-            <div className="flex gap-2">
-              {([30, 60, 120, 300] as Duration[]).map(dur => (
-                <button
-                  key={dur}
-                  onClick={() => {
-                    setDuration(dur)
-                    if (!isRunning) {
-                      setTimeLeft(dur)
-                    }
-                  }}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    duration === dur
-                      ? 'bg-primary hover:bg-blue-700 text-white'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                  disabled={isRunning}
-                >
-                  {dur >= 60 ? `${dur / 60}분` : `${dur}초`}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Control Buttons */}
-          <div className="flex gap-2 pt-2">
-            {!isRunning ? (
-              <button
-                onClick={startTest}
-                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
-              >
-                <Play className="w-5 h-5" />
-                {t('start')}
-              </button>
-            ) : (
-              <button
-                onClick={stopTest}
-                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-red-700 hover:to-orange-700 transition-all"
-              >
-                <Square className="w-5 h-5" />
-                {t('stop')}
-              </button>
-            )}
-            <button
-              onClick={restartTest}
-              className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-3 font-medium transition-all"
-            >
-              <RotateCcw className="w-5 h-5" />
-              {t('restart')}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Typing Area */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        {/* Timer and Live Stats */}
-        <div className="flex items-center justify-between mb-6 pb-6 border-b border-line">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <span className="text-2xl font-bold text-fg">
-                {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
-              </span>
-            </div>
-            <div className="text-center">
-              <div className="text-sm text-muted">{t('wpm')}</div>
-              <div className="text-xl font-bold text-blue-600 dark:text-blue-400">{liveStats.wpm}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-sm text-muted">{t('cpm')}</div>
-              <div className="text-xl font-bold text-indigo-600 dark:text-indigo-400">{liveStats.cpm}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-sm text-muted">{t('accuracy')}</div>
-              <div className="text-xl font-bold text-green-600 dark:text-green-400">{liveStats.accuracy}%</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Display Text */}
-        <div className="bg-subtle rounded-lg p-6 mb-4">
-          <div className="font-mono text-lg leading-relaxed whitespace-pre-wrap break-words">
-            {currentText.split('').map((char, idx) => {
-              const status = charStatuses[idx]
-              const isCursor = idx === userInput.length
-
-              return (
-                <span
-                  key={idx}
-                  className={`relative ${
-                    status === 'correct'
-                      ? 'text-green-600 dark:text-green-400'
-                      : status === 'wrong'
-                      ? 'text-red-600 dark:text-red-400 underline decoration-2 decoration-red-600'
-                      : 'text-gray-400 dark:text-gray-600'
-                  } ${isCursor ? 'bg-blue-200 dark:bg-blue-900' : ''}`}
-                >
-                  {char}
-                </span>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Input Textarea */}
-        <div>
-          <textarea
-            ref={inputRef}
-            value={userInput}
-            onChange={handleInputChange}
-            disabled={!isRunning}
-            placeholder={isRunning ? "텍스트를 입력하세요" : "시작 버튼을 눌러주세요"}
-            className={`w-full h-32 px-4 py-3 ${glassInput} font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
-            spellCheck={false}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-          />
-        </div>
-      </div>
-
-      {/* Results Modal */}
-      {showResults && results && (
-        <div className="relative rounded-xl shadow-lg p-8 border-2 border-line">
-          <div className="text-center mb-6">
-            <Trophy className="w-16 h-16 mx-auto mb-4 text-yellow-500" />
-            <h2 className="text-3xl font-bold text-fg mb-2">
-              {t('result')}
-            </h2>
-            <div className="inline-block mt-2">
-              <span className={`${getSpeedRating(results.wpm).color} text-white px-6 py-2 rounded-full text-lg font-semibold`}>
-                {getSpeedRating(results.wpm).label}
-              </span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-surface rounded-lg p-4 text-center">
-              <div className="text-sm text-muted mb-1">{t('wpm')}</div>
-              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{results.wpm}</div>
-            </div>
-            <div className="bg-surface rounded-lg p-4 text-center">
-              <div className="text-sm text-muted mb-1">{t('cpm')}</div>
-              <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{results.cpm}</div>
-            </div>
-            <div className="bg-surface rounded-lg p-4 text-center">
-              <div className="text-sm text-muted mb-1">{t('accuracy')}</div>
-              <div className="text-3xl font-bold text-green-600 dark:text-green-400">{results.accuracy}%</div>
-            </div>
-            <div className="bg-surface rounded-lg p-4 text-center">
-              <div className="text-sm text-muted mb-1">총 입력</div>
-              <div className="text-xl font-bold text-fg">
-                {results.correct} / {results.total}
-              </div>
-              <div className="text-xs text-muted">
-                정확 / 총
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={() => setShowResults(false)}
-            className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
-          >
-            닫기
-          </button>
-        </div>
-      )}
-
-      {/* History Section */}
-      {history.length > 0 && (
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-fg">
-              {t('history')}
-            </h2>
-            <button
-              onClick={clearHistory}
-              className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium transition-colors"
-            >
-              <Trash2 className="w-4 h-4" />
-              {t('clearHistory')}
-            </button>
-          </div>
-
-          {/* Summary Stats */}
-          {stats && (
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-subtle rounded-lg p-4 text-center">
-                <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('bestRecord')}</div>
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.bestWpm}</div>
-              </div>
-              <div className="bg-subtle rounded-lg p-4 text-center">
-                <div className="text-sm text-green-600 dark:text-green-400 mb-1">{t('averageSpeed')}</div>
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.avgWpm}</div>
-              </div>
-              <div className="bg-subtle rounded-lg p-4 text-center">
-                <div className="text-sm text-purple-600 dark:text-purple-400 mb-1">{t('totalTests')}</div>
-                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{stats.totalTests}</div>
-              </div>
             </div>
           )}
+          {mode === 'time' && (
+            <div className="flex gap-2" role="group" aria-label={t('timeLabel')}>
+              {SECS.map(s => (
+                <button key={s} onClick={() => { setSec(s); focusInput() }} className={seg(sec === s)} aria-pressed={sec === s}>{t('sec', { n: s })}</button>
+              ))}
+            </div>
+          )}
+          {mode === 'daily' && (
+            <div className="text-sm text-sub">
+              <span className="font-semibold text-fg">{today ? t('daily.label', { n: today }) : t('mode.daily')}</span>
+              {' · '}{todayRec ? t('daily.best', { speed: unit(todayRec.best, 'ko'), tries: todayRec.tries }) : t('daily.none')}
+              {streak(daily, today) > 0 && <> · {t('daily.streak', { n: streak(daily, today) })}</>}
+            </div>
+          )}
+        </div>
+      </div>
 
-          {/* History Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-line">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
-                    날짜
-                  </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
-                    언어
-                  </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-body">
-                    난이도
-                  </th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-body">
-                    {t('wpm')}
-                  </th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-body">
-                    {t('cpm')}
-                  </th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-body">
-                    {t('accuracy')}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {history.map((entry) => (
-                  <tr key={entry.id} className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <td className="py-3 px-4 text-sm text-fg">
-                      {new Date(entry.date).toLocaleDateString('ko-KR', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-fg">
-                      {t(`language.${entry.language}`)}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-fg">
-                      {t(`difficulty.${entry.difficulty}`)}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-right font-semibold text-blue-600 dark:text-blue-400">
-                      {entry.wpm}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-right font-semibold text-indigo-600 dark:text-indigo-400">
-                      {entry.cpm}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-right font-semibold text-green-600 dark:text-green-400">
-                      {entry.accuracy}%
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* 타자 영역 */}
+      <div className="ui-card p-6">
+        <div className="grid grid-cols-3 gap-3 mb-5">
+          <div>
+            <div className="text-xs text-muted">{mode === 'time' ? t('live.left') : t('live.time')}</div>
+            <div className="text-2xl font-bold text-fg tabular-nums">{mode === 'time' ? fmtTime(sec * 1000 - elapsed) : fmtTime(elapsed)}</div>
+          </div>
+          <div>
+            <div className="text-xs text-muted">{L === 'ko' ? t('live.speedKo') : t('live.speedEn')}</div>
+            <div className="text-2xl font-bold text-primary tabular-nums">{liveSpeed.toLocaleString()}</div>
+          </div>
+          <div>
+            <div className="text-xs text-muted">{t('live.accuracy')}</div>
+            <div className="text-2xl font-bold text-fg tabular-nums">{liveAcc}%</div>
+          </div>
+        </div>
+
+        {mode !== 'time' && (
+          <div className="h-1.5 rounded-full bg-track mb-4 overflow-hidden" aria-hidden>
+            <div className="h-full bg-primary transition-all" style={{ width: `${(done / T.length) * 100}%` }} />
+          </div>
+        )}
+
+        <div
+          ref={boxRef}
+          onClick={() => inputRef.current?.focus()}
+          className="relative bg-subtle rounded-2xl p-5 mb-4 max-h-56 overflow-y-auto text-xl leading-loose break-keep cursor-text"
+          lang={L}
+        >
+          {T.map((ch, i) => (
+            <span
+              key={i}
+              ref={i === caretAt ? caretRef : undefined}
+              className={`${CHAR_CLASS[statuses[i]]} ${statuses[i] === 'wrong' && ch === ' ' ? 'bg-red-500/20' : ''} ${i === caretAt && !result ? 'shadow-[inset_2px_0_0_var(--primary)]' : ''}`}
+            >{ch}</span>
+          ))}
+        </div>
+
+        <textarea
+          ref={inputRef}
+          value={typed}
+          onChange={onChange}
+          onKeyDown={e => { if (e.key === 'Enter') e.preventDefault(); if (e.key === 'Escape') reset() }}
+          onPaste={e => e.preventDefault()}
+          onDrop={e => e.preventDefault()}
+          disabled={!!result}
+          rows={2}
+          placeholder={t('placeholder')}
+          aria-label={t('inputLabel')}
+          className="ui-field w-full px-4 py-3 text-lg resize-none"
+          spellCheck={false}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          lang={L}
+        />
+
+        <div className="flex flex-wrap gap-2 mt-4">
+          <button onClick={() => { reset(); focusInput() }} className="ui-btn-soft px-4 py-2 inline-flex items-center gap-1.5">
+            <RotateCcw className="w-4 h-4" /> {t('restart')}
+          </button>
+          {mode !== 'daily' && (
+            <button onClick={() => { setIdx(i => i + 1); focusInput() }} className="ui-btn-soft px-4 py-2 inline-flex items-center gap-1.5">
+              <Shuffle className="w-4 h-4" /> {t('nextText')}
+            </button>
+          )}
+          <span className="text-xs text-faint self-center">{t('escHint')}</span>
+        </div>
+      </div>
+
+      {/* 결과 */}
+      {result && (
+        <div className="space-y-4">
+          <div className="ui-hero p-6">
+            <div className="text-sm text-white/70">
+              {result.day ? t('daily.label', { n: result.day }) : t(`mode.${result.mode}`)} · {t(`language.${result.lang === 'ko' ? 'korean' : 'english'}`)}
+            </div>
+            <div className="text-5xl font-bold mt-2 tabular-nums">{unit(result.speed, result.lang)}</div>
+            <div className="text-sm text-white/80 mt-2">
+              {t('result.sub', { acc: result.acc, grade: grades[gradeLevel(result.speed, result.lang)] })}
+              {' · '}
+              {vsAverage(result.speed, result.lang) >= 0
+                ? t('result.faster', { n: vsAverage(result.speed, result.lang) })
+                : t('result.slower', { n: -vsAverage(result.speed, result.lang) })}
+            </div>
+            <div className="flex flex-wrap gap-2 mt-4 text-sm">
+              {result.newBest && <span className="rounded-full bg-white px-3 py-1 font-semibold text-primary">{t('result.newBest')}</span>}
+              <span className="rounded-full bg-white/15 px-3 py-1">{t('result.time', { v: fmtTime(result.ms) })}</span>
+              <span className="rounded-full bg-white/15 px-3 py-1">{t('result.keys', { n: result.keys.toLocaleString() })}</span>
+              {result.lang === 'en' && <span className="rounded-full bg-white/15 px-3 py-1">{t('result.cpm', { n: perMinute(result.keys, result.ms) })}</span>}
+              <span className="rounded-full bg-white/15 px-3 py-1">{t('result.errors', { n: result.errors })}</span>
+            </div>
+          </div>
+
+          <div className="ui-card p-6 space-y-5">
+            <div>
+              <h2 className="text-sm font-semibold text-body mb-2">{t('result.missed')}</h2>
+              {result.missed.length ? (
+                <div className="flex flex-wrap gap-2">
+                  {result.missed.map(([k, n]) => (
+                    <span key={k} className="rounded-xl bg-soft px-3 py-1.5 text-body">
+                      <span className="text-lg font-bold text-fg">{k === ' ' ? t('result.space') : k}</span>
+                      <span className="text-sm text-muted ml-1.5">{t('result.times', { n })}</span>
+                    </span>
+                  ))}
+                </div>
+              ) : <p className="text-sm text-muted">{t('result.noMissed')}</p>}
+            </div>
+            <ShareResult
+              card={{
+                tool: t('title'),
+                label: result.day ? t('daily.label', { n: result.day }) : t(`language.${result.lang === 'ko' ? 'korean' : 'english'}`),
+                headline: unit(result.speed, result.lang),
+                sub: t('result.sub', { acc: result.acc, grade: grades[gradeLevel(result.speed, result.lang)] }),
+                rows: [
+                  { label: t('live.time'), value: fmtTime(result.ms) },
+                  { label: t('live.accuracy'), value: `${result.acc}%` },
+                  { label: t('result.errorsLabel'), value: String(result.errors) },
+                ],
+              }}
+              text={shareText}
+              fileName="toolhub-typing"
+            />
+            <div className="flex flex-wrap gap-2">
+              <button onClick={copyText} className="ui-btn-soft px-4 py-2 inline-flex items-center gap-1.5">
+                {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />} {copied ? t('result.copied') : t('result.copyText')}
+              </button>
+              <button onClick={() => { reset(); focusInput() }} className="ui-btn px-4 py-2 inline-flex items-center gap-1.5">
+                <RotateCcw className="w-4 h-4" /> {t('result.retry')}
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
+      {/* 기록 */}
+      {langHistory.length > 0 && (
+        <div className="ui-card p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-fg">{t('history')} · {t(`language.${L === 'ko' ? 'korean' : 'english'}`)}</h2>
+            <button
+              onClick={() => { if (confirm(t('clearConfirm'))) { setHistory([]); setDaily({}); save(HISTORY_KEY, []); save(DAILY_KEY, {}) } }}
+              className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-red-500"
+            >
+              <Trash2 className="w-4 h-4" /> {t('clearHistory')}
+            </button>
+          </div>
+          <div className="grid grid-cols-3 gap-3 mb-5">
+            {[[t('bestRecord'), unit(best)], [t('averageSpeed'), unit(avg)], [t('totalTests'), String(langHistory.length)]].map(([k, v]) => (
+              <div key={k} className="bg-subtle rounded-2xl p-4">
+                <div className="text-xs text-muted">{k}</div>
+                <div className="text-xl font-bold text-fg tabular-nums mt-1">{v}</div>
+              </div>
+            ))}
+          </div>
+          <div className="text-xs text-muted mb-2">{t('chartLabel', { n: recent.length })}</div>
+          <div className="h-56">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartData} margin={{ top: 5, right: 10, left: -15, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
+                <XAxis dataKey="n" tick={{ fill: 'var(--muted)', fontSize: 12 }} stroke="var(--line)" />
+                <YAxis tick={{ fill: 'var(--muted)', fontSize: 12 }} stroke="var(--line)" />
+                <Tooltip
+                  contentStyle={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 12, color: 'var(--fg)' }}
+                  formatter={(v) => [unit(Number(v ?? 0)), L === 'ko' ? t('live.speedKo') : t('live.speedEn')]}
+                  labelFormatter={(n) => t('chartRun', { n: String(n) })}
+                />
+                <Line type="monotone" dataKey="speed" stroke="var(--primary)" strokeWidth={2} dot={{ r: 3 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
 
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-medium text-fg mb-3">
-              {t('guide.howTo.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.howTo.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-body">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <p className="text-body leading-relaxed">{t('guide.whatIs.description')}</p>
+        {(['howTo', 'rules', 'speed', 'tips'] as const).map(sec => (
+          <div key={sec}>
+            <h3 className="text-lg font-medium text-fg mb-2">{t(`guide.${sec}.title`)}</h3>
+            <ul className="space-y-1.5 list-disc pl-5 text-body">
+              {(t.raw(`guide.${sec}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           </div>
-
-          <div>
-            <h3 className="text-lg font-medium text-fg mb-3">
-              {t('guide.speed.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.speed.items') as string[]).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-body">
-                  <span className="text-green-600 dark:text-green-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+        ))}
+        <div>
+          <h3 className="text-lg font-medium text-fg mb-2">{t('guide.faq.title')}</h3>
+          <div className="space-y-3">
+            {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((f, i) => (
+              <div key={i} className="bg-subtle rounded-2xl p-5">
+                <div className="font-semibold text-fg">{f.q}</div>
+                <div className="text-sub mt-1 text-sm leading-relaxed">{f.a}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

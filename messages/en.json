@@ -8981,8 +8981,54 @@
     }
   },
   "typingTest": {
+    "modeLabel": "Mode",
+    "languageLabel": "Language",
+    "timeLabel": "Time limit",
+    "mode": {
+      "daily": "Daily text",
+      "short": "Short",
+      "long": "Long",
+      "time": "Timed"
+    },
+    "sec": "{n}s",
+    "daily": {
+      "label": "Daily text #{n}",
+      "best": "Today's best {speed} ({tries} tries)",
+      "none": "Not tried yet",
+      "streak": "{n}-day streak"
+    },
+    "live": {
+      "left": "Time left",
+      "time": "Time",
+      "speedKo": "Keystrokes/min",
+      "speedEn": "WPM",
+      "accuracy": "Accuracy"
+    },
+    "unit": {
+      "ko": "{n} KPM",
+      "en": "{n} WPM"
+    },
+    "placeholder": "Start typing here — the timer starts automatically",
+    "inputLabel": "Typing input",
+    "nextText": "New text",
+    "escHint": "Esc: restart",
+    "share": {
+      "text": "{lang} typing {speed} · {acc}% accuracy"
+    },
+    "clearConfirm": "Delete all typing records?",
+    "chartLabel": "Speed over the last {n} runs",
+    "chartRun": "Run {n}",
+    "grade": [
+      "Beginner",
+      "Novice",
+      "Intermediate",
+      "Advanced",
+      "Expert",
+      "Master",
+      "Legend"
+    ],
     "title": "Typing Test",
-    "description": "Measure your typing speed and practice Korean/English typing.",
+    "description": "Measure Korean keystrokes per minute and English WPM accurately, and take on the daily text every day.",
     "language": {
       "korean": "Korean",
       "english": "English"
@@ -9003,7 +9049,24 @@
     "start": "Start",
     "restart": "Restart",
     "stop": "Stop",
-    "result": "Result",
+    "result": {
+      "sub": "{acc}% accuracy · {grade}",
+      "faster": "{n}% faster than average",
+      "slower": "{n}% slower than average",
+      "newBest": "New personal best",
+      "time": "Time {v}",
+      "keys": "{n} keystrokes",
+      "cpm": "{n} CPM",
+      "errors": "{n} errors",
+      "errorsLabel": "Errors",
+      "missed": "Most-missed keys",
+      "space": "Space",
+      "times": "×{n}",
+      "noMissed": "No missed keys. Perfect!",
+      "copyText": "Copy result text",
+      "copied": "Copied",
+      "retry": "Try again"
+    },
     "timeLeft": "Time Left",
     "wpm": "WPM",
     "cpm": "CPM",
@@ -9024,23 +9087,39 @@
     "totalTests": "Total Tests",
     "clearHistory": "Clear History",
     "guide": {
+      "rules": {
+        "title": "How speed is counted",
+        "items": [
+          "Korean speed = correct keystrokes (jamo) per minute, the same way Hancom Typing counts.",
+          "닭 = ㄷ·ㅏ·ㄹ·ㄱ is 4 keystrokes; double final consonants count as 2.",
+          "과 = ㄱ·ㅗ·ㅏ is 3 keystrokes; compound vowels count as 2.",
+          "Tense consonants (ㄲ ㄸ ㅃ ㅆ ㅉ) and ㅒ ㅖ count as 1 (Shift is not counted). Spaces and punctuation count as 1.",
+          "English WPM treats 5 correct characters as one word, per minute.",
+          "Accuracy counts every character you ever got wrong, even if you fixed it.",
+          "The syllable you are still composing is never marked wrong; it is shown with a blue underline."
+        ]
+      },
       "title": "Typing Test Guide",
       "howTo": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "Select language, difficulty, and duration, then click Start",
-          "Type the text displayed on screen exactly as shown",
-          "Correctly typed characters appear green, errors appear red",
-          "Your typing speed and accuracy are shown when time runs out"
+          "Pick a mode: Daily text (changes every day), Short, Long, or Timed (30s/60s).",
+          "The timer starts the moment you type the first character. No start button.",
+          "Correct characters turn dark, errors get a red underline, and the syllable being composed gets a blue underline.",
+          "Finish the text or run out of time to see speed, accuracy, grade and most-missed keys.",
+          "Share the result as an image or link so friends can race on the same text."
         ]
       },
       "speed": {
-        "title": "Speed Reference (WPM)",
+        "title": "Grades (Korean KPM · English WPM)",
         "items": [
-          "Under 20: Beginner - Basic typing practice needed",
-          "20-40: Intermediate - Suitable for general office work",
-          "40-70: Advanced - Fast work processing possible",
-          "70+: Expert - Professional typing level"
+          "Beginner: under 100 · under 20 WPM",
+          "Novice: 100-199 · 20-29 WPM",
+          "Intermediate: 200-299 · 30-39 WPM (adult average about 250 · 40 WPM)",
+          "Advanced: 300-399 · 40-59 WPM",
+          "Expert: 400-499 · 60-79 WPM",
+          "Master: 500-599 · 80-99 WPM",
+          "Legend: 600+ · 100+ WPM"
         ]
       },
       "whatIs": {
@@ -13066,8 +13145,89 @@
     }
   },
   "colorBlindTest": {
+    "intro": {
+      "title": "Am I color blind?",
+      "lead": "Read the numbers hidden in {count} dot plates. It takes about 3 minutes and estimates red-green deficiency and its type.",
+      "preview": "This plate shows {n}. Can you see it? You get fresh plates in the test.",
+      "checklist": [
+        "Turn off night mode, blue-light filters and True Tone",
+        "Use a moderately bright screen and look straight at it from about 50 cm",
+        "Wear your usual glasses or lenses",
+        "Answer within about 3 seconds. You cannot go back to previous plates"
+      ],
+      "start": "Start test",
+      "note": "Plates are redrawn and shuffled every time. The first plate is a demonstration that everyone can read."
+    },
+    "test": {
+      "progress": "{n} / {total}",
+      "instruction": "Enter the number you see in the circle",
+      "notVisible": "Can't see",
+      "placeholder": "Enter number",
+      "clear": "Delete one digit",
+      "next": "Next",
+      "finish": "See result",
+      "hint": "Keyboard: digits · Enter next · Backspace delete · N can't see"
+    },
+    "kinds": {
+      "demo": "Demonstration plate (everyone sees it)",
+      "vanishing": "Vanishing plate · disappears for {target}",
+      "transform": "Transformation plate · different number for {target}",
+      "hidden": "Hidden-digit plate · designed to appear only for {target} (reference)",
+      "classify": "Classification plate · protan vs deutan",
+      "tritan": "Blue-yellow plate · disappears for tritan"
+    },
+    "deficiency": {
+      "protan": "protan",
+      "deutan": "deutan",
+      "tritan": "tritan"
+    },
+    "verdict": {
+      "normal": "Normal range",
+      "protan": "Possible protan (red-weak)",
+      "deutan": "Possible deutan (green-weak)",
+      "redGreen": "Possible red-green deficiency",
+      "tritan": "Possible tritan (blue-yellow)",
+      "unclear": "Inconclusive"
+    },
+    "verdictDesc": {
+      "normal": "You read most red-green plates. Your color vision looks within the normal range.",
+      "protan": "You mostly missed plates designed to vanish for protans (L-cone deficiency). Reds may look darker, and red, green and brown can be confused.",
+      "deutan": "You mostly missed plates designed to vanish for deutans (M-cone deficiency), the most common type. Green, orange and red can be confused.",
+      "redGreen": "You missed several red-green plates, but the type is unclear. It may be a mild deficiency or the effect of your screen.",
+      "tritan": "You read the red-green plates but not the blue-yellow ones. Tritan deficiency is very rare and depends heavily on how your screen shows blue, so turn off screen filters and try again.",
+      "unclear": "You missed the demonstration plate or most plates. Screen settings (night mode, filters, brightness) or attention are likely factors, so no verdict is given."
+    },
+    "confidence": {
+      "label": "Confidence",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "confidenceDesc": {
+      "high": "Your answers point consistently in one direction. Still, a screen test is less accurate than printed plates.",
+      "medium": "Mostly consistent, with some borderline answers. Try again with different lighting or screen.",
+      "low": "Your answers are mixed, so this result alone is not conclusive. Retake the test or see an eye doctor."
+    },
+    "view": {
+      "normal": "Normal",
+      "protan": "Protanope view",
+      "deutan": "Deuteranope view",
+      "tritan": "Tritanope view"
+    },
+    "disclaimer": {
+      "title": "This is not a medical diagnosis",
+      "items": [
+        "Results vary with screen color, brightness and room lighting",
+        "Night mode or blue-light filters can make people with normal vision fail",
+        "Get a proper diagnosis from an eye doctor (Ishihara plates, anomaloscope)"
+      ]
+    },
+    "share": {
+      "label": "My color vision test result",
+      "text": "Color vision test {correct}/{total} correct · {verdict}. Am I color blind? Find out in 3 minutes"
+    },
     "title": "Color Blind Test",
-    "description": "Ishihara-style color vision test. Identify the numbers in the circles.",
+    "description": "A self-check with 14 Ishihara-style pseudo-isochromatic plates for red-green color vision deficiency.",
     "instruction": "Enter the number you see in the circle",
     "plate": "Plate",
     "of": "/",
@@ -13079,6 +13239,21 @@
     "restart": "Restart",
     "skip": "Not sure",
     "result": {
+      "summary": "{correct} of {total} plates answered as normal",
+      "rgPlates": "Red-green plates",
+      "tritanPlates": "Blue-yellow plates",
+      "signal": {
+        "protan": "Protan signal score",
+        "deutan": "Deutan signal score"
+      },
+      "retake": "Retake with new plates",
+      "simulatorLink": "Open color blindness simulator",
+      "simulatorDesc": "See how photos and designs look to people with color vision deficiency in the simulator.",
+      "breakdown": "Plate breakdown",
+      "viewAs": "View as",
+      "viewDesc": "Use the buttons to compare how each plate looks to each type of color vision (Viénot 1999 dichromat simulation).",
+      "plateN": "Plate {n}",
+      "yourAnswer": "Your answer",
       "title": "Test Results",
       "correct": "Correct",
       "wrong": "Wrong",
@@ -13095,10 +13270,10 @@
       "about": {
         "title": "About the Test",
         "items": [
-          "Based on the Ishihara color test method",
-          "View in bright lighting, facing the monitor directly",
-          "Enter the number you see in each plate",
-          "10 plates in total"
+          "A screening test based on the Ishihara plate principle",
+          "Plate colors are computed on dichromat confusion lines and redrawn every time",
+          "1 demonstration, 5 vanishing, 2 transformation, 2 classification, 2 hidden-digit and 2 blue-yellow plates (14 total)",
+          "Use a bright room, turn off screen filters and look straight at the screen"
         ]
       },
       "types": {
@@ -13157,10 +13332,10 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. View the screen under normal lighting at a distance of about 50–75 cm from your eyes.",
-          "2. For each test plate, identify the number or shape visible within the circle.",
-          "3. Enter or select the number you see.",
-          "4. After completing all plates, review your color vision analysis result."
+          "1. Turn off night mode and blue-light filters and sit about 50 cm from the screen.",
+          "2. Enter the number you see with the number pad. If you see none, press 'Can't see'.",
+          "3. You can't go back, so answer with your first impression.",
+          "4. Check the verdict, confidence and how each plate looks to color-deficient viewers."
         ]
       },
       "tips": {
@@ -14182,10 +14357,49 @@
     }
   },
   "imageMosaic": {
+    "local": "Your image never leaves this browser. Nothing is uploaded.",
+    "dropTitle": "Paste a screenshot or drop an image here",
+    "pasteHint": "Take a screenshot, then press Ctrl+V (⌘+V on Mac) on this page",
+    "pickFile": "Choose file",
+    "pasteButton": "Paste from clipboard",
+    "pasteFailed": "No image found on the clipboard. Take a screenshot and press Ctrl+V.",
+    "loadFailed": "Couldn't open this image. Try a JPG, PNG or WebP file.",
+    "tool": "Tool",
+    "toolSelect": "Select",
+    "toolEllipse": "Ellipse",
+    "toolPan": "Pan",
+    "hint": {
+      "select": "Tap a region to select it, drag to move, drag a corner to resize, Delete to remove.",
+      "rect": "Drag over what you want to hide. Add as many regions as you like.",
+      "ellipse": "Drag to cover round areas like faces.",
+      "brush": "Paint over the area to hide it.",
+      "pan": "Drag to move around. Zoom with Ctrl+wheel or two fingers."
+    },
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "zoomFit": "Fit to screen",
+    "black": "Black box",
+    "white": "White box",
+    "blockSize": "Block size",
+    "blurStrength": "Blur strength",
+    "weakWarning": "Weak mosaic or blur can sometimes be reversed for text. Use a black/white box for names, phone numbers, addresses and plates.",
+    "solidNote": "A solid box fully replaces the original pixels, so it cannot be reversed.",
+    "editingRegion": "Editing region {n}",
+    "regions": "Hidden regions",
+    "noRegions": "Drag on the image to add a region to hide.",
+    "delete": "Delete",
+    "faceDetect": "Auto-detect faces",
+    "faceFound": "Found and covered {n} face(s). Check that none were missed.",
+    "faceNone": "No faces found. Please draw the regions yourself.",
+    "copy": "Copy to clipboard",
+    "copied": "Copied",
+    "copyFailed": "This browser can't copy images. Please use Download.",
+    "exifNote": "Saving or copying re-encodes the image, so the original EXIF data (GPS location, camera, date) is removed.",
+    "downscaled": "The original ({ow}×{oh}) is too large, so it is edited and saved at {w}×{h}.",
     "redo": "Redo",
-    "changeImage": "Change image",
+    "changeImage": "Another image",
     "title": "Image Mosaic/Blur",
-    "description": "Apply mosaic or blur effects to photos. Select areas or use brush to process specific parts.",
+    "description": "Hide faces, license plates, names and addresses with mosaic, blur or a solid box. Paste screenshots with Ctrl+V. Nothing is uploaded.",
     "upload": "Upload Image",
     "dragDrop": "Drag & drop or click to upload",
     "mosaic": "Mosaic",
@@ -14195,7 +14409,7 @@
     "intensity": "Intensity",
     "brushSize": "Brush Size",
     "undo": "Undo",
-    "reset": "Reset",
+    "reset": "Clear all",
     "download": "Download",
     "png": "PNG",
     "jpeg": "JPEG",
@@ -14206,24 +14420,33 @@
     "effectType": "Effect Type",
     "format": "Format",
     "guide": {
+      "safety": {
+        "title": "Hiding things for real",
+        "items": [
+          "Cover text (names, phone numbers, addresses, account numbers, plates) with a black or white box. Only a solid box leaves none of the original pixels.",
+          "Small-block mosaic or light blur keeps the shape of letters and can sometimes be reconstructed. If you use them, turn the size/strength up.",
+          "The saved file is a brand-new image with only the redacted result. Undo history and the original are not included.",
+          "Before posting, zoom to 100% and check the edges are fully covered."
+        ]
+      },
       "title": "User Guide",
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Drag an image or use the upload button to load an image",
-          "Rectangle mode: Drag to select a rectangular area for the effect",
-          "Brush mode: Paint over areas to apply the effect freely",
-          "Choose between mosaic (pixelate) and blur (gaussian) effects",
-          "Adjust the intensity slider to control effect strength"
+          "Take a screenshot and press Ctrl+V, drop an image, or choose a file.",
+          "Draw what to hide with the rectangle, ellipse or brush tool. Add as many regions as you need.",
+          "Pick an effect (mosaic, blur, black or white box) and strength. With a region selected, only that region changes.",
+          "Move or resize regions with the Select tool and delete them from the list. Ctrl+Z / Ctrl+Shift+Z to undo/redo.",
+          "Download as PNG/JPG or copy to the clipboard and paste it straight into a chat or post."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Great for protecting privacy on faces, license plates, etc.",
-          "Use Undo to reverse any mistaken effects",
-          "PNG is lossless, JPEG produces smaller file sizes",
-          "Adjust brush size for precise processing"
+          "Zoom with Ctrl+wheel or two fingers for detailed work on large photos.",
+          "PNG suits screenshots; JPG keeps photos smaller.",
+          "Auto face detection appears only in browsers that support it. Always check for missed faces.",
+          "Press Delete to remove the selected region and Esc to deselect."
         ]
       },
       "guide": {
@@ -14257,16 +14480,20 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "Can I adjust the intensity of the mosaic or blur?",
-            "a": "Yes. Sliders let you control pixel block size for mosaic and blur radius for Gaussian blur. Higher values produce stronger obscuring effects."
+            "q": "Is my image uploaded to a server?",
+            "a": "No. Loading, editing and saving all happen inside your browser; the image is never sent anywhere."
           },
           {
-            "q": "Can I undo changes?",
-            "a": "Yes. Use the Undo function to step back to previous states. The original image is always kept separately."
+            "q": "Can pixelated text be recovered?",
+            "a": "With small blocks or weak blur, there are techniques that can guess the text. A solid box is the safest choice for text."
           },
           {
-            "q": "Which save formats are supported?",
-            "a": "PNG (lossless) and JPEG (smaller file size) are both supported for saving your edited image."
+            "q": "Is the photo's GPS location removed?",
+            "a": "Yes. Saving or copying re-encodes only the pixels, so EXIF GPS, camera and date data are not in the result."
+          },
+          {
+            "q": "Can I edit a region after drawing it?",
+            "a": "Use the Select tool to move or resize it; while selected you can change its effect and strength or delete it. Ctrl+Z undoes."
           }
         ]
       }
@@ -18112,8 +18339,163 @@
     }
   },
   "noiseMeter": {
+    "current": "Now",
+    "estimate": "estimate",
+    "idleHint": "Press Start to measure ambient noise with your microphone. Audio is never saved or sent.",
+    "duration": "Duration",
+    "mode": {
+      "general": "General",
+      "floor": "Neighbor noise"
+    },
+    "dur": {
+      "sec": "{n}s",
+      "min": "{n} min",
+      "hourMin": "{h}h {m}m"
+    },
+    "wake": {
+      "on": "Screen kept awake while measuring",
+      "off": "This browser can't keep the screen awake. Please stop the screen from turning off while measuring."
+    },
+    "noWeighting": "This browser doesn't support the A-weighting filter, so unweighted dB(Z) is shown. Bass-heavy noise will read higher.",
+    "err": {
+      "denied": "Microphone permission was denied.",
+      "deniedHelp": [
+        "iPhone: Settings > Safari > Microphone > Allow, or 'aA' in the address bar > Website Settings > Microphone",
+        "Android Chrome: icon left of the address bar > Permissions > Allow microphone",
+        "Desktop: lock icon in the address bar > Allow microphone, then reload"
+      ],
+      "notFound": "No microphone found. Please check that one is connected.",
+      "busy": "Another app (call, recorder, video meeting) is using the microphone. Close it and try again.",
+      "insecure": "The microphone isn't available here. Open this page over https in a regular browser such as Chrome or Safari.",
+      "generic": "Couldn't start the microphone. Reload the page and try again.",
+      "ended": "The microphone disconnected, so measuring stopped.",
+      "inApp": "In-app browsers (KakaoTalk, Naver, Instagram) often block the microphone. Use the menu to 'Open in another browser'."
+    },
+    "share": {
+      "label": "Average noise over {duration}",
+      "headline": "{avg}dB",
+      "sub": "Phone microphone estimate · dB(A)",
+      "events": "Over-limit events",
+      "eventsValue": "{n}",
+      "text": "Avg {avg}dB · Max {max}dB · measured {duration}"
+    },
+    "floor": {
+      "title": "Compare with Korean floor-noise limits",
+      "period": {
+        "day": "Day 06–22",
+        "night": "Night 22–06"
+      },
+      "leqLabel": "Impact noise, 1-min Leq",
+      "maxLabel": "Maximum level (instant)",
+      "currentMinute": "Current minute ({s}s / 60s)",
+      "lastMinute": "Previous minute: {v}dB",
+      "maxCount": "{n} exceedances in the last hour (limit is exceeded at {limit}+ per hour)",
+      "oldBuilding": "Apartment approved before June 30, 2005 (limits +2dB)",
+      "clip": "Record 10 s when the max limit is exceeded (stored on this device only, up to 20)",
+      "caveat": "Phone readings are uncalibrated estimates and are not legal evidence. Official assessment requires measurement by an accredited body such as the Floor Noise Neighbor Center (1661-2642). Use this log to document when and how often noise occurs.",
+      "source": "Source: Rules on the Scope and Standards of Floor Noise in Apartment Buildings (Ministry of Environment & MOLIT, effective Jan 2, 2023). Impact noise 1-min Leq 39dB day / 34dB night; max 57dB day / 52dB night. Buildings approved before 2005-06-30: +2dB from 2025."
+    },
+    "log": {
+      "title": "Exceedance log",
+      "empty": "No noise over the limit yet. Keep measuring and exceedances are logged automatically.",
+      "time": "Time",
+      "type": "Type",
+      "level": "Level / limit",
+      "dur": "Length",
+      "clip": "Clip",
+      "download": "Save",
+      "recording": "Recording",
+      "csv": "CSV",
+      "clear": "Clear",
+      "types": {
+        "leq": "1-min Leq over",
+        "max": "Max level over"
+      },
+      "csvHeader": [
+        "Start time",
+        "Type",
+        "Period",
+        "Level (dB, est.)",
+        "Limit (dB)",
+        "Length (s)"
+      ],
+      "csvNote": "Phone microphone estimate (offset {offset}). Not a legal measurement."
+    },
+    "chart": {
+      "title": "Last 60 seconds",
+      "leq": "1-s average",
+      "max": "1-s max",
+      "axis": "{lo}–{hi} dB",
+      "now": "now"
+    },
+    "hist": {
+      "title": "Noise distribution (share of time)",
+      "below": "under {v}",
+      "above": "{v}+"
+    },
+    "calib": {
+      "title": "Microphone calibration",
+      "desc": "Phone microphones differ in sensitivity, so readings are estimates. Adjust the offset to match reality. The setting is saved on this device.",
+      "offset": "Offset (dBFS → dB)",
+      "down": "Lower offset by 1dB",
+      "up": "Raise offset by 1dB",
+      "known": "Reading from a sound meter (or app) placed next to it",
+      "apply": "Match now",
+      "knownHelp": "While measuring, play a steady sound for 3+ seconds, then press. The last 3-second average is set to the value you entered.",
+      "reset": "Reset to default ({v})"
+    },
+    "scale": {
+      "title": "How loud is that?",
+      "now": "now {v}dB",
+      "items": [
+        {
+          "db": 20,
+          "label": "Rustling leaves, whisper"
+        },
+        {
+          "db": 30,
+          "label": "Quiet library, residential area at night"
+        },
+        {
+          "db": 40,
+          "label": "Quiet office, refrigerator hum"
+        },
+        {
+          "db": 50,
+          "label": "Quiet café, light rain"
+        },
+        {
+          "db": 60,
+          "label": "Normal conversation (1 m)"
+        },
+        {
+          "db": 70,
+          "label": "Noisy office, vacuum cleaner"
+        },
+        {
+          "db": 80,
+          "label": "Inside a subway car, busy roadside"
+        },
+        {
+          "db": 90,
+          "label": "Factory floor, hair dryer up close"
+        },
+        {
+          "db": 100,
+          "label": "Passing train, construction site"
+        },
+        {
+          "db": 110,
+          "label": "Car horn up close, concert"
+        },
+        {
+          "db": 120,
+          "label": "Jet takeoff nearby"
+        }
+      ]
+    },
     "title": "Noise Meter",
-    "description": "Measure ambient noise levels in real-time using your microphone. Displayed in dB (decibels).",
+    "description": "Measure ambient noise in dB(A) with your phone or PC microphone. Leq average, max/min, a 60-second chart, Korean floor-noise limit comparison and an exceedance log (CSV and clips). Audio is never saved or sent.",
     "mobileFriendly": "Mobile Optimized",
     "start": "Start Measuring",
     "stop": "Stop",
@@ -18121,7 +18503,7 @@
     "micPermissionDenied": "Microphone access was denied. Please allow microphone permission in your browser settings.",
     "micError": "Cannot access the microphone. Please check if a microphone is connected.",
     "maxDb": "Max",
-    "avgDb": "Avg",
+    "avgDb": "Avg (Leq)",
     "minDb": "Min",
     "historyGraph": "Measurement History",
     "historyOld": "Older",
@@ -18146,21 +18528,21 @@
     "guide": {
       "title": "User Guide",
       "how": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "Press the Start button to request microphone access.",
-          "Once permission is granted, noise levels are measured in real-time.",
-          "View max, average, and min dB statistics.",
-          "The history graph shows noise level changes over time."
+          "Press Start and allow microphone access. Noise is measured every 0.1 s.",
+          "The average is the equivalent level (Leq), an energy average, the same method legal limits use.",
+          "Choose the Neighbor noise tab to compare against the day/night limit for the current time and log every exceedance automatically.",
+          "Stop to save or share a result card, and export the exceedance log as CSV."
         ]
       },
       "tips": {
-        "title": "Tips for Accurate Measurement",
+        "title": "Measuring accurately",
         "items": [
-          "Removing your phone case may improve microphone sensitivity.",
-          "Measurement may be inaccurate in windy environments.",
-          "Point the microphone toward the noise source for better accuracy.",
-          "Values are for reference only and cannot replace professional sound meters."
+          "Place the phone in the middle of the room, away from walls and the ceiling, not on the floor or furniture. For floor noise, use the room where the upstairs noise is loudest.",
+          "Make sure the case doesn't cover the microphone, and switch off nearby fans or air conditioners.",
+          "For overnight logging, keep the charger connected, the screen on (wake lock is applied automatically) and the browser in the foreground. Most phones stop the microphone when the screen locks.",
+          "If you have a sound level meter or a trusted app, calibrate once with Microphone calibration to make later readings far more reliable."
         ]
       },
       "guide": {
@@ -18194,21 +18576,33 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "Is microphone permission required?",
-            "a": "Yes, microphone access is needed for measurement. Click 'Allow' when the browser requests permission. You can revoke the permission in browser settings after use."
+            "q": "How accurate is a phone noise meter?",
+            "a": "Phone microphones vary in sensitivity and frequency response, so uncalibrated readings can be off by ±5–10dB. Comparing readings from the same device (last night vs tonight) works well, but absolute values are estimates. If you have a sound level meter, use Microphone calibration to match it."
           },
           {
-            "q": "Can the result differ from a professional sound level meter?",
-            "a": "Yes. Smartphone microphones are less precise than professional meters and have different frequency response characteristics. Use this tool for relative noise assessment and everyday checks. For legally required measurements, use calibrated professional equipment."
+            "q": "What are the Korean floor-noise limits?",
+            "a": "Under the Rules on the Scope and Standards of Floor Noise in Apartment Buildings (effective Jan 2, 2023), impact noise (footsteps, jumping) is limited to a 1-minute Leq of 39dB by day and 34dB at night, and a maximum level of 57dB by day and 52dB at night. The maximum limit counts as exceeded when it is crossed 3 or more times in an hour. Airborne noise (TV, audio) uses a 5-minute Leq of 45dB day / 40dB night. Buildings approved before June 30, 2005 add 2dB from 2025."
           },
           {
-            "q": "What dB level counts as noisy?",
-            "a": "Below 40 dB is quiet (library-like); 60 dB is normal conversation; 80 dB is a loud office; 90 dB+ risks hearing damage. Korean apartment noise standards are 43 dB (daytime) / 38 dB (nighttime)."
+            "q": "Can I use this log for an official complaint or lawsuit?",
+            "a": "Phone measurements are not legal evidence. For official measurement use the Floor Noise Neighbor Center (1661-2642), your local government's meter lending, or an accredited firm. A log of when and how often noise occurred (CSV) plus clips can still help explain the situation to building management or counselors."
+          },
+          {
+            "q": "How is Leq different from a normal average?",
+            "a": "Decibels are logarithmic, so a plain average understates loud moments. Equivalent level (Leq) averages sound energy: half 60dB and half 70dB gives about 67.4dB, not 65dB. Legal limits use this method."
+          },
+          {
+            "q": "What does dB(A) mean?",
+            "a": "Human ears are less sensitive to low and very high frequencies. A-weighting models that, and most noise regulations use dB(A). This tool applies an A-weighting filter to the microphone signal."
+          },
+          {
+            "q": "Is audio recorded or uploaded?",
+            "a": "No. Everything is computed in your browser. Only when you enable clip recording in neighbor-noise mode are short clips kept in this device's memory, and they become files only when you press Save."
           }
         ]
       }
     },
-    "disclaimer": "This tool is for reference only. Use a professional sound meter for precise measurements. Results may vary depending on your device's microphone quality."
+    "disclaimer": "Readings are uncalibrated phone/PC microphone estimates, not legal measurements. For official assessment of floor-noise disputes, contact the Floor Noise Neighbor Center (1661-2642) or an accredited measurement firm."
   },
   "spiritLevel": {
     "title": "Spirit Level & Compass",
