@@ -1,740 +1,428 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+/**
+ * PercentCalculator — 자주 묻는 퍼센트 질문 8가지를 카드로 동시에 실시간 계산
+ * Translation namespace: percentCalculator
+ * 계산 로직: src/utils/percent.ts (회귀: node scripts/check-percent.ts)
+ */
+
+import { useState, useMemo, useEffect, useRef, useCallback, type ReactNode } from 'react'
+import Link from 'next/link'
+import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
-import { Copy, Check, BookOpen, Percent, ArrowRightLeft, TrendingUp, PlusCircle, Trash2, RotateCcw } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { Copy, Check, Plus, X, RotateCcw, ArrowRight } from 'lucide-react'
+import GuideSection from '@/components/GuideSection'
+import {
+  parseNum, parseQuery, round, fmt, fmtKo, percentOf, ratio, change, discount, originalPrice, chainRate, vatSplit,
+  type Query,
+} from '@/utils/percent'
 
-type Mode = 'basicPercent' | 'whatPercent' | 'change' | 'addSubtract'
+type F = 'a' | 'b' | 'p' | 'w' | 'f' | 't' | 'dp' | 'dr' | 'rs' | 'rr' | 'cp' | 'x' | 'y' | 'v'
+type CardId = 'of' | 'ratio' | 'change' | 'discount' | 'reverse' | 'chain' | 'pp' | 'vat'
 
-interface HistoryItem {
-  mode: Mode
-  expression: string
-  result: string
-  timestamp: number
+const DEF: Record<F, string> = {
+  a: '50000', b: '15', p: '300', w: '1200', f: '30000', t: '40000', dp: '89000', dr: '30',
+  rs: '62300', rr: '30', cp: '100000', x: '3', y: '5', v: '110000',
 }
+const DEF_CHAIN = ['30', '20']
+const DEF_DEC = 2
+const KEYS = Object.keys(DEF) as F[]
+const QUICK = [5, 10, 15, 20, 30, 50]
 
-export default function PercentCalculator() {
-  const t = useTranslations('percentCalculator')
-  const [mode, setMode] = useState<Mode>('basicPercent')
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [history, setHistory] = useState<HistoryItem[]>([])
+interface Res {
+  main: string
+  copy: string
+  formula: string
+  sub?: ReactNode
+}
+type Out = Res | { error: string }
 
-  // Basic Percent: X의 Y%
-  const [basicValue, setBasicValue] = useState('')
-  const [basicPercent, setBasicPercent] = useState('')
+const seg = (on: boolean) =>
+  `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+const raw = (n: number) => fmt(n, 10)
+const signed = (s: string, n: number) => (n > 0 ? `+${s}` : s)
 
-  // What Percent: X는 Y의 몇%
-  const [partValue, setPartValue] = useState('')
-  const [wholeValue, setWholeValue] = useState('')
-
-  // Change: 증감률
-  const [fromValue, setFromValue] = useState('')
-  const [toValue, setToValue] = useState('')
-
-  // Add/Subtract
-  const [addSubValue, setAddSubValue] = useState('')
-  const [addSubPercent, setAddSubPercent] = useState('')
-  const [addSubMode, setAddSubMode] = useState<'add' | 'subtract'>('add')
-
-  const resultRef = useRef<HTMLDivElement>(null)
-
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
-  }, [])
-
-  const formatNumber = (num: number): string => {
-    if (Number.isInteger(num)) return num.toLocaleString()
-    // 소수점 이하 불필요한 0 제거, 최대 4자리
-    const rounded = Math.round(num * 10000) / 10000
-    return rounded.toLocaleString(undefined, { maximumFractionDigits: 4 })
-  }
-
-  const addToHistory = useCallback((mode: Mode, expression: string, result: string) => {
-    setHistory(prev => [{
-      mode,
-      expression,
-      result,
-      timestamp: Date.now()
-    }, ...prev].slice(0, 20))
-  }, [])
-
-  // 기본 퍼센트 계산
-  const basicResult = (() => {
-    const v = parseFloat(basicValue)
-    const p = parseFloat(basicPercent)
-    if (isNaN(v) || isNaN(p)) return null
-    return v * p / 100
-  })()
-
-  // 비율 계산
-  const whatPercentResult = (() => {
-    const part = parseFloat(partValue)
-    const whole = parseFloat(wholeValue)
-    if (isNaN(part) || isNaN(whole) || whole === 0) return null
-    return (part / whole) * 100
-  })()
-
-  // 증감률 계산
-  const changeResult = (() => {
-    const from = parseFloat(fromValue)
-    const to = parseFloat(toValue)
-    if (isNaN(from) || isNaN(to) || from === 0) return null
-    const change = ((to - from) / Math.abs(from)) * 100
-    return { percent: change, difference: to - from }
-  })()
-
-  // 추가/차감 계산
-  const addSubResult = (() => {
-    const v = parseFloat(addSubValue)
-    const p = parseFloat(addSubPercent)
-    if (isNaN(v) || isNaN(p)) return null
-    const amount = v * p / 100
-    return {
-      addResult: v + amount,
-      subtractResult: v - amount,
-      amount
-    }
-  })()
-
-  const handleSaveToHistory = useCallback(() => {
-    if (mode === 'basicPercent' && basicResult !== null) {
-      addToHistory('basicPercent', `${basicValue}의 ${basicPercent}%`, formatNumber(basicResult))
-    } else if (mode === 'whatPercent' && whatPercentResult !== null) {
-      addToHistory('whatPercent', `${partValue}는 ${wholeValue}의 ?%`, `${formatNumber(whatPercentResult)}%`)
-    } else if (mode === 'change' && changeResult !== null) {
-      addToHistory('change', `${fromValue} → ${toValue}`, `${formatNumber(changeResult.percent)}%`)
-    } else if (mode === 'addSubtract' && addSubResult !== null) {
-      const result = addSubMode === 'add' ? addSubResult.addResult : addSubResult.subtractResult
-      const sign = addSubMode === 'add' ? '+' : '-'
-      addToHistory('addSubtract', `${addSubValue} ${sign} ${addSubPercent}%`, formatNumber(result))
-    }
-  }, [mode, basicResult, basicValue, basicPercent, whatPercentResult, partValue, wholeValue, changeResult, fromValue, toValue, addSubResult, addSubValue, addSubPercent, addSubMode, addToHistory])
-
-  const handleReset = useCallback(() => {
-    setBasicValue('')
-    setBasicPercent('')
-    setPartValue('')
-    setWholeValue('')
-    setFromValue('')
-    setToValue('')
-    setAddSubValue('')
-    setAddSubPercent('')
-  }, [])
-
-  const handleQuickPercent = useCallback((percent: number) => {
-    if (mode === 'basicPercent') {
-      setBasicPercent(String(percent))
-    } else if (mode === 'addSubtract') {
-      setAddSubPercent(String(percent))
-    }
-  }, [mode])
-
-  const modeIcons: Record<Mode, React.ReactNode> = {
-    basicPercent: <Percent className="w-4 h-4" />,
-    whatPercent: <ArrowRightLeft className="w-4 h-4" />,
-    change: <TrendingUp className="w-4 h-4" />,
-    addSubtract: <PlusCircle className="w-4 h-4" />,
-  }
-
-  const modes: Mode[] = ['basicPercent', 'whatPercent', 'change', 'addSubtract']
-
+function Field({ id, label, value, onChange, suffix }: { id: string; label: string; value: string; onChange: (v: string) => void; suffix?: string }) {
   return (
-    <div className="space-y-8">
-      {/* 헤더 */}
-      <div>
-        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
-      </div>
-
-      {/* 모드 탭 */}
-      <div className="flex flex-wrap gap-2">
-        {modes.map((m) => (
-          <button
-            key={m}
-            onClick={() => setMode(m)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${
-              mode === m
-                ? 'bg-primary hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25'
-                : 'bg-surface text-body hover:bg-gray-100 dark:hover:bg-gray-700 border border-line'
-            }`}
-          >
-            {modeIcons[m]}
-            {t(`modes.${m}`)}
-          </button>
-        ))}
-      </div>
-
-      {/* 메인 그리드 */}
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* 입력 패널 */}
-        <div className="lg:col-span-1 space-y-6">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-fg">
-              {t(`${mode}.title`)}
-            </h2>
-            <p className="text-sm text-muted">
-              {t(`${mode}.description`)}
-            </p>
-
-            {/* 기본 퍼센트 */}
-            {mode === 'basicPercent' && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">
-                    {t('basicPercent.valueLabel')}
-                  </label>
-                  <input
-                    type="number"
-                    value={basicValue}
-                    onChange={(e) => setBasicValue(e.target.value)}
-                    placeholder={t('common.placeholder')}
-                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">
-                    {t('basicPercent.percentLabel')}
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      value={basicPercent}
-                      onChange={(e) => setBasicPercent(e.target.value)}
-                      placeholder={t('common.placeholder')}
-                      className={`w-full px-3 py-2 pr-8 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                    />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">%</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* 비율 계산 */}
-            {mode === 'whatPercent' && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">
-                    {t('whatPercent.partLabel')}
-                  </label>
-                  <input
-                    type="number"
-                    value={partValue}
-                    onChange={(e) => setPartValue(e.target.value)}
-                    placeholder={t('common.placeholder')}
-                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">
-                    {t('whatPercent.wholeLabel')}
-                  </label>
-                  <input
-                    type="number"
-                    value={wholeValue}
-                    onChange={(e) => setWholeValue(e.target.value)}
-                    placeholder={t('common.placeholder')}
-                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* 증감률 */}
-            {mode === 'change' && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">
-                    {t('change.fromLabel')}
-                  </label>
-                  <input
-                    type="number"
-                    value={fromValue}
-                    onChange={(e) => setFromValue(e.target.value)}
-                    placeholder={t('common.placeholder')}
-                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">
-                    {t('change.toLabel')}
-                  </label>
-                  <input
-                    type="number"
-                    value={toValue}
-                    onChange={(e) => setToValue(e.target.value)}
-                    placeholder={t('common.placeholder')}
-                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* 추가/차감 */}
-            {mode === 'addSubtract' && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">
-                    {t('addSubtract.valueLabel')}
-                  </label>
-                  <input
-                    type="number"
-                    value={addSubValue}
-                    onChange={(e) => setAddSubValue(e.target.value)}
-                    placeholder={t('common.placeholder')}
-                    className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">
-                    {t('addSubtract.percentLabel')}
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      value={addSubPercent}
-                      onChange={(e) => setAddSubPercent(e.target.value)}
-                      placeholder={t('common.placeholder')}
-                      className={`w-full px-3 py-2 pr-8 ${glassInput} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                    />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">%</span>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setAddSubMode('add')}
-                    className={`flex-1 py-2 rounded-lg font-medium text-sm transition-all ${
-                      addSubMode === 'add'
-                        ? 'bg-soft text-sub border-2 border-green-500'
-                        : 'bg-soft text-sub border-2 border-transparent'
-                    }`}
-                  >
-                    {t('addSubtract.add')}
-                  </button>
-                  <button
-                    onClick={() => setAddSubMode('subtract')}
-                    className={`flex-1 py-2 rounded-lg font-medium text-sm transition-all ${
-                      addSubMode === 'subtract'
-                        ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 border-2 border-red-500'
-                        : 'bg-soft text-sub border-2 border-transparent'
-                    }`}
-                  >
-                    {t('addSubtract.subtract')}
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* 빠른 퍼센트 버튼 */}
-            {(mode === 'basicPercent' || mode === 'addSubtract') && (
-              <div>
-                <p className="text-xs font-medium text-muted mb-2">{t('common.quickPercent')}</p>
-                <div className="flex flex-wrap gap-2">
-                  {[5, 10, 15, 20, 25, 30, 50, 75].map((p) => (
-                    <button
-                      key={p}
-                      onClick={() => handleQuickPercent(p)}
-                      className="px-3 py-1.5 text-xs font-medium rounded-full bg-subtle text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
-                    >
-                      {p}%
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* 액션 버튼 */}
-            <div className="flex gap-2 pt-2">
-              <button
-                onClick={handleSaveToHistory}
-                disabled={
-                  (mode === 'basicPercent' && basicResult === null) ||
-                  (mode === 'whatPercent' && whatPercentResult === null) ||
-                  (mode === 'change' && changeResult === null) ||
-                  (mode === 'addSubtract' && addSubResult === null)
-                }
-                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
-              >
-                {t('common.calculate')}
-              </button>
-              <button
-                onClick={handleReset}
-                className="px-3 py-2.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-                title={t('common.reset')}
-              >
-                <RotateCcw className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* 활용 팁 */}
-          <div className="bg-subtle rounded-xl p-5">
-            <h3 className="text-sm font-semibold text-sub mb-3">{t('common.tipTitle')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('common.tips') as string[]).map((tip, i) => (
-                <li key={i} className="text-xs text-blue-700 dark:text-blue-400 flex items-start gap-2">
-                  <span className="mt-0.5 shrink-0">&#8226;</span>
-                  <span>{tip}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* 결과 패널 */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* 실시간 결과 */}
-          <div ref={resultRef} className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-lg font-semibold text-fg mb-4">{t('common.result')}</h2>
-
-            {/* 기본 퍼센트 결과 */}
-            {mode === 'basicPercent' && (
-              <div>
-                {basicResult !== null ? (
-                  <div className="space-y-4">
-                    <div className="bg-subtle rounded-xl p-6">
-                      <p className="text-sm text-muted mb-2">
-                        {formatNumber(parseFloat(basicValue))}{t('basicPercent.resultPrefix')} {basicPercent}{t('basicPercent.resultMiddle')}
-                      </p>
-                      <div className="flex items-center gap-3">
-                        <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">
-                          {formatNumber(basicResult)}
-                        </p>
-                        <button
-                          onClick={() => copyToClipboard(String(Math.round(basicResult * 10000) / 10000), 'basic')}
-                          className="p-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
-                          title={t('common.copy')}
-                        >
-                          {copiedId === 'basic' ? (
-                            <Check className="w-5 h-5 text-green-500" />
-                          ) : (
-                            <Copy className="w-5 h-5 text-gray-400" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* 관련 계산 미리보기 */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      {[10, 20, 30, 50].map((p) => {
-                        const val = parseFloat(basicValue)
-                        if (isNaN(val)) return null
-                        return (
-                          <div key={p} className="bg-subtle rounded-lg p-3 text-center">
-                            <p className="text-xs text-muted">{p}%</p>
-                            <p className="text-sm font-semibold text-fg mt-1">
-                              {formatNumber(val * p / 100)}
-                            </p>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                ) : (
-                  <EmptyState />
-                )}
-              </div>
-            )}
-
-            {/* 비율 결과 */}
-            {mode === 'whatPercent' && (
-              <div>
-                {whatPercentResult !== null ? (
-                  <div className="space-y-4">
-                    <div className="bg-subtle rounded-xl p-6">
-                      <p className="text-sm text-muted mb-2">
-                        {formatNumber(parseFloat(partValue))} {t('whatPercent.resultPrefix')} {formatNumber(parseFloat(wholeValue))}{t('whatPercent.resultMiddle')}
-                      </p>
-                      <div className="flex items-center gap-3">
-                        <p className="text-4xl font-bold text-purple-600 dark:text-purple-400">
-                          {formatNumber(whatPercentResult)}%
-                        </p>
-                        <button
-                          onClick={() => copyToClipboard(String(Math.round(whatPercentResult * 10000) / 10000), 'whatPercent')}
-                          className="p-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors"
-                          title={t('common.copy')}
-                        >
-                          {copiedId === 'whatPercent' ? (
-                            <Check className="w-5 h-5 text-green-500" />
-                          ) : (
-                            <Copy className="w-5 h-5 text-gray-400" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* 비율 시각화 바 */}
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-xs text-muted">
-                        <span>0%</span>
-                        <span>100%</span>
-                      </div>
-                      <div className="w-full bg-track rounded-full h-4 overflow-hidden">
-                        <div
-                          className="bg-primary h-4 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
-                          style={{ width: `${Math.min(whatPercentResult, 100)}%` }}
-                        >
-                          {whatPercentResult >= 15 && (
-                            <span className="text-[10px] font-bold text-white">
-                              {formatNumber(whatPercentResult)}%
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <EmptyState />
-                )}
-              </div>
-            )}
-
-            {/* 증감률 결과 */}
-            {mode === 'change' && (
-              <div>
-                {changeResult !== null ? (
-                  <div className="space-y-4">
-                    <div className={`rounded-xl p-6 ${
-                      changeResult.percent > 0
-                        ? 'bg-subtle'
-                        : changeResult.percent < 0
-                          ? 'bg-subtle'
-                          : 'bg-subtle'
-                    }`}>
-                      <p className="text-sm text-muted mb-2">
-                        {formatNumber(parseFloat(fromValue))} {t('change.resultPrefix')} {formatNumber(parseFloat(toValue))} {t('change.resultMiddle')}
-                      </p>
-                      <div className="flex items-center gap-3">
-                        <p className={`text-4xl font-bold ${
-                          changeResult.percent > 0
-                            ? 'text-green-600 dark:text-green-400'
-                            : changeResult.percent < 0
-                              ? 'text-red-600 dark:text-red-400'
-                              : 'text-sub'
-                        }`}>
-                          {changeResult.percent > 0 ? '+' : ''}{formatNumber(changeResult.percent)}%
-                        </p>
-                        <button
-                          onClick={() => copyToClipboard(String(Math.round(changeResult.percent * 10000) / 10000), 'change')}
-                          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                          title={t('common.copy')}
-                        >
-                          {copiedId === 'change' ? (
-                            <Check className="w-5 h-5 text-green-500" />
-                          ) : (
-                            <Copy className="w-5 h-5 text-gray-400" />
-                          )}
-                        </button>
-                      </div>
-                      <p className={`text-sm mt-2 font-medium ${
-                        changeResult.percent > 0
-                          ? 'text-green-600 dark:text-green-400'
-                          : changeResult.percent < 0
-                            ? 'text-red-600 dark:text-red-400'
-                            : 'text-sub'
-                      }`}>
-                        {changeResult.percent > 0
-                          ? t('change.increase')
-                          : changeResult.percent < 0
-                            ? t('change.decrease')
-                            : t('change.noChange')}
-                      </p>
-                    </div>
-
-                    <div className="bg-subtle rounded-lg p-4">
-                      <p className="text-sm text-muted">{t('change.difference')}</p>
-                      <p className="text-xl font-bold text-fg mt-1">
-                        {changeResult.difference > 0 ? '+' : ''}{formatNumber(changeResult.difference)}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <EmptyState />
-                )}
-              </div>
-            )}
-
-            {/* 추가/차감 결과 */}
-            {mode === 'addSubtract' && (
-              <div>
-                {addSubResult !== null ? (
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {/* 추가 결과 */}
-                      <div className={`rounded-xl p-5 ${
-                        addSubMode === 'add'
-                          ? 'bg-subtle ring-2 ring-green-500/30'
-                          : 'bg-subtle'
-                      }`}>
-                        <p className="text-sm text-muted mb-1">{t('addSubtract.addResult')}</p>
-                        <div className="flex items-center gap-2">
-                          <p className="text-2xl font-bold text-green-600 dark:text-green-400">
-                            {formatNumber(addSubResult.addResult)}
-                          </p>
-                          <button
-                            onClick={() => copyToClipboard(String(Math.round(addSubResult.addResult * 10000) / 10000), 'addResult')}
-                            className="p-1.5 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
-                          >
-                            {copiedId === 'addResult' ? (
-                              <Check className="w-4 h-4 text-green-500" />
-                            ) : (
-                              <Copy className="w-4 h-4 text-gray-400" />
-                            )}
-                          </button>
-                        </div>
-                        <p className="text-xs text-gray-400 mt-1">
-                          (+{formatNumber(addSubResult.amount)})
-                        </p>
-                      </div>
-
-                      {/* 차감 결과 */}
-                      <div className={`rounded-xl p-5 ${
-                        addSubMode === 'subtract'
-                          ? 'bg-subtle ring-2 ring-red-500/30'
-                          : 'bg-subtle'
-                      }`}>
-                        <p className="text-sm text-muted mb-1">{t('addSubtract.subtractResult')}</p>
-                        <div className="flex items-center gap-2">
-                          <p className="text-2xl font-bold text-red-600 dark:text-red-400">
-                            {formatNumber(addSubResult.subtractResult)}
-                          </p>
-                          <button
-                            onClick={() => copyToClipboard(String(Math.round(addSubResult.subtractResult * 10000) / 10000), 'subResult')}
-                            className="p-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors"
-                          >
-                            {copiedId === 'subResult' ? (
-                              <Check className="w-4 h-4 text-green-500" />
-                            ) : (
-                              <Copy className="w-4 h-4 text-gray-400" />
-                            )}
-                          </button>
-                        </div>
-                        <p className="text-xs text-gray-400 mt-1">
-                          (-{formatNumber(addSubResult.amount)})
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* 비교 요약 */}
-                    <div className="bg-subtle rounded-lg p-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted">
-                          {addSubMode === 'add' ? t('addSubtract.addedAmount') : t('addSubtract.subtractedAmount')}
-                        </span>
-                        <span className="font-semibold text-fg">
-                          {formatNumber(addSubResult.amount)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <EmptyState />
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* 계산 기록 */}
-          {history.length > 0 && (
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-fg">{t('common.history')}</h2>
-                <button
-                  onClick={() => setHistory([])}
-                  className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  {t('common.clearHistory')}
-                </button>
-              </div>
-              <div className="space-y-2">
-                {history.map((item, i) => (
-                  <div
-                    key={item.timestamp}
-                    className="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group"
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <span className="text-xs text-faint w-5 text-right shrink-0">
-                        {i + 1}
-                      </span>
-                      <div className="min-w-0">
-                        <p className="text-sm text-body truncate">{item.expression}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-sm font-semibold text-fg">{item.result}</span>
-                      <button
-                        onClick={() => copyToClipboard(item.result.replace(/,/g, ''), `history-${i}`)}
-                        className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
-                      >
-                        {copiedId === `history-${i}` ? (
-                          <Check className="w-3.5 h-3.5 text-green-500" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5 text-gray-400" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* 가이드 섹션 */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          {(['basicPercent', 'whatPercent', 'change', 'addSubtract'] as const).map((section) => (
-            <div key={section} className="space-y-3">
-              <h3 className="font-medium text-fg flex items-center gap-2">
-                {modeIcons[section]}
-                {t(`guide.${section}.title`)}
-              </h3>
-              <ul className="space-y-1.5">
-                {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-sub flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5 shrink-0">&#8226;</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+    <div className="min-w-0 flex-1">
+      <label htmlFor={id} className="block text-xs font-medium text-sub mb-1">{label}</label>
+      <div className="relative">
+        <input
+          id={id} type="text" inputMode="decimal" autoComplete="off" value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className={`ui-field px-3 py-2.5 text-right tabular-nums ${suffix ? 'pr-8' : ''}`}
+        />
+        {suffix && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-faint">{suffix}</span>}
       </div>
     </div>
   )
 }
 
-function EmptyState() {
+export default function PercentCalculator() {
+  const t = useTranslations('percentCalculator')
+  const searchParams = useSearchParams()
+  const ready = useRef(false)
+
+  const [v, setV] = useState<Record<F, string>>(DEF)
+  const [chain, setChain] = useState<string[]>(DEF_CHAIN)
+  const [dec, setDec] = useState(DEF_DEC)
+  const [ko, setKo] = useState(false)
+  const [showFormula, setShowFormula] = useState(true)
+  const [q, setQ] = useState('')
+  const [hit, setHit] = useState<CardId | null>(null)
+  const [copied, setCopied] = useState<string | null>(null)
+
+  const set = (k: F) => (val: string) => setV((s) => ({ ...s, [k]: val }))
+
+  // URL → 상태 (한 번)
+  useEffect(() => {
+    if (ready.current) return
+    const next = { ...DEF }
+    for (const k of KEYS) { const g = searchParams.get(k); if (g !== null) next[k] = g }
+    setV(next)
+    const c = searchParams.get('c')
+    if (c) setChain(c.split(',').slice(0, 5))
+    const d = Number(searchParams.get('d'))
+    if (searchParams.get('d') !== null && d >= 0 && d <= 4) setDec(Math.trunc(d))
+    setKo(searchParams.get('k') === '1')
+    ready.current = true
+  }, [searchParams])
+
+  // 상태 → URL (기본값과 다른 것만)
+  useEffect(() => {
+    if (!ready.current) return
+    const p = new URLSearchParams()
+    for (const k of KEYS) if (v[k] !== DEF[k]) p.set(k, v[k])
+    if (chain.join(',') !== DEF_CHAIN.join(',')) p.set('c', chain.join(','))
+    if (dec !== DEF_DEC) p.set('d', String(dec))
+    if (ko) p.set('k', '1')
+    const qs = p.toString()
+    window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`)
+  }, [v, chain, dec, ko])
+
+  const copy = useCallback(async (text: string, id: string) => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text)
+      } else {
+        const ta = document.createElement('textarea')
+        ta.value = text
+        ta.style.position = 'fixed'
+        ta.style.left = '-999999px'
+        document.body.appendChild(ta)
+        ta.select()
+        document.execCommand('copy')
+        document.body.removeChild(ta)
+      }
+    } catch { /* 복사 실패해도 UI는 그대로 */ }
+    setCopied(id)
+    setTimeout(() => setCopied(null), 1500)
+  }, [])
+
+  const results = useMemo<Record<CardId, Out>>(() => {
+    const num = (x: number) => (ko ? fmtKo(x, dec) : fmt(x, dec))
+    const pct = (x: number) => `${fmt(x, dec)}%`
+    const cp = (x: number) => String(round(x, dec))
+    const E = (k: string) => ({ error: t(`errors.${k}`) })
+    // 필수 입력 → 숫자 배열 | 오류
+    const need = (...ks: F[]): number[] | { error: string } => {
+      if (ks.some((k) => !v[k].trim())) return E('empty')
+      const ns = ks.map((k) => parseNum(v[k]))
+      return ns.some((n) => n === null) ? E('invalid') : (ns as number[])
+    }
+    const out = {} as Record<CardId, Out>
+
+    let r = need('a', 'b')
+    if ('error' in r) out.of = r
+    else {
+      const [a, p] = r, x = percentOf(a, p)
+      out.of = { main: num(x), copy: cp(x), formula: `${raw(a)} × ${raw(p)} ÷ 100 = ${fmt(x, dec)}` }
+    }
+
+    r = need('p', 'w')
+    if ('error' in r) out.ratio = r
+    else {
+      const [part, whole] = r, x = ratio(part, whole)
+      out.ratio = x === null ? E('zeroBase') : {
+        main: pct(x), copy: cp(x), formula: `${raw(part)} ÷ ${raw(whole)} × 100 = ${pct(x)}`,
+        sub: (
+          <div className="h-2 bg-track rounded-full overflow-hidden" aria-hidden>
+            <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${Math.min(100, Math.max(0, x))}%` }} />
+          </div>
+        ),
+      }
+    }
+
+    r = need('f', 't')
+    if ('error' in r) out.change = r
+    else {
+      const [from, to] = r, { pct: x, diff } = change(from, to)
+      out.change = x === null ? E('zeroBase') : {
+        main: signed(pct(x), x), copy: cp(x),
+        formula: `(${raw(to)} − ${raw(from)}) ÷ ${raw(Math.abs(from))} × 100 = ${signed(pct(x), x)}`,
+        sub: (
+          <p>
+            {t(x > 0 ? 'change.up' : x < 0 ? 'change.down' : 'change.same')} · {t('change.diff')} {signed(num(diff), diff)}
+            {from < 0 && <span className="block text-xs text-muted mt-1">{t('change.negBase')}</span>}
+          </p>
+        ),
+      }
+    }
+
+    r = need('dp', 'dr')
+    if ('error' in r) out.discount = r
+    else {
+      const [price, rate] = r
+      if (price < 0) out.discount = E('negative')
+      else if (rate < 0 || rate > 100) out.discount = E('rateRange')
+      else {
+        const { sale, off } = discount(price, rate)
+        out.discount = {
+          main: num(sale), copy: cp(sale),
+          formula: `${raw(price)} × (1 − ${raw(rate)}%) = ${fmt(sale, dec)}`,
+          sub: <p>{t('discount.off')} {num(off)}</p>,
+        }
+      }
+    }
+
+    r = need('rs', 'rr')
+    if ('error' in r) out.reverse = r
+    else {
+      const [sale, rate] = r
+      const x = rate < 0 ? null : originalPrice(sale, rate)
+      if (sale < 0) out.reverse = E('negative')
+      else if (x === null) out.reverse = E(rate >= 100 ? 'rate100' : 'rateRange')
+      else out.reverse = {
+        main: num(x), copy: cp(x),
+        formula: `${raw(sale)} ÷ (1 − ${raw(rate)}%) = ${fmt(x, dec)}`,
+        sub: <p>{t('reverse.off')} {num(x - sale)}</p>,
+      }
+    }
+
+    const rates = chain.map((s) => (s.trim() ? parseNum(s) : null))
+    if (chain.some((s) => !s.trim())) out.chain = E('empty')
+    else if (rates.some((n) => n === null)) out.chain = E('invalid')
+    else if ((rates as number[]).some((n) => n < 0 || n > 100)) out.chain = E('rateRange')
+    else {
+      const rs = rates as number[], x = chainRate(rs)
+      const sum = rs.reduce((s, n) => s + n, 0)
+      const price = v.cp.trim() ? parseNum(v.cp) : null
+      out.chain = {
+        main: pct(x), copy: cp(x),
+        formula: `1 − ${rs.map((n) => `(1 − ${raw(n)}%)`).join(' × ')} = ${pct(x)}`,
+        sub: (
+          <p>
+            {rs.length > 1 && <>{t('chain.notSum', { sum: fmt(sum, dec) })}<br /></>}
+            {price !== null && price >= 0 && <>{t('chain.final')} {num(price * (1 - x / 100))}</>}
+          </p>
+        ),
+      }
+    }
+
+    r = need('x', 'y')
+    if ('error' in r) out.pp = r
+    else {
+      const [x0, y0] = r, d = y0 - x0, rel = change(x0, y0).pct
+      out.pp = {
+        main: `${signed(fmt(d, dec), d)}%p`, copy: cp(d),
+        formula: `${raw(y0)}% − ${raw(x0)}% = ${signed(fmt(d, dec), d)}%p`,
+        sub: <p>{rel === null ? t('pp.relNone') : t('pp.rel', { v: signed(pct(rel), rel) })}</p>,
+      }
+    }
+
+    r = need('v')
+    if ('error' in r) out.vat = r
+    else {
+      const { supply, vat } = vatSplit(r[0])
+      out.vat = {
+        main: num(supply), copy: cp(supply),
+        formula: `${raw(r[0])} ÷ 1.1 = ${fmt(supply, dec)}`,
+        sub: <p>{t('vat.tax')} {num(vat)}</p>,
+      }
+    }
+    return out
+  }, [v, chain, dec, ko, t])
+
+  // 한 줄 입력 → 해당 카드 입력칸에 반영
+  const onQuery = (text: string) => {
+    setQ(text)
+    const pq: Query | null = parseQuery(text)
+    if (!pq) { setHit(null); return }
+    const S = (n: number) => String(n)
+    const patch: Partial<Record<F, string>> =
+      pq.kind === 'of' ? { a: S(pq.a), b: S(pq.p) }
+      : pq.kind === 'ratio' ? { p: S(pq.part), w: S(pq.whole) }
+      : pq.kind === 'change' ? { f: S(pq.from), t: S(pq.to) }
+      : pq.kind === 'discount' ? { dp: S(pq.price), dr: S(pq.rate) }
+      : { rs: S(pq.sale), rr: S(pq.rate) }
+    setV((s) => ({ ...s, ...patch }))
+    setHit(pq.kind)
+  }
+
+  const reset = () => { setV(DEF); setChain(DEF_CHAIN); setQ(''); setHit(null) }
+
+  const card = (id: CardId, inputs: ReactNode, extra?: ReactNode) => {
+    const res = results[id]
+    return (
+      <section key={id} className={`ui-card p-5 flex flex-col gap-4 ${hit === id ? 'ring-2 ring-primary' : ''}`} aria-labelledby={`pc-${id}`}>
+        <h2 id={`pc-${id}`} className="text-base font-semibold text-fg">{t(`${id}.title`)}</h2>
+        <div className="flex gap-2 items-end">{inputs}</div>
+        {extra}
+        <div className="bg-subtle rounded-2xl p-4 mt-auto" aria-live="polite">
+          {'error' in res ? (
+            <p className="text-sm text-amber-700 dark:text-amber-400 py-2">{res.error}</p>
+          ) : (
+            <>
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-xs text-muted">{t(`${id}.result`)}</p>
+                  <p className="text-3xl font-bold text-fg tabular-nums break-all">{res.main}</p>
+                </div>
+                <button
+                  type="button" onClick={() => copy(res.copy, id)}
+                  className="shrink-0 p-2 rounded-lg text-sub hover:bg-soft transition-colors"
+                  aria-label={t('copy')} title={t('copy')}
+                >
+                  {copied === id ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+                </button>
+              </div>
+              {res.sub && <div className="text-sm text-sub mt-2">{res.sub}</div>}
+              {showFormula && (
+                <p className="text-xs text-muted mt-2 font-mono break-all tabular-nums">{res.formula}</p>
+              )}
+            </>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  const chips = (k: F) => (
+    <div className="flex flex-wrap gap-1.5">
+      {QUICK.map((n) => (
+        <button key={n} type="button" onClick={() => set(k)(String(n))} className={`${seg(parseNum(v[k]) === n)} text-xs px-2.5 py-1`}>
+          {n}%
+        </button>
+      ))}
+    </div>
+  )
+
+  const hitRes = hit ? results[hit] : null
+
   return (
-    <div className="text-center py-12">
-      <Percent className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-      <p className="text-faint text-sm">
-        값을 입력하면 실시간으로 결과가 표시됩니다
-      </p>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('subtitle')}</p>
+      </div>
+
+      {/* 한 줄 입력 */}
+      <div className="ui-card p-5 space-y-3">
+        <label htmlFor="pc-q" className="block text-sm font-medium text-body">{t('smart.label')}</label>
+        <input
+          id="pc-q" type="text" value={q} onChange={(e) => onQuery(e.target.value)}
+          placeholder={t('smart.placeholder')} autoComplete="off"
+          className="ui-field px-4 py-3 text-base"
+        />
+        {q.trim() && (
+          hitRes && !('error' in hitRes) ? (
+            <p className="text-sm text-body flex flex-wrap items-center gap-2">
+              <span className="text-muted">{t(`${hit}.title`)}</span>
+              <ArrowRight className="w-4 h-4 text-faint" aria-hidden />
+              <strong className="text-lg text-primary tabular-nums">{hitRes.main}</strong>
+            </p>
+          ) : (
+            <p className="text-sm text-muted">{hitRes && 'error' in hitRes ? hitRes.error : t('smart.fail')}</p>
+          )
+        )}
+      </div>
+
+      {/* 표시 설정 */}
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
+        <div className="flex items-center gap-2" role="group" aria-label={t('settings.decimals')}>
+          <span className="text-sub">{t('settings.decimals')}</span>
+          {[0, 1, 2, 3, 4].map((d) => (
+            <button key={d} type="button" onClick={() => setDec(d)} className={seg(dec === d)} aria-pressed={dec === d}>{d}</button>
+          ))}
+        </div>
+        <button type="button" onClick={() => setKo(!ko)} className={seg(ko)} aria-pressed={ko}>{t('settings.koUnit')}</button>
+        <button type="button" onClick={() => setShowFormula(!showFormula)} className={seg(showFormula)} aria-pressed={showFormula}>{t('settings.formula')}</button>
+        <button type="button" onClick={reset} className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-sub hover:bg-soft">
+          <RotateCcw className="w-4 h-4" aria-hidden />{t('settings.reset')}
+        </button>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        {card('of', <>
+          <Field id="pc-a" label={t('of.a')} value={v.a} onChange={set('a')} />
+          <Field id="pc-b" label={t('of.p')} value={v.b} onChange={set('b')} suffix="%" />
+        </>, chips('b'))}
+
+        {card('ratio', <>
+          <Field id="pc-p" label={t('ratio.part')} value={v.p} onChange={set('p')} />
+          <Field id="pc-w" label={t('ratio.whole')} value={v.w} onChange={set('w')} />
+        </>)}
+
+        {card('change', <>
+          <Field id="pc-f" label={t('change.from')} value={v.f} onChange={set('f')} />
+          <Field id="pc-t" label={t('change.to')} value={v.t} onChange={set('t')} />
+        </>)}
+
+        {card('discount', <>
+          <Field id="pc-dp" label={t('discount.price')} value={v.dp} onChange={set('dp')} />
+          <Field id="pc-dr" label={t('discount.rate')} value={v.dr} onChange={set('dr')} suffix="%" />
+        </>, chips('dr'))}
+
+        {card('reverse', <>
+          <Field id="pc-rs" label={t('reverse.sale')} value={v.rs} onChange={set('rs')} />
+          <Field id="pc-rr" label={t('reverse.rate')} value={v.rr} onChange={set('rr')} suffix="%" />
+        </>)}
+
+        {card('chain', <>
+          <Field id="pc-cp" label={t('chain.price')} value={v.cp} onChange={set('cp')} />
+        </>, (
+          <div className="space-y-2">
+            {chain.map((s, i) => (
+              <div key={i} className="flex items-end gap-2">
+                <Field
+                  id={`pc-c${i}`} label={t('chain.step', { n: i + 1 })} value={s} suffix="%"
+                  onChange={(val) => setChain((c) => c.map((x, j) => (j === i ? val : x)))}
+                />
+                {chain.length > 1 && (
+                  <button
+                    type="button" onClick={() => setChain((c) => c.filter((_, j) => j !== i))}
+                    className="p-2.5 rounded-lg text-sub hover:bg-soft" aria-label={t('chain.remove')}
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            ))}
+            {chain.length < 5 && (
+              <button type="button" onClick={() => setChain((c) => [...c, '10'])} className="ui-btn-soft px-3 py-2 text-sm">
+                <Plus className="w-4 h-4" aria-hidden />{t('chain.add')}
+              </button>
+            )}
+          </div>
+        ))}
+
+        {card('pp', <>
+          <Field id="pc-x" label={t('pp.before')} value={v.x} onChange={set('x')} suffix="%" />
+          <Field id="pc-y" label={t('pp.after')} value={v.y} onChange={set('y')} suffix="%" />
+        </>, <p className="text-xs text-muted leading-relaxed">{t('pp.explain')}</p>)}
+
+        {card('vat', <>
+          <Field id="pc-v" label={t('vat.total')} value={v.v} onChange={set('v')} />
+        </>, (
+          <Link href="/vat-calculator/" className="text-sm text-primary font-medium inline-flex items-center gap-1 hover:underline">
+            {t('vat.link')}<ArrowRight className="w-4 h-4" aria-hidden />
+          </Link>
+        ))}
+      </div>
+
+      <p className="text-xs text-muted">{t('inputHint')}</p>
+
+      <GuideSection namespace="percentCalculator" />
     </div>
   )
 }

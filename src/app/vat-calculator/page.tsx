@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '부가세 계산기 - 부가가치세 10% 계산, 역산 | 툴허브',
-  description: '부가세 계산기 - 공급가액에서 부가가치세(10%) 계산, 합계금액에서 부가세 역산. 세금계산서 작성, 사업자 부가세 신고에 유용.',
+  description: '부가세 계산기 - 공급가액↔합계 부가가치세 10% 즉시 계산·역산(1원 끝수 안내), 여러 품목 세금계산서 합계(과세·영세·면세), 일반·간이과세자 부가세 신고 예상 납부세액과 신고 기한.',
   keywords: '부가세 계산기, 부가가치세 계산, VAT 계산, 부가세 역산, 공급가액 계산, 세금계산서',
   openGraph: { title: '부가세 계산기 | 툴허브', description: '부가가치세 10% 계산, 역산', url: 'https://toolhub.ai.kr/vat-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/vat-calculator.png', width: 1200, height: 630, alt: '부가세 계산기' }] },
   twitter: { card: 'summary_large_image', title: '부가세 계산기 | 툴허브', description: '부가가치세 계산, 역산', images: ['https://toolhub.ai.kr/og/vat-calculator.png'] },
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default function VatCalculatorPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '부가세 계산기', description: '부가가치세 10% 계산, 역산', url: 'https://toolhub.ai.kr/vat-calculator', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['부가세 계산', '부가세 역산', '세금계산서 양식', '빠른 금액 입력'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '부가세 계산기', description: '부가가치세 10% 계산, 역산', url: 'https://toolhub.ai.kr/vat-calculator', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['부가세 계산', '부가세 역산', '여러 품목 세금계산서 합계', '과세·영세율·면세 구분', '일반·간이과세자 부가세 신고 예상', '신용카드 발행세액공제', '신고 기한 D-day'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -39,7 +39,7 @@ export default function VatCalculatorPage() {
         name: '간이과세자와 일반과세자의 부가세 차이는?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '일반과세자는 매출세액(매출의 10%)에서 매입세액을 차감하여 부가세를 납부합니다. 간이과세자는 연매출 1억 400만 원 미만의 소규모 사업자로, 업종별 부가가치율(5~30%)을 적용하여 세금이 줄어듭니다. 연매출 4,800만 원 미만이면 부가세 납부가 면제됩니다.',
+          text: '일반과세자는 매출세액(매출의 10%)에서 매입세액을 차감하여 부가세를 납부합니다. 간이과세자는 연매출 1억 400만 원 미만의 소규모 사업자로, 업종별 부가가치율(15~40%) × 10%로 세금을 계산합니다(2024년 7월부터 기준금액 1억 400만 원). 연매출 4,800만 원 미만이면 부가세 납부가 면제됩니다.',
         },
       },
     ],
@@ -50,7 +50,7 @@ export default function VatCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <I18nWrapper><VatCalculator />  <div className="mt-8">
+          <I18nWrapper><VatCalculator /><div className="mt-8">
     <RelatedTools />
   </div>
 </I18nWrapper>

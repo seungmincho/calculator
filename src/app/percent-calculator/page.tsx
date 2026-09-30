@@ -5,8 +5,8 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '퍼센트 계산기 - 비율, 증감률, 할인율 계산 | 툴허브',
-  description: '퍼센트 계산기 - X의 Y%는? 비율 계산, 증감률 계산, 퍼센트 추가/차감 (세금, 할인) 등 다양한 퍼센트 계산을 한 곳에서 간편하게 해보세요.',
-  keywords: '퍼센트 계산기, 퍼센트 계산, 비율 계산, 증감률 계산, 할인율 계산, 세금 계산, 백분율 계산기, percent calculator',
+  description: '퍼센트 계산기 - A의 B%, 비율, 증감률(인상률), 할인가·정가 역산, 중복 할인, 퍼센트포인트(%p)까지 한 화면에서 바로 계산. "5만원의 15%"처럼 한 줄로 물어보세요.',
+  keywords: '퍼센트 계산기, 퍼센트 계산, 비율 계산, 증감률 계산, 인상률 계산, 할인율 계산, 할인가 계산, 정가 역산, 중복 할인, 퍼센트포인트, 백분율 계산기, percent calculator',
   openGraph: {
     title: '퍼센트 계산기 | 툴허브',
     description: '퍼센트 계산, 비율 계산, 증감률, 할인율 등 다양한 퍼센트 계산을 한 곳에서 간편하게',
@@ -32,7 +32,7 @@ export default function PercentCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '퍼센트 계산기',
-    description: '퍼센트 계산, 비율 계산, 증감률 계산, 퍼센트 추가/차감 등 다양한 퍼센트 계산을 한 곳에서 간편하게 해보세요.',
+    description: 'A의 B%, 비율, 증감률, 할인가, 정가 역산, 중복 할인, 퍼센트포인트, 부가세 역산을 한 화면에서 동시에 계산합니다.',
     url: 'https://toolhub.ai.kr/percent-calculator',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
@@ -42,9 +42,13 @@ export default function PercentCalculatorPage() {
       '기본 퍼센트 계산 (X의 Y%)',
       '비율 계산 (X는 Y의 몇%)',
       '증감률 계산',
-      '퍼센트 추가/차감 (세금, 할인)',
-      '계산 기록',
-      '빠른 퍼센트 버튼',
+      '할인가 계산 (정가·할인율 → 판매가)',
+      '할인 전 정가 역산',
+      '연속(중복) 할인 실효 할인율',
+      '퍼센트포인트(%p) vs 퍼센트(%) 비교',
+      '부가세 포함가 → 공급가',
+      '한 줄 자연어 입력 (5만원의 15%, 3만→4만)',
+      '만·억 단위 표시, 소수점 자릿수 조절, 수식 보기, 결과 복사',
     ],
   }
 
@@ -83,11 +87,11 @@ export default function PercentCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name: '퍼센트 계산하는 방법',
-    description: '계산 모드를 선택하고 값을 입력하면 퍼센트, 비율, 증감률을 계산합니다.',
+    description: '한 줄 입력창이나 카드에 숫자를 넣으면 모든 퍼센트 질문의 답이 바로 계산됩니다.',
     step: [
-      { '@type': 'HowToStep', name: '계산 모드 선택', text: '기본 퍼센트(X의 Y%), 비율 계산, 증감률, 퍼센트 추가/차감 중 원하는 모드를 선택합니다.' },
-      { '@type': 'HowToStep', name: '값 입력', text: '기준값과 퍼센트 또는 비교할 두 값을 입력합니다.' },
-      { '@type': 'HowToStep', name: '결과 확인', text: '계산 결과와 함께 계산 과정을 단계별로 확인할 수 있습니다.' },
+      { '@type': 'HowToStep', name: '한 줄로 입력', text: '"5만원의 15%", "3만→4만", "12만 30% 할인"처럼 질문을 한 줄로 적으면 해당 카드가 채워집니다.' },
+      { '@type': 'HowToStep', name: '값 입력', text: '또는 원하는 카드(비율, 증감률, 할인가, 정가 역산, 중복 할인, %p)에 직접 숫자를 입력합니다. 5만, 1억 같은 한글 단위도 됩니다.' },
+      { '@type': 'HowToStep', name: '결과 확인', text: '결과와 수식을 확인하고 복사 버튼으로 숫자를 복사합니다. 주소 링크를 공유하면 같은 입력값이 열립니다.' },
     ],
   }
 
@@ -125,16 +129,16 @@ export default function PercentCalculatorPage() {
             퍼센트 계산기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            퍼센트 계산기는 기본 퍼센트 계산(X의 Y%), 비율 계산(X는 Y의 몇%), 증감률 계산, 퍼센트 추가·차감(세금·할인 적용) 등 다양한 백분율 계산을 한 번에 처리할 수 있는 무료 온라인 계산기입니다. 쇼핑 할인율, 부가세(10%) 계산, 성적 백분위, 투자 수익률 등 일상과 업무에서 자주 만나는 퍼센트 계산을 빠르고 정확하게 수행할 수 있습니다.
+            퍼센트 계산기는 A의 B%, 비율(A는 B의 몇 %), 증감률·인상률, 할인가와 할인 전 정가 역산, 중복 할인, 퍼센트포인트(%p), 부가세 역산 등 자주 쓰는 백분율 계산을 한 화면에서 동시에 처리하는 무료 온라인 계산기입니다. 쇼핑 할인율, 부가세(10%) 계산, 성적 백분위, 투자 수익률 등 일상과 업무에서 자주 만나는 퍼센트 계산을 빠르고 정확하게 수행할 수 있습니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             퍼센트 계산기 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>할인율 계산:</strong> 정가 100,000원에서 30% 할인 시 실제 가격은 100,000 × (1 - 0.3) = 70,000원입니다. 중복 할인은 순차적으로 곱해야 정확합니다.</li>
-            <li><strong>부가세 포함/제외:</strong> 부가세 포함 금액에서 공급가액을 구하려면 총액 ÷ 1.1로 계산하세요. 퍼센트 차감 기능으로 쉽게 계산할 수 있습니다.</li>
-            <li><strong>성과·성장률 분석:</strong> 전월 대비 매출 증가율 = (이번달 - 저번달) ÷ 저번달 × 100. 증감률 계산 기능으로 사업 성과를 빠르게 분석하세요.</li>
-            <li><strong>팁 계산:</strong> 식당에서 봉사료 10~15%를 계산할 때도 퍼센트 추가 기능을 사용하면 총 금액을 즉시 확인할 수 있습니다.</li>
+            <li><strong>부가세 포함/제외:</strong> 부가세 포함 금액에서 공급가액을 구하려면 총액 ÷ 1.1로 계산하세요. 10%를 빼는 것(× 0.9)과는 결과가 다릅니다.</li>
+            <li><strong>성과·성장률 분석:</strong> 전월 대비 매출 증가율 = (이번달 - 저번달) ÷ 저번달 × 100. 증감률 카드로 사업 성과를 빠르게 분석하세요.</li>
+            <li><strong>퍼센트포인트:</strong> 금리가 3%에서 5%로 오르면 2%p 상승이자 약 66.7% 상승입니다. 비율끼리의 차이는 %p로 말해야 정확합니다.</li>
           </ul>
         </div>
       </section>

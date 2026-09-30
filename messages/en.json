@@ -7430,6 +7430,80 @@
     }
   },
   "percentCalculator": {
+    "subtitle": "Discounts, increases, ratios and percentage points on one screen. Change a number and every card updates.",
+    "copy": "Copy result",
+    "inputHint": "Fields accept 12,000 and Korean units like 5만 or 1억 2천만. Copy gives a plain number without commas (spreadsheet-friendly).",
+    "smart": {
+      "label": "Ask in one line",
+      "placeholder": "e.g. 15% of 50000 · 30000->40000 · 120000 30% off · 300 is what % of 1200",
+      "fail": "Couldn't understand that. Please use the cards below."
+    },
+    "settings": {
+      "decimals": "Decimals",
+      "koUnit": "Korean units (만·억)",
+      "formula": "Show formula",
+      "reset": "Reset"
+    },
+    "errors": {
+      "empty": "Enter a value to calculate",
+      "invalid": "Check the number format (e.g. 12,000)",
+      "zeroBase": "Cannot calculate when the base is 0",
+      "negative": "Enter an amount of 0 or more",
+      "rateRange": "Discount rate must be between 0 and 100%",
+      "rate100": "With a 100% discount the original price can't be recovered"
+    },
+    "of": {
+      "title": "What is B% of A?",
+      "a": "Value (A)",
+      "p": "Percent (B)",
+      "result": "Result"
+    },
+    "ratio": {
+      "title": "A is what % of B?",
+      "part": "Part (A)",
+      "whole": "Whole (B)",
+      "result": "Ratio"
+    },
+    "discount": {
+      "title": "Sale price",
+      "price": "Original price",
+      "rate": "Discount",
+      "result": "Sale price",
+      "off": "You save"
+    },
+    "reverse": {
+      "title": "Original price from sale price",
+      "sale": "Sale price",
+      "rate": "Discount",
+      "result": "Original price",
+      "off": "Discount amount"
+    },
+    "chain": {
+      "title": "Stacked discounts",
+      "price": "Original price (optional)",
+      "step": "Discount {n}",
+      "add": "Add discount",
+      "remove": "Remove this discount",
+      "result": "Effective total discount",
+      "notSum": "Not the simple sum of {sum}%",
+      "final": "Final price"
+    },
+    "pp": {
+      "title": "Percentage points vs percent",
+      "before": "Before rate",
+      "after": "After rate",
+      "result": "Difference in percentage points",
+      "rel": "Relative change: {v}",
+      "relNone": "Before rate is 0%, so relative change is undefined",
+      "explain": "A rate going from 3% to 5% is up 2 percentage points, or about 66.7%. Points subtract the rates; percent compares to the base."
+    },
+    "vat": {
+      "title": "VAT-inclusive to net amount",
+      "total": "Amount incl. VAT (10%)",
+      "result": "Net amount (÷ 1.1)",
+      "tax": "VAT",
+      "link": "Rounding and more in the VAT calculator"
+    },
     "title": "Percentage Calculator",
     "description": "Various percentage calculations in one place",
     "modes": {
@@ -7457,7 +7531,15 @@
       "resultSuffix": ""
     },
     "change": {
-      "title": "Percentage Change",
+      "from": "Before",
+      "to": "After",
+      "result": "Change",
+      "up": "Increase",
+      "down": "Decrease",
+      "same": "No change",
+      "diff": "Difference",
+      "negBase": "Base is negative, so we divided by its absolute value (smaller loss = +)",
+      "title": "A → B percent change",
       "description": "Calculate the rate of change from old to new value",
       "fromLabel": "Old value",
       "toLabel": "New value",
@@ -7536,24 +7618,25 @@
         ]
       },
       "whatIs": {
-        "title": "What is the Percent Calculator?",
-        "description": "A one-stop tool for the percentage calculations you encounter every day. It supports four calculation types: applying a discount rate, finding what percentage one value is of another, calculating the percentage change between two values, and adding or subtracting a percentage. Useful for shopping discounts, grade calculations, inflation analysis, and more."
+        "title": "What is the percentage calculator?",
+        "description": "It answers the eight most common percent questions at once: B% of A, ratio, percent change, sale price, original price from a sale price, stacked discounts, percentage points, and VAT-inclusive to net. No mode switching: change a number and every card updates, each with its formula and a copy button."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. Select the calculation type: basic percentage / ratio / percentage change / add-subtract percentage.",
-          "2. Enter the numbers required for that calculation.",
-          "3. The result is displayed instantly.",
-          "4. Multiple calculation types can be viewed simultaneously for easy comparison."
+          "1. Type a question in the top box, like '15% of 50000', '30000->40000' or '120000 30% off'. The matching card fills in and the answer appears right away.",
+          "2. Or type numbers directly into any card. Korean units like 5만 work too.",
+          "3. Choose decimal places (0-4) and Korean unit display, and toggle 'Show formula' to see the math.",
+          "4. Copy gives a plain number without commas, and the page URL reproduces your inputs when shared."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "To add tax: pre-tax price × 1.1 = price including 10% VAT. To reverse it: tax-inclusive price ÷ 1.1 = pre-tax price.",
-          "Reverse discount calculation: 'If 30% off equals ₩70,000, what was the original price?' → ₩70,000 ÷ (1 − 0.3) = ₩100,000.",
-          "Investment return rate = (current price − purchase price) / purchase price × 100. Use the percentage change tab."
+          "To get the net amount from a VAT-inclusive price, divide by 1.1. That is not the same as subtracting 10% (× 0.9).",
+          "Reverse discount: 70,000 after 30% off means an original price of 70,000 ÷ 0.7 = 100,000.",
+          "For investment returns or raises, put the before and after values into the percent change card.",
+          "Differences between rates (interest, approval ratings) are best stated in percentage points."
         ]
       },
       "faq": {
@@ -9458,12 +9541,156 @@
     }
   },
   "vatCalculator": {
+    "subtitle": "Instant supply ↔ total conversion, multi-item tax invoice totals, and a VAT return estimate for general and simplified taxpayers",
+    "tab": {
+      "quick": "Quick",
+      "items": "Multiple items",
+      "report": "VAT return estimate"
+    },
+    "amountFor": {
+      "fromSupply": "Supply value (excl. VAT)",
+      "fromTotal": "Total (incl. VAT, amount received)",
+      "fromVat": "VAT amount"
+    },
+    "quickLabel": {
+      "10000": "10K",
+      "50000": "50K",
+      "100000": "100K",
+      "500000": "500K",
+      "1000000": "1M",
+      "5000000": "5M",
+      "10000000": "10M",
+      "50000000": "50M",
+      "100000000": "100M"
+    },
+    "rounding": {
+      "label": "VAT under 1 won",
+      "floor": "Round down",
+      "round": "Round",
+      "hint": "There is no statutory rule for fractions under 1 won; it follows the parties' agreement. Rounding down is the common default."
+    },
+    "short": {
+      "supply": "Supply value",
+      "vat": "VAT",
+      "total": "Total"
+    },
+    "vatIs": "VAT {vat} won",
+    "copyInvoiceLine": "Copy for invoice",
+    "invoiceLine": "Supply {supply} won / VAT {vat} won / Total {total} won",
+    "gapNote": "Supply {supply} won × 10% = {check} won, but VAT was set to {vat} won to keep the total at {total} won (1-won rounding gap). VAT is in principle supply × 10%, so agree with your counterparty whether the total or the VAT takes priority.",
+    "fromVatNote": "From VAT only, supply value = VAT × 10. Because of rounding, the actual supply value may differ by a few won.",
+    "formula": {
+      "fromSupply": "VAT = supply × 10% (fraction per selected rule), total = supply + VAT",
+      "fromTotal": "VAT = total ÷ 11 (fraction per selected rule), supply = total − VAT → the amount received never changes"
+    },
+    "share": {
+      "label": "{mode} · {amount} won"
+    },
+    "items": {
+      "sample1": "Website build",
+      "sample2": "Maintenance (monthly)",
+      "name": "Item",
+      "qty": "Qty",
+      "price": "Unit price",
+      "kind": "Tax type",
+      "sum": "Total",
+      "remove": "Remove item",
+      "priceBasis": "Unit price",
+      "exclusive": "VAT excluded",
+      "inclusive": "VAT included (retail price)",
+      "lineResult": "Supply {supply} won · VAT {vat} won · Total {total} won",
+      "grandTotal": "Total",
+      "copyTable": "Copy table (Excel)",
+      "taxableSupply": "Taxable supply",
+      "zeroSupply": "Zero-rated supply",
+      "exemptAmount": "Exempt amount (invoice)",
+      "sumGapNote": "The sum of per-line VAT ({lines} won) differs from taxable supply total × 10% ({sum} won). Tax invoices usually show the sum of per-line VAT; the few-won gap comes from rounding.",
+      "exemptNote": "Exempt items go on a separate (non-VAT) invoice, not a tax invoice. Zero-rated items (exports etc.) are listed with 0 won VAT."
+    },
+    "kind": {
+      "taxable": "Taxable 10%",
+      "zero": "Zero-rated 0%",
+      "exempt": "Exempt"
+    },
+    "report": {
+      "payer": "Taxpayer type",
+      "general": "General taxpayer",
+      "simple": "Simplified taxpayer",
+      "industry": "Industry (value-added rate)",
+      "sales": {
+        "general": "Taxable sales, supply value (6 months, excl. VAT)",
+        "simple": "Annual sales incl. VAT (1 year)"
+      },
+      "purchases": {
+        "general": "Purchases, supply value (deductible)",
+        "simple": "Purchases incl. VAT (with tax invoice/card)"
+      },
+      "purchasesHint": {
+        "general": "Deductible purchases on tax invoices or business cards (excl. VAT). Input VAT = × 10%",
+        "simple": "0.5% of purchases (incl. VAT) is credited"
+      },
+      "cardSales": "Card & cash-receipt sales",
+      "cardSalesHint": "Card, cash receipt and easy-pay sales (amount paid incl. VAT)",
+      "cardEligible": "Individual business with prior-year supply ≤ 1 billion won (corporations are not eligible)",
+      "eFiling": "Electronic filing on Hometax (10,000 won credit on final return)",
+      "payableLabel": "Estimated VAT payable",
+      "refundLabel": "Estimated VAT refund",
+      "deadline": "{period} · due {date} ({dday})",
+      "period": {
+        "h1": "{year} 1st-half final return (Jan–Jun)",
+        "h2": "{year} 2nd-half final return (Jul–Dec)",
+        "year": "{year} simplified taxpayer return (Jan–Dec)"
+      },
+      "breakdown": "Tax breakdown",
+      "outputTax": {
+        "general": "Output VAT",
+        "simple": "Computed tax (sales × value-added rate × 10%)"
+      },
+      "inputTax": {
+        "general": "Input VAT",
+        "simple": "Purchase invoice credit (0.5%)"
+      },
+      "cardCredit": "Card sales issuance credit (1.3%)",
+      "eFilingCredit": "E-filing credit",
+      "formula": {
+        "general": "Payable = output VAT (supply × 10%) − input VAT − card sales credit (× 1.3%, capped at 10M won/year and the tax payable) − 10,000 won e-filing credit",
+        "simple": "Payable = sales × value-added rate {rate}% × 10% − purchases × 0.5% − card sales credit − 10,000 won e-filing (no refund if credits exceed tax)"
+      },
+      "exemptNote": "Sales for the period are under {amount} won, so payment is exempt. You still have to file.",
+      "overThresholdNote": "With annual sales of {amount} won or more you become a general taxpayer from July 1 of the next year (48M won for real-estate rental and entertainment venues).",
+      "cardLimitNote": "You reached the 10M won annual cap for the card sales credit. If you used some in the 1st half, only the remainder applies in the 2nd half.",
+      "cardSunsetNote": "The 1.3% card sales credit with a 10M won annual cap applies to supplies through Dec 31, 2026 (VAT Act Art. 46). It may change from 2027 (2026 tax reform proposal: 1.2%, 5M won).",
+      "disclaimer": "Estimate only. Deemed input tax credit, preliminary payments, penalties and common-purchase apportionment are not included. Corporations also file preliminary returns (April, October)."
+    },
+    "industry": {
+      "retail": "Retail, restaurants, recyclables",
+      "manufacturing": "Manufacturing, agriculture/forestry/fishery, parcel transport",
+      "lodging": "Lodging",
+      "construction": "Construction, transport, warehousing, ICT, other services",
+      "professional": "Finance/insurance, professional services, business support, real-estate rental"
+    },
+    "sources": {
+      "title": "Rules and sources (2026)",
+      "items": [
+        "VAT rate 10%: VAT Act Art. 30",
+        "Fractions under 1 won: no statutory rule — VAT is supply × 10% in principle; round down or round per agreement",
+        "Simplified taxpayer threshold under 104M won prior-year sales (from Jul 1, 2024): VAT Enforcement Decree Art. 109",
+        "Payment exemption under 48M won: VAT Act Art. 69",
+        "Value-added rates 15–40%: Enforcement Decree Art. 111; tax computation: Act Art. 63",
+        "Card sales issuance credit 1.3%, 10M won/year (through Dec 31, 2026): VAT Act Art. 46",
+        "E-filing credit 10,000 won: Restriction of Special Taxation Act Art. 104-8",
+        "Deadline: 25th of the month after the period (Act Arts. 49, 67); moved to the next day if on a weekend or holiday (Framework Act on National Taxes Art. 5)"
+      ],
+      "law": "VAT Act (Korea Law Information Center)",
+      "hometax": "Hometax",
+      "nts": "National Tax Service"
+    },
     "title": "VAT Calculator",
     "description": "Calculate VAT (10%) from supply amount, or reverse-calculate from total amount.",
     "mode": {
-      "fromSupply": "Supply → VAT",
-      "fromTotal": "Total → Reverse",
-      "fromVat": "VAT → Reverse"
+      "fromSupply": "Supply → total",
+      "fromTotal": "Total → supply (reverse)",
+      "fromVat": "VAT → supply"
     },
     "supplyAmount": "Supply Amount",
     "vatAmount": "VAT (10%)",
@@ -9480,6 +9707,16 @@
     "receipt": "Tax Invoice Format",
     "quickAmounts": "Quick Amounts",
     "guide": {
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "Supply → total: VAT = supply × 10%, fraction rounded down (default) or rounded.",
+          "Total → supply: VAT = total ÷ 11, supply = total − VAT, so the amount received stays exact. When this differs from supply × 10% by 1 won, a note is shown.",
+          "Multiple items: each line is qty × unit price; supply and VAT are summed. Exempt lines carry no VAT and zero-rated lines carry 0 VAT, both totaled separately.",
+          "General taxpayer: output VAT − input VAT − card sales credit − e-filing credit. A negative result is a refund.",
+          "Simplified taxpayer: sales × value-added rate × 10% − purchases × 0.5% − credits. Under 48M won annual sales, payment is exempt; no refunds."
+        ]
+      },
       "title": "VAT Calculator Guide",
       "basic": {
         "title": "What is VAT?",
@@ -9500,40 +9737,46 @@
         ]
       },
       "whatIs": {
-        "title": "What is the VAT Calculator?",
-        "description": "A tool for calculating Korea's 10% value-added tax (VAT). Enter a supply price (pre-tax amount) to get the VAT and total amount, or reverse-calculate the supply price and VAT from a VAT-inclusive total. Ideal for issuing tax invoices, writing business quotes, or reconciling B2B transactions."
+        "title": "What is the VAT calculator?",
+        "description": "Adds 10% VAT to a supply value or splits a VAT-inclusive total into supply value and VAT. It also builds tax-invoice totals for multiple items (taxable, zero-rated, exempt) and estimates the VAT return and next filing deadline for general and simplified taxpayers — handy for small business owners, freelancers and online sellers."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. 'Forward' mode: Enter the supply price (ex-VAT) and the 10% VAT and total are calculated automatically.",
-          "2. 'Reverse' mode: Enter the VAT-inclusive total to separate it into the supply price and the VAT amount.",
-          "3. For multiple line items, calculate each one and use the copy button to transfer the results to a quote or spreadsheet.",
-          "4. The copy button outputs the result as 'Supply price / VAT / Total' in a format ready to paste into documents."
+          "1. Quick: choose supply → total, total → supply, or VAT → supply and enter an amount; results update instantly.",
+          "2. Match the VAT rounding rule (round down / round) with your counterparty. A note appears when there is a 1-won gap.",
+          "3. Multiple items: enter item, quantity, unit price and tax type to get taxable supply, VAT, exempt amount and total like a tax invoice. Pick \"VAT included\" for retail prices.",
+          "4. VAT return estimate: choose general or simplified, enter sales, purchases and card sales to see the estimated payable (or refund) and a D-day to the next deadline.",
+          "5. Copy for invoice, copy table (Excel) and copy link share the exact result; the link restores the same inputs."
         ]
       },
       "tips": {
-        "title": "Pro Tips",
+        "title": "Tips",
         "items": [
-          "Freelancers and sole traders: always state clearly whether your quote is VAT-inclusive or exclusive to avoid misunderstandings with clients.",
-          "Simplified taxpayers (연 매출 ₩80M or less) may apply a different effective VAT rate, and some industries are VAT-exempt. Confirm the applicable rate with your tax accountant.",
-          "For overseas purchases subject to customs duties and VAT, apply 10% to the taxable base (item price + shipping + insurance) to estimate your import VAT."
+          "Always state \"VAT excluded\" or \"VAT included\" on quotes — for a 1.1M won quote it is a 100,000 won difference.",
+          "Simplified taxpayers are individual businesses with prior-year sales under 104M won (from July 2024; 48M won for real-estate rental and entertainment venues).",
+          "Individual businesses with lots of card/cash-receipt sales should claim the card sales credit (1.3%, up to 10M won/year, through 2026).",
+          "Exempt goods (unprocessed farm/fishery products, books, medical and education services) get a regular invoice, not a tax invoice."
         ]
       },
       "faq": {
-        "title": "Frequently Asked Questions",
+        "title": "FAQ",
         "items": [
           {
-            "q": "Is VAT 10% of the supply price or 10% of the total?",
-            "a": "VAT is 10% of the supply price (pre-tax amount). As a share of the total price, it works out to approximately 9.09%. Example: supply price ₩1,000,000 → VAT ₩100,000 → total ₩1,100,000."
+            "q": "Is 10% VAT based on supply value or total?",
+            "a": "Supply value. Relative to the total it is 1/11 (about 9.09%). Example: supply 1,000,000 won → VAT 100,000 → total 1,100,000."
           },
           {
-            "q": "Can VAT-exempt businesses use this calculator?",
-            "a": "Yes. Even VAT-exempt businesses may need to track input VAT on purchases. This calculator is useful for understanding the VAT component on invoices you receive."
+            "q": "How are fractions under 1 won handled on tax invoices?",
+            "a": "There is no statutory rounding rule; VAT is supply × 10% in principle and fractions follow the parties' agreement (rounding down is common). When reversing from a total, compute VAT = total ÷ 11 first and supply = total − VAT so the total matches exactly."
           },
           {
-            "q": "How should sub-won amounts be handled on tax invoices?",
-            "a": "Korean tax law generally requires rounding down to the nearest won for supply prices on tax invoices. Drop any decimal amounts before entering the figure on an official tax invoice."
+            "q": "How much VAT does a simplified taxpayer pay?",
+            "a": "Sales incl. VAT × value-added rate by industry (15–40%) × 10%, minus 0.5% of purchases and other credits. Under 48M won annual sales, payment is exempt but filing is still required."
+          },
+          {
+            "q": "When is the VAT filing deadline?",
+            "a": "Individual general taxpayers file by July 25 (Jan–Jun) and January 25 of the next year (Jul–Dec). Simplified taxpayers file the full year by January 25. If the date falls on a weekend or holiday, it moves to the next business day."
           }
         ]
       }
@@ -10386,8 +10629,95 @@
     }
   },
   "businessNumber": {
+    "modeSingle": "Single",
+    "modeBulk": "Bulk",
+    "sample": "Try a sample",
+    "privacyNote": "Validation runs only in your browser. Numbers are sent to the NTS lookup service only when you press the status button.",
+    "copyDigits": "Copy digits",
+    "copyLink": "Copy link",
+    "expectedCheck": "The last digit (check digit) should be {expected} but is {actual}. Check for typos.",
+    "emptyHint": "Type or paste a number to validate it instantly.",
+    "typing": "{n}/10 digits entered",
+    "categoryNote": "The type code reflects the original registration. This is a reference reading based on public sources; check the current status and tax type with the status lookup.",
+    "parts": {
+      "title": "Number Breakdown",
+      "office": "Tax office code",
+      "mid": "Type code",
+      "serial": "Serial",
+      "check": "Check digit",
+      "officeNote": "Code of the tax office where the business first registered. It may differ from the current office due to office mergers or relocation, so it is not mapped to a name."
+    },
+    "entity": {
+      "individual": "Individual",
+      "corporation": "Corporation",
+      "other": "Other organization"
+    },
+    "category": {
+      "individualTaxable": "Individual, VAT-taxable",
+      "individualOther": "Apartment management office, direct-sales agent, etc.",
+      "corpHQ": "For-profit corporation (head office)",
+      "nonprofit": "Non-profit corporation / quasi-corporate body",
+      "government": "National or local government",
+      "foreignCorp": "Foreign corporation (office, branch, liaison)",
+      "corpBranch": "For-profit corporation (branch)",
+      "religious": "Unincorporated religious body",
+      "individualExempt": "Individual, VAT-exempt",
+      "unknown": "Undefined code (00)"
+    },
+    "status": {
+      "title": "Active / Suspended / Closed Status",
+      "button": "Check NTS status",
+      "loading": "Checking…",
+      "active": "Active",
+      "suspended": "Suspended",
+      "closed": "Closed",
+      "unregistered": "Not registered with NTS",
+      "closedOn": "Closed on {date}",
+      "taxType": "Tax type",
+      "hint": "A valid check digit does not prove the number is registered. Use the status lookup.",
+      "notConfigured": "Live status lookup is not connected yet. Please check on Hometax.",
+      "error": "Status lookup failed. Try again later or check on Hometax.",
+      "hometax": "Check on Hometax",
+      "hometaxPath": "Hometax > Inquiry/Issuance > Business Status > Business registration status (no login needed)",
+      "source": "Source: NTS business registration status service (data.go.kr). As of lookup time.",
+      "invalidFirst": "Only numbers with a valid check digit can be looked up."
+    },
+    "calc": {
+      "title": "Check Digit Calculation",
+      "digit": "Digit",
+      "weight": "Weight",
+      "product": "Product",
+      "bonus": "9th digit adjustment: ⌊{d}×5÷10⌋ = {bonus}",
+      "sum": "Sum: {sum}",
+      "formula": "Check digit = (10 − {last}) mod 10 = {expected}"
+    },
+    "bulk": {
+      "label": "Business numbers",
+      "placeholder": "Paste one per line (an Excel column works)\n124-81-00998\n1234567891",
+      "clear": "Clear",
+      "empty": "Paste numbers to validate them instantly. Separated by newlines, commas or tabs.",
+      "total": "Total {n}",
+      "valid": "Valid {n}",
+      "invalid": "Invalid {n}",
+      "exportCsv": "Download CSV",
+      "copyValid": "Copy valid numbers",
+      "statusButton": "Check status of valid numbers",
+      "tooMany": "Status lookup is limited to 100 per request. Only the first 100 were checked.",
+      "colNo": "#",
+      "colInput": "Input",
+      "colFormatted": "Number",
+      "colResult": "Check",
+      "colType": "Type",
+      "colStatus": "Status",
+      "dup": "duplicate",
+      "ok": "Valid",
+      "ng": "Invalid",
+      "reasonShort": "Too few digits",
+      "reasonLong": "Too many digits",
+      "reasonChecksum": "Check digit mismatch"
+    },
     "title": "Business Registration Number Validator",
-    "description": "Validate Korean business registration numbers (10 digits). Check if a number is valid using the checksum algorithm.",
+    "description": "Validate a 10-digit Korean business registration number as you type, see the individual/corporate breakdown, check active/closed status, and validate many numbers at once.",
     "inputLabel": "Business Registration Number",
     "inputPlaceholder": "000-00-00000 or digits only",
     "verify": "Verify",
@@ -10405,6 +10735,48 @@
     "copy": "Copy",
     "copied": "Copied!",
     "guide": {
+      "codes": {
+        "title": "Middle 2-Digit Type Codes",
+        "rows": [
+          [
+            "01~79",
+            "Individual, VAT-taxable"
+          ],
+          [
+            "80",
+            "Bodies treated as individuals (e.g. apartment management offices), direct-sales agents"
+          ],
+          [
+            "81, 86, 87, 88",
+            "For-profit corporation head office"
+          ],
+          [
+            "82",
+            "Non-profit corporation, quasi-corporate bodies"
+          ],
+          [
+            "83",
+            "National/local government, local government unions"
+          ],
+          [
+            "84",
+            "Foreign corporation office, branch, liaison office"
+          ],
+          [
+            "85",
+            "For-profit corporation branch"
+          ],
+          [
+            "89",
+            "Unincorporated religious body"
+          ],
+          [
+            "90~99",
+            "Individual, VAT-exempt"
+          ]
+        ],
+        "note": "Reference table from public sources such as press reports (not an official NTS notice). Reflects the type at first registration and may differ after later changes."
+      },
       "title": "Business Number Guide",
       "structure": {
         "title": "Number Structure",
@@ -10418,31 +10790,31 @@
       "validation": {
         "title": "Validation Method",
         "items": [
-          "Checksum verification using weight array",
-          "Last digit is the check digit",
-          "This tool performs format validation only",
-          "Check actual business status at NTS (Korea)"
+          "Multiply the first 9 digits by weights 1·3·7·1·3·7·1·3·5 and add them",
+          "Add the quotient of (9th digit × 5) ÷ 10 once more",
+          "The check digit is 10 minus the last digit of the sum (0 if 10)",
+          "A valid check digit does not prove registration — use the status lookup"
         ]
       },
       "whatIs": {
         "title": "What is the Business Registration Number Validator?",
-        "description": "This tool instantly validates 10-digit Korean business registration numbers using the checksum algorithm defined by the National Tax Service (NTS). It helps prevent transcription errors when writing contracts, issuing tax invoices, or entering supplier information. All validation runs locally in the browser — no data is sent to any server."
+        "description": "This tool validates 10-digit Korean business registration numbers instantly using the NTS check-digit algorithm. It breaks down the number (tax office code, type code, serial), validates many numbers at once with CSV export, and checks active/suspended/closed status via the NTS status service."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter the 10-digit business registration number in the input field. Hyphens (-) are automatically ignored.",
-          "2. Validation runs instantly as you type using the checksum algorithm.",
-          "3. A valid number shows a green check mark; an invalid one shows a red error message.",
-          "4. To check multiple numbers, simply clear the field and enter the next one."
+          "1. Type or paste a number. Spaces, hyphens and dots are cleaned up and formatted as 000-00-00000.",
+          "2. Once 10 digits are entered, validity, the breakdown and the check-digit calculation appear immediately.",
+          "3. For valid numbers, press 'Check NTS status' to see if the business is active or closed. If unavailable, use the Hometax link.",
+          "4. For many numbers, paste an Excel column into the Bulk tab and download the results as CSV."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "This tool validates format only. To confirm whether a business actually exists, use the NTS business inquiry service (Hometax).",
-          "When pasting numbers from Excel, leading zeros may be dropped — always confirm the number is exactly 10 digits.",
-          "Validate supplier numbers before issuing a tax invoice to avoid rejection errors."
+          "The check digit only catches typos. Before a transaction, also check whether the business is closed.",
+          "Bulk-validate supplier numbers before issuing tax invoices to avoid rejections.",
+          "Copy the result link (?n=number) to share the same result."
         ]
       },
       "faq": {
@@ -10450,15 +10822,15 @@
         "items": [
           {
             "q": "Can a number pass validation but not actually exist?",
-            "a": "Yes. The checksum only confirms the number structure is valid. You must check the NTS Hometax portal to confirm actual registration."
+            "a": "Yes. The check digit only confirms the structure. Registration and active/closed status must be checked with the status lookup or on Hometax."
           },
           {
-            "q": "Does this work for corporation registration numbers too?",
-            "a": "Corporate registration numbers (13 digits) follow a different format. However, business registration numbers (10 digits) — including those for corporations — are validated with the same algorithm."
+            "q": "Does this work for corporations?",
+            "a": "Corporate registration numbers (13 digits) are a different format, but 10-digit business registration numbers of corporations use the same algorithm. Middle digits 81/86/87/88 mean a for-profit head office, 85 a branch."
           },
           {
-            "q": "Is my data sent to a server?",
-            "a": "No. All validation is performed entirely within your browser and no input is transmitted externally."
+            "q": "Is my number sent to a server?",
+            "a": "Validation and breakdown run only in your browser. Only when you press 'Check NTS status' is the number sent to the NTS lookup service (data.go.kr); this site does not store it."
           }
         ]
       }
@@ -23255,18 +23627,72 @@
     }
   },
   "collageMaker": {
+    "undo": "Undo",
+    "close": "Close",
+    "uploadHint": "Add many at once · paste with Ctrl+V · JPG/PNG/WebP",
+    "photosCount": "{n} photos",
+    "clearAll": "Clear all",
+    "notInCollage": "{n} more photos than cells. Dimmed photos are not in the collage.",
+    "cellHint": "Drag a cell to reposition · wheel or pinch to zoom · drop on another cell to swap · tap to select",
+    "zoom": "Zoom",
+    "replace": "Replace photo",
+    "resetFit": "Reset fit",
+    "format": "Format",
+    "share": "Share",
+    "exportInfo": "{w}×{h}px high-res",
+    "privacy": "Photos never leave your browser. Nothing is uploaded to a server.",
+    "fourCutPreset": "Photo booth strip",
+    "layoutFits": "{n} pics",
+    "autoLayout": "auto-picked for your photo count",
+    "ratio": "Canvas ratio",
+    "ratios": {
+      "r1_1": "Square 1:1",
+      "r4_5": "Portrait 4:5",
+      "r3_4": "3:4",
+      "r9_16": "Story 9:16",
+      "r16_9": "Wide 16:9",
+      "r1_3": "Photo strip 1:3",
+      "custom": "Custom"
+    },
+    "customPlaceholder": "e.g. 3:2, 2.35:1",
+    "customInvalid": "Enter a ratio like 3:2. Showing 1:1 for now.",
+    "customColor": "Pick a custom color",
+    "footer": "Add footer text (photo booth style)",
+    "captionPlaceholder": "Caption (e.g. Our summer)",
+    "showDate": "Show date",
+    "layouts": {
+      "one": "Single photo",
+      "h2": "2 side by side",
+      "v2": "2 stacked",
+      "h3": "3 columns",
+      "v3": "3 rows",
+      "l1r2": "Big left + 2",
+      "t1b2": "Big top + 2",
+      "g4": "2×2 grid",
+      "strip4": "4-cut strip",
+      "t1b3": "Big top + 3",
+      "l1r3": "Big left + 3",
+      "t2b3": "2 top + 3 bottom",
+      "l1g4": "Big left + 4",
+      "g6": "6 grid (3×2)",
+      "g6v": "6 grid (2×3)",
+      "b1s5": "1 big + 5",
+      "t1g6": "Big top + 6",
+      "g8": "8-cut (2 strips)",
+      "g9": "3×3 grid"
+    },
     "title": "Photo Collage",
-    "description": "Combine multiple photos into various collage layouts.",
+    "description": "Add photos and a layout is picked for your photo count. Adjust position and zoom in each cell, then save in high resolution or share.",
     "uploadImages": "Upload Photos",
-    "addImages": "Add Photos",
+    "addImages": "Add photos",
     "layout": "Layout",
-    "spacing": "Spacing",
+    "spacing": "Gap & border",
     "borderRadius": "Border Radius",
     "backgroundColor": "Background Color",
     "download": "Download",
     "reset": "Reset",
     "noImages": "Please add photos",
-    "dragDrop": "Drag or click to upload photos",
+    "dragDrop": "Drop photos here or tap to choose",
     "layoutGrid2": "2 Grid",
     "layoutGrid3": "3 Grid",
     "layoutGrid4": "4 Grid",
@@ -23282,10 +23708,10 @@
       "howTo": {
         "title": "How to Use",
         "items": [
-          "Upload multiple photos",
-          "Choose a layout template",
-          "Adjust spacing and background color",
-          "Download the finished collage"
+          "Drop, pick, or paste (Ctrl+V) several photos. A layout matching the count is chosen automatically.",
+          "Change the canvas ratio (1:1, 4:5, 9:16...) and layout as you like.",
+          "Drag inside a cell to reposition, wheel or pinch to zoom. Drop onto another cell to swap.",
+          "Set gap, corners, background and footer text, then save as JPG/PNG or tap Share."
         ]
       },
       "guide": {
@@ -23335,16 +23761,28 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "How many photos can I combine?",
-            "a": "Depending on the layout, 2–6 photos can be combined. For more photos, create multiple collages and combine them in a subsequent step."
+            "q": "Are my photos uploaded?",
+            "a": "No. Loading, composing and saving all happen in your browser. Nothing is sent anywhere, and photos are gone when you close the page."
           },
           {
-            "q": "What resolution is the output?",
-            "a": "The original photo resolution is maintained in the composite. Using high-resolution photos produces a collage suitable for printing."
+            "q": "Part of my photo is cropped. Can I choose what shows?",
+            "a": "Each cell is filled edge to edge, so photos are cropped to fit. Drag inside a cell to move the photo, and use the mouse wheel or pinch to zoom. Tap a cell for a zoom slider."
           },
           {
-            "q": "Can I add text or stickers to the collage?",
-            "a": "Currently only photo composition is supported. For text or sticker additions, do further editing in an image editor after exporting the collage."
+            "q": "How do I reorder photos?",
+            "a": "Drag a photo onto another cell to swap them. Made a mistake? Press Undo (Ctrl+Z)."
+          },
+          {
+            "q": "What resolution is saved?",
+            "a": "The long side is 2160px: 2160×2160 for square, 1728×2160 for 4:5. Choose JPG for smaller files or PNG for lossless output."
+          },
+          {
+            "q": "Can I make a photo booth strip?",
+            "a": "Press 'Photo booth strip' next to Layout to set a 4-cut strip, 1:3 ratio, black background and footer text in one click. You can edit the caption and date."
+          },
+          {
+            "q": "My iPhone HEIC photo won't open.",
+            "a": "HEIC opens only in Safari. In other browsers, share it as JPG from Photos, or set Settings > Camera > Formats to 'Most Compatible'."
           }
         ]
       }
