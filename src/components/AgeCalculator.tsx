@@ -1,862 +1,400 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
-import { Copy, Check, BookOpen, Cake, Calendar, Star, Clock, RotateCcw, GraduationCap, ChevronDown, ChevronUp, Users, Link } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { Trash2 } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import GuideSection from '@/components/GuideSection'
+import { todayKST, isValidDate, weekday, ddayLabel, daysBetween } from '@/utils/dday'
+import { solarToLunar, leapMonth, isValidLunar, MIN_YEAR, MAX_YEAR } from '@/utils/lunarCalendar'
+import {
+  type BirthInput, type Member, birthSolar, ageUpDay, manAge, yeonAge, countingAge, ageDetail, nextBirthday,
+  zodiacOf, westernSign, generationOf, schoolEntryYear, schoolStatus, ageMilestones, ageGap, sanitizeMembers,
+} from '@/utils/age'
 
-interface SchoolInfo {
-  elementaryEntryYear: number
-  sameGradeLateBirth: number
-  sameGradeEarlyBirth: number
-  isEarlyBirth: boolean
-  status: string
-  grade: number
+const DAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const
+const STORE_KEY = 'ageCalc.family'
+const pad = (n: number) => String(n).padStart(2, '0')
+
+const readMembers = (): Member[] => {
+  try { return sanitizeMembers(JSON.parse(localStorage.getItem(STORE_KEY) || '[]')) } catch { return [] }
+}
+const writeMembers = (list: Member[]) => {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(list)) } catch { /* 시크릿 모드 등 */ }
 }
 
-interface MilestoneItem {
-  event: string
-  year: number
-  intAge: number
-  isPast: boolean
-  isCurrent: boolean
-}
-
-function calculateSchoolInfo(birthYear: number, birthMonth: number, baseDate: Date): SchoolInfo {
-  const isEarlyBirth = birthMonth >= 1 && birthMonth <= 2
-  const elementaryEntryYear = isEarlyBirth ? birthYear + 6 : birthYear + 7
-
-  const sameGradeLateBirth = elementaryEntryYear - 7
-  const sameGradeEarlyBirth = elementaryEntryYear - 6
-
-  const currentYear = baseDate.getFullYear()
-  const currentMonth = baseDate.getMonth() + 1
-  const academicYear = currentMonth >= 3 ? currentYear : currentYear - 1
-  const yearsFromEntry = academicYear - elementaryEntryYear
-
-  let status = ''
-  let grade = 0
-  if (yearsFromEntry < 0) {
-    status = 'preschool'
-  } else if (yearsFromEntry < 6) {
-    status = 'elementary'
-    grade = yearsFromEntry + 1
-  } else if (yearsFromEntry < 9) {
-    status = 'middle'
-    grade = yearsFromEntry - 5
-  } else if (yearsFromEntry < 12) {
-    status = 'high'
-    grade = yearsFromEntry - 8
-  } else if (yearsFromEntry < 16) {
-    status = 'university'
-    grade = yearsFromEntry - 11
-  } else {
-    status = 'graduated'
-  }
-
-  return { elementaryEntryYear, sameGradeLateBirth, sameGradeEarlyBirth, isEarlyBirth, status, grade }
-}
-
-function generateMilestones(birthYear: number, birthMonth: number, baseDate: Date): MilestoneItem[] {
-  const isEarlyBirth = birthMonth >= 1 && birthMonth <= 2
-
-  const elementaryYear = isEarlyBirth ? birthYear + 6 : birthYear + 7
-  const middleYear = elementaryYear + 6
-  const highYear = elementaryYear + 9
-
-  const milestones: MilestoneItem[] = [
-    { event: 'elementary', year: elementaryYear, intAge: elementaryYear - birthYear - (isEarlyBirth ? 0 : 1), isPast: false, isCurrent: false },
-    { event: 'middle', year: middleYear, intAge: middleYear - birthYear - (isEarlyBirth ? 0 : 1), isPast: false, isCurrent: false },
-    { event: 'high', year: highYear, intAge: highYear - birthYear - (isEarlyBirth ? 0 : 1), isPast: false, isCurrent: false },
-    { event: 'driving', year: birthYear + 18, intAge: 18, isPast: false, isCurrent: false },
-    { event: 'voting', year: birthYear + 18, intAge: 18, isPast: false, isCurrent: false },
-    { event: 'adult', year: birthYear + 19, intAge: 19, isPast: false, isCurrent: false },
-    { event: 'drinking', year: birthYear + 19, intAge: 19, isPast: false, isCurrent: false },
-    { event: 'universityGrad', year: highYear + 4, intAge: highYear + 4 - birthYear - (isEarlyBirth ? 0 : 1), isPast: false, isCurrent: false },
-    { event: 'avgMarriageMale', year: birthYear + 34, intAge: 34, isPast: false, isCurrent: false },
-    { event: 'avgMarriageFemale', year: birthYear + 31, intAge: 31, isPast: false, isCurrent: false },
-    { event: 'seniorDiscount', year: birthYear + 65, intAge: 65, isPast: false, isCurrent: false },
-    { event: 'pension', year: birthYear + 65, intAge: 65, isPast: false, isCurrent: false },
-  ]
-
-  const baseYear = baseDate.getFullYear()
-
-  return milestones
-    .map(m => ({
-      ...m,
-      isPast: m.year < baseYear,
-      isCurrent: m.year === baseYear,
-    }))
-    .sort((a, b) => a.year - b.year)
+const LAW_LINKS: Record<string, string> = {
+  civil: 'https://www.law.go.kr/법령/민법',
+  youth: 'https://www.law.go.kr/법령/청소년보호법',
+  military: 'https://www.law.go.kr/법령/병역법',
+  nps: 'https://www.nps.or.kr',
 }
 
 export default function AgeCalculator() {
   const t = useTranslations('ageCalculator')
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [showTimeline, setShowTimeline] = useState(false)
-
-  const now = new Date()
-  const [birthYear, setBirthYear] = useState('')
-  const [birthMonth, setBirthMonth] = useState('')
-  const [birthDay, setBirthDay] = useState('')
-  const [baseDate, setBaseDate] = useState(formatDateInput(now))
-
   const searchParams = useSearchParams()
 
-  // Read URL params on mount
+  const [today, setToday] = useState<string | null>(null)
+  const [birth, setBirth] = useState<BirthInput>({ cal: 'solar', date: '' })
+  const [base, setBase] = useState('')
+  const [name, setName] = useState('')
+  const [hideBirth, setHideBirth] = useState(false)
+  const [members, setMembers] = useState<Member[]>([])
+
+  // ── 초기화: URL → 기본값(30년 전 3월 15일생) ──
+  const inited = useRef(false)
   useEffect(() => {
-    const birth = searchParams.get('birth')
-    if (birth) {
-      const parts = birth.split('-')
-      if (parts.length === 3) {
-        setBirthYear(parts[0])
-        setBirthMonth(String(parseInt(parts[1])))
-        setBirthDay(String(parseInt(parts[2])))
-      }
-    }
-    const base = searchParams.get('base')
-    if (base) {
-      setBaseDate(base)
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    if (inited.current) return
+    inited.current = true
+    const now = todayKST()
+    setToday(now)
+    setMembers(readMembers())
+    const b = searchParams.get('birth') ?? ''
+    const input: BirthInput = { cal: searchParams.get('cal') === 'lunar' ? 'lunar' : 'solar', date: b, leap: searchParams.get('leap') === '1' }
+    setBirth(/^\d{4}-\d{2}-\d{2}$/.test(b) && birthSolar(input) ? input : { cal: 'solar', date: `${+now.slice(0, 4) - 30}-03-15` })
+    const bs = searchParams.get('base')
+    setBase(isValidDate(bs) ? bs : now)
+    setName((searchParams.get('name') ?? '').slice(0, 20))
+  }, [searchParams])
 
-  // Sync state to URL
-  const updateURL = useCallback((year: string, month: string, day: string, base: string) => {
-    const url = new URL(window.location.href)
-    if (year && month && day) {
-      const m = String(parseInt(month)).padStart(2, '0')
-      const d = String(parseInt(day)).padStart(2, '0')
-      url.searchParams.set('birth', `${year}-${m}-${d}`)
-    } else {
-      url.searchParams.delete('birth')
-    }
-    const today = formatDateInput(new Date())
-    if (base && base !== today) {
-      url.searchParams.set('base', base)
-    } else {
-      url.searchParams.delete('base')
-    }
-    window.history.replaceState({}, '', url)
-  }, [])
+  // ── URL 동기화 ──
+  useEffect(() => {
+    if (!today || !birth.date) return
+    const p = new URLSearchParams({ birth: birth.date })
+    if (birth.cal === 'lunar') { p.set('cal', 'lunar'); if (birth.leap) p.set('leap', '1') }
+    if (base && base !== today) p.set('base', base)
+    if (name.trim()) p.set('name', name.trim())
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${p}`)
+  }, [today, birth, base, name])
 
-  const handleSetBirthYear = useCallback((v: string) => {
-    setBirthYear(v)
-    updateURL(v, birthMonth, birthDay, baseDate)
-  }, [birthMonth, birthDay, baseDate, updateURL])
+  const fmt = useCallback((d: string) => {
+    const [y, m, dd] = d.split('-').map(Number)
+    return t('dateFmt', { y, m, d: dd, w: t(`days.${DAY_KEYS[weekday(d)]}`) })
+  }, [t])
+  const fmtBirth = useCallback((b: BirthInput) => {
+    const [y, m, d] = b.date.split('-').map(Number)
+    return b.cal === 'lunar' ? t(b.leap ? 'lunarLeapFmt' : 'lunarFmt', { y, m, d }) : t('solarFmt', { y, m, d })
+  }, [t])
 
-  const handleSetBirthMonth = useCallback((v: string) => {
-    setBirthMonth(v)
-    updateURL(birthYear, v, birthDay, baseDate)
-  }, [birthYear, birthDay, baseDate, updateURL])
+  const solar = birthSolar(birth)
+  const error = !birth.date || !isValidDate(base) ? '' : !solar ? t('input.invalid') : solar > base ? t('input.future') : ''
 
-  const handleSetBirthDay = useCallback((v: string) => {
-    setBirthDay(v)
-    updateURL(birthYear, birthMonth, v, baseDate)
-  }, [birthYear, birthMonth, baseDate, updateURL])
-
-  const handleSetBaseDate = useCallback((v: string) => {
-    setBaseDate(v)
-    updateURL(birthYear, birthMonth, birthDay, v)
-  }, [birthYear, birthMonth, birthDay, updateURL])
-
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
-  }, [])
-
-  const copyLink = useCallback(() => {
-    copyToClipboard(window.location.href, 'link')
-  }, [copyToClipboard])
-
-  const result = useMemo(() => {
-    const y = parseInt(birthYear)
-    const m = parseInt(birthMonth)
-    const d = parseInt(birthDay)
-    if (isNaN(y) || isNaN(m) || isNaN(d)) return null
-    if (m < 1 || m > 12 || d < 1 || d > 31 || y < 1900 || y > now.getFullYear()) return null
-
-    const birth = new Date(y, m - 1, d)
-    if (birth.getMonth() !== m - 1 || birth.getDate() !== d) return null
-
-    const base = new Date(baseDate + 'T00:00:00')
-    if (isNaN(base.getTime())) return null
-    if (birth > base) return null
-
-    // 만 나이
-    let intAge = base.getFullYear() - y
-    const hadBirthday = (base.getMonth() > m - 1) || (base.getMonth() === m - 1 && base.getDate() >= d)
-    if (!hadBirthday) intAge--
-
-    // 한국 나이 (세는 나이)
-    const koreanAge = base.getFullYear() - y + 1
-
-    // 연 나이
-    const yearAge = base.getFullYear() - y
-
-    // 살아온 일수
-    const totalDays = Math.floor((base.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24))
-    const totalWeeks = Math.floor(totalDays / 7)
-    const totalMonths = (base.getFullYear() - y) * 12 + (base.getMonth() - (m - 1))
-
-    // 다음 생일
-    let nextBirthday = new Date(base.getFullYear(), m - 1, d)
-    if (nextBirthday <= base) {
-      nextBirthday = new Date(base.getFullYear() + 1, m - 1, d)
-    }
-    const daysUntilBirthday = Math.ceil((nextBirthday.getTime() - base.getTime()) / (1000 * 60 * 60 * 24))
-    const isBirthdayToday = base.getMonth() === m - 1 && base.getDate() === d
-    const nextBirthdayAge = isBirthdayToday ? intAge + 1 : intAge + 1
-
-    // 띠 (12간지)
-    const zodiacKeys = ['monkey', 'rooster', 'dog', 'pig', 'rat', 'ox', 'tiger', 'rabbit', 'dragon', 'snake', 'horse', 'goat'] as const
-    const zodiacAnimal = zodiacKeys[y % 12]
-
-    // 별자리
-    const zodiacSign = getZodiacSign(m, d)
-
-    // 요일
-    const dayKeys = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const
-    const birthDayOfWeek = dayKeys[birth.getDay()]
-
-    // 세대
-    const generation = getGeneration(y)
-
-    // 빠른년생
-    const isEarlySchool = m >= 1 && m <= 2
-
-    // 만 나이 상세 (년, 월, 일)
-    let detailYears = intAge
-    let detailMonths = base.getMonth() - (m - 1)
-    let detailDays = base.getDate() - d
-    if (detailDays < 0) {
-      detailMonths--
-      const prevMonth = new Date(base.getFullYear(), base.getMonth(), 0)
-      detailDays += prevMonth.getDate()
-    }
-    if (detailMonths < 0) {
-      detailMonths += 12
-      detailYears--
-    }
-
-    // 학년 정보
-    const schoolInfo = calculateSchoolInfo(y, m, base)
-
-    // 인생 타임라인
-    const milestones = generateMilestones(y, m, base)
-
+  const r = useMemo(() => {
+    if (!today || !solar || !isValidDate(base) || solar > base || error) return null
+    const by = +solar.slice(0, 4)
+    const man = manAge(solar, base)
+    const upDay = ageUpDay(solar, +base.slice(0, 4))
+    const lived = daysBetween(solar, base)
     return {
-      intAge,
-      koreanAge,
-      yearAge,
-      totalDays,
-      totalWeeks,
-      totalMonths: totalMonths >= 0 ? totalMonths : 0,
-      daysUntilBirthday,
-      isBirthdayToday,
-      nextBirthdayAge,
-      zodiacAnimal,
-      zodiacSign,
-      birthDayOfWeek,
-      generation,
-      isEarlySchool,
-      detailYears,
-      detailMonths,
-      detailDays,
-      schoolInfo,
-      milestones,
-      birthYearNum: y,
-      birthMonthNum: m,
+      man, yeon: yeonAge(solar, base), counting: countingAge(solar, base),
+      detail: ageDetail(solar, base), passed: base >= upDay, upDay,
+      next: nextBirthday(birth, base), lived,
+      zodiac: zodiacOf(solar), sign: westernSign(solar), dayKey: DAY_KEYS[weekday(solar)],
+      generation: generationOf(by), entry: schoolEntryYear(solar), school: schoolStatus(solar, base),
+      milestones: ageMilestones(solar),
     }
-  }, [birthYear, birthMonth, birthDay, baseDate, now])
+  }, [today, solar, base, birth, error])
 
-  const handleReset = useCallback(() => {
-    setBirthYear('')
-    setBirthMonth('')
-    setBirthDay('')
-    setBaseDate(formatDateInput(new Date()))
-    setShowTimeline(false)
-    const url = new URL(window.location.href)
-    url.searchParams.delete('birth')
-    url.searchParams.delete('base')
-    window.history.replaceState({}, '', url)
-  }, [])
+  // ── 입력 ──
+  const setCal = (cal: 'solar' | 'lunar') => {
+    if (cal === birth.cal) return
+    if (!solar) return setBirth({ cal, date: '' })
+    if (cal === 'solar') return setBirth({ cal, date: solar })
+    const [y, m, d] = solar.split('-').map(Number)
+    const l = solarToLunar(y, m, d)
+    setBirth(l ? { cal, date: `${l.year}-${pad(l.month)}-${pad(l.day)}`, leap: l.isLeap } : { cal, date: '' })
+  }
+  const [ly, lm, ld] = birth.cal === 'lunar' && birth.date ? birth.date.split('-').map(Number) : [1990, 1, 1]
+  const setLunar = (y: number, m: number, d: number, leap: boolean) => {
+    const useLeap = leap && leapMonth(y) === m
+    setBirth({ cal: 'lunar', date: `${String(y).padStart(4, '0')}-${pad(m)}-${pad(d)}`, leap: useLeap })
+  }
+  const canLeap = leapMonth(ly) === lm
 
-  // 연도 선택 옵션 생성
-  const yearOptions = useMemo(() => {
-    const years = []
-    for (let y = now.getFullYear(); y >= 1920; y--) {
-      years.push(y)
-    }
-    return years
-  }, [now])
+  // ── 가족 ──
+  const addMember = () => {
+    if (!solar || error) return
+    const list = [...members, { id: Date.now().toString(36), name: name.trim() || t('family.defaultName', { n: members.length + 1 }), ...birth, leap: !!birth.leap }].slice(0, 30)
+    setMembers(list); writeMembers(list)
+  }
+  const removeMember = (id: string) => { const list = members.filter(m => m.id !== id); setMembers(list); writeMembers(list) }
+  const loadMember = (m: Member) => { setBirth({ cal: m.cal, date: m.date, leap: m.leap }); setName(m.name) }
 
-  const copyTimeline = useCallback(() => {
-    if (!result) return
-    const lines = result.milestones.map(m => {
-      const status = m.isPast ? '[V]' : m.isCurrent ? '[*]' : '[ ]'
-      return `${status} ${m.year} (${t('milestone.intAgeLabel', { age: m.intAge })}) - ${t(`milestone.${m.event}`)}`
-    })
-    copyToClipboard(lines.join('\n'), 'timeline')
-  }, [result, t, copyToClipboard])
+  const segBtn = (active: boolean) => `flex-1 py-2 rounded-xl text-sm font-semibold transition-colors ${active ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`
+  const who = name.trim()
+
+  const shareCard = r && {
+    tool: t('title'),
+    label: who ? t('hero.labelNamed', { name: who }) : t('hero.label'),
+    headline: t('hero.age', { n: r.man }),
+    sub: hideBirth ? undefined : fmtBirth(birth),
+    rows: [
+      { label: t('types.yeon'), value: t('ageN', { n: r.yeon }) },
+      { label: t('types.counting'), value: t('ageN', { n: r.counting }) },
+      ...(hideBirth ? [] : [
+        ...(r.next ? [{ label: t('next.title'), value: `${ddayLabel(r.next.days)} · ${fmt(r.next.date)}` }] : []),
+        { label: t('lived.title'), value: t('lived.nth', { n: (r.lived + 1).toLocaleString('ko-KR') }) },
+        { label: t('info.zodiac'), value: t(`zodiacAnimals.${r.zodiac.key}`) },
+      ]),
+    ],
+  }
 
   return (
     <div className="space-y-8">
-      {/* 헤더 */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* 입력 패널 */}
-        <div className="lg:col-span-1 space-y-6">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
-            <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-              {t('birthDate')}
-            </h2>
-
-            {/* 생년월일 입력 */}
-            <div className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">{t('year')}</label>
-                <select
-                  value={birthYear}
-                  onChange={(e) => handleSetBirthYear(e.target.value)}
-                  className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">-- {t('year')} --</option>
-                  {yearOptions.map((y) => (
-                    <option key={y} value={y}>{y}{t('year')}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">{t('month')}</label>
-                  <select
-                    value={birthMonth}
-                    onChange={(e) => handleSetBirthMonth(e.target.value)}
-                    className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">-- {t('month')} --</option>
-                    {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-                      <option key={m} value={m}>{m}{t('month')}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-body mb-1">{t('day')}</label>
-                  <select
-                    value={birthDay}
-                    onChange={(e) => handleSetBirthDay(e.target.value)}
-                    className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">-- {t('day')} --</option>
-                    {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
-                      <option key={d} value={d}>{d}{t('day')}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* 기준 날짜 */}
+        {/* 입력 */}
+        <div className="lg:col-span-1">
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-1 flex items-center gap-1">
-                {t('baseDate')}
-              </label>
-              <input
-                type="date"
-                value={baseDate}
-                onChange={(e) => handleSetBaseDate(e.target.value)}
-                className="w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <button
-                onClick={() => handleSetBaseDate(formatDateInput(new Date()))}
-                className="mt-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                {t('today')}
-              </button>
+              <label className="block text-sm font-medium text-body mb-1.5" htmlFor="age-name">{t('input.name')}</label>
+              <input id="age-name" value={name} maxLength={20} onChange={e => setName(e.target.value)} placeholder={t('input.namePlaceholder')} className="ui-field px-4 py-3" />
             </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={handleReset}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors text-sm font-medium"
-              >
-                <RotateCcw className="w-4 h-4" />
-                {t('reset')}
-              </button>
-              <button
-                onClick={copyLink}
-                title="링크 복사"
-                className="flex items-center justify-center gap-1.5 px-3 py-2.5 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors text-sm font-medium"
-              >
-                {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-              </button>
+            <div>
+              <p className="text-sm font-medium text-body mb-1.5">{t('birthDate')}</p>
+              <div className="flex gap-1 p-1 bg-soft rounded-2xl mb-3" role="tablist">
+                <button role="tab" aria-selected={birth.cal === 'solar'} onClick={() => setCal('solar')} className={segBtn(birth.cal === 'solar')}>{t('input.solar')}</button>
+                <button role="tab" aria-selected={birth.cal === 'lunar'} onClick={() => setCal('lunar')} className={segBtn(birth.cal === 'lunar')}>{t('input.lunar')}</button>
+              </div>
+              {birth.cal === 'solar' ? (
+                <input type="date" aria-label={t('birthDate')} value={birth.date} min="1900-01-01" max={today ?? undefined}
+                  onChange={e => setBirth({ cal: 'solar', date: e.target.value })} className="ui-field px-4 py-3" />
+              ) : (
+                <div className="space-y-2">
+                  <div className="grid grid-cols-3 gap-2">
+                    <input type="number" aria-label={t('input.lunarYear')} min={MIN_YEAR} max={MAX_YEAR} value={ly}
+                      onChange={e => setLunar(Math.min(MAX_YEAR, Math.max(0, +e.target.value || 0)), lm, ld, !!birth.leap)} className="ui-field px-3 py-3 tabular-nums" />
+                    <select aria-label={t('input.lunarMonth')} value={lm} onChange={e => setLunar(ly, +e.target.value, ld, !!birth.leap)} className="ui-field px-3 py-3">
+                      {Array.from({ length: 12 }, (_, i) => <option key={i} value={i + 1}>{t('input.monthN', { n: i + 1 })}</option>)}
+                    </select>
+                    <select aria-label={t('input.lunarDay')} value={ld} onChange={e => setLunar(ly, lm, +e.target.value, !!birth.leap)} className="ui-field px-3 py-3">
+                      {Array.from({ length: 30 }, (_, i) => <option key={i} value={i + 1}>{t('input.dayN', { n: i + 1 })}</option>)}
+                    </select>
+                  </div>
+                  <label className={`flex items-center gap-2 text-sm ${canLeap ? 'text-body' : 'text-faint'}`}>
+                    <input type="checkbox" disabled={!canLeap} checked={!!birth.leap && canLeap} onChange={e => setLunar(ly, lm, ld, e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
+                    {canLeap ? t('input.leap', { m: lm }) : t('input.noLeap', { y: ly, m: lm })}
+                  </label>
+                  {solar && <p className="text-sm text-sub">{t('input.converted', { date: fmt(solar) })}</p>}
+                  <p className="text-xs text-muted">{t('input.lunarRange')}</p>
+                </div>
+              )}
+              {error && <p className="mt-2 text-sm text-red-600" role="alert">{error}</p>}
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-body mb-1.5" htmlFor="age-base">{t('baseDate')}</label>
+              <div className="flex gap-2">
+                <input id="age-base" type="date" value={base} onChange={e => setBase(e.target.value)} className="ui-field px-4 py-3" />
+                {today && base !== today && (
+                  <button onClick={() => setBase(today)} className="ui-btn-soft px-4 py-2 shrink-0 text-sm">{t('today')}</button>
+                )}
+              </div>
+            </div>
+
+            <button onClick={addMember} disabled={!r} className="ui-btn w-full px-4 py-3">{t('family.add')}</button>
           </div>
         </div>
 
-        {/* 결과 패널 */}
+        {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          {result ? (
+          {r ? (
             <>
-              {/* 메인 나이 카드 */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {/* 만 나이 */}
-                <div className="bg-primary rounded-xl p-5 text-white shadow-lg">
-                  <p className="text-sm opacity-80">{t('result.internationalAge')}</p>
-                  <div className="flex items-end gap-1 mt-2">
-                    <span className="text-4xl font-bold">{result.intAge}</span>
-                    <span className="text-lg mb-1">{t('result.years')}</span>
+              <div className="ui-hero p-6 sm:p-8">
+                <p className="text-sm text-white/70">{who ? t('hero.labelNamed', { name: who }) : t('hero.label')}</p>
+                <p className="mt-1 text-5xl sm:text-6xl font-bold tabular-nums tracking-tight">{t('hero.age', { n: r.man })}</p>
+                <p className="mt-2 text-sm text-white/90">
+                  {t(r.passed ? 'hero.passed' : 'hero.notPassed', { date: t('mdFmt', { m: +r.upDay.slice(5, 7), d: +r.upDay.slice(8, 10) }) })}
+                  <span className="text-white/70"> · {t('hero.detail', { y: r.detail.years, m: r.detail.months, d: r.detail.days })}</span>
+                </p>
+                {birth.cal === 'lunar' && <p className="mt-1 text-xs text-white/70">{t('hero.lunarNote', { date: fmt(solar!) })}</p>}
+                <div className="mt-6 grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl bg-white/15 p-4">
+                    <p className="text-xs text-white/70">{t('types.yeon')}</p>
+                    <p className="text-2xl font-bold tabular-nums">{t('ageN', { n: r.yeon })}</p>
+                    <p className="text-xs text-white/70 mt-1">{t('hero.yeonUse')}</p>
                   </div>
-                  <p className="text-xs opacity-70 mt-1">
-                    {result.detailYears}{t('result.years')} {result.detailMonths}{t('result.months')} {result.detailDays}{t('result.days')}
-                  </p>
-                  <button
-                    onClick={() => copyToClipboard(String(result.intAge), 'intAge')}
-                    className="mt-2 p-1.5 rounded-lg hover:bg-white/20 transition-colors"
-                  >
-                    {copiedId === 'intAge' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4 opacity-70" />}
-                  </button>
-                </div>
-
-                {/* 한국 나이 */}
-                <div className="bg-primary rounded-xl p-5 text-white shadow-lg">
-                  <p className="text-sm opacity-80">{t('result.koreanAge')}</p>
-                  <div className="flex items-end gap-1 mt-2">
-                    <span className="text-4xl font-bold">{result.koreanAge}</span>
-                    <span className="text-lg mb-1">{t('result.years')}</span>
-                  </div>
-                  <p className="text-xs opacity-70 mt-1">&nbsp;</p>
-                  <button
-                    onClick={() => copyToClipboard(String(result.koreanAge), 'koreanAge')}
-                    className="mt-2 p-1.5 rounded-lg hover:bg-white/20 transition-colors"
-                  >
-                    {copiedId === 'koreanAge' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4 opacity-70" />}
-                  </button>
-                </div>
-
-                {/* 연 나이 */}
-                <div className="bg-primary rounded-xl p-5 text-white shadow-lg">
-                  <p className="text-sm opacity-80">{t('result.yearAge')}</p>
-                  <div className="flex items-end gap-1 mt-2">
-                    <span className="text-4xl font-bold">{result.yearAge}</span>
-                    <span className="text-lg mb-1">{t('result.years')}</span>
-                  </div>
-                  <p className="text-xs opacity-70 mt-1">&nbsp;</p>
-                  <button
-                    onClick={() => copyToClipboard(String(result.yearAge), 'yearAge')}
-                    className="mt-2 p-1.5 rounded-lg hover:bg-white/20 transition-colors"
-                  >
-                    {copiedId === 'yearAge' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4 opacity-70" />}
-                  </button>
-                </div>
-              </div>
-
-              {/* 상세 정보 그리드 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  {t('result.title')}
-                </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  <InfoCard
-                    label={t('result.totalDays')}
-                    value={result.totalDays.toLocaleString()}
-                    suffix={t('result.days')}
-                    copyId="totalDays"
-                    copiedId={copiedId}
-                    onCopy={copyToClipboard}
-                  />
-                  <InfoCard
-                    label={t('result.totalWeeks')}
-                    value={result.totalWeeks.toLocaleString()}
-                    copyId="totalWeeks"
-                    copiedId={copiedId}
-                    onCopy={copyToClipboard}
-                  />
-                  <InfoCard
-                    label={t('result.totalMonths')}
-                    value={result.totalMonths.toLocaleString()}
-                    suffix={t('result.months')}
-                    copyId="totalMonths"
-                    copiedId={copiedId}
-                    onCopy={copyToClipboard}
-                  />
-                  <InfoCard
-                    label={t('result.nextBirthday')}
-                    value={result.isBirthdayToday ? t('result.birthdayToday') : `${result.daysUntilBirthday}`}
-                    suffix={result.isBirthdayToday ? '' : t('result.daysUntilBirthday')}
-                    highlight={result.isBirthdayToday}
-                    copyId="birthday"
-                    copiedId={copiedId}
-                    onCopy={copyToClipboard}
-                  />
-                  <InfoCard
-                    label={t('result.zodiacAnimal')}
-                    value={t(`zodiacAnimals.${result.zodiacAnimal}`)}
-                    copyId="zodiac"
-                    copiedId={copiedId}
-                    onCopy={copyToClipboard}
-                  />
-                  <InfoCard
-                    label={t('result.zodiacSign')}
-                    value={t(`zodiacSigns.${result.zodiacSign}`)}
-                    copyId="zodiacSign"
-                    copiedId={copiedId}
-                    onCopy={copyToClipboard}
-                  />
-                  <InfoCard
-                    label={t('result.birthDay')}
-                    value={t(`days.${result.birthDayOfWeek}`)}
-                    copyId="birthDay"
-                    copiedId={copiedId}
-                    onCopy={copyToClipboard}
-                  />
-                  <InfoCard
-                    label={t('result.generation')}
-                    value={t(`generations.${result.generation}`)}
-                    copyId="generation"
-                    copiedId={copiedId}
-                    onCopy={copyToClipboard}
-                  />
-                  <InfoCard
-                    label={t('result.earlySchoolYear')}
-                    value={t(`earlySchool.${result.isEarlySchool ? 'yes' : 'no'}`)}
-                    copyId="earlySchool"
-                    copiedId={copiedId}
-                    onCopy={copyToClipboard}
-                  />
-                </div>
-              </div>
-
-              {/* 다음 생일 D-day */}
-              <div className="bg-subtle rounded-xl p-6 border border-amber-200 dark:border-amber-800">
-                <h2 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
-                  {t('birthday.title')}
-                </h2>
-                {result.isBirthdayToday ? (
-                  <div className="text-center py-4">
-                    <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">
-                      {t('result.birthdayToday')}
-                    </p>
-                    <p className="text-sm text-sub mt-2">
-                      {t('birthday.turningAge', { age: result.intAge })}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-6 flex-wrap">
-                    <div>
-                      <p className="text-sm text-muted">{t('birthday.daysLeft')}</p>
-                      <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">
-                        D-{result.daysUntilBirthday}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted">{t('birthday.nextAge')}</p>
-                      <p className="text-2xl font-bold text-fg">
-                        {t('birthday.willTurn', { age: result.nextBirthdayAge })}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* 학년 정보 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-                  {t('school.title')}
-                </h2>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="bg-subtle rounded-lg p-4">
-                      <p className="text-xs text-muted">{t('school.entryYear')}</p>
-                      <p className="text-lg font-bold text-sub mt-1">
-                        {result.schoolInfo.elementaryEntryYear}{t('school.yearSuffix')}
-                      </p>
-                    </div>
-                    <div className="bg-subtle rounded-lg p-4">
-                      <p className="text-xs text-muted">{t('school.currentStatus')}</p>
-                      <p className="text-lg font-bold text-sub mt-1">
-                        {result.schoolInfo.status === 'preschool' && t('school.status.preschool')}
-                        {result.schoolInfo.status === 'elementary' && t('school.status.elementaryGrade', { grade: result.schoolInfo.grade })}
-                        {result.schoolInfo.status === 'middle' && t('school.status.middleGrade', { grade: result.schoolInfo.grade })}
-                        {result.schoolInfo.status === 'high' && t('school.status.highGrade', { grade: result.schoolInfo.grade })}
-                        {result.schoolInfo.status === 'university' && t('school.status.universityGrade', { grade: result.schoolInfo.grade })}
-                        {result.schoolInfo.status === 'graduated' && t('school.status.graduated')}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 같은 학년 또래 */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <p className="text-sm font-medium text-body flex items-center gap-1.5 mb-2">
-                      <Users className="w-4 h-4" />
-                      {t('school.sameGrade')}
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-2 text-sm">
-                      <span className="bg-surface rounded px-3 py-1.5 text-body">
-                        {result.schoolInfo.sameGradeLateBirth}{t('school.yearSuffix')} 3~12{t('school.monthBorn')}
-                      </span>
-                      <span className="text-gray-400 self-center">+</span>
-                      <span className="bg-surface rounded px-3 py-1.5 text-body">
-                        {result.schoolInfo.sameGradeEarlyBirth}{t('school.yearSuffix')} 1~2{t('school.monthBorn')}{' '}
-                        <span className="text-xs text-orange-500 dark:text-orange-400">({t('school.earlyBirthday')})</span>
-                      </span>
-                    </div>
-                    {result.schoolInfo.isEarlyBirth && (
-                      <p className="text-xs text-orange-600 dark:text-orange-400 mt-2 bg-subtle rounded px-2 py-1">
-                        {t('school.earlyBirthdayNote')}
-                      </p>
-                    )}
+                  <div className="rounded-2xl bg-white/15 p-4">
+                    <p className="text-xs text-white/70">{t('types.counting')}</p>
+                    <p className="text-2xl font-bold tabular-nums">{t('ageN', { n: r.counting })}</p>
+                    <p className="text-xs text-white/70 mt-1">{t('hero.countingUse')}</p>
                   </div>
                 </div>
               </div>
 
-              {/* 인생 타임라인 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-                    {t('milestone.title')}
-                  </h2>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={copyTimeline}
-                      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                      title={t('milestone.copyAll')}
-                    >
-                      {copiedId === 'timeline' ? (
-                        <Check className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <Copy className="w-4 h-4 text-gray-400" />
-                      )}
-                    </button>
-                    <button
-                      onClick={() => setShowTimeline(!showTimeline)}
-                      className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors"
-                    >
-                      {showTimeline ? t('milestone.hideTimeline') : t('milestone.showTimeline')}
-                      {showTimeline ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                    </button>
-                  </div>
+              {shareCard && (
+                <div className="space-y-2">
+                  <ShareResult card={shareCard} url={hideBirth ? `${window.location.origin}${window.location.pathname}` : undefined}
+                    text={who ? t('share.textNamed', { name: who, n: r.man }) : t('share.text', { n: r.man })} fileName="age" />
+                  <label className="flex items-center gap-2 text-sm text-sub">
+                    <input type="checkbox" checked={hideBirth} onChange={e => setHideBirth(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
+                    {t('share.hideBirth')}
+                  </label>
                 </div>
+              )}
 
-                {showTimeline && (
-                  <div className="relative">
-                    {/* Timeline vertical line */}
-                    <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-track" />
-
-                    <div className="space-y-0">
-                      {result.milestones.map((milestone, idx) => (
-                        <div
-                          key={idx}
-                          className={`relative flex items-start gap-4 py-3 pl-10 pr-3 rounded-lg transition-colors ${
-                            milestone.isCurrent
-                              ? 'bg-primary-soft text-primary'
-                              : milestone.isPast
-                                ? 'opacity-60'
-                                : ''
-                          }`}
-                        >
-                          {/* Timeline dot */}
-                          <div className={`absolute left-2.5 top-4 w-3 h-3 rounded-full border-2 ${
-                            milestone.isCurrent
-                              ? 'bg-blue-500 border-blue-500 ring-4 ring-blue-100 dark:ring-blue-900'
-                              : milestone.isPast
-                                ? 'bg-green-500 border-green-500'
-                                : 'bg-surface border-line-strong'
-                          }`} />
-
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-3 flex-wrap">
-                              <span className="text-sm font-bold text-fg">
-                                {milestone.year}{t('school.yearSuffix')}
-                              </span>
-                              <span className="text-xs text-muted">
-                                ({t('milestone.intAgeLabel', { age: milestone.intAge })})
-                              </span>
-                              <span className={`text-sm font-medium ${
-                                milestone.isCurrent
-                                  ? 'text-sub'
-                                  : milestone.isPast
-                                    ? 'text-muted'
-                                    : 'text-body'
-                              }`}>
-                                {t(`milestone.${milestone.event}`)}
-                              </span>
-                              {milestone.isPast && (
-                                <span className="text-xs text-green-600 dark:text-green-400">&#10003;</span>
-                              )}
-                              {milestone.isCurrent && (
-                                <span className="text-xs bg-soft text-sub px-1.5 py-0.5 rounded">
-                                  {t('milestone.current')}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {!showTimeline && (
-                  <div className="text-center py-4">
-                    <p className="text-sm text-faint">{t('milestone.clickToShow')}</p>
-                  </div>
-                )}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="ui-card p-5">
+                  <p className="text-sm text-muted">{t('next.title')}</p>
+                  {r.next ? (
+                    <>
+                      <p className="mt-1 text-3xl font-bold text-fg tabular-nums">{r.next.isToday ? t('next.today') : ddayLabel(r.next.days)}</p>
+                      <p className="mt-1 text-sm text-body">{fmt(r.next.date)}</p>
+                      <p className="text-sm text-sub">{t('next.turning', { n: r.next.turning })}</p>
+                      {birth.cal === 'lunar' && <p className="mt-2 text-xs text-muted">{t('next.lunarFrom', { md: fmtBirth(birth) })}</p>}
+                      {r.next.lunar?.leapFallback && <p className="mt-1 text-xs text-muted">{t('next.leapFallback')}</p>}
+                      {r.next.lunar?.dayFallback && <p className="mt-1 text-xs text-muted">{t('next.dayFallback')}</p>}
+                      {birth.cal === 'solar' && solar!.slice(5) === '02-29' && <p className="mt-2 text-xs text-muted">{t('next.feb29')}</p>}
+                    </>
+                  ) : <p className="mt-2 text-sm text-muted">{t('next.outOfRange')}</p>}
+                </div>
+                <div className="ui-card p-5">
+                  <p className="text-sm text-muted">{t('lived.title')}</p>
+                  <p className="mt-1 text-3xl font-bold text-fg tabular-nums">{t('lived.nth', { n: (r.lived + 1).toLocaleString('ko-KR') })}</p>
+                  <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                    <dt className="text-sub">{t('lived.days')}</dt><dd className="text-right text-fg tabular-nums">{r.lived.toLocaleString('ko-KR')}</dd>
+                    <dt className="text-sub">{t('lived.weeks')}</dt><dd className="text-right text-fg tabular-nums">{t('lived.weeksVal', { w: Math.floor(r.lived / 7).toLocaleString('ko-KR'), d: r.lived % 7 })}</dd>
+                    <dt className="text-sub">{t('lived.hours')}</dt><dd className="text-right text-fg tabular-nums">{(r.lived * 24).toLocaleString('ko-KR')}</dd>
+                  </dl>
+                </div>
               </div>
 
-              {/* 나이 계산 방식 안내 */}
-              <div className="bg-subtle rounded-xl p-6">
-                <h3 className="text-sm font-semibold text-sub mb-4 flex items-center gap-2">
-                  {t('ageExplanation.title')}
-                </h3>
-                <div className="space-y-3">
-                  {(['international', 'korean', 'year'] as const).map((type) => (
-                    <div key={type} className="bg-white/60 dark:bg-gray-800/50 rounded-lg p-3">
-                      <p className="text-sm font-medium text-fg">
-                        {t(`ageExplanation.${type}.title`)}
-                      </p>
-                      <p className="text-xs text-sub mt-1">
-                        {t(`ageExplanation.${type}.description`)}
-                      </p>
+              <div className="ui-card p-6">
+                <h2 className="text-lg font-semibold text-fg mb-4">{t('info.title')}</h2>
+                <dl className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {[
+                    [t('info.zodiac'), `${t(`zodiacAnimals.${r.zodiac.key}`)}`, r.zodiac.byLunar ? t('info.zodiacNote', { g: r.zodiac.ganzi }) : ''],
+                    [t('info.sign'), t(`zodiacSigns.${r.sign}`), ''],
+                    [t('info.weekday'), t(`days.${r.dayKey}`), ''],
+                    [t('info.generation'), t(`generations.${r.generation}`), ''],
+                    [t('school.currentStatus'), r.school.status === 'preschool' || r.school.status === 'graduated'
+                      ? t(`school.status.${r.school.status}`) : t(`school.status.${r.school.status}Grade`, { grade: r.school.grade }), t('info.schoolNote')],
+                    [t('school.entryYear'), t('info.entryVal', { y: r.entry.year }), r.entry.early ? t('info.early') : ''],
+                  ].map(([label, value, note]) => (
+                    <div key={label} className="bg-subtle rounded-xl p-3">
+                      <dt className="text-xs text-muted">{label}</dt>
+                      <dd className="mt-1 text-sm font-semibold text-fg">{value}</dd>
+                      {note && <dd className="mt-0.5 text-xs text-muted">{note}</dd>}
                     </div>
                   ))}
-                </div>
+                </dl>
               </div>
             </>
           ) : (
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <div className="text-center py-16">
-                <Cake className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                <p className="text-faint text-sm">
-                  {t('placeholder')}
-                </p>
-              </div>
+            <div className="ui-hero p-8 min-h-[260px] flex items-center justify-center text-white/70 text-sm">
+              {today ? (error || t('placeholder')) : ''}
             </div>
           )}
         </div>
       </div>
 
-      {/* 가이드 섹션 */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          {(['howToUse', 'features'] as const).map((section) => (
-            <div key={section} className="space-y-3">
-              <h3 className="font-medium text-fg">
-                {t(`guide.${section}.title`)}
-              </h3>
-              <ul className="space-y-1.5">
-                {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
-                  <li key={i} className="text-sm text-sub flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5 shrink-0">&#8226;</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+      {/* 나이 기준 이정표 */}
+      {r && (
+        <div className="ui-card p-6">
+          <h2 className="text-lg font-semibold text-fg">{t('ms.title')}</h2>
+          <p className="text-xs text-muted mt-1">{t('ms.note')}</p>
+          <ol className="mt-4 divide-y divide-line">
+            {r.milestones.map(m => {
+              const d = daysBetween(base, m.date)
+              return (
+                <li key={m.key} className={`py-3 flex flex-wrap items-start gap-x-4 gap-y-1 ${d < 0 ? 'opacity-60' : ''}`}>
+                  <div className="flex-1 min-w-[12rem]">
+                    <p className="text-sm font-semibold text-fg">{t(`ms.${m.key}.title`)}</p>
+                    <p className="text-xs text-muted mt-0.5">{t(`ms.${m.key}.law`)}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-body tabular-nums">{fmt(m.date)}</p>
+                    <p className="text-xs text-sub">
+                      {m.basis === 'man' ? t('ms.man', { n: m.age }) : m.basis === 'yeon' ? t('ms.yeon', { n: m.age }) : t('ms.fixed')}
+                      {' · '}{d < 0 ? t('ms.done') : ddayLabel(d)}
+                    </p>
+                  </div>
+                </li>
+              )
+            })}
+          </ol>
+        </div>
+      )}
+
+      {/* 가족 나이 표 */}
+      {members.length > 0 && (
+        <div className="ui-card p-6">
+          <h2 className="text-lg font-semibold text-fg">{t('family.title')}</h2>
+          <p className="text-xs text-muted mt-1">{t('family.note')}</p>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full text-sm min-w-[640px]">
+              <thead>
+                <tr className="text-left text-xs text-muted border-b border-line">
+                  <th className="py-2 font-medium">{t('family.name')}</th>
+                  <th className="py-2 font-medium">{t('birthDate')}</th>
+                  <th className="py-2 font-medium text-right">{t('types.man')}</th>
+                  <th className="py-2 font-medium text-right">{t('types.yeon')}</th>
+                  <th className="py-2 font-medium">{t('info.zodiac')}</th>
+                  <th className="py-2 font-medium text-right">{t('next.title')}</th>
+                  <th className="py-2 font-medium text-right">{t('family.gap')}</th>
+                  <th className="py-2" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {members.map(m => {
+                  const s = birthSolar(m)!
+                  const ok = !!base && isValidDate(base) && s <= base
+                  const nb = ok ? nextBirthday(m, base) : null
+                  const g = solar ? ageGap(solar, s) : null
+                  return (
+                    <tr key={m.id}>
+                      <td className="py-2.5">
+                        <button onClick={() => loadMember(m)} className="font-semibold text-primary hover:underline">{m.name}</button>
+                      </td>
+                      <td className="py-2.5 text-body">{fmtBirth(m)}</td>
+                      <td className="py-2.5 text-right text-fg font-semibold tabular-nums">{ok ? t('ageN', { n: manAge(s, base) }) : '-'}</td>
+                      <td className="py-2.5 text-right text-body tabular-nums">{ok ? t('ageN', { n: yeonAge(s, base) }) : '-'}</td>
+                      <td className="py-2.5 text-body">{t(`zodiacAnimals.${zodiacOf(s).key}`)}</td>
+                      <td className="py-2.5 text-right text-body tabular-nums">{nb ? ddayLabel(nb.days) : '-'}</td>
+                      <td className="py-2.5 text-right text-sub tabular-nums">
+                        {!g ? '-' : g.sign === 0 ? t('family.same')
+                          : t(g.sign > 0 ? 'family.younger' : 'family.older', { y: g.years, m: g.months, d: g.days })}
+                      </td>
+                      <td className="py-2.5 text-right">
+                        <button onClick={() => removeMember(m.id)} aria-label={t('family.remove', { name: m.name })} className="p-1.5 rounded-lg text-faint hover:text-fg hover:bg-soft">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 나이 종류 안내 */}
+      <div className="ui-card p-6">
+        <h2 className="text-lg font-semibold text-fg">{t('types.title')}</h2>
+        <div className="mt-4 grid md:grid-cols-3 gap-3">
+          {(['man', 'yeon', 'counting'] as const).map(k => (
+            <div key={k} className="bg-subtle rounded-2xl p-5">
+              <p className="text-sm font-semibold text-fg">{t(`types.${k}`)}</p>
+              <p className="mt-1 text-sm text-sub">{t(`types.${k}Desc`)}</p>
             </div>
           ))}
         </div>
-      </div>
-    </div>
-  )
-}
-
-function InfoCard({
-  label,
-  value,
-  suffix,
-  highlight,
-  copyId,
-  copiedId,
-  onCopy,
-}: {
-  label: string
-  value: string
-  suffix?: string
-  highlight?: boolean
-  copyId: string
-  copiedId: string | null
-  onCopy: (text: string, id: string) => void
-}) {
-  return (
-    <div className={`rounded-lg p-3 group ${
-      highlight
-        ? 'bg-yellow-50 dark:bg-yellow-950/30 ring-1 ring-yellow-300 dark:ring-yellow-700'
-        : 'bg-subtle'
-    }`}>
-      <p className="text-xs text-muted">{label}</p>
-      <div className="flex items-center justify-between mt-1">
-        <p className={`text-sm font-semibold ${
-          highlight ? 'text-yellow-700 dark:text-yellow-400' : 'text-fg'
-        }`}>
-          {value} {suffix && <span className="text-xs font-normal text-gray-400">{suffix}</span>}
+        <p className="mt-4 text-xs text-muted">
+          {t('types.sources')}{' '}
+          {Object.entries(LAW_LINKS).map(([k, href], i) => (
+            <span key={k}>{i > 0 && ' · '}<a href={href} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{t(`types.link.${k}`)}</a></span>
+          ))}
         </p>
-        <button
-          onClick={() => onCopy(value, copyId)}
-          className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
-        >
-          {copiedId === copyId ? (
-            <Check className="w-3.5 h-3.5 text-green-500" />
-          ) : (
-            <Copy className="w-3.5 h-3.5 text-gray-400" />
-          )}
-        </button>
       </div>
+
+      <GuideSection namespace="ageCalculator" />
     </div>
   )
-}
-
-function formatDateInput(date: Date): string {
-  const y = date.getFullYear()
-  const m = String(date.getMonth() + 1).padStart(2, '0')
-  const d = String(date.getDate()).padStart(2, '0')
-  return `${y}-${m}-${d}`
-}
-
-function getZodiacSign(month: number, day: number): string {
-  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'aquarius'
-  if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return 'pisces'
-  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'aries'
-  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return 'taurus'
-  if ((month === 5 && day >= 21) || (month === 6 && day <= 21)) return 'gemini'
-  if ((month === 6 && day >= 22) || (month === 7 && day <= 22)) return 'cancer'
-  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return 'leo'
-  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'virgo'
-  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'libra'
-  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'scorpio'
-  if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return 'sagittarius'
-  return 'capricorn'
-}
-
-function getGeneration(year: number): string {
-  if (year >= 2013) return 'genAlpha'
-  if (year >= 1997) return 'genZ'
-  if (year >= 1981) return 'millennial'
-  if (year >= 1965) return 'genX'
-  if (year >= 1946) return 'babyBoomer'
-  return 'silent'
 }

@@ -7937,8 +7937,152 @@
     }
   },
   "ageCalculator": {
+    "dateFmt": "{m}/{d}/{y} ({w})",
+    "mdFmt": "{m}/{d}",
+    "solarFmt": "{m}/{d}/{y}",
+    "lunarFmt": "Lunar {m}/{d}/{y}",
+    "lunarLeapFmt": "Lunar leap {m}/{d}/{y}",
+    "ageN": "{n}",
+    "input": {
+      "name": "Name (optional)",
+      "namePlaceholder": "e.g. Mom",
+      "solar": "Solar",
+      "lunar": "Lunar",
+      "lunarYear": "Lunar year",
+      "lunarMonth": "Lunar month",
+      "lunarDay": "Lunar day",
+      "monthN": "Month {n}",
+      "dayN": "Day {n}",
+      "leap": "Leap month {m}",
+      "noLeap": "{y} has no leap month {m}",
+      "converted": "Solar {date}",
+      "lunarRange": "Lunar dates 1900-2050 (KASI almanac)",
+      "invalid": "This date does not exist",
+      "future": "Birth date is after the reference date"
+    },
+    "hero": {
+      "label": "International age",
+      "labelNamed": "{name}'s international age",
+      "age": "{n} years",
+      "passed": "Birthday ({date}) passed this year",
+      "notPassed": "Birthday ({date}) not yet this year",
+      "detail": "{y}y {m}m {d}d",
+      "lunarNote": "International age uses the converted solar birth date ({date})",
+      "yeonUse": "Juvenile Protection & Military Service Acts",
+      "countingUse": "No legal effect (reference)"
+    },
+    "share": {
+      "text": "My international age is {n}",
+      "textNamed": "{name}'s international age is {n}",
+      "hideBirth": "Hide birth date when sharing"
+    },
+    "next": {
+      "title": "Next birthday",
+      "today": "Today!",
+      "turning": "Birthday #{n}",
+      "lunarFrom": "Solar date of lunar birthday {md}",
+      "leapFallback": "No such leap month this year, so the regular month is used",
+      "dayFallback": "That month has 29 days this year, so the 29th is used",
+      "feb29": "Feb 29 births gain a year on Mar 1 in common years (Civil Act Art. 160(3))",
+      "outOfRange": "Beyond the lunar conversion range (2050)"
+    },
+    "lived": {
+      "title": "Days lived",
+      "nth": "Day {n}",
+      "days": "Days elapsed",
+      "weeks": "Weeks",
+      "weeksVal": "{w}w {d}d",
+      "hours": "Hours (approx.)"
+    },
+    "info": {
+      "title": "Zodiac, sign & school",
+      "zodiac": "Chinese zodiac",
+      "zodiacNote": "{g} year (Lunar New Year basis)",
+      "sign": "Star sign",
+      "weekday": "Day of birth",
+      "generation": "Generation",
+      "schoolNote": "Assumes on-time entry",
+      "entryVal": "March {y}",
+      "early": "Early entry (Jan-Feb births through 2002)"
+    },
+    "ms": {
+      "title": "Age milestones",
+      "note": "Dates compared with the reference date. Intl = by birthday; Year = Jan 1 of the year you reach that age.",
+      "man": "Intl {n}",
+      "yeon": "Year-age {n}",
+      "fixed": "Entry day",
+      "done": "Passed",
+      "school": {
+        "title": "Elementary school entry",
+        "law": "Elementary and Secondary Education Act Art. 13 · March 1 of the year after turning 6"
+      },
+      "idCard": {
+        "title": "Resident ID card eligible",
+        "law": "Resident Registration Act Art. 24 · age 17+"
+      },
+      "militaryPrep": {
+        "title": "Military reserve registration (men)",
+        "law": "Military Service Act Art. 8 · uses calendar-year age (year you turn 18)"
+      },
+      "vote": {
+        "title": "Voting right",
+        "law": "Public Official Election Act Art. 15 · 18+ on election day"
+      },
+      "driving": {
+        "title": "Car driver license test",
+        "law": "Road Traffic Act Art. 82 · not under 18 (mopeds: 16)"
+      },
+      "youthProtection": {
+        "title": "May buy alcohol & tobacco",
+        "law": "Juvenile Protection Act Art. 2 · no longer a minor from Jan 1 of the year you turn 19"
+      },
+      "militaryExam": {
+        "title": "Military physical exam (men)",
+        "law": "Military Service Act Art. 11 · year you turn 19"
+      },
+      "adult": {
+        "title": "Legal adulthood",
+        "law": "Civil Act Art. 4 · may sign contracts without parental consent"
+      },
+      "pension": {
+        "title": "National Pension old-age benefit starts",
+        "law": "National Pension Act Addenda (Act No. 5623) Art. 8 · 60-65 by birth year (65 from 1969). Paid from the following month; up to 5 years early/deferred"
+      },
+      "basicPension": {
+        "title": "Basic Pension & senior benefits",
+        "law": "Basic Pension Act Art. 3 (if income test met) · Welfare of Older Persons Act Art. 26 · age 65+"
+      }
+    },
+    "family": {
+      "add": "Add to family table",
+      "defaultName": "Family {n}",
+      "title": "Family ages",
+      "note": "Saved only in this browser. Click a name to load it; gaps are relative to the person entered above.",
+      "name": "Name",
+      "gap": "Age gap",
+      "same": "Same day",
+      "younger": "{y}y {m}m {d}d younger",
+      "older": "{y}y {m}m {d}d older",
+      "remove": "Delete {name}"
+    },
+    "types": {
+      "title": "International vs calendar-year vs counting age",
+      "man": "International age",
+      "yeon": "Calendar-year age",
+      "counting": "Counting age",
+      "manDesc": "0 at birth, +1 every birthday. Since June 28, 2023, ages in Korean laws, contracts and documents mean international age unless stated otherwise (Civil Act Art. 158, Framework Act on Administration Art. 7-2).",
+      "yeonDesc": "Current year minus birth year. Per the Ministry of Government Legislation, the Juvenile Protection Act (alcohol/tobacco), Military Service Act and civil-service exam rules keep using it.",
+      "countingDesc": "1 at birth, +1 every Jan 1. Everyday use only; no legal effect.",
+      "sources": "Legal sources:",
+      "link": {
+        "civil": "Civil Act",
+        "youth": "Juvenile Protection Act",
+        "military": "Military Service Act",
+        "nps": "National Pension Service"
+      }
+    },
     "title": "Age Calculator",
-    "description": "Enter your birthdate to see your age, zodiac sign, and more at a glance",
+    "description": "Enter a solar or lunar birth date to see international, calendar-year and counting age, next birthday and age milestones",
     "birthDate": "Date of Birth",
     "year": "Year",
     "month": "Month",
@@ -7968,32 +8112,32 @@
       "earlySchoolYear": "Early school year"
     },
     "zodiacAnimals": {
-      "rat": "Rat 🐭",
-      "ox": "Ox 🐂",
-      "tiger": "Tiger 🐅",
-      "rabbit": "Rabbit 🐇",
-      "dragon": "Dragon 🐉",
-      "snake": "Snake 🐍",
-      "horse": "Horse 🐴",
-      "goat": "Goat 🐑",
-      "monkey": "Monkey 🐒",
-      "rooster": "Rooster 🐓",
-      "dog": "Dog 🐕",
-      "pig": "Pig 🐷"
+      "rat": "Rat",
+      "ox": "Ox",
+      "tiger": "Tiger",
+      "rabbit": "Rabbit",
+      "dragon": "Dragon",
+      "snake": "Snake",
+      "horse": "Horse",
+      "goat": "Goat",
+      "monkey": "Monkey",
+      "rooster": "Rooster",
+      "dog": "Dog",
+      "pig": "Pig"
     },
     "zodiacSigns": {
-      "capricorn": "Capricorn ♑",
-      "aquarius": "Aquarius ♒",
-      "pisces": "Pisces ♓",
-      "aries": "Aries ♈",
-      "taurus": "Taurus ♉",
-      "gemini": "Gemini ♊",
-      "cancer": "Cancer ♋",
-      "leo": "Leo ♌",
-      "virgo": "Virgo ♍",
-      "libra": "Libra ♎",
-      "scorpio": "Scorpio ♏",
-      "sagittarius": "Sagittarius ♐"
+      "capricorn": "Capricorn",
+      "aquarius": "Aquarius",
+      "pisces": "Pisces",
+      "aries": "Aries",
+      "taurus": "Taurus",
+      "gemini": "Gemini",
+      "cancer": "Cancer",
+      "leo": "Leo",
+      "virgo": "Virgo",
+      "libra": "Libra",
+      "scorpio": "Scorpio",
+      "sagittarius": "Sagittarius"
     },
     "days": {
       "sunday": "Sunday",
@@ -8083,9 +8227,10 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Enter your birthdate to see results in real-time",
-          "Change the reference date to calculate age at a specific point in time",
-          "View international age, Korean age, and year age all at once"
+          "Enter a solar or lunar (incl. leap month) birth date to see results instantly",
+          "Change the reference date to get the age on any past or future date",
+          "Add people to the family table to compare ages and age gaps (saved in this browser)",
+          "Share a link or image; turn on \"hide birth date\" to share only the age"
         ]
       },
       "features": {
@@ -8121,11 +8266,19 @@
           },
           {
             "q": "What is calendar-year age (연 나이)?",
-            "a": "It is the current year minus the birth year (e.g., 2025 − 2000 = 25). Used for school enrollment age criteria and military service age calculations."
+            "a": "Current year minus birth year (e.g., 2026 - 2000 = 26). Even after the 2023 unification, the Juvenile Protection Act (alcohol/tobacco), Military Service Act and civil-service exam rules use it."
           },
           {
             "q": "What is the international age if my birthday hasn't passed yet this year?",
             "a": "If your birthday hasn't occurred yet this year, your international age is (current year − birth year − 1). It increases by 1 on your birthday."
+          },
+          {
+            "q": "When do Feb 29 babies get older in common years?",
+            "a": "Under the Civil Act (Art. 158, 160(3)) the period ends on the last day of February, so the age increases on March 1."
+          },
+          {
+            "q": "How are lunar birthdays calculated?",
+            "a": "Each year the lunar month/day is converted to the solar calendar using the KASI almanac. Leap-month births use the regular month in years without that leap month; 30th-day births use the 29th in short months. International age uses the actual (solar) birth date."
           }
         ]
       }
@@ -11699,8 +11852,224 @@
     }
   },
   "dueDateCalculator": {
+    "u": {
+      "dateFmt": "{w}, {m}/{d}/{y}",
+      "dateShort": "{m}/{d}",
+      "weekdays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "weeksDays": "{w}w {d}d",
+      "method": {
+        "lmp": "Last period",
+        "conception": "Conception",
+        "ultrasound": "Ultrasound",
+        "ivf": "IVF transfer"
+      },
+      "methodHint": {
+        "lmp": "First day of last period + 280 days (Naegele). Adjusted by the difference if your cycle isn't 28 days.",
+        "conception": "Conception (ovulation) day counts as 2w0d. Conception + 266 days.",
+        "ultrasound": "Most accurate if you have an ultrasound dating, especially one taken before 13w6d.",
+        "ivf": "Transfer date + 263 days (day-3 embryo) or + 261 days (day-5 embryo). Most accurate for IVF pregnancies."
+      },
+      "dateLabel": {
+        "lmp": "First day of last period",
+        "conception": "Conception / ovulation date",
+        "ultrasound": "Ultrasound date",
+        "ivf": "Embryo transfer date"
+      },
+      "cycle": "Average cycle length",
+      "cycleHint": "Longer than 28 days moves the due date later; shorter moves it earlier (20–45).",
+      "days": "d",
+      "weeks": "w",
+      "usAge": "Gestational age at the scan",
+      "usHint": "Enter the GA on your scan report, e.g. '8w3d'.",
+      "embryo": "Embryo transferred",
+      "embryoDay": "Day-{n} embryo",
+      "fetuses": "Number of babies",
+      "fetus1": "Single",
+      "fetus2": "Twins",
+      "fetus3": "Triplets+",
+      "enterDate": "Enter a date to calculate your due date.",
+      "eddLabel": "Due date (40w0d)",
+      "heroSub": "Today {ga} · month {month} · trimester {tri}",
+      "notYet": "Based on this date, the pregnancy hasn't started yet.",
+      "over42": "More than 42 weeks have passed. Check the date, or use this for reference only if the baby has arrived.",
+      "progress": "Progress",
+      "currentWeek": "Current week",
+      "monthLabel": "Pregnancy month",
+      "monthValue": "Month {n}",
+      "triLabel": "Trimester",
+      "tri1": "1st (to 13w)",
+      "tri2": "2nd (14–27w)",
+      "tri3": "3rd (28w+)",
+      "daysLeft": "Until due date",
+      "daysOver": "Past due date",
+      "nDays": "{n} days",
+      "lmpEq": "0w0d (equivalent LMP)",
+      "conceptionEst": "Estimated conception (2w0d)",
+      "fullTermFrom": "Full term from (37w0d)",
+      "range": "Due date ±2 weeks",
+      "monthNote": "Pregnancy months follow the Korean '4 weeks = 1 month' convention (40 weeks = 10 months). Clinics use weeks + days.",
+      "share": {
+        "sub": "Now {ga} · month {month}",
+        "text": "Our baby is due {edd} — we're at {ga}!",
+        "textShort": "Our baby is due {edd}!"
+      },
+      "status": {
+        "past": "Past",
+        "now": "Now",
+        "upcoming": "Upcoming"
+      },
+      "timeline": {
+        "title": "Tests & vaccines",
+        "subtitle": "Typical timing used in Korean prenatal care, converted to dates from your due date. Confirm your schedule with your care team.",
+        "weeks": "{from}–{to}w",
+        "firstVisit": {
+          "title": "Pregnancy confirmation",
+          "desc": "Ultrasound checks the gestational sac and heartbeat. The confirmation lets you apply for the medical voucher."
+        },
+        "nt": {
+          "title": "First-trimester screening (NT)",
+          "desc": "Nuchal translucency scan + blood test. Only measurable from 11w0d to 13w6d."
+        },
+        "quad": {
+          "title": "Second-trimester screening (Quad)",
+          "desc": "Maternal blood test screening for neural tube defects and chromosomal risk. Results show risk, not a diagnosis."
+        },
+        "anatomy": {
+          "title": "Detailed anatomy scan",
+          "desc": "Checks the baby's brain, heart, spine, limbs and other structures."
+        },
+        "gdm": {
+          "title": "Gestational diabetes test",
+          "desc": "50 g glucose screen, then a 100 g OGTT if above the cutoff. Anemia is usually rechecked around now."
+        },
+        "tdap": {
+          "title": "Tdap (whooping cough) vaccine",
+          "desc": "KDCA recommends vaccination at 27–36 weeks so antibodies pass to the newborn."
+        },
+        "gbs": {
+          "title": "Group B strep (GBS) test",
+          "desc": "Done at some clinics. If positive, antibiotics are given during labor."
+        },
+        "fullTerm": {
+          "title": "Full term (37w–41w6d)",
+          "desc": "Birth in this window is term. 42 weeks and beyond is post-term."
+        },
+        "visitNote": "Typical visit interval: every 4 weeks until 28w, every 2 weeks 28–36w, weekly after 36w. High-risk pregnancies may need more visits."
+      },
+      "support": {
+        "title": "Korean pregnancy & birth support",
+        "subtitle": "As of 2026. Dates are based on your due date.",
+        "voucherTitle": "Pregnancy medical voucher",
+        "manwon": "KRW {won}",
+        "voucherDesc": "Paid to the National Happiness Card: KRW 1M per fetus (since 2024), +KRW 200k in areas lacking delivery care. Usable until 2 years after birth.",
+        "leaveTitle": "{n}-day maternity leave · earliest start",
+        "leaveDesc": "Up to {before} days before birth; at least {after} days must remain after birth (Labor Standards Act Art. 74). If born on the due date, ends {end}. A late birth extends the leave.",
+        "shortTitle": "Reduced hours during pregnancy",
+        "shortDesc": "2 fewer hours a day with no pay cut, within 12 weeks or from 32 weeks (expanded from 36w on 2025-02-23).",
+        "note": "Amounts and eligibility can change. Check Bokjiro, Work24 or NHIS before applying."
+      },
+      "size": {
+        "title": "Average baby size at {w} weeks",
+        "like": "About the size of",
+        "note": "Reference values from the BabyCenter fetal chart. Crown-rump length until 20w, crown-heel after, so the number jumps at 21w. Babies vary a lot."
+      },
+      "open": "Show",
+      "wg": {
+        "yourBmi": "Pre-pregnancy BMI {b}",
+        "cat": "Pre-pregnancy BMI",
+        "total": "Total gain",
+        "weekly": "Weekly (2nd–3rd tri.)",
+        "underweightWeekly": "~0.5 kg (0.44–0.58)",
+        "normalWeekly": "~0.4 kg (0.35–0.50)",
+        "overweightWeekly": "~0.3 kg (0.23–0.33)",
+        "obeseWeekly": "~0.2 kg (0.17–0.27)",
+        "note": "IOM (2009). Assumes 0.5–2 kg gain in the first trimester. Asian BMI cutoffs may differ.",
+        "twins": "IOM provisional guidance for twins: normal weight 17–25 kg, overweight 14–23 kg, obese 11–19 kg (insufficient data for underweight)."
+      },
+      "guide": {
+        "methods": {
+          "title": "How it's calculated",
+          "items": [
+            "Last period (LMP): LMP + 280 days, plus/minus (cycle − 28) days.",
+            "Conception/ovulation: conception + 266 days (conception = 2w0d).",
+            "Ultrasound: scan date + (280 − GA at scan in days). Early scans are most accurate.",
+            "IVF: day-5 transfer + 261 days, day-3 transfer + 263 days (ACOG).",
+            "Gestational age always counts from due date − 280 days as 0w0d."
+          ]
+        },
+        "facts": {
+          "title": "Good to know",
+          "items": [
+            "Few babies arrive exactly on the due date; birth from 37w0d to 41w6d is term.",
+            "If LMP and early ultrasound differ by more than 7 days (5 days before 9w), clinics usually switch to the ultrasound date.",
+            "Once set, the due date is usually not changed by later scans.",
+            "Trimesters follow ACOG (1st to 13w6d, 2nd 14–27w6d, 3rd from 28w)."
+          ]
+        },
+        "faq": [
+          {
+            "q": "My clinic gave a different date.",
+            "a": "Clinics often confirm the due date with an early ultrasound. Choose 'Ultrasound' and enter the GA from your record to match it."
+          },
+          {
+            "q": "My cycle is irregular.",
+            "a": "LMP dating is less reliable. Use an ultrasound record or a known ovulation date instead."
+          },
+          {
+            "q": "Which weeks are 'month 5'?",
+            "a": "Weeks 16–19 under the '4 weeks = 1 month' convention. Use weeks when talking to your clinic."
+          },
+          {
+            "q": "When can maternity leave start?",
+            "a": "For a single baby, 45+ of the 90 days must be after birth, so leave can start 44 days before the due date (twins or more: 120 days, 60+ after)."
+          }
+        ],
+        "sources": {
+          "title": "Sources",
+          "items": [
+            {
+              "label": "ACOG Committee Opinion 700 — Methods for Estimating the Due Date",
+              "url": "https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/05/methods-for-estimating-the-due-date"
+            },
+            {
+              "label": "Labor Standards Act Art. 74 (Korea) — law.go.kr",
+              "url": "https://www.law.go.kr/법령/근로기준법/제74조"
+            },
+            {
+              "label": "Pregnancy & childbirth medical voucher — Bokjiro",
+              "url": "https://www.bokjiro.go.kr"
+            },
+            {
+              "label": "Tdap vaccination in pregnancy — KDCA",
+              "url": "https://nip.kdca.go.kr"
+            },
+            {
+              "label": "Prenatal care — KDCA Health Info",
+              "url": "https://health.kdca.go.kr"
+            },
+            {
+              "label": "IOM (2009) Weight Gain During Pregnancy",
+              "url": "https://nap.nationalacademies.org/catalog/12584"
+            },
+            {
+              "label": "BabyCenter — Average fetal length and weight chart",
+              "url": "https://www.babycenter.com/pregnancy/your-baby/average-fetal-length-and-weight-chart_1290794"
+            }
+          ]
+        }
+      },
+      "disclaimer": "For reference only, not a diagnosis. Always consult your care team about your due date, tests and weight. Contact your clinic right away for bleeding, severe pain or reduced fetal movement."
+    },
     "title": "Due Date Calculator",
-    "description": "Calculate your estimated due date based on your last menstrual period (LMP) or ovulation date.",
+    "description": "Calculate your due date, gestational age and test schedule from your last period, conception, ultrasound or IVF transfer date.",
     "calcMethod": "Calculation Basis",
     "lmpMethod": "Last Menstrual Period (LMP)",
     "ovulationMethod": "Ovulation / Conception Date",
@@ -19341,6 +19710,172 @@
     "copyLink": "Copy Link"
   },
   "freelancerTax": {
+    "ft": {
+      "subtitle": "Estimate your May income tax refund or extra payment from freelance income with 3.3% withheld. Uses NTS 2025 expense rates and 2026 tax brackets.",
+      "won": " KRW",
+      "people": "{n}",
+      "in": {
+        "revenue": "Annual income (gross, before 3.3%)",
+        "revenueHint": "Total paid amount on your withholding receipts / Hometax statements",
+        "industry": "Business code",
+        "simpleRate": "Simple rate",
+        "standardRate": "Standard rate",
+        "customHint": "Enter the rates from Hometax's expense-rate lookup. Example: 940909 other self-employed 64.1% / 17.4%. The excess rate above 40M KRW is approximated as 100−(100−simple)×1.4.",
+        "rateLine": "Simple {simple}% ({excess}% above 40M) · Standard {standard}% — tax year 2025",
+        "prev": "Previous year's income",
+        "prevHint": "Enter 0 if you started this year. Used to decide your expense method and bookkeeping duty.",
+        "method": "Expense method",
+        "eligible": "You qualify for: {method}",
+        "doubleEntry": "double-entry bookkeeping required",
+        "notEligible": "With previous-year income of {limitWon} KRW or more, the simple rate is not allowed. Shown for comparison only.",
+        "major": "Major expenses (documented purchases, rent, wages)",
+        "majorHint": "Only amounts backed by tax invoices, card slips, etc. count.",
+        "book": "Actual expenses from your books",
+        "bookHint": "Total expenses in your simplified ledger. Regional health insurance premiums can be included.",
+        "persons": "Basic deduction persons",
+        "children": "Children aged 8–20",
+        "personsHint": "Including yourself. Spouse with ≤1M KRW income, children ≤20, parents ≥60, etc.",
+        "pension": "National pension paid (yearly)",
+        "pensionHint": "Fully deductible when paid as a regional subscriber",
+        "yellow": "Yellow Umbrella contributions (yearly)",
+        "yellowHint": "Deduction limit for your business income: {limitWon} KRW"
+      },
+      "ind": {
+        "940909": "Other self-employed",
+        "940926": "Software freelancer",
+        "940100": "Writer / translator",
+        "940903": "Instructor / tutor",
+        "940306": "Solo media creator",
+        "940500": "Entertainment support",
+        "940600": "Advisory / consulting / proofreading",
+        "940918": "Courier (quick service)",
+        "940302": "Actor / talent",
+        "custom": "Enter manually"
+      },
+      "method": {
+        "simple": "Simple rate",
+        "standard": "Standard rate",
+        "book": "Books (actual)"
+      },
+      "hero": {
+        "label": "Tax year {year} · Income {rev} KRW",
+        "refund": "About {amountWon} KRW refund",
+        "pay": "About {amountWon} KRW to pay",
+        "zero": "No refund or extra payment",
+        "vs": "Withheld at 3.3%: {withheld} KRW vs actual tax: {tax} KRW",
+        "eff": "Effective rate {rate}%",
+        "dday": "Filing deadline D-{days} ({date})",
+        "ddayToday": "Filing deadline is today"
+      },
+      "share": {
+        "label": "{revWon} KRW with 3.3% withheld — what comes back in May",
+        "text": "{revWon} KRW with 3.3% withheld → {result}. Check your own refund"
+      },
+      "row": {
+        "title": "Calculation",
+        "revenue": "Income",
+        "expense": "Expenses ({method})",
+        "income": "Business income",
+        "basic": "Basic deduction ({n} × 1.5M)",
+        "pension": "Pension deduction",
+        "yellow": "Yellow Umbrella deduction",
+        "taxable": "Tax base",
+        "computed": "Calculated tax (top bracket {rate}%)",
+        "childCredit": "Child tax credit",
+        "standardCredit": "Standard tax credit",
+        "penalty": "No-bookkeeping penalty",
+        "incomeTax": "Final income tax",
+        "localTax": "Local income tax (10%)",
+        "totalTax": "Total actual tax",
+        "withheld": "Paid via 3.3%",
+        "withheldDetail": "Prepaid tax (income {it} + local {lt})",
+        "refund": "Refund",
+        "pay": "Extra payment"
+      },
+      "cmp": {
+        "title": "Compare expense methods",
+        "desc": "The same income can be taxed differently depending on how expenses are counted. Tap a row to use that method.",
+        "method": "Method",
+        "result": "Refund (+) / Pay (−)",
+        "eligibleTag": "eligible",
+        "bookEmpty": "Enter book expenses to compare",
+        "hintBook": "With a simplified ledger, your real expenses (equipment, software, transport, phone, regional health insurance) count in full. Books win when real expenses exceed the rate, and losses can be carried forward for 10 years.",
+        "hintCap": "Standard-rate income hit the cap of 2.8× the simple-rate income (3.4× for double-entry filers), so the cap was used.",
+        "hintPenalty": "Previous-year income is 48M KRW or more; filing by estimate without books adds a {amount} KRW penalty."
+      },
+      "wh": {
+        "title": "3.3% withholding calculator",
+        "desc": "Convert between the paid amount and take-home for a single payment. The 3% income tax and local tax (10% of it) are each truncated below 10 KRW.",
+        "gross": "Paid → take-home",
+        "net": "Take-home → paid",
+        "grossInput": "Paid amount (contract)",
+        "netInput": "Desired take-home",
+        "outPay": "Paid",
+        "incomeTax": "Income tax 3%",
+        "localTax": "Local tax 0.3%",
+        "outNet": "Take-home",
+        "note": "Take-home → paid returns the smallest paid amount whose take-home meets the target. Withholding is per payment, so yearly totals may differ by a few dozen KRW."
+      },
+      "rate": {
+        "title": "Income tax brackets (2026)",
+        "bracket": "Tax base",
+        "rate": "Rate",
+        "deduction": "Progressive deduction",
+        "range": "Over {loWon} up to {hiWon} KRW",
+        "over": "Over {loWon} KRW"
+      },
+      "links": {
+        "title": "Also check",
+        "health": "Regional health insurance is recalculated from November based on your newly filed income.",
+        "healthLink": "Health insurance calculator",
+        "pension": "Regional national pension premium and expected benefit:",
+        "pensionLink": "National pension calculator",
+        "hometax": "File via Hometax / Sontax → Global income tax return.",
+        "hometaxLink": "Go to Hometax"
+      },
+      "guide": {
+        "title": "Freelancer income tax essentials",
+        "withholding": {
+          "title": "3.3% is prepaid tax",
+          "items": [
+            "When business (personal service) income is paid, 3% income tax plus 0.3% local tax is withheld (Income Tax Act Art. 129).",
+            "In May of the next year you file and settle: overpaid tax is refunded, underpaid tax is due.",
+            "Lower income and more dependents make a refund more likely.",
+            "Income tax and local tax are each truncated below 10 KRW."
+          ]
+        },
+        "rates": {
+          "title": "Simple rate · Standard rate · Books",
+          "items": [
+            "Personal services (940xxx) use the simple rate if last year's income was under 36M KRW, otherwise the standard rate. New businesses use the simple rate while this year's income is under 75M KRW.",
+            "Simple rate: income × rate counts as expenses; income above 40M uses a lower excess rate.",
+            "Standard rate: documented major expenses + income × standard rate, capped at 2.8× the simple-rate income (3.4× for double-entry filers).",
+            "Books (simplified ledger): real expenses count. With last year's income of 48M KRW or more, filing without books incurs a penalty."
+          ]
+        },
+        "deductions": {
+          "title": "Deductions",
+          "items": [
+            "Basic deduction: 1.5M KRW per person including yourself.",
+            "Pension deduction: all national pension paid as a regional subscriber.",
+            "Yellow Umbrella: up to 6M (business income ≤40M), 4M (≤100M), 2M (>100M) from 2025 contributions.",
+            "Tax credits: 70K standard credit if you have no wage income; children 8–20: 250K for one, 550K for two, +400K each from the third.",
+            "Regional health insurance is not an income deduction; it is an expense when filing with books."
+          ]
+        },
+        "filing": {
+          "title": "Deadline and filing",
+          "items": [
+            "File last year's income May 1–31. If the 31st is a weekend or holiday, the next business day.",
+            "File on Hometax or Sontax; simple-rate filers can use the pre-filled return.",
+            "Refunds usually arrive about a month after filing.",
+            "Late filing adds a 20% non-filing penalty plus late-payment interest."
+          ]
+        },
+        "sources": "Sources: Income Tax Act Arts. 55, 129, 59-2, 59-4, 81-5; Enforcement Decree Arts. 143, 145; Restriction of Special Taxation Act Art. 86-3; NTS 2025 standard/simple expense rate notice (Hometax business code lookup)."
+      },
+      "disclaimer": "Estimate for reference only. Other income (wages, misc.), other credits, interim prepayment and separate local tax credits are not included. Confirm via Hometax or a tax accountant."
+    },
     "title": "Freelancer Tax Calculator",
     "description": "Compare 3.3% withholding tax with actual income tax to calculate expected refund or additional payment.",
     "inputTitle": "Income Details",
@@ -22391,8 +22926,91 @@
     }
   },
   "sleepCalculator": {
+    "u": {
+      "modeLabel": "Calculation mode",
+      "modes": {
+        "wake": "Wake time",
+        "bed": "Bedtime",
+        "nap": "Nap"
+      },
+      "bedAt": "Time you go to bed",
+      "napAt": "Nap start",
+      "now": "Now",
+      "pickTime": "Pick a time",
+      "latNote": "Time from lying down to actually falling asleep. Usually 10-20 min",
+      "cycleLen": "Sleep cycle length",
+      "cycleNote": "About 90 min on average. Adjust if you often wake before or after your alarm",
+      "clockFormat": "Clock format",
+      "h24": "24-hour",
+      "h12": "12-hour",
+      "clock12": "{hm} {p}",
+      "am": "AM",
+      "pm": "PM",
+      "durH": "{h}h",
+      "durHM": "{h}h {m}m",
+      "or": " or ",
+      "heroWake": "To wake up at {time}",
+      "heroNow": "If you fall asleep now ({time})",
+      "heroBed": "If you go to bed at {time}",
+      "heroNap": "If you nap at {time}",
+      "heroNapNow": "If you nap now",
+      "heroBedtime": "Go to bed at",
+      "heroAlarm": "Set your alarm for",
+      "optSub": "{c} cycles · {d} of sleep",
+      "napSub": "{len}-min nap (alarm includes time to fall asleep)",
+      "alarmText": "Bed {bed} · Alarm {wake} · {d} sleep",
+      "copyAlarm": "Copy alarm text",
+      "cycles": "{c} cycles",
+      "past": "Passed",
+      "short": "Too short",
+      "nextDay": "next day",
+      "rangeNote": "Options within the {lo}-{hi}h recommendation for {age} are marked. Tap a card to update the result above.",
+      "warnShort": "This option gives {d} of sleep, below the recommended {lo}-{hi}h. Try to fit one more cycle.",
+      "warnPast": "Bedtimes that allow {lo}+ hours have already passed. If you go to bed right now you can get up to about {d}. Getting to bed now matters more than matching cycles.",
+      "caffeine": "Stop caffeine by {time} ({h}h before bed). General guidance only; caffeine metabolism varies widely between people.",
+      "napTitle": "Nap alarm times",
+      "napLen": "{len} min",
+      "napShort": "Quick boost, easy to wake",
+      "napPower": "Power nap, wake before deep sleep",
+      "napFull": "One full cycle; avoid late afternoon",
+      "napNote": "Naps of 30-60 min often end in deep sleep, leaving you groggy (sleep inertia). Keep it short or complete a full cycle; naps after 3 PM can disturb night sleep.",
+      "share": {
+        "wake": "Wake at {wake} → go to bed at {list}",
+        "bed": "Bed at {bed} → wake at {list}",
+        "nap": "Nap at {start} → alarm at {wake}"
+      },
+      "debt": {
+        "title": "Sleep debt log (last 7 days)",
+        "note": "Enter how long you actually slept each day to total the shortfall against your target. Saved in this browser only.",
+        "days": [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat",
+          "Sun"
+        ],
+        "dayAria": "Sleep hours on {d}",
+        "target": "Daily target",
+        "reset": "Reset",
+        "deficit": "Sleep missed this week",
+        "avg": "Average sleep ({n} days logged)",
+        "warn": "You are 5+ hours short this week. Going to bed 30-60 min earlier over several nights disrupts your rhythm less than one long weekend lie-in.",
+        "tip": "Extra sleep on some days is not subtracted from the shortfall (catch-up sleep does not fully repay it). General reference only."
+      },
+      "sourcesTitle": "Evidence and sources",
+      "sources": [
+        "Recommended sleep by age: Hirshkowitz et al. (2015), National Sleep Foundation, Sleep Health 1(1):40-43",
+        "Adults: Watson et al. (2015), AASM/SRS consensus, J Clin Sleep Med 11(6):591 — 7+ hours per night for adults 18-60",
+        "Children/teens: Paruthi et al. (2016), AASM, J Clin Sleep Med 12(6):785 — 9-12h for ages 6-12, 8-10h for 13-18",
+        "Caffeine: Drake et al. (2013), J Clin Sleep Med 9(11):1195 — 400 mg caffeine even 6h before bed cut total sleep by over 1 hour",
+        "Naps: Brooks & Lack (2006), Sleep 29(6):831 — among 5/10/20/30-min naps, 10 min gave the strongest immediate benefit",
+        "Sleep cycles: about 90 min on average but 70-120 min, varying by person, night and cycle (Carskadon & Dement, Principles and Practice of Sleep Medicine)"
+      ]
+    },
     "title": "Sleep Calculator",
-    "description": "Calculate optimal bedtime and wake-up times based on 90-minute sleep cycles",
+    "description": "Find bedtimes for your wake-up time, when to wake if you sleep now, and nap alarms, based on sleep cycles",
     "linkCopied": "Copied",
     "copyLink": "Copy Link",
     "currentTime": "Current Time",
@@ -22407,14 +23025,14 @@
     "cycleLabel": "cycles",
     "recommended": "Recommended",
     "totalSleep": "Total sleep",
-    "cycleExplanation": "Sleep cycles last about 90 minutes. Waking at the end of a cycle helps you feel refreshed. It takes an average of 14 minutes to fall asleep.",
+    "cycleExplanation": "The 90-minute cycle is an average. Real cycles run roughly 70-120 minutes and vary by person and even between cycles in the same night, and time to fall asleep changes daily. Treat results as times you are more likely to wake less groggy; total sleep and a consistent wake time matter more than matching cycles.",
     "hourUnit": "h ",
     "minuteUnit": "m",
     "hoursLabel": "hours",
     "ageGroupTitle": "Recommended Sleep by Age",
     "ageGroupLabel": "Age Group",
     "recommendedHours": "Recommended",
-    "ageGroupSource": "Source: National Sleep Foundation",
+    "ageGroupSource": "Source: National Sleep Foundation (2015). The AASM recommends 7+ hours for adults, 9-12h for ages 6-12 and 8-10h for ages 13-18.",
     "ageNewborn": "Newborn (0-3 mo)",
     "ageInfant": "Infant (4-11 mo)",
     "ageToddler": "Toddler (1-2 yr)",
@@ -22428,7 +23046,7 @@
     "guideHabitsItems": [
       "Go to bed and wake up at the same time every day",
       "Reduce screen time 1 hour before bed",
-      "Limit caffeine to before 2 PM",
+      "Stop caffeine at least 6 hours before bed (by 5 PM for an 11 PM bedtime)",
       "Keep your bedroom dark and cool (64-68°F / 18-20°C)",
       "Exercise regularly but finish 3 hours before bedtime"
     ],

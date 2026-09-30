@@ -1,752 +1,464 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
-import { Calendar, Baby, Heart, Clock, BookOpen, TrendingUp, Stethoscope, Scale } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import ShareResult from '@/components/ShareResult'
+import { todayKST, isValidDate, addDays, daysBetween, weekday, ddayLabel } from '@/utils/dday'
+import {
+  dueDate, gestAge, trimester, koreanMonth, progress, lmpOf, checkupDates, CHECKUPS,
+  maternityLeave, voucher, shortHours, type Method,
+} from '@/utils/dueDate'
 
-type CalcMethod = 'lmp' | 'ovulation'
-
-interface Milestone {
-  labelKey: string
-  weekStart: number
-  weekEnd?: number
+const METHODS: Method[] = ['lmp', 'conception', 'ultrasound', 'ivf']
+type BmiCat = 'underweight' | 'normal' | 'overweight' | 'obese'
+const BMI_CATS: BmiCat[] = ['underweight', 'normal', 'overweight', 'obese']
+const bmiCat = (b: number): BmiCat => (b < 18.5 ? 'underweight' : b < 25 ? 'normal' : b < 30 ? 'overweight' : 'obese')
+const clampInt = (v: string | null, lo: number, hi: number, def: number) => {
+  const n = parseInt(v ?? '', 10)
+  return Number.isFinite(n) && n >= lo && n <= hi ? n : def
 }
-
-interface PrenatalVisit {
-  key: string
-  atWeek: number
-  toWeek?: number
-}
-
-const PRENATAL_VISITS: PrenatalVisit[] = [
-  { key: 'week8', atWeek: 8 },
-  { key: 'week12', atWeek: 12 },
-  { key: 'week16', atWeek: 16 },
-  { key: 'week20', atWeek: 20 },
-  { key: 'week24', atWeek: 24, toWeek: 28 },
-  { key: 'week28', atWeek: 28, toWeek: 32 },
-  { key: 'week36', atWeek: 36, toWeek: 40 },
-]
-
-const MILESTONES: Milestone[] = [
-  { labelKey: 'heartbeat', weekStart: 6, weekEnd: 7 },
-  { labelKey: 'firstTrimesterScreen', weekStart: 11, weekEnd: 13 },
-  { labelKey: 'genderReveal', weekStart: 16, weekEnd: 20 },
-  { labelKey: 'secondTrimesterScreen', weekStart: 15, weekEnd: 20 },
-  { labelKey: 'viability', weekStart: 24 },
-  { labelKey: 'glucoseTest', weekStart: 24, weekEnd: 28 },
-  { labelKey: 'fullTerm', weekStart: 37 },
-  { labelKey: 'dueDate', weekStart: 40 },
-]
-
-type BmiCategory = 'underweight' | 'normal' | 'overweight' | 'obese'
-
-function getBmiCategory(bmi: number): BmiCategory {
-  if (bmi < 18.5) return 'underweight'
-  if (bmi < 25) return 'normal'
-  if (bmi < 30) return 'overweight'
-  return 'obese'
-}
-
-const BABY_SIZE_WEEKS = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]
 
 export default function DueDateCalculator() {
   const t = useTranslations('dueDateCalculator')
-  const [calcMethod, setCalcMethod] = useState<CalcMethod>('lmp')
-  const [selectedDate, setSelectedDate] = useState<string>('')
-  const [calculated, setCalculated] = useState(false)
-  const [preHeight, setPreHeight] = useState<string>('')
-  const [preWeight, setPreWeight] = useState<string>('')
+  const tf = useTranslations('footer')
+  const sp = useSearchParams()
 
-  const results = useMemo(() => {
-    if (!selectedDate || !calculated) return null
+  const [today, setToday] = useState('')
+  const [method, setMethod] = useState<Method>('lmp')
+  const [date, setDate] = useState('')
+  const [cycle, setCycle] = useState(28)
+  const [usWeeks, setUsWeeks] = useState(8)
+  const [usDays, setUsDays] = useState(0)
+  const [embryo, setEmbryo] = useState<3 | 5>(5)
+  const [fetuses, setFetuses] = useState(1)
+  const [height, setHeight] = useState('')
+  const [weight, setWeight] = useState('')
 
-    const inputDate = new Date(selectedDate)
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
+  // 초기화: URL 파라미터 → 없으면 '오늘 기준 약 14주' 예시 (KST 오늘은 마운트 후에 구함)
+  const inited = useRef(false)
+  useEffect(() => {
+    if (inited.current) return
+    inited.current = true
+    const now = todayKST()
+    setToday(now)
+    const m = sp.get('m') as Method | null
+    if (m && METHODS.includes(m)) setMethod(m)
+    const d = sp.get('d')
+    setDate(isValidDate(d) ? d : addDays(now, -100))
+    setCycle(clampInt(sp.get('c'), 20, 45, 28))
+    setUsWeeks(clampInt(sp.get('uw'), 4, 42, 8))
+    setUsDays(clampInt(sp.get('ud'), 0, 6, 0))
+    setEmbryo(sp.get('e') === '3' ? 3 : 5)
+    setFetuses(clampInt(sp.get('n'), 1, 3, 1))
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    // Calculate due date
-    const dueDate = new Date(inputDate)
-    if (calcMethod === 'lmp') {
-      dueDate.setDate(dueDate.getDate() + 280) // LMP + 280 days
-    } else {
-      dueDate.setDate(dueDate.getDate() + 266) // Ovulation + 266 days
-    }
+  useEffect(() => {
+    if (!inited.current || !date) return
+    const url = new URL(window.location.href)
+    const p = url.searchParams
+    p.set('m', method)
+    p.set('d', date)
+    ;['c', 'uw', 'ud', 'e'].forEach(k => p.delete(k))
+    if (method === 'lmp' && cycle !== 28) p.set('c', String(cycle))
+    if (method === 'ultrasound') { p.set('uw', String(usWeeks)); p.set('ud', String(usDays)) }
+    if (method === 'ivf') p.set('e', String(embryo))
+    if (fetuses > 1) p.set('n', String(fetuses)); else p.delete('n')
+    window.history.replaceState({}, '', url)
+  }, [method, date, cycle, usWeeks, usDays, embryo, fetuses])
 
-    // Calculate conception date (LMP + 14 days)
-    const conceptionDate = new Date(inputDate)
-    if (calcMethod === 'lmp') {
-      conceptionDate.setDate(conceptionDate.getDate() + 14)
-    } else {
-      // If using ovulation date, it IS the conception date
-      conceptionDate.setTime(inputDate.getTime())
-    }
+  const fmt = (s: string) => {
+    const [y, m, d] = s.split('-').map(Number)
+    return t('u.dateFmt', { y, m, d, w: (t.raw('u.weekdays') as string[])[weekday(s)] })
+  }
+  const fmtShort = (s: string) => {
+    const [, m, d] = s.split('-').map(Number)
+    return t('u.dateShort', { m, d })
+  }
 
-    // Calculate current week and days
-    const daysSinceStart = Math.floor((today.getTime() - inputDate.getTime()) / (1000 * 60 * 60 * 24))
-    const totalWeeks = Math.floor(daysSinceStart / 7)
-    const remainingDays = daysSinceStart % 7
-
-    // Calculate days remaining/elapsed
-    const daysUntilDue = Math.floor((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
-    const isPastDue = daysUntilDue < 0
-
-    // Calculate progress
-    const totalDays = calcMethod === 'lmp' ? 280 : 266
-    const progress = Math.min(100, Math.max(0, (daysSinceStart / totalDays) * 100))
-
-    // Determine trimester
-    let trimester = 1
-    if (totalWeeks >= 28) trimester = 3
-    else if (totalWeeks >= 13) trimester = 2
-
+  const r = useMemo(() => {
+    if (!today || !isValidDate(date)) return null
+    const edd = dueDate({ method, date, cycle, usWeeks, usDays, embryo })
+    const ga = gestAge(edd, today)
+    const left = daysBetween(today, edd)
     return {
-      dueDate,
-      conceptionDate,
-      weeks: totalWeeks,
-      days: remainingDays,
-      trimester,
-      daysRemaining: Math.abs(daysUntilDue),
-      isPastDue,
-      progress,
+      edd, ga, left,
+      lmp: lmpOf(edd),
+      conception: addDays(lmpOf(edd), 14),
+      tri: trimester(ga.totalDays),
+      month: koreanMonth(ga.weeks),
+      pct: progress(ga.totalDays),
+      fullTerm: addDays(lmpOf(edd), 37 * 7),
+      notYet: ga.totalDays < 0,
+      over42: ga.totalDays >= 42 * 7,
     }
-  }, [selectedDate, calcMethod, calculated])
+  }, [today, date, method, cycle, usWeeks, usDays, embryo])
 
-  const bmiData = useMemo(() => {
-    const h = parseFloat(preHeight)
-    const w = parseFloat(preWeight)
-    if (!h || !w || h <= 0 || w <= 0) return null
-    const bmi = w / ((h / 100) ** 2)
-    const cat = getBmiCategory(bmi)
-    return { bmi, cat }
-  }, [preHeight, preWeight])
+  const bmi = useMemo(() => {
+    const h = parseFloat(height), w = parseFloat(weight)
+    if (!(h >= 100 && h <= 230 && w >= 30 && w <= 250)) return null
+    const b = w / (h / 100) ** 2
+    return { b, cat: bmiCat(b) }
+  }, [height, weight])
 
-  // Find the closest week data key (clamp to 4-40)
-  const babySizeWeek = useMemo(() => {
-    if (!results) return null
-    const w = Math.max(4, Math.min(40, results.weeks))
-    // find closest week in BABY_SIZE_WEEKS
-    const closest = BABY_SIZE_WEEKS.reduce((prev, cur) =>
-      Math.abs(cur - w) < Math.abs(prev - w) ? cur : prev
-    )
-    return closest
-  }, [results])
+  const seg = (on: boolean) =>
+    `px-3 py-2 rounded-xl text-sm font-semibold transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`
 
-  const handleCalculate = () => {
-    if (selectedDate) {
-      setCalculated(true)
-    }
-  }
+  const gaText = r ? t('u.weeksDays', { w: r.ga.weeks, d: r.ga.days }) : ''
+  const sizeWeek = r ? Math.max(4, Math.min(40, r.ga.weeks)) : 0
+  const size = r && r.ga.weeks >= 4 && !r.over42
+    ? (t.raw(`babySize.week${sizeWeek}`) as { fruit: string; length: string; weight: string } | undefined)
+    : undefined
 
-  const handleReset = () => {
-    setSelectedDate('')
-    setCalculated(false)
-  }
-
-  const formatDate = (date: Date) => {
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${year}년 ${month}월 ${day}일`
-  }
-
-  const getMilestoneDate = (weekNumber: number) => {
-    if (!selectedDate || !calculated) return null
-    const inputDate = new Date(selectedDate)
-    const milestoneDate = new Date(inputDate)
-    milestoneDate.setDate(milestoneDate.getDate() + weekNumber * 7)
-    return milestoneDate
-  }
+  const ml = r ? maternityLeave(r.edd, fetuses) : null
+  const sh = r ? shortHours(r.edd) : null
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Settings Panel */}
+        {/* ── 입력 ── */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-              <Calendar className="w-5 h-5" />
-              <h2 className="text-lg font-semibold">{t('calcMethod')}</h2>
-            </div>
-
-            {/* Calculation Method */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="radio"
-                  name="calcMethod"
-                  value="lmp"
-                  checked={calcMethod === 'lmp'}
-                  onChange={(e) => setCalcMethod(e.target.value as CalcMethod)}
-                  className="w-4 h-4 accent-blue-600"
-                />
-                <span className="text-fg">{t('lmpMethod')}</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="radio"
-                  name="calcMethod"
-                  value="ovulation"
-                  checked={calcMethod === 'ovulation'}
-                  onChange={(e) => setCalcMethod(e.target.value as CalcMethod)}
-                  className="w-4 h-4 accent-blue-600"
-                />
-                <span className="text-fg">{t('ovulationMethod')}</span>
-              </label>
-            </div>
-
-            {/* Date Input */}
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {calcMethod === 'lmp' ? t('lmpDate') : t('ovulationDate')}
-              </label>
+              <p className="text-sm font-medium text-body mb-2">{t('calcMethod')}</p>
+              <div className="grid grid-cols-2 gap-2" role="radiogroup">
+                {METHODS.map(m => (
+                  <button key={m} role="radio" aria-checked={method === m} onClick={() => setMethod(m)} className={seg(method === m)}>
+                    {t(`u.method.${m}`)}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-muted mt-2">{t(`u.methodHint.${method}`)}</p>
+            </div>
+
+            <div>
+              <label htmlFor="dd-date" className="block text-sm font-medium text-body mb-2">{t(`u.dateLabel.${method}`)}</label>
               <input
+                id="dd-date"
                 type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                max={new Date().toISOString().split('T')[0]}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
+                value={date}
+                max={today || undefined}
+                onChange={e => setDate(e.target.value)}
+                className="ui-field w-full px-4 py-3"
               />
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={handleCalculate}
-                disabled={!selectedDate}
-                className="flex-1 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              >
-                {t('calculate')}
-              </button>
-              <button
-                onClick={handleReset}
-                className="px-4 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg font-medium transition-colors"
-              >
-                {t('reset')}
-              </button>
+            {method === 'lmp' && (
+              <div>
+                <label htmlFor="dd-cycle" className="block text-sm font-medium text-body mb-2">{t('u.cycle')}</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="dd-cycle" type="number" min={20} max={45} value={cycle}
+                    onChange={e => setCycle(clampInt(e.target.value, 20, 45, cycle))}
+                    className="ui-field w-24 px-4 py-3 tabular-nums"
+                  />
+                  <span className="text-sm text-sub">{t('u.days')}</span>
+                </div>
+                <p className="text-xs text-muted mt-2">{t('u.cycleHint')}</p>
+              </div>
+            )}
+
+            {method === 'ultrasound' && (
+              <div>
+                <p className="text-sm font-medium text-body mb-2">{t('u.usAge')}</p>
+                <div className="flex items-center gap-2">
+                  <input
+                    aria-label={t('u.weeks')} type="number" min={4} max={42} value={usWeeks}
+                    onChange={e => setUsWeeks(clampInt(e.target.value, 4, 42, usWeeks))}
+                    className="ui-field w-20 px-3 py-3 tabular-nums"
+                  />
+                  <span className="text-sm text-sub">{t('u.weeks')}</span>
+                  <input
+                    aria-label={t('u.days')} type="number" min={0} max={6} value={usDays}
+                    onChange={e => setUsDays(clampInt(e.target.value, 0, 6, usDays))}
+                    className="ui-field w-20 px-3 py-3 tabular-nums"
+                  />
+                  <span className="text-sm text-sub">{t('u.days')}</span>
+                </div>
+                <p className="text-xs text-muted mt-2">{t('u.usHint')}</p>
+              </div>
+            )}
+
+            {method === 'ivf' && (
+              <div>
+                <p className="text-sm font-medium text-body mb-2">{t('u.embryo')}</p>
+                <div className="grid grid-cols-2 gap-2" role="radiogroup">
+                  {([3, 5] as const).map(e => (
+                    <button key={e} role="radio" aria-checked={embryo === e} onClick={() => setEmbryo(e)} className={seg(embryo === e)}>
+                      {t('u.embryoDay', { n: e })}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div>
+              <p className="text-sm font-medium text-body mb-2">{t('u.fetuses')}</p>
+              <div className="grid grid-cols-3 gap-2" role="radiogroup">
+                {[1, 2, 3].map(n => (
+                  <button key={n} role="radio" aria-checked={fetuses === n} onClick={() => setFetuses(n)} className={seg(fetuses === n)}>
+                    {t(`u.fetus${n}`)}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Results Panel */}
-        <div className="lg:col-span-2">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            {!calculated || !results ? (
-              <div className="text-center py-12 text-muted">
-                <Baby className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p>{t('description')}</p>
+        {/* ── 결과 ── */}
+        <div className="lg:col-span-2 space-y-4">
+          {!r ? (
+            <div className="ui-card p-6 text-center text-muted">{t('u.enterDate')}</div>
+          ) : (
+            <>
+              <div className="ui-hero p-6 sm:p-8">
+                <p className="text-sm text-white/70">{t('u.eddLabel')}</p>
+                <p className="text-3xl sm:text-4xl font-bold mt-1 tabular-nums">{fmt(r.edd)}</p>
+                <p className="text-sm text-white/80 mt-1">
+                  {r.notYet ? t('u.notYet') : t('u.heroSub', { ga: gaText, month: r.month, tri: r.tri })}
+                </p>
+                <div className="mt-6">
+                  <div className="flex justify-between text-xs text-white/70 mb-1.5 tabular-nums">
+                    <span>{t('u.progress')} {r.pct.toFixed(0)}%</span>
+                    <span>{ddayLabel(r.left)}</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-white/25 overflow-hidden">
+                    <div className="h-full bg-white rounded-full transition-all" style={{ width: `${r.pct}%` }} />
+                  </div>
+                </div>
               </div>
-            ) : (
-              <>
-                <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                  <Heart className="w-5 h-5" />
-                  <h2 className="text-lg font-semibold">{t('result.title')}</h2>
-                </div>
 
-                {/* Main Results Grid */}
-                <div className="grid md:grid-cols-2 gap-4">
-                  {/* Due Date */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-sub mb-1">{t('result.dueDate')}</div>
-                    <div className="text-2xl font-bold text-pink-600 dark:text-pink-400">
-                      {formatDate(results.dueDate)}
-                    </div>
-                  </div>
+              {r.over42 && <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('u.over42')}</div>}
 
-                  {/* Current Week */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-sub mb-1">{t('result.currentWeek')}</div>
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {t('result.weeksAndDays', { weeks: results.weeks, days: results.days })}
-                    </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                  { label: t('u.currentWeek'), value: r.notYet ? '-' : gaText },
+                  { label: t('u.monthLabel'), value: r.notYet ? '-' : t('u.monthValue', { n: r.month }) },
+                  { label: t('u.triLabel'), value: r.notYet ? '-' : t(`u.tri${r.tri}`) },
+                  { label: r.left >= 0 ? t('u.daysLeft') : t('u.daysOver'), value: t('u.nDays', { n: Math.abs(r.left) }) },
+                ].map(x => (
+                  <div key={x.label} className="ui-card p-4">
+                    <p className="text-xs text-muted">{x.label}</p>
+                    <p className="text-lg font-bold text-fg tabular-nums mt-0.5">{x.value}</p>
                   </div>
+                ))}
+              </div>
 
-                  {/* Trimester */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-sub mb-1">{t('result.trimester')}</div>
-                    <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
-                      {t(`result.trimester${results.trimester}` as Parameters<typeof t>[0])}
-                    </div>
+              <div className="ui-card p-5 divide-y divide-line text-sm">
+                {[
+                  { label: t('u.lmpEq'), value: fmt(r.lmp) },
+                  { label: t('u.conceptionEst'), value: fmt(r.conception) },
+                  { label: t('u.fullTermFrom'), value: fmt(r.fullTerm) },
+                  { label: t('u.range'), value: `${fmtShort(addDays(r.edd, -14))} ~ ${fmtShort(addDays(r.edd, 14))}` },
+                ].map(x => (
+                  <div key={x.label} className="flex justify-between gap-4 py-2.5 first:pt-0 last:pb-0">
+                    <span className="text-sub">{x.label}</span>
+                    <span className="text-fg font-medium tabular-nums text-right">{x.value}</span>
                   </div>
+                ))}
+                <p className="text-xs text-muted pt-2.5">{t('u.monthNote')}</p>
+              </div>
 
-                  {/* Days Remaining/Elapsed */}
-                  <div className="bg-subtle rounded-lg p-4">
-                    <div className="text-sm text-sub mb-1">
-                      {results.isPastDue ? t('result.daysElapsed') : t('result.daysRemaining')}
-                    </div>
-                    <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
-                      {results.daysRemaining}일
-                    </div>
-                    {results.isPastDue && (
-                      <div className="text-xs text-amber-600 dark:text-amber-400 mt-1">
-                        {t('result.alreadyPassed')}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Progress Bar */}
-                <div>
-                  <div className="flex justify-between text-sm text-sub mb-2">
-                    <span>{t('result.progress')}</span>
-                    <span>{results.progress.toFixed(1)}%</span>
-                  </div>
-                  <div className="w-full bg-track rounded-full h-3 overflow-hidden">
-                    <div
-                      className="bg-primary h-full transition-all duration-500"
-                      style={{ width: `${results.progress}%` }}
-                    />
-                  </div>
-                </div>
-
-                {/* Conception Date */}
-                <div className="bg-subtle rounded-lg p-4">
-                  <div className="text-sm text-sub mb-1">{t('result.conceptionDate')}</div>
-                  <div className="text-lg font-semibold text-blue-600 dark:text-blue-400">
-                    {formatDate(results.conceptionDate)}
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
+              <ShareResult
+                card={{
+                  tool: t('title'),
+                  label: t('u.eddLabel'),
+                  headline: fmt(r.edd),
+                  sub: r.notYet ? undefined : t('u.share.sub', { ga: gaText, month: r.month }),
+                  rows: [
+                    { label: t('u.daysLeft'), value: ddayLabel(r.left) },
+                    { label: t('u.triLabel'), value: r.notYet ? '-' : t(`u.tri${r.tri}`) },
+                    { label: t('u.fullTermFrom'), value: fmt(r.fullTerm) },
+                  ],
+                }}
+                text={r.notYet ? t('u.share.textShort', { edd: fmt(r.edd) }) : t('u.share.text', { edd: fmt(r.edd), ga: gaText })}
+                fileName="due-date"
+              />
+            </>
+          )}
         </div>
       </div>
 
-      {/* Milestones Timeline */}
-      {calculated && results && (
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-6">
-            <Clock className="w-5 h-5" />
-            <h2 className="text-lg font-semibold">{t('milestones.title')}</h2>
-          </div>
-
-          <div className="space-y-4">
-            {MILESTONES.map((milestone, index) => {
-              const milestoneDate = getMilestoneDate(milestone.weekStart)
-              const isPast = milestoneDate && milestoneDate < new Date()
-              const isCurrent = results.weeks >= milestone.weekStart &&
-                               (!milestone.weekEnd || results.weeks <= milestone.weekEnd)
-
-              return (
-                <div
-                  key={index}
-                  className={`flex items-start gap-4 p-4 rounded-lg transition-colors ${
-                    isCurrent
-                      ? 'bg-subtle border-l-4 border-blue-600'
-                      : isPast
-                      ? 'bg-subtle opacity-60'
-                      : 'bg-subtle'
-                  }`}
-                >
-                  <div
-                    className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-                      isCurrent
-                        ? 'bg-blue-600 text-white'
-                        : isPast
-                        ? 'bg-gray-400 text-white'
-                        : 'bg-gray-300 dark:bg-gray-700 text-sub'
-                    }`}
-                  >
-                    <Baby className="w-5 h-5" />
-                  </div>
-                  <div className="flex-1">
-                    <div className={`font-medium ${
-                      isCurrent
-                        ? 'text-blue-600 dark:text-blue-400'
-                        : 'text-fg'
-                    }`}>
-                      {t(`milestones.${milestone.labelKey}` as Parameters<typeof t>[0])}
-                    </div>
-                    {milestoneDate && (
-                      <div className="text-sm text-muted mt-1">
-                        {formatDate(milestoneDate)}
-                      </div>
-                    )}
-                  </div>
-                  {isCurrent && (
-                    <div className="flex-shrink-0 px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-full">
-                      현재
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* ── 1. Weekly Progress Bar ── */}
-      {calculated && results && (
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 mb-6">
-            <TrendingUp className="w-5 h-5" />
-            <h2 className="text-lg font-semibold">{t('weeklyProgress.title')}</h2>
-          </div>
-
-          {/* Trimester color legend */}
-          <div className="flex flex-wrap gap-3 mb-4 text-xs">
-            <span className="flex items-center gap-1.5">
-              <span className="inline-block w-3 h-3 rounded-sm bg-green-400" />
-              <span className="text-sub">{t('weeklyProgress.trimester1Label')}</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="inline-block w-3 h-3 rounded-sm bg-blue-400" />
-              <span className="text-sub">{t('weeklyProgress.trimester2Label')}</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="inline-block w-3 h-3 rounded-sm bg-purple-400" />
-              <span className="text-sub">{t('weeklyProgress.trimester3Label')}</span>
-            </span>
-          </div>
-
-          {/* Progress bar (40 segments) */}
-          <div className="relative w-full h-8 rounded-full overflow-hidden flex">
-            {Array.from({ length: 40 }, (_, i) => {
-              const week = i + 1
-              const isFilled = week <= results.weeks
-              const isCurrent = week === results.weeks
-              let colorClass = ''
-              if (isFilled) {
-                if (week <= 12) colorClass = 'bg-green-400'
-                else if (week <= 27) colorClass = 'bg-blue-400'
-                else colorClass = 'bg-purple-400'
-              } else {
-                colorClass = 'bg-track'
-              }
-              return (
-                <div
-                  key={week}
-                  title={`${week}주`}
-                  className={`flex-1 transition-colors ${colorClass} ${isCurrent ? 'ring-2 ring-offset-1 ring-white dark:ring-gray-800 relative z-10' : ''}`}
-                  style={{ marginRight: week < 40 ? '1px' : 0 }}
-                />
-              )
-            })}
-          </div>
-
-          {/* Week marker */}
-          <div className="flex justify-between text-xs text-muted mt-1 px-0.5">
-            <span>1주</span>
-            <span>10주</span>
-            <span>20주</span>
-            <span>30주</span>
-            <span>40주</span>
-          </div>
-
-          {/* Current badge + baby size teaser */}
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold bg-soft text-sub">
-              {t('weeklyProgress.currentWeekBadge', { week: results.weeks })}
-              {results.days > 0 && (
-                <span className="font-normal text-xs opacity-75">+ {results.days}일</span>
-              )}
-            </span>
-            <span className="text-sm text-muted">
-              {t('weeklyProgress.outOf40')}
-            </span>
-            {babySizeWeek && results.weeks >= 4 && (
-              <span className="text-sm text-body">
-                {t('weeklyProgress.babyThisWeek')}
-                {' '}
-                <span className="font-medium">
-                  {(t.raw(`babySize.week${babySizeWeek}`) as { fruit: string; emoji: string }).emoji}{' '}
-                  {(t.raw(`babySize.week${babySizeWeek}`) as { fruit: string; emoji: string }).fruit}
-                </span>
-              </span>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ── 2. Baby Size by Week ── */}
-      {calculated && results && results.weeks >= 4 && babySizeWeek && (
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <div className="flex items-center gap-2 text-pink-500 dark:text-pink-400 mb-2">
-            <Baby className="w-5 h-5" />
-            <h2 className="text-lg font-semibold">{t('babySize.title')}</h2>
-          </div>
-          <p className="text-sm text-muted mb-6">{t('babySize.description')}</p>
-
-          {/* Highlight card for current week */}
-          {(() => {
-            const data = t.raw(`babySize.week${babySizeWeek}`) as { fruit: string; emoji: string; length: string; weight: string }
-            return (
-              <div className="bg-subtle rounded-xl p-6 mb-6 flex flex-col sm:flex-row items-center gap-6">
-                <div className="text-7xl leading-none">{data.emoji}</div>
-                <div>
-                  <div className="text-sm text-muted mb-1">{results.weeks}주 아기</div>
-                  <div className="text-2xl font-bold text-pink-600 dark:text-pink-400 mb-2">{data.fruit} 크기</div>
-                  <div className="flex gap-4 text-sm text-body">
-                    <span>📏 {t('babySize.lengthLabel')}: <strong>{data.length}</strong></span>
-                    <span>⚖️ {t('babySize.weightLabel')}: <strong>{data.weight}</strong></span>
-                  </div>
-                </div>
-              </div>
-            )
-          })()}
-
-          {/* Compact table of all milestones */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left border-b border-line">
-                  <th className="pb-2 pr-4 text-muted font-medium">주수</th>
-                  <th className="pb-2 pr-4 text-muted font-medium">크기</th>
-                  <th className="pb-2 pr-4 text-muted font-medium">길이</th>
-                  <th className="pb-2 text-muted font-medium">몸무게</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[4, 8, 12, 16, 20, 24, 28, 32, 36, 40].map((w) => {
-                  const data = t.raw(`babySize.week${w}`) as { fruit: string; emoji: string; length: string; weight: string }
-                  const isCurrentRow = Math.abs(w - results.weeks) <= 2 && babySizeWeek === w
-                  return (
-                    <tr
-                      key={w}
-                      className={`border-b border-line transition-colors ${
-                        isCurrentRow ? 'bg-primary-soft text-primary font-medium' : ''
-                      }`}
-                    >
-                      <td className="py-2 pr-4 text-body">{w}주</td>
-                      <td className="py-2 pr-4">
-                        <span className="mr-1">{data.emoji}</span>
-                        <span className="text-body">{data.fruit}</span>
-                        {isCurrentRow && (
-                          <span className="ml-2 text-xs px-1.5 py-0.5 bg-soft text-sub rounded-full">현재</span>
-                        )}
-                      </td>
-                      <td className="py-2 pr-4 text-sub">{data.length}</td>
-                      <td className="py-2 text-sub">{data.weight}</td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* ── 3. Prenatal Checkup Schedule ── */}
-      {calculated && results && (
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 mb-2">
-            <Stethoscope className="w-5 h-5" />
-            <h2 className="text-lg font-semibold">{t('prenatalSchedule.title')}</h2>
-          </div>
-          <p className="text-sm text-muted mb-6">{t('prenatalSchedule.subtitle')}</p>
-
-          <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-track" />
-
-            <div className="space-y-4">
-              {PRENATAL_VISITS.map((visit) => {
-                const isPast = results.weeks > (visit.toWeek ?? visit.atWeek)
-                const isCurrent = results.weeks >= visit.atWeek && results.weeks <= (visit.toWeek ?? visit.atWeek + 2)
-                const isUpcoming = !isPast && !isCurrent
-
-                let dotClass = 'bg-gray-300 dark:bg-gray-600'
-                let labelClass = 'bg-soft text-sub'
-                let labelText = t('prenatalSchedule.upcomingLabel')
-                if (isPast) {
-                  dotClass = 'bg-green-500'
-                  labelClass = 'bg-soft text-sub'
-                  labelText = t('prenatalSchedule.completedLabel')
-                } else if (isCurrent) {
-                  dotClass = 'bg-teal-500 ring-4 ring-teal-200 dark:ring-teal-900'
-                  labelClass = 'bg-soft text-sub'
-                  labelText = t('prenatalSchedule.currentLabel')
-                }
-
-                const visitData = t.raw(`prenatalSchedule.${visit.key}`) as { title: string; desc: string }
-
+      {r && (
+        <>
+          {/* ── 검사·일정 타임라인 ── */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('u.timeline.title')}</h2>
+            <p className="text-sm text-muted mt-1 mb-5">{t('u.timeline.subtitle')}</p>
+            <ol className="space-y-3">
+              {CHECKUPS.map(c => {
+                const cd = checkupDates(r.edd, c, today)
                 return (
-                  <div key={visit.key} className="flex items-start gap-4 pl-0">
-                    <div className={`relative z-10 flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${dotClass}`}>
-                      <Stethoscope className="w-4 h-4 text-white" />
+                  <li
+                    key={c.key}
+                    className={`rounded-2xl p-4 ${cd.status === 'now' ? 'bg-primary-soft border border-primary' : 'bg-subtle'} ${cd.status === 'past' ? 'opacity-60' : ''}`}
+                  >
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className={`font-semibold ${cd.status === 'now' ? 'text-primary' : 'text-fg'}`}>{t(`u.timeline.${c.key}.title`)}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${cd.status === 'now' ? 'bg-primary text-white' : 'bg-soft text-sub'}`}>
+                        {t(`u.status.${cd.status}`)}
+                      </span>
                     </div>
-                    <div className={`flex-1 rounded-lg p-4 ${isCurrent ? 'bg-subtle border-l-4 border-teal-500' : isPast ? 'bg-subtle opacity-70' : 'bg-subtle'}`}>
-                      <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <span className={`font-semibold ${isCurrent ? 'text-sub' : 'text-fg'}`}>
-                          {visitData.title}
-                        </span>
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${labelClass}`}>
-                          {labelText}
-                        </span>
-                      </div>
-                      <p className="text-sm text-sub">{visitData.desc}</p>
-                    </div>
-                  </div>
+                    <p className="text-sm text-sub mt-1 tabular-nums">
+                      {t('u.timeline.weeks', { from: c.from, to: c.to })} · {fmtShort(cd.start)} ~ {fmtShort(cd.end)}
+                      {cd.status === 'upcoming' && ` · ${ddayLabel(daysBetween(today, cd.start))}`}
+                    </p>
+                    <p className="text-sm text-muted mt-1">{t(`u.timeline.${c.key}.desc`)}</p>
+                  </li>
+                )
+              })}
+            </ol>
+            <p className="text-xs text-muted mt-4">{t('u.timeline.visitNote')}</p>
+          </div>
+
+          {/* ── 지원 제도 ── */}
+          <div className="ui-card p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('u.support.title')}</h2>
+            <p className="text-sm text-muted mt-1 mb-5">{t('u.support.subtitle')}</p>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="bg-subtle rounded-2xl p-5">
+                <p className="text-sm text-sub">{t('u.support.voucherTitle')}</p>
+                <p className="text-2xl font-bold text-fg tabular-nums mt-1">{t('u.support.manwon', { n: voucher(fetuses), won: (voucher(fetuses) * 10000).toLocaleString('en-US') })}</p>
+                <p className="text-xs text-muted mt-2">{t('u.support.voucherDesc')}</p>
+              </div>
+              {ml && (
+                <div className="bg-subtle rounded-2xl p-5">
+                  <p className="text-sm text-sub">{t('u.support.leaveTitle', { n: ml.total })}</p>
+                  <p className="text-2xl font-bold text-fg tabular-nums mt-1">{fmtShort(ml.earliestStart)}</p>
+                  <p className="text-xs text-muted mt-2">
+                    {t('u.support.leaveDesc', { before: ml.total - ml.after - 1, after: ml.after, end: fmtShort(ml.endIfOnTime) })}
+                  </p>
+                </div>
+              )}
+              {sh && (
+                <div className="bg-subtle rounded-2xl p-5">
+                  <p className="text-sm text-sub">{t('u.support.shortTitle')}</p>
+                  <p className="text-base font-bold text-fg tabular-nums mt-1">
+                    ~{fmtShort(sh.week12)} · {fmtShort(sh.week32)}~
+                  </p>
+                  <p className="text-xs text-muted mt-2">{t('u.support.shortDesc')}</p>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2 mt-5">
+              {(['parental-leave:parentalLeave', 'child-benefit:childBenefit', 'government-subsidy:governmentSubsidy', 'ovulation-calculator:ovulationCalculator'] as const).map(x => {
+                const [href, key] = x.split(':')
+                return (
+                  <Link key={href} href={`/${href}/`} className="px-4 py-2 rounded-xl bg-soft text-body text-sm font-medium hover:bg-track">
+                    {tf(`links.${key}`)} →
+                  </Link>
                 )
               })}
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── 4. Weight Gain Guide ── */}
-      {calculated && results && (
-        <div className={`${glassCard} ${glassInset} p-6`}>
-          <div className="flex items-center gap-2 text-orange-500 dark:text-orange-400 mb-2">
-            <Scale className="w-5 h-5" />
-            <h2 className="text-lg font-semibold">{t('weightGain.title')}</h2>
-          </div>
-          <p className="text-sm text-muted mb-6">{t('weightGain.subtitle')}</p>
-
-          {/* Input row */}
-          <div className="grid sm:grid-cols-2 gap-4 mb-6">
-            <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('weightGain.heightLabel')}
-              </label>
-              <input
-                type="number"
-                value={preHeight}
-                onChange={(e) => setPreHeight(e.target.value)}
-                placeholder={t('weightGain.heightPlaceholder')}
-                min="100"
-                max="220"
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-orange-400`}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-body mb-1">
-                {t('weightGain.weightLabel')}
-              </label>
-              <input
-                type="number"
-                value={preWeight}
-                onChange={(e) => setPreWeight(e.target.value)}
-                placeholder={t('weightGain.weightPlaceholder')}
-                min="30"
-                max="200"
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-orange-400`}
-              />
-            </div>
+            <p className="text-xs text-muted mt-4">{t('u.support.note')}</p>
           </div>
 
-          {!bmiData ? (
-            <div className="text-center py-6 text-faint text-sm">
-              {t('weightGain.enterHeightWeight')}
+          {/* ── 이번 주 아기 크기 ── */}
+          {size && (
+            <div className="ui-card p-6">
+              <h2 className="text-lg font-semibold text-fg">{t('u.size.title', { w: sizeWeek })}</h2>
+              <div className="grid grid-cols-3 gap-3 mt-4">
+                <div className="bg-subtle rounded-2xl p-4">
+                  <p className="text-xs text-muted">{t('u.size.like')}</p>
+                  <p className="text-lg font-bold text-fg mt-0.5">{size.fruit}</p>
+                </div>
+                <div className="bg-subtle rounded-2xl p-4">
+                  <p className="text-xs text-muted">{t('babySize.lengthLabel')}</p>
+                  <p className="text-lg font-bold text-fg tabular-nums mt-0.5">{size.length}</p>
+                </div>
+                <div className="bg-subtle rounded-2xl p-4">
+                  <p className="text-xs text-muted">{t('babySize.weightLabel')}</p>
+                  <p className="text-lg font-bold text-fg tabular-nums mt-0.5">{size.weight}</p>
+                </div>
+              </div>
+              <p className="text-xs text-muted mt-3">{t('u.size.note')}</p>
             </div>
-          ) : (
-            <>
-              {/* BMI result cards */}
-              <div className="grid sm:grid-cols-3 gap-4 mb-6">
-                <div className="bg-subtle rounded-lg p-4 text-center">
-                  <div className="text-sm text-muted mb-1">{t('weightGain.bmiLabel')}</div>
-                  <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{bmiData.bmi.toFixed(1)}</div>
-                </div>
-                <div className="bg-amber-50 dark:bg-amber-950/30 rounded-lg p-4 text-center">
-                  <div className="text-sm text-muted mb-1">{t('weightGain.categoryLabel')}</div>
-                  <div className="text-base font-semibold text-amber-700 dark:text-amber-300">
-                    {t(`weightGain.${bmiData.cat}` as Parameters<typeof t>[0])}
-                  </div>
-                </div>
-                <div className="bg-yellow-50 dark:bg-yellow-950/30 rounded-lg p-4 text-center">
-                  <div className="text-sm text-muted mb-1">{t('weightGain.recommendedGainLabel')}</div>
-                  <div className="text-xl font-bold text-yellow-700 dark:text-yellow-300">
-                    {t(`weightGain.${bmiData.cat}Range` as Parameters<typeof t>[0])}
-                  </div>
-                </div>
-              </div>
-
-              {/* Trimester breakdown */}
-              <div className="grid sm:grid-cols-2 gap-4 mb-4">
-                <div className="bg-subtle rounded-lg p-4">
-                  <div className="text-sm text-muted mb-1">{t('weightGain.trimester1GainLabel')}</div>
-                  <div className="font-semibold text-body">
-                    {t(`weightGain.${bmiData.cat}Trimester1` as Parameters<typeof t>[0])}
-                  </div>
-                </div>
-                <div className="bg-subtle rounded-lg p-4">
-                  <div className="text-sm text-muted mb-1">{t('weightGain.trimester23GainLabel')}</div>
-                  <div className="font-semibold text-body">
-                    {t(`weightGain.${bmiData.cat}Weekly` as Parameters<typeof t>[0])}
-                  </div>
-                </div>
-              </div>
-
-              {/* All categories reference table */}
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-left border-b border-line">
-                      <th className="pb-2 pr-4 text-muted font-medium">체중 분류</th>
-                      <th className="pb-2 pr-4 text-muted font-medium">총 권장량</th>
-                      <th className="pb-2 text-muted font-medium">주당 (2·3분기)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(['underweight', 'normal', 'overweight', 'obese'] as BmiCategory[]).map((cat) => (
-                      <tr
-                        key={cat}
-                        className={`border-b border-line ${bmiData.cat === cat ? 'bg-primary-soft text-primary font-semibold' : ''}`}
-                      >
-                        <td className="py-2 pr-4 text-body">
-                          {t(`weightGain.${cat}` as Parameters<typeof t>[0])}
-                          {bmiData.cat === cat && <span className="ml-2 text-xs px-1.5 py-0.5 bg-soft text-sub rounded-full">나</span>}
-                        </td>
-                        <td className="py-2 pr-4 text-sub">{t(`weightGain.${cat}Range` as Parameters<typeof t>[0])}</td>
-                        <td className="py-2 text-sub">{t(`weightGain.${cat}Weekly` as Parameters<typeof t>[0])}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </>
           )}
 
-          <p className="text-xs text-faint mt-4">{t('weightGain.disclaimer')}</p>
-        </div>
+          {/* ── 체중 증가 가이드 (IOM 2009) ── */}
+          <details className="ui-card p-6 group">
+            <summary className="cursor-pointer list-none flex items-center justify-between">
+              <span className="text-lg font-semibold text-fg">{t('weightGain.title')}</span>
+              <span className="text-sm text-muted group-open:hidden">{t('u.open')}</span>
+            </summary>
+            <p className="text-sm text-muted mt-2 mb-4">{t('weightGain.subtitle')}</p>
+            <div className="grid grid-cols-2 gap-3 mb-4 max-w-sm">
+              <div>
+                <label htmlFor="dd-h" className="block text-xs text-sub mb-1">{t('weightGain.heightLabel')}</label>
+                <input id="dd-h" type="number" inputMode="decimal" value={height} onChange={e => setHeight(e.target.value)} placeholder={t('weightGain.heightPlaceholder')} className="ui-field w-full px-4 py-3" />
+              </div>
+              <div>
+                <label htmlFor="dd-w" className="block text-xs text-sub mb-1">{t('weightGain.weightLabel')}</label>
+                <input id="dd-w" type="number" inputMode="decimal" value={weight} onChange={e => setWeight(e.target.value)} placeholder={t('weightGain.weightPlaceholder')} className="ui-field w-full px-4 py-3" />
+              </div>
+            </div>
+            {bmi && <p className="text-sm text-body mb-3">{t('u.wg.yourBmi', { b: bmi.b.toFixed(1) })}</p>}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left border-b border-line text-muted">
+                    <th className="py-2 pr-3 font-medium">{t('u.wg.cat')}</th>
+                    <th className="py-2 pr-3 font-medium">{t('u.wg.total')}</th>
+                    <th className="py-2 font-medium">{t('u.wg.weekly')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {BMI_CATS.map(c => (
+                    <tr key={c} className={`border-b border-line ${fetuses === 1 && bmi?.cat === c ? 'bg-primary-soft text-primary font-semibold' : 'text-body'}`}>
+                      <td className="py-2 pr-3">{t(`weightGain.${c}`)}</td>
+                      <td className="py-2 pr-3 tabular-nums">{t(`weightGain.${c}Range`)}</td>
+                      <td className="py-2 tabular-nums">{t(`u.wg.${c}Weekly`)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-muted mt-3">{fetuses > 1 ? t('u.wg.twins') : t('u.wg.note')}</p>
+          </details>
+        </>
       )}
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-6">
-          <BookOpen className="w-5 h-5" />
-          <h2 className="text-lg font-semibold">{t('guide.title')}</h2>
-        </div>
-
+      {/* ── 가이드 ── */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Calculation Method */}
-          <div>
-            <h3 className="font-semibold text-fg mb-3">
-              {t('guide.calculation.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.calculation.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Tips */}
-          <div>
-            <h3 className="font-semibold text-fg mb-3">
-              {t('guide.tips.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+          {(['methods', 'facts'] as const).map(k => (
+            <div key={k}>
+              <h3 className="font-semibold text-fg mb-2">{t(`u.guide.${k}.title`)}</h3>
+              <ul className="list-disc pl-5 space-y-1.5 text-sm text-sub">
+                {(t.raw(`u.guide.${k}.items`) as string[]).map((it, i) => <li key={i}>{it}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div>
+          <h3 className="font-semibold text-fg mb-2">{t('guide.faq.title')}</h3>
+          <div className="space-y-3">
+            {(t.raw('u.guide.faq') as { q: string; a: string }[]).map((f, i) => (
+              <div key={i} className="bg-subtle rounded-2xl p-4">
+                <p className="font-medium text-fg text-sm">{f.q}</p>
+                <p className="text-sm text-sub mt-1">{f.a}</p>
+              </div>
+            ))}
           </div>
         </div>
+        <div>
+          <h3 className="font-semibold text-fg mb-2">{t('u.guide.sources.title')}</h3>
+          <ul className="space-y-1 text-sm">
+            {(t.raw('u.guide.sources.items') as { label: string; url: string }[]).map(s => (
+              <li key={s.url}>
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <p className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('u.disclaimer')}</p>
       </div>
     </div>
   )
