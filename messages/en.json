@@ -17174,8 +17174,130 @@
     }
   },
   "subnetCalculator": {
+    "tabSplit": "Subnetting",
+    "tabList": "Summarize & overlap",
+    "tabRange": "Range → CIDR",
+    "tabV6": "IPv6",
+    "inputLabel": "IP address / CIDR",
+    "inputPlaceholder": "192.168.1.10/24 or 10.0.0.1 255.255.255.0",
+    "inputHint": "Accepts CIDR, subnet masks and wildcard masks. Use ↑/↓ in the field to change the prefix.",
+    "via": {
+      "mask": "Read as a subnet mask → /{prefix}",
+      "wildcard": "Read as a wildcard mask → /{prefix}",
+      "host": "No prefix given, calculated as a single host (/32). Try adding /24."
+    },
+    "hostBitsSet": "This is a host address. Its network: {network}",
+    "errors": {
+      "empty": "Enter an IP address.",
+      "format": "Unrecognized format. e.g. 192.168.1.10/24, 10.0.0.1 255.255.255.0",
+      "ip": "Not a valid IPv4 address. Each octet must be 0-255.",
+      "prefix": "Prefix must be between /0 and /32.",
+      "mask": "Not a valid mask. The 1 bits must be contiguous (e.g. 255.255.255.0 or 0.0.0.255).",
+      "order": "Start address is greater than end address.",
+      "v6ip": "Not a valid IPv6 address. e.g. 2001:db8::1/64",
+      "v6prefix": "IPv6 prefix must be between /0 and /128."
+    },
+    "prefixTitle": "Prefix length",
+    "heroLabel": "Network",
+    "heroHosts": "{hosts} usable hosts",
+    "copyAll": "Copy all",
+    "copyLink": "Copy link",
+    "copyList": "Copy list",
+    "details": "Details",
+    "inputIp": "Input IP",
+    "firstHost": "First host",
+    "lastHost": "Last host",
+    "cidrNotation": "CIDR notation",
+    "classType": "Class · type",
+    "hex": "Hex",
+    "decimal": "Integer (decimal)",
+    "reverseZone": "Reverse DNS zone",
+    "moreZones": "+{count} more zones",
+    "none": "None",
+    "note31": "/31 is an RFC 3021 point-to-point link: no broadcast, both addresses are usable hosts.",
+    "note32": "/32 is a single host (host route or loopback) with no network/broadcast distinction.",
+    "binaryLegend": "{net} network bits · {host} host bits",
+    "scopes": {
+      "thisNetwork": "This network",
+      "private": "Private",
+      "cgnat": "CGNAT shared space",
+      "loopback": "Loopback",
+      "linkLocal": "Link-local",
+      "ietf": "IETF protocol assignments",
+      "documentation": "Documentation",
+      "benchmark": "Benchmarking",
+      "multicast": "Multicast",
+      "broadcast": "Limited broadcast",
+      "reserved": "Reserved",
+      "public": "Public",
+      "unspecified": "Unspecified",
+      "v4mapped": "IPv4-mapped",
+      "nat64": "NAT64",
+      "sixToFour": "6to4",
+      "ula": "Unique local (ULA)",
+      "global": "Global unicast"
+    },
+    "splitMode": {
+      "equal": "Equal split",
+      "vlsm": "VLSM (by hosts)"
+    },
+    "splitTargetTitle": "Subnet size",
+    "splitChip": "{count} × {hosts} hosts",
+    "splitNone": "A /32 cannot be split further.",
+    "splitCount": "{count} subnets",
+    "splitSummary": "{hosts} usable hosts each · mask {mask}",
+    "splitResult": "Subnets",
+    "showingFirst": "Showing the first {shown} of {total} (CSV/Markdown export up to {max}).",
+    "vlsmReqTitle": "Required hosts",
+    "vlsmReqHint": "One per line as 'name hosts' (name optional). Allocated largest first; smallest block is /30.",
+    "vlsmExample": "Sales 60\nDev 28\nMeeting 12\nRouter link 2",
+    "vlsmBad": "Unrecognized lines: {lines}",
+    "vlsmUsage": "{pct}% used",
+    "vlsmAllocated": "{used} / {total} addresses · {ok} of {all} requests allocated",
+    "vlsmFree": "Free blocks",
+    "noSpace": "No space",
+    "col": {
+      "index": "#",
+      "name": "Name",
+      "needed": "Needed",
+      "network": "Network",
+      "range": "Usable range",
+      "broadcast": "Broadcast",
+      "mask": "Mask",
+      "hosts": "Hosts",
+      "waste": "Spare",
+      "size": "Size",
+      "count": "Count",
+      "first": "First subnet",
+      "second": "Next subnet"
+    },
+    "downloadCsv": "Download CSV",
+    "copyMarkdown": "Copy as Markdown",
+    "listHint": "One per line (commas also work). A bare IP is /32; host bits are normalized to the network.",
+    "supernetTitle": "Single supernet",
+    "supernetExtra": "Also covers {extra} addresses not in your list.",
+    "supernetExact": "Matches your list exactly, no extra addresses.",
+    "summaryTitle": "Minimal CIDR aggregate",
+    "summaryDesc": "Shortest list covering exactly the same addresses (duplicates, nested and adjacent blocks merged). {from} → {to}",
+    "relSame": "Identical",
+    "relContains": "{a} contains {b}",
+    "rangeLabel": "IP range",
+    "rangeHint": "'start - end'. The end can be just the last octet (10.0.0.5-20). Converts to the minimal CIDR list for ACLs and firewalls.",
+    "rangeCount": "{count} CIDR blocks",
+    "rangeTotal": "{total} addresses",
+    "longestMatch": "Longest match (the route that wins)",
+    "longestMatchHint": "When an IP falls in several networks, the longest prefix (blue) is listed first, just like longest-prefix-match routing.",
+    "v6Label": "IPv6 address / prefix",
+    "v6Hint": "Accepts compressed (::), full and embedded IPv4 (::ffff:1.2.3.4) forms. Without a prefix, /128 is used.",
+    "v6Addresses": "2^{exp} addresses",
+    "compressed": "Compressed",
+    "expanded": "Expanded",
+    "firstAddress": "First address",
+    "lastAddress": "Last address",
+    "v6SplitTitle": "Subnet counts",
+    "v6SplitHint": "A LAN is normally a /64 (required for SLAAC); sites typically get a /48, home connections a /56.",
     "title": "IP Subnet Calculator",
-    "description": "Calculate IPv4 subnets easily. Check CIDR, subnet mask, and host range.",
+    "description": "Calculate IPv4 and IPv6 subnets. CIDR, mask and wildcard input, VLSM subnetting, route summarization and range-to-CIDR in one place.",
     "inputTitle": "IP Information",
     "ipAddress": "IP Address",
     "subnetMask": "Subnet Mask",
@@ -17203,7 +17325,7 @@
     "totalAddresses": "Total Addresses",
     "binaryRepresentation": "Binary Representation",
     "inputPrompt": "Enter an IP address and CIDR prefix to see the subnet details.",
-    "note": "This calculator supports IPv4 only. IPv6 subnet calculation is not supported.",
+    "note": "Everything runs in your browser; addresses are never sent to a server. Follows /31 (RFC 3021) and /32 rules and the RFC 1918, 6598 and 5737 special ranges.",
     "tabCalculator": "Subnet Calc",
     "tabOverlap": "Overlap Check",
     "tabLookup": "IP Lookup",
@@ -17222,6 +17344,25 @@
     "lookupPrompt": "Enter CIDR ranges and IP addresses.",
     "noMatch": "No match",
     "guide": {
+      "special": {
+        "title": "Special ranges at a glance",
+        "items": [
+          "Private (RFC 1918): 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16",
+          "CGNAT (RFC 6598): 100.64.0.0/10 — carrier NAT space. Looks private but can collide if used internally.",
+          "Loopback 127.0.0.0/8, link-local 169.254.0.0/16 (self-assigned when DHCP fails)",
+          "Documentation (RFC 5737): 192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24",
+          "Multicast 224.0.0.0/4, reserved 240.0.0.0/4, limited broadcast 255.255.255.255"
+        ]
+      },
+      "vlsm": {
+        "title": "VLSM & summarization tips",
+        "items": [
+          "Allocate the largest requirement first so every block lands on its boundary with no gaps.",
+          "Pick the smallest power-of-two block holding hosts + 2 (network and broadcast). 60 hosts → /26 (62).",
+          "Router-to-router links use /30 (2 hosts) or an RFC 3021 /31.",
+          "Use the minimal aggregate for exact route summaries; check the extra addresses before using a single supernet."
+        ]
+      },
       "title": "User Guide",
       "basics": {
         "title": "Subnet Basics",
@@ -17230,7 +17371,7 @@
           "The subnet mask separates the network portion from the host portion of an IP address.",
           "The network address is the first address in the subnet (all host bits are 0).",
           "The broadcast address is the last address in the subnet (all host bits are 1).",
-          "Usable hosts = total addresses - 2 (network + broadcast)"
+          "Usable hosts = total addresses - 2 (network + broadcast), except /31 = 2 (RFC 3021) and /32 = 1."
         ]
       },
       "cidr": {
@@ -17318,15 +17459,15 @@
         "items": [
           {
             "q": "What is CIDR?",
-            "a": "CIDR stands for Classless Inter-Domain Routing. It represents an IP address and network size in the format '192.168.1.0/24'. A larger number after the slash means a smaller network."
+            "a": "Classless Inter-Domain Routing writes an address and its network size as '192.168.1.0/24'. The larger the number after the slash, the smaller the network."
           },
           {
-            "q": "Can I use the network or broadcast address for hosts?",
-            "a": "No. The first IP (network address) and last IP (broadcast) in each subnet cannot be assigned to hosts. The usable host count is total IPs minus 2."
+            "q": "Can the network and broadcast addresses be used?",
+            "a": "In a normal subnet the first (network) and last (broadcast) addresses can't be assigned to hosts, so usable hosts = total - 2. Exceptions: a /31 uses both addresses (RFC 3021) and a /32 is a single host."
           },
           {
-            "q": "Does this support IPv6?",
-            "a": "Currently only IPv4 is supported. For IPv6 subnetting, use a dedicated tool or refer to RFC 4291."
+            "q": "Is IPv6 supported?",
+            "a": "Yes. The IPv6 tab shows compressed/expanded forms, the network range, address count, subnet counts such as /48 → /64, and the ip6.arpa reverse zone."
           }
         ]
       }
