@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '단어 맞추기 게임 - 한글 행맨, 무료 온라인 단어 게임 | 툴허브',
-  description: '한글 단어 맞추기 게임(행맨). 자음·모음을 눌러 숨은 단어를 맞혀보세요. 동물·음식·나라·과일 4개 카테고리, 설치 없이 바로 플레이.',
+  description: '한글 단어 맞추기 게임(행맨). 자음·모음을 눌러 숨은 단어를 맞혀보세요. 매일 바뀌는 오늘의 단어, 연속 기록·결과 공유, 7개 카테고리 연습 모드.',
   keywords: '행맨, 단어 맞추기, 한글 게임, 한국어 게임, 단어 게임, hangman, 자음 모음',
   openGraph: {
     title: '단어 맞추기 (행맨) - 한글 단어 추측 게임 | 툴허브',
@@ -39,7 +39,7 @@ export default function HangmanPage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     genre: 'Word Game',
     numberOfPlayers: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 1 },
-    featureList: ['한글 자음/모음 가상 키보드', '4가지 카테고리 (동물, 음식, 나라, 과일)', 'SVG 행맨 그림', '7번의 도전 기회', '한글 자모 분해 매칭'],
+    featureList: ['한글 자음/모음 가상 키보드', '매일 바뀌는 오늘의 단어', '연속 기록·통계·결과 공유', '7가지 카테고리 연습 모드와 난이도', 'SVG 행맨 그림', '7번의 도전 기회', '한글 자모 분해 매칭'],
   }
 
   const faqJsonLd = {
@@ -89,7 +89,7 @@ export default function HangmanPage() {
             단어 맞추기 (행맨) 게임이란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            행맨(Hangman)은 숨겨진 한글 단어를 자음과 모음을 하나씩 선택하며 추측하는 고전 단어 게임입니다. 동물·음식·나라·과일 4가지 카테고리에서 무작위로 단어가 출제되며, 7번 안에 단어를 완성해야 합니다. 한글 자음·모음 분해 방식으로 한국어 단어를 공부하는 어린이와 외국인 한국어 학습자에게도 유용합니다.
+            행맨(Hangman)은 숨겨진 한글 단어를 자음과 모음을 하나씩 선택하며 추측하는 고전 단어 게임입니다. 매일 자정 모두에게 같은 '오늘의 단어'가 나오고, 연습 모드에서는 동물·음식·나라·과일·직업·스포츠·사물 7가지 카테고리와 3단계 난이도로 즐길 수 있습니다. 한글 자음·모음 분해 방식으로 한국어 단어를 공부하는 어린이와 외국인 한국어 학습자에게도 유용합니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             행맨 게임 전략 팁

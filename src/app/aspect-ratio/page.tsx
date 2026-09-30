@@ -4,16 +4,16 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: '화면 비율 계산기 - 종횡비, 해상도 계산 | 툴허브',
-  description: '화면 비율 계산기 - 가로세로 비율(종횡비) 계산, 해상도 변환, 비율 유지 리사이즈. 주요 해상도 프리셋 제공.',
-  keywords: '화면 비율 계산기, aspect ratio calculator, 종횡비, 해상도 계산, 16:9, 4:3',
+  title: '화면 비율 계산기 - 16:9·9:16·4:5 해상도 | 툴허브',
+  description: '가로×세로를 넣으면 16:9 같은 비율이 바로 나오는 화면 비율 계산기. 유튜브·쇼츠·릴스·인스타 4:5 규격, 세이프존 미리보기, 내 이미지 자르기/여백 저장, 720p~8K 해상도 표.',
+  keywords: '화면 비율 계산기, aspect ratio calculator, 종횡비, 해상도 계산, 16:9, 9:16, 4:5, 쇼츠 사이즈, 릴스 사이즈, 인스타 피드 사이즈, 유튜브 썸네일 크기',
   openGraph: { title: '화면 비율 계산기 | 툴허브', description: '종횡비 및 해상도 계산', url: 'https://toolhub.ai.kr/aspect-ratio', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '화면 비율 계산기 | 툴허브', description: '종횡비 및 해상도 계산' },
   alternates: { canonical: 'https://toolhub.ai.kr/aspect-ratio/' },
 }
 
 export default function AspectRatioPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '화면 비율 계산기', description: '종횡비 및 해상도 계산', url: 'https://toolhub.ai.kr/aspect-ratio', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['종횡비 계산', '해상도 변환', '비율 유지 리사이즈', '프리셋 해상도'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '화면 비율 계산기', description: '종횡비 및 해상도 계산', url: 'https://toolhub.ai.kr/aspect-ratio', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['종횡비 계산', '비율+한 변으로 나머지 계산', '플랫폼 규격 프리셋', '쇼츠·릴스 세이프존', '이미지 자르기/여백 저장', '해상도 표'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -54,7 +54,8 @@ export default function AspectRatioPage() {
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>유튜브·TV 콘텐츠:</strong> 16:9 비율이 표준이며, FHD(1920×1080), QHD(2560×1440), 4K(3840×2160) 해상도를 활용하세요.</li>
-            <li><strong>인스타그램 최적화:</strong> 정사각형 게시물은 1:1(1080×1080), 세로 릴스·스토리는 9:16(1080×1920) 비율을 사용하세요.</li>
+            <li><strong>인스타그램 최적화:</strong> 피드는 세로 4:5(1080×1350)가 화면을 가장 많이 차지하고, 정사각형은 1:1(1080×1080), 릴스·스토리는 9:16(1080×1920)입니다.</li>
+            <li><strong>쇼츠·릴스 세이프존:</strong> 9:16 영상은 위·아래와 오른쪽에 좋아요·자막·버튼이 겹칩니다. 자막과 로고는 가운데 안전 영역 안에 두세요.</li>
             <li><strong>DSLR 사진 인화:</strong> 카메라 센서 비율은 3:2(6×4인치, 10×15cm 인화)가 표준이며, 4:3은 마이크로포서드 카메라에 해당합니다.</li>
             <li><strong>반응형 웹 디자인:</strong> CSS aspect-ratio 속성과 함께 계산 결과를 활용하면 다양한 화면 크기에서 비율을 유지할 수 있습니다.</li>
             <li><strong>울트라와이드 모니터:</strong> 21:9(2560×1080 또는 3440×1440) 비율은 영상 편집과 멀티태스킹 환경에 최적화되어 있습니다.</li>

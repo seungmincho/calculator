@@ -2,935 +2,708 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Clock, Check, Eye, RotateCcw, ChevronRight, BookOpen } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { Clock, RotateCcw, ChevronLeft, ChevronRight, Volume2, VolumeX, Copy, Check, Shuffle } from 'lucide-react'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
+import { useGameSounds } from '@/hooks/useGameSounds'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
+import GameConfetti from '@/components/GameConfetti'
+import ShareResult from '@/components/ShareResult'
+import {
+  type Dir, type Puzzle, type DailyResults,
+  generatePuzzle, dailyNumber, dailyDate, msUntilNextDaily, wordCells, buildWordIndex,
+  SENTINEL, toTyped, mapTyped, cursorSlot, isJamo, computeStats, shapeGrid,
+} from '@/utils/crossword'
 
-// ── Types ──
-interface ClueData {
-  number: number
-  row: number
-  col: number
-  answer: string
-  clue: string
+type Mode = { kind: 'daily'; n: number } | { kind: 'practice'; seed: number }
+interface Game { key: string; cells: string[]; locked: number[]; hinted: number[]; hints: number; time: number; solved: boolean }
+
+const PROGRESS_KEY = 'crossword-progress-v1'
+const RESULTS_KEY = 'crossword-daily-v1'
+const SITE = 'https://toolhub.ai.kr/crossword/'
+
+function readJSON<T>(key: string, fallback: T): T {
+  try { const v = localStorage.getItem(key); return v ? (JSON.parse(v) as T) : fallback } catch { return fallback }
 }
-
-interface CrosswordPuzzle {
-  id: number
-  size: number
-  grid: string[][] // '' = black cell, character = solution
-  clues: {
-    across: ClueData[]
-    down: ClueData[]
-  }
+function writeJSON(key: string, v: unknown) {
+  try { localStorage.setItem(key, JSON.stringify(v)) } catch { /* 저장 불가: 무시 */ }
 }
-
-type Direction = 'across' | 'down'
-
-// ── Puzzle Data (10 puzzles with real Korean words) ──
-const PUZZLES: CrosswordPuzzle[] = [
-  // Puzzle 1: 7x7 - 과일과 자연
-  {
-    id: 1, size: 7,
-    grid: [
-      ['사','과','','바','나','나',''],
-      ['랑','','','','','무',''],
-      ['','학','교','','','지',''],
-      ['','','부','','','개',''],
-      ['가','족','','친','구','',''],
-      ['','','','','름','',''],
-      ['','','','','다','리',''],
-    ],
-    clues: {
-      across: [
-        { number: 1, row: 0, col: 0, answer: '사과', clue: '빨갛고 달콤한 과일' },
-        { number: 2, row: 0, col: 3, answer: '바나나', clue: '노란색 열대 과일' },
-        { number: 3, row: 2, col: 1, answer: '학교', clue: '학생들이 배우는 장소' },
-        { number: 4, row: 4, col: 0, answer: '가족', clue: '부모와 자녀로 이루어진 집단' },
-        { number: 5, row: 4, col: 3, answer: '친구', clue: '가깝게 사귀는 사람' },
-        { number: 6, row: 6, col: 3, answer: '다리', clue: '강을 건너는 구조물' },
-      ],
-      down: [
-        { number: 1, row: 0, col: 0, answer: '사랑', clue: '마음 깊이 좋아하는 감정' },
-        { number: 7, row: 0, col: 5, answer: '나무지개', clue: '비 온 뒤 하늘에 뜨는 일곱 빛깔 (나_____)' },
-        { number: 3, row: 2, col: 2, answer: '교부', clue: '서류를 내어 줌' },
-        { number: 8, row: 4, col: 4, answer: '구름다리', clue: '높은 곳에 걸린 다리 (3글자)' },
-      ],
-    },
-  },
-  // Puzzle 2: 7x7 - 음식과 생활
-  {
-    id: 2, size: 7,
-    grid: [
-      ['김','치','','','비','빔','밥'],
-      ['','마','','','','',''],
-      ['','음','','수','박','',''],
-      ['','','','영','','',''],
-      ['떡','볶','이','화','','',''],
-      ['','','','','','',''],
-      ['','','','','','',''],
-    ],
-    clues: {
-      across: [
-        { number: 1, row: 0, col: 0, answer: '김치', clue: '배추를 소금에 절여 양념한 한국 전통 음식' },
-        { number: 2, row: 0, col: 4, answer: '비빔밥', clue: '밥에 나물과 고추장을 넣어 비벼 먹는 음식' },
-        { number: 3, row: 2, col: 3, answer: '수박', clue: '여름에 먹는 크고 둥근 과일' },
-        { number: 4, row: 4, col: 0, answer: '떡볶이', clue: '떡을 고추장 양념에 볶은 길거리 음식' },
-      ],
-      down: [
-        { number: 5, row: 0, col: 1, answer: '치마음', clue: '치___: 마음씨' },
-        { number: 6, row: 2, col: 3, answer: '수영화', clue: '물에서 하는 운동 + 영___: 화면 예술' },
-      ],
-    },
-  },
-  // Puzzle 3: 7x7 - 동물과 자연
-  {
-    id: 3, size: 7,
-    grid: [
-      ['고','양','이','','','',''],
-      ['래','','','','','',''],
-      ['','','호','랑','이','',''],
-      ['','','','','미','',''],
-      ['','토','끼','','소','나','무'],
-      ['','','','','','',''],
-      ['','','','','','',''],
-    ],
-    clues: {
-      across: [
-        { number: 1, row: 0, col: 0, answer: '고양이', clue: '야옹 하고 우는 반려동물' },
-        { number: 2, row: 2, col: 2, answer: '호랑이', clue: '줄무늬가 있는 큰 고양이과 동물' },
-        { number: 3, row: 4, col: 1, answer: '토끼', clue: '귀가 긴 귀여운 동물' },
-        { number: 4, row: 4, col: 4, answer: '소나무', clue: '사계절 푸른 침엽수' },
-      ],
-      down: [
-        { number: 1, row: 0, col: 0, answer: '고래', clue: '바다에서 가장 큰 포유류' },
-        { number: 5, row: 2, col: 4, answer: '이미소', clue: '이__: 이미 + __소: 웃음' },
-      ],
-    },
-  },
-  // Puzzle 4: 7x7 - 계절과 날씨
-  {
-    id: 4, size: 7,
-    grid: [
-      ['봄','','여','름','','',''],
-      ['','','','','','',''],
-      ['가','을','','겨','울','',''],
-      ['','','','','산','',''],
-      ['구','두','','','바','람',''],
-      ['','','','','','',''],
-      ['','','','','','',''],
-    ],
-    clues: {
-      across: [
-        { number: 1, row: 0, col: 0, answer: '봄', clue: '꽃이 피는 계절' },
-        { number: 2, row: 0, col: 2, answer: '여름', clue: '가장 더운 계절' },
-        { number: 3, row: 2, col: 0, answer: '가을', clue: '단풍이 드는 계절' },
-        { number: 4, row: 2, col: 3, answer: '겨울', clue: '눈이 내리는 추운 계절' },
-        { number: 5, row: 4, col: 0, answer: '구두', clue: '정장에 신는 신발' },
-        { number: 6, row: 4, col: 4, answer: '바람', clue: '공기가 이동하는 현상' },
-      ],
-      down: [
-        { number: 7, row: 2, col: 4, answer: '울산바', clue: '울___: 경상남도 광역시' },
-        { number: 5, row: 4, col: 0, answer: '구', clue: '아홉' },
-      ],
-    },
-  },
-  // Puzzle 5: 7x7 - 직업과 사회
-  {
-    id: 5, size: 7,
-    grid: [
-      ['의','사','','간','호','사',''],
-      ['','','','','','자',''],
-      ['선','생','님','','','동',''],
-      ['','','','','','차',''],
-      ['경','찰','','소','방','관',''],
-      ['','','','','','',''],
-      ['','','','','','',''],
-    ],
-    clues: {
-      across: [
-        { number: 1, row: 0, col: 0, answer: '의사', clue: '병을 치료하는 사람' },
-        { number: 2, row: 0, col: 3, answer: '간호사', clue: '환자를 돌보는 의료인' },
-        { number: 3, row: 2, col: 0, answer: '선생님', clue: '학교에서 가르치는 분' },
-        { number: 4, row: 4, col: 0, answer: '경찰', clue: '범죄를 예방하고 잡는 공무원' },
-        { number: 5, row: 4, col: 3, answer: '소방관', clue: '불을 끄는 사람' },
-      ],
-      down: [
-        { number: 6, row: 0, col: 5, answer: '사자동차', clue: '사___: 네 바퀴 탈것' },
-      ],
-    },
-  },
-  // Puzzle 6: 7x7 - 학교생활
-  {
-    id: 6, size: 7,
-    grid: [
-      ['수','학','','과','학','',''],
-      ['','','','','교','',''],
-      ['영','어','','체','육','',''],
-      ['','','','','','',''],
-      ['국','어','','미','술','',''],
-      ['','','','','','',''],
-      ['','','','','','',''],
-    ],
-    clues: {
-      across: [
-        { number: 1, row: 0, col: 0, answer: '수학', clue: '숫자와 도형을 배우는 과목' },
-        { number: 2, row: 0, col: 3, answer: '과학', clue: '자연 현상을 탐구하는 과목' },
-        { number: 3, row: 2, col: 0, answer: '영어', clue: '세계 공용어를 배우는 과목' },
-        { number: 4, row: 2, col: 3, answer: '체육', clue: '운동하는 과목' },
-        { number: 5, row: 4, col: 0, answer: '국어', clue: '한국어를 배우는 과목' },
-        { number: 6, row: 4, col: 3, answer: '미술', clue: '그림을 그리는 과목' },
-      ],
-      down: [
-        { number: 7, row: 0, col: 4, answer: '학교육', clue: '학___: 배움의 장소 + ___육: 가르침' },
-      ],
-    },
-  },
-  // Puzzle 7: 7x7 - 교통과 이동
-  {
-    id: 7, size: 7,
-    grid: [
-      ['자','전','거','','','',''],
-      ['동','','','','','',''],
-      ['차','','비','행','기','',''],
-      ['','','','','차','',''],
-      ['기','차','','버','스','',''],
-      ['','','','','','',''],
-      ['','','','','','',''],
-    ],
-    clues: {
-      across: [
-        { number: 1, row: 0, col: 0, answer: '자전거', clue: '페달을 밟아 타는 두 바퀴 탈것' },
-        { number: 2, row: 2, col: 2, answer: '비행기', clue: '하늘을 나는 탈것' },
-        { number: 3, row: 4, col: 0, answer: '기차', clue: '레일 위를 달리는 긴 탈것' },
-        { number: 4, row: 4, col: 3, answer: '버스', clue: '많은 사람이 타는 대중교통' },
-      ],
-      down: [
-        { number: 1, row: 0, col: 0, answer: '자동차', clue: '엔진으로 달리는 네 바퀴 탈것' },
-        { number: 5, row: 2, col: 4, answer: '기차', clue: '레일 위를 달리는 탈것 (세로)' },
-      ],
-    },
-  },
-  // Puzzle 8: 7x7 - 감정과 표현
-  {
-    id: 8, size: 7,
-    grid: [
-      ['행','복','','기','쁨','',''],
-      ['','','','','','',''],
-      ['슬','픔','','화','남','',''],
-      ['','','','','','',''],
-      ['놀','라','움','','두','려','움'],
-      ['','','','','','',''],
-      ['','','','','','',''],
-    ],
-    clues: {
-      across: [
-        { number: 1, row: 0, col: 0, answer: '행복', clue: '만족하고 즐거운 상태' },
-        { number: 2, row: 0, col: 3, answer: '기쁨', clue: '좋은 일이 있을 때의 감정' },
-        { number: 3, row: 2, col: 0, answer: '슬픔', clue: '마음이 아프고 괴로운 감정' },
-        { number: 4, row: 2, col: 3, answer: '화남', clue: '분노를 느끼는 상태' },
-        { number: 5, row: 4, col: 0, answer: '놀라움', clue: '예상 밖의 일에 느끼는 감정' },
-        { number: 6, row: 4, col: 4, answer: '두려움', clue: '무서움을 느끼는 감정' },
-      ],
-      down: [],
-    },
-  },
-  // Puzzle 9: 7x7 - 집과 가구
-  {
-    id: 9, size: 7,
-    grid: [
-      ['침','대','','거','실','',''],
-      ['','','','','','',''],
-      ['부','엌','','창','문','',''],
-      ['','','','','','',''],
-      ['의','자','','책','상','',''],
-      ['','','','','','',''],
-      ['','','','','','',''],
-    ],
-    clues: {
-      across: [
-        { number: 1, row: 0, col: 0, answer: '침대', clue: '잠을 자는 가구' },
-        { number: 2, row: 0, col: 3, answer: '거실', clue: '온 가족이 모이는 방' },
-        { number: 3, row: 2, col: 0, answer: '부엌', clue: '음식을 만드는 공간' },
-        { number: 4, row: 2, col: 3, answer: '창문', clue: '빛과 공기가 들어오는 곳' },
-        { number: 5, row: 4, col: 0, answer: '의자', clue: '앉는 가구' },
-        { number: 6, row: 4, col: 3, answer: '책상', clue: '공부하는 가구' },
-      ],
-      down: [],
-    },
-  },
-  // Puzzle 10: 7x7 - 색깔과 모양
-  {
-    id: 10, size: 7,
-    grid: [
-      ['빨','강','','노','랑','',''],
-      ['','','','','','',''],
-      ['파','랑','','초','록','',''],
-      ['','','','','','',''],
-      ['보','라','','하','양','',''],
-      ['','','','','','',''],
-      ['','','','','','',''],
-    ],
-    clues: {
-      across: [
-        { number: 1, row: 0, col: 0, answer: '빨강', clue: '사과, 딸기의 색깔' },
-        { number: 2, row: 0, col: 3, answer: '노랑', clue: '바나나, 병아리의 색깔' },
-        { number: 3, row: 2, col: 0, answer: '파랑', clue: '하늘, 바다의 색깔' },
-        { number: 4, row: 2, col: 3, answer: '초록', clue: '풀, 나뭇잎의 색깔' },
-        { number: 5, row: 4, col: 0, answer: '보라', clue: '빨강과 파랑을 섞은 색깔' },
-        { number: 6, row: 4, col: 3, answer: '하양', clue: '눈, 구름의 색깔' },
-      ],
-      down: [],
-    },
-  },
-]
-
-// ── Helper: get daily puzzle index ──
-function getDailyPuzzleIndex(): number {
-  const now = new Date()
-  const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate()
-  return seed % PUZZLES.length
-}
-
-// ── Helper: build cell number map ──
-function buildNumberMap(puzzle: CrosswordPuzzle): Map<string, number> {
-  const map = new Map<string, number>()
-  const allClues = [...puzzle.clues.across, ...puzzle.clues.down]
-  for (const c of allClues) {
-    const key = `${c.row},${c.col}`
-    if (!map.has(key)) {
-      map.set(key, c.number)
-    }
-  }
-  return map
-}
-
-// ── Helper: get cells belonging to a clue word ──
-function getClueCells(clue: ClueData, direction: Direction): [number, number][] {
-  const cells: [number, number][] = []
-  for (let i = 0; i < clue.answer.length; i++) {
-    if (direction === 'across') {
-      cells.push([clue.row, clue.col + i])
-    } else {
-      cells.push([clue.row + i, clue.col])
-    }
-  }
-  return cells
-}
+const other = (d: Dir): Dir => (d === 'across' ? 'down' : 'across')
+const clock = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`
 
 export default function Crossword() {
   const t = useTranslations('crossword')
-
-  // ── State ──
-  const [puzzleIndex, setPuzzleIndex] = useState(getDailyPuzzleIndex)
-  const puzzle = PUZZLES[puzzleIndex]
-  const [userGrid, setUserGrid] = useState<string[][]>([])
-  const [selectedCell, setSelectedCell] = useState<[number, number] | null>(null)
-  const [direction, setDirection] = useState<Direction>('across')
-  const [wrongCells, setWrongCells] = useState<Set<string>>(new Set())
-  const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
-  const [completed, setCompleted] = useState(false)
-  const [time, setTime] = useState(0)
-  const [isRunning, setIsRunning] = useState(false)
-  const [checkedOnce, setCheckedOnce] = useState(false)
-  const gridRef = useRef<HTMLDivElement>(null)
-  const resultRecorded = useRef(false)
-
+  const ts = useTranslations('gameSounds')
   const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
+  const { playWin, playInvalid, enabled: soundOn, setEnabled: setSoundOn } = useGameSounds()
 
-  const numberMap = useMemo(() => buildNumberMap(puzzle), [puzzle])
-
-  // ── Initialize user grid ──
-  const initGrid = useCallback(() => {
-    const g: string[][] = []
-    for (let r = 0; r < puzzle.size; r++) {
-      g[r] = []
-      for (let c = 0; c < puzzle.size; c++) {
-        g[r][c] = ''
-      }
-    }
-    setUserGrid(g)
-    setSelectedCell(null)
-    setDirection('across')
-    setWrongCells(new Set())
-    setRevealedCells(new Set())
-    setCompleted(false)
-    setTime(0)
-    setIsRunning(false)
-    setCheckedOnce(false)
-  }, [puzzle])
-
+  // 날짜·저장소는 마운트 후에만 읽음 → 정적 HTML에는 판/정답이 없고 hydration도 깨끗함
+  const [today, setToday] = useState<number | null>(null)
+  const [mode, setMode] = useState<Mode | null>(null)
+  const [results, setResults] = useState<DailyResults>({})
   useEffect(() => {
-    initGrid()
-  }, [initGrid])
-
-  // ── Timer ──
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null
-    if (isRunning && !completed) {
-      interval = setInterval(() => setTime(t => t + 1), 1000)
-    }
-    return () => { if (interval) clearInterval(interval) }
-  }, [isRunning, completed])
-
-  const formatTime = useCallback((s: number) => {
-    const m = Math.floor(s / 60)
-    const sec = s % 60
-    return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`
+    const n = dailyNumber()
+    const q = Math.floor(Number(new URLSearchParams(window.location.search).get('n')))
+    setToday(n)
+    setMode({ kind: 'daily', n: q >= 1 && q <= n ? q : n })
+    setResults(readJSON<DailyResults>(RESULTS_KEY, {}))
   }, [])
 
-  // ── Find which clue the selected cell belongs to ──
-  const activeClue = useMemo(() => {
-    if (!selectedCell) return null
-    const [sr, sc] = selectedCell
-    const clues = direction === 'across' ? puzzle.clues.across : puzzle.clues.down
-    for (const clue of clues) {
-      const cells = getClueCells(clue, direction)
-      if (cells.some(([r, c]) => r === sr && c === sc)) {
-        return { clue, direction }
-      }
-    }
-    // Try other direction
-    const otherDir: Direction = direction === 'across' ? 'down' : 'across'
-    const otherClues = otherDir === 'across' ? puzzle.clues.across : puzzle.clues.down
-    for (const clue of otherClues) {
-      const cells = getClueCells(clue, otherDir)
-      if (cells.some(([r, c]) => r === sr && c === sc)) {
-        return { clue, direction: otherDir }
-      }
-    }
-    return null
-  }, [selectedCell, direction, puzzle])
+  const puzzle = useMemo<Puzzle | null>(() => (mode ? generatePuzzle(mode.kind === 'daily' ? mode.n : mode.seed) : null), [mode])
+  const key = mode ? (mode.kind === 'daily' ? `d${mode.n}` : `p${mode.seed}`) : ''
+  const widx = useMemo(() => (puzzle ? buildWordIndex(puzzle) : null), [puzzle])
 
-  // ── Active word cells ──
-  const activeWordCells = useMemo(() => {
-    if (!activeClue) return new Set<string>()
-    const cells = getClueCells(activeClue.clue, activeClue.direction)
-    return new Set(cells.map(([r, c]) => `${r},${c}`))
-  }, [activeClue])
+  const [game, setGame] = useState<Game | null>(null)
+  const [cursor, setCursor] = useState<number | null>(null)
+  const [dir, setDir] = useState<Dir>('across')
+  const [wrong, setWrong] = useState<Set<number>>(new Set())
+  const [msg, setMsg] = useState<string | null>(null)
+  const [started, setStarted] = useState(false)
+  const [confetti, setConfetti] = useState(false)
+  const [copied, setCopied] = useState(false)
 
-  // ── Is cell a valid (non-black) cell ──
-  const isValidCell = useCallback((r: number, c: number) => {
-    return r >= 0 && r < puzzle.size && c >= 0 && c < puzzle.size && puzzle.grid[r][c] !== ''
-  }, [puzzle])
-
-  // ── Handle character input ──
-  const handleInput = useCallback((char: string) => {
-    if (!selectedCell || completed) return
-    if (!isRunning) setIsRunning(true)
-    const [sr, sc] = selectedCell
-
-    setUserGrid(prev => {
-      const ng = prev.map(row => [...row])
-      ng[sr][sc] = char
-      return ng
-    })
-    setWrongCells(new Set())
-
-    // Move to next cell in current direction
-    if (direction === 'across') {
-      for (let c = sc + 1; c < puzzle.size; c++) {
-        if (isValidCell(sr, c)) { setSelectedCell([sr, c]); return }
-      }
-    } else {
-      for (let r = sr + 1; r < puzzle.size; r++) {
-        if (isValidCell(r, sc)) { setSelectedCell([r, sc]); return }
-      }
-    }
-  }, [selectedCell, completed, isRunning, direction, puzzle.size, isValidCell])
-
-  // ── Cell click ──
-  const handleCellClick = useCallback((r: number, c: number) => {
-    if (!isValidCell(r, c)) return
-    if (!isRunning && !completed) setIsRunning(true)
-
-    if (selectedCell && selectedCell[0] === r && selectedCell[1] === c) {
-      // Toggle direction on same cell
-      setDirection(d => d === 'across' ? 'down' : 'across')
-    } else {
-      setSelectedCell([r, c])
-    }
-    setWrongCells(new Set())
-  }, [isValidCell, selectedCell, isRunning, completed])
-
-  // ── Handle keyboard input ──
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (!selectedCell || completed) return
-    const [sr, sc] = selectedCell
-
-    if (e.key === 'Tab') {
-      e.preventDefault()
-      setDirection(d => d === 'across' ? 'down' : 'across')
-      return
-    }
-
-    if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      for (let r = sr - 1; r >= 0; r--) {
-        if (isValidCell(r, sc)) { setSelectedCell([r, sc]); return }
-      }
-      return
-    }
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      for (let r = sr + 1; r < puzzle.size; r++) {
-        if (isValidCell(r, sc)) { setSelectedCell([r, sc]); return }
-      }
-      return
-    }
-    if (e.key === 'ArrowLeft') {
-      e.preventDefault()
-      for (let c = sc - 1; c >= 0; c--) {
-        if (isValidCell(sr, c)) { setSelectedCell([sr, c]); return }
-      }
-      return
-    }
-    if (e.key === 'ArrowRight') {
-      e.preventDefault()
-      for (let c = sc + 1; c < puzzle.size; c++) {
-        if (isValidCell(sr, c)) { setSelectedCell([sr, c]); return }
-      }
-      return
-    }
-
-    if (e.key === 'Backspace' || e.key === 'Delete') {
-      e.preventDefault()
-      if (userGrid[sr]?.[sc]) {
-        setUserGrid(prev => {
-          const ng = prev.map(row => [...row])
-          ng[sr][sc] = ''
-          return ng
-        })
-      } else {
-        // Move back
-        if (direction === 'across') {
-          for (let c = sc - 1; c >= 0; c--) {
-            if (isValidCell(sr, c)) { setSelectedCell([sr, c]); break }
-          }
-        } else {
-          for (let r = sr - 1; r >= 0; r--) {
-            if (isValidCell(r, sc)) { setSelectedCell([r, sc]); break }
-          }
-        }
-      }
-      return
-    }
-
-    // Korean complete syllable — handle directly as fallback
-    // (primary path is via hidden input's onCompositionEnd/onInput)
-    if (e.key.length === 1 && /[가-힣]/.test(e.key)) {
-      e.preventDefault()
-      handleInput(e.key)
-      return
-    }
-
-    // Korean jamo or English — let IME handle via hidden input
-    if (e.key.length === 1 && /[ㄱ-ㅎㅏ-ㅣa-zA-Z]/.test(e.key)) {
-      return
-    }
-  }, [selectedCell, completed, isValidCell, userGrid, direction, puzzle.size, handleInput])
-
-  // ── Check completion ──
-  useEffect(() => {
-    if (!userGrid.length || completed) return
-    let allFilled = true
-    let allCorrect = true
-    for (let r = 0; r < puzzle.size; r++) {
-      for (let c = 0; c < puzzle.size; c++) {
-        if (puzzle.grid[r][c] !== '') {
-          if (!userGrid[r]?.[c]) {
-            allFilled = false
-          } else if (userGrid[r][c] !== puzzle.grid[r][c]) {
-            allCorrect = false
-          }
-        }
-      }
-    }
-    if (allFilled && allCorrect) {
-      setCompleted(true)
-      setIsRunning(false)
-      if (!resultRecorded.current) {
-        resultRecorded.current = true
-        recordGameResult({ gameType: 'crossword', result: 'win', difficulty: 'normal', moves: 0 })
-      }
-    }
-  }, [userGrid, puzzle, completed, recordGameResult])
-
-  // ── Check answers ──
-  const handleCheck = useCallback(() => {
-    const wrong = new Set<string>()
-    for (let r = 0; r < puzzle.size; r++) {
-      for (let c = 0; c < puzzle.size; c++) {
-        if (puzzle.grid[r][c] !== '' && userGrid[r]?.[c] && userGrid[r][c] !== puzzle.grid[r][c]) {
-          wrong.add(`${r},${c}`)
-        }
-      }
-    }
-    setWrongCells(wrong)
-    setCheckedOnce(true)
-  }, [puzzle, userGrid])
-
-  // ── Reveal current word ──
-  const handleRevealWord = useCallback(() => {
-    if (!activeClue) return
-    const cells = getClueCells(activeClue.clue, activeClue.direction)
-    setUserGrid(prev => {
-      const ng = prev.map(row => [...row])
-      const newRevealed = new Set(revealedCells)
-      for (const [r, c] of cells) {
-        ng[r][c] = puzzle.grid[r][c]
-        newRevealed.add(`${r},${c}`)
-      }
-      setRevealedCells(newRevealed)
-      return ng
-    })
-  }, [activeClue, puzzle, revealedCells])
-
-  // ── Reset ──
-  const handleReset = useCallback(() => {
-    initGrid()
-  }, [initGrid])
-
-  // ── Change puzzle ──
-  const handleChangePuzzle = useCallback((idx: number) => {
-    setPuzzleIndex(idx)
-  }, [])
-
-  // ── Hidden input for Korean IME ──
-  const hiddenInputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const composingRef = useRef(false)
+  const bufRef = useRef<{ slots: number[]; base: string[]; touched: number } | null>(null)
+  const almostShown = useRef(false)
+  const clueRefs = useRef<Record<number, HTMLButtonElement | null>>({})
+
+  // ── 퍼즐 전환: 저장된 진행 불러오기 ──
+  useEffect(() => {
+    if (!puzzle || !key) return
+    const saved = readJSON<Record<string, Game>>(PROGRESS_KEY, {})[key]
+    const blank: Game = { key, cells: puzzle.grid.map(() => ''), locked: [], hinted: [], hints: 0, time: 0, solved: false }
+    const g = saved && saved.cells?.length === puzzle.grid.length ? { ...blank, ...saved, key } : blank
+    setGame(g)
+    const first = puzzle.words[0]
+    const cells = wordCells(first, puzzle.cols)
+    setCursor(g.solved ? null : cells.find(k => !g.cells[k]) ?? cells[0])
+    setDir(first.dir)
+    setWrong(new Set())
+    setMsg(null)
+    setStarted(false)
+    bufRef.current = null
+    almostShown.current = false
+  }, [puzzle, key])
+
+  // 데스크톱은 바로 타이핑할 수 있게 포커스 (모바일은 키보드가 튀어나오므로 탭할 때만)
+  const ready = !!game && game.key === key && !game.solved
+  useEffect(() => {
+    if (ready && window.matchMedia('(pointer: fine)').matches) inputRef.current?.focus({ preventScroll: true })
+  }, [ready, key])
+
+  // ── 자동 저장 (최근 10개 퍼즐만 보관) ──
+  useEffect(() => {
+    if (!game || game.key !== key) return
+    const all = readJSON<Record<string, Game & { at: number }>>(PROGRESS_KEY, {})
+    all[key] = { ...game, at: Date.now() }
+    const keep = Object.entries(all).sort((a, b) => b[1].at - a[1].at).slice(0, 10)
+    writeJSON(PROGRESS_KEY, Object.fromEntries(keep))
+  }, [game, key])
+
+  // ── 타이머: 첫 조작부터, 탭이 보일 때만 ──
+  const solved = !!game?.solved
+  useEffect(() => {
+    if (!started || solved) return
+    const id = setInterval(() => {
+      if (document.visibilityState === 'visible') setGame(g => (g && !g.solved ? { ...g, time: g.time + 1 } : g))
+    }, 1000)
+    return () => clearInterval(id)
+  }, [started, solved, key])
+
+  const lockedSet = useMemo(() => new Set(game?.locked ?? []), [game?.locked])
+  const hintedSet = useMemo(() => new Set(game?.hinted ?? []), [game?.hinted])
+
+  const activeIdx = cursor == null || !widx ? -1 : widx[dir][cursor] >= 0 ? widx[dir][cursor] : widx[other(dir)][cursor]
+  const activeWord = puzzle && activeIdx >= 0 ? puzzle.words[activeIdx] : null
+  const activeCells = useMemo(() => new Set(activeWord && puzzle ? wordCells(activeWord, puzzle.cols) : []), [activeWord, puzzle])
+
+  // ── 입력 버퍼 ──
+  const resetInput = useCallback(() => {
+    const el = inputRef.current
+    if (!el) return
+    el.value = SENTINEL
+    try { el.setSelectionRange(1, 1) } catch { /* 일부 브라우저 */ }
+  }, [])
+
+  /** 조합 중인 버퍼 확정: 남은 낱자(ㄱ, ㅏ)는 지움 */
+  const commitBuffer = useCallback(() => {
+    const el = inputRef.current
+    if (el && composingRef.current && document.activeElement === el) {
+      // 조합 중 값 변경은 IME를 꼬이게 함 → blur로 먼저 확정.
+      // 이때 오는 compositionend는 아직 살아 있는 버퍼로 같은 값을 다시 비출 뿐 (새 버퍼 안 만듦)
+      el.blur()
+      composingRef.current = false
+      el.focus({ preventScroll: true })
+    }
+    const buf = bufRef.current
+    bufRef.current = null
+    if (buf) {
+      setGame(g => {
+        if (!g) return g
+        const cells = g.cells.slice()
+        let changed = false
+        for (const k of buf.slots) if (isJamo(cells[k])) { cells[k] = ''; changed = true }
+        return changed ? { ...g, cells } : g
+      })
+    }
+    resetInput()
+  }, [resetInput])
 
   const focusInput = useCallback(() => {
-    if (hiddenInputRef.current) {
-      hiddenInputRef.current.value = ''
-      hiddenInputRef.current.focus({ preventScroll: true })
-    }
-  }, [])
+    inputRef.current?.focus({ preventScroll: true })
+    resetInput()
+  }, [resetInput])
 
-  useEffect(() => {
-    if (selectedCell) {
+  const select = useCallback((k: number, prefer?: Dir) => {
+    if (!widx || !game || game.solved) return
+    commitBuffer()
+    let d = prefer ?? dir
+    if (widx[d][k] < 0) d = other(d)
+    setCursor(k)
+    setDir(d)
+    setStarted(true)
+    focusInput()
+  }, [widx, game, dir, commitBuffer, focusInput])
+
+  const onCellClick = (k: number) => {
+    if (!puzzle?.grid[k] || !widx) return
+    if (k === cursor && widx[other(dir)][k] >= 0) {
+      commitBuffer()
+      setDir(other(dir))
+      setStarted(true)
       focusInput()
+    } else select(k)
+  }
+
+  const gotoWord = useCallback((i: number) => {
+    if (!puzzle || !game) return
+    const w = puzzle.words[(i + puzzle.words.length) % puzzle.words.length]
+    const cells = wordCells(w, puzzle.cols)
+    select(cells.find(k => !game.cells[k]) ?? cells[0], w.dir)
+  }, [puzzle, game, select])
+
+  // 단서 순서(가로 → 세로)로 이전/다음 단어
+  const clueOrder = useMemo(() => {
+    if (!puzzle) return []
+    const idx = puzzle.words.map((_, i) => i)
+    return [...idx.filter(i => puzzle.words[i].dir === 'across'), ...idx.filter(i => puzzle.words[i].dir === 'down')]
+  }, [puzzle])
+  const stepWord = (delta: number) => {
+    const pos = clueOrder.indexOf(activeIdx)
+    gotoWord(clueOrder[(pos + delta + clueOrder.length) % clueOrder.length])
+  }
+
+  const deleteBackward = () => {
+    if (!puzzle || !game || cursor == null || !activeWord) return
+    bufRef.current = null
+    resetInput()
+    const cells = wordCells(activeWord, puzzle.cols)
+    let k = cursor
+    if (!game.cells[k] || lockedSet.has(k)) {
+      const i = cells.indexOf(k)
+      if (i <= 0) return
+      k = cells[i - 1]
+      setCursor(k)
     }
-  }, [selectedCell, focusInput])
+    if (!lockedSet.has(k) && game.cells[k]) {
+      setGame(g => (g ? { ...g, cells: g.cells.map((v, j) => (j === k ? '' : v)) } : g))
+      setWrong(new Set())
+    }
+  }
 
-  // ── Render ──
-  if (!userGrid.length) return null
+  const processInput = () => {
+    const el = inputRef.current
+    if (!el || !puzzle || !game || game.solved || cursor == null || !activeWord) return
+    const v = el.value
+    if (!v.startsWith(SENTINEL)) {
+      // 빈 버퍼에서 Backspace → 센티넬이 지워짐 (안드로이드 키보드는 keydown이 안 옴)
+      if (!composingRef.current) deleteBackward()
+      else resetInput()
+      return
+    }
+    const raw = v.slice(SENTINEL.length)
+    if (/[a-zA-Z]/.test(raw)) setMsg(t('msg.switchKorean'))
+    const typed = toTyped(raw)
+    if (!bufRef.current) {
+      if (!typed) return
+      const cells = wordCells(activeWord, puzzle.cols)
+      const slots = cells.slice(Math.max(0, cells.indexOf(cursor))).filter(k => !lockedSet.has(k))
+      if (!slots.length) { resetInput(); return }
+      bufRef.current = { slots, base: slots.map(k => game.cells[k]), touched: 0 }
+    }
+    const buf = bufRef.current
+    const { values, touched } = mapTyped(buf.base, typed, buf.touched)
+    buf.touched = touched
+    setGame(g => {
+      if (!g) return g
+      const cells = g.cells.slice()
+      buf.slots.forEach((k, i) => { cells[k] = values[i] })
+      return { ...g, cells }
+    })
+    if (wrong.size) setWrong(new Set())
+    if (typed && msg) setMsg(null)
+    setStarted(true)
+    setCursor(buf.slots[cursorSlot(typed.length, buf.slots.length, composingRef.current)])
+  }
 
-  const cellSize = puzzle.size <= 7 ? 'w-10 h-10 sm:w-12 sm:h-12' : 'w-9 h-9 sm:w-11 sm:h-11'
-  const fontSize = puzzle.size <= 7 ? 'text-lg sm:text-xl' : 'text-base sm:text-lg'
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing || e.keyCode === 229 || !puzzle || cursor == null) return
+    const arrows: Record<string, [Dir, number]> = { ArrowLeft: ['across', -1], ArrowRight: ['across', 1], ArrowUp: ['down', -1], ArrowDown: ['down', 1] }
+    if (arrows[e.key]) {
+      e.preventDefault()
+      const [d, step] = arrows[e.key]
+      // 방향과 수직인 화살표: 먼저 방향만 바꿈
+      if (d !== dir && widx && widx[d][cursor] >= 0) { commitBuffer(); setDir(d); return }
+      let r = Math.floor(cursor / puzzle.cols)
+      let c = cursor % puzzle.cols
+      for (;;) {
+        if (d === 'across') c += step; else r += step
+        if (r < 0 || c < 0 || r >= puzzle.rows || c >= puzzle.cols) return
+        if (puzzle.grid[r * puzzle.cols + c]) { select(r * puzzle.cols + c, d); return }
+      }
+    }
+    if (e.key === 'Tab') { e.preventDefault(); stepWord(e.shiftKey ? -1 : 1); return }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onCellClick(cursor); return }
+    if (e.key === 'Delete') {
+      e.preventDefault()
+      if (!lockedSet.has(cursor)) setGame(g => (g ? { ...g, cells: g.cells.map((v, j) => (j === cursor ? '' : v)) } : g))
+      commitBuffer()
+      return
+    }
+    if (e.key === 'Escape') inputRef.current?.blur()
+  }
+
+  // ── 검사 / 공개 (각 1회 = 힌트 1회) ──
+  const scope = (s: 'cell' | 'word' | 'all'): number[] => {
+    if (!puzzle) return []
+    if (s === 'cell') return cursor == null ? [] : [cursor]
+    if (s === 'word') return activeWord ? wordCells(activeWord, puzzle.cols) : []
+    return puzzle.grid.map((a, k) => (a ? k : -1)).filter(k => k >= 0)
+  }
+  const check = (s: 'cell' | 'word' | 'all') => {
+    if (!puzzle || !game || game.solved) return
+    commitBuffer()
+    const ks = scope(s).filter(k => game.cells[k] && !lockedSet.has(k))
+    if (!ks.length) { setMsg(t('msg.nothingToCheck')); return }
+    const bad = ks.filter(k => game.cells[k] !== puzzle.grid[k])
+    const good = ks.filter(k => game.cells[k] === puzzle.grid[k])
+    setGame(g => (g ? { ...g, locked: [...g.locked, ...good], hints: g.hints + 1 } : g))
+    setWrong(new Set(bad))
+    setMsg(bad.length ? t('msg.wrongCount', { count: bad.length }) : t('msg.allCorrect'))
+    if (bad.length) playInvalid()
+    setStarted(true)
+    inputRef.current?.focus({ preventScroll: true })
+  }
+  const reveal = (s: 'cell' | 'word') => {
+    if (!puzzle || !game || game.solved) return
+    commitBuffer()
+    const ks = scope(s).filter(k => !lockedSet.has(k))
+    if (!ks.length) return
+    setGame(g => {
+      if (!g) return g
+      const cells = g.cells.slice()
+      ks.forEach(k => { cells[k] = puzzle.grid[k] })
+      return { ...g, cells, locked: [...g.locked, ...ks], hinted: [...g.hinted, ...ks], hints: g.hints + 1 }
+    })
+    setWrong(new Set())
+    setMsg(null)
+    setStarted(true)
+    inputRef.current?.focus({ preventScroll: true })
+  }
+  const clearAll = () => {
+    if (!game || game.solved) return
+    commitBuffer()
+    // 시간·힌트 수는 유지 (다시 시작으로 기록을 줄이지 못하게)
+    setGame(g => (g ? { ...g, cells: g.cells.map(() => ''), locked: [], hinted: [] } : g))
+    setWrong(new Set())
+    setMsg(null)
+    almostShown.current = false
+  }
+
+  // ── 완성 판정 ──
+  useEffect(() => {
+    if (!puzzle || !game || game.solved || game.key !== key) return
+    const filled = puzzle.grid.every((a, k) => !a || game.cells[k])
+    if (!filled) { almostShown.current = false; return }
+    if (puzzle.grid.every((a, k) => !a || game.cells[k] === a)) {
+      bufRef.current = null
+      inputRef.current?.blur()
+      setCursor(null)
+      setMsg(null)
+      setGame(g => (g ? { ...g, solved: true, locked: puzzle.grid.map((a, k) => (a ? k : -1)).filter(k => k >= 0) } : g))
+      playWin()
+      setConfetti(true)
+      setTimeout(() => setConfetti(false), 3500)
+      recordGameResult({ gameType: 'crossword', result: 'win', difficulty: 'normal', moves: game.hints })
+      // 오늘의 퍼즐은 그날 첫 완성 기록만 저장
+      if (mode?.kind === 'daily' && mode.n === today) {
+        const all = readJSON<DailyResults>(RESULTS_KEY, {})
+        if (!all[mode.n]) {
+          all[mode.n] = { time: game.time, hints: game.hints }
+          writeJSON(RESULTS_KEY, all)
+          setResults(all)
+        }
+      }
+    } else if (!almostShown.current && !composingRef.current) {
+      almostShown.current = true
+      setMsg(t('msg.almost'))
+      playInvalid()
+    }
+  }, [game, puzzle, key, mode, today, playWin, playInvalid, recordGameResult, t])
+
+  // ── 단서 목록 스크롤 동기화 (목록 안에서만, 페이지는 안 움직임) ──
+  useEffect(() => {
+    const el = clueRefs.current[activeIdx]
+    const box = el?.parentElement
+    if (!el || !box || box.scrollHeight <= box.clientHeight) return
+    if (el.offsetTop < box.scrollTop || el.offsetTop + el.offsetHeight > box.scrollTop + box.clientHeight) {
+      box.scrollTop = el.offsetTop - box.clientHeight / 2
+    }
+  }, [activeIdx])
+
+  // ── 퍼즐 선택 ──
+  const changeMode = (v: string) => {
+    commitBuffer()
+    if (v === 'practice') {
+      setMode({ kind: 'practice', seed: 1_000_000 + Math.floor(Math.random() * 1e9) })
+      window.history.replaceState(null, '', window.location.pathname)
+      return
+    }
+    const n = Number(v.slice(1))
+    setMode({ kind: 'daily', n })
+    window.history.replaceState(null, '', n === today ? window.location.pathname : `?n=${n}`)
+  }
+  const goToday = () => {
+    const n = dailyNumber()
+    setToday(n)
+    setMode({ kind: 'daily', n })
+    window.history.replaceState(null, '', window.location.pathname)
+  }
+
+  // ── 표시 ──
+  const dur = (s: number) => (s >= 60 ? t('time.minSec', { m: Math.floor(s / 60), s: s % 60 }) : t('time.sec', { s }))
+  const dateShort = (n: number) => { const [, m, d] = dailyDate(n).split('-').map(Number); return t('dateShort', { m, d }) }
+  const stats = useMemo(() => computeStats(results, today ?? 0), [results, today])
+
+  const header = (
+    <div>
+      <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+      <p className="text-sm text-muted mt-1">{t('description')}</p>
+    </div>
+  )
+  if (!puzzle || !game || !mode || today == null || game.key !== key) {
+    return (
+      <div className="space-y-6">
+        {header}
+        <div className="ui-card p-6 min-h-[420px]" aria-busy="true" />
+      </div>
+    )
+  }
+
+  const isDaily = mode.kind === 'daily'
+  const recorded = isDaily ? results[mode.n] : undefined
+  const shownTime = recorded?.time ?? game.time
+  const shownHints = recorded?.hints ?? game.hints
+  const hintText = shownHints ? t('share.hints', { count: shownHints }) : t('share.noHints')
+  const shareText = (isDaily
+    ? t('share.text', { n: mode.n, time: dur(shownTime), hints: hintText })
+    : t('share.practiceText', { time: dur(shownTime), hints: hintText })) + '\n' + shapeGrid(puzzle, hintedSet)
+  const shareUrl = isDaily ? `${SITE}?n=${mode.n}` : SITE
+
+  const copyText = async () => {
+    try { await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`) } catch { /* 권한 없음 */ }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const across = puzzle.words.map((w, i) => ({ w, i })).filter(x => x.w.dir === 'across')
+  const down = puzzle.words.map((w, i) => ({ w, i })).filter(x => x.w.dir === 'down')
+  const numberAt = new Map(puzzle.words.map(w => [w.row * puzzle.cols + w.col, w.n]))
+  const cr = cursor == null ? 0 : Math.floor(cursor / puzzle.cols)
+  const cc = cursor == null ? 0 : cursor % puzzle.cols
+  const keep = (e: React.MouseEvent) => e.preventDefault() // 버튼을 눌러도 입력 포커스(모바일 키보드) 유지
+  const pastDays = Array.from({ length: Math.min(7, today) }, (_, i) => today - i)
+
+  const clueList = (title: string, items: { w: typeof puzzle.words[number]; i: number }[]) => (
+    <div className="ui-card p-4 sm:p-5">
+      <h2 className="text-base font-bold text-fg mb-2">{title}</h2>
+      <div className="relative space-y-1 lg:max-h-72 lg:overflow-y-auto">
+        {items.map(({ w, i }) => {
+          const active = i === activeIdx
+          const done = wordCells(w, puzzle.cols).every(k => game.cells[k] && !isJamo(game.cells[k]))
+          return (
+            <button
+              key={i}
+              ref={el => { clueRefs.current[i] = el }}
+              onMouseDown={keep}
+              onClick={() => gotoWord(i)}
+              className={`w-full text-left px-3 py-2 rounded-xl text-sm transition-colors flex gap-2 ${
+                active ? 'bg-primary-soft text-primary font-medium' : done ? 'text-faint hover:bg-soft' : 'text-body hover:bg-soft'}`}
+            >
+              <span className="font-bold tabular-nums w-5 shrink-0">{w.n}</span>
+              <span>{w.clue} <span className="text-faint">({w.answer.length})</span></span>
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+
+  const btn = 'px-3 py-2 rounded-xl text-sm font-medium bg-soft text-body hover:bg-track transition-colors disabled:opacity-40'
 
   return (
     <>
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
-      </div>
+      <GameConfetti active={confetti} />
+      <div className="space-y-6">
+        {header}
 
-      {/* Controls bar */}
-      <div className={`${glassCard} ${glassInset} p-4`}>
-        <div className="flex flex-wrap items-center gap-3">
-          {/* Timer */}
-          <div className="flex items-center gap-1.5 text-body">
-            <Clock className="w-4 h-4" />
-            <span className="font-mono text-sm">{formatTime(time)}</span>
+        {/* 상단 바: 퍼즐 번호·타이머·힌트·효과음·퍼즐 선택 */}
+        <div className="ui-card p-4 flex flex-wrap items-center gap-x-4 gap-y-3">
+          <div className="font-bold text-fg">
+            {isDaily ? t('dailyLabel', { n: mode.n }) : t('practice')}
+            {isDaily && <span className="ml-2 text-sm font-normal text-muted">{dateShort(mode.n)}</span>}
           </div>
-
+          <div className="flex items-center gap-1.5 text-body tabular-nums" aria-label={t('timer')}>
+            <Clock className="w-4 h-4 text-muted" /> {clock(shownTime)}
+          </div>
+          <div className="text-sm text-muted">{t('hintsUsed', { count: shownHints })}</div>
           <div className="flex-1" />
-
-          {/* Puzzle selector */}
-          <select
-            value={puzzleIndex}
-            onChange={e => handleChangePuzzle(Number(e.target.value))}
-            className={`${glassInput} px-2 py-1.5 text-sm`}
+          <button
+            onClick={() => setSoundOn(!soundOn)}
+            className="p-2 rounded-xl text-muted hover:bg-soft"
+            aria-label={soundOn ? ts('disabled') : ts('enabled')}
+            title={soundOn ? ts('disabled') : ts('enabled')}
           >
-            {PUZZLES.map((p, i) => (
-              <option key={p.id} value={i}>
-                {i === getDailyPuzzleIndex() ? `${t('daily')} (#${p.id})` : `${t('puzzle')} #${p.id}`}
+            {soundOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+          </button>
+          <select
+            value={isDaily ? `d${mode.n}` : 'practice'}
+            onChange={e => changeMode(e.target.value)}
+            className="ui-field w-auto max-w-full px-3 py-2 text-sm"
+            aria-label={t('puzzle')}
+          >
+            {pastDays.map(n => (
+              <option key={n} value={`d${n}`}>
+                {n === today ? t('dailyLabel', { n }) : t('pastLabel', { n, date: dateShort(n) })}
+                {results[n] ? ` · ${t('solvedMark')}` : ''}
               </option>
             ))}
+            <option value="practice">{t('practice')}</option>
           </select>
-
-          {/* Check */}
-          <button
-            onClick={handleCheck}
-            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-lg hover:bg-amber-200 dark:hover:bg-amber-800 transition-colors"
-          >
-            <Check className="w-4 h-4" />
-            {t('check')}
-          </button>
-
-          {/* Reveal word */}
-          <button
-            onClick={handleRevealWord}
-            disabled={!activeClue}
-            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-sub rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors disabled:opacity-50"
-          >
-            <Eye className="w-4 h-4" />
-            {t('revealWord')}
-          </button>
-
-          {/* Reset */}
-          <button
-            onClick={handleReset}
-            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-          >
-            <RotateCcw className="w-4 h-4" />
-            {t('reset')}
-          </button>
+          {!isDaily && (
+            <button onClick={() => changeMode('practice')} className={`${btn} inline-flex items-center gap-1.5`}>
+              <Shuffle className="w-4 h-4" /> {t('newPractice')}
+            </button>
+          )}
         </div>
-      </div>
 
-      {/* Win banner */}
-      {completed && (
-        <div className="bg-subtle border border-line rounded-xl p-4 text-center">
-          <p className="text-lg font-bold text-fg">
-            {t('congratulations')}
-          </p>
-          <p className="text-sm text-sub mt-1">
-            {t('completedIn', { time: formatTime(time) })}
-          </p>
-        </div>
-      )}
-
-      {/* Main content: grid + clues */}
-      <div className="grid lg:grid-cols-5 gap-6">
-        {/* Grid */}
-        <div className="lg:col-span-3">
-          <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
-            {/* Active clue display */}
-            {activeClue && (
-              <div className="mb-4 p-3 bg-subtle rounded-lg">
-                <span className="font-bold text-fg">
-                  {activeClue.clue.number}{activeClue.direction === 'across' ? t('acrossShort') : t('downShort')}
-                </span>
-                <span className="ml-2 text-sub">{activeClue.clue.clue}</span>
-              </div>
-            )}
-
-            {/* Hidden input for Korean IME — positioned off-screen but with real size so mobile keyboards appear */}
-            <input
-              ref={hiddenInputRef}
-              type="text"
-              className="absolute -left-[9999px] top-0 w-[1px] h-[1px] opacity-[0.01]"
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck={false}
-              inputMode="text"
-              onCompositionStart={() => { composingRef.current = true }}
-              onCompositionEnd={(e) => {
-                composingRef.current = false
-                const val = e.currentTarget.value
-                if (val) {
-                  const lastChar = val[val.length - 1]
-                  if (/[가-힣]/.test(lastChar)) {
-                    handleInput(lastChar)
-                  }
-                }
-                // Delay clearing to avoid race with onInput
-                setTimeout(() => {
-                  if (hiddenInputRef.current) hiddenInputRef.current.value = ''
-                }, 10)
+        {/* 완성 결과 + 공유 */}
+        {game.solved && (
+          <div className="ui-card p-6">
+            <p className="text-sm text-muted">{isDaily ? t('result.dailyTitle', { n: mode.n }) : t('result.title')}</p>
+            <p className="text-3xl font-bold text-fg tabular-nums mt-1">{dur(shownTime)}</p>
+            <p className="text-sm text-sub mt-1">
+              {shownHints ? t('share.hints', { count: shownHints }) : t('result.noHints')}
+              {isDaily && mode.n === today && stats.streak > 0 && <> · {t('result.streak', { count: stats.streak })}</>}
+            </p>
+            <pre className="mt-4 text-sm leading-tight font-sans" aria-hidden="true">{shapeGrid(puzzle, hintedSet)}</pre>
+            <ShareResult
+              className="mt-5"
+              card={{
+                tool: t('title'),
+                label: isDaily ? t('share.cardLabel', { n: mode.n, date: dateShort(mode.n) }) : t('share.practiceLabel'),
+                headline: dur(shownTime),
+                sub: hintText,
+                rows: [
+                  { label: t('share.words'), value: t('share.wordsValue', { count: puzzle.words.length }) },
+                  ...(isDaily && stats.streak ? [{ label: t('stats.streak'), value: t('stats.days', { count: stats.streak }) }] : []),
+                ],
               }}
-              onInput={(e) => {
-                if (composingRef.current) return
-                const val = (e.target as HTMLInputElement).value
-                if (val) {
-                  const lastChar = val[val.length - 1]
-                  if (/[가-힣]/.test(lastChar)) {
-                    handleInput(lastChar)
-                    ;(e.target as HTMLInputElement).value = ''
-                  }
-                  // For non-Korean single chars (English fallback), also handle
-                  else if (/[a-zA-Z]/.test(lastChar)) {
-                    ;(e.target as HTMLInputElement).value = ''
-                  }
-                }
-              }}
-              onKeyDown={handleKeyDown}
-              onBlur={() => {
-                // Re-focus when input loses focus while a cell is selected (mobile keyboard dismiss prevention)
-                if (selectedCell && !completed) {
-                  setTimeout(() => hiddenInputRef.current?.focus(), 100)
-                }
-              }}
+              text={shareText}
+              url={shareUrl}
+              fileName={`toolhub-crossword-${isDaily ? mode.n : 'practice'}`}
             />
-
-            {/* Grid */}
-            <div
-              ref={gridRef}
-              className="inline-grid gap-0 border-2 border-gray-800 dark:border-gray-400"
-              style={{ gridTemplateColumns: `repeat(${puzzle.size}, 1fr)` }}
-              onClick={focusInput}
-              role="grid"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Tab') {
-                  e.preventDefault()
-                  setDirection(d => d === 'across' ? 'down' : 'across')
-                  return
-                }
-                // Fallback: if hidden input lost focus, handle arrow/backspace/etc directly on grid
-                handleKeyDown(e)
-                // Also try to re-focus hidden input for future IME input
-                focusInput()
-              }}
-            >
-              {Array.from({ length: puzzle.size }, (_, r) =>
-                Array.from({ length: puzzle.size }, (_, c) => {
-                  const isBlack = puzzle.grid[r][c] === ''
-                  const isSelected = selectedCell?.[0] === r && selectedCell?.[1] === c
-                  const isInWord = activeWordCells.has(`${r},${c}`)
-                  const isWrong = wrongCells.has(`${r},${c}`)
-                  const isRevealed = revealedCells.has(`${r},${c}`)
-                  const cellNum = numberMap.get(`${r},${c}`)
-                  const value = userGrid[r]?.[c] || ''
-
-                  return (
-                    <div
-                      key={`${r}-${c}`}
-                      className={`
-                        ${cellSize} relative border border-line-strong cursor-pointer select-none
-                        ${isBlack ? 'bg-gray-800 dark:bg-gray-950 cursor-default' : ''}
-                        ${!isBlack && isSelected ? 'ring-2 ring-blue-500 ring-inset z-10 bg-blue-100 dark:bg-blue-800' : ''}
-                        ${!isBlack && !isSelected && isInWord ? 'bg-primary-soft text-primary' : ''}
-                        ${!isBlack && !isSelected && !isInWord ? 'bg-surface' : ''}
-                        ${isWrong ? 'bg-red-100 dark:bg-red-900/50' : ''}
-                        ${isRevealed && !isSelected ? 'bg-primary-soft text-primary' : ''}
-                      `}
-                      onClick={() => !isBlack && handleCellClick(r, c)}
-                      role="gridcell"
-                      aria-label={isBlack ? 'black' : `row ${r + 1} col ${c + 1}`}
-                    >
-                      {/* Cell number */}
-                      {cellNum && !isBlack && (
-                        <span className="absolute top-0 left-0.5 text-[8px] sm:text-[10px] font-bold text-sub leading-none">
-                          {cellNum}
-                        </span>
-                      )}
-                      {/* Value */}
-                      {!isBlack && (
-                        <span className={`
-                          absolute inset-0 flex items-center justify-center font-semibold
-                          ${fontSize}
-                          ${isWrong ? 'text-red-600 dark:text-red-400' : isRevealed ? 'text-green-700 dark:text-green-400' : 'text-fg'}
-                        `}>
-                          {value}
-                        </span>
-                      )}
-                    </div>
-                  )
-                })
+            <button onClick={copyText} className={`${btn} mt-2 inline-flex items-center gap-1.5`}>
+              {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+              {copied ? t('result.copied') : t('result.copyText')}
+            </button>
+            <div className="mt-5 pt-5 border-t border-line flex flex-wrap items-center gap-3">
+              <Countdown today={today} onNew={goToday} t={t} />
+              <div className="flex-1" />
+              {(!isDaily || mode.n !== today) && !results[today] ? (
+                <button onClick={goToday} className="ui-btn px-4 py-2.5 text-sm">{t('result.playToday')}</button>
+              ) : (
+                <button onClick={() => changeMode('practice')} className={btn}>{t('result.tryPractice')}</button>
               )}
             </div>
-
-            <p className="mt-3 text-xs text-muted">
-              {t('hint')}
-            </p>
           </div>
-        </div>
+        )}
 
-        {/* Clues */}
-        <div className="lg:col-span-2 space-y-4">
-          {/* Across clues */}
-          <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
-            <h2 className="text-lg font-bold text-fg mb-3 flex items-center gap-2">
-              {t('across')}
-            </h2>
-            <div className="space-y-2">
-              {puzzle.clues.across.map(clue => {
-                const isActive = activeClue?.clue.number === clue.number && activeClue.direction === 'across'
-                return (
-                  <button
-                    key={`a-${clue.number}`}
-                    onClick={() => {
-                      setSelectedCell([clue.row, clue.col])
-                      setDirection('across')
-                      if (!isRunning && !completed) setIsRunning(true)
-                      focusInput()
-                    }}
-                    className={`
-                      w-full text-left px-3 py-2 rounded-lg text-sm transition-colors
-                      ${isActive
-                        ? 'bg-blue-100 dark:bg-blue-800 text-fg'
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
-                      }
-                    `}
-                  >
-                    <span className="font-bold mr-2">{clue.number}.</span>
-                    {clue.clue}
+        <div className="grid lg:grid-cols-5 gap-6">
+          <div className="lg:col-span-3">
+            <div className="ui-card p-4 sm:p-6">
+              {/* 현재 단서 (모바일에선 키보드가 목록을 가리므로 여기서 이동) */}
+              {activeWord && !game.solved && (
+                <div className="mb-4 flex items-center gap-1 bg-primary-soft rounded-xl px-1 py-1">
+                  <button onMouseDown={keep} onClick={() => stepWord(-1)} className="p-2 rounded-lg text-primary hover:bg-surface" aria-label={t('prevClue')}>
+                    <ChevronLeft className="w-5 h-5" />
                   </button>
-                )
-              })}
+                  <div className="flex-1 text-sm text-primary py-1" aria-live="polite">
+                    <span className="font-bold mr-1.5">{activeWord.n}{activeWord.dir === 'across' ? t('acrossShort') : t('downShort')}</span>
+                    {activeWord.clue} <span className="opacity-60">({activeWord.answer.length})</span>
+                  </div>
+                  <button onMouseDown={keep} onClick={() => stepWord(1)} className="p-2 rounded-lg text-primary hover:bg-surface" aria-label={t('nextClue')}>
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
+
+              <div className="relative mx-auto" style={{ maxWidth: puzzle.cols * 60 }}>
+                <div
+                  className="grid gap-px bg-line p-px rounded-xl border border-line-strong overflow-hidden select-none touch-manipulation"
+                  style={{ gridTemplateColumns: `repeat(${puzzle.cols}, minmax(0, 1fr))` }}
+                  role="grid"
+                  aria-label={t('title')}
+                >
+                  {puzzle.grid.map((ans, k) => {
+                    if (!ans) return <div key={k} className="aspect-square bg-line-strong" aria-hidden="true" />
+                    const sel = k === cursor
+                    const inWord = activeCells.has(k)
+                    const v = game.cells[k]
+                    const num = numberAt.get(k)
+                    return (
+                      <div
+                        key={k}
+                        role="gridcell"
+                        aria-label={`${num ? num + ' ' : ''}${v || t('emptyCell')}`}
+                        aria-selected={sel}
+                        onMouseDown={keep}
+                        onClick={() => onCellClick(k)}
+                        className={`relative aspect-square flex items-center justify-center cursor-pointer ${
+                          sel ? 'bg-primary text-white' : inWord ? 'bg-primary-soft text-fg' : 'bg-surface text-fg'}`}
+                      >
+                        {num && <span className={`absolute top-0.5 left-1 text-[10px] leading-none ${sel ? 'text-white/80' : 'text-muted'}`}>{num}</span>}
+                        {hintedSet.has(k) && <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-current opacity-50" />}
+                        <span className={`text-lg sm:text-2xl font-bold ${wrong.has(k) ? (sel ? 'line-through' : 'text-red-500 line-through') : ''} ${isJamo(v) ? 'opacity-60' : ''}`}>
+                          {v}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+                {/* 한글 IME용 숨은 입력칸: 선택 칸 위에 겹쳐 둬서 모바일에서 화면이 튀지 않게 */}
+                <input
+                  ref={inputRef}
+                  type="text"
+                  lang="ko"
+                  aria-label={t('inputLabel')}
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
+                  enterKeyHint="next"
+                  defaultValue={SENTINEL}
+                  disabled={game.solved}
+                  className="absolute opacity-0 pointer-events-none caret-transparent bg-transparent border-0 p-0"
+                  style={{ left: `${(cc / puzzle.cols) * 100}%`, top: `${(cr / puzzle.rows) * 100}%`, width: `${100 / puzzle.cols}%`, height: `${100 / puzzle.rows}%`, fontSize: 16 }}
+                  onCompositionStart={() => { composingRef.current = true }}
+                  onCompositionEnd={() => { composingRef.current = false; processInput() }}
+                  onInput={processInput}
+                  onKeyDown={onKeyDown}
+                  onBlur={() => { if (!composingRef.current) { bufRef.current = null; resetInput() } }}
+                />
+              </div>
+
+              {!game.solved && (
+                <>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <button onMouseDown={keep} onClick={() => check('cell')} disabled={cursor == null} className={btn}>{t('checkLetter')}</button>
+                    <button onMouseDown={keep} onClick={() => check('word')} disabled={!activeWord} className={btn}>{t('checkWord')}</button>
+                    <button onMouseDown={keep} onClick={() => check('all')} className={btn}>{t('checkAll')}</button>
+                    <button onMouseDown={keep} onClick={() => reveal('cell')} disabled={cursor == null} className={btn}>{t('revealLetter')}</button>
+                    <button onMouseDown={keep} onClick={() => reveal('word')} disabled={!activeWord} className={btn}>{t('revealWord')}</button>
+                    <button onClick={clearAll} className={`${btn} inline-flex items-center gap-1.5`}>
+                      <RotateCcw className="w-4 h-4" /> {t('reset')}
+                    </button>
+                  </div>
+                  <p className="mt-3 min-h-5 text-sm text-sub" aria-live="polite">{msg}</p>
+                  <p className="mt-1 text-xs text-muted">{t('hint')}</p>
+                </>
+              )}
             </div>
           </div>
 
-          {/* Down clues */}
-          {puzzle.clues.down.length > 0 && (
-            <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
-              <h2 className="text-lg font-bold text-fg mb-3 flex items-center gap-2">
-                {t('down')}
-              </h2>
-              <div className="space-y-2">
-                {puzzle.clues.down.map(clue => {
-                  const isActive = activeClue?.clue.number === clue.number && activeClue.direction === 'down'
-                  return (
-                    <button
-                      key={`d-${clue.number}`}
-                      onClick={() => {
-                        setSelectedCell([clue.row, clue.col])
-                        setDirection('down')
-                        if (!isRunning && !completed) setIsRunning(true)
-                        focusInput()
-                      }}
-                      className={`
-                        w-full text-left px-3 py-2 rounded-lg text-sm transition-colors
-                        ${isActive
-                          ? 'bg-blue-100 dark:bg-blue-800 text-fg'
-                          : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
-                        }
-                      `}
-                    >
-                      <span className="font-bold mr-2">{clue.number}.</span>
-                      {clue.clue}
-                    </button>
-                  )
-                })}
-              </div>
+          <div className="lg:col-span-2 space-y-4">
+            {clueList(t('across'), across)}
+            {down.length > 0 && clueList(t('down'), down)}
+          </div>
+        </div>
+
+        {/* 내 기록 */}
+        <div className="ui-card p-6">
+          <h2 className="text-lg font-bold text-fg">{t('stats.title')}</h2>
+          {stats.solved === 0 ? (
+            <p className="mt-2 text-sm text-muted">{t('stats.empty')}</p>
+          ) : (
+            <div className="mt-4 grid grid-cols-3 sm:grid-cols-6 gap-4">
+              {[
+                [t('stats.solved'), t('stats.count', { count: stats.solved })],
+                [t('stats.streak'), t('stats.days', { count: stats.streak })],
+                [t('stats.maxStreak'), t('stats.days', { count: stats.maxStreak })],
+                [t('stats.best'), stats.best != null ? dur(stats.best) : '-'],
+                [t('stats.avg'), stats.avg != null ? dur(stats.avg) : '-'],
+                [t('stats.clean'), t('stats.count', { count: stats.clean })],
+              ].map(([label, value]) => (
+                <div key={label}>
+                  <div className="text-xs text-muted">{label}</div>
+                  <div className="text-lg font-bold text-fg tabular-nums mt-0.5">{value}</div>
+                </div>
+              ))}
             </div>
           )}
-
-          {/* Achievements */}
-          <GameAchievements
-            achievements={achievements}
-            unlockedCount={unlockedCount}
-            totalCount={totalCount}
-          />
-
-          {/* Guide */}
-          <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
-            <h2 className="text-lg font-bold text-fg mb-3 flex items-center gap-2">
-              {t('guide.title')}
-            </h2>
-            <ul className="space-y-2 text-sm text-body">
-              {(t.raw('guide.items') as string[]).map((item, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-blue-500 mt-0.5">&#8226;</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+          {/* 최근 7일 */}
+          <div className="mt-5 flex gap-1.5">
+            {[...pastDays].reverse().map(n => (
+              <div key={n} className="flex-1 text-center">
+                <div className={`h-2 rounded-full ${results[n] ? 'bg-primary' : 'bg-track'}`} />
+                <div className="mt-1 text-[11px] text-muted tabular-nums">#{n}</div>
+              </div>
+            ))}
           </div>
+          <p className="mt-4 text-xs text-muted">{t('stats.note')}</p>
+        </div>
+
+        <GameAchievements achievements={achievements} unlockedCount={unlockedCount} totalCount={totalCount} />
+
+        <div className="ui-card p-6">
+          <h2 className="text-lg font-bold text-fg mb-3">{t('guide.title')}</h2>
+          <ul className="space-y-2 text-sm text-body list-disc pl-5">
+            {((t.raw('guide.items') as string[] | undefined) ?? []).map((item, i) => <li key={i}>{item}</li>)}
+          </ul>
         </div>
       </div>
-    </div>
-    <AchievementToast
-      achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
-      onDismiss={dismissNewAchievements}
-    />
+      <AchievementToast achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null} onDismiss={dismissNewAchievements} />
     </>
+  )
+}
+
+function Countdown({ today, onNew, t }: { today: number; onNew: () => void; t: ReturnType<typeof useTranslations> }) {
+  const [ms, setMs] = useState(() => msUntilNextDaily())
+  const [rolled, setRolled] = useState(false)
+  useEffect(() => {
+    const id = setInterval(() => {
+      setMs(msUntilNextDaily())
+      if (dailyNumber() > today) setRolled(true)
+    }, 1000)
+    return () => clearInterval(id)
+  }, [today])
+  if (rolled) return <button onClick={onNew} className="ui-btn px-4 py-2.5 text-sm">{t('result.newReady')}</button>
+  const s = Math.floor(ms / 1000)
+  const hms = [Math.floor(s / 3600), Math.floor(s / 60) % 60, s % 60].map(x => String(x).padStart(2, '0')).join(':')
+  return (
+    <div>
+      <div className="text-xs text-muted">{t('result.nextIn')}</div>
+      <div className="text-lg font-bold text-fg tabular-nums">{hms}</div>
+    </div>
   )
 }

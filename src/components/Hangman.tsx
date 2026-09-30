@@ -1,411 +1,428 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
+import { Volume2, VolumeX, Copy, Check, RotateCcw } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
+import { useGameSounds } from '@/hooks/useGameSounds'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
+import GameConfetti from '@/components/GameConfetti'
+import ShareResult from '@/components/ShareResult'
+import {
+  CATEGORIES, KEY_ROWS, type Category, type DailyRecords,
+  wordJamos, isRevealed, countWrong, gameStatus, dayNumber, msToNextDay,
+  dailyWord, randomWord, computeStats, shareText, keyToJamo,
+} from '@/utils/hangman'
 
-// ── Korean jamo decomposition ──────────────────────────────────────────────
-const CHOSUNG = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
-const JUNGSUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ']
-const JONGSUNG = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
+const DAILY_MAX = 7
+const LIVES = { easy: 9, normal: 7, hard: 5 } as const
+type Difficulty = keyof typeof LIVES
+type Mode = 'daily' | 'practice'
+const STORE = 'hangman-daily-v1'
 
-function decompose(char: string): string[] {
-  const code = char.charCodeAt(0) - 0xAC00
-  if (code < 0 || code > 11171) return [char]
-  const cho = Math.floor(code / (21 * 28))
-  const jung = Math.floor((code % (21 * 28)) / 28)
-  const jong = code % 28
-  const result = [CHOSUNG[cho], JUNGSUNG[jung]]
-  if (jong > 0) result.push(JONGSUNG[jong])
-  return result
+interface Game { word: string; category: Category; guesses: string[]; max: number }
+
+function loadRecords(): DailyRecords {
+  try { return JSON.parse(localStorage.getItem(STORE) || '{}') } catch { return {} }
 }
 
-// ── Word bank ──────────────────────────────────────────────────────────────
-const WORD_BANK: Record<string, string[]> = {
-  animals: ['코끼리','사자','호랑이','기린','펭귄','고양이','강아지','다람쥐','햄스터','앵무새','돌고래','코뿔소','하마','치타','독수리'],
-  food:    ['김치찌개','비빔밥','된장찌개','떡볶이','김밥','냉면','삼겹살','불고기','잡채','라면','만두','칼국수','순두부','갈비탕','팥빙수'],
-  countries: ['대한민국','일본','중국','미국','영국','프랑스','독일','브라질','호주','캐나다','이탈리아','스페인','인도','멕시코','태국'],
-  fruits:  ['사과','바나나','포도','딸기','수박','참외','복숭아','블루베리','키위','망고','자두','체리','레몬','파인애플','귤'],
-}
-
-const CATEGORIES = ['animals', 'food', 'countries', 'fruits'] as const
-type Category = typeof CATEGORIES[number]
-
-const CONSONANTS = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
-const VOWELS = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ']
-const MAX_WRONG = 7
-
-// ── SVG Hangman drawing ────────────────────────────────────────────────────
-function HangmanSVG({ wrongCount, label }: { wrongCount: number; label: string }) {
-  const isGameOver = wrongCount >= MAX_WRONG
+// ── SVG: 난이도와 무관하게 7단계로 그림 ────────────────────────────────────
+function HangmanSVG({ stage, label }: { stage: number; label: string }) {
+  const part = 'text-red-500'
   return (
-    <svg
-      viewBox="0 0 200 240"
-      width="200"
-      height="240"
-      aria-label={label}
-      className="mx-auto"
-    >
-      {/* Gallows */}
-      <line x1="20" y1="230" x2="180" y2="230" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-body" />
-      <line x1="60" y1="230" x2="60" y2="20" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-body" />
-      <line x1="60" y1="20" x2="130" y2="20" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-body" />
-      <line x1="130" y1="20" x2="130" y2="45" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-body" />
-
-      {/* 1: Head */}
-      {wrongCount >= 1 && (
-        <circle cx="130" cy="60" r="15" stroke="currentColor" strokeWidth="3" fill="none" className="text-red-500" />
-      )}
-
-      {/* 2: Body */}
-      {wrongCount >= 2 && (
-        <line x1="130" y1="75" x2="130" y2="145" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-red-500" />
-      )}
-
-      {/* 3: Left arm */}
-      {wrongCount >= 3 && (
-        <line x1="130" y1="90" x2="105" y2="120" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-red-500" />
-      )}
-
-      {/* 4: Right arm */}
-      {wrongCount >= 4 && (
-        <line x1="130" y1="90" x2="155" y2="120" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-red-500" />
-      )}
-
-      {/* 5: Left leg */}
-      {wrongCount >= 5 && (
-        <line x1="130" y1="145" x2="105" y2="185" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-red-500" />
-      )}
-
-      {/* 6: Right leg */}
-      {wrongCount >= 6 && (
-        <line x1="130" y1="145" x2="155" y2="185" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-red-500" />
-      )}
-
-      {/* 7: X eyes (game over face) */}
-      {isGameOver && (
-        <>
-          <line x1="123" y1="54" x2="127" y2="58" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-red-600" />
-          <line x1="127" y1="54" x2="123" y2="58" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-red-600" />
-          <line x1="133" y1="54" x2="137" y2="58" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-red-600" />
-          <line x1="137" y1="54" x2="133" y2="58" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-red-600" />
-          <path d="M 122 66 Q 130 62 138 66" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" className="text-red-600" />
-        </>
-      )}
+    <svg viewBox="0 0 200 240" aria-label={label} role="img" className="w-28 sm:w-40 md:w-48 h-auto mx-auto">
+      <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-body">
+        <line x1="20" y1="230" x2="180" y2="230" />
+        <line x1="60" y1="230" x2="60" y2="20" />
+        <line x1="60" y1="20" x2="130" y2="20" />
+        <line x1="130" y1="20" x2="130" y2="45" />
+      </g>
+      <g stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" className={part}>
+        {stage >= 1 && <circle cx="130" cy="60" r="15" />}
+        {stage >= 2 && <line x1="130" y1="75" x2="130" y2="145" />}
+        {stage >= 3 && <line x1="130" y1="90" x2="105" y2="120" />}
+        {stage >= 4 && <line x1="130" y1="90" x2="155" y2="120" />}
+        {stage >= 5 && <line x1="130" y1="145" x2="105" y2="185" />}
+        {stage >= 6 && <line x1="130" y1="145" x2="155" y2="185" />}
+        {stage >= 7 && (
+          <g strokeWidth="2">
+            <path d="M123 54l4 4M127 54l-4 4M133 54l4 4M137 54l-4 4" />
+            <path d="M122 66Q130 62 138 66" />
+          </g>
+        )}
+      </g>
     </svg>
   )
 }
 
-// ── Main component ─────────────────────────────────────────────────────────
+const pad = (n: number) => String(n).padStart(2, '0')
+const fmtCountdown = (ms: number) => {
+  const s = Math.floor(ms / 1000)
+  return `${pad(Math.floor(s / 3600))}:${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}`
+}
+
 export default function Hangman() {
   const t = useTranslations('hangman')
+  const tSound = useTranslations('gameSounds')
 
-  const [category, setCategory] = useState<Category>('animals')
-  const [word, setWord] = useState<string>('')
-  const [guessed, setGuessed] = useState<Set<string>>(new Set())
-  const [wrongCount, setWrongCount] = useState<number>(0)
-  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing')
+  const [mounted, setMounted] = useState(false)
+  const [mode, setMode] = useState<Mode>('daily')
+  const [now, setNow] = useState(0)
+  const [records, setRecords] = useState<DailyRecords>({})
+  const [practiceCat, setPracticeCat] = useState<Category | 'all'>('all')
+  const [difficulty, setDifficulty] = useState<Difficulty>('normal')
+  const [practice, setPractice] = useState<Game | null>(null)
+  const [celebrate, setCelebrate] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
-  const resultRecordedRef = useRef(false)
+  const sounds = useGameSounds()
 
-  // Compute which jamos are in the word
-  const wordJamos = useCallback((w: string): Set<string> => {
-    const jamos = new Set<string>()
-    for (const ch of w) {
-      for (const j of decompose(ch)) {
-        jamos.add(j)
-      }
-    }
-    return jamos
+  const newPractice = useCallback((cat: Category | 'all', diff: Difficulty) => {
+    const w = randomWord(cat)
+    setPractice({ word: w.word, category: w.category, guesses: [], max: LIVES[diff] })
+    setCelebrate(false)
   }, [])
 
-  // Check if a character's jamos are all guessed
-  const isCharRevealed = useCallback((ch: string, guessedSet: Set<string>): boolean => {
-    const jamos = decompose(ch)
-    return jamos.every(j => guessedSet.has(j))
-  }, [])
-
-  const startNewGame = useCallback((cat: Category) => {
-    const words = WORD_BANK[cat]
-    const newWord = words[Math.floor(Math.random() * words.length)]
-    setWord(newWord)
-    setGuessed(new Set())
-    setWrongCount(0)
-    setGameStatus('playing')
-    resultRecordedRef.current = false
-  }, [])
-
-  // Start initial game on mount
+  // 오늘의 단어·기록은 클라이언트에서만 계산 (정답이 HTML에 들어가지 않고 hydration 불일치 없음)
   useEffect(() => {
-    startNewGame('animals')
-  }, [startNewGame])
+    setMounted(true)
+    setNow(Date.now())
+    setRecords(loadRecords())
+    newPractice('all', 'normal')
+    const id = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(id)
+  }, [newPractice])
 
-  const handleCategoryChange = useCallback((cat: Category) => {
-    setCategory(cat)
-    startNewGame(cat)
-  }, [startNewGame])
+  const today = now ? dayNumber(now) : 0
+  const daily = today ? dailyWord(today) : null
+  const game: Game | null = !mounted ? null
+    : mode === 'daily'
+      ? daily && { word: daily.word, category: daily.category, guesses: records[today]?.guesses ?? [], max: DAILY_MAX }
+      : practice
+
+  const status = game ? gameStatus(game.word, game.guesses, game.max) : 'playing'
+  const wrong = game ? countWrong(game.word, game.guesses) : 0
+  const jamos = game ? wordJamos(game.word) : new Set<string>()
+  const guessedSet = new Set(game?.guesses ?? [])
 
   const handleGuess = useCallback((jamo: string) => {
-    if (gameStatus !== 'playing') return
-    if (guessed.has(jamo)) return
+    if (!game || status !== 'playing' || game.guesses.includes(jamo)) return
+    const guesses = [...game.guesses, jamo]
+    const next = gameStatus(game.word, guesses, game.max)
+    const w = countWrong(game.word, guesses)
 
-    const newGuessed = new Set(guessed)
-    newGuessed.add(jamo)
-    setGuessed(newGuessed)
-
-    const inWord = wordJamos(word).has(jamo)
-    let newWrongCount = wrongCount
-    if (!inWord) {
-      newWrongCount = wrongCount + 1
-      setWrongCount(newWrongCount)
+    if (mode === 'daily') {
+      setRecords(prev => {
+        const r = { ...prev, [today]: { guesses, wrong: w, status: next } }
+        try { localStorage.setItem(STORE, JSON.stringify(r)) } catch { /* 저장 불가: 이번 세션만 */ }
+        return r
+      })
+    } else {
+      setPractice({ ...game, guesses })
     }
 
-    // Check win: all chars revealed
-    const allRevealed = [...word].every(ch => isCharRevealed(ch, newGuessed))
-    if (allRevealed) {
-      setGameStatus('won')
-      if (!resultRecordedRef.current) {
-        resultRecordedRef.current = true
-        recordGameResult({
-          gameType: 'hangman',
-          result: 'win',
-          difficulty: 'normal',
-          moves: newGuessed.size,
-        })
-      }
-    } else if (newWrongCount >= MAX_WRONG) {
-      setGameStatus('lost')
-      if (!resultRecordedRef.current) {
-        resultRecordedRef.current = true
-        recordGameResult({
-          gameType: 'hangman',
-          result: 'loss',
-          difficulty: 'normal',
-          moves: newGuessed.size,
-        })
-      }
+    if (next === 'playing') {
+      if (wordJamos(game.word).has(jamo)) sounds.playMove(); else sounds.playInvalid()
+      return
     }
-  }, [gameStatus, guessed, word, wrongCount, wordJamos, isCharRevealed, recordGameResult])
+    if (next === 'won') { sounds.playWin(); setCelebrate(true) } else sounds.playLose()
+    recordGameResult({
+      gameType: 'hangman',
+      result: next === 'won' ? 'win' : 'loss',
+      difficulty: mode === 'daily' ? 'daily' : difficulty,
+      moves: guesses.length,
+    })
+  }, [game, status, mode, today, difficulty, sounds, recordGameResult])
 
-  const categoryIcon: Record<Category, string> = {
-    animals: '🐾',
-    food: '🍜',
-    countries: '🌍',
-    fruits: '🍎',
+  // 물리 키보드: 한글 IME 켜짐/꺼짐 모두 두벌식으로 입력, Enter = 연습 모드 다음 단어
+  const guessRef = useRef(handleGuess)
+  guessRef.current = handleGuess
+  const enterRef = useRef<() => void>(() => {})
+  enterRef.current = () => { if (mode === 'practice' && status !== 'playing') newPractice(practiceCat, difficulty) }
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      const el = e.target as HTMLElement
+      if (el.closest('input, textarea, select, [contenteditable="true"]')) return
+      if (e.key === 'Enter') { if (el.tagName !== 'BUTTON') enterRef.current(); return }
+      const j = keyToJamo(e.key, e.code, e.shiftKey)
+      if (j) { e.preventDefault(); guessRef.current(j) }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  const stats = computeStats(records, today, DAILY_MAX)
+  const dailyDone = mode === 'daily' && status !== 'playing'
+  const shareUrl = mounted ? `${window.location.origin}/hangman/` : ''
+  const resultText = game && dailyDone
+    ? shareText(t('daily.shareTitle', { day: today }), game.word, game.guesses, status === 'won', DAILY_MAX, shareUrl)
+    : ''
+
+  const copyResult = async () => {
+    try { await navigator.clipboard.writeText(resultText) } catch {
+      const ta = document.createElement('textarea')
+      ta.value = resultText; ta.style.position = 'fixed'; ta.style.left = '-9999px'
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta)
+    }
+    setCopied(true); setTimeout(() => setCopied(false), 2000)
   }
 
-  const remainingTries = MAX_WRONG - wrongCount
+  const chip = (on: boolean) =>
+    `px-3.5 py-2 rounded-full text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`
+  const stage = game ? Math.min(7, Math.ceil((wrong * 7) / game.max)) : 0
+  const maxDist = Math.max(1, ...stats.dist, stats.losses)
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
+      <GameConfetti active={celebrate} />
+
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="text-sm text-muted mt-1">{t('description')}</p>
+        </div>
+        {mounted && (
+          <button
+            onClick={() => sounds.setEnabled(!sounds.enabled)}
+            aria-label={sounds.enabled ? tSound('enabled') : tSound('disabled')}
+            title={sounds.enabled ? tSound('enabled') : tSound('disabled')}
+            className="shrink-0 p-2.5 rounded-xl bg-soft text-body hover:bg-track"
+          >
+            {sounds.enabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+          </button>
+        )}
       </div>
 
-      {/* Category selector */}
-      <div className="bg-surface rounded-xl shadow-lg p-4">
-        <p className="text-sm font-medium text-body mb-3">{t('category')}</p>
-        <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => handleCategoryChange(cat)}
-              className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                category === cat
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-              }`}
-            >
-              {categoryIcon[cat]} {t(`categories.${cat}`)}
-            </button>
-          ))}
-        </div>
+      {/* 모드 */}
+      <div role="tablist" className="grid grid-cols-2 gap-1 p-1 bg-soft rounded-2xl">
+        {(['daily', 'practice'] as const).map(m => (
+          <button
+            key={m}
+            role="tab"
+            aria-selected={mode === m}
+            onClick={() => { setMode(m); setCelebrate(false) }}
+            className={`py-2.5 rounded-xl text-sm font-semibold transition-colors ${mode === m ? 'bg-primary text-white' : 'text-body hover:bg-track'}`}
+          >
+            {m === 'daily' ? (today ? t('daily.tabWithDay', { day: today }) : t('daily.tab')) : t('practice.tab')}
+          </button>
+        ))}
       </div>
 
-      {/* Game area */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Left: Hangman figure */}
-        <div className="bg-surface rounded-xl shadow-lg p-6 flex flex-col items-center">
-          <HangmanSVG wrongCount={wrongCount} label={t('svgLabel', { wrong: wrongCount, max: MAX_WRONG })} />
-          <div className="mt-4 text-center">
-            <p className="text-sm text-muted">
-              {t('remainingTries')}: <span className={`font-bold text-lg ${remainingTries <= 2 ? 'text-red-500' : 'text-green-600 dark:text-green-400'}`}>{remainingTries}</span> / {MAX_WRONG}
-            </p>
+      {mode === 'practice' && (
+        <div className="ui-card p-5 space-y-4">
+          <div>
+            <p className="text-sm font-medium text-body mb-2">{t('category')}</p>
+            <div className="flex flex-wrap gap-2">
+              {(['all', ...CATEGORIES] as const).map(c => (
+                <button key={c} onClick={() => { setPracticeCat(c); newPractice(c, difficulty) }} className={chip(practiceCat === c)} aria-pressed={practiceCat === c}>
+                  {t(`categories.${c}`)}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-body mb-2">{t('practice.difficulty')}</p>
+            <div className="flex flex-wrap gap-2">
+              {(Object.keys(LIVES) as Difficulty[]).map(d => (
+                <button key={d} onClick={() => { setDifficulty(d); newPractice(practiceCat, d) }} className={chip(difficulty === d)} aria-pressed={difficulty === d}>
+                  {t(`practice.levels.${d}`, { n: LIVES[d] })}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
+      )}
 
-        {/* Right: Word display + keyboard */}
-        <div className="bg-surface rounded-xl shadow-lg p-6 flex flex-col gap-6">
-          {/* Hint */}
-          <div className="text-center">
-            <span className="inline-block bg-subtle text-sub text-sm font-medium px-3 py-1 rounded-full">
-              {t('hint')}: {categoryIcon[category]} {t(`categories.${category}`)}
-            </span>
-          </div>
+      {/* 게임 */}
+      <div className="ui-card p-5 sm:p-6">
+        <div className="flex items-center justify-between text-sm mb-4">
+          <span className="px-3 py-1 rounded-full bg-subtle text-sub font-medium">
+            {game ? t('hintLine', { category: t(`categories.${game.category}`), n: [...game.word].length }) : t('loading')}
+          </span>
+          <span className="text-muted">
+            {t('remainingTries')}{' '}
+            <b className={`tabular-nums text-base ${game && game.max - wrong <= 2 ? 'text-red-500' : 'text-fg'}`}>{game ? game.max - wrong : '-'}</b>
+            {game && <span> / {game.max}</span>}
+          </span>
+        </div>
 
-          {/* Word display */}
-          {word && (
-            <div className="flex flex-wrap gap-2 justify-center" aria-label={t('wordDisplay')}>
-              {[...word].map((ch, i) => {
-                const revealed = isCharRevealed(ch, guessed)
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+          <HangmanSVG stage={stage} label={t('svgLabel', { wrong, max: game?.max ?? DAILY_MAX })} />
+          <div className="flex-1 w-full">
+            <div className="flex flex-wrap gap-2 justify-center min-h-14" aria-label={t('wordDisplay')} aria-live="polite">
+              {game ? [...game.word].map((ch, i) => {
+                const shown = isRevealed(ch, guessedSet)
+                const missed = !shown && status === 'lost'
                 return (
                   <div
                     key={i}
-                    className={`w-12 h-12 border-b-4 flex items-center justify-center text-xl font-bold transition-all ${
-                      revealed
-                        ? 'border-blue-500 text-fg'
-                        : 'border-gray-400 dark:border-gray-500 text-transparent'
+                    className={`w-12 h-14 rounded-xl border-2 flex items-center justify-center text-2xl font-bold transition-colors ${
+                      shown ? 'border-primary text-fg' : missed ? 'border-red-400 text-red-500' : 'border-line bg-subtle'
                     }`}
-                    aria-label={revealed ? ch : t('unrevealed')}
+                    aria-label={shown || missed ? ch : t('unrevealed')}
                   >
-                    {revealed ? ch : '_'}
+                    {shown || missed ? ch : ''}
                   </div>
                 )
-              })}
+              }) : Array.from({ length: 3 }, (_, i) => <div key={i} className="w-12 h-14 rounded-xl border-2 border-line bg-subtle" />)}
             </div>
-          )}
 
-          {/* Used letters count */}
-          <p className="text-xs text-faint text-center">
-            {t('usedLetters')}: {guessed.size}
-          </p>
-        </div>
-      </div>
-
-      {/* Virtual keyboard */}
-      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
-        {/* Consonants */}
-        <div>
-          <p className="text-xs font-medium text-muted mb-2">{t('consonants')}</p>
-          <div className="flex flex-wrap gap-1.5">
-            {CONSONANTS.map((con) => {
-              const used = guessed.has(con)
-              const isCorrect = used && wordJamos(word).has(con)
-              const isWrong = used && !wordJamos(word).has(con)
-              return (
-                <button
-                  key={con}
-                  onClick={() => handleGuess(con)}
-                  disabled={used || gameStatus !== 'playing'}
-                  aria-pressed={used}
-                  aria-label={used ? t('consonantUsed', { letter: con }) : t('consonantLabel', { letter: con })}
-                  className={`w-10 h-10 rounded-lg text-base font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-                    isCorrect
-                      ? 'bg-soft text-sub opacity-70 cursor-not-allowed'
-                      : isWrong
-                      ? 'bg-red-200 dark:bg-red-900 text-red-700 dark:text-red-300 opacity-50 cursor-not-allowed'
-                      : 'bg-soft text-body hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer'
-                  }`}
-                >
-                  {con}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Vowels */}
-        <div>
-          <p className="text-xs font-medium text-muted mb-2">{t('vowels')}</p>
-          <div className="flex flex-wrap gap-1.5">
-            {VOWELS.map((vow) => {
-              const used = guessed.has(vow)
-              const isCorrect = used && wordJamos(word).has(vow)
-              const isWrong = used && !wordJamos(word).has(vow)
-              return (
-                <button
-                  key={vow}
-                  onClick={() => handleGuess(vow)}
-                  disabled={used || gameStatus !== 'playing'}
-                  aria-pressed={used}
-                  aria-label={used ? t('vowelUsed', { letter: vow }) : t('vowelLabel', { letter: vow })}
-                  className={`w-10 h-10 rounded-lg text-base font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-                    isCorrect
-                      ? 'bg-soft text-sub opacity-70 cursor-not-allowed'
-                      : isWrong
-                      ? 'bg-red-200 dark:bg-red-900 text-red-700 dark:text-red-300 opacity-50 cursor-not-allowed'
-                      : 'bg-soft text-body hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer'
-                  }`}
-                >
-                  {vow}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* Win/Lose overlay */}
-      {gameStatus !== 'playing' && (
-        <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-          role="dialog"
-          aria-modal="true"
-          aria-label={gameStatus === 'won' ? t('gameWon') : t('gameLost')}
-        >
-          <div className="bg-surface rounded-2xl shadow-2xl p-8 mx-4 max-w-sm w-full text-center space-y-4">
-            <div className="text-5xl">{gameStatus === 'won' ? '🎉' : '😢'}</div>
-            <h2 className={`text-2xl font-bold ${gameStatus === 'won' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-              {gameStatus === 'won' ? t('won') : t('lost')}
-            </h2>
-            {gameStatus === 'lost' && (
-              <div>
-                <p className="text-sm text-muted">{t('answer')}</p>
-                <p className="text-3xl font-bold text-fg mt-1">{word}</p>
+            {status !== 'playing' && game && (
+              <div className="mt-5 text-center space-y-1">
+                <p className={`text-xl font-bold ${status === 'won' ? 'text-primary' : 'text-red-500'}`}>
+                  {status === 'won' ? t('wonWithWrong', { wrong }) : t('lost')}
+                </p>
+                {status === 'lost' && <p className="text-sm text-muted">{t('answer')}: <b className="text-fg">{game.word}</b></p>}
+                {mode === 'practice' && (
+                  <button onClick={() => newPractice(practiceCat, difficulty)} className="ui-btn px-5 py-3 mt-3 inline-flex items-center gap-2">
+                    <RotateCcw className="w-4 h-4" /> {t('practice.next')}
+                  </button>
+                )}
               </div>
             )}
-            <button
-              onClick={() => startNewGame(category)}
-              className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
-            >
-              {t('newGame')}
-            </button>
           </div>
         </div>
-      )}
-
-      {/* New game button (always visible during play) */}
-      {gameStatus === 'playing' && (
-        <div className="flex justify-center">
-          <button
-            onClick={() => startNewGame(category)}
-            className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-6 py-2 font-medium text-sm transition-colors"
-          >
-            {t('newGame')}
-          </button>
-        </div>
-      )}
-
-      {/* Achievements */}
-      <GameAchievements
-        achievements={achievements}
-        unlockedCount={unlockedCount}
-        totalCount={totalCount}
-      />
-
-      {/* Guide */}
-      <div className="bg-surface rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-fg mb-4">{t('guide.title')}</h2>
-        <div>
-          <h3 className="text-base font-medium text-body mb-2">{t('guide.rules.title')}</h3>
-          <ul className="space-y-2">
-            {(t.raw('guide.rules.items') as string[]).map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                <span className="text-blue-500 mt-0.5">•</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
-      <AchievementToast
-        achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null}
-        onDismiss={dismissNewAchievements}
-      />
+
+      {/* 오늘의 단어 결과 · 공유 · 카운트다운 */}
+      {dailyDone && game && (
+        <div className="ui-card p-5 sm:p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted">{t('daily.next')}</p>
+              <p className="text-3xl font-bold text-fg tabular-nums">{fmtCountdown(msToNextDay(now))}</p>
+            </div>
+            <button onClick={() => setMode('practice')} className="ui-btn-soft px-4 py-2 text-sm">{t('daily.goPractice')}</button>
+          </div>
+          <pre className="bg-subtle rounded-2xl p-4 text-sm text-body whitespace-pre-wrap break-all font-sans">{resultText}</pre>
+          <button onClick={copyResult} className="w-full ui-btn px-4 py-3 inline-flex items-center justify-center gap-2">
+            {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />} {copied ? t('daily.copied') : t('daily.copyResult')}
+          </button>
+          <ShareResult
+            url={shareUrl}
+            text={resultText.replace(/\n[^\n]*$/, '')}
+            fileName={`hangman-${today}`}
+            card={{
+              tool: t('title'),
+              label: t('daily.cardLabel', { day: today }),
+              headline: status === 'won' ? t('daily.cardWon', { wrong, max: DAILY_MAX }) : t('daily.cardLost'),
+              sub: t('daily.cardStreak', { n: stats.current }),
+              rows: [
+                { label: t('stats.played'), value: String(stats.played) },
+                { label: t('stats.winRate'), value: `${stats.winRate}%` },
+                { label: t('stats.maxStreak'), value: String(stats.maxStreak) },
+              ],
+            }}
+          />
+        </div>
+      )}
+
+      {/* 화면 키보드 (두벌식) */}
+      <div className="ui-card p-2 sm:p-4 space-y-1.5" aria-label={t('keyboard')}>
+        {KEY_ROWS.map((row, r) => (
+          <div key={r} className={`flex gap-1 sm:gap-1.5 justify-center ${r >= 3 ? 'pt-1' : ''}`}>
+            {row.map(k => {
+              const used = guessedSet.has(k)
+              const hit = used && jamos.has(k)
+              return (
+                <button
+                  key={k}
+                  onClick={() => handleGuess(k)}
+                  disabled={used || status !== 'playing' || !game}
+                  aria-label={used ? t(hit ? 'keyHit' : 'keyMiss', { letter: k }) : k}
+                  className={`flex-1 max-w-12 h-12 sm:h-13 rounded-lg text-lg font-bold transition-colors select-none touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                    hit ? 'bg-primary text-white'
+                      : used ? 'bg-track text-faint line-through'
+                        : 'bg-soft text-fg hover:bg-track active:bg-track disabled:opacity-60'
+                  }`}
+                >
+                  {k}
+                </button>
+              )
+            })}
+          </div>
+        ))}
+        <p className="hidden sm:block text-xs text-faint text-center pt-1">{t('keyboardHint')}</p>
+      </div>
+
+      {mode === 'practice' && status === 'playing' && game && (
+        <div className="flex justify-center">
+          <button onClick={() => newPractice(practiceCat, difficulty)} className="ui-btn-soft px-5 py-2 text-sm">{t('newGame')}</button>
+        </div>
+      )}
+
+      {/* 오늘의 단어 통계 */}
+      {mounted && mode === 'daily' && (
+        <div className="ui-card p-5 sm:p-6">
+          <h2 className="text-lg font-semibold text-fg mb-4">{t('stats.title')}</h2>
+          <div className="grid grid-cols-4 gap-2 text-center mb-5">
+            {([
+              ['played', stats.played],
+              ['winRate', `${stats.winRate}%`],
+              ['current', stats.current],
+              ['maxStreak', stats.maxStreak],
+            ] as const).map(([k, v]) => (
+              <div key={k}>
+                <p className="text-2xl font-bold text-fg tabular-nums">{v}</p>
+                <p className="text-xs text-muted mt-0.5">{t(`stats.${k}`)}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm font-medium text-body mb-2">{t('stats.distribution')}</p>
+          <div className="space-y-1.5">
+            {[...stats.dist.map((n, k) => ({ label: String(k), n, mine: dailyDone && status === 'won' && wrong === k })),
+              { label: 'X', n: stats.losses, mine: dailyDone && status === 'lost' }].map(b => (
+              <div key={b.label} className="flex items-center gap-2 text-sm">
+                <span className="w-4 text-right text-muted tabular-nums">{b.label}</span>
+                <div className="flex-1">
+                  <div
+                    className={`h-6 rounded-md px-2 flex items-center justify-end text-xs font-semibold tabular-nums ${b.mine ? 'bg-primary text-white' : 'bg-track text-body'}`}
+                    style={{ width: `${Math.max(8, (b.n / maxDist) * 100)}%` }}
+                  >
+                    {b.n}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-faint mt-3">{t('stats.distributionNote')}</p>
+        </div>
+      )}
+
+      <GameAchievements achievements={achievements} unlockedCount={unlockedCount} totalCount={totalCount} />
+
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-2">{t('guide.rules.title')}</h3>
+          <ul className="space-y-1.5 list-disc list-inside text-sm text-sub">
+            {(t.raw('guide.rules.items') as string[]).map((item, i) => <li key={i}>{item}</li>)}
+            <li>{t('daily.about')}</li>
+          </ul>
+        </section>
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-2">{t('guide.tips.title')}</h3>
+          <ul className="space-y-1.5 list-disc list-inside text-sm text-sub">
+            {(t.raw('guide.tips.items') as string[]).map((item, i) => <li key={i}>{item}</li>)}
+          </ul>
+        </section>
+        <section>
+          <h3 className="text-base font-semibold text-fg mb-2">{t('guide.faq.title')}</h3>
+          <div className="space-y-3">
+            {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((f, i) => (
+              <div key={i}>
+                <p className="text-sm font-semibold text-body">{f.q}</p>
+                <p className="text-sm text-sub mt-0.5">{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <AchievementToast achievement={newlyUnlocked.length > 0 ? newlyUnlocked[0] : null} onDismiss={dismissNewAchievements} />
     </div>
   )
 }

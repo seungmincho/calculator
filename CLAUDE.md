@@ -646,6 +646,7 @@ export default function NewTool() {
 - **컴포넌트 클래스** (`@layer components` → 같이 쓴 유틸리티가 이김, 예: `ui-card p-6 rounded-xl`)
   - `ui-card` 카드 · `ui-field` 입력(회색 채움, `bg-subtle` 안에서는 자동으로 흰색) · `ui-btn` 메인 버튼 · `ui-btn-soft` 보조 버튼
 - **강조색 규칙(토스식)**: 흰 바탕에 파랑 포인트. 선택된 탭·세그먼트·칩 = `bg-primary text-white`, 선택된 옵션 카드/리스트 항목 = `bg-primary-soft text-primary`(+`border-primary`), 주요 버튼 = `ui-btn`. 선택 상태를 회색(bg-soft/bg-subtle)으로 두지 말 것. 첫 화면에 기본값으로 결과가 보이게.
+- **결과 공유(입소문)**: `<ShareResult card={{ tool, label, headline, sub?, rows? }} text? url? />` (`src/components/ShareResult.tsx`) — 공유하기(모바일 공유 시트: 카드 이미지+링크)·이미지 저장(1080×1350 토스식 카드, `src/utils/shareCard.ts`)·링크 복사. 결과가 있는 도구는 결과 카드 아래에 붙이고, URL 파라미터로 결과가 재현되게 할 것.
 - **아이콘**: 도구 아이콘은 `<ToolIcon href=... />`(`src/config/toolIcons.ts` 매핑, 새 도구 추가 시 한 줄 추가). menuConfig의 emoji `icon`은 화면에 쓰지 말 것.
 - **팔레트 재정의**: gray/slate = 토스 그레이, blue = 토스 블루(#3182F6), indigo/violet/purple → blue. 폰트 Pretendard.
 - 금지: 장식용 이모지(제목·버튼·라벨 앞), 입력 라벨/섹션 제목 앞 아이콘, 색 틴트 박스(`bg-green-50` 등 — 정보 박스는 `bg-subtle`, 경고만 amber/red), 그라데이션 버튼·배너, `backdrop-blur`, 배경 color blob, light/dark 색 쌍 하드코딩, 인라인 `rgba()` 그림자, page.tsx 래퍼 배경.

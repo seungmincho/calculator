@@ -3,7 +3,10 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from '@/hooks/useSearchParams';
-import { DollarSign, TrendingUp, Calculator, Share2, Check, Table, Save, BarChart3, LineChart, PieChart } from 'lucide-react';
+import Link from 'next/link';
+import { DollarSign, TrendingUp, Calculator, Table, Save, BarChart3, ChevronRight } from 'lucide-react';
+import ShareResult from '@/components/ShareResult';
+import { topPercent, simulateRaise, hourlyNet, MONTHLY_HOURS, NTS_SOURCE_YEAR } from '@/utils/salaryInsights';
 import { useTranslations } from '@/lib/i18n';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
@@ -19,16 +22,13 @@ const SalaryCalculatorContent = () => {
   const searchParams = useSearchParams();
   const t = useTranslations('salary');
   const tc = useTranslations('common');
-  const glassCard = 'bg-surface border border-line rounded-[28px] shadow-[0_24px_80px_rgba(59,130,246,0.12)]'
-  const glassInset = 'shadow-[inset_1px_1px_10px_rgba(255,255,255,0.30),inset_0_-1px_10px_rgba(255,255,255,0.10)]'
-  const glassInput = 'w-full rounded-2xl border border-line bg-surface text-fg placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-blue-400/50 transition-all'
   const [salary, setSalary] = useState('50,000,000'); // 첫 화면부터 결과 표시 (URL ?salary= 가 있으면 덮어씀)
   const [salaryType, setSalaryType] = useState<'annual' | 'monthly'>('annual');
   const [nonTaxableAmount, setNonTaxableAmount] = useState('0');
   const [dependents, setDependents] = useState('1');
   const [childrenUnder20, setChildrenUnder20] = useState('0');
   const [result, setResult] = useState<ReturnType<typeof calculateNetSalary>>(null);
-  const [isCopied, setIsCopied] = useState(false);
+  const [raisePct, setRaisePct] = useState(5);
   const [showTable, setShowTable] = useState(false);
   const [showSaveButton, setShowSaveButton] = useState(false);
   const [bonusMonths, setBonusMonths] = useState<number[]>([]);
@@ -47,16 +47,22 @@ const SalaryCalculatorContent = () => {
     loadFromHistory
   } = useCalculationHistory('salary');
 
+  // 자녀 수는 부양가족(본인 포함)에 포함된 인원 → 부양가족-1을 넘을 수 없음 (URL 등 잘못된 조합 방지)
+  const taxOptions = (nonTaxable: string, dependentCount: string, childrenCount: string) => {
+    const deps = parseInt(dependentCount) || 1;
+    return {
+      nonTaxableMonthly: parseInt(nonTaxable.replace(/,/g, '')) || 0,
+      dependents: deps,
+      children: Math.min(parseInt(childrenCount) || 0, deps - 1),
+    };
+  };
+
   // 한국 연봉 실수령액 계산 함수 (4대보험 요율은 insuranceRates.ts 기준연도)
   const calculateNetSalary = (inputSalary: string, type: 'annual' | 'monthly', nonTaxable: string, dependentCount: string, childrenCount: string) => {
     const salaryNum = parseInt(inputSalary.replace(/,/g, ''));
     if (!salaryNum || salaryNum <= 0) return null;
     // 계산 로직은 utils/netSalary.ts (연봉 실수령액 표와 공유)
-    return calcNetSalary(type === 'monthly' ? salaryNum * 12 : salaryNum, {
-      nonTaxableMonthly: parseInt(nonTaxable.replace(/,/g, '')) || 0,
-      dependents: parseInt(dependentCount) || 1,
-      children: parseInt(childrenCount) || 0,
-    });
+    return calcNetSalary(type === 'monthly' ? salaryNum * 12 : salaryNum, taxOptions(nonTaxable, dependentCount, childrenCount));
   };
 
   const handleCalculate = React.useCallback(() => {
@@ -74,7 +80,8 @@ const SalaryCalculatorContent = () => {
     if (!result) return [];
     
     // 상여금 개념: 연봉을 (12 + 상여비율/100)회로 분할하여 지급
-    const bonusRatio = parseInt(bonusPercentage) / 100; // 상여 800% → 8
+    // 상여 800% → 8. 지급월을 안 고르면 상여가 어디에도 안 붙어 연 합계가 연봉보다 작아지므로 균등(÷12) 처리
+    const bonusRatio = bonusMonths.length ? parseInt(bonusPercentage) / 100 : 0;
     const totalPayments = 12 + bonusRatio; // 12개월 + 상여 횟수
     const onePaymentAmount = Math.floor(result.gross / totalPayments); // 1회 지급액
     
@@ -146,21 +153,11 @@ const SalaryCalculatorContent = () => {
     ];
   };
 
-  const handleShare = async () => {
-    try {
-      const currentUrl = window.location.href;
-      await navigator.clipboard.writeText(currentUrl);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy URL:', err);
-    }
-  };
-
   const handleSalaryInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
     if (/^\d*$/.test(value)) {
-      const formattedValue = formatNumber(Number(value));
+      // 빈 칸은 빈 칸으로 둠 (예전엔 '0'으로 바뀌어 지울 수가 없었음)
+      const formattedValue = value === '' ? '' : formatNumber(Number(value));
       setSalary(formattedValue);
       updateURL({ salary: value });
     }
@@ -169,7 +166,7 @@ const SalaryCalculatorContent = () => {
   const handleNonTaxableChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
     if (/^\d*$/.test(value)) {
-      const formattedValue = formatNumber(Number(value));
+      const formattedValue = value === '' ? '' : formatNumber(Number(value));
       setNonTaxableAmount(formattedValue);
       updateURL({ nonTaxable: value });
     }
@@ -283,6 +280,19 @@ const SalaryCalculatorContent = () => {
     return tableData;
   };
 
+  // ── 입소문 지표 (결과가 있을 때만 의미 있음) ──
+  const opts = taxOptions(nonTaxableAmount, dependents, childrenUnder20);
+  const topPct = result ? topPercent(result.gross) : 0;
+  const deductionPct = result ? (result.deductions.total / result.gross) * 100 : 0;
+  const raise = result ? simulateRaise(result.gross, raisePct, opts) : null;
+  const toMan = (won: number) => t('viral.salaryMan', { man: formatNumber(Math.round(won / 10000)), won: formatNumber(won) });
+  // 공유 링크는 현재 주소창이 아니라 입력값으로 직접 만듦 → 기본값(파라미터 없음) 상태에서도 결과 재현
+  const shareUrl = typeof window === 'undefined' ? undefined
+    : `${window.location.origin}/salary-calculator/?${new URLSearchParams({
+        salary: salary.replace(/,/g, ''), type: salaryType, nonTaxable: nonTaxableAmount.replace(/,/g, '') || '0',
+        dependents: String(opts.dependents), children: String(opts.children),
+      })}`;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
@@ -304,7 +314,7 @@ const SalaryCalculatorContent = () => {
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Input Section */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
+        <div className={`ui-card p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-fg">{t('input.salaryType')}</h2>
           
           <div className="space-y-6">
@@ -341,7 +351,7 @@ const SalaryCalculatorContent = () => {
                   value={salary}
                   onChange={handleSalaryInputChange}
                   placeholder={salaryType === 'annual' ? t('input.salaryPlaceholderAnnual') : t('input.salaryPlaceholderMonthly')}
-                  className={`${glassInput} px-4 py-4 text-lg font-semibold pr-14`}
+                  className={`ui-field px-4 py-4 text-lg font-semibold pr-14`}
                 />
                 <span className="absolute right-4 top-4 text-gray-600 font-medium">{t('input.currency')}</span>
               </div>
@@ -358,7 +368,7 @@ const SalaryCalculatorContent = () => {
                   value={nonTaxableAmount}
                   onChange={handleNonTaxableChange}
                   placeholder={t('input.nonTaxablePlaceholder')}
-                  className={`${glassInput} px-4 py-3 pr-14`}
+                  className={`ui-field px-4 py-3 pr-14`}
                 />
                 <span className="absolute right-3 top-3 text-muted">{t('input.currency')}</span>
               </div>
@@ -376,10 +386,12 @@ const SalaryCalculatorContent = () => {
                 <select
                   value={dependents}
                   onChange={(e) => {
+                    const maxChildren = String(Math.min(parseInt(childrenUnder20) || 0, parseInt(e.target.value) - 1));
                     setDependents(e.target.value);
-                    updateURL({ dependents: e.target.value });
+                    setChildrenUnder20(maxChildren);
+                    updateURL({ dependents: e.target.value, children: maxChildren });
                   }}
-                  className={`${glassInput} px-3 py-3`}
+                  className={`ui-field px-3 py-3`}
                 >
                   {[1,2,3,4,5,6,7,8,9,10].map(num => (
                     <option key={num} value={num}>{num}명</option>
@@ -397,9 +409,9 @@ const SalaryCalculatorContent = () => {
                     setChildrenUnder20(e.target.value);
                     updateURL({ children: e.target.value });
                   }}
-                  className={`${glassInput} px-3 py-3`}
+                  className={`ui-field px-3 py-3`}
                 >
-                  {[0,1,2,3,4,5].map(num => (
+                  {[0,1,2,3,4,5].filter(num => num < (parseInt(dependents) || 1)).map(num => (
                     <option key={num} value={num}>{num}명</option>
                   ))}
                 </select>
@@ -416,9 +428,9 @@ const SalaryCalculatorContent = () => {
                 {/* 상여금 설정 */}
                 <div>
                   <h3 className="text-sm font-medium text-body mb-2">상여금 설정</h3>
-                  <div className="bg-amber-50/80 dark:bg-amber-900/20 rounded-xl p-3 mb-3 border border-amber-200/40 dark:border-amber-700/20">
-                    <p className="text-xs text-amber-800 dark:text-amber-200">
-                      💡 <strong>상여금은 연봉을 분할 지급하는 방식입니다</strong><br/>
+                  <div className="bg-subtle rounded-xl p-3 mb-3">
+                    <p className="text-xs text-sub">
+                      <strong className="text-body">상여금은 연봉을 분할 지급하는 방식입니다</strong><br/>
                       예: 연봉 3000만원 + 상여 800% = 3000만원을 20회(12+8)로 나누어 지급
                     </p>
                   </div>
@@ -428,15 +440,16 @@ const SalaryCalculatorContent = () => {
                       <select
                         value={bonusPercentage}
                         onChange={(e) => setBonusPercentage(e.target.value)}
-                        className={`${glassInput} px-3 py-2`}
+                        className={`ui-field px-3 py-2`}
                       >
                         <option value="0">상여금 없음 (연봉÷12개월)</option>
-                        <option value="100">100% (연봉÷14회)</option>
-                        <option value="200">200% (연봉÷16회)</option>
-                        <option value="300">300% (연봉÷18회)</option>
-                        <option value="400">400% (연봉÷20회)</option>
-                        <option value="600">600% (연봉÷24회)</option>
-                        <option value="800">800% (연봉÷28회)</option>
+                        {/* 계산식(12 + 비율/100 회)과 라벨을 일치시킴 — 예전 라벨은 ÷14/÷16…로 계산과 달랐음 */}
+                        <option value="100">100% (연봉÷13회)</option>
+                        <option value="200">200% (연봉÷14회)</option>
+                        <option value="300">300% (연봉÷15회)</option>
+                        <option value="400">400% (연봉÷16회)</option>
+                        <option value="600">600% (연봉÷18회)</option>
+                        <option value="800">800% (연봉÷20회)</option>
                       </select>
                     </div>
                     {bonusPercentage !== '0' && (
@@ -455,7 +468,7 @@ const SalaryCalculatorContent = () => {
                               }}
                               className={`py-1.5 px-2 text-xs rounded-xl transition-all font-medium ${
                                 bonusMonths.includes(month)
-                                  ? 'bg-blue-500 text-white shadow-[0_2px_8px_rgba(59,130,246,0.4)]'
+                                  ? 'bg-primary text-white'
                                   : 'bg-surface border border-line text-body hover:bg-soft'
                               }`}
                             >
@@ -471,9 +484,9 @@ const SalaryCalculatorContent = () => {
                 {/* 성과급 설정 */}
                 <div className="border-t border-line pt-5">
                   <h3 className="text-sm font-medium text-body mb-2">성과급 설정</h3>
-                  <div className="bg-subtle rounded-xl p-3 mb-3 border border-line">
-                    <p className="text-xs text-fg">
-                      💡 <strong>성과급은 연봉에 추가로 지급되는 금액입니다</strong><br/>
+                  <div className="bg-subtle rounded-xl p-3 mb-3">
+                    <p className="text-xs text-sub">
+                      <strong className="text-body">성과급은 연봉에 추가로 지급되는 금액입니다</strong><br/>
                       예: 연봉 3000만원 + 성과급 200% = 3000만원 + (3000만원의 200%)
                     </p>
                   </div>
@@ -481,7 +494,7 @@ const SalaryCalculatorContent = () => {
                   <select
                     value={performanceBonus}
                     onChange={(e) => setPerformanceBonus(e.target.value)}
-                    className={`${glassInput} px-3 py-2`}
+                    className={`ui-field px-3 py-2`}
                   >
                     <option value="0">성과급 없음</option>
                     <option value="50">50% (연봉의 50%)</option>
@@ -499,7 +512,7 @@ const SalaryCalculatorContent = () => {
                   <select
                     value={experienceYears}
                     onChange={(e) => setExperienceYears(e.target.value)}
-                    className={`${glassInput} px-3 py-3`}
+                    className={`ui-field px-3 py-3`}
                   >
                     <option value="0">신입</option>
                     <option value="1">1-2년</option>
@@ -524,7 +537,7 @@ const SalaryCalculatorContent = () => {
         </div>
 
         {/* Result Section */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
+        <div className={`ui-card p-8`}>
           <h2 className="text-2xl font-semibold mb-6 text-fg">{tc('result')}</h2>
           
           {result ? (
@@ -536,9 +549,12 @@ const SalaryCalculatorContent = () => {
                     <p className="text-white/80 text-sm font-medium">{t('result.monthlyTakeHome')}</p>
                     <TrendingUp className="w-5 h-5 shrink-0 text-white/80" />
                   </div>
-                  <div className="text-4xl sm:text-5xl font-bold tracking-tight text-white mt-1 mb-5">
+                  <div className="text-4xl sm:text-5xl font-bold tracking-tight text-white mt-1 mb-2 tabular-nums">
                     {formatNumber(result.netMonthly)}<span className="text-2xl sm:text-3xl ml-1 font-semibold text-white/70">원</span>
                   </div>
+                  <p className="text-sm font-semibold text-white mb-5">
+                    {t('viral.heroTop', { salary: toMan(result.gross), top: topPct })}
+                  </p>
                   <div className="grid grid-cols-2 gap-3 mb-5">
                     <div className="rounded-2xl bg-white/[0.14] px-4 py-3">
                       <div className="text-xs text-white/70 mb-1">{t('result.annualTakeHome')}</div>
@@ -549,35 +565,86 @@ const SalaryCalculatorContent = () => {
                       <div className="text-base font-semibold text-white">{result.taxInfo?.effectiveTaxRate.toFixed(1)}%</div>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  {showSaveButton && (
                     <button
-                      onClick={handleShare}
+                      onClick={handleSaveCalculation}
                       className="inline-flex items-center gap-2 bg-white/[0.16] hover:bg-white/[0.24] px-4 py-2 rounded-xl text-white text-sm font-medium transition-colors"
                     >
-                      {isCopied ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span>{tc('copied')}</span>
-                        </>
-                      ) : (
-                        <>
-                          <Share2 className="w-4 h-4" />
-                          <span>{t('result.shareResult')}</span>
-                        </>
-                      )}
+                      <Save className="w-4 h-4" />
+                      <span>{tc('save')}</span>
                     </button>
-                    {showSaveButton && (
-                      <button
-                        onClick={handleSaveCalculation}
-                        className="inline-flex items-center gap-2 bg-white/[0.16] hover:bg-white/[0.24] px-4 py-2 rounded-xl text-white text-sm font-medium transition-colors"
-                      >
-                        <Save className="w-4 h-4" />
-                        <span>{tc('save')}</span>
-                      </button>
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
+
+              {/* 한 줄 인사이트: 공제 비율 · 월급 기준 시급 · 상위 % 출처 */}
+              <div className="bg-subtle rounded-2xl p-5 space-y-2 text-sm text-body">
+                <p>{t('viral.deductionLine', { pct: deductionPct.toFixed(1), monthly: formatNumber(Math.round(result.deductions.total / 12)) })}</p>
+                <p>{t('viral.hourlyLine', { hourly: formatNumber(hourlyNet(result.netMonthly)), hours: MONTHLY_HOURS })}</p>
+                <p className="text-xs text-muted">
+                  {t('viral.topSource', { year: NTS_SOURCE_YEAR })}{' '}
+                  <Link href="/salary-rank/" className="text-primary font-medium hover:underline">{t('viral.rankLink')}</Link>
+                </p>
+              </div>
+
+              <ShareResult
+                fileName="toolhub-salary"
+                url={shareUrl}
+                text={t('viral.shareText', { salary: toMan(result.gross), monthly: formatNumber(result.netMonthly), top: topPct })}
+                card={{
+                  tool: t('title'),
+                  label: t('viral.cardLabel', { salary: toMan(result.gross) }),
+                  headline: `${formatNumber(result.netMonthly)}${t('input.currency')}`,
+                  sub: t('viral.cardSub', { top: topPct, year: NTS_SOURCE_YEAR }),
+                  rows: [
+                    { label: t('result.annualTakeHome'), value: `${formatNumber(result.netAnnual)}${t('input.currency')}` },
+                    { label: t('viral.rowDeduction'), value: `${formatNumber(Math.round(result.deductions.total / 12))}${t('input.currency')} (${deductionPct.toFixed(1)}%)` },
+                    { label: t('viral.rowHourly'), value: `${formatNumber(hourlyNet(result.netMonthly))}${t('input.currency')}` },
+                    { label: t('viral.rowCondition'), value: t('viral.conditionValue', { dependents: opts.dependents, children: opts.children }) },
+                  ],
+                }}
+              />
+
+              {/* 연봉 인상 시뮬레이션 */}
+              {raise && (
+                <div className="rounded-2xl border border-line p-5 space-y-4">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <h3 className="font-semibold text-fg">{t('viral.raise.title')}</h3>
+                    <span className="text-sm font-semibold text-primary tabular-nums">+{raisePct}%</span>
+                  </div>
+                  <input
+                    type="range" min={0} max={30} step={1} value={raisePct}
+                    onChange={(e) => setRaisePct(Number(e.target.value))}
+                    aria-label={t('viral.raise.sliderLabel')}
+                    className="w-full accent-blue-600"
+                  />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <div className="text-xs text-muted mb-1">{t('viral.raise.newSalary')}</div>
+                      <div className="text-lg font-bold text-fg tabular-nums">{formatNumber(raise.newGross)}{t('input.currency')}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted mb-1">{t('viral.raise.newMonthly')}</div>
+                      <div className="text-lg font-bold text-fg tabular-nums">
+                        {formatNumber(raise.newNetMonthly)}{t('input.currency')}
+                      </div>
+                      <div className="text-sm font-semibold text-primary tabular-nums">+{formatNumber(raise.monthlyGain)}{t('input.currency')}</div>
+                    </div>
+                  </div>
+                  {raisePct > 0 && (
+                    <p className="text-sm text-body">
+                      {t('viral.raise.insight', { pct: raisePct, netPct: raise.netGainPct.toFixed(1), keep: Math.round(raise.keepPct) })}
+                    </p>
+                  )}
+                  <Link
+                    href={`/salary-comparison/?salaryA=${result.gross}&salaryB=${raise.newGross}`}
+                    className="flex items-center justify-between rounded-xl bg-soft hover:bg-subtle px-4 py-3 text-sm font-medium text-body transition-colors"
+                  >
+                    <span>{t('viral.raise.compareLink')}</span>
+                    <ChevronRight className="w-4 h-4 text-muted" />
+                  </Link>
+                </div>
+              )}
 
               {/* Tax Information */}
               {result.taxInfo && (
@@ -684,7 +751,7 @@ const SalaryCalculatorContent = () => {
       </div>
 
       {/* Tips Section */}
-      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
+      <div className={`mt-12 ui-card p-8`}>
         <h2 className="text-2xl font-semibold mb-6 text-fg">{t('tips.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-surface border-l-4 border-emerald-400/70 border border-line rounded-2xl p-6">
@@ -703,7 +770,7 @@ const SalaryCalculatorContent = () => {
       </div>
 
       {/* 연봉별 실수령액 표 섹션 */}
-      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
+      <div className={`mt-12 ui-card p-8`}>
         <div className="flex justify-between items-center mb-6">
           <div>
             <h2 className="text-2xl font-semibold text-fg">{t('table.title')}</h2>
@@ -771,7 +838,7 @@ const SalaryCalculatorContent = () => {
 
       {/* 시각화 차트 섹션 */}
       {result && (
-        <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
+        <div className={`mt-12 ui-card p-8`}>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold text-fg">상세 분석 차트</h2>
             <button
@@ -813,7 +880,7 @@ const SalaryCalculatorContent = () => {
                     </p>
                     {bonusMonths.length > 0 && (
                       <p className="text-sm text-muted mt-1">
-                        상여금 지급월: {bonusMonths.sort((a, b) => a - b).join(', ')}월 
+                        상여금 지급월: {[...bonusMonths].sort((a, b) => a - b).join(', ')}월 
                         (월 {(parseInt(bonusPercentage)/100/bonusMonths.length).toFixed(1)}회분씩)
                       </p>
                     )}
@@ -931,7 +998,7 @@ const SalaryCalculatorContent = () => {
       )}
 
       {/* 상세 가이드 섹션 */}
-      <div className={`mt-12 ${glassCard} ${glassInset} p-8`}>
+      <div className={`mt-12 ui-card p-8`}>
         <h2 className="text-3xl font-bold mb-8 text-fg text-center">{t('guide.title')}</h2>
         <p className="text-lg text-sub text-center mb-12 max-w-4xl mx-auto break-keep whitespace-pre-line">
           {t('guide.subtitle')}
@@ -977,11 +1044,9 @@ const SalaryCalculatorContent = () => {
             </p>
             <div className="space-y-3">
               {[0, 1, 2].map((index) => {
-                const icons = ['📊', '💡', '📋'];
                 return (
                   <div key={index} className="bg-surface border border-line p-3 rounded-xl">
                     <h4 className="font-semibold text-fg mb-1 flex items-center">
-                      <span className="mr-2">{icons[index]}</span>
                       {t(`guide.features.smart.points.${index}.title`)}
                     </h4>
                     <p className="text-sm text-sub">{t(`guide.features.smart.points.${index}.content`)}</p>
@@ -1003,11 +1068,9 @@ const SalaryCalculatorContent = () => {
             </p>
             <div className="space-y-3">
               {[0, 1, 2].map((index) => {
-                const icons = ['📱', '🔗', '💻'];
                 return (
                   <div key={index} className="bg-surface border border-line p-3 rounded-xl">
                     <h4 className="font-semibold text-fg mb-1 flex items-center">
-                      <span className="mr-2">{icons[index]}</span>
                       {t(`guide.features.practical.points.${index}.title`)}
                     </h4>
                     <p className="text-sm text-sub">{t(`guide.features.practical.points.${index}.content`)}</p>

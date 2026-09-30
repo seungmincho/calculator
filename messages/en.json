@@ -236,6 +236,29 @@
     }
   },
   "salary": {
+    "viral": {
+      "salaryMan": "₩{won}",
+      "heroTop": "{salary} salary · Top {top}% (NTS data)",
+      "deductionLine": "{pct}% of your salary goes to tax and social insurance, {monthly} KRW every month.",
+      "hourlyLine": "Your take-home works out to {hourly} KRW per hour ({hours} h/month, after tax).",
+      "topSource": "Top % is an estimate based on NTS earned-income percentiles (tax year {year}).",
+      "rankLink": "See rank by age and gender",
+      "shareText": "A {salary} salary takes home {monthly} KRW a month, top {top}% in Korea. What about yours?",
+      "cardLabel": "Monthly take-home on {salary}",
+      "cardSub": "Top {top}% (NTS, tax year {year})",
+      "rowDeduction": "Monthly tax and insurance",
+      "rowHourly": "Hourly equivalent",
+      "rowCondition": "Assumptions",
+      "conditionValue": "{dependents} dependents · {children} children",
+      "raise": {
+        "title": "How much more do you keep after a raise?",
+        "sliderLabel": "Raise percentage",
+        "newSalary": "New salary",
+        "newMonthly": "New monthly take-home",
+        "insight": "A {pct}% raise lifts take-home by only {netPct}%. You keep {keep} out of every 100 KRW of the raise.",
+        "compareLink": "Compare side by side with a job offer"
+      }
+    },
     "title": "Salary Take-Home Calculator",
     "description": "Enter your salary to calculate the actual amount you can receive after deducting 4 major insurances, income tax, and local income tax.",
     "input": {
@@ -10721,8 +10744,83 @@
     }
   },
   "aspectRatio": {
+    "lockHint": "Ratio locked: change one side and the other updates automatically",
+    "invalid": "Enter a width and height of 1 or more",
+    "shareText": "The aspect ratio of {w}×{h} is {ratio}",
+    "ratioPick": {
+      "title": "Pick a ratio",
+      "custom": "Custom ratio",
+      "customPlaceholder": "e.g. 2.39:1, 3:1",
+      "apply": "Apply",
+      "hint": "Keeps the short side, calculates the long side, then locks the ratio"
+    },
+    "platforms": {
+      "groups": {
+        "video": "YouTube video",
+        "vertical": "Vertical video",
+        "social": "Social & link previews",
+        "monitor": "Monitors & print"
+      },
+      "items": {
+        "youtube": "YouTube FHD",
+        "youtube4k": "YouTube 4K",
+        "youtubeThumb": "YouTube thumbnail",
+        "shorts": "Shorts / Reels / TikTok",
+        "instaPortrait": "Instagram portrait 4:5",
+        "instaSquare": "Instagram square",
+        "og": "OG link image",
+        "hd": "HD",
+        "fullHd": "Full HD",
+        "qhd": "QHD",
+        "uhd4k": "4K UHD",
+        "ultrawide": "Ultrawide FHD",
+        "uwqhd": "Ultrawide QHD",
+        "a4": "A4 300dpi"
+      }
+    },
+    "hero": {
+      "label": "Aspect ratio of {w} × {h}",
+      "near": "≈ close to {ratio}"
+    },
+    "preview": {
+      "title": "Preview",
+      "safeZone": "Safe zone overlay",
+      "zone": {
+        "none": "None",
+        "shorts": "Shorts",
+        "reels": "Reels ads"
+      },
+      "zoneNote": {
+        "shorts": "Shaded areas are covered by Shorts UI such as title and buttons (industry estimate, not official). Safe area about {safeW}×{safeH}px",
+        "reels": "Per Meta Reels ad guidance, the top 14%, bottom 35% and 6% on each side are covered by UI. Safe area about {safeW}×{safeH}px"
+      }
+    },
+    "image": {
+      "title": "Try your image",
+      "hint": "Drop or pick an image to see how it fits the current ratio",
+      "pick": "Choose image",
+      "change": "Change image",
+      "remove": "Remove image",
+      "source": "Original {w}×{h} ({ratio})",
+      "useSize": "Use this size",
+      "sameRatio": "Same ratio: no cropping or padding",
+      "cropSides": "Sides are cropped; {pct}% of the original is lost",
+      "cropTopBottom": "Top and bottom are cropped; {pct}% of the original is lost",
+      "padTopBottom": "Bars are added top and bottom (letterbox)",
+      "padSides": "Bars are added left and right (pillarbox)",
+      "crop": "Crop",
+      "pad": "Pad",
+      "black": "Black",
+      "white": "White",
+      "download": "Save as {w}×{h}",
+      "privacy": "Your image never leaves the browser"
+    },
+    "table": {
+      "title": "{ratio} resolution table",
+      "hint": "By short side (1080p = short side 1080). ≈ means rounded to an even number. Tap a size to apply"
+    },
     "title": "Aspect Ratio Calculator",
-    "description": "Calculate aspect ratios and convert between resolutions.",
+    "description": "Enter width × height to get the ratio instantly. YouTube, Shorts, Reels, Instagram sizes and fit your own image",
     "width": "Width (px)",
     "height": "Height (px)",
     "widthPlaceholder": "Enter width",
@@ -10744,7 +10842,7 @@
       "square": "Square"
     },
     "presets": {
-      "title": "Common Resolutions",
+      "title": "Platform & resolution presets",
       "items": {
         "hd": "HD (1280×720)",
         "fullHd": "Full HD (1920×1080)",
@@ -10768,20 +10866,22 @@
       "common": {
         "title": "Common Ratios",
         "items": [
-          "16:9 - Standard widescreen (TV, monitor, YouTube)",
-          "4:3 - Classic TV, iPad",
-          "21:9 - Ultrawide monitor, cinema",
-          "1:1 - Square (Instagram)",
-          "9:16 - Vertical (smartphone, Reels, Shorts)"
+          "16:9 - YouTube, TV, monitors (1920×1080, 3840×2160)",
+          "9:16 - Shorts, Reels, TikTok vertical video (1080×1920)",
+          "4:5 - Instagram portrait feed (1080×1350)",
+          "1:1 - Instagram square (1080×1080)",
+          "1.91:1 - OG link preview image (1200×630)",
+          "21:9 - Ultrawide monitors (2560×1080, 3440×1440 — actually 64:27, 43:18)",
+          "4:3 / 3:2 - Tablets, camera photos"
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "Lock ratio to auto-calculate from one dimension",
-          "Use presets for quick standard resolution selection",
-          "Print: 300dpi, Web: 72dpi standard",
-          "Check recommended image sizes per social media platform"
+          "Shorts and Reels UI covers the top, bottom and right edges — keep captions and logos centered",
+          "Cropping a 16:9 photo to 9:16 loses about 68% of it — compare with padding",
+          "Even-numbered resolutions are safest for video encoding (the table rounds to even)",
+          "On the web, CSS aspect-ratio: 16 / 9; keeps the ratio in one line"
         ]
       },
       "whatIs": {
@@ -10791,10 +10891,11 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter width and height in pixels to automatically calculate the aspect ratio.",
-          "2. Enter a known ratio (e.g., 16:9) plus one dimension to calculate the other.",
-          "3. Use preset buttons (16:9, 4:3, 1:1, 9:16, etc.) to instantly load common ratios.",
-          "4. Copy the result or convert it to a CSS padding-top percentage for responsive web use."
+          "1. Enter width and height in pixels to get the ratio (e.g. 16:9) instantly.",
+          "2. Tap a ratio chip (16:9, 9:16, 4:5…) to resize while keeping the short side; the ratio is then locked so changing one side updates the other.",
+          "3. Use platform presets for YouTube, Shorts, Instagram and OG image sizes.",
+          "4. Add your own image to preview crop or pad results and save it at that size.",
+          "5. Copy the size, ratio or CSS aspect-ratio, or share the link."
         ]
       },
       "faq": {
@@ -10802,15 +10903,19 @@
         "items": [
           {
             "q": "How are 16:9 and 1920×1080 related?",
-            "a": "The GCD of 1920 and 1080 is 120, so 1920:1080 simplifies to 16:9. This is the standard ratio for Full HD monitors and YouTube videos."
+            "a": "The GCD of 1920 and 1080 is 120, so 1920:1080 = 16:9. Resolutions that don't reduce cleanly, like 1366×768, are shown as close to 16:9."
           },
           {
-            "q": "What size should a YouTube thumbnail be?",
-            "a": "YouTube recommends 1280×720 px (16:9). Enter 1280 as the width and select the 16:9 ratio — the calculator will output 720 automatically."
+            "q": "How do YouTube thumbnail and video sizes differ?",
+            "a": "Thumbnails: 1280×720 (16:9, under 2MB). Videos: 1920×1080 or 3840×2160 (16:9). Shorts: vertical 1080×1920 (9:16)."
           },
           {
-            "q": "What is the CSS padding-top trick?",
-            "a": "Setting padding-top: 56.25% (= 9/16 × 100%) on a parent element creates a responsive container that automatically maintains a 16:9 ratio as the width changes."
+            "q": "Instagram feed: 1:1 or 4:5?",
+            "a": "4:5 (1080×1350) takes more screen space in the feed. Square 1:1 (1080×1080) is also supported."
+          },
+          {
+            "q": "How do I keep a ratio in CSS?",
+            "a": "Modern browsers: aspect-ratio: 16 / 9;. The legacy padding-top trick uses height/width × 100% (16:9 = 56.25%)."
           }
         ]
       }
@@ -22349,8 +22454,48 @@
     }
   },
   "hangman": {
+    "loading": "Loading",
+    "hintLine": "{category} · {n} letters",
+    "wonWithWrong": "Solved! ({wrong} wrong)",
+    "keyboard": "Jamo keyboard",
+    "keyboardHint": "You can type too (2-beolsik, Shift = double consonants)",
+    "keyHit": "{letter} (hit)",
+    "keyMiss": "{letter} (miss)",
+    "daily": {
+      "tab": "Daily word",
+      "tabWithDay": "Daily word #{day}",
+      "next": "Next word in",
+      "goPractice": "Practice",
+      "copyResult": "Copy result",
+      "copied": "Copied",
+      "shareTitle": "ToolHub Word Guess #{day}",
+      "cardLabel": "Daily word #{day}",
+      "cardWon": "Solved with {wrong} wrong",
+      "cardLost": "Not this time",
+      "cardStreak": "{n}-day streak",
+      "about": "The daily word changes at midnight (KST) and is the same for everyone. One try per day."
+    },
+    "practice": {
+      "tab": "Practice",
+      "difficulty": "Difficulty",
+      "levels": {
+        "easy": "Easy · {n} lives",
+        "normal": "Normal · {n} lives",
+        "hard": "Hard · {n} lives"
+      },
+      "next": "Next word"
+    },
+    "stats": {
+      "title": "My stats",
+      "played": "Played",
+      "winRate": "Win %",
+      "current": "Streak",
+      "maxStreak": "Max streak",
+      "distribution": "Wrong-guess distribution",
+      "distributionNote": "Daily results are stored only in this browser."
+    },
     "title": "Hangman",
-    "description": "Guess Korean words letter by letter.",
+    "description": "One Korean word a day, the same for everyone — guess it jamo by jamo.",
     "newGame": "New Game",
     "category": "Category",
     "hint": "Hint",
@@ -22360,6 +22505,10 @@
     "remainingTries": "Remaining Tries",
     "usedLetters": "Used Letters",
     "categories": {
+      "all": "All",
+      "jobs": "Jobs",
+      "sports": "Sports",
+      "things": "Things",
       "animals": "Animals",
       "food": "Food",
       "countries": "Countries",
@@ -22414,11 +22563,11 @@
           "items": [
             {
               "q": "How do I adjust word difficulty?",
-              "a": "Select Easy/Normal/Hard difficulty levels — ranging from everyday vocabulary to challenging words."
+              "a": "In practice mode choose Easy (9 lives), Normal (7) or Hard (5). The daily word always gives 7 lives."
             },
             {
               "q": "How many wrong guesses are allowed?",
-              "a": "7 wrong guesses are allowed by default (head, body, 2 arms, 2 legs = 7 stages). This can be changed in settings."
+              "a": "The daily word and Normal allow 7 wrong guesses, Easy 9, Hard 5."
             },
             {
               "q": "Can I see the correct answer after losing?",
@@ -22453,11 +22602,11 @@
         "items": [
           {
             "q": "How do I adjust word difficulty?",
-            "a": "Select Easy/Normal/Hard difficulty levels — ranging from everyday vocabulary to challenging words."
+            "a": "In practice mode choose Easy (9 lives), Normal (7) or Hard (5). The daily word always gives 7 lives."
           },
           {
             "q": "How many wrong guesses are allowed?",
-            "a": "7 wrong guesses are allowed by default (head, body, 2 arms, 2 legs = 7 stages). This can be changed in settings."
+            "a": "The daily word and Normal allow 7 wrong guesses, Easy 9, Hard 5."
           },
           {
             "q": "Can I see the correct answer after losing?",
@@ -27918,6 +28067,68 @@
     "tileTypes": " types"
   },
   "crossword": {
+    "dailyLabel": "Daily #{n}",
+    "pastLabel": "#{n} ({date})",
+    "dateShort": "{m}/{d}",
+    "practice": "Practice",
+    "newPractice": "New practice puzzle",
+    "solvedMark": "Solved",
+    "timer": "Elapsed time",
+    "hintsUsed": "{count} hints",
+    "emptyCell": "empty",
+    "inputLabel": "Answer input",
+    "prevClue": "Previous clue",
+    "nextClue": "Next clue",
+    "checkLetter": "Check letter",
+    "checkWord": "Check word",
+    "checkAll": "Check all",
+    "revealLetter": "Reveal letter",
+    "msg": {
+      "switchKorean": "Switch your keyboard to Korean (Han/Eng key)",
+      "almost": "All cells are filled but some letters are wrong. Try Check.",
+      "wrongCount": "{count} wrong letters",
+      "allCorrect": "All correct so far",
+      "nothingToCheck": "Nothing to check yet"
+    },
+    "result": {
+      "title": "Solved!",
+      "dailyTitle": "Daily #{n} solved",
+      "noHints": "No hints used",
+      "streak": "{count}-day streak",
+      "nextIn": "Next puzzle in",
+      "newReady": "A new puzzle is out",
+      "playToday": "Play today's puzzle",
+      "tryPractice": "Play a practice puzzle",
+      "copyText": "Copy result text",
+      "copied": "Copied"
+    },
+    "share": {
+      "text": "ToolHub Crossword #{n} {time} · {hints}",
+      "practiceText": "ToolHub Crossword practice {time} · {hints}",
+      "hints": "{count} hints",
+      "noHints": "no hints",
+      "cardLabel": "Crossword #{n} · {date}",
+      "practiceLabel": "Crossword practice",
+      "words": "Words",
+      "wordsValue": "{count}"
+    },
+    "time": {
+      "minSec": "{m}m {s}s",
+      "sec": "{s}s"
+    },
+    "stats": {
+      "title": "My stats",
+      "solved": "Solved",
+      "streak": "Streak",
+      "maxStreak": "Best streak",
+      "best": "Best time",
+      "avg": "Average",
+      "clean": "No-hint solves",
+      "days": "{count}d",
+      "count": "{count}",
+      "empty": "Solve the daily puzzle to start your stats.",
+      "note": "Stats are stored only in this browser."
+    },
     "title": "Crossword Puzzle",
     "description": "Fill in Korean words using across and down clues in this crossword puzzle game.",
     "across": "Across",
@@ -27926,22 +28137,22 @@
     "downShort": "D",
     "check": "Check",
     "revealWord": "Reveal Word",
-    "reset": "Reset",
+    "reset": "Clear all",
     "daily": "Daily Puzzle",
     "puzzle": "Puzzle",
     "congratulations": "Congratulations! You completed the puzzle!",
     "completedIn": "Completed in {time}",
-    "hint": "Click a cell and type Korean characters. Press Tab to switch direction, arrow keys to navigate.",
+    "hint": "Tap a cell and type in Korean. Tap the same cell again or press Space to switch direction, Tab for the next word, arrows to move.",
     "guide": {
       "title": "How to Play",
       "items": [
-        "Click a cell to see the clue for that word",
-        "Type Korean characters — the cursor moves to the next cell automatically",
-        "Click the same cell again to toggle between across and down",
-        "Press Tab to quickly switch between across and down direction",
-        "Use the Check button to highlight incorrect letters in red",
-        "Use the Reveal Word button to show the answer for the current word",
-        "A new daily puzzle is available every day at midnight"
+        "A numbered daily puzzle is released every midnight (KST). Everyone gets the same puzzle, so you can compare times",
+        "Tap a cell to show its clue above the grid; use ‹ › to move between words",
+        "Letters being composed appear in the cell right away, and the cursor advances after each syllable",
+        "Tap the same cell again or press Space to switch across/down; Tab jumps to the next word",
+        "Each check (letter/word/all) or reveal (letter/word) counts as one hint",
+        "Progress is saved automatically; only your first daily solve is recorded",
+        "After solving, share your '#number time · hints' result as an image or text"
       ],
       "guide": {
         "whatIs": {
@@ -27975,7 +28186,7 @@
             },
             {
               "q": "Do new puzzles become available?",
-              "a": "Multiple puzzles are included and new ones become available after completing the current one. New daily puzzles may also be added regularly."
+              "a": "A new numbered daily puzzle is released every midnight (KST). You can also play the last 7 days and unlimited practice puzzles."
             },
             {
               "q": "Can I play on mobile?",
@@ -28015,7 +28226,7 @@
           },
           {
             "q": "Do new puzzles become available?",
-            "a": "Multiple puzzles are included and new ones become available after completing the current one. New daily puzzles may also be added regularly."
+            "a": "A new numbered daily puzzle is released every midnight (KST). You can also play the last 7 days and unlimited practice puzzles."
           },
           {
             "q": "Can I play on mobile?",
@@ -37257,5 +37468,12 @@
         ]
       }
     }
+  },
+  "shareResult": {
+    "share": "Share",
+    "save": "Save image",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "cta": "Try it yourself →"
   }
 }

@@ -1,0 +1,42 @@
+// 화면 비율 로직 회귀 체크: node scripts/check-aspect-ratio.ts
+import { reduceRatio, nearestCommon, parseRatio, resolutionLadder, fitImage } from '../src/utils/aspectRatio.ts'
+let fail = 0
+const eq = (name: string, got: unknown, want: unknown) => {
+  if (JSON.stringify(got) !== JSON.stringify(want)) { fail++; console.log('FAIL', name, JSON.stringify(got), '!=', JSON.stringify(want)) }
+}
+eq('1920x1080', reduceRatio(1920, 1080), [16, 9])
+eq('1080x1350', reduceRatio(1080, 1350), [4, 5])
+eq('1366x768', reduceRatio(1366, 768), [683, 384])
+eq('2560x1080', reduceRatio(2560, 1080), [64, 27])
+eq('0', reduceRatio(0, 1080), [0, 0])
+eq('near 1366', nearestCommon(1366, 768), { label: '16:9', exact: false })
+eq('near 1920', nearestCommon(1920, 1080), { label: '16:9', exact: true })
+eq('near 3440', nearestCommon(3440, 1440), { label: '21:9', exact: false })
+eq('near 2560x1080', nearestCommon(2560, 1080), { label: '21:9', exact: false })
+eq('near 1080x1920', nearestCommon(1080, 1920), { label: '9:16', exact: true })
+eq('near og', nearestCommon(1200, 630), { label: '1.91:1', exact: false })
+eq('near 1440x900', nearestCommon(1440, 900), { label: '16:10', exact: true })
+eq('near odd', nearestCommon(1000, 370), null)
+eq('parse 16:9', parseRatio('16:9'), 16 / 9)
+eq('parse 2.39:1', parseRatio('2.39 : 1'), 2.39)
+eq('parse 1.85', parseRatio('1.85'), 1.85)
+eq('parse 4x5', parseRatio('4x5'), 0.8)
+eq('parse bad', parseRatio('abc'), null)
+eq('parse 0', parseRatio('0:9'), null)
+const l169 = resolutionLadder(16 / 9)
+eq('ladder 1080p', l169[2], { short: 1080, w: 1920, h: 1080, exact: true })
+eq('ladder 8k', l169[5], { short: 4320, w: 7680, h: 4320, exact: true })
+eq('ladder 480p', l169[0], { short: 480, w: 854, h: 480, exact: false })
+eq('ladder 9:16', resolutionLadder(9 / 16)[2], { short: 1080, w: 1080, h: 1920, exact: true })
+eq('ladder 4:5', resolutionLadder(4 / 5)[2], { short: 1080, w: 1080, h: 1350, exact: true })
+// 4000×3000(4:3) 사진 → 9:16 쇼츠: 가로를 잘라냄
+const f = fitImage(4000, 3000, 1080, 1920)
+eq('crop h', f.crop.h, 3000)
+eq('crop w', Math.round(f.crop.w), 1688)
+eq('crop x', Math.round(f.crop.x), 1156)
+eq('pad w', f.pad.w, 1080)
+eq('pad y', f.pad.y, (1920 - 810) / 2)
+eq('cut%', Math.round(f.cutPct), 58)
+const same = fitImage(1920, 1080, 1280, 720)
+eq('same ratio no cut', Math.round(same.cutPct * 1000), 0)
+console.log(fail ? `${fail} failed` : 'all passed'); if (fail) process.exit(1)
