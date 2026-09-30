@@ -7198,26 +7198,110 @@
     }
   },
   "ddayCalculator": {
+    "date": {
+      "format": "{w}, {m}/{d}/{y}",
+      "weekdays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ]
+    },
+    "hero": {
+      "weeksDays": "{w}w {d}d",
+      "business": "{n} business days",
+      "weekend": "{n} weekend days",
+      "holiday": "{n} holidays",
+      "remaining": "Remaining",
+      "passed": "Elapsed",
+      "todayIs": "It's today"
+    },
+    "saved": {
+      "title": "My D-Days",
+      "add": "Save to my D-Days",
+      "done": "Saved",
+      "empty": "No saved D-Days yet. Pick a date and save it to see them sorted by nearest.",
+      "hint": "Saved in this browser only. A pinned D-Day opens first on your next visit.",
+      "pin": "Pin",
+      "unpin": "Unpin",
+      "delete": "Delete"
+    },
+    "shareText": {
+      "copyText": "Copy text",
+      "copied": "Copied",
+      "rowPeriod": "Remaining",
+      "rowBusiness": "Business days",
+      "rowHoliday": "Holidays"
+    },
+    "anniv": {
+      "typeLabel": "What are you celebrating?",
+      "types": {
+        "couple": {
+          "short": "Dating",
+          "name": "Together for",
+          "startLabel": "Day we started dating"
+        },
+        "marriage": {
+          "short": "Married",
+          "name": "Married for",
+          "startLabel": "Wedding day"
+        },
+        "baby": {
+          "short": "Baby",
+          "name": "Baby's age",
+          "startLabel": "Baby's birthday"
+        }
+      },
+      "includeStart": "Count the start date as day 1",
+      "includeStartHint": "Korean couples and 100-day (baekil) celebrations usually count the first day as day 1. Turn off to start from the next day.",
+      "dayCount": "Day {n}",
+      "daysMilestone": "{n} days",
+      "yearsMilestone": "{n} year(s)",
+      "together": "{y}y {m}m {d}d",
+      "babyAge": "{y}y {m}m old ({total} months)",
+      "nextIs": "{d} to {name}",
+      "since": "Since {date}",
+      "milestones": "Milestones",
+      "toDday": "As D-Day"
+    },
+    "calendar": {
+      "month": "{m}/{y}",
+      "prev": "Previous month",
+      "next": "Next month",
+      "legendTarget": "Target",
+      "legendToday": "Today",
+      "legendRange": "Remaining",
+      "legendHoliday": "Holiday"
+    },
     "title": "D-Day Calculator",
-    "description": "D-Day countdown, date difference, and date add/subtract in one place",
+    "description": "D-Day countdown with saving and sharing, 100-day and yearly anniversaries, date difference, add/subtract dates",
     "modes": {
+      "anniv": "Anniversary",
       "dday": "D-Day Counter",
       "diff": "Date Difference",
       "add": "Date Add/Subtract"
     },
     "dday": {
+      "untitled": "My D-Day",
       "targetDate": "Target Date",
-      "eventName": "Event Name",
-      "eventNamePlaceholder": "e.g., Exam, Wedding, Trip...",
+      "eventName": "D-Day name",
+      "eventNamePlaceholder": "e.g. Exam, wedding, trip",
       "today": "Today",
       "setToday": "Set to Today"
     },
     "diff": {
+      "totalDays": "{n} days",
+      "note": "Counts from the day after the start date through the end date. See 'Both ends' to count both dates.",
       "startDate": "Start Date",
       "endDate": "End Date",
       "swap": "Swap Dates"
     },
     "add": {
+      "businessShort": "business days",
+      "toDday": "Open as D-Day",
       "baseDate": "Base Date",
       "value": "Value",
       "unit": "Unit",
@@ -7231,10 +7315,15 @@
         "add": "Add",
         "subtract": "Subtract"
       },
-      "businessDaysOnly": "Business Days Only",
+      "businessDaysOnly": "Business days (excl. weekends and holidays)",
       "resultDate": "Result Date"
     },
     "result": {
+      "ymd": "Years, months, days",
+      "totalMonths": "Total months",
+      "monthsValue": "{n} months",
+      "inclusive": "Both ends",
+      "daysValue": "{n} days",
       "title": "Results",
       "totalDays": "Total Days",
       "weeks": "weeks",
@@ -7250,6 +7339,8 @@
       "dday": "D-Day!"
     },
     "presets": {
+      "yearEnd": "Year end",
+      "estimated": "Estimated (not yet announced)",
       "title": "Popular D-Days",
       "csat": "CSAT (Suneung)",
       "seollal": "Seollal",
@@ -7260,6 +7351,10 @@
       "liberationDay": "Liberation Day"
     },
     "holidays": {
+      "laborDay": "Labor Day",
+      "constitutionDay": "Constitution Day",
+      "election": "Election Day",
+      "tempHoliday": "Temporary holiday",
       "title": "Korean Public Holidays",
       "newYear": "New Year's Day",
       "marchFirst": "March 1st Movement Day",
@@ -7300,10 +7395,11 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. In the D-Day tab, select a target date to see the number of days remaining from today.",
-          "2. In the Date Difference tab, select two dates to see the total days, weeks, months, and years between them.",
-          "3. In the Date Calculation tab, add or subtract days from a reference date to find a resulting date.",
-          "4. Enable the Exclude Holidays option for business day calculations to exclude Korean public holidays."
+          "On the D-Day tab, enter a name and date or tap a preset (CSAT, Seollal, Chuseok, Christmas) to see days left plus business days, weekends and holidays.",
+          "Save several D-Days and pin one so it opens first on your next visit.",
+          "On the Anniversary tab, enter the day you started dating, got married or your baby was born to see 100-day and yearly milestones.",
+          "Use Date difference and Add/Subtract for the span between two dates or the date N (business) days later.",
+          "Share, save the image or copy the link; whoever opens it sees the same D-Day."
         ]
       },
       "tips": {
@@ -7318,16 +7414,16 @@
         "title": "Frequently Asked Questions",
         "items": [
           {
-            "q": "What are the standards for D-1 and D-0?",
-            "a": "This calculator treats the target date itself as D-0 and the day before as D-1. D-Day conventions can vary by context or organization, so verify important dates directly."
+            "q": "How are D-1 and D-Day defined?",
+            "a": "The target date itself is D-Day, the day before is D-1 and the day after is D+1. Today is computed in Korea Standard Time. Couple anniversaries often count the first day as day 1, so the Anniversary tab lets you choose."
           },
           {
-            "q": "How far ahead does the Korean holiday data go?",
-            "a": "Korean public holiday data for 2024–2030 is built in, including substitute holidays and lunar-calendar holidays (Lunar New Year, Chuseok)."
+            "q": "Which years of Korean holidays are supported?",
+            "a": "2024-2030, including Seollal/Chuseok, substitute holidays, Labor Day and Constitution Day (public holidays since 2026), election days and temporary holidays. New temporary holidays are added after they are designated."
           },
           {
-            "q": "Does it handle February 29 in leap years?",
-            "a": "Yes — all date calculations, including leap year dates, are handled accurately."
+            "q": "Does it handle February 29?",
+            "a": "Yes. One year after Feb 29 is Feb 28, and one month after Jan 31 is the last day of February."
           }
         ]
       }
@@ -7804,8 +7900,76 @@
     }
   },
   "randomPicker": {
-    "title": "Random Picker",
-    "description": "Random number generation, pick from list, and team divider",
+    "sampleList": "Olivia\nLiam\nEmma\nNoah\nAva\nElijah\nSophia\nJames\nMia\nLucas\nAmelia\nMason",
+    "defaultTitle": "Giveaway draw",
+    "draw": "Draw winners",
+    "drawAgain": "Draw again",
+    "nextRound": "Draw next round",
+    "skip": "Reveal now",
+    "rank": "{rank}",
+    "summary": "{winners} winners · {total} entrants · {date}",
+    "headlineMore": "{names} and {more} more",
+    "shareText": "[{title}] {winners} winners announced ({total} entrants) — anyone can verify the result with this link",
+    "copyAnnounce": "Copy announcement",
+    "copied": "Copied",
+    "present": "Presentation mode",
+    "presentClose": "Close presentation mode",
+    "presentHint": "Space / Enter: draw · Esc: close",
+    "form": {
+      "title": "Draw title (optional)",
+      "titlePlaceholder": "e.g. October subscriber giveaway",
+      "list": "Entrants",
+      "listPlaceholder": "One per line, or comma separated",
+      "listHint": "Paste names separated by new lines or commas. Write \"Alex x3\" to give 3 tickets.",
+      "people": "{count}",
+      "tickets": "{count} tickets",
+      "removed": "Removed {count} duplicate lines",
+      "dedupe": "Count each name once (remove duplicates)",
+      "count": "Number of winners",
+      "excludePrev": "Exclude winners from previous rounds",
+      "excludedNow": "{count} people in this list already won and are excluded",
+      "instant": "Show results instantly (no animation)",
+      "fairness": "Fairness settings (seed)",
+      "seed": "Draw seed",
+      "seedPlaceholder": "Leave empty to auto-generate",
+      "seedHint": "Leave empty to create a fresh seed from cryptographic randomness each time. Announce a seed before the draw and use it, and everyone can confirm the host could not pick the outcome. The same list, winner count and seed always give the same result."
+    },
+    "error": {
+      "empty": "Enter at least one entrant",
+      "count": "Number of winners must be at least 1",
+      "tooMany": "More than the eligible entrants ({eligible})"
+    },
+    "ready": {
+      "label": "Ready to draw",
+      "headline": "{count} of {total}",
+      "sub": "Check the list and winner count, then press Draw winners"
+    },
+    "notice": {
+      "replayed": "This device re-ran the draw with the shared list and seed. If the winners match the announcement, the draw was not tampered with.",
+      "listMissing": "The list was too long to fit in the link. Paste the list published by the host and draw with seed {seed} to check the same result."
+    },
+    "proof": {
+      "title": "Draw verification",
+      "seed": "Seed",
+      "time": "Drawn at",
+      "entrants": "Entrants",
+      "excluded": "Excluded previous winners",
+      "howTo": "Opening the verification link re-runs the draw with the same list, winner count and seed. Everyone should see the same winners.",
+      "listTooLong": "The list was too long, so the link only holds the seed and winner count. Publish the list too and anyone can verify the result with the seed.",
+      "copyLink": "Copy verification link"
+    },
+    "announce": {
+      "header": "Draw results",
+      "seed": "Seed: {seed} (anyone can check the same result with the link below)"
+    },
+    "history": {
+      "title": "Draw history",
+      "clear": "Clear history",
+      "round": "Round {n}",
+      "note": "History is stored only in this browser. \"Exclude previous winners\" uses this history."
+    },
+    "title": "Random Picker · Giveaway Draw",
+    "description": "Paste a list and draw winners without duplicates. Anyone can verify the result with a link.",
     "modes": {
       "number": "Number",
       "list": "List Picker",
@@ -7844,6 +8008,16 @@
       "animation": "Animation"
     },
     "guide": {
+      "howItWorks": {
+        "title": "How the draw works",
+        "items": [
+          "The list is split by new lines and commas; a trailing \"x number\" is read as the ticket count (weight).",
+          "The seed string is hashed (cyrb128) to initialize a random generator (sfc32). The same seed always yields the same sequence.",
+          "One ticket is drawn from all remaining tickets, then all of that person's tickets are removed, repeated for each winner (weighted sampling without replacement).",
+          "With an empty seed, an unpredictable seed is created with crypto.getRandomValues.",
+          "Winners come out in draw order, so you can assign prizes from 1st place down."
+        ]
+      },
       "title": "User Guide",
       "number": {
         "title": "Number Picker",
@@ -7867,40 +8041,42 @@
         ]
       },
       "whatIs": {
-        "title": "What is the Random Picker?",
-        "description": "A drawing tool with three functions: random number generation, random item selection from a list, and random team assignment. Use it whenever you need a fair, unbiased random selection — deciding order, assigning duties, choosing a presenter, dividing into teams, or running a giveaway. Cryptographically secure random numbers ensure unbiased results."
+        "title": "What is Random Picker?",
+        "description": "A draw tool for picking winners from a list: comment giveaways, group chat prizes, live stream viewer draws. It draws several winners without duplicates and supports ticket weights and excluding previous winners. Every draw records a seed and time and produces a verification link so participants can confirm they get the same result."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Select a mode from the tabs: Numbers, List, or Team Split.",
-          "2. Number mode: set the range (min–max) and quantity to generate.",
-          "3. List mode: enter items separated by line breaks or commas, and set how many to pick.",
-          "4. Team mode: enter a participant list and the number of teams to randomly assign everyone."
+          "1. Paste the entrant list. New lines or commas separate names and the count updates instantly.",
+          "2. Choose the number of winners. Give extra chances with \"Alex x3\".",
+          "3. Press Draw winners: names spin and winners are revealed one by one. Use presentation mode on a big screen for live events.",
+          "4. Copy the announcement for your chat, or share the result card image and verification link.",
+          "5. For several prizes, keep \"Exclude previous winners\" on and draw another round."
         ]
       },
       "tips": {
         "title": "Tips",
         "items": [
-          "When determining order without repeats, enable the 'no duplicates' option in List mode.",
-          "For team assignments, use the auto-balance option to distribute participants as evenly as possible.",
-          "Share the result via URL to revisit it later or use it as documentation."
+          "Publish the entrant list before the draw to avoid disputes about missing or added names.",
+          "Announce a seed in advance (e.g. the event date) and draw with it to prove the host could not choose the result.",
+          "Duplicates from pasting the list several times are cleaned up by duplicate removal. Turn it off to give one chance per comment.",
+          "Devices set to reduce motion, or \"Show results instantly\", skip the animation."
         ]
       },
       "faq": {
-        "title": "Frequently Asked Questions",
+        "title": "FAQ",
         "items": [
           {
-            "q": "Is it truly fair random?",
-            "a": "Yes — it uses crypto.getRandomValues() from the Web Crypto API, generating cryptographically secure random numbers with no bias or manipulation."
+            "q": "Is the draw really fair?",
+            "a": "With an empty seed, an unpredictable seed is created with the Web Crypto API crypto.getRandomValues(), and every entrant gets equal odds per ticket. Anyone can recompute the same result with the verification link."
           },
           {
-            "q": "Can the same number appear more than once?",
-            "a": "Duplicates are allowed by default. Enable the 'no duplicates' option to ensure only unique numbers or items are selected."
+            "q": "Can the same person win twice?",
+            "a": "No. Within one draw each name wins at most once. With \"Exclude previous winners\" on, winners of earlier rounds are not drawn again."
           },
           {
-            "q": "Can I save the pick result?",
-            "a": "You can copy the result to your clipboard, or share it as a link using the URL sharing feature."
+            "q": "Can I save or share results?",
+            "a": "Draw history is saved in this browser, and you can share via the copied announcement, the result card image or the verification link. The link holds the list, winner count and seed, so opening it recomputes the same result."
           }
         ]
       }
@@ -12477,25 +12653,79 @@
     }
   },
   "parkingFee": {
+    "days": "d",
+    "nextDay": "(+{n}d)",
+    "mode": {
+      "duration": "By duration",
+      "times": "By entry/exit time"
+    },
+    "entryHint": "Entry time is used for night/weekend rates and the exit clock. Overnight and multi-day stays work — just pick the right dates.",
+    "exitAt": "Exit at {time}",
+    "timeError": "Exit time must be after entry time.",
+    "lots": {
+      "add": "Add lot",
+      "remove": "Remove lot",
+      "name": "Lot name",
+      "defaultName": "Lot {n}"
+    },
+    "discount": {
+      "title": "Vehicle discount",
+      "none": "None",
+      "compact": "Compact/low-emission 50%",
+      "disabled": "Disabled 80%",
+      "custom": "Custom",
+      "pct": "Discount (%)",
+      "hint": "Seoul public lots: 50% off for compact and low-emission cars, 80% off for disabled drivers. Private lots may differ."
+    },
+    "hero": {
+      "label": "{time} parked · {name}",
+      "next": "Goes up to {fee} KRW in {after} ({clock})",
+      "noMore": "The fee won't go up any further",
+      "free": "Free right now",
+      "cheapest": "Cheapest",
+      "moreThan": "{diff} KRW more than {name}",
+      "lessThan": "{diff} KRW less than {name}",
+      "same": "Same as {name}"
+    },
+    "compare": {
+      "title": "Compare lots",
+      "hint": "Parking for {time} at each",
+      "cheapest": "Lowest",
+      "diff": "+{diff} KRW vs lowest"
+    },
+    "timeline": {
+      "title": "Fee over time",
+      "time": "Duration",
+      "clock": "Exit time",
+      "fee": "Fee"
+    },
+    "share": {
+      "text": "Parking {time} at {name} costs {fee} KRW. Check your parking fee"
+    },
     "title": "Parking Fee Calculator",
-    "description": "Calculate parking fees based on duration.",
+    "description": "Enter entry/exit times or a duration to get the parking fee with base and extra units, daily max, grace period, purchase-based free time and discounts — and compare lots side by side.",
     "parkingType": "Parking Type",
     "types": {
       "public": "Public Parking",
       "private": "Private Parking",
       "apartment": "Apartment Parking"
     },
-    "startTime": "Entry Time",
-    "endTime": "Exit Time",
+    "startTime": "Entry time",
+    "endTime": "Exit time",
     "duration": "Duration",
     "hours": "hours",
     "minutes": "minutes",
     "calculate": "Calculate",
-    "reset": "Reset",
+    "reset": "Reset to defaults",
     "result": {
-      "title": "Parking Fee Result",
+      "grace": "Free (within grace period)",
+      "extra": "Extra fee ({n} units)",
+      "timeSaving": "Night/weekend discount",
+      "capSaving": "Daily max applied ({n} days)",
+      "discount": "Vehicle discount",
+      "title": "Fee breakdown",
       "totalTime": "Total Time",
-      "freeTime": "Free Time",
+      "freeTime": "Free time",
       "chargedTime": "Charged Time",
       "baseFee": "Base Fee",
       "additionalFee": "Additional Fee",
@@ -12504,7 +12734,21 @@
       "won": "KRW"
     },
     "settings": {
-      "title": "Fee Settings",
+      "dailyMaxHint": "0 = none · applied per 24h from entry",
+      "graceMin": "Grace period (min)",
+      "graceHint": "Free if you leave within this time",
+      "freeTitle": "Free time · purchase-based free parking",
+      "spend": "Your purchase (KRW)",
+      "tierAmount": "Purchase at least (KRW)",
+      "tierMin": "Free time (min)",
+      "tierHint": "The longest free time among the tiers you qualify for is added to the base free time. Rules differ by store.",
+      "timeTitle": "Night & weekend rates",
+      "nightStart": "Night starts (h)",
+      "nightEnd": "Night ends (h)",
+      "nightPct": "Night discount (%)",
+      "weekendPct": "Weekend (Sat–Sun) discount (%)",
+      "timeHint": "100% = free, 0 = off. If both apply, the larger discount wins.",
+      "title": "Lot fee settings",
       "baseFee": "Base Fee (KRW)",
       "baseMinutes": "Base Minutes",
       "additionalFee": "Additional Fee (KRW)",
@@ -12513,7 +12757,15 @@
       "dailyMax": "Daily Maximum (KRW)"
     },
     "presets": {
-      "title": "Presets",
+      "seoul1": "Seoul public grade 1",
+      "seoul2": "Seoul public grade 2",
+      "seoul3": "Seoul public grade 3",
+      "private": "Private (example)",
+      "mart": "Mart/department store (example)",
+      "office": "Office w/ night & weekend discount (example)",
+      "seoulNote": "Seoul public lot grades are 500/250/150 KRW per 5 minutes (Seoul public parking status, as of 2026-07-30); individual lots multiply this by a land-price factor. 'Example' presets mimic common structures — adjust them to the posted rates.",
+      "source": "Source: Seoul Traffic Info",
+      "title": "Load a fee structure",
       "publicSeoul": "Seoul Public (5min ₩300)",
       "privateAvg": "Private Avg (30min ₩2,000)",
       "department": "Dept Store (1hr free, 10min ₩1,000)"
@@ -12521,21 +12773,24 @@
     "guide": {
       "title": "Parking Fee Guide",
       "structure": {
-        "title": "Fee Structure",
+        "title": "How parking fees work",
         "items": [
-          "Base fee: Fixed charge for initial period",
-          "Additional fee: Per-interval charge after base time",
-          "Daily max: Maximum daily charge cap",
-          "Free time: Initial free parking period"
+          "Base fee: a flat fee for the first block of time (e.g. 30 minutes).",
+          "Extra fee: charged per unit (e.g. 5 or 10 minutes) after the base time. Even one minute over adds a full unit.",
+          "Grace period: leave within this time (e.g. 10 minutes) and pay nothing.",
+          "Free time: validation from marts, hospitals, etc. is subtracted from your parking time first.",
+          "Daily max: each 24 hours from entry never costs more than this. Two days means up to twice the cap.",
+          "Discounts: compact/low-emission and disabled discounts apply as a percentage of the final fee."
         ]
       },
       "tips": {
-        "title": "Notes",
+        "title": "Ways to save",
         "items": [
-          "Public parking is usually cheaper than private",
-          "Disability/compact car discounts may apply",
-          "Shopping discounts at department stores/malls",
-          "Monthly passes offer discounted rates"
+          "Watch the 'next increase' notice and leave just before the next unit starts.",
+          "Seoul public lots charge 500/250/150 KRW per 5 minutes by grade; grade 3 is the cheapest.",
+          "Mart and department store free time depends on how much you spend — check the threshold and keep your receipt.",
+          "For long stays, lots with a daily max win. Use the comparison to see when they overtake each other.",
+          "If you park somewhere often, compare a monthly pass with your expected monthly fee."
         ]
       },
       "guide": {
@@ -12587,16 +12842,20 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "Can it calculate parking that crosses midnight?",
-            "a": "Yes. If the exit time is earlier than the entry time, the next day is assumed automatically, so overnight parking is calculated correctly."
+            "q": "Can it handle overnight or multi-day parking?",
+            "a": "Yes. Choose 'By entry/exit time' and pick the next day (or later) as the exit date. The daily max is applied separately for each 24 hours from entry."
           },
           {
-            "q": "How is the daily maximum fee applied?",
-            "a": "The daily maximum is applied per 24-hour period. If the calculated fee exceeds the cap, it is automatically capped at the maximum."
+            "q": "How is the daily max applied?",
+            "a": "This calculator splits the fee into 24-hour blocks starting at entry and caps each block at the daily max. Some lots settle at midnight instead, so check the posted rules."
           },
           {
-            "q": "Can I compare a monthly pass against hourly rates?",
-            "a": "The calculator specializes in hourly rate calculations. You can compare by estimating your monthly hourly total and checking whether it exceeds a monthly pass price."
+            "q": "In what order are free time and discounts applied?",
+            "a": "Free time (including purchase-based free time) is subtracted first, the daily max is applied to the remaining fee, and the discount percentage is applied last. Amounts under 10 KRW are dropped."
+          },
+          {
+            "q": "Can it calculate monthly passes?",
+            "a": "It is built for hourly fees. To see if a pass pays off, enter your expected monthly parking time and compare the result with the pass price."
           }
         ]
       }
@@ -18734,21 +18993,71 @@
     ]
   },
   "fancyText": {
-    "title": "Unicode Fancy Text Generator",
-    "description": "Convert English text into 15+ Unicode styles for SNS profiles, usernames, and social posts.",
-    "inputPlaceholder": "Enter English text to convert...",
+    "sample": "Lucky day",
+    "clear": "Clear",
+    "limitLabel": "Length check",
+    "limits": {
+      "none": "No limit",
+      "kakaoNick": "KakaoTalk name 20",
+      "instaBio": "Instagram bio 150"
+    },
+    "charCount": "{n} chars",
+    "overLimit": "{n} over",
+    "hangulNote": "Font styles like bold and script only change Latin letters and digits; Korean stays as is. Use the Korean or Frames tabs for Korean text.",
+    "showKorean": "Korean styles",
+    "showFrame": "Frames",
+    "recentTitle": "Recently copied",
+    "recentClear": "Clear history",
+    "cats": {
+      "all": "All",
+      "bold": "Bold & Italic",
+      "script": "Script",
+      "deco": "Decorative",
+      "korean": "Korean",
+      "frame": "Frames"
+    },
+    "searchPlaceholder": "Search styles (e.g. script, ꧁)",
+    "frameBase": "Text inside frame",
+    "frameBasePlain": "Original text",
+    "noResults": "No styles match your search",
+    "tapToCopy": "Tap a result to copy it. Star a style to pin it to the top.",
+    "favorite": "Add to favorites",
+    "unfavorite": "Remove from favorites",
+    "copyFailed": "Copy failed — long-press to copy",
+    "unchanged": "Unchanged: {chars}",
+    "notes": {
+      "combining": "Uses combining marks; lines may look offset in some apps",
+      "emoji": "Some letters (A, B, O, P) may show as emoji",
+      "font": "May show as □ on older devices",
+      "reverse": "Reverses the text order; Korean only changes order"
+    },
+    "shareLabel": "My styled text",
+    "shareText": "Made with Fancy Text",
+    "title": "Fancy Text Generator",
+    "description": "Type once and see 30 Unicode fonts, Korean styles and nickname frames. Tap to copy.",
+    "inputPlaceholder": "Type a nickname or phrase",
     "inputLabel": "Text Input",
     "outputLabel": "Converted Results",
-    "copyAll": "Copy All",
+    "copyAll": "Copy all visible",
     "copied": "Copied!",
     "copy": "Copy",
     "copyAllSuccess": "All styles copied to clipboard",
-    "noInput": "Enter text above to see converted styles",
+    "noInput": "Type something to see styled results",
     "asciiNote": "Only ASCII letters (a-z, A-Z) are converted. Numbers and symbols stay unchanged.",
     "decorTitle": "Decorative Frames (works on any text)",
     "decorDesc": "Wraps Korean, English, or emoji. Great for Instagram, game names, and profiles!",
     "fontTitle": "Latin Unicode Fonts",
     "styles": {
+      "smallCaps": "Small caps",
+      "tiny": "Tiny (superscript)",
+      "jamo": "Split jamo",
+      "chosung": "Initial consonants",
+      "chosungCircled": "Circled initials",
+      "chosungParen": "Parenthesized initials",
+      "spaced": "Spaced out",
+      "heartBetween": "Hearts between",
+      "starBetween": "Stars between",
+      "eachBracket": "Bracket each letter",
       "bold": "Mathematical Bold",
       "italic": "Mathematical Italic",
       "boldItalic": "Bold Italic",
@@ -18775,19 +19084,19 @@
       "title": "Usage Guide",
       "usageTitle": "Use Cases",
       "usageItems": [
-        "Stand out on Instagram, X (Twitter), or Facebook profiles and posts",
-        "Add unique fonts to YouTube or TikTok channel names and usernames",
-        "Combine with emojis for eye-catching decorative text effects",
-        "Use hard-to-read styles for password hints or secret notes",
-        "Test special font ideas for web design mockups or logo sketches"
+        "Paste into Instagram name/bio, KakaoTalk nickname or game nicknames",
+        "Star your favorite styles to pin them to the top next time",
+        "In the Frames tab, change 'Text inside frame' to script etc. to make combos like ꧁𝓛𝓾𝓬𝓴𝔂꧂",
+        "Pick the Instagram bio 150 / KakaoTalk 20 check to see styled length",
+        "Share the link and your text opens as is"
       ],
       "howTitle": "How It Works",
       "howItems": [
-        "Uses characters from the Unicode Mathematical Symbols block (U+1D400 to U+1D7FF)",
-        "Only ASCII letters a-z and A-Z are converted; Korean, Chinese, and digits remain unchanged",
-        "Strikethrough and underline add Unicode combining characters to each letter",
-        "Upside-down and mirror styles use special Unicode character mappings",
-        "Rendering may vary by device depending on font support"
+        "Uses Unicode Mathematical Alphanumeric Symbols (U+1D400–U+1D7FF)",
+        "Font styles only change Latin a-z, A-Z and some digits; Korean and CJK stay unchanged (shown on each card)",
+        "Korean styles split syllables into jamo or turn initials into enclosed letters (㉠, ㈀)",
+        "Strikethrough and underline add combining marks (U+0336, U+0332) after each character",
+        "Appearance depends on the device and app font"
       ],
       "tipsTitle": "Notes",
       "tipsItems": [
@@ -18827,16 +19136,16 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "Why doesn't Korean text convert?",
-            "a": "This tool only supports Latin (English) character conversion. The Unicode mathematical character blocks are only defined for Latin letters. For Korean text decoration, use emojis or dedicated font apps."
+            "q": "Can I style Korean text?",
+            "a": "Font styles like bold or script exist in Unicode only for Latin letters and digits, so Korean stays as is. The Korean tab (jamo split, initials, circled initials, hearts between) and the Frames tab (꧁ ꧂, ★彡 彡★) work with Korean."
           },
           {
-            "q": "The converted text looks broken on some platforms",
-            "a": "If a platform or device doesn't include fonts covering the Unicode mathematical symbol range, characters may display as □ or ?. Modern iOS, Android, and Windows 10+ environments generally display them correctly."
+            "q": "The text looks broken on some platforms",
+            "a": "If the device or app font lacks those characters they show as □ or ?. Squared styles are most affected on older devices, and 🅰🅱🅾🅿 may render as emoji. Check the note on each card."
           },
           {
-            "q": "Will search engines recognize this styled text?",
-            "a": "Search engines often don't recognize Unicode mathematical symbols as regular text. Avoid using styled text for SEO content — it's best for visual design purposes only."
+            "q": "How are Instagram / KakaoTalk limits counted?",
+            "a": "This tool counts visible characters (code points). Styled letters may take two units internally, so some platforms count them as longer; leave some room."
           }
         ]
       }

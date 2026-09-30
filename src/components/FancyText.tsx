@@ -1,574 +1,327 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Copy, Check, ClipboardList } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { Copy, Check, ClipboardList, Star, Search, X } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import {
+  STYLES, FRAMES, applyFrame, frameLabel, styleByKey, unchangedChars, visibleLength,
+  type FancyCat, type FancyNote,
+} from '@/utils/fancyText'
 
-// ── Unicode conversion maps ──────────────────────────────────────────────────
+const CATS: ('all' | FancyCat)[] = ['all', 'bold', 'script', 'deco', 'korean', 'frame']
+const LIMITS = [{ key: 'none', n: 0 }, { key: 'kakaoNick', n: 20 }, { key: 'instaBio', n: 150 }] as const
+const FAV_KEY = 'fancyText:favorites'
+const RECENT_KEY = 'fancyText:recent'
+const RECENT_MAX = 8
+const HANGUL = /[가-힣ㄱ-ㆎ]/
 
-// Mathematical Bold: A=𝐀 a=𝐚
-const BOLD_UPPER = 0x1d400
-const BOLD_LOWER = 0x1d41a
+interface Item { id: string; cat: FancyCat; label: string; output: string; unchanged: string[]; note?: FancyNote }
 
-// Mathematical Italic: A=𝐴 a=𝑎  (h is at U+210E — handled specially)
-const ITALIC_UPPER = 0x1d434
-const ITALIC_LOWER = 0x1d44e
-// Italic 'h' is U+210E (Planck constant), skip replacement – just use standard offset
-// Actually standard: italic a=U+1D44E..z, A=U+1D434..Z, but h(=0x68) maps to U+210E.
-// For simplicity we keep the standard block offset and let h render as is.
-
-// Mathematical Bold Italic
-const BOLD_ITALIC_UPPER = 0x1d468
-const BOLD_ITALIC_LOWER = 0x1d482
-
-// Double-Struck (Outlined)
-const DOUBLE_UPPER = 0x1d538
-const DOUBLE_LOWER = 0x1d552
-// Exceptions in double-struck: C=U+2102, H=U+210D, N=U+2115, P=U+2119, Q=U+211A, R=U+211D, Z=U+2124
-const DOUBLE_EXCEPTIONS: Record<string, string> = {
-  C: '\u2102',
-  H: '\u210D',
-  N: '\u2115',
-  P: '\u2119',
-  Q: '\u211A',
-  R: '\u211D',
-  Z: '\u2124',
+const load = (key: string): string[] => {
+  try { const v = JSON.parse(localStorage.getItem(key) ?? '[]'); return Array.isArray(v) ? v : [] } catch { return [] }
 }
+const save = (key: string, v: string[]) => { try { localStorage.setItem(key, JSON.stringify(v)) } catch { /* 저장 불가: 무시 */ } }
 
-// Monospace
-const MONO_UPPER = 0x1d670
-const MONO_LOWER = 0x1d68a
-
-// Script (Cursive)
-const SCRIPT_UPPER = 0x1d49c
-const SCRIPT_LOWER = 0x1d4b6
-// Script exceptions: B=U+212C, E=U+2130, F=U+2131, H=U+210B, I=U+2110, L=U+2112, M=U+2133, R=U+211B
-const SCRIPT_UPPER_EXCEPTIONS: Record<string, string> = {
-  B: '\u212C',
-  E: '\u2130',
-  F: '\u2131',
-  H: '\u210B',
-  I: '\u2110',
-  L: '\u2112',
-  M: '\u2133',
-  R: '\u211B',
+async function writeClipboard(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return true }
+    const ta = document.createElement('textarea')
+    ta.value = text
+    ta.style.position = 'fixed'
+    ta.style.left = '-999999px'
+    document.body.appendChild(ta)
+    ta.select()
+    const ok = document.execCommand('copy')
+    document.body.removeChild(ta)
+    return ok
+  } catch { return false }
 }
-// Script lowercase exceptions: e=U+212F, g=U+210A, o=U+2134
-const SCRIPT_LOWER_EXCEPTIONS: Record<string, string> = {
-  e: '\u212F',
-  g: '\u210A',
-  o: '\u2134',
-}
-
-// Bold Script
-const BOLD_SCRIPT_UPPER = 0x1d4d0
-const BOLD_SCRIPT_LOWER = 0x1d4ea
-
-// Fraktur
-const FRAKTUR_UPPER = 0x1d504
-const FRAKTUR_LOWER = 0x1d51e
-// Fraktur exceptions: C=U+212D, H=U+210C, I=U+2111, R=U+211C, Z=U+2128
-const FRAKTUR_UPPER_EXCEPTIONS: Record<string, string> = {
-  C: '\u212D',
-  H: '\u210C',
-  I: '\u2111',
-  R: '\u211C',
-  Z: '\u2128',
-}
-
-// Bold Fraktur
-const BOLD_FRAKTUR_UPPER = 0x1d56c
-const BOLD_FRAKTUR_LOWER = 0x1d586
-
-// Sans-Serif
-const SANS_UPPER = 0x1d5a0
-const SANS_LOWER = 0x1d5ba
-
-// Sans-Serif Bold
-const SANS_BOLD_UPPER = 0x1d5d4
-const SANS_BOLD_LOWER = 0x1d5ee
-
-// Sans-Serif Italic
-const SANS_ITALIC_UPPER = 0x1d608
-const SANS_ITALIC_LOWER = 0x1d622
-
-// Sans-Serif Bold Italic
-const SANS_BOLD_ITALIC_UPPER = 0x1d63c
-const SANS_BOLD_ITALIC_LOWER = 0x1d656
-
-// Circled letters: Ⓐ=U+24B6 ... Ⓩ=U+24CF, ⓐ=U+24D0 ... ⓩ=U+24E9
-const CIRCLED_UPPER = 0x24b6
-const CIRCLED_LOWER = 0x24d0
-
-// Squared letters: 🄰=U+1F130 ... 🅉=U+1F149
-const SQUARED_UPPER = 0x1f130
-// Squared lowercase — no standard block, reuse uppercase
-// Negative Squared: 🅐=U+1F150 ... 🅩=U+1F169
-const NEG_SQUARED_UPPER = 0x1f150
-
-// Combining strikethrough: U+0336
-const COMBINING_STRIKETHROUGH = '\u0336'
-
-// Combining underline (low line): U+0332
-const COMBINING_UNDERLINE = '\u0332'
-
-// Upside-down map
-const UPSIDE_DOWN_MAP: Record<string, string> = {
-  a: '\u0250', b: 'q', c: '\u0254', d: 'p', e: '\u01DD',
-  f: '\u025F', g: '\u0253', h: '\u0265', i: '\u0131', j: '\u027E',
-  k: '\u029E', l: '\u05DF', m: '\u026F', n: 'u', o: 'o',
-  p: 'd', q: 'b', r: '\u0279', s: 's', t: '\u0287',
-  u: 'n', v: '\u028C', w: '\u028D', x: 'x', y: '\u028E', z: 'z',
-  A: '\u2200', B: '\u15FA', C: '\u0186', D: '\u15E1', E: '\u018E',
-  F: '\u2132', G: '\u2141', H: 'H', I: 'I', J: '\u017F',
-  K: '\u22CA', L: '\u2143', M: 'W', N: 'N', O: 'O',
-  P: '\u0500', Q: '\u038A', R: '\u1D1A', S: 'S', T: '\u22A5',
-  U: '\u2229', V: '\u2227', W: 'M', X: 'X', Y: '\u2144', Z: 'Z',
-}
-
-// Mirror / Reversed map (visually plausible ASCII mirrors)
-const MIRROR_MAP: Record<string, string> = {
-  a: '\u0252', b: 'd', c: '\u0254', d: 'b', e: '\u0258',
-  f: '\u025F', g: '\u0261', h: '\u0265', i: 'i', j: '\u027E',
-  k: '\u029E', l: 'l', m: '\u026F', n: '\u0272', o: 'o',
-  p: 'q', q: 'p', r: '\u0279', s: 's', t: '\u0287',
-  u: 'u', v: '\u028C', w: '\u028D', x: 'x', y: '\u028E', z: 'z',
-  A: 'A', B: '\u15FA', C: '\u0186', D: '\u15E1', E: '\u018E',
-  F: '\u2132', G: '\u2141', H: 'H', I: 'I', J: 'L',
-  K: '\u22CA', L: 'J', M: 'M', N: '\u0418', O: 'O',
-  P: '\u15E1', Q: '\u038A', R: '\u1D1A', S: 'S', T: 'T',
-  U: 'U', V: 'V', W: 'W', X: 'X', Y: 'Y', Z: 'Z',
-}
-
-// Full-width: Ａ=U+FF21 ... Ｚ=U+FF3A, ａ=U+FF41 ... ｚ=U+FF5A, ０=U+FF10 ... ９=U+FF19
-const FW_UPPER = 0xff21
-const FW_LOWER = 0xff41
-const FW_DIGIT = 0xff10
-
-// ── Converter helpers ────────────────────────────────────────────────────────
-
-function mapChar(
-  char: string,
-  upperBase: number,
-  lowerBase: number,
-  upperExceptions?: Record<string, string>,
-  lowerExceptions?: Record<string, string>
-): string {
-  const code = char.charCodeAt(0)
-  if (code >= 65 && code <= 90) {
-    // uppercase
-    if (upperExceptions && upperExceptions[char]) return upperExceptions[char]
-    return String.fromCodePoint(upperBase + (code - 65))
-  }
-  if (code >= 97 && code <= 122) {
-    // lowercase
-    if (lowerExceptions && lowerExceptions[char]) return lowerExceptions[char]
-    return String.fromCodePoint(lowerBase + (code - 97))
-  }
-  return char
-}
-
-function convertText(
-  text: string,
-  converter: (char: string) => string
-): string {
-  return [...text].map(converter).join('')
-}
-
-// ── All style definitions ────────────────────────────────────────────────────
-
-interface StyleDef {
-  key: string
-  convert: (text: string) => string
-}
-
-const STYLE_DEFS: StyleDef[] = [
-  {
-    key: 'bold',
-    convert: (t) => convertText(t, (c) => mapChar(c, BOLD_UPPER, BOLD_LOWER)),
-  },
-  {
-    key: 'italic',
-    convert: (t) => convertText(t, (c) => mapChar(c, ITALIC_UPPER, ITALIC_LOWER)),
-  },
-  {
-    key: 'boldItalic',
-    convert: (t) => convertText(t, (c) => mapChar(c, BOLD_ITALIC_UPPER, BOLD_ITALIC_LOWER)),
-  },
-  {
-    key: 'doubleStruck',
-    convert: (t) =>
-      convertText(t, (c) => mapChar(c, DOUBLE_UPPER, DOUBLE_LOWER, DOUBLE_EXCEPTIONS)),
-  },
-  {
-    key: 'monospace',
-    convert: (t) => convertText(t, (c) => mapChar(c, MONO_UPPER, MONO_LOWER)),
-  },
-  {
-    key: 'script',
-    convert: (t) =>
-      convertText(
-        t,
-        (c) => mapChar(c, SCRIPT_UPPER, SCRIPT_LOWER, SCRIPT_UPPER_EXCEPTIONS, SCRIPT_LOWER_EXCEPTIONS)
-      ),
-  },
-  {
-    key: 'boldScript',
-    convert: (t) => convertText(t, (c) => mapChar(c, BOLD_SCRIPT_UPPER, BOLD_SCRIPT_LOWER)),
-  },
-  {
-    key: 'fraktur',
-    convert: (t) =>
-      convertText(t, (c) => mapChar(c, FRAKTUR_UPPER, FRAKTUR_LOWER, FRAKTUR_UPPER_EXCEPTIONS)),
-  },
-  {
-    key: 'boldFraktur',
-    convert: (t) => convertText(t, (c) => mapChar(c, BOLD_FRAKTUR_UPPER, BOLD_FRAKTUR_LOWER)),
-  },
-  {
-    key: 'sansSerif',
-    convert: (t) => convertText(t, (c) => mapChar(c, SANS_UPPER, SANS_LOWER)),
-  },
-  {
-    key: 'sansSerifBold',
-    convert: (t) => convertText(t, (c) => mapChar(c, SANS_BOLD_UPPER, SANS_BOLD_LOWER)),
-  },
-  {
-    key: 'sansSerifItalic',
-    convert: (t) => convertText(t, (c) => mapChar(c, SANS_ITALIC_UPPER, SANS_ITALIC_LOWER)),
-  },
-  {
-    key: 'sansSerifBoldItalic',
-    convert: (t) =>
-      convertText(t, (c) => mapChar(c, SANS_BOLD_ITALIC_UPPER, SANS_BOLD_ITALIC_LOWER)),
-  },
-  {
-    key: 'circled',
-    convert: (t) =>
-      convertText(t, (c) => {
-        const code = c.charCodeAt(0)
-        if (code >= 65 && code <= 90) return String.fromCodePoint(CIRCLED_UPPER + (code - 65))
-        if (code >= 97 && code <= 122) return String.fromCodePoint(CIRCLED_LOWER + (code - 97))
-        return c
-      }),
-  },
-  {
-    key: 'squared',
-    convert: (t) =>
-      convertText(t, (c) => {
-        const code = c.charCodeAt(0)
-        if (code >= 65 && code <= 90) return String.fromCodePoint(SQUARED_UPPER + (code - 65))
-        if (code >= 97 && code <= 122) return String.fromCodePoint(SQUARED_UPPER + (code - 97))
-        return c
-      }),
-  },
-  {
-    key: 'negativeSquared',
-    convert: (t) =>
-      convertText(t, (c) => {
-        const code = c.charCodeAt(0)
-        if (code >= 65 && code <= 90) return String.fromCodePoint(NEG_SQUARED_UPPER + (code - 65))
-        if (code >= 97 && code <= 122) return String.fromCodePoint(NEG_SQUARED_UPPER + (code - 97))
-        return c
-      }),
-  },
-  {
-    key: 'strikethrough',
-    convert: (t) => convertText(t, (c) => (c === ' ' ? c : c + COMBINING_STRIKETHROUGH)),
-  },
-  {
-    key: 'underline',
-    convert: (t) => convertText(t, (c) => (c === ' ' ? c : c + COMBINING_UNDERLINE)),
-  },
-  {
-    key: 'upsideDown',
-    convert: (t) =>
-      [...t]
-        .map((c) => UPSIDE_DOWN_MAP[c] ?? c)
-        .reverse()
-        .join(''),
-  },
-  {
-    key: 'mirror',
-    convert: (t) =>
-      [...t]
-        .map((c) => MIRROR_MAP[c] ?? c)
-        .reverse()
-        .join(''),
-  },
-  {
-    key: 'fullwidth',
-    convert: (t) =>
-      convertText(t, (c) => {
-        const code = c.charCodeAt(0)
-        if (code >= 65 && code <= 90) return String.fromCodePoint(FW_UPPER + (code - 65))
-        if (code >= 97 && code <= 122) return String.fromCodePoint(FW_LOWER + (code - 97))
-        if (code >= 48 && code <= 57) return String.fromCodePoint(FW_DIGIT + (code - 48))
-        return c
-      }),
-  },
-]
-
-// ── Decoration frames (work on ANY script incl. Korean) ─────────────────────
-
-interface DecorDef {
-  key: string
-  badge: string
-  wrap: (text: string) => string
-}
-
-const DECOR_DEFS: DecorDef[] = [
-  { key: 'heart', badge: '♡ ♡', wrap: (x) => `♡ ${x} ♡` },
-  { key: 'sparkle', badge: '✧･ﾟ ✧', wrap: (x) => `✧･ﾟ: ${x} :･ﾟ✧` },
-  { key: 'star', badge: '★ ★', wrap: (x) => `｡･:*:･ﾟ★ ${x} ★ﾟ･:*:･｡` },
-  { key: 'flower', badge: '✿ ✿', wrap: (x) => `✿ ${x} ✿` },
-  { key: 'cute', badge: '꒰ა ໒꒱', wrap: (x) => `˚₊‧꒰ა ${x} ໒꒱‧₊˚` },
-  { key: 'wing', badge: '➶➷ ➸➹', wrap: (x) => `➶➷ ${x} ➸➹` },
-  { key: 'game', badge: '꧁ ꧂', wrap: (x) => `꧁ ${x} ꧂` },
-  { key: 'crown', badge: '♔ ♔', wrap: (x) => `♔ ${x} ♔` },
-  { key: 'moon', badge: '☾ ☽', wrap: (x) => `☾ ${x} ☽` },
-  { key: 'music', badge: '♪♫ ♫♪', wrap: (x) => `♪♫ ${x} ♫♪` },
-  { key: 'bracketFull', badge: '【 】', wrap: (x) => `【 ${x} 】` },
-  { key: 'bracketCorner', badge: '「 」', wrap: (x) => `「 ${x} 」` },
-  { key: 'bracketAngle', badge: '《 》', wrap: (x) => `《 ${x} 》` },
-  { key: 'dot', badge: '•° °•', wrap: (x) => `•°• ${x} •°•` },
-  { key: 'line', badge: '»— —«', wrap: (x) => `»»——— ${x} ———««` },
-  { key: 'fire', badge: '🔥 🔥', wrap: (x) => `🔥 ${x} 🔥` },
-  { key: 'ribbon', badge: '⊹ ⊹', wrap: (x) => `⊹ ࣪ ˖ ${x} ˖ ࣪ ⊹` },
-  { key: 'spaced', badge: 'ㄱ ㅏ', wrap: (x) => [...x.replace(/\s/g, '')].join(' ') },
-]
-
-// ── Component ────────────────────────────────────────────────────────────────
 
 export default function FancyText() {
   const t = useTranslations('fancyText')
-  const [input, setInput] = useState('')
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const sample = t('sample')
+  const params = useSearchParams()
+  const urlText = params.get('t')
 
-  const results = useMemo(() => {
-    if (!input.trim()) return []
-    return STYLE_DEFS.map((def) => ({
-      key: def.key,
-      label: t(`styles.${def.key}`),
-      output: def.convert(input),
+  const [input, setInput] = useState(sample)
+  const [cat, setCat] = useState<'all' | FancyCat>('all')
+  const [query, setQuery] = useState('')
+  const [limit, setLimit] = useState<number>(0)
+  const [frameBase, setFrameBase] = useState('plain')
+  const [favs, setFavs] = useState<string[]>([])
+  const [recent, setRecent] = useState<string[]>([])
+  const [copied, setCopied] = useState<{ id: string; ok: boolean } | null>(null)
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // 공유 링크(?t=) 복원 + 저장된 즐겨찾기/최근 복사
+  useEffect(() => { if (urlText !== null) setInput(urlText) }, [urlText])
+  useEffect(() => { setFavs(load(FAV_KEY)); setRecent(load(RECENT_KEY)) }, [])
+
+  // 입력 변경 시에만 URL 갱신 (마운트 때 쓰면 공유 링크 파라미터를 지워버림)
+  const changeInput = useCallback((v: string) => {
+    setInput(v)
+    const url = new URL(window.location.href)
+    if (v && v !== sample) url.searchParams.set('t', v)
+    else url.searchParams.delete('t')
+    window.history.replaceState(window.history.state, '', url)
+  }, [sample])
+
+  const text = input.trim() ? input : ''
+  const hasHangul = HANGUL.test(text)
+
+  const items = useMemo<Item[]>(() => {
+    if (!text) return []
+    const styled: Item[] = STYLES.map((s) => ({
+      id: s.key, cat: s.cat, label: t(`styles.${s.key}`), output: s.convert(text),
+      unchanged: unchangedChars(s, text), note: s.note,
     }))
-  }, [input, t])
-
-  const decorResults = useMemo(() => {
-    if (!input.trim()) return []
-    return DECOR_DEFS.map((def) => ({
-      key: def.key,
-      badge: def.badge,
-      output: def.wrap(input.trim()),
+    const base = styleByKey(frameBase)
+    const inner = base ? base.convert(text.trim()) : text.trim()
+    const framed: Item[] = FRAMES.map((f) => ({
+      id: `frame:${f[0]}${f[1]}`, cat: 'frame', label: frameLabel(f), output: applyFrame(f, inner),
+      unchanged: base ? unchangedChars(base, text) : [], note: base?.note,
     }))
-  }, [input])
+    return [...styled, ...framed]
+  }, [text, frameBase, t])
 
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-    } catch {
-      // fallback silently fails
+  const visible = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    const list = items.filter((i) =>
+      (cat === 'all' || i.cat === cat) &&
+      (!q || i.label.toLowerCase().includes(q) || i.id.toLowerCase().includes(q)))
+    // 즐겨찾기 먼저 (즐겨찾기 순서 유지)
+    const favIdx = (id: string) => { const k = favs.indexOf(id); return k < 0 ? Infinity : k }
+    return list.map((i, k) => ({ i, k })).sort((a, b) => favIdx(a.i.id) - favIdx(b.i.id) || a.k - b.k).map((x) => x.i)
+  }, [items, cat, query, favs])
+
+  const copy = useCallback(async (value: string, id: string) => {
+    const ok = await writeClipboard(value)
+    setCopied({ id, ok })
+    if (timer.current) clearTimeout(timer.current)
+    timer.current = setTimeout(() => setCopied(null), 2000)
+    if (ok && id !== '__all__') {
+      setRecent((prev) => { const next = [value, ...prev.filter((v) => v !== value)].slice(0, RECENT_MAX); save(RECENT_KEY, next); return next })
     }
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 2000)
   }, [])
 
-  const copyAll = useCallback(async () => {
-    if (!results.length) return
-    const allText = results.map((r) => `${r.label}: ${r.output}`).join('\n')
-    await copyToClipboard(allText, '__all__')
-  }, [results, copyToClipboard])
+  const toggleFav = useCallback((id: string) => {
+    setFavs((prev) => { const next = prev.includes(id) ? prev.filter((x) => x !== id) : [id, ...prev]; save(FAV_KEY, next); return next })
+  }, [])
+
+  const clearRecent = () => { setRecent([]); save(RECENT_KEY, []) }
+  const inputLen = visibleLength(text)
+  const headline = visible[0]?.output ?? text
+  const copiedLabel = (id: string) => (copied?.id === id ? (copied.ok ? t('copied') : t('copyFailed')) : t('copy'))
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Input area */}
-      <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-        <label className="block text-sm font-medium text-body">
-          {t('inputLabel')}
-        </label>
-        <textarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={t('inputPlaceholder')}
-          rows={3}
-          className={`w-full px-3 py-2 ${glassInput} placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none`}
-          aria-label={t('inputLabel')}
-        />
-        <p className="text-xs text-faint">{t('asciiNote')}</p>
-
-        {results.length > 0 && (
-          <div className="flex justify-end">
-            <button
-              onClick={copyAll}
-              className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium hover:from-purple-700 hover:to-indigo-700 transition-all"
-              aria-label={t('copyAll')}
-            >
-              {copiedId === '__all__' ? (
-                <>
-                  <Check className="w-4 h-4" />
-                  {t('copied')}
-                </>
-              ) : (
-                <>
-                  <ClipboardList className="w-4 h-4" />
-                  {t('copyAll')}
-                </>
-              )}
+      {/* 입력 */}
+      <div className="ui-card p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <label htmlFor="fancy-input" className="text-sm font-medium text-body">{t('inputLabel')}</label>
+          {input && (
+            <button onClick={() => changeInput('')} className="text-xs text-muted hover:text-fg flex items-center gap-1">
+              <X className="w-3.5 h-3.5" />{t('clear')}
             </button>
+          )}
+        </div>
+        <textarea
+          id="fancy-input"
+          value={input}
+          onChange={(e) => changeInput(e.target.value)}
+          placeholder={t('inputPlaceholder')}
+          rows={2}
+          className="ui-field w-full px-4 py-3 text-lg resize-none"
+        />
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-sub">{t('limitLabel')}</span>
+          {LIMITS.map((l) => (
+            <button
+              key={l.key}
+              onClick={() => setLimit(l.n)}
+              aria-pressed={limit === l.n}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium ${limit === l.n ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+            >
+              {t(`limits.${l.key}`)}
+            </button>
+          ))}
+          <span className={`ml-auto tabular-nums ${limit && inputLen > limit ? 'text-red-600 font-semibold' : 'text-muted'}`}>
+            {limit ? `${inputLen} / ${limit}` : t('charCount', { n: inputLen })}
+          </span>
+        </div>
+        {hasHangul && cat !== 'korean' && cat !== 'frame' && (
+          <div className="bg-subtle rounded-2xl p-4 text-sm text-sub flex flex-wrap items-center gap-x-3 gap-y-2">
+            <span className="flex-1 min-w-[200px]">{t('hangulNote')}</span>
+            <button onClick={() => setCat('korean')} className="ui-btn-soft px-3 py-1.5 text-xs">{t('showKorean')}</button>
+            <button onClick={() => setCat('frame')} className="ui-btn-soft px-3 py-1.5 text-xs">{t('showFrame')}</button>
           </div>
         )}
       </div>
 
-      {/* Decoration frames — works on Korean & any script */}
-      {decorResults.length > 0 && (
-        <div className="space-y-3">
-          <div>
-            <h2 className="text-lg font-semibold text-fg">{t('decorTitle')}</h2>
-            <p className="text-xs text-muted mt-0.5">{t('decorDesc')}</p>
+      {/* 최근 복사 */}
+      {recent.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-body">{t('recentTitle')}</h2>
+            <button onClick={clearRecent} className="text-xs text-muted hover:text-fg">{t('recentClear')}</button>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {decorResults.map((r) => (
-              <div key={r.key} className={`${glassCard} ${glassInset} p-5 flex flex-col gap-3`}>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold tracking-wide text-pink-600 dark:text-pink-400">{r.badge}</span>
-                  <button
-                    onClick={() => copyToClipboard(r.output, `decor:${r.key}`)}
-                    className="flex items-center gap-1 text-xs bg-soft hover:bg-pink-100 dark:hover:bg-pink-900 text-sub hover:text-pink-700 dark:hover:text-pink-300 rounded-md px-2 py-1 transition-colors"
-                    aria-label={`${t('copy')} ${r.badge}`}
-                  >
-                    {copiedId === `decor:${r.key}` ? (
-                      <><Check className="w-3 h-3" />{t('copied')}</>
-                    ) : (
-                      <><Copy className="w-3 h-3" />{t('copy')}</>
-                    )}
-                  </button>
-                </div>
-                <p className="text-body text-lg leading-relaxed break-all select-all cursor-text">{r.output}</p>
-              </div>
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {recent.map((r) => (
+              <button
+                key={r}
+                onClick={() => copy(r, `recent:${r}`)}
+                title={t('copy')}
+                className={`shrink-0 max-w-[240px] truncate px-3 py-2 rounded-xl text-sm border ${copied?.id === `recent:${r}` ? 'bg-primary-soft text-primary border-primary' : 'bg-surface text-body border-line hover:bg-soft'}`}
+              >
+                {copied?.id === `recent:${r}` ? copiedLabel(`recent:${r}`) : r}
+              </button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Latin Unicode font styles */}
-      {results.length > 0 && (
-        <h2 className="text-lg font-semibold text-fg">{t('fontTitle')}</h2>
-      )}
-      {results.length === 0 ? (
-        <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-          <p className="text-faint text-lg">{t('noInput')}</p>
-        </div>
-      ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {results.map((r) => (
-            <div
-              key={r.key}
-              className={`${glassCard} ${glassInset} p-5 flex flex-col gap-3 group`}
+      {/* 탭 + 검색 */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <div className="flex gap-1.5 overflow-x-auto pb-1" role="tablist">
+          {CATS.map((c) => (
+            <button
+              key={c}
+              role="tab"
+              aria-selected={cat === c}
+              onClick={() => setCat(c)}
+              className={`shrink-0 px-3.5 py-2 rounded-full text-sm font-medium ${cat === c ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
             >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">
-                  {r.label}
-                </span>
-                <button
-                  onClick={() => copyToClipboard(r.output, r.key)}
-                  className="flex items-center gap-1 text-xs bg-soft hover:bg-purple-100 dark:hover:bg-purple-900 text-sub hover:text-purple-700 dark:hover:text-purple-300 rounded-md px-2 py-1 transition-colors"
-                  aria-label={`${t('copy')} ${r.label}`}
-                >
-                  {copiedId === r.key ? (
-                    <>
-                      <Check className="w-3 h-3" />
-                      {t('copied')}
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3 h-3" />
-                      {t('copy')}
-                    </>
+              {t(`cats.${c}`)}
+            </button>
+          ))}
+        </div>
+        <div className="relative sm:ml-auto sm:w-56">
+          <Search className="w-4 h-4 text-faint absolute left-3 top-1/2 -translate-y-1/2" aria-hidden />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t('searchPlaceholder')}
+            aria-label={t('searchPlaceholder')}
+            className="ui-field w-full pl-9 pr-3 py-2 text-sm"
+          />
+        </div>
+      </div>
+
+      {(cat === 'frame' || cat === 'all') && text && (
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <label htmlFor="frame-base" className="text-sub">{t('frameBase')}</label>
+          <select id="frame-base" value={frameBase} onChange={(e) => setFrameBase(e.target.value)} className="ui-field px-3 py-2 text-sm">
+            <option value="plain">{t('frameBasePlain')}</option>
+            {STYLES.filter((s) => s.key !== 'jamo').map((s) => (
+              <option key={s.key} value={s.key}>{t(`styles.${s.key}`)}</option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {/* 결과 */}
+      {!text ? (
+        <div className="ui-card p-12 text-center text-faint">{t('noInput')}</div>
+      ) : visible.length === 0 ? (
+        <div className="ui-card p-12 text-center text-faint">{t('noResults')}</div>
+      ) : (
+        <>
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted">{t('tapToCopy')}</p>
+            <button
+              onClick={() => copy(visible.map((r) => r.output).join('\n'), '__all__')}
+              className="ui-btn-soft px-3 py-2 text-sm flex items-center gap-1.5"
+            >
+              {copied?.id === '__all__' ? <Check className="w-4 h-4" /> : <ClipboardList className="w-4 h-4" />}
+              {copied?.id === '__all__' ? copiedLabel('__all__') : t('copyAll')}
+            </button>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {visible.map((r) => {
+              const isCopied = copied?.id === r.id
+              const fav = favs.includes(r.id)
+              const len = visibleLength(r.output)
+              const over = limit > 0 && len > limit
+              return (
+                <div key={r.id} className={`ui-card p-4 flex flex-col gap-2 ${isCopied ? 'border-primary' : ''}`}>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-sub truncate">{r.label}</span>
+                    <span className={`ml-auto text-xs tabular-nums ${over ? 'text-red-600 font-semibold' : 'text-faint'}`}>
+                      {over ? t('overLimit', { n: len - limit }) : t('charCount', { n: len })}
+                    </span>
+                    <button
+                      onClick={() => toggleFav(r.id)}
+                      aria-pressed={fav}
+                      aria-label={fav ? t('unfavorite') : t('favorite')}
+                      title={fav ? t('unfavorite') : t('favorite')}
+                      className={`p-1 rounded-lg hover:bg-soft ${fav ? 'text-primary' : 'text-faint'}`}
+                    >
+                      <Star className={`w-4 h-4 ${fav ? 'fill-current' : ''}`} />
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => copy(r.output, r.id)}
+                    className="text-left flex items-start gap-3 rounded-xl -mx-1 px-1 py-1 hover:bg-soft"
+                    aria-label={`${t('copy')} ${r.label}`}
+                  >
+                    <span className="flex-1 text-xl leading-relaxed text-fg break-all" lang="und">{r.output}</span>
+                    <span className={`shrink-0 mt-1 flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-lg ${isCopied ? (copied?.ok ? 'bg-primary text-white' : 'bg-red-50 text-red-700') : 'bg-soft text-sub'}`}>
+                      {isCopied && copied?.ok ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      {copiedLabel(r.id)}
+                    </span>
+                  </button>
+                  {r.unchanged.length > 0 && (
+                    <p className="text-xs text-amber-700 dark:text-amber-400">
+                      {t('unchanged', { chars: r.unchanged.slice(0, 8).join(' ') + (r.unchanged.length > 8 ? ' …' : '') })}
+                    </p>
                   )}
-                </button>
-              </div>
-              <p
-                className="text-body text-lg leading-relaxed break-all select-all cursor-text"
-                lang="und"
-                aria-label={`${r.label}: ${r.output}`}
-              >
-                {r.output}
-              </p>
+                  {r.note && <p className="text-xs text-muted">{t(`notes.${r.note}`)}</p>}
+                </div>
+              )
+            })}
+          </div>
+          <p className="sr-only" aria-live="polite">{copied ? (copied.ok ? t('copied') : t('copyFailed')) : ''}</p>
+          <ShareResult
+            card={{ tool: t('title'), label: t('shareLabel'), headline }}
+            text={`${headline}\n${t('shareText')}`}
+            fileName="fancy-text"
+          />
+        </>
+      )}
+
+      {/* 가이드 */}
+      <div className="ui-card p-6 space-y-6">
+        <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          {(['usage', 'how', 'tips'] as const).map((g) => (
+            <div key={g}>
+              <h3 className="font-medium text-body mb-2">{t(`guide.${g}Title`)}</h3>
+              <ul className="space-y-1.5 list-disc pl-4 text-sm text-sub">
+                {((t.raw(`guide.${g}Items`) as string[]) ?? []).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
             </div>
           ))}
         </div>
-      )}
-
-      {/* Guide */}
-      <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-        <h2 className="text-xl font-semibold text-fg">
-          {t('guide.title')}
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* Usage */}
+        {Array.isArray(t.raw('guide.faq.items')) && (
           <div>
-            <h3 className="font-medium text-body mb-2">
-              {t('guide.usageTitle')}
-            </h3>
-            <ul className="space-y-1">
-              {(t.raw('guide.usageItems') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-sub flex gap-2">
-                  <span className="text-purple-500 shrink-0">•</span>
-                  <span>{item}</span>
-                </li>
+            <h3 className="font-medium text-body mb-2">{t('guide.faq.title')}</h3>
+            <div className="space-y-2">
+              {(t.raw('guide.faq.items') as { q: string; a: string }[]).map((f, i) => (
+                <details key={i} className="bg-subtle rounded-2xl px-4 py-3">
+                  <summary className="cursor-pointer text-sm font-medium text-body">{f.q}</summary>
+                  <p className="text-sm text-sub mt-2">{f.a}</p>
+                </details>
               ))}
-            </ul>
+            </div>
           </div>
-
-          {/* How */}
-          <div>
-            <h3 className="font-medium text-body mb-2">
-              {t('guide.howTitle')}
-            </h3>
-            <ul className="space-y-1">
-              {(t.raw('guide.howItems') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-sub flex gap-2">
-                  <span className="text-purple-500 shrink-0">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Tips */}
-          <div>
-            <h3 className="font-medium text-body mb-2">
-              {t('guide.tipsTitle')}
-            </h3>
-            <ul className="space-y-1">
-              {(t.raw('guide.tipsItems') as string[]).map((item, i) => (
-                <li key={i} className="text-sm text-sub flex gap-2">
-                  <span className="text-amber-500 shrink-0">!</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   )
