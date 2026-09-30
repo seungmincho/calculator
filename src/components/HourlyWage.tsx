@@ -1,148 +1,107 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
-import { useRouter, usePathname } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { DollarSign, Clock, TrendingUp, BookOpen, ArrowRightLeft, Link, Check } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { MIN_WAGE_2026, WEEKS_PER_MONTH } from '@/utils/workHours'
+import { calculateNetSalary } from '@/utils/netSalary'
 
 type InputType = 'hourly' | 'daily' | 'monthly' | 'yearly'
-
-// 2026년 최저임금 시급 10,320원 (고용노동부 고시)
-const MINIMUM_WAGE_2026 = 10320
-const MIN_WAGE_COMPARE = MINIMUM_WAGE_2026
+const TYPES: InputType[] = ['hourly', 'daily', 'monthly', 'yearly']
+const PRESETS = [15, 20, 30, 40]
 const AVG_ANNUAL_SALARY_KR = 42_000_000 // 한국 근로자 평균 연봉 약 4,200만원 (2024 기준)
+
+/**
+ * 주휴시간 = 주 소정근로시간/40 × 8 (주 15시간 이상, 최대 8)
+ * 월 소정근로시간 = (주 소정근로 + 주휴) × 365/7/12, 정수 반올림 → 주 40시간 = 209시간
+ */
+export function wageTable(type: InputType, amount: number, weeklyHours: number, daysPerWeek: number, holiday: boolean) {
+  const holidayHours = holiday && weeklyHours >= 15 ? Math.min(8, (weeklyHours / 40) * 8) : 0
+  const monthlyHours = Math.round((weeklyHours + holidayHours) * WEEKS_PER_MONTH)
+  const dailyHours = weeklyHours / daysPerWeek
+  const hourly =
+    type === 'hourly' ? amount
+    : type === 'daily' ? amount / dailyHours
+    : type === 'monthly' ? amount / monthlyHours
+    : amount / 12 / monthlyHours
+  const monthly = hourly * monthlyHours
+  return {
+    hourly,
+    daily: hourly * dailyHours,
+    weekly: hourly * (weeklyHours + holidayHours),
+    monthly,
+    yearly: monthly * 12,
+    holidayHours,
+    monthlyHours,
+    dailyHours,
+    holidayPayMonthly: hourly * holidayHours * WEEKS_PER_MONTH,
+  }
+}
+
+const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
 
 function HourlyWageInner() {
   const t = useTranslations('hourlyWage')
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
+  const sp = useSearchParams()
 
-  // --- State initialised from URL params ---
-  const [inputType, setInputType] = useState<InputType>(
-    () => (searchParams.get('type') as InputType) || 'hourly'
-  )
-  const [amount, setAmount] = useState<string>(() => {
-    const w = searchParams.get('wage')
-    return w ? parseInt(w).toLocaleString('ko-KR') : ''
+  const [inputType, setInputType] = useState<InputType>(() => {
+    const ty = sp.get('type') as InputType
+    return TYPES.includes(ty) ? ty : 'hourly'
   })
-  const [hoursPerDay, setHoursPerDay] = useState<number>(() => {
-    const h = parseFloat(searchParams.get('hours') || '')
-    return h > 0 ? h : 8
+  const [amount, setAmount] = useState<string>(() => {
+    const w = parseInt(sp.get('wage') || '')
+    return (w > 0 ? w : MIN_WAGE_2026).toLocaleString('ko-KR')
   })
   const [daysPerWeek, setDaysPerWeek] = useState<number>(() => {
-    const d = parseFloat(searchParams.get('days') || '')
+    const d = parseFloat(sp.get('days') || '')
     return d > 0 && d <= 7 ? d : 5
   })
-  const [daysPerMonth, setDaysPerMonth] = useState<number>(() => {
-    const dm = parseFloat(searchParams.get('dpm') || '')
-    return dm > 0 ? dm : 21.74
+  const [weeklyHours, setWeeklyHours] = useState<number>(() => {
+    const wh = parseFloat(sp.get('wh') || '')
+    if (wh > 0 && wh <= 68) return wh
+    // 구버전 공유 링크: hours(1일) × days
+    const h = parseFloat(sp.get('hours') || '')
+    const d = parseFloat(sp.get('days') || '') || 5
+    return h > 0 ? Math.min(68, h * d) : 40
   })
-
+  const [holiday, setHoliday] = useState<boolean>(() => sp.get('hol') !== '0')
   const [copied, setCopied] = useState(false)
 
-  // --- Sync URL whenever inputs change ---
-  const updateURL = useCallback(
-    (
-      type: InputType,
-      wage: string,
-      hours: number,
-      days: number,
-      dpm: number
-    ) => {
-      const rawWage = wage.replace(/,/g, '')
-      const params = new URLSearchParams()
-      if (rawWage) params.set('wage', rawWage)
-      if (type !== 'hourly') params.set('type', type)
-      if (hours !== 8) params.set('hours', String(hours))
-      if (days !== 5) params.set('days', String(days))
-      if (dpm !== 21.74) params.set('dpm', String(dpm))
-      const qs = params.toString()
-      router.replace(`${pathname}${qs ? '?' + qs : ''}`, { scroll: false })
-    },
-    [router, pathname]
-  )
+  const shareUrl = useCallback(() => {
+    const p = new URLSearchParams()
+    const raw = amount.replace(/,/g, '')
+    if (raw) p.set('wage', raw)
+    if (inputType !== 'hourly') p.set('type', inputType)
+    if (weeklyHours !== 40) p.set('wh', String(weeklyHours))
+    if (daysPerWeek !== 5) p.set('days', String(daysPerWeek))
+    if (!holiday) p.set('hol', '0')
+    const qs = p.toString()
+    return `${window.location.pathname}${qs ? '?' + qs : ''}`
+  }, [amount, inputType, weeklyHours, daysPerWeek, holiday])
 
-  // Debounce URL update to avoid rapid-fire history entries
   useEffect(() => {
-    const id = setTimeout(() => {
-      updateURL(inputType, amount, hoursPerDay, daysPerWeek, daysPerMonth)
-    }, 300)
+    const id = setTimeout(() => window.history.replaceState(null, '', shareUrl()), 300)
     return () => clearTimeout(id)
-  }, [inputType, amount, hoursPerDay, daysPerWeek, daysPerMonth, updateURL])
+  }, [shareUrl])
 
-  // --- Calculations ---
-  const results = useMemo(() => {
-    const inputAmount = parseFloat(amount.replace(/,/g, ''))
-    if (!inputAmount || inputAmount <= 0) {
-      return { hourly: 0, daily: 0, monthly: 0, yearly: 0 }
-    }
+  const amt = parseFloat(amount.replace(/,/g, '')) || 0
+  const r = useMemo(
+    () => (amt > 0 ? wageTable(inputType, amt, weeklyHours, daysPerWeek, holiday) : null),
+    [amt, inputType, weeklyHours, daysPerWeek, holiday]
+  )
+  const net = useMemo(() => (r ? calculateNetSalary(r.yearly, { nonTaxableMonthly: 0 }) : null), [r])
 
-    let hourlyWage = 0
-    switch (inputType) {
-      case 'hourly':
-        hourlyWage = inputAmount
-        break
-      case 'daily':
-        hourlyWage = inputAmount / hoursPerDay
-        break
-      case 'monthly':
-        hourlyWage = inputAmount / (hoursPerDay * daysPerMonth)
-        break
-      case 'yearly':
-        hourlyWage = inputAmount / 12 / (hoursPerDay * daysPerMonth)
-        break
-    }
-
-    const dailyWage = hourlyWage * hoursPerDay
-    const monthlyWage = hourlyWage * hoursPerDay * daysPerMonth
-    const yearlyWage = monthlyWage * 12
-
-    return { hourly: hourlyWage, daily: dailyWage, monthly: monthlyWage, yearly: yearlyWage }
-  }, [amount, inputType, hoursPerDay, daysPerMonth])
-
-  // Annual projection: hourly × hours/day × days/week × 52
-  const annualProjection = useMemo(() => {
-    if (results.hourly === 0) return 0
-    return results.hourly * hoursPerDay * daysPerWeek * 52
-  }, [results.hourly, hoursPerDay, daysPerWeek])
-
-  // Minimum wage comparison (2025: 9,860원)
-  const minimumWageComparison = useMemo(() => {
-    if (results.hourly === 0) return { percent: 0, isAbove: false, diff: 0, barWidth: 0 }
-    const percent = Math.round((results.hourly / MIN_WAGE_COMPARE) * 100)
-    const isAbove = results.hourly >= MIN_WAGE_COMPARE
-    const diff = Math.round(results.hourly - MIN_WAGE_COMPARE)
-    // bar: user wage fills relative to max(user, minWage) capped at 150%
-    const maxVal = Math.max(results.hourly, MIN_WAGE_COMPARE)
-    const barWidth = Math.min(Math.round((results.hourly / maxVal) * 100), 100)
-    return { percent, isAbove, diff, barWidth }
-  }, [results.hourly])
-
-  // Annual salary comparison vs average
-  const annualComparison = useMemo(() => {
-    if (annualProjection === 0) return { percent: 0, isAbove: false, diff: 0, barWidth: 0 }
-    const percent = Math.round((annualProjection / AVG_ANNUAL_SALARY_KR) * 100)
-    const isAbove = annualProjection >= AVG_ANNUAL_SALARY_KR
-    const diff = Math.round(annualProjection - AVG_ANNUAL_SALARY_KR)
-    const maxVal = Math.max(annualProjection, AVG_ANNUAL_SALARY_KR)
-    const barWidth = Math.min(Math.round((annualProjection / maxVal) * 100), 100)
-    return { percent, isAbove, diff, barWidth }
-  }, [annualProjection])
-
-  // --- Handlers ---
   const handleReset = () => {
     setInputType('hourly')
-    setAmount('')
-    setHoursPerDay(8)
+    setAmount(MIN_WAGE_2026.toLocaleString('ko-KR'))
+    setWeeklyHours(40)
     setDaysPerWeek(5)
-    setDaysPerMonth(21.74)
+    setHoliday(true)
   }
 
   const handleCopyLink = useCallback(async () => {
-    const url = window.location.href
+    const url = window.location.origin + shareUrl()
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url)
@@ -161,66 +120,49 @@ function HourlyWageInner() {
     }
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
-  }, [])
+  }, [shareUrl])
 
-  const formatCurrency = (value: number) => Math.round(value).toLocaleString('ko-KR')
+  const minPct = r ? Math.round((r.hourly / MIN_WAGE_2026) * 100) : 0
+  const isAbove = r ? Math.round(r.hourly) >= MIN_WAGE_2026 : true
+  // 바 스케일: 최저임금의 150%까지, 최저임금 마커는 2/3 지점
+  const barWidth = r ? Math.min(100, (r.hourly / (MIN_WAGE_2026 * 1.5)) * 100) : 0
 
-  const showResults = results.hourly > 0
+  const rows: { key: InputType | 'weekly'; gross: number; net?: number }[] = r
+    ? [
+        { key: 'hourly', gross: r.hourly },
+        { key: 'daily', gross: r.daily },
+        { key: 'weekly', gross: r.weekly },
+        { key: 'monthly', gross: r.monthly, net: net?.netMonthly },
+        { key: 'yearly', gross: r.yearly, net: net?.netAnnual },
+      ]
+    : []
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
-        {/* Copy Link Button */}
-        <button
-          onClick={handleCopyLink}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body text-sm font-medium transition-colors shrink-0"
-          title="링크 복사"
-        >
-          {copied ? (
-            <>
-              <Check className="w-4 h-4 text-green-500" />
-              <span className="text-green-600 dark:text-green-400">복사됨</span>
-            </>
-          ) : (
-            <>
-              <Link className="w-4 h-4" />
-              <span>링크 복사</span>
-            </>
-          )}
+        <button onClick={handleCopyLink} className="ui-btn-soft px-3 py-2 text-sm font-medium shrink-0">
+          {copied ? t('copied') : t('copyLink')}
         </button>
       </div>
 
-      {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Settings Panel */}
+        {/* 입력 */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
-            <div className="flex items-center gap-2 mb-4">
-              <ArrowRightLeft className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-semibold text-fg">
-                {t('inputType')}
-              </h2>
-            </div>
-
-            {/* Input Type Selector */}
+          <div className="ui-card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('inputType')}
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {(['hourly', 'daily', 'monthly', 'yearly'] as InputType[]).map((type) => (
+              <label className="block text-sm font-medium text-body mb-2">{t('inputType')}</label>
+              <div className="grid grid-cols-4 gap-1.5">
+                {TYPES.map((type) => (
                   <button
                     key={type}
                     onClick={() => setInputType(type)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      inputType === type
-                        ? 'bg-primary hover:bg-blue-700 text-white'
-                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                    aria-pressed={inputType === type}
+                    className={`px-2 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      inputType === type ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
                     }`}
                   >
                     {t(type)}
@@ -229,451 +171,215 @@ function HourlyWageInner() {
               </div>
             </div>
 
-            {/* Amount Input */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                {t('amount')}
+              <label htmlFor="hw-amount" className="block text-sm font-medium text-body mb-2">
+                {t(inputType)} {t('amount')}
               </label>
-              <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                id="hw-amount"
+                type="text"
+                inputMode="numeric"
+                value={amount}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/,/g, '')
+                  if (value === '' || /^\d+$/.test(value)) {
+                    setAmount(value ? parseInt(value).toLocaleString('ko-KR') : '')
+                  }
+                }}
+                placeholder={t('amountPlaceholder')}
+                className="ui-field w-full px-4 py-3 text-lg tabular-nums"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="hw-weekly" className="block text-sm font-medium text-body mb-2">
+                {t('weeklyHours')}
+              </label>
+              <div className="grid grid-cols-4 gap-1.5 mb-2">
+                {PRESETS.map((h) => (
+                  <button
+                    key={h}
+                    onClick={() => setWeeklyHours(h)}
+                    aria-pressed={weeklyHours === h}
+                    className={`px-2 py-1.5 rounded-lg text-sm transition-colors ${
+                      weeklyHours === h ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
+                    }`}
+                  >
+                    {h}{t('hours')}
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center gap-2">
                 <input
-                  type="text"
-                  value={amount}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/,/g, '')
-                    if (value === '' || /^\d+$/.test(value)) {
-                      setAmount(value ? parseInt(value).toLocaleString('ko-KR') : '')
-                    }
-                  }}
-                  placeholder={t('amountPlaceholder')}
-                  className={`${glassInput} pl-10 pr-3 py-2`}
+                  id="hw-weekly"
+                  type="number"
+                  value={weeklyHours}
+                  onChange={(e) => setWeeklyHours(Math.max(1, Math.min(68, parseFloat(e.target.value) || 1)))}
+                  min={1}
+                  max={68}
+                  step={0.5}
+                  className="ui-field w-full px-4 py-2"
                 />
+                <span className="text-sm text-muted whitespace-nowrap">{t('hours')}</span>
               </div>
             </div>
 
-            {/* Work Settings */}
-            <div className="pt-4 border-t border-line">
-              <div className="flex items-center gap-2 mb-3">
-                <Clock className="w-4 h-4 text-gray-500" />
-                <h3 className="text-sm font-semibold text-fg">
-                  Work Settings
-                </h3>
+            <div>
+              <label htmlFor="hw-days" className="block text-sm font-medium text-body mb-2">
+                {t('workDaysPerWeek')}
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  id="hw-days"
+                  type="number"
+                  value={daysPerWeek}
+                  onChange={(e) => setDaysPerWeek(Math.max(1, Math.min(7, parseFloat(e.target.value) || 1)))}
+                  min={1}
+                  max={7}
+                  step={1}
+                  className="ui-field w-full px-4 py-2"
+                />
+                <span className="text-sm text-muted whitespace-nowrap">{t('days')}</span>
               </div>
-
-              {/* Hours per Day */}
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('workHoursPerDay')}
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    value={hoursPerDay}
-                    onChange={(e) => setHoursPerDay(Math.max(1, parseFloat(e.target.value) || 1))}
-                    min="1"
-                    max="24"
-                    step="0.5"
-                    className={`${glassInput} px-3 py-2`}
-                  />
-                  <span className="text-sm text-muted whitespace-nowrap">
-                    {t('hours')}
-                  </span>
-                </div>
-              </div>
-
-              {/* Days per Week */}
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('workDaysPerWeek')}
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    value={daysPerWeek}
-                    onChange={(e) =>
-                      setDaysPerWeek(Math.max(1, Math.min(7, parseFloat(e.target.value) || 1)))
-                    }
-                    min="1"
-                    max="7"
-                    step="0.5"
-                    className={`${glassInput} px-3 py-2`}
-                  />
-                  <span className="text-sm text-muted whitespace-nowrap">
-                    {t('days')}
-                  </span>
-                </div>
-              </div>
-
-              {/* Days per Month */}
-              <div>
-                <label className="block text-sm font-medium text-body mb-1">
-                  {t('workDaysPerMonth')}
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    value={daysPerMonth}
-                    onChange={(e) =>
-                      setDaysPerMonth(Math.max(1, parseFloat(e.target.value) || 1))
-                    }
-                    min="1"
-                    max="31"
-                    step="0.01"
-                    className={`${glassInput} px-3 py-2`}
-                  />
-                  <span className="text-sm text-muted whitespace-nowrap">
-                    {t('days')}
-                  </span>
-                </div>
-              </div>
+              {r && <p className="text-xs text-muted mt-1">{t('dailyHoursNote', { hours: +r.dailyHours.toFixed(2) })}</p>}
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-2 pt-4">
-              <button
-                onClick={handleReset}
-                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors"
-              >
-                {t('reset')}
-              </button>
-            </div>
+            <label className="flex items-start gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={holiday}
+                onChange={(e) => setHoliday(e.target.checked)}
+                className="mt-1 accent-blue-600"
+              />
+              <span>
+                <span className="block text-sm font-medium text-body">{t('includeHoliday')}</span>
+                <span className="block text-xs text-muted">{t('includeHolidayHint')}</span>
+              </span>
+            </label>
+
+            <button onClick={handleReset} className="ui-btn-soft w-full px-4 py-2 font-medium">
+              {t('reset')}
+            </button>
           </div>
         </div>
 
-        {/* Results Panel */}
+        {/* 결과 */}
         <div className="lg:col-span-2">
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-semibold text-fg mb-6">
-              {t('result.title')}
-            </h2>
-
-            {showResults ? (
-              <div className="space-y-4">
-                {/* Hourly Wage */}
-                <div className="bg-subtle rounded-xl p-4 border-t-4 border-blue-600">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm text-sub">
-                        {t('result.hourlyWage')}
-                      </div>
-                      <div className="text-2xl font-bold text-fg mt-1">
-                        {formatCurrency(results.hourly)}{' '}
-                        <span className="text-lg">{t('result.won')}</span>
-                      </div>
-                    </div>
-                    <Clock className="w-8 h-8 text-blue-600" />
+          <div className="ui-card p-6 space-y-6">
+            {r ? (
+              <>
+                <div>
+                  <div className="text-sm text-sub">{t('result.monthlyWage')}</div>
+                  <div className="text-3xl font-bold text-fg tabular-nums mt-1">
+                    {won(r.monthly)}
+                    <span className="text-lg font-semibold ml-1">{t('result.won')}</span>
                   </div>
-                </div>
-
-                {/* Daily Wage */}
-                <div className="bg-subtle rounded-xl p-4 border-t-4 border-green-600">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm text-sub">
-                        {t('result.dailyWage')}
-                      </div>
-                      <div className="text-2xl font-bold text-fg mt-1">
-                        {formatCurrency(results.daily)}{' '}
-                        <span className="text-lg">{t('result.won')}</span>
-                      </div>
-                    </div>
-                    <DollarSign className="w-8 h-8 text-green-600" />
-                  </div>
-                </div>
-
-                {/* Monthly Wage */}
-                <div className="bg-subtle rounded-xl p-4 border-t-4 border-purple-600">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm text-sub">
-                        {t('result.monthlyWage')}
-                      </div>
-                      <div className="text-2xl font-bold text-fg mt-1">
-                        {formatCurrency(results.monthly)}{' '}
-                        <span className="text-lg">{t('result.won')}</span>
-                      </div>
-                    </div>
-                    <TrendingUp className="w-8 h-8 text-purple-600" />
-                  </div>
-                </div>
-
-                {/* Yearly Wage */}
-                <div className="bg-subtle rounded-xl p-4 border-t-4 border-orange-600">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm text-sub">
-                        {t('result.yearlyWage')}
-                      </div>
-                      <div className="text-2xl font-bold text-fg mt-1">
-                        {formatCurrency(results.yearly)}{' '}
-                        <span className="text-lg">{t('result.won')}</span>
-                      </div>
-                    </div>
-                    <TrendingUp className="w-8 h-8 text-orange-600" />
-                  </div>
-                </div>
-
-                {/* ── NEW: Minimum Wage Visual Comparison Bar ── */}
-                <div className="bg-subtle rounded-xl p-5 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-fg">
-                      2025년 최저임금 비교
-                    </h3>
-                    <span
-                      className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                        minimumWageComparison.isAbove
-                          ? 'bg-soft text-sub'
-                          : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
-                      }`}
-                    >
-                      {minimumWageComparison.isAbove ? '최저임금 이상' : '최저임금 미달'}
-                    </span>
-                  </div>
-
-                  {/* Bar: user wage */}
-                  <div>
-                    <div className="flex justify-between text-xs text-muted mb-1">
-                      <span>내 시급 {formatCurrency(results.hourly)}원</span>
-                      <span>{minimumWageComparison.percent}%</span>
-                    </div>
-                    <div className="relative h-4 bg-track rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-500 ${
-                          minimumWageComparison.isAbove
-                            ? 'bg-green-500'
-                            : 'bg-red-500'
-                        }`}
-                        style={{ width: `${minimumWageComparison.barWidth}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Bar: minimum wage (always 100% of itself) */}
-                  <div>
-                    <div className="flex justify-between text-xs text-muted mb-1">
-                      <span>최저임금 9,860원</span>
-                      <span>기준</span>
-                    </div>
-                    <div className="relative h-4 bg-track rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-blue-400"
-                        style={{
-                          width: `${Math.min(
-                            Math.round(
-                              (MIN_WAGE_COMPARE / Math.max(results.hourly, MIN_WAGE_COMPARE)) * 100
-                            ),
-                            100
-                          )}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  <p className={`text-sm font-medium ${
-                    minimumWageComparison.isAbove
-                      ? 'text-green-700 dark:text-green-400'
-                      : 'text-red-700 dark:text-red-400'
-                  }`}>
-                    {minimumWageComparison.isAbove
-                      ? `최저임금보다 ${formatCurrency(minimumWageComparison.diff)}원 높습니다`
-                      : `최저임금보다 ${formatCurrency(Math.abs(minimumWageComparison.diff))}원 부족합니다`}
+                  <p className="text-xs text-muted mt-1">
+                    {t('formula', {
+                      hourly: won(r.hourly),
+                      weekly: weeklyHours,
+                      holiday: +r.holidayHours.toFixed(2),
+                      monthlyHours: r.monthlyHours,
+                    })}
                   </p>
                 </div>
 
-                {/* ── NEW: Annual Salary Projection ── */}
-                <div className="bg-subtle rounded-xl p-5 space-y-3 border border-line">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-line text-muted">
+                        <th className="text-left font-medium py-2">{t('result.title')}</th>
+                        <th className="text-right font-medium py-2">{t('pretax')}</th>
+                        <th className="text-right font-medium py-2">{t('aftertax')}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rows.map((row) => (
+                        <tr key={row.key} className={`border-b border-line ${row.key === inputType ? 'bg-subtle' : ''}`}>
+                          <td className="py-2.5 pl-1 text-body">
+                            {row.key === 'weekly' ? t('weekly') : t(`result.${row.key}Wage`)}
+                            {row.key === inputType && <span className="ml-1.5 text-xs text-primary">{t('inputMark')}</span>}
+                          </td>
+                          <td className="py-2.5 text-right font-semibold text-fg tabular-nums">{won(row.gross)}{t('result.won')}</td>
+                          <td className="py-2.5 pr-1 text-right text-sub tabular-nums">
+                            {row.net !== undefined ? `${won(row.net)}${t('result.won')}` : '-'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p className="text-xs text-muted mt-2">{t('netNote')}</p>
+                </div>
+
+                {r.holidayHours > 0 ? (
+                  <p className="text-sm text-sub bg-subtle rounded-xl p-4">
+                    {t('holidayPay', { hours: +r.holidayHours.toFixed(2), amount: won(r.holidayPayMonthly) })}
+                  </p>
+                ) : (
+                  <p className="text-sm text-sub bg-subtle rounded-xl p-4">
+                    {weeklyHours < 15 ? t('holidayUnder15') : t('holidayExcluded')}
+                  </p>
+                )}
+
+                {/* 최저임금 비교 */}
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-fg">
-                      연봉 환산 예상 (주 52주 기준)
-                    </h3>
-                    <span
-                      className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                        annualComparison.isAbove
-                          ? 'bg-soft text-sub'
-                          : 'bg-soft text-sub'
-                      }`}
-                    >
-                      {annualComparison.isAbove ? '평균 이상' : '평균 미만'}
-                    </span>
+                    <h3 className="text-sm font-semibold text-fg">{t('minWage.title', { wage: won(MIN_WAGE_2026) })}</h3>
+                    <span className={`text-sm font-bold tabular-nums ${isAbove ? 'text-fg' : 'text-red-600'}`}>{minPct}%</span>
                   </div>
-
-                  <div className="text-2xl font-bold text-sub">
-                    {formatCurrency(annualProjection)}원
-                    <span className="text-sm font-normal text-muted ml-2">
-                      / 년
-                    </span>
+                  <div className="relative h-3 bg-track rounded-full">
+                    <div
+                      className={`h-full rounded-full transition-all duration-300 ${isAbove ? 'bg-primary' : 'bg-red-500'}`}
+                      style={{ width: `${barWidth}%` }}
+                    />
+                    <div className="absolute top-[-4px] bottom-[-4px] w-0.5 bg-fg" style={{ left: `${100 / 1.5}%` }} aria-hidden />
                   </div>
-
+                  <div className="flex justify-between text-xs text-muted">
+                    <span>{t('minWage.mine', { wage: won(r.hourly) })}</span>
+                    <span>{t('minWage.monthlyMin', { hours: r.monthlyHours, amount: won(MIN_WAGE_2026 * r.monthlyHours) })}</span>
+                  </div>
+                  <p className={`text-sm font-medium ${isAbove ? 'text-body' : 'text-red-600'}`}>
+                    {isAbove
+                      ? t('minWage.above', { diff: won(r.hourly - MIN_WAGE_2026) })
+                      : t('minWage.below', { diff: won(MIN_WAGE_2026 - r.hourly) })}
+                  </p>
+                  {!isAbove && !holiday && (inputType === 'monthly' || inputType === 'yearly') && (
+                    <p className="text-xs text-muted">{t('minWage.holidayNote')}</p>
+                  )}
                   <p className="text-xs text-muted">
-                    시급 {formatCurrency(results.hourly)}원 × {hoursPerDay}시간 × {daysPerWeek}일 × 52주
-                  </p>
-
-                  {/* Bar: annual projection */}
-                  <div>
-                    <div className="flex justify-between text-xs text-muted mb-1">
-                      <span>내 예상 연봉</span>
-                      <span>{annualComparison.percent}%</span>
-                    </div>
-                    <div className="relative h-4 bg-track rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-500 ${
-                          annualComparison.isAbove ? 'bg-green-500' : 'bg-orange-400'
-                        }`}
-                        style={{ width: `${annualComparison.barWidth}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Bar: average salary */}
-                  <div>
-                    <div className="flex justify-between text-xs text-muted mb-1">
-                      <span>한국 평균 연봉 4,200만원</span>
-                      <span>기준</span>
-                    </div>
-                    <div className="relative h-4 bg-track rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-blue-400"
-                        style={{
-                          width: `${Math.min(
-                            Math.round(
-                              (AVG_ANNUAL_SALARY_KR /
-                                Math.max(annualProjection, AVG_ANNUAL_SALARY_KR)) *
-                                100
-                            ),
-                            100
-                          )}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  <p className={`text-sm font-medium ${
-                    annualComparison.isAbove
-                      ? 'text-green-700 dark:text-green-400'
-                      : 'text-orange-700 dark:text-orange-400'
-                  }`}>
-                    {annualComparison.isAbove
-                      ? `평균보다 ${formatCurrency(annualComparison.diff)}원 높습니다`
-                      : `평균보다 ${formatCurrency(Math.abs(annualComparison.diff))}원 낮습니다`}
+                    {t('avgCompare', { percent: Math.round((r.yearly / AVG_ANNUAL_SALARY_KR) * 100) })}
                   </p>
                 </div>
 
-                {/* Original Minimum Wage Info Cards */}
-                <div className="bg-subtle rounded-xl p-6 mt-2">
-                  <h3 className="text-lg font-semibold text-fg mb-4">
-                    {t('minimumWage.title')}
-                  </h3>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="bg-surface rounded-lg p-4">
-                      <div className="text-sm text-sub">
-                        {t('minimumWage.current')}
-                      </div>
-                      <div className="text-xl font-bold text-fg mt-1">
-                        {t('minimumWage.currentValue')}
-                      </div>
-                    </div>
-                    <div className="bg-surface rounded-lg p-4">
-                      <div className="text-sm text-sub">
-                        {t('minimumWage.monthlyMin')}
-                      </div>
-                      <div className="text-xl font-bold text-fg mt-1">
-                        {t('minimumWage.monthlyMinValue')}
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className={`mt-4 p-4 rounded-lg ${
-                      minimumWageComparison.isAbove
-                        ? 'bg-green-100 dark:bg-green-950 border border-line'
-                        : 'bg-red-100 dark:bg-red-950 border border-red-300 dark:border-red-700'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-sm font-medium mb-1">
-                          {t('minimumWage.comparison')}
-                        </div>
-                        <div
-                          className={`text-lg font-bold ${
-                            minimumWageComparison.isAbove
-                              ? 'text-green-700 dark:text-green-400'
-                              : 'text-red-700 dark:text-red-400'
-                          }`}
-                        >
-                          {minimumWageComparison.isAbove
-                            ? t('minimumWage.above')
-                            : t('minimumWage.below')}
-                        </div>
-                        <div className="text-sm text-sub mt-1">
-                          {t('minimumWage.percent', { percent: minimumWageComparison.percent })}
-                        </div>
-                      </div>
-                      <div
-                        className={`text-3xl font-bold ${
-                          minimumWageComparison.isAbove
-                            ? 'text-green-600 dark:text-green-500'
-                            : 'text-red-600 dark:text-red-500'
-                        }`}
-                      >
-                        {minimumWageComparison.percent}%
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex flex-wrap gap-2 pt-2 border-t border-line">
+                  <Link href="/weekly-holiday-pay/" className="ui-btn-soft px-3 py-2 text-sm">
+                    {t('links.weeklyHolidayPay')}
+                  </Link>
+                  <Link href="/work-hours-calculator/" className="ui-btn-soft px-3 py-2 text-sm">
+                    {t('links.workHours')}
+                  </Link>
                 </div>
-              </div>
+              </>
             ) : (
-              <div className="text-center py-12 text-muted">
-                <DollarSign className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p>{t('amountPlaceholder')}</p>
-              </div>
+              <p className="text-center py-12 text-muted">{t('amountPlaceholder')}</p>
             )}
           </div>
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <div className="flex items-center gap-2 mb-6">
-          <BookOpen className="w-5 h-5 text-blue-600" />
-          <h2 className="text-xl font-semibold text-fg">
-            {t('guide.title')}
-          </h2>
-        </div>
-
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="font-semibold text-fg mb-3">
-              {t('guide.conversion.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.conversion.items') as string[]).map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-start gap-2 text-sm text-sub"
-                >
-                  <span className="text-blue-600 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-fg mb-3">
-              {t('guide.tips.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-start gap-2 text-sm text-sub"
-                >
-                  <span className="text-blue-600 mt-1">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {(['conversion', 'tips'] as const).map((sec) => (
+            <div key={sec}>
+              <h3 className="font-semibold text-fg mb-3">{t(`guide.${sec}.title`)}</h3>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-sub">
+                {(t.raw(`guide.${sec}.items`) as string[]).map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </div>

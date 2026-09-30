@@ -8508,6 +8508,39 @@
     }
   },
   "lunarConverter": {
+    "weekdays": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "lunarDate": "Lunar {year}-{leap}{month}-{day}",
+    "solarDate": "{year}-{month}-{day}",
+    "leapPrefix": "Leap ",
+    "yearSuffix": " year",
+    "zodiacSuffix": "",
+    "daySuffix": " day",
+    "leapInfo": "{year} has a leap month {month}",
+    "noLeapInfo": "{year} has no leap month",
+    "swap": "Swap direction",
+    "copyLink": "Copy link",
+    "rangeNote": "Based on KASI (Korea Astronomy and Space Science Institute) · 1900-01-31 to 2050-12-31",
+    "ganziNote": "Zodiac and year stem-branch follow the lunar new year, not Ipchun (used in saju), so Jan–Feb may differ.",
+    "yearly": {
+      "title": "Lunar {leap}{month}/{day} in the solar calendar each year",
+      "description": "Solar dates of a lunar birthday or memorial day from this year to 10 years ahead",
+      "next": "Next occurrence",
+      "today": "Today",
+      "colLunarYear": "Lunar year",
+      "colSolar": "Solar date",
+      "colNote": "Note",
+      "leapFallback": "No leap month {month} → regular month",
+      "dayFallback": "Short month → 29th",
+      "rule": "By convention, a leap-month birthday falls on the regular month in years without that leap month, and a 30th birthday falls on the 29th in 29-day months."
+    },
     "title": "Lunar Calendar Converter",
     "description": "Convert between lunar and solar calendar dates",
     "mode": {
@@ -8524,6 +8557,7 @@
     "convert": "Convert",
     "reset": "Reset",
     "result": {
+      "dayGanzi": "Day stem-branch",
       "title": "Conversion Result",
       "solarDate": "Solar Date",
       "lunarDate": "Lunar Date",
@@ -8538,7 +8572,7 @@
     "copied": "Copied!",
     "error": {
       "invalidDate": "Invalid date",
-      "outOfRange": "Out of convertible range (1900-2100)"
+      "outOfRange": "Out of range or nonexistent date (1900-01-31 to 2050-12-31)"
     },
     "guide": {
       "title": "User Guide",
@@ -8553,9 +8587,9 @@
       "tips": {
         "title": "Notes",
         "items": [
-          "Useful for finding lunar birthdays, ancestral rites, and holiday dates",
-          "Convertible range: 1900-2100",
-          "The same lunar date may correspond to different solar dates depending on leap month"
+          "Useful for lunar birthdays, memorial days and holidays",
+          "Based on KASI data, range 1900–2050",
+          "The same lunar date maps to a different solar date depending on the leap month"
         ]
       },
       "whatIs": {
@@ -8575,7 +8609,7 @@
           },
           {
             "q": "What year range does the converter support?",
-            "a": "Conversion data covers 1900 to 2100, which is more than sufficient for practical everyday use."
+            "a": "Conversion uses KASI (Korea Astronomy and Space Science Institute) data from 1900 to 2050. Korean dates can differ by a day from the Chinese lunar calendar in some months because of the time zone, so Korean data is used."
           }
         ]
       }
@@ -10437,8 +10471,36 @@
     }
   },
   "hourlyWage": {
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "weeklyHours": "Contracted hours per week",
+    "dailyHoursNote": "{hours} h per day (used for daily wage)",
+    "includeHoliday": "Include weekly holiday pay",
+    "includeHolidayHint": "15+ h/week with full attendance: weekly hours/40 × 8 paid hours",
+    "pretax": "Gross",
+    "aftertax": "Net (est.)",
+    "weekly": "Weekly (incl. holiday pay)",
+    "inputMark": "input",
+    "formula": "{hourly} KRW/h × {monthlyHours} h/month = ({weekly} h + {holiday} h holiday) × 365÷7÷12",
+    "netNote": "Net is an estimate after 4 social insurances and income tax (1 dependent, no tax-free pay). Actual deductions differ if you are not enrolled in social insurance (e.g. under 15 h/week).",
+    "holidayPay": "Weekly holiday hours: {hours} h → about {amount} KRW/month of holiday pay is included in the monthly wage.",
+    "holidayUnder15": "No weekly holiday pay under 15 hours per week.",
+    "holidayExcluded": "Calculated without weekly holiday pay.",
+    "minWage": {
+      "title": "2026 minimum wage {wage} KRW",
+      "mine": "Your wage {wage} KRW",
+      "monthlyMin": "Minimum monthly {amount} KRW ({hours} h)",
+      "above": "{diff} KRW/h above the minimum wage",
+      "below": "{diff} KRW/h below the minimum wage",
+      "holidayNote": "For monthly salaries, minimum wage compliance counts weekly holiday hours. Turn on holiday pay and check again."
+    },
+    "avgCompare": "{percent}% of the Korean average annual salary (about 42M KRW)",
+    "links": {
+      "weeklyHolidayPay": "Weekly Holiday Pay Calculator",
+      "workHours": "Work Hours Calculator"
+    },
     "title": "Hourly Wage Calculator",
-    "description": "Convert between hourly, daily, monthly, and yearly wages. Includes comparison with 2024 minimum wage.",
+    "description": "Convert hourly, daily, weekly, monthly and annual pay including weekly holiday pay, and compare with the 2026 minimum wage.",
     "inputType": "Input Basis",
     "hourly": "Hourly",
     "daily": "Daily",
@@ -10477,10 +10539,10 @@
       "conversion": {
         "title": "Conversion Basis",
         "items": [
-          "Monthly → Hourly: Monthly ÷ (weekly hours × 4.345 weeks)",
-          "Yearly → Monthly: Yearly ÷ 12",
-          "Daily → Hourly: Daily ÷ daily work hours",
-          "Legal work hours: 40 hrs/week, 8 hrs/day"
+          "Monthly hours = (weekly hours + holiday hours) × 365÷7÷12 (40 h/week = 209 h)",
+          "Holiday hours = weekly hours ÷ 40 × 8 (15+ h/week, max 8)",
+          "Monthly = hourly × monthly hours, annual = monthly × 12",
+          "Daily = hourly × daily hours (weekly hours ÷ days per week)"
         ]
       },
       "tips": {
@@ -11464,6 +11526,26 @@
     }
   },
   "installmentCalc": {
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "rateHint": "Typically 10-20% per year depending on the card issuer and your credit. Check your card app.",
+    "plan": {
+      "title": "Plan",
+      "normal": "Standard",
+      "free": "Interest-free",
+      "partial": "Partial free",
+      "feeMonths": "Installments with fee (from 1st)",
+      "feeMonthsHint": "e.g. 10-month partial free with fees on installments 1-3 → 3"
+    },
+    "compare": {
+      "title": "Compare by term ({rate}% APR)",
+      "note": "At this fee rate without interest-free promotions. Click a row to select that term.",
+      "months": "Term",
+      "firstPayment": "1st payment",
+      "totalFee": "Total fee",
+      "totalPayment": "Total paid"
+    },
+    "formulaNote": "Fee = remaining balance × annual rate ÷ 12 (equal principal, truncated to won). Issuers use days/365, so actual bills may differ by a few won.",
     "title": "Installment Calculator",
     "description": "Calculate monthly payments and fees for credit card installment purchases.",
     "totalAmount": "Purchase Amount (KRW)",
@@ -11476,14 +11558,20 @@
     "calculate": "Calculate",
     "reset": "Reset",
     "result": {
+      "firstPayment": "Monthly payment (1st)",
+      "lastPayment": "Last installment",
+      "paymentRange": "fees are charged on the remaining balance, so payments decrease",
+      "vsLumpSum": "You pay {fee} won more in fees than paying {amount} won in full.",
+      "lumpSumSame": "No fees, so the total equals a lump-sum payment.",
       "title": "Installment Result",
       "monthlyPayment": "Monthly Payment",
       "totalInterest": "Total Interest",
       "totalPayment": "Total Payment",
       "won": "KRW",
-      "effectiveRate": "Effective Rate"
+      "effectiveRate": "Fee vs principal"
     },
     "schedule": {
+      "total": "Total",
       "title": "Payment Schedule",
       "month": "Month",
       "payment": "Payment",
@@ -11497,10 +11585,10 @@
       "rates": {
         "title": "Typical Interest Rates",
         "items": [
-          "2-3 months: Often interest-free promotions",
-          "6 months: ~8-12% annual rate",
-          "12 months: ~10-15% annual rate",
-          "24 months: ~12-18% annual rate"
+          "2-3 months: most interest-free promotions",
+          "Standard installment fees: about 10-20% per year by issuer and credit",
+          "Longer terms often carry higher rates",
+          "Check the exact rate in your card app or issuer website"
         ]
       },
       "tips": {
@@ -23156,8 +23244,41 @@
     }
   },
   "gradeCalc": {
-    "title": "Grade/Rank Calculator",
-    "description": "Calculate grade (9-tier), percentile from rank and total students",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "settings": {
+      "title": "Grading system",
+      "entryYear": "High school entry year",
+      "yearOption": "Entered {year}",
+      "system": "Scale",
+      "system5": "5-tier",
+      "system9": "9-tier",
+      "autoHint5": "Students entering in 2025 or later use the 5-tier relative scale (credit system).",
+      "autoHint9": "Students who entered in 2024 or earlier use the 9-tier relative scale.",
+      "mismatch": "This differs from the scale for the selected entry year."
+    },
+    "subjects": {
+      "title": "Rank by subject",
+      "name": "Subject",
+      "units": "Units/credits",
+      "rank": "Rank",
+      "ties": "Tied",
+      "total": "Students",
+      "grade": "Grade",
+      "add": "Add subject",
+      "remove": "Remove subject",
+      "select": "Show table for this subject",
+      "namePlaceholder": "Subject",
+      "unnamed": "Selected subject",
+      "tiesHelp": "Tied = number of students with the same score, including you. Use 1 if none."
+    },
+    "notes": {
+      "small": "With few students, some grades have no ranks.",
+      "tie": "With ties, the grade uses the mid-rank percentile (rank + (tied - 1)/2); all tied students get the same grade.",
+      "fusion": "Under the 5-tier scale, 9 social/science convergence electives record only achievement levels (A–E), no rank grade."
+    },
+    "title": "School Grade Calculator",
+    "description": "Compute school grades and the average grade from rank, ties and class size per subject (5-tier and 9-tier)",
     "input": {
       "score": "Score (Optional)",
       "scorePlaceholder": "Enter score (reference)",
@@ -23171,6 +23292,9 @@
       "title": "Rank/Grade Input"
     },
     "result": {
+      "average": "Unit-weighted average grade",
+      "averageHint": "{count} subjects · {units} units",
+      "detail": "Top {top}% · mid-rank {mid}",
       "title": "Results",
       "grade": "Grade",
       "percentile": "Percentile",
@@ -23179,16 +23303,25 @@
       "gradeUnit": "Grade"
     },
     "table": {
-      "title": "9-Grade Reference Table",
+      "titleFor": "{subject} grade ranges ({total} students)",
+      "help": "Ranks covered by each grade when there are no ties.",
+      "range": "Rank range",
+      "count": "Students",
+      "none": "None",
+      "upTo": "~{percent}%",
+      "single": "#{rank}",
+      "rangeValue": "#{from}–{to}",
+      "people": "{count}",
+      "title": "Grade ranges",
       "grade": "Grade",
       "cutoff": "Cutoff Rank",
-      "cumulative": "Cumulative %",
+      "cumulative": "Cumulative",
       "ratio": "Ratio",
       "person": "th"
     },
     "position": {
       "title": "Your Position",
-      "topLabel": "Top"
+      "topLabel": "Top {percent}%"
     },
     "grades": [
       "Grade 1",
@@ -23204,22 +23337,21 @@
     "guide": {
       "title": "Grade Calculation Guide",
       "gradeSystem": {
-        "title": "9-Grade System",
+        "title": "5-tier vs 9-tier",
         "items": [
-          "Grade 1: Top 4% (highest)",
-          "Grade 2: Top 4~11%",
-          "Grade 3: Top 11~23%",
-          "Grade 4: Top 23~40%",
-          "Grade 5: Top 40~60% (middle)",
-          "Grades 6-9: Bottom 40%"
+          "Entered 2025+ (5-tier): cumulative 10 · 34 · 66 · 90 · 100%",
+          "Entered 2024 or earlier (9-tier): cumulative 4 · 11 · 23 · 40 · 60 · 77 · 89 · 96 · 100%",
+          "The 5-tier system also records achievement levels (A–E)",
+          "With ties, the grade uses mid-rank = rank + (tied - 1)/2"
         ]
       },
       "usage": {
-        "title": "Usage",
+        "title": "How to use",
         "items": [
-          "College admission: Calculate transcript grades",
-          "Mock exams: Raw score → rank → grade",
-          "Rank percentile = rank/total × 100"
+          "Enter rank (tied count) / class size per subject from your report card",
+          "The average is weighted by units (credits)",
+          "Check each university's admissions guide for subject weights",
+          "Use Copy link to share your inputs"
         ]
       },
       "guide": {
@@ -23289,21 +23421,22 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "Can I compare grades between subjects with different class sizes?",
-            "a": "Since grades are determined by relative percentage, the same grade represents the same relative standing regardless of class size. Percentile provides the most intuitive comparison."
+            "q": "Who uses the 5-tier system?",
+            "a": "All students entering high school from the 2025 school year. Students who entered in 2024 or earlier keep the 9-tier system until graduation."
           },
           {
-            "q": "How do school grades affect university admissions?",
-            "a": "Grade-based admissions use the average grade across subjects. Each university has different subject weighting policies, so check each school's admissions criteria."
+            "q": "How are ties graded?",
+            "a": "The grade uses the mid-rank percentile, where mid-rank = rank + (tied - 1)/2, and all tied students get the same grade. Example: 7 students tied for 1st out of 96 → mid-rank 4 (4.17%) → grade 2 on the 9-tier scale."
           },
           {
-            "q": "Where exactly is the boundary between Grade 1 and Grade 2?",
-            "a": "The top 4% earns Grade 1. For example, ranks 1–4 out of 100 students are Grade 1, ranks 5–11 are Grade 2. Fractional boundaries are rounded up."
+            "q": "Where exactly is the grade 1 cutoff?",
+            "a": "You get a grade when your mid-rank percentile is at or below its cumulative ratio. On the 9-tier scale with 100 students, ranks 1–4 are grade 1; on the 5-tier scale with 150 students, ranks 1–15 are. Small classes may have no grade 1."
           }
         ]
       }
     },
     "error": {
+      "invalidRow": "Check rank, ties and students (rank + tied - 1 ≤ students)",
       "invalidRank": "Invalid rank",
       "rankExceedsTotal": "Rank exceeds total students",
       "required": "Please enter rank and total students"

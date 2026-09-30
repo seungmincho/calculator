@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default function LunarConverterPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '음력 양력 변환기', description: '음력 ↔ 양력 날짜 변환, 띠, 간지(60갑자) 정보', url: 'https://toolhub.ai.kr/lunar-converter', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['양력→음력 변환', '음력→양력 변환', '띠/간지 정보', '윤달 지원'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '음력 양력 변환기', description: '음력 ↔ 양력 날짜 변환, 띠, 간지(60갑자) 정보', url: 'https://toolhub.ai.kr/lunar-converter', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['양력→음력 변환', '음력→양력 변환', '음력 생일 향후 10년 양력 날짜', '다음 음력 생일 D-day', '띠·간지·일진 정보', '윤달 지원', '한국천문연구원 역서 기준'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

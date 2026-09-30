@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '시급 계산기 - 시급, 일급, 월급, 연봉 변환 | 툴허브',
-  description: '시급 계산기 - 시급, 일급, 월급, 연봉을 상호 변환합니다. 2024년 최저시급 기준 비교, 근무시간 설정 가능.',
+  description: '시급 계산기 - 시급, 일급, 월급, 연봉을 상호 변환합니다. 2026년 최저시급 10,320원 비교, 주휴수당 포함 월급·세후 실수령액, 주 15·20·30·40시간 알바 환산.',
   keywords: '시급 계산기, 시급 계산, 일급 계산, 월급 시급 변환, hourly wage calculator, 최저시급',
   openGraph: { title: '시급 계산기 | 툴허브', description: '시급/일급/월급/연봉 상호 변환', url: 'https://toolhub.ai.kr/hourly-wage', siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: '시급 계산기 | 툴허브', description: '시급/일급/월급/연봉 상호 변환' },
@@ -20,7 +20,7 @@ export default function HourlyWagePage() {
     mainEntity: [
       {
         '@type': 'Question',
-        name: '2025년 최저시급은 얼마인가요?',
+        name: '2026년 최저시급은 얼마인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
           text: '2026년 최저시급은 시간당 10,320원입니다. 주 40시간 근무 기준 월 환산액은 2,156,880원(주휴수당 포함, 월 209시간)이며, 연봉으로 환산하면 약 25,882,560원입니다. 최저임금은 정규직, 비정규직, 아르바이트 등 모든 근로자에게 동일하게 적용됩니다.',
@@ -31,7 +31,7 @@ export default function HourlyWagePage() {
         name: '시급을 월급으로 변환하는 방법은?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '월급 = 시급 × 1일 근로시간 × 월 소정근로일수로 계산합니다. 주 5일, 1일 8시간 근무 기준 월 소정근로시간은 209시간(유급 주휴 포함)입니다. 주 5일 근무 시 월 소정근로일수는 약 21.7일이지만, 주휴시간을 포함하면 209시간을 시급에 곱합니다.',
+          text: '월급 = 시급 × 월 소정근로시간이며, 월 소정근로시간 = (주 소정근로시간 + 주휴시간) × 365 ÷ 7 ÷ 12입니다. 주 40시간이면 (40 + 8) × 4.345 ≈ 209시간, 주 20시간이면 (20 + 4) × 4.345 ≈ 104시간입니다. 주 4주로 곱하면 한 달 약 0.345주분이 빠져 월급이 적게 계산됩니다.',
         },
       },
       {
@@ -51,7 +51,7 @@ export default function HourlyWagePage() {
     description: '월급 또는 연봉을 입력하면 근무시간 기준으로 시급을 환산합니다.',
     step: [
       { '@type': 'HowToStep', name: '급여 유형 선택', text: '시급, 일급, 월급, 연봉 중 알고 있는 급여 유형을 선택합니다.' },
-      { '@type': 'HowToStep', name: '금액과 근무시간 입력', text: '급여 금액과 주간 근무시간, 근무일수를 입력합니다.' },
+      { '@type': 'HowToStep', name: '금액과 근무시간 입력', text: '급여 금액과 주 소정근로시간(15·20·30·40시간 프리셋), 주 근무일수, 주휴수당 포함 여부를 입력합니다.' },
       { '@type': 'HowToStep', name: '환산 결과 확인', text: '시급·일급·월급·연봉 상호 변환 결과와 최저시급 대비 비교를 확인합니다.' },
     ],
   }

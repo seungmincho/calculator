@@ -1,273 +1,88 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { Moon, Sun, Calendar, ArrowRightLeft, Copy, Check, BookOpen, RotateCcw, Link } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
-
-// Lunar calendar data for years 1900-2100
-// Each entry encodes: leap month info + month lengths for that lunar year
-const LUNAR_DATA = [
-  0x04bd8, 0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0, 0x09ad0, 0x055d2, // 1900-1909
-  0x04ae0, 0x0a5b6, 0x0a4d0, 0x0d250, 0x1d255, 0x0b540, 0x0d6a0, 0x0ada2, 0x095b0, 0x14977, // 1910-1919
-  0x04970, 0x0a4b0, 0x0b4b5, 0x06a50, 0x06d40, 0x1ab54, 0x02b60, 0x09570, 0x052f2, 0x04970, // 1920-1929
-  0x06566, 0x0d4a0, 0x0ea50, 0x06e95, 0x05ad0, 0x02b60, 0x186e3, 0x092e0, 0x1c8d7, 0x0c950, // 1930-1939
-  0x0d4a0, 0x1d8a6, 0x0b550, 0x056a0, 0x1a5b4, 0x025d0, 0x092d0, 0x0d2b2, 0x0a950, 0x0b557, // 1940-1949
-  0x06ca0, 0x0b550, 0x15355, 0x04da0, 0x0a5b0, 0x14573, 0x052b0, 0x0a9a8, 0x0e950, 0x06aa0, // 1950-1959
-  0x0aea6, 0x0ab50, 0x04b60, 0x0aae4, 0x0a570, 0x05260, 0x0f263, 0x0d950, 0x05b57, 0x056a0, // 1960-1969
-  0x096d0, 0x04dd5, 0x04ad0, 0x0a4d0, 0x0d4d4, 0x0d250, 0x0d558, 0x0b540, 0x0b6a0, 0x195a6, // 1970-1979
-  0x095b0, 0x049b0, 0x0a974, 0x0a4b0, 0x0b27a, 0x06a50, 0x06d40, 0x0af46, 0x0ab60, 0x09570, // 1980-1989
-  0x04af5, 0x04970, 0x064b0, 0x074a3, 0x0ea50, 0x06b58, 0x05ac0, 0x0ab60, 0x096d5, 0x092e0, // 1990-1999
-  0x0c960, 0x0d954, 0x0d4a0, 0x0da50, 0x07552, 0x056a0, 0x0abb7, 0x025d0, 0x092d0, 0x0cab5, // 2000-2009
-  0x0a950, 0x0b4a0, 0x0baa4, 0x0ad50, 0x055d9, 0x04ba0, 0x0a5b0, 0x15176, 0x052b0, 0x0a930, // 2010-2019
-  0x07954, 0x06aa0, 0x0ad50, 0x05b52, 0x04b60, 0x0a6e6, 0x0a4e0, 0x0d260, 0x0ea65, 0x0d530, // 2020-2029
-  0x05aa0, 0x076a3, 0x096d0, 0x04afb, 0x04ad0, 0x0a4d0, 0x1d0b6, 0x0d250, 0x0d520, 0x0dd45, // 2030-2039
-  0x0b5a0, 0x056d0, 0x055b2, 0x049b0, 0x0a577, 0x0a4b0, 0x0aa50, 0x1b255, 0x06d20, 0x0ada0, // 2040-2049
-  0x14b63, 0x09370, 0x049f8, 0x04970, 0x064b0, 0x168a6, 0x0ea50, 0x06b20, 0x1a6c4, 0x0aae0, // 2050-2059
-  0x092e0, 0x0d2e3, 0x0c960, 0x0d557, 0x0d4a0, 0x0da50, 0x05d55, 0x056a0, 0x0a6d0, 0x055d4, // 2060-2069
-  0x052d0, 0x0a9b8, 0x0a950, 0x0b4a0, 0x0b6a6, 0x0ad50, 0x055a0, 0x0aba4, 0x0a5b0, 0x052b0, // 2070-2079
-  0x0b273, 0x06930, 0x07337, 0x06aa0, 0x0ad50, 0x14b55, 0x04b60, 0x0a570, 0x054e4, 0x0d160, // 2080-2089
-  0x0e968, 0x0d520, 0x0daa0, 0x16aa6, 0x056d0, 0x04ae0, 0x0a9d4, 0x0a4d0, 0x0d150, 0x0f252, // 2090-2099
-  0x0d520, // 2100
-]
-
-const BASE_YEAR = 1900
-const BASE_DATE = new Date(Date.UTC(1900, 0, 31)) // 1900-01-31 is lunar 1900-01-01
-
-// Heavenly Stems (천간)
-const STEMS = ['갑', '을', '병', '정', '무', '기', '경', '신', '임', '계']
-// Earthly Branches (지지)
-const BRANCHES = ['자', '축', '인', '묘', '진', '사', '오', '미', '신', '유', '술', '해']
-// Zodiac animals
-const ZODIAC = ['쥐', '소', '호랑이', '토끼', '용', '뱀', '말', '양', '원숭이', '닭', '개', '돼지']
-
-// Get leap month for a given year (0 if no leap month)
-function leapMonth(year: number): number {
-  return LUNAR_DATA[year - BASE_YEAR] & 0x0F
-}
-
-// Get days in leap month (0 if no leap month)
-function leapMonthDays(year: number): number {
-  if (leapMonth(year) === 0) return 0
-  return (LUNAR_DATA[year - BASE_YEAR] & 0x10000) ? 30 : 29
-}
-
-// Get days in a specific lunar month
-function lunarMonthDays(year: number, month: number): number {
-  return (LUNAR_DATA[year - BASE_YEAR] & (0x10000 >> month)) ? 30 : 29
-}
-
-// Get total days in a lunar year
-function lunarYearDays(year: number): number {
-  let days = 0
-  for (let i = 1; i <= 12; i++) {
-    days += lunarMonthDays(year, i)
-  }
-  days += leapMonthDays(year)
-  return days
-}
-
-// Convert solar date to lunar date
-function solarToLunar(solarYear: number, solarMonth: number, solarDay: number): {
-  year: number
-  month: number
-  day: number
-  isLeap: boolean
-} {
-  const solarDate = new Date(Date.UTC(solarYear, solarMonth - 1, solarDay))
-  const offset = Math.round((solarDate.getTime() - BASE_DATE.getTime()) / (24 * 60 * 60 * 1000))
-
-  let lunarYear = BASE_YEAR
-  let daysCount = offset
-
-  // Find lunar year
-  while (lunarYear < 2101 && daysCount > 0) {
-    const yearDays = lunarYearDays(lunarYear)
-    if (daysCount < yearDays) break
-    daysCount -= yearDays
-    lunarYear++
-  }
-
-  // Find lunar month
-  let lunarMonth = 1
-  let isLeapMonth = false
-  const leap = leapMonth(lunarYear)
-
-  while (lunarMonth <= 12 && daysCount > 0) {
-    let monthDays = lunarMonthDays(lunarYear, lunarMonth)
-
-    if (daysCount < monthDays) break
-    daysCount -= monthDays
-
-    // Check leap month
-    if (leap === lunarMonth && !isLeapMonth) {
-      const leapDays = leapMonthDays(lunarYear)
-      if (daysCount < leapDays) {
-        isLeapMonth = true
-        break
-      }
-      daysCount -= leapDays
-    }
-
-    if (!isLeapMonth || leap !== lunarMonth) {
-      lunarMonth++
-    }
-  }
-
-  return {
-    year: lunarYear,
-    month: lunarMonth,
-    day: daysCount + 1,
-    isLeap: isLeapMonth,
-  }
-}
-
-// Convert lunar date to solar date
-function lunarToSolar(lunarYear: number, lunarMonth: number, lunarDay: number, isLeap: boolean): {
-  year: number
-  month: number
-  day: number
-} {
-  let offset = 0
-
-  // Add days from base year to target year
-  for (let y = BASE_YEAR; y < lunarYear; y++) {
-    offset += lunarYearDays(y)
-  }
-
-  // Add days from months
-  const leap = leapMonth(lunarYear)
-  for (let m = 1; m < lunarMonth; m++) {
-    offset += lunarMonthDays(lunarYear, m)
-    if (leap === m) {
-      offset += leapMonthDays(lunarYear)
-    }
-  }
-
-  // Add leap month days if current month is after leap or is leap itself
-  if (isLeap) {
-    offset += lunarMonthDays(lunarYear, lunarMonth)
-  }
-
-  // Add current month days
-  offset += lunarDay - 1
-
-  const solarDate = new Date(BASE_DATE.getTime() + offset * 24 * 60 * 60 * 1000)
-
-  return {
-    year: solarDate.getUTCFullYear(),
-    month: solarDate.getUTCMonth() + 1,
-    day: solarDate.getUTCDate(),
-  }
-}
-
-// Get zodiac and stems/branches for a lunar year
-function getYearInfo(lunarYear: number) {
-  const yearOffset = (lunarYear - 4) % 60
-  const stemIndex = yearOffset % 10
-  const branchIndex = yearOffset % 12
-
-  return {
-    zodiac: ZODIAC[branchIndex],
-    stem: STEMS[stemIndex],
-    branch: BRANCHES[branchIndex],
-    ganzi: STEMS[stemIndex] + BRANCHES[branchIndex],
-  }
-}
-
-// Get day of week
-function getDayOfWeek(year: number, month: number, day: number, locale: string): string {
-  const date = new Date(year, month - 1, day)
-  return new Intl.DateTimeFormat(locale === 'ko' ? 'ko-KR' : 'en-US', { weekday: 'long' }).format(date)
-}
+import { ArrowRightLeft, Copy, Check, RotateCcw, Link } from 'lucide-react'
+import {
+  MIN_YEAR, MAX_YEAR, leapMonth, lunarMonthDays, lunarToSolar, solarToLunar,
+  yearGanzi, dayGanzi, weekday, lunarAnniversary, nextLunarAnniversary, daysBetween,
+  type SolarDate, type LunarDate,
+} from '@/utils/lunarCalendar'
 
 type ConversionMode = 'solarToLunar' | 'lunarToSolar'
+
+const YEARS = Array.from({ length: MAX_YEAR - MIN_YEAR + 1 }, (_, i) => MIN_YEAR + i)
+const clampYear = (y: number, fallback: number) => (y >= MIN_YEAR && y <= MAX_YEAR ? y : fallback)
+const fmt = (s: SolarDate) => `${s.year}.${String(s.month).padStart(2, '0')}.${String(s.day).padStart(2, '0')}`
 
 export default function LunarConverter() {
   const t = useTranslations('lunarConverter')
   const searchParams = useSearchParams()
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
-  // Read initial values from URL params (fall back to today/defaults)
-  const today = new Date()
-  const initMode = (searchParams.get('mode') as ConversionMode) || 'solarToLunar'
-  const [mode, setMode] = useState<ConversionMode>(initMode)
+  const now = new Date()
+  const today: SolarDate = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() }
+  const todayLunar = solarToLunar(today.year, today.month, today.day)
 
-  // Solar input
-  const [solarYear, setSolarYear] = useState(() => Number(searchParams.get('sy')) || today.getFullYear())
-  const [solarMonth, setSolarMonth] = useState(() => Number(searchParams.get('sm')) || today.getMonth() + 1)
-  const [solarDay, setSolarDay] = useState(() => Number(searchParams.get('sd')) || today.getDate())
+  const weekdays = t.raw('weekdays')
+  const wd = (s: SolarDate) => (Array.isArray(weekdays) ? String(weekdays[weekday(s)]) : '')
 
-  // Lunar input
-  const [lunarYear, setLunarYear] = useState(() => Number(searchParams.get('ly')) || today.getFullYear())
-  const [lunarMonth, setLunarMonth] = useState(() => Number(searchParams.get('lm')) || 1)
-  const [lunarDay, setLunarDay] = useState(() => Number(searchParams.get('ld')) || 1)
+  // 기본값: 음력 → 양력 (음력 생일 찾기가 주 용도), 오늘의 음력 날짜로 바로 결과 표시
+  const [mode, setMode] = useState<ConversionMode>(() =>
+    searchParams.get('mode') === 'solarToLunar' ? 'solarToLunar' : 'lunarToSolar')
+
+  const [solarYear, setSolarYear] = useState(() => clampYear(Number(searchParams.get('sy')), today.year))
+  const [solarMonth, setSolarMonth] = useState(() => Number(searchParams.get('sm')) || today.month)
+  const [solarDay, setSolarDay] = useState(() => Number(searchParams.get('sd')) || today.day)
+
+  const [lunarYear, setLunarYear] = useState(() => clampYear(Number(searchParams.get('ly')), todayLunar?.year ?? today.year))
+  const [lunarMonth, setLunarMonth] = useState(() => Number(searchParams.get('lm')) || todayLunar?.month || 1)
+  const [lunarDay, setLunarDay] = useState(() => Number(searchParams.get('ld')) || todayLunar?.day || 1)
   const [isLeap, setIsLeap] = useState(() => searchParams.get('leap') === '1')
 
-  // Result
-  const [result, setResult] = useState<{
-    year: number
-    month: number
-    day: number
-    isLeap?: boolean
-    dayOfWeek: string
-    zodiac: string
-    stem: string
-    branch: string
-    ganzi: string
-  } | null>(null)
+  // 선택한 연도에 윤달이 없거나 날짜가 짧으면 자동 보정
+  const leapInLunarYear = leapMonth(lunarYear)
+  const leapValid = isLeap && leapInLunarYear === lunarMonth
+  const lunarMax = lunarMonthDays(lunarYear, lunarMonth, leapValid)
+  const solarMax = new Date(solarYear, solarMonth, 0).getDate()
+  useEffect(() => { if (isLeap && !leapValid) setIsLeap(false) }, [isLeap, leapValid])
+  useEffect(() => { if (lunarDay > lunarMax) setLunarDay(lunarMax) }, [lunarDay, lunarMax])
+  useEffect(() => { if (solarDay > solarMax) setSolarDay(solarMax) }, [solarDay, solarMax])
 
-  // Update result when inputs change
-  useEffect(() => {
-    try {
-      if (mode === 'solarToLunar') {
-        const lunar = solarToLunar(solarYear, solarMonth, solarDay)
-        const yearInfo = getYearInfo(lunar.year)
-        const dayOfWeek = getDayOfWeek(solarYear, solarMonth, solarDay, 'ko')
-
-        setResult({
-          year: lunar.year,
-          month: lunar.month,
-          day: lunar.day,
-          isLeap: lunar.isLeap,
-          dayOfWeek,
-          ...yearInfo,
-        })
-      } else {
-        const solar = lunarToSolar(lunarYear, lunarMonth, lunarDay, isLeap)
-        const yearInfo = getYearInfo(lunarYear)
-        const dayOfWeek = getDayOfWeek(solar.year, solar.month, solar.day, 'ko')
-
-        setResult({
-          year: solar.year,
-          month: solar.month,
-          day: solar.day,
-          dayOfWeek,
-          ...yearInfo,
-        })
-      }
-    } catch (error) {
-      setResult(null)
+  // 변환 결과: 양력/음력 한 쌍
+  const pair = useMemo<{ solar: SolarDate; lunar: LunarDate } | null>(() => {
+    if (mode === 'solarToLunar') {
+      const lunar = solarToLunar(solarYear, solarMonth, solarDay)
+      return lunar && { solar: { year: solarYear, month: solarMonth, day: solarDay }, lunar }
     }
-  }, [mode, solarYear, solarMonth, solarDay, lunarYear, lunarMonth, lunarDay, isLeap])
+    const solar = lunarToSolar(lunarYear, lunarMonth, lunarDay, leapValid)
+    return solar && { solar, lunar: { year: lunarYear, month: lunarMonth, day: lunarDay, isLeap: leapValid } }
+  }, [mode, solarYear, solarMonth, solarDay, lunarYear, lunarMonth, lunarDay, leapValid])
 
-  // Sync state to URL params
+  // 음력 기념일(생일·제사) 올해~10년 뒤 양력 날짜 + 다음 기념일 D-day
+  const anniversaries = useMemo(() => {
+    if (!pair) return null
+    const { month, day, isLeap: leap } = pair.lunar
+    const start = todayLunar?.year ?? today.year
+    const rows = Array.from({ length: 11 }, (_, i) => lunarAnniversary(start + i, month, day, leap)).filter(r => r !== null)
+    const next = nextLunarAnniversary(today, month, day, leap)
+    return { rows, next, dday: next ? daysBetween(today, next.solar) : null }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pair, today.year, today.month, today.day])
+
+  // URL 동기화 (공유 링크)
   useEffect(() => {
     const params = new URLSearchParams()
     params.set('mode', mode)
     if (mode === 'solarToLunar') {
-      params.set('sy', String(solarYear))
-      params.set('sm', String(solarMonth))
-      params.set('sd', String(solarDay))
+      params.set('sy', String(solarYear)); params.set('sm', String(solarMonth)); params.set('sd', String(solarDay))
     } else {
-      params.set('ly', String(lunarYear))
-      params.set('lm', String(lunarMonth))
-      params.set('ld', String(lunarDay))
-      if (isLeap) params.set('leap', '1')
+      params.set('ly', String(lunarYear)); params.set('lm', String(lunarMonth)); params.set('ld', String(lunarDay))
+      if (leapValid) params.set('leap', '1')
     }
     window.history.replaceState({}, '', `?${params.toString()}`)
-  }, [mode, solarYear, solarMonth, solarDay, lunarYear, lunarMonth, lunarDay, isLeap])
+  }, [mode, solarYear, solarMonth, solarDay, lunarYear, lunarMonth, lunarDay, leapValid])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -283,411 +98,263 @@ export default function LunarConverter() {
         document.execCommand('copy')
         document.body.removeChild(textarea)
       }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
+    } catch { /* ignore */ }
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
   }, [])
 
-  const copyLink = useCallback(() => {
-    copyToClipboard(window.location.href, 'link')
-  }, [copyToClipboard])
+  const lunarLabel = (l: LunarDate) => t('lunarDate', { year: l.year, leap: l.isLeap ? t('leapPrefix') : '', month: l.month, day: l.day })
+  const solarLabel = (s: SolarDate) => t('solarDate', { year: s.year, month: s.month, day: s.day })
+
+  // 모드 전환 시 현재 결과를 반대편 입력으로 넘김
+  const toggleMode = useCallback(() => {
+    if (pair) {
+      setSolarYear(pair.solar.year); setSolarMonth(pair.solar.month); setSolarDay(pair.solar.day)
+      setLunarYear(pair.lunar.year); setLunarMonth(pair.lunar.month); setLunarDay(pair.lunar.day); setIsLeap(pair.lunar.isLeap)
+    }
+    setMode(prev => (prev === 'solarToLunar' ? 'lunarToSolar' : 'solarToLunar'))
+  }, [pair])
 
   const handleReset = useCallback(() => {
-    const today = new Date()
-    setSolarYear(today.getFullYear())
-    setSolarMonth(today.getMonth() + 1)
-    setSolarDay(today.getDate())
-    setLunarYear(today.getFullYear())
-    setLunarMonth(1)
-    setLunarDay(1)
-    setIsLeap(false)
-    setMode('solarToLunar')
+    const n = new Date()
+    const l = solarToLunar(n.getFullYear(), n.getMonth() + 1, n.getDate())
+    setSolarYear(n.getFullYear()); setSolarMonth(n.getMonth() + 1); setSolarDay(n.getDate())
+    setLunarYear(l?.year ?? n.getFullYear()); setLunarMonth(l?.month ?? 1); setLunarDay(l?.day ?? 1); setIsLeap(l?.isLeap ?? false)
+    setMode('lunarToSolar')
   }, [])
 
-  const toggleMode = useCallback(() => {
-    setMode(prev => prev === 'solarToLunar' ? 'lunarToSolar' : 'solarToLunar')
-  }, [])
+  const resultText = pair
+    ? `${lunarLabel(pair.lunar)} = ${solarLabel(pair.solar)} (${wd(pair.solar)}) · ${yearGanzi(pair.lunar.year).ganzi}${t('yearSuffix')} ${yearGanzi(pair.lunar.year).zodiac}${t('zodiacSuffix')}`
+    : ''
 
-  const getResultText = useCallback(() => {
-    if (!result) return ''
+  const tableText = anniversaries
+    ? anniversaries.rows.map(r => `${lunarLabel({ year: r.lunarYear, month: pair!.lunar.month, day: pair!.lunar.day, isLeap: pair!.lunar.isLeap && !r.leapFallback })} → ${fmt(r.solar)} (${wd(r.solar)})`).join('\n')
+    : ''
 
-    if (mode === 'solarToLunar') {
-      return `음력 ${result.year}년 ${result.isLeap ? '윤' : ''}${result.month}월 ${result.day}일 (${result.dayOfWeek}) - ${result.ganzi}년 ${result.zodiac}띠`
-    } else {
-      return `양력 ${result.year}년 ${result.month}월 ${result.day}일 (${result.dayOfWeek})`
-    }
-  }, [result, mode])
-
-  const getDaysInMonth = useCallback((year: number, month: number, isLunarMode: boolean) => {
-    if (isLunarMode) {
-      return lunarMonthDays(year, month)
-    } else {
-      return new Date(year, month, 0).getDate()
-    }
-  }, [])
+  const selectCls = 'ui-field px-3 py-2 w-full'
+  const range = (n: number) => Array.from({ length: n }, (_, i) => i + 1)
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      {/* Main Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Settings Panel */}
+        {/* 입력 */}
         <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            {/* Mode Toggle */}
-            <div>
-              <label className="block text-sm font-medium text-body mb-2">
-                변환 모드
-              </label>
-              <div className="grid grid-cols-2 gap-2">
+          <div className="ui-card p-6 space-y-6">
+            <div className="grid grid-cols-2 gap-2" role="tablist">
+              {(['lunarToSolar', 'solarToLunar'] as const).map(m => (
                 <button
-                  onClick={() => setMode('solarToLunar')}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    mode === 'solarToLunar'
-                      ? 'bg-primary hover:bg-blue-700 text-white'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
+                  key={m}
+                  role="tab"
+                  aria-selected={mode === m}
+                  onClick={() => (mode === m ? undefined : toggleMode())}
+                  className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors ${mode === m ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
                 >
-                  <div className="flex items-center justify-center gap-2">
-                    <Sun className="w-4 h-4" />
-                    <ArrowRightLeft className="w-3 h-3" />
-                    <Moon className="w-4 h-4" />
-                  </div>
-                  <div className="mt-1">{t('mode.solarToLunar')}</div>
+                  {t(`mode.${m}`)}
                 </button>
-                <button
-                  onClick={() => setMode('lunarToSolar')}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    mode === 'lunarToSolar'
-                      ? 'bg-primary hover:bg-blue-700 text-white'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    <Moon className="w-4 h-4" />
-                    <ArrowRightLeft className="w-3 h-3" />
-                    <Sun className="w-4 h-4" />
-                  </div>
-                  <div className="mt-1">{t('mode.lunarToSolar')}</div>
-                </button>
-              </div>
+              ))}
             </div>
 
-            {/* Date Input */}
             {mode === 'solarToLunar' ? (
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium text-body flex items-center gap-2">
-                  {t('solar')}
-                </h3>
-
-                <div>
-                  <label className="block text-xs text-sub mb-1">
-                    {t('year')}
-                  </label>
-                  <select
-                    value={solarYear}
-                    onChange={(e) => setSolarYear(Number(e.target.value))}
-                    className={`${glassInput} px-3 py-2`}
-                  >
-                    {Array.from({ length: 201 }, (_, i) => 1900 + i).map(year => (
-                      <option key={year} value={year}>{year}</option>
-                    ))}
+              <div className="space-y-3">
+                <h3 className="text-sm font-medium text-body">{t('solar')}</h3>
+                <div className="grid grid-cols-3 gap-2">
+                  <select aria-label={t('year')} value={solarYear} onChange={e => setSolarYear(Number(e.target.value))} className={selectCls}>
+                    {YEARS.map(y => <option key={y} value={y}>{y}{t('year')}</option>)}
                   </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-sub mb-1">
-                    {t('month')}
-                  </label>
-                  <select
-                    value={solarMonth}
-                    onChange={(e) => {
-                      const newMonth = Number(e.target.value)
-                      setSolarMonth(newMonth)
-                      const maxDay = getDaysInMonth(solarYear, newMonth, false)
-                      if (solarDay > maxDay) setSolarDay(maxDay)
-                    }}
-                    className={`${glassInput} px-3 py-2`}
-                  >
-                    {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
-                      <option key={month} value={month}>{month}</option>
-                    ))}
+                  <select aria-label={t('month')} value={solarMonth} onChange={e => setSolarMonth(Number(e.target.value))} className={selectCls}>
+                    {range(12).map(m => <option key={m} value={m}>{m}{t('month')}</option>)}
                   </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-sub mb-1">
-                    {t('day')}
-                  </label>
-                  <select
-                    value={solarDay}
-                    onChange={(e) => setSolarDay(Number(e.target.value))}
-                    className={`${glassInput} px-3 py-2`}
-                  >
-                    {Array.from({ length: getDaysInMonth(solarYear, solarMonth, false) }, (_, i) => i + 1).map(day => (
-                      <option key={day} value={day}>{day}</option>
-                    ))}
+                  <select aria-label={t('day')} value={Math.min(solarDay, solarMax)} onChange={e => setSolarDay(Number(e.target.value))} className={selectCls}>
+                    {range(solarMax).map(d => <option key={d} value={d}>{d}{t('day')}</option>)}
                   </select>
                 </div>
               </div>
             ) : (
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium text-body flex items-center gap-2">
-                  {t('lunar')}
-                </h3>
-
-                <div>
-                  <label className="block text-xs text-sub mb-1">
-                    {t('year')}
-                  </label>
-                  <select
-                    value={lunarYear}
-                    onChange={(e) => setLunarYear(Number(e.target.value))}
-                    className={`${glassInput} px-3 py-2`}
-                  >
-                    {Array.from({ length: 201 }, (_, i) => 1900 + i).map(year => (
-                      <option key={year} value={year}>{year}</option>
-                    ))}
+              <div className="space-y-3">
+                <h3 className="text-sm font-medium text-body">{t('lunar')}</h3>
+                <div className="grid grid-cols-3 gap-2">
+                  <select aria-label={t('year')} value={lunarYear} onChange={e => setLunarYear(Number(e.target.value))} className={selectCls}>
+                    {YEARS.map(y => <option key={y} value={y}>{y}{t('year')}</option>)}
                   </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-sub mb-1">
-                    {t('month')}
-                  </label>
+                  {/* 윤달이 있는 해엔 "윤N월"을 월 목록에 끼워 넣음 */}
                   <select
-                    value={lunarMonth}
-                    onChange={(e) => {
-                      const newMonth = Number(e.target.value)
-                      setLunarMonth(newMonth)
-                      const maxDay = getDaysInMonth(lunarYear, newMonth, true)
-                      if (lunarDay > maxDay) setLunarDay(maxDay)
-                      // Reset leap month if not available
-                      if (leapMonth(lunarYear) !== newMonth) {
-                        setIsLeap(false)
-                      }
+                    aria-label={t('month')}
+                    value={leapValid ? `L${lunarMonth}` : String(lunarMonth)}
+                    onChange={e => {
+                      const v = e.target.value
+                      setIsLeap(v.startsWith('L'))
+                      setLunarMonth(Number(v.replace('L', '')))
                     }}
-                    className={`${glassInput} px-3 py-2`}
+                    className={selectCls}
                   >
-                    {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
-                      <option key={month} value={month}>{month}</option>
-                    ))}
+                    {range(12).flatMap(m => {
+                      const opts = [<option key={m} value={String(m)}>{m}{t('month')}</option>]
+                      if (leapInLunarYear === m) opts.push(<option key={`L${m}`} value={`L${m}`}>{t('leapPrefix')}{m}{t('month')}</option>)
+                      return opts
+                    })}
+                  </select>
+                  <select aria-label={t('day')} value={Math.min(lunarDay, lunarMax)} onChange={e => setLunarDay(Number(e.target.value))} className={selectCls}>
+                    {range(lunarMax).map(d => <option key={d} value={d}>{d}{t('day')}</option>)}
                   </select>
                 </div>
-
-                <div>
-                  <label className="block text-xs text-sub mb-1">
-                    {t('day')}
-                  </label>
-                  <select
-                    value={lunarDay}
-                    onChange={(e) => setLunarDay(Number(e.target.value))}
-                    className={`${glassInput} px-3 py-2`}
-                  >
-                    {Array.from({ length: getDaysInMonth(lunarYear, lunarMonth, true) }, (_, i) => i + 1).map(day => (
-                      <option key={day} value={day}>{day}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {leapMonth(lunarYear) === lunarMonth && (
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="isLeap"
-                      checked={isLeap}
-                      onChange={(e) => setIsLeap(e.target.checked)}
-                      className="w-4 h-4 accent-blue-600 rounded"
-                    />
-                    <label htmlFor="isLeap" className="text-sm text-body">
-                      {t('leapMonth')}
-                    </label>
-                  </div>
-                )}
+                <p className="text-xs text-muted">
+                  {leapInLunarYear
+                    ? t('leapInfo', { year: lunarYear, month: leapInLunarYear })
+                    : t('noLeapInfo', { year: lunarYear })}
+                </p>
+                <label className="flex items-center gap-2 text-sm text-body">
+                  <input
+                    type="checkbox"
+                    checked={isLeap}
+                    disabled={leapInLunarYear !== lunarMonth}
+                    onChange={e => setIsLeap(e.target.checked)}
+                    className="w-4 h-4 accent-blue-600"
+                  />
+                  {t('leapMonth')}
+                </label>
               </div>
             )}
 
-            {/* Action Buttons */}
             <div className="flex gap-2">
-              <button
-                onClick={toggleMode}
-                className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors flex items-center justify-center gap-2"
-              >
-                <ArrowRightLeft className="w-4 h-4" />
-                모드 전환
+              <button onClick={toggleMode} className="ui-btn-soft flex-1 px-4 py-2 flex items-center justify-center gap-2">
+                <ArrowRightLeft className="w-4 h-4" aria-hidden />
+                {t('swap')}
               </button>
-              <button
-                onClick={copyLink}
-                title="링크 복사"
-                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors"
-              >
-                {copiedId === 'link' ? (
-                  <Check className="w-4 h-4 text-green-600" />
-                ) : (
-                  <Link className="w-4 h-4" />
-                )}
+              <button onClick={() => copyToClipboard(window.location.href, 'link')} title={t('copyLink')} aria-label={t('copyLink')} className="ui-btn-soft px-4 py-2">
+                {copiedId === 'link' ? <Check className="w-4 h-4" /> : <Link className="w-4 h-4" />}
               </button>
-              <button
-                onClick={handleReset}
-                title="초기화"
-                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors"
-              >
+              <button onClick={handleReset} title={t('reset')} aria-label={t('reset')} className="ui-btn-soft px-4 py-2">
                 <RotateCcw className="w-4 h-4" />
               </button>
             </div>
+            <p className="text-xs text-muted">{t('rangeNote')}</p>
           </div>
         </div>
 
-        {/* Result Panel */}
-        <div className="lg:col-span-2">
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-              {t('result.title')}
-            </h2>
-
-            {result ? (
-              <div className="space-y-6">
-                {/* Main Result */}
-                <div className="bg-subtle rounded-xl p-6">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="text-sm text-sub mb-2">
-                        {mode === 'solarToLunar' ? '음력' : '양력'}
-                      </div>
-                      <div className="text-2xl font-bold text-fg mb-1">
-                        {mode === 'solarToLunar' ? (
-                          <>
-                            음력 {result.year}년 {result.isLeap ? '윤' : ''}{result.month}월 {result.day}일
-                          </>
-                        ) : (
-                          <>
-                            양력 {result.year}년 {result.month}월 {result.day}일
-                          </>
-                        )}
-                      </div>
-                      <div className="text-sm text-sub">
-                        {result.dayOfWeek}
-                      </div>
+        {/* 결과 */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="ui-card p-6">
+            <h2 className="text-xl font-semibold text-fg mb-4">{t('result.title')}</h2>
+            {pair ? (
+              <div className="space-y-4">
+                <div className="bg-subtle rounded-2xl p-5 flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-sm text-sub">
+                      {mode === 'solarToLunar' ? solarLabel(pair.solar) : lunarLabel(pair.lunar)}
                     </div>
-                    <button
-                      onClick={() => copyToClipboard(getResultText(), 'result')}
-                      className="bg-field hover:bg-gray-50 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-2 transition-colors"
-                    >
-                      {copiedId === 'result' ? (
-                        <Check className="w-4 h-4 text-green-600" />
-                      ) : (
-                        <Copy className="w-4 h-4" />
-                      )}
-                    </button>
+                    <div className="text-3xl font-bold text-fg tabular-nums mt-1">
+                      {mode === 'solarToLunar' ? lunarLabel(pair.lunar) : solarLabel(pair.solar)}
+                    </div>
+                    <div className="text-sm text-sub mt-1">
+                      {wd(pair.solar)}
+                      {pair.lunar.isLeap && <span className="ml-2 text-primary font-medium">{t('result.leapMonth')}</span>}
+                    </div>
                   </div>
+                  <button onClick={() => copyToClipboard(resultText, 'result')} aria-label={t('copy')} className="ui-btn-soft px-3 py-2 shrink-0">
+                    {copiedId === 'result' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  </button>
                 </div>
 
-                {/* Year Info */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="bg-subtle rounded-xl p-4">
-                    <div className="text-xs text-sub mb-1">
-                      띠
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {[
+                    [t('result.zodiacAnimal'), `${yearGanzi(pair.lunar.year).zodiac}${t('zodiacSuffix')}`],
+                    [t('result.sexagenary'), `${yearGanzi(pair.lunar.year).ganzi}${t('yearSuffix')}`],
+                    [t('result.dayGanzi'), `${dayGanzi(pair.solar)}${t('daySuffix')}`],
+                    [t('result.dayOfWeek'), wd(pair.solar)],
+                  ].map(([label, value]) => (
+                    <div key={label} className="bg-subtle rounded-xl p-4">
+                      <div className="text-xs text-sub mb-1">{label}</div>
+                      <div className="text-lg font-semibold text-fg">{value}</div>
                     </div>
-                    <div className="text-lg font-semibold text-fg">
-                      {result.zodiac}띠
-                    </div>
-                  </div>
-
-                  <div className="bg-subtle rounded-xl p-4">
-                    <div className="text-xs text-sub mb-1">
-                      {t('result.sexagenary')}
-                    </div>
-                    <div className="text-lg font-semibold text-fg">
-                      {result.ganzi}년
-                    </div>
-                  </div>
-
-                  <div className="bg-subtle rounded-xl p-4">
-                    <div className="text-xs text-sub mb-1">
-                      {t('result.heavenlyStem')}
-                    </div>
-                    <div className="text-lg font-semibold text-fg">
-                      {result.stem}
-                    </div>
-                  </div>
-
-                  <div className="bg-subtle rounded-xl p-4">
-                    <div className="text-xs text-sub mb-1">
-                      {t('result.earthlyBranch')}
-                    </div>
-                    <div className="text-lg font-semibold text-fg">
-                      {result.branch}
-                    </div>
-                  </div>
+                  ))}
                 </div>
-
-                {/* Original Date */}
-                <div className="bg-subtle rounded-xl p-4">
-                  <div className="text-xs text-sub mb-1">
-                    {mode === 'solarToLunar' ? '입력한 양력' : '입력한 음력'}
-                  </div>
-                  <div className="text-base font-medium text-fg">
-                    {mode === 'solarToLunar' ? (
-                      <>양력 {solarYear}년 {solarMonth}월 {solarDay}일</>
-                    ) : (
-                      <>음력 {lunarYear}년 {isLeap ? '윤' : ''}{lunarMonth}월 {lunarDay}일</>
-                    )}
-                  </div>
-                </div>
+                <p className="text-xs text-muted">{t('ganziNote')}</p>
               </div>
             ) : (
-              <div className="text-center text-muted py-12">
-                날짜를 선택하면 변환 결과가 표시됩니다
-              </div>
+              <div className="text-center text-muted py-12">{t('error.outOfRange')}</div>
             )}
           </div>
+
+          {/* 음력 생일·제사 → 매년 양력 날짜 */}
+          {pair && anniversaries && (
+            <div className="ui-card p-6">
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <div>
+                  <h2 className="text-xl font-semibold text-fg">
+                    {t('yearly.title', { leap: pair.lunar.isLeap ? t('leapPrefix') : '', month: pair.lunar.month, day: pair.lunar.day })}
+                  </h2>
+                  <p className="text-sm text-muted mt-1">{t('yearly.description')}</p>
+                </div>
+                <button onClick={() => copyToClipboard(tableText, 'table')} aria-label={t('copy')} className="ui-btn-soft px-3 py-2 shrink-0">
+                  {copiedId === 'table' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                </button>
+              </div>
+
+              {anniversaries.next && anniversaries.dday !== null && (
+                <div className="bg-subtle rounded-2xl p-5 mb-4">
+                  <div className="text-sm text-sub">{t('yearly.next')}</div>
+                  <div className="text-2xl font-bold text-fg tabular-nums mt-1">
+                    {solarLabel(anniversaries.next.solar)} ({wd(anniversaries.next.solar)})
+                    <span className="ml-3 text-primary">
+                      {anniversaries.dday === 0 ? t('yearly.today') : `D-${anniversaries.dday}`}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-line text-left text-sub">
+                      <th className="py-2 pr-3 font-medium">{t('yearly.colLunarYear')}</th>
+                      <th className="py-2 pr-3 font-medium">{t('yearly.colSolar')}</th>
+                      <th className="py-2 pr-3 font-medium">{t('result.dayOfWeek')}</th>
+                      <th className="py-2 font-medium">{t('yearly.colNote')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {anniversaries.rows.map(r => {
+                      const isNext = anniversaries.next?.lunarYear === r.lunarYear
+                      const past = daysBetween(today, r.solar) < 0
+                      const notes = [
+                        r.leapFallback && t('yearly.leapFallback', { month: pair.lunar.month }),
+                        r.dayFallback && t('yearly.dayFallback'),
+                      ].filter(Boolean).join(' · ')
+                      return (
+                        <tr key={r.lunarYear} className={`border-b border-line last:border-0 ${isNext ? 'bg-soft' : ''} ${past ? 'text-faint' : 'text-body'}`}>
+                          <td className="py-2 pr-3 tabular-nums">{r.lunarYear} <span className="text-muted">({yearGanzi(r.lunarYear).ganzi})</span></td>
+                          <td className={`py-2 pr-3 tabular-nums ${isNext ? 'font-semibold text-fg' : ''}`}>{fmt(r.solar)}</td>
+                          <td className="py-2 pr-3">{wd(r.solar)}</td>
+                          <td className="py-2 text-xs text-muted">{notes}</td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-xs text-muted mt-3">{t('yearly.rule')}</p>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Guide Section */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-xl font-semibold text-fg mb-6 flex items-center gap-2">
-          {t('guide.title')}
-        </h2>
-
+      {/* 가이드 */}
+      <div className="ui-card p-6">
+        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
         <div className="space-y-6">
-          {/* How to Use */}
-          <div>
-            <h3 className="text-base font-semibold text-fg mb-3">
-              {t('guide.howToUse.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.howToUse.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Tips */}
-          <div>
-            <h3 className="text-base font-semibold text-fg mb-3">
-              {t('guide.tips.title')}
-            </h3>
-            <ul className="space-y-2">
-              {(t.raw('guide.tips.items') as string[]).map((item, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {(['howToUse', 'tips'] as const).map(section => (
+            <div key={section}>
+              <h3 className="text-base font-semibold text-fg mb-3">{t(`guide.${section}.title`)}</h3>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-sub">
+                {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </div>

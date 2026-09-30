@@ -10,10 +10,10 @@ const LUNAR_HOLIDAYS: Record<number, { seollal: string; buddha: string; chuseok:
   2024: { seollal: '2024-02-10', buddha: '2024-05-15', chuseok: '2024-09-17' },
   2025: { seollal: '2025-01-29', buddha: '2025-05-05', chuseok: '2025-10-06' },
   2026: { seollal: '2026-02-17', buddha: '2026-05-24', chuseok: '2026-09-25' },
-  2027: { seollal: '2027-02-07', buddha: '2027-05-13', chuseok: '2027-10-15' },
+  2027: { seollal: '2027-02-07', buddha: '2027-05-13', chuseok: '2027-09-15' },
   2028: { seollal: '2028-01-27', buddha: '2028-05-02', chuseok: '2028-10-03' },
   2029: { seollal: '2029-02-13', buddha: '2029-05-20', chuseok: '2029-09-22' },
-  2030: { seollal: '2030-02-03', buddha: '2030-05-09', chuseok: '2030-10-12' },
+  2030: { seollal: '2030-02-03', buddha: '2030-05-09', chuseok: '2030-09-12' },
 }
 
 function formatDate(d: Date): string {
