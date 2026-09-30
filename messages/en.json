@@ -13877,8 +13877,61 @@
     }
   },
   "signatureGenerator": {
+    "redo": "Redo",
+    "copyFailed": "This browser can't copy images. Please use Download instead.",
+    "penHint": "Draw slowly for thicker lines, quickly for thinner ones. Stylus pressure is used when available.",
+    "privacy": "Your signature is created only in your browser and never sent to a server. Saved signatures stay in this browser (localStorage) only — delete them after use on a shared computer.",
+    "mode": {
+      "draw": "Draw",
+      "type": "Type name"
+    },
+    "ink": {
+      "black": "Black",
+      "blue": "Blue",
+      "custom": "Custom"
+    },
+    "type": {
+      "name": "Name",
+      "namePlaceholder": "Enter your name",
+      "defaultName": "Jane Doe",
+      "font": "Handwriting font",
+      "latinHint": "Enter a Latin-alphabet name to also choose English script fonts.",
+      "size": "Size",
+      "slant": "Slant",
+      "spacing": "Letter spacing"
+    },
+    "mock": {
+      "title": "On a document",
+      "docTitle": "Consent Form",
+      "docBody": "I have read and understood the above and agree to it.",
+      "signLabel": "Signature:",
+      "alt": "Signature image",
+      "note": "The saved image is automatically trimmed to the signature with a small margin."
+    },
+    "export": {
+      "title": "Save",
+      "format": "Format",
+      "png": "PNG",
+      "jpg": "JPG",
+      "svg": "SVG",
+      "pngHint": "Transparent background — best for documents, PDFs and e-contracts.",
+      "jpgHint": "White background — for places that don't support transparency.",
+      "svgHint": "Vector — stays sharp at any size (drawn signatures only).",
+      "svgTypeNote": "Typed signatures use web fonts, so they're saved as PNG/JPG instead of SVG.",
+      "scale": "Resolution",
+      "download": "Download {fmt}"
+    },
+    "saved": {
+      "title": "My signatures",
+      "save": "Save",
+      "done": "Saved",
+      "failed": "Not enough storage, or the browser blocked saving.",
+      "full": "You can save up to {max}. Delete one to save a new signature.",
+      "empty": "No saved signatures yet. Save the one you use often to download it again instantly.",
+      "delete": "Delete"
+    },
     "title": "Signature Generator",
-    "description": "Create electronic signatures with mouse or touch and download as image.",
+    "description": "Draw or type your name to create a signature image, then save it as a trimmed transparent PNG, SVG or JPG. For e-contracts, PDFs and email — nothing is uploaded.",
     "canvas": "Signature Area",
     "drawHere": "Sign here",
     "penColor": "Pen Color",
@@ -13891,10 +13944,39 @@
     "download": "Download",
     "downloadPNG": "Download PNG",
     "downloadSVG": "Download SVG",
-    "copy": "Copy to Clipboard",
-    "copied": "Copied!",
+    "copy": "Copy",
+    "copied": "Copied",
     "guide": {
-      "title": "Signature Generator Guide",
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "Pointer Events handle mouse, touch and stylus the same way, and the canvas disables touch-action so the page doesn't scroll while you draw.",
+          "Input points are joined with a Catmull-Rom spline converted to cubic Bézier curves, passing through every point without kinks.",
+          "Line width follows drawing speed (px/ms): slower is thicker, faster is thinner, smoothed to avoid jumps. Stylus pressure is used directly.",
+          "On export the signature is redrawn at 1–3x on a transparent canvas, trimmed to the ink using the alpha channel, and padded.",
+          "SVG export groups curves of equal width into single paths, so lines stay crisp at any size."
+        ]
+      },
+      "realWorld": {
+        "title": "Use it for",
+        "items": [
+          "Adding a signature image to PDF contracts and consent forms (Acrobat Fill & Sign, macOS Preview)",
+          "Inserting a transparent PNG into Word or Hangul documents",
+          "Adding a handwritten signature to Gmail or Outlook email signatures",
+          "Signing quotes, statements and receipts",
+          "Uploading a ready-made signature to e-contract services that accept images"
+        ]
+      },
+      "comparison": {
+        "title": "Comparing options",
+        "items": [
+          "Draw — your own handwriting, the most natural. Touch or stylus gives much cleaner results than a mouse.",
+          "Type name — fast and consistent when drawing is hard, but anyone can produce the same look.",
+          "PNG vs SVG vs JPG — transparent PNG (2x) for documents, SVG for print and scaling, JPG where transparency isn't supported.",
+          "Signature image vs digital signature — an image is only the look of a signature; contracts that need identity verification require certificate-based e-signatures."
+        ]
+      },
+      "title": "Signature Guide",
       "usage": {
         "title": "How to Use",
         "items": [
@@ -13907,39 +13989,45 @@
       "tips": {
         "title": "Tips",
         "items": [
-          "Use when e-signatures are needed for documents",
-          "Transparent background is best for overlays",
-          "SVG maintains quality when resized",
-          "This signature may not have legal validity"
+          "Transparent PNG at 2x works for most documents; use 3x or SVG for print or large sizes.",
+          "Blue ink makes an original signature easy to tell apart from a photocopy and is common for contracts.",
+          "Drawing with a mouse is hard — open this page on your phone and sign with your finger.",
+          "Copied signatures can be pasted directly into Word, Hangul, PowerPoint or email (browser support varies).",
+          "A signature image is not proof of identity. Use certificate-based e-signatures for important contracts."
         ]
       },
       "whatIs": {
-        "title": "What is the Signature Generator?",
-        "description": "The signature generator lets you draw a custom electronic signature using mouse drag or touch input and save it as a PNG image — no app installation needed. Draw directly in the browser, adjust stroke width and color, and download a transparent-background PNG that can be cleanly inserted into contracts, emails, and documents of any kind."
+        "title": "What is the signature generator?",
+        "description": "Create a signature image for e-contracts, PDFs and email. Draw with a mouse, finger or stylus and the stroke width follows your speed and pressure, or type your name and pick a Korean or English handwriting font. Exports are trimmed to the signature automatically so they drop straight into documents."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. Draw your signature freely on the canvas area using a mouse or touch input.",
-          "2. Adjust the stroke width and color to achieve the style you prefer.",
-          "3. If you make a mistake, click the Clear button to reset the canvas and start over.",
-          "4. Click Save to download the signature as a transparent-background PNG file."
+          "1. Choose Draw or Type name.",
+          "2. Sign in the white area (undo/redo supported, Ctrl+Z / Ctrl+Shift+Z), or type your name and pick a font.",
+          "3. Adjust ink color (black, blue, custom) and thickness, or font size, slant and spacing.",
+          "4. Check the document preview to see how it looks on a signature line.",
+          "5. Pick a format (PNG, JPG, SVG) and resolution (1x–3x), then download or copy. Save up to 5 signatures under My signatures."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Does an electronic signature created here have legal validity?",
-            "a": "Under the Electronic Signature Act, legally binding electronic signatures require an accredited certification process. This tool creates a simple graphical signature image — use a certified e-signature service for legally binding documents."
+            "q": "Is a signature image legally binding?",
+            "a": "An electronic signature can be valid if the signer's identity and intent can be verified, but an image alone makes that hard to prove. For contracts that require identity verification, use certificate-based e-signatures or an e-contract platform."
           },
           {
-            "q": "How do I insert the signature into a Word document or PDF?",
-            "a": "Save as transparent PNG, then insert the image into your Word document. For PDFs, use Adobe Acrobat or any PDF editor to place the image at the desired location."
+            "q": "How do I add it to Word or a PDF?",
+            "a": "In Word, insert the PNG as a picture and set wrapping to 'In front of text'. For PDFs, use Adobe Acrobat's Fill & Sign, macOS Preview's signature tool, or any PDF editor that supports images."
           },
           {
-            "q": "Is the signature image stored on a server?",
-            "a": "No. All processing happens in the browser using the Canvas API. The signature is never transmitted to any external server."
+            "q": "Is my signature uploaded?",
+            "a": "No. Drawing, font rendering and file creation all happen in your browser. Only the typed-name fonts are requested from Google Fonts (with the letters needed), and My signatures are stored only in this browser's localStorage."
+          },
+          {
+            "q": "Copy doesn't work.",
+            "a": "Image clipboard copy is supported in recent Chrome, Edge and Safari, but blocked in some browsers or on http. Download the PNG instead."
           }
         ]
       }
@@ -18068,8 +18156,108 @@
     }
   },
   "loanSchedule": {
+    "typeGraduated": "Graduated",
+    "growth": "Annual payment growth",
+    "growthHint": "Graduated: the monthly payment rises by this rate every year. Lower at first, but more total interest than equal payment.",
+    "graceHint": "Interest-only months (included in the loan term)",
+    "unit": {
+      "eok": "×100M",
+      "man": "×10K"
+    },
+    "link": {
+      "calculator": "Just need the monthly payment? Loan calculator"
+    },
+    "term": {
+      "years": "{n} yr",
+      "months": "{n} mo",
+      "mixed": "{y} yr {m} mo"
+    },
+    "hero": {
+      "label": "{amount} · {rate}% p.a. · {term} · {method}",
+      "monthly": "Monthly payment",
+      "firstMonth": "First month payment",
+      "lastMonth": "Decreases every month down to {amount}",
+      "firstYear": "Monthly payment in year 1",
+      "maxMonth": "Rises yearly up to {amount}/month",
+      "monthlyInterest": "Monthly interest",
+      "bulletEnd": "Principal {amount} repaid at maturity",
+      "graceNote": "Interest only for {months} months: {amount}/month",
+      "rateChange": "From payment {month} at {rate}% → {amount}/month",
+      "prepay": "Prepay {amount} after payment {month} (fee {fee}) → {months} total"
+    },
+    "rateChange": {
+      "title": "Rate change",
+      "desc": "For hybrid loans (fixed, then variable). Payments for the remaining term are recalculated at the new rate.",
+      "none": "No change",
+      "preset": "Fixed {n} yr",
+      "month": "Fixed period",
+      "newRate": "Rate after change"
+    },
+    "prepay": {
+      "title": "Prepayment",
+      "desc": "Pay a lump sum at a given payment and compare shortening the term vs lowering the monthly payment.",
+      "amount": "Prepayment amount",
+      "month": "Timing (right after payment #)",
+      "monthHint": "Right after the {date} payment",
+      "feeRate": "Prepayment fee rate",
+      "feeHint": "Korean fees were cut to actual cost for contracts from 2025-01-13 (bank mortgage average ~0.56–0.65%). Enter the rate in your contract — the default is an example.",
+      "feeFormula": "Fee = amount × rate × remaining period ÷ 3 years (waived after 3 years; if the loan is shorter than 3 years, the loan term is used).",
+      "source": "Financial Services Commission",
+      "mode": "After prepaying",
+      "shorten": "Shorten term",
+      "reduce": "Lower payment",
+      "none": "No prepayment",
+      "cmpTitle": "Prepayment comparison",
+      "cmpDesc": "Paying {amount} after payment {month} · fee {fee}",
+      "colMonths": "Term",
+      "colAfter": "Payment after",
+      "colSaved": "Net saving (interest − fee)",
+      "verdict": "Shortening ends {months} months earlier and saves {diff} more interest than lowering the payment. Lowering the payment cuts {drop} from each month."
+    },
+    "methods": {
+      "title": "Repayment methods compared (same terms)",
+      "first": "First payment",
+      "max": "Max monthly payment",
+      "diff": "Interest vs current",
+      "current": "Current",
+      "note": "Equal principal costs {amount} less interest than equal payment, but the first payment is {first} higher. Click a row to switch methods."
+    },
+    "chart": {
+      "title": "Principal and interest by year",
+      "year": "Yr {n}"
+    },
+    "table": {
+      "hint": "Click a year to expand monthly rows",
+      "year": "Year {n}",
+      "range": "#{from}–{to}",
+      "expandAll": "Expand all",
+      "collapseAll": "Collapse all",
+      "tsv": "Copy for Excel",
+      "csv": "Download CSV",
+      "print": "Print",
+      "rate": "Rate",
+      "prepay": "Prepayment",
+      "fee": "Fee",
+      "total": "Total"
+    },
+    "cmp": {
+      "title": "Compare with another loan (A/B)",
+      "desc": "Compare the loan above (A, without prepayment) side by side with loan B at a different rate, term or method.",
+      "toggle": "Compare with loan B",
+      "months": "Term",
+      "diff": "Difference (B − A)",
+      "better": "{loan} costs {amount} less interest."
+    },
+    "note": {
+      "dayCount": "Monthly basis: interest = balance × annual rate ÷ 12 (truncated to the won), payments rounded to the won, and the last payment absorbs the remainder. Banks accrue daily (actual days/365), so each payment may differ by a few won."
+    },
+    "warn": {
+      "invalid": "Enter a loan amount and term (up to 50 years).",
+      "graceTooLong": "The grace period must be shorter than the loan term.",
+      "negative": "The early graduated payments are below the interest, so the balance grows for a while. Try a lower growth rate."
+    },
     "title": "Loan Repayment Scheduler",
-    "description": "Generate loan repayment schedule and analyze interest",
+    "description": "Build a monthly and yearly repayment schedule and compare rate changes, prepayments and repayment methods",
     "loanAmount": "Loan Amount",
     "annualRate": "Annual Interest Rate",
     "loanTerm": "Loan Term",
@@ -18177,28 +18365,33 @@
         "description": "The Loan Repayment Scheduler generates a full month-by-month repayment table showing principal, interest, and remaining balance for your loan. It supports equal principal+interest (annuity), equal principal, and deferred repayment structures, and lets you simulate the interest savings from early repayment. Essential for planning mortgages, auto loans, or personal loans."
       },
       "howToUse": {
-        "title": "How to Use",
+        "title": "How to use",
         "items": [
-          "1. Enter the loan principal, annual interest rate, and loan term (in months).",
-          "2. Select a repayment method (equal principal+interest / equal principal / deferred).",
-          "3. Enter the loan start date and payment dates will be generated automatically.",
-          "4. Review the monthly schedule showing principal, interest, and balance — export to Excel if needed."
+          "1. Choose principal (x10,000 KRW), annual rate, term and method (equal payment, equal principal, bullet, graduated). Results appear right away with defaults.",
+          "2. Enter a grace period in months if any — only interest is paid during it.",
+          "3. For hybrid loans, set the fixed period and the new rate under 'Rate change'.",
+          "4. Enter amount, timing and fee rate under 'Prepayment' to compare shortening the term vs lowering the payment.",
+          "5. Click a year to expand monthly rows, then download CSV, copy for Excel or print. Share the URL to reopen the same scenario."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Which repayment method is better: equal P+I or equal principal?",
-            "a": "Equal principal repayment results in less total interest and decreasing monthly payments but has higher initial payments. Equal P+I offers predictable monthly payments, making budgeting easier."
+            "q": "Equal payment or equal principal?",
+            "a": "Equal principal has the lowest total interest and shrinking payments but a higher start. Equal payment keeps every month the same. The 'methods compared' table shows the difference for your exact terms."
           },
           {
-            "q": "How much interest can I save with early repayment?",
-            "a": "Enter a lump-sum early repayment at a specific month to simulate the interest savings and how much the loan term shortens."
+            "q": "After prepaying, shorten the term or lower the payment?",
+            "a": "For the same amount, shortening the term saves more interest; lowering the payment eases monthly cash flow. In Korea prepayment fees usually apply only within 3 years, pro-rated by the remaining period, and were cut to actual cost for contracts from 2025-01-13."
           },
           {
-            "q": "Can it handle variable rate loans?",
-            "a": "The calculator uses a fixed rate. For variable rate loans, recalculate the remaining schedule each time the rate changes."
+            "q": "Can it handle variable rates?",
+            "a": "Yes. Under 'Rate change', set the fixed period (e.g. 5 years) and the later rate; payments for the remaining term are recalculated from that point. Try a few expected rates to compare scenarios."
+          },
+          {
+            "q": "Why does it differ from my bank by a few won?",
+            "a": "This tool accrues interest monthly (annual rate ÷ 12) and truncates below one won. Banks accrue daily, so each payment may differ slightly, and the last payment settles the remainder."
           }
         ]
       }
@@ -29320,6 +29513,168 @@
     }
   },
   "jeonseLoanCalc": {
+    "product": {
+      "general": {
+        "label": "Beotimmok",
+        "sub": "Homeless head of household, income ≤ ₩50M"
+      },
+      "youth": {
+        "label": "Youth",
+        "sub": "Age 19–34, deposit ≤ ₩300M"
+      },
+      "newlywed": {
+        "label": "Newlywed",
+        "sub": "Married ≤ 7 years, income ≤ ₩75M"
+      },
+      "newborn": {
+        "label": "Newborn special",
+        "sub": "Birth within 2 years, income ≤ ₩130M (dual ₩200M)"
+      },
+      "bank": {
+        "label": "Commercial bank",
+        "sub": "HF guarantee basis, enter your rate"
+      }
+    },
+    "field": {
+      "profileTitle": "Your situation",
+      "deposit": "Jeonse deposit",
+      "location": "Location",
+      "capital": "Seoul metro (Seoul·Incheon·Gyeonggi)",
+      "local": "Outside Seoul metro",
+      "income": "Combined annual income (couple)",
+      "netAsset": "Combined net assets (assets − debt)",
+      "age": "Age (international)",
+      "kids": "Minor children",
+      "kids0": "None",
+      "kids1": "1",
+      "kids2": "2",
+      "kids3": "3 or more",
+      "toggle": {
+        "home": "Homeless head of household (no member owns a home)",
+        "area": "Exclusive area ≤ 85㎡",
+        "mar": "Married within 7 years (or marrying within 3 months)",
+        "nb": "Child born within 2 years of application (born 2023 or later)",
+        "dual": "Dual income (each spouse ≤ ₩130M)",
+        "sme": "Works at an SME/mid-size firm or youth startup (youth discount)",
+        "ec": "Lease signed via real-estate e-contract"
+      },
+      "loanTitle": "Loan settings",
+      "want": "Desired loan (0 = maximum)",
+      "wantMax": "0 calculates the maximum available",
+      "bankRate": "Commercial bank rate (% p.a.)",
+      "bankRateHint": "Varies by bank and needs checking. Enter the rate you were quoted."
+    },
+    "hero": {
+      "label": "{product} estimated loan",
+      "rateLine": "{rate}% p.a. · {kind} {monthly}",
+      "interest": "Monthly interest",
+      "payment": "Monthly payment",
+      "own": "Your own cash needed",
+      "interest2y": "2-year total interest"
+    },
+    "warn": {
+      "notEligible": "You do not qualify for {product} with these inputs. See the checklist below.",
+      "overLimit": "Desired amount exceeds the limit; calculated with {limit}."
+    },
+    "share": {
+      "sub": "Rate {rate}% p.a. · Housing & Urban Fund as of {date}"
+    },
+    "check": {
+      "title": "{product} eligibility",
+      "pass": "Eligible",
+      "fail": "Not eligible",
+      "limit": "≤ {value}",
+      "homeless": "Homeless head of household",
+      "age": "Age 19–34 (up to 39 with military service)",
+      "married": "Newlywed (married ≤ 7 years)",
+      "newborn": "Birth within 2 years",
+      "income": "Combined annual income",
+      "asset": "Net assets (2026 standard)",
+      "deposit": "Lease deposit",
+      "area": "Exclusive area ≤ 85㎡"
+    },
+    "rate": {
+      "title": "Rate breakdown",
+      "table": "Base rate (income × deposit bracket)",
+      "bankInput": "Entered bank rate",
+      "local": "Outside Seoul metro",
+      "discount": {
+        "kids": "Children discount",
+        "sme": "SME employee / youth startup",
+        "under25": "Single head of household under 25",
+        "econtract": "Real-estate e-contract",
+        "small": "Borrowing ≤ 30% of limit"
+      },
+      "capNote": "Discounts are capped at {cap}%p in total.",
+      "final": "Final rate",
+      "limit": "Loan limit",
+      "floorNote": "Final rate floor is 1.0%. Welfare, single-parent and disability discounts and asset-review surcharges are not included."
+    },
+    "compare": {
+      "title": "Compare products",
+      "best": "Best",
+      "product": "Product",
+      "eligible": "Eligibility",
+      "limit": "Loan",
+      "rate": "Rate",
+      "monthly": "Monthly",
+      "note": "Best = the eligible fund product with the largest loan, then the lowest rate. Tap a row to calculate with it."
+    },
+    "wolse": {
+      "title": "What if you rent monthly?",
+      "desc": "Compares with putting only your own {own} as deposit and paying monthly rent for the same home.",
+      "conv": "Conversion rate (% p.a.)",
+      "convHint": "Legal cap {cap}% (base rate + 2%p, as of {date})",
+      "rent": "Estimated monthly rent",
+      "interest": "Jeonse loan monthly interest",
+      "jeonseCheaper": "The jeonse loan costs {diff} less per month.",
+      "wolseCheaper": "Monthly rent costs {diff} less per month.",
+      "link": "Compare in detail with the rent converter"
+    },
+    "hug": {
+      "title": "Deposit return guarantee (HUG)",
+      "desc": "Protects your deposit if the landlord cannot return it. Fee for a 2-year lease.",
+      "apt": "Apartment",
+      "other": "Other housing",
+      "debt": "Debt ratio (senior liens + deposit) ÷ home price",
+      "debt70": "≤ 70%",
+      "debt80": "≤ 80%",
+      "debt100": "> 80%",
+      "debtHint": "Check mortgages on the property register and the market price.",
+      "rate": "Fee rate",
+      "rateValue": "{rate}% p.a.",
+      "discount": "Discount (income/newlywed/multi-child, auto)",
+      "fee": "2-year fee",
+      "note": "One of: 60% off for income ≤ ₩50M, 40% off for newlyweds (≤ ₩60M) or 3+ children. Debt-ratio surcharge and other discounts excluded."
+    },
+    "source": {
+      "title": "Sources · retrieved {date}",
+      "nhuf": "Housing & Urban Fund (nhuf.molit.go.kr) — Beotimmok, youth, newlywed and newborn product pages and rate tables",
+      "hug": "Korea Housing & Urban Guarantee Corp. — deposit return guarantee fee rates",
+      "hf": "Korea Housing Finance Corp. — general jeonse loan guarantee (bank limit basis)",
+      "caveat": "Bank limits are estimated from the HF general guarantee (80% of deposit, up to ₩400M) and may be lower depending on income and credit. Confirm rates with your bank."
+    },
+    "faq": {
+      "title": "FAQ",
+      "items": [
+        {
+          "q": "Beotimmok or the youth product: which is better?",
+          "a": "If you are 34 or younger, usually the youth product: its ₩150M limit exceeds Beotimmok's ₩120M (Seoul metro) and it lends up to 80% of the deposit."
+        },
+        {
+          "q": "How is the ₩345M net-asset cap calculated?",
+          "a": "Assets of you and your spouse minus debts. The cap follows Statistics Korea's household survey and is ₩345M for 2026."
+        },
+        {
+          "q": "Does the loan renew with the lease?",
+          "a": "No, it needs an extension review. Fund jeonse loans run in 2-year terms up to 10 years (12 for the newborn product), plus 2 years per minor child."
+        },
+        {
+          "q": "How much is the deposit guarantee fee?",
+          "a": "HUG fee = deposit × fee rate (0.097–0.211% p.a.) × lease term, with 60% off for income up to ₩50M."
+        }
+      ]
+    },
     "title": "Jeonse Loan Calculator",
     "description": "Auto-calculate jeonse loan rates, limits, and monthly payments (2025)",
     "loanType": {
@@ -29396,6 +29751,9 @@
       "calculate": "Calculate"
     },
     "unit": {
+      "wonShort": " KRW",
+      "eokShort": "×100M",
+      "manShort": "×10K",
       "won": "KRW",
       "percent": "%",
       "year": "years",
@@ -29403,34 +29761,35 @@
       "manwon": "×10K KRW",
       "eok": "×100M KRW"
     },
-    "disclaimer": "This calculator is for reference only. Please verify actual terms with your financial institution.",
+    "disclaimer": "For reference only. Actual eligibility, limits and rates depend on the bank's review and guarantor (HF/HUG) rules.",
     "guide": {
       "title": "Jeonse Loan Guide",
       "overview": {
-        "title": "Loan Type Comparison",
+        "title": "Key conditions by product",
         "items": [
-          "General Beotimok: Income ≤50M, Capital max 120M, LTV 70%",
-          "Youth Beotimok: Age 19~34, max 150M, LTV 80%, SME discount",
-          "Newlywed Beotimok: Within 7yr marriage, Capital max 250M, LTV 80%, child discount",
-          "Commercial Bank: No income limit, max 500M, LTV 80%, higher rates"
+          "Beotimmok: income ≤ ₩50M (2 children ₩60M, newlywed ₩75M), net assets ≤ ₩345M, deposit ≤ ₩300M metro / ₩200M elsewhere, limit ₩120M / ₩80M (70% of deposit)",
+          "Youth: age 19–34, deposit ≤ ₩300M, limit ₩150M (₩120M for single under 25), 80% of deposit",
+          "Newlywed: married ≤ 7 years, income ≤ ₩75M, deposit ≤ ₩400M / ₩300M, limit ₩250M / ₩160M",
+          "Newborn special: birth within 2 years, income ≤ ₩130M (dual ₩200M), deposit ≤ ₩500M / ₩400M, limit ₩240M",
+          "Commercial bank: no income cap but higher rates; HF guarantee basis 80% of deposit up to ₩400M"
         ]
       },
       "rates": {
-        "title": "Rate Factors",
+        "title": "How the rate is set",
         "items": [
-          "Income bracket: Lower income = lower rate",
-          "Deposit size: Smaller deposit = lower rate",
-          "Location: Non-capital regions get 0.2%p discount",
-          "Preferences: SME employee (-0.3%p), number of children, etc."
+          "Base rate comes from the combined income bracket and deposit bracket (variable, set by MOLIT).",
+          "Homes outside the Seoul metro area get 0.2%p off.",
+          "Discounts: children (0.3/0.5/0.7%p), youth SME 0.3%p, e-contract 0.1%p, borrowing ≤ 30% of limit 0.2%p.",
+          "Total discount is capped at 0.5%p (0.7%p for 3+ children) and the final rate never goes below 1.0%."
         ]
       },
       "tips": {
-        "title": "Tips",
+        "title": "Good to know",
         "items": [
-          "Beotimok loans are exempt from DSR regulation",
-          "Youth should check SME discount (-0.3%p extra)",
-          "Newlywed with 3+ children: up to -0.7%p discount",
-          "Bullet repayment has lower monthly cost but higher total interest"
+          "Apply within 3 months of the earlier of balance payment or move-in date.",
+          "Borrowing ≤ 30% of your limit earns a 0.2%p discount.",
+          "HUG's jeonse loan guarantee includes deposit return protection; with an HF guarantee, buy it separately.",
+          "When comparing with monthly rent, also consider the opportunity cost of your own cash."
         ]
       },
       "guide": {
@@ -40617,6 +40976,163 @@
     }
   },
   "evSubsidy": {
+    "ev": {
+      "man": "₩{won}",
+      "won": "₩{n}",
+      "unitMan": "×10k ₩",
+      "subtitle": "Estimates national and local subsidies, add-ons and the net price using the {year} Ministry of Climate, Energy and Environment guidelines and ev.or.kr published amounts (retrieved {date}).",
+      "car": {
+        "title": "Vehicle",
+        "model": "Model",
+        "nationalShort": "national {n}",
+        "modelHint": "Per-model national/local amounts are as published on ev.or.kr (retrieved {date}). Amounts in ×10,000 KRW.",
+        "custom": "Not listed (enter manually)",
+        "price": "Vehicle price",
+        "priceHint": "Enter your quoted price incl. options. The price factor (100%/50%/0%) uses the base price.",
+        "priceHintPreset": "Replace with your quote (example: 50M KRW). Published national amounts already include the price factor.",
+        "band": "Price band",
+        "discount": "Manufacturer discount",
+        "discountHint": "Dealer or manufacturer promotion on the contract"
+      },
+      "custom": {
+        "direct": "Enter national amount",
+        "estimate": "Estimate from specs",
+        "national": "National subsidy",
+        "nationalHint": "National amount from ev.or.kr per-model subsidy list",
+        "lookup": "Look up published amounts"
+      },
+      "est": {
+        "large": "Mid/large",
+        "small": "Small/compact",
+        "eff": "Room-temp efficiency",
+        "roomRange": "Room-temp range",
+        "coldRange": "Cold range",
+        "bg": "Battery density",
+        "eg": "Recycling value",
+        "ag": "After-sales",
+        "grade": "Grade {g} ({c})",
+        "incentive": "Manufacturer incentives",
+        "incentiveHint": "Battery safety (≤50) + supply target (140) + charging infra (40) + innovation (50), max {max} (×10k ₩)",
+        "result": "Performance {perf} × coef {coef} + incentives → price factor {pf}% = national ≈ {n} (×10k ₩)"
+      },
+      "band": {
+        "full": "< 53M: 100%",
+        "half": "53M–85M: 50%",
+        "none": "≥ 85M: none"
+      },
+      "region": {
+        "title": "Registration area",
+        "sido": "Province/city",
+        "sigungu": "District",
+        "local": "Local subsidy",
+        "published": "Published amount for this model (retrieved {date}). Type to override.",
+        "estimated": "No published amount, estimated as national × {pct}% (this area's typical ratio). Enter the published amount for accuracy.",
+        "manual": "Using your amount. Clear it to go back to automatic."
+      },
+      "buyer": {
+        "title": "Add-ons (individual buyers)",
+        "conversion": "Replacing a combustion car",
+        "conversionHint": "Gasoline/diesel car 3+ years since release and owned 3+ years, sold or scrapped. Hybrids and family transfers excluded. National up to 1M KRW + local",
+        "youth": "Young first-time buyer",
+        "youthHint": "Age 19–34, first car ever. +20% of national subsidy",
+        "lowIncome": "Low-income (차상위 or below)",
+        "lowIncomeHint": "Basic livelihood recipients / near-poor. +20% of national subsidy (stacks with youth)",
+        "children": "Children aged 18 or under",
+        "child0": "0–1",
+        "child2": "2",
+        "child3": "3",
+        "child4": "4+",
+        "childrenHint": "2 kids 1M · 3 kids 2M · 4+ kids 3M KRW"
+      },
+      "hero": {
+        "label": "Estimated total subsidy for {car} in {region}",
+        "net": "Price {price} − discount {discount} − subsidy = net {net}",
+        "national": "National {v}",
+        "local": "Local {v}",
+        "extras": "Add-ons {v}"
+      },
+      "share": {
+        "label": "{region} · {car} EV subsidy",
+        "sub": "Net price {net}",
+        "text": "EV subsidy for {car} in {region}: {total}, net price {net}"
+      },
+      "detail": {
+        "title": "Subsidy and net price breakdown"
+      },
+      "row": {
+        "national": "National subsidy",
+        "nationalPreset": "ev.or.kr published amount (performance and price factor included)",
+        "nationalEst": "Estimated with guideline Annex 1 formula",
+        "nationalDirect": "Entered manually",
+        "local": "Local subsidy",
+        "extras": "Add-ons",
+        "conversion": "Conversion bonus",
+        "conversionSub": "national {nat} + local {loc} (×10k ₩)",
+        "youth": "Young first-time buyer",
+        "lowIncome": "Low-income",
+        "pct20": "20% of national (shared by national/local)",
+        "multiChild": "Multi-child household",
+        "total": "Total subsidy",
+        "price": "Vehicle price",
+        "discount": "Manufacturer discount",
+        "subsidy": "Subsidy",
+        "net": "Net price"
+      },
+      "acq": {
+        "title": "Acquisition tax relief",
+        "desc": "Tax base (supply price excl. VAT) × 7%, minus EV relief of up to 1.4M KRW. Subsidies do not reduce the tax base.",
+        "descLight": "Light cars pay tax base × 4%, with EV relief of up to 1.4M KRW.",
+        "tax": "Acquisition tax (before relief)",
+        "relief": "EV relief",
+        "pay": "Tax payable",
+        "note": "Restriction of Special Local Taxation Act §66: cap 1.4M KRW for registrations through Dec 31, 2026. A bill to cut the cap to 0.7M KRW from 2027 (extended to 2029) is in pre-announcement. Bonds, plates and delivery fees not included."
+      },
+      "cmpRegion": {
+        "title": "Compare areas in {sido}",
+        "range": "Nationwide local subsidy: highest {max} {maxV} · lowest {min} {minV}",
+        "region": "Area",
+        "est": "(est.)"
+      },
+      "cmpModel": {
+        "title": "Popular models in {region}",
+        "model": "Model",
+        "sum": "National+local",
+        "unlisted": "Not listed",
+        "note": "Unit: ×10,000 KRW · ev.or.kr published amounts (retrieved {date}). 'Not listed' means the model is not on this area's list."
+      },
+      "cost": {
+        "title": "5-year energy cost: charging vs gasoline",
+        "desc": "Compares charging an EV with fueling a comparable gasoline car over the same distance.",
+        "km": "Annual mileage",
+        "evEff": "EV efficiency",
+        "rate": "Charging rate",
+        "rateOpt": "Public {kw} · ₩{won}/kWh",
+        "rateHint": "Public charging rates by the Ministry (from Aug 1, 2026). Private and apartment chargers differ.",
+        "iceEff": "Gasoline car fuel economy",
+        "wonPerL": "₩/L",
+        "fuel": "Gasoline price",
+        "fuelOpinet": "Opinet national average ({date})",
+        "fuelManual": "Enter your local pump price",
+        "ev": "EV charging",
+        "ice": "Gasoline car fuel",
+        "saving": "5-year savings",
+        "loss": "5-year extra cost",
+        "note": "Insurance, maintenance and vehicle tax differences (EV flat 130k KRW/yr) are excluded.",
+        "fuelLink": "See details in the fuel cost calculator"
+      },
+      "notes": {
+        "title": "Before you apply",
+        "items": [
+          "Local subsidies stop when the area's budget runs out. Check remaining slots on ev.or.kr before applying.",
+          "Subsidies are paid in order of delivery and registration; a contract alone does not secure them.",
+          "Subsidized cars must be kept for 2 years; selling or exporting earlier requires partial repayment.",
+          "Extra local programs (local companies, taxis, rural areas, etc.) are not included.",
+          "From 2027 the price thresholds are expected to drop to 50M (100%) and 80M KRW (50%)."
+        ],
+        "linkModels": "Subsidy by area and model",
+        "linkBudget": "Remaining budget by area"
+      }
+    },
     "title": "EV Subsidy Calculator",
     "description": "Calculate national and local government subsidies for electric vehicle purchases by model and region.",
     "vehicleInfo": "Vehicle Information",
@@ -40687,42 +41203,46 @@
       "title": "Guide",
       "whatIs": {
         "title": "What are EV Subsidies?",
-        "description": "Government subsidies that cover part of the purchase price when buying an electric vehicle. In 2026, you can receive up to ₩6.8M nationally plus regional subsidies (₩3M~₩11M), varying by vehicle price, performance, and battery capacity."
+        "description": "Korean national (government) and local subsidies cover part of an EV's price. In 2026 the national subsidy for passenger EVs is up to ₩5.8M (mid/large) or ₩5.3M (small), plus a conversion bonus of up to ₩1M when you sell or scrap a combustion car (max ₩6.8M). Local subsidies range from about 30% of the national amount (Seoul etc.) to over 150% in some rural counties."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Select vehicle type (sedan/SUV/truck) and price range",
-          "Enter battery capacity and driving range (see vehicle specs)",
-          "Select registration region (local subsidies vary)",
-          "Click 'Calculate Subsidy' to see national + local total",
-          "Compare regional subsidies and popular model amounts"
+          "Pick a model to load the national and local amounts published on ev.or.kr (or enter/estimate them for unlisted cars)",
+          "Enter your quoted price and manufacturer discount to get the net price",
+          "Choose your province and district to apply that area's local subsidy",
+          "Tick conversion, young first-time buyer, low-income or multi-child if they apply",
+          "Share the result by link or image, and check the area/model comparisons and 5-year energy cost"
         ]
       },
       "tips": {
         "title": "Useful Tips",
         "items": [
-          "Vehicles under ₩55M get 100% subsidy rate, ₩55-85M get 50%",
-          "Vehicles over ₩85M are not eligible for subsidies",
-          "Jeju offers the highest local subsidies, Seoul the lowest",
-          "Apply early in the year as budgets are limited",
-          "Apply online at the Zero Emission Vehicle portal (ev.or.kr)"
+          "National = [(performance + battery safety) × battery coefficients + supply target + charging infra + innovation] × price factor. Performance depends on efficiency and range (25% cold weather)",
+          "Base price under ₩53M gets 100%, ₩53M–85M gets 50%, ₩85M or more gets nothing",
+          "Young first-time and low-income buyers each get +20% of the national amount; multi-child households get ₩1M/2M/3M for 2/3/4+ kids (stackable)",
+          "The conversion bonus is ₩1M when the national subsidy is ₩5M or more, prorated below that (e.g. ₩3M → ₩0.6M)",
+          "Local budgets run out, so check remaining slots on ev.or.kr first"
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Can I sell the car after receiving the subsidy?",
-            "a": "You must operate the vehicle for 2 years. Selling before 2 years requires returning the subsidy."
+            "q": "Can I sell the car right after receiving the subsidy?",
+            "a": "Passenger EVs must be kept for 2 years. Selling or exporting earlier requires repaying part of the subsidy depending on how long you kept it."
           },
           {
-            "q": "Can businesses apply?",
-            "a": "Yes, both individuals and businesses can apply, though some regions limit the number per business."
+            "q": "Can I combine the young first-time buyer and low-income add-ons?",
+            "a": "Yes. Percentage add-ons (20% of national each) are added first, then fixed amounts such as the multi-child bonus."
           },
           {
-            "q": "When do subsidies run out?",
-            "a": "Varies by region, but popular areas often exhaust budgets in the first half of the year. Check availability at the EV portal."
+            "q": "Why do local subsidies differ so much?",
+            "a": "The guideline requires local governments to add at least 30% of the national amount; anything above depends on their budget. Seoul and Busan pay about 30%, while many counties in Chungbuk, Chungnam, Jeonbuk and Gyeongbuk match or exceed the national amount."
+          },
+          {
+            "q": "What changes in 2027?",
+            "a": "Price thresholds are expected to drop to ₩50M (100%) and ₩80M (50%), and a bill to cut the EV acquisition tax relief cap from ₩1.4M to ₩0.7M is in pre-announcement."
           }
         ]
       }
