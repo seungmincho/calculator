@@ -8898,6 +8898,109 @@
     }
   },
   "ipChecker": {
+    "hero": {
+      "label": "My public IP",
+      "errorHint": "Check your network connection or whether an ad blocker is blocking the request, then try again. Browser info below is still available.",
+      "v4Note": "You connected to this site over IPv4. If your network also has IPv6, the browser picks one of them, so only one address is visible at a time.",
+      "v6Note": "You connected to this site over IPv6. Your IPv4 address uses a separate path and is not visible here. The WebRTC check below may reveal the other version."
+    },
+    "loc": {
+      "postal": "Postal code",
+      "coords": "Coordinates (approx.)",
+      "accuracy": "IP location reflects where the ISP assigned the address and may be several to tens of km off."
+    },
+    "net": {
+      "colo": "Cloudflare data center",
+      "http": "HTTP protocol",
+      "tls": "TLS version",
+      "rtt": "Round-trip to edge",
+      "note": "All values are what the Cloudflare edge serving this site sees. No third-party IP lookup API is used."
+    },
+    "browser": {
+      "title": "Browser & device",
+      "browser": "Browser",
+      "os": "Operating system",
+      "device": "Device type",
+      "devices": {
+        "mobile": "Mobile",
+        "tablet": "Tablet",
+        "desktop": "Desktop"
+      },
+      "screen": "Screen resolution",
+      "viewport": "Window size",
+      "language": "Languages",
+      "tz": "Browser time zone",
+      "cores": "CPU cores",
+      "online": "Online",
+      "connection": "Connection",
+      "notExposed": "Not provided by this browser",
+      "cookies": "Cookies enabled",
+      "dnt": "Do Not Track",
+      "ua": "User-Agent"
+    },
+    "vpnHint": {
+      "title": "Possible VPN or proxy",
+      "body": "Your browser time zone {browser} differs from the IP location time zone {ip}. You may be using a VPN, proxy or roaming, or the IP location data may be inaccurate."
+    },
+    "webrtc": {
+      "title": "WebRTC IP leak test",
+      "desc": "Checks whether WebRTC (used for video calls and P2P) bypasses your VPN and reveals your real IP. Pressing the button sends one request to Cloudflare's public STUN server (stun.cloudflare.com).",
+      "run": "Run test",
+      "rerun": "Run again",
+      "running": "Testing...",
+      "unsupported": "WebRTC is unavailable or disabled in this browser, so it cannot leak your IP.",
+      "blocked": "The WebRTC test was blocked (browser setting or extension). Leak risk is low.",
+      "none": "No addresses were gathered.",
+      "types": {
+        "host": "Local (host)",
+        "srflx": "Public (STUN)",
+        "prflx": "Public (peer)",
+        "relay": "Relay (TURN)"
+      },
+      "mdnsOk": "Your local IP is hidden behind a random .local name (mDNS). This is the default protection in modern browsers; your private IP is not exposed.",
+      "localExposed": "Your local (private) IP is exposed: {ips}. You can block WebRTC local IP exposure in browser settings or with an extension.",
+      "leak": "WebRTC shows a different address from your public IP above: {ips}. If you are on a VPN, WebRTC may be bypassing it.",
+      "same": "The public IP seen via WebRTC matches your public IP above. No extra leak through this path.",
+      "otherVersion": "A public address of the other IP version is visible: {ips}. Normal on dual-stack (IPv4+IPv6) networks; a leak if your VPN tunnels only one version.",
+      "noStun": "No STUN response. Your network may block UDP or the browser restricts WebRTC public IP exposure.",
+      "note": "Web pages cannot reliably see your private IP because of mDNS protection. Check it with ipconfig on Windows or ifconfig / ip addr on macOS and Linux."
+    },
+    "check": {
+      "title": "IP address check",
+      "desc": "Instantly check whether another IP address is valid and which range it belongs to. Leave empty to check your own IP.",
+      "label": "IP address",
+      "version": "Version",
+      "class": "Range",
+      "full": "Full form",
+      "invalid": "Not a valid IPv4/IPv6 address.",
+      "classes": {
+        "public": "Public IP",
+        "private": "Private IP",
+        "loopback": "Loopback",
+        "linkLocal": "Link-local",
+        "cgnat": "CGNAT shared range",
+        "uniqueLocal": "IPv6 private (ULA)",
+        "multicast": "Multicast",
+        "reserved": "Reserved / documentation"
+      },
+      "explain": {
+        "public": "Globally routable on the internet. Firewall allowlists use addresses like this.",
+        "private": "Used only inside home or office networks (10/8, 172.16/12, 192.168/16); not directly reachable from outside.",
+        "loopback": "Points to the machine itself (127.0.0.1, ::1). Used for local development servers.",
+        "linkLocal": "Auto-assigned when DHCP fails (169.254.x.x) or used only on the local link in IPv6 (fe80::).",
+        "cgnat": "Range ISPs use to share one public IP among many subscribers (100.64/10). Port forwarding is hard behind it.",
+        "uniqueLocal": "IPv6 private addresses (fc00::/7), not routed on the internet.",
+        "multicast": "Group address for sending to many receivers at once; not assigned to a device.",
+        "reserved": "Reserved for special purposes (0.0.0.0, 240/4, documentation 2001:db8::, etc.) and not normally used."
+      },
+      "more": "Need CIDR/subnet math or a domain's IP?",
+      "subnetLink": "Subnet calculator",
+      "dnsLink": "DNS lookup"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "body": "IP and location are simply what the Cloudflare edge already knows when you load the page; nothing is stored or logged. Browser info is read on your device only. Use 'Copy all' to copy every item as text."
+    },
     "title": "IP Address Checker",
     "description": "Check your public IP address, location, ISP, and network information at a glance.",
     "myIp": "My IP Address",
@@ -8950,10 +9053,11 @@
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Open the page and your current public IP address appears automatically — no input needed.",
-          "2. Click the copy icon next to your IP to save it to your clipboard, or view your approximate location on the map.",
-          "3. Enable a VPN and refresh the page to instantly see the updated IP and location.",
-          "4. To look up a specific IP address, enter it in the input field and press the lookup button."
+          "1. Your current public IP (IPv4 or IPv6) appears in the blue card as soon as the page opens. Copy it with the button next to it.",
+          "2. The location and network cards show country/city, ISP (ASN), the Cloudflare data center you hit, and HTTP/TLS versions.",
+          "3. Turn on your VPN and press Refresh to see the new IP and location, then run the WebRTC leak test to check for VPN bypass.",
+          "4. Enter another address in 'IP address check' to instantly see if it is valid, IPv4/IPv6, and private/public/CGNAT.",
+          "5. Press 'Copy all' to copy every item as text for support tickets or firewall requests."
         ]
       },
       "tips": {
@@ -13738,8 +13842,56 @@
     }
   },
   "monitorTest": {
+    "quick": {
+      "title": "Quick Check (buying new or used)",
+      "description": "Runs the 9 must-see tests, from dead pixels to burn-in, back to back in fullscreen. Mark defects on each screen and a result card is ready when you finish.",
+      "start": "Start quick check"
+    },
+    "info": {
+      "title": "Your display",
+      "remeasure": "Measure again",
+      "resolution": "Resolution × scale",
+      "physical": "Estimated native",
+      "refresh": "Refresh rate",
+      "gamut": "Color gamut",
+      "hdr": "HDR",
+      "yes": "Supported",
+      "no": "Not supported",
+      "measuring": "Measuring…",
+      "note": "Values reported by the browser. OS scaling, power saving and other windows can affect them, so they may differ from the panel spec."
+    },
+    "mark": {
+      "none": "None",
+      "minor": "Slight",
+      "severe": "Severe",
+      "count": "{n}"
+    },
+    "checkNames": {
+      "deadPixel": "Dead pixels",
+      "lightBleed": "Backlight bleed",
+      "uniformity": "Uniformity",
+      "levels": "Black/white levels",
+      "banding": "Banding",
+      "sharpness": "Sharpness",
+      "responseTime": "Ghosting",
+      "burnIn": "Burn-in",
+      "viewingAngle": "Viewing angle"
+    },
+    "summary": {
+      "label": "My monitor check result",
+      "deadCount": "Dead pixels {n}",
+      "none": "Nothing marked yet",
+      "grade0": "Good",
+      "grade1": "Caution",
+      "grade2": "Likely defective"
+    },
+    "checklist": {
+      "title": "Checklist",
+      "reset": "Reset",
+      "empty": "Mark results on a test screen or here to build a summary."
+    },
     "title": "Monitor Test",
-    "description": "14 tests for dead pixels, contrast, color, gamma, burn-in and more",
+    "description": "18 monitor tests for dead pixels, backlight bleed, uniformity, banding, ghosting, burn-in and more, plus a quick-check checklist",
     "startFullscreen": "Start Fullscreen Test",
     "preview": "Preview",
     "clickToStart": "Click to start fullscreen",
@@ -13747,19 +13899,85 @@
     "prev": "Prev",
     "next": "Next",
     "hud": {
-      "clickToNext": "Click for next step",
+      "mark": "Mark defect",
+      "touchHint": "Tap or swipe left: next · Swipe right: previous · X: exit",
+      "clickToNext": "Click, → or Space: next · ←: previous · Esc: exit",
       "escToExit": "ESC to exit"
     },
     "tests": {
-      "deadPixel": {
-        "name": "Dead Pixel",
-        "shortDesc": "Find dead/stuck pixels with 8 solid colors",
-        "description": "Fill the entire screen with 8 solid colors (black, white, red, green, blue, cyan, magenta, yellow) to find dead or stuck pixels.",
+      "uniformity": {
+        "name": "Uniformity",
+        "shortDesc": "Compare brightness and tint across a 9-zone grid",
+        "description": "Fills the screen with one gray split into 9 zones so you can compare edges and center for brightness differences (clouding, vignetting) and tint shifts (yellowish or bluish areas).",
         "steps": [
           "Start the fullscreen test",
-          "Check for any dots or differently colored spots on each color",
-          "Click to advance to the next color",
-          "Check all 8 colors then press ESC to exit"
+          "Look for zones that are noticeably darker or brighter",
+          "Check that no zone is tinted yellow or blue",
+          "Go through 5%, 25%, 50%, 75% and 100% gray"
+        ]
+      },
+      "levels": {
+        "name": "Black/White Levels",
+        "shortDesc": "Check whether near-black 1–20 and near-white 235–254 steps are visible",
+        "description": "Shows squares of level 1–20 on pure black and 235–254 on pure white. If many dark squares disappear, shadow detail is crushed or brightness/gamma is off.",
+        "steps": [
+          "Start the fullscreen test",
+          "On black, find the lowest visible number (4–5 or below is excellent)",
+          "On white, find the highest distinguishable number (250+ is excellent)",
+          "If not visible, adjust brightness, contrast, gamma or black level"
+        ],
+        "labels": [
+          "Near black 1–20",
+          "Near white 235–254"
+        ],
+        "hintBlack": "Find the lowest number you can tell apart from the background (0). 1–5 visible is excellent; starting at 10+ means crushed blacks.",
+        "hintWhite": "Find the highest number you can tell apart from the background (255). Seeing up to 250+ is excellent."
+      },
+      "banding": {
+        "name": "Banding",
+        "shortDesc": "Check gradients for coarse bands or color blotches",
+        "description": "Displays smooth gradients from black to white (or R/G/B) to reveal stair-step bands or color shifts. The last screen compares the original (top) with a 6-bit 64-level reference (bottom).",
+        "steps": [
+          "Start the fullscreen test",
+          "Check whether gradients are smooth or show coarse vertical bands",
+          "Pink or green tints in the gray gradient point to calibration issues",
+          "If the top looks as stepped as the 64-level bottom, banding is severe"
+        ],
+        "labels": [
+          "Gray 0→255",
+          "Dark gray 0→48 (stretched)",
+          "Red",
+          "Green",
+          "Blue",
+          "Top: original / Bottom: 6-bit (64 levels) reference"
+        ]
+      },
+      "sharpness": {
+        "name": "Sharpness",
+        "shortDesc": "1-pixel lines, checkerboard and small text reveal blur and scaling issues",
+        "description": "Draws 1-pixel vertical lines, horizontal lines and a checkerboard at true device-pixel resolution. A non-native resolution or wrong scaling turns them gray or causes moiré. The last screen checks small text clarity.",
+        "steps": [
+          "Start the fullscreen test",
+          "A fine, even pattern across the whole screen is normal",
+          "Gray mush or wavy moiré means you should check resolution/scaling",
+          "Check small text for color fringing or blur"
+        ],
+        "labels": [
+          "1px vertical lines",
+          "1px horizontal lines",
+          "1px checkerboard",
+          "Small text"
+        ]
+      },
+      "deadPixel": {
+        "name": "Dead Pixel",
+        "shortDesc": "Find dead/stuck pixels with 11 solid colors and grays",
+        "description": "Fills the screen with black, white, red, green, blue, cyan, magenta, yellow and three grays to find dead pixels (always off) and stuck pixels (fixed on one color).",
+        "steps": [
+          "Wipe the screen and start the fullscreen test",
+          "Scan each color closely for dots or odd-colored spots",
+          "Click, Space or → (tap on mobile) to go to the next color",
+          "Record how many you found with the mark buttons"
         ]
       },
       "viewingAngle": {
@@ -13808,18 +14026,29 @@
         ]
       },
       "responseTime": {
+        "labels": [
+          "Mid-gray background",
+          "Dark background",
+          "Light background"
+        ],
         "name": "Response Time",
-        "shortDesc": "Check response time and ghosting with 5 fps levels",
-        "description": "Test monitor response time and ghosting with 5 boxes moving at 1fps, 15fps, 30fps, 45fps, and 60fps.",
-        "instruction": "Compare ghosting across different fps levels",
+        "shortDesc": "Check ghosting with a moving UFO and FPS counter",
+        "description": "Watch UFOs moving at 480, 960 and 1440 pixels per second for trailing ghosts or inverse ghosting (overshoot). The top-right corner shows the real frame rate and estimated refresh rate.",
+        "instruction": "Compare the trails behind the UFOs",
         "steps": [
           "Start the fullscreen test",
-          "5 boxes move at different speeds simultaneously",
-          "Ghosting on faster boxes indicates slow response time",
-          "Press ESC to exit"
+          "Follow a UFO with your eyes and look for a blurry trail",
+          "A bright halo behind it means overdrive is too strong",
+          "If FPS is below the advertised refresh rate, check your refresh settings"
         ]
       },
       "gamma": {
+        "colors": [
+          "Gray",
+          "Red",
+          "Green",
+          "Blue"
+        ],
         "name": "Gamma",
         "shortDesc": "Measure monitor gamma value with 4 color patterns",
         "description": "Compare checkerboard patterns and backgrounds in 4 colors (gray, red, green, blue) to measure your monitor's gamma value.",
@@ -13833,14 +14062,15 @@
         ]
       },
       "lightBleed": {
+        "tip": "Darken the room, set monitor brightness to max, and look from about 1 m straight on. Photos exaggerate bleed, so judge with your eyes.",
         "name": "Light Bleed",
-        "shortDesc": "Check for light bleed, clouding, banding, and grain in 15 steps",
-        "description": "Display 15 brightness levels from black to white and back to check for light bleed, clouding, uneven coloring, banding patterns, and grain.",
+        "shortDesc": "Check backlight bleed and clouding on black and dark gray",
+        "description": "Shows pure black and four dark grays to reveal backlight leaking from the edges (bleed), blotchy brightness (clouding) and IPS glow.",
         "steps": [
-          "Start the test in a dark room for best results",
-          "On black screens, check for light leaking from edges",
-          "On bright screens, check for dark spots or clouding",
-          "Click to advance to the next brightness level"
+          "Darken the room and set monitor brightness to maximum",
+          "On black, check whether light leaks from corners or edges",
+          "On dark gray, look for cloud-like blotches",
+          "Mark it as none, slight or severe"
         ]
       },
       "burnIn": {
@@ -13849,9 +14079,9 @@
         "description": "Compare solid colors and mosaic checkerboard patterns side-by-side in 7 colors to detect burn-in (persistent image retention).",
         "steps": [
           "Start the fullscreen test",
-          "Move your mouse left/right to compare solid vs mosaic areas",
-          "If you see ghost images on the solid area, that indicates burn-in",
-          "Click to advance to the next color"
+          "Move the mouse left/right (drag with a finger on mobile) to compare solid vs mosaic",
+          "Marks like logos or a taskbar on the solid area indicate burn-in",
+          "Click (tap on mobile) to go to the next color"
         ]
       },
       "whiteBalance": {
@@ -13877,6 +14107,18 @@
         ]
       },
       "imageQuality": {
+        "labels": [
+          "Rainbow spectrum",
+          "Grayscale",
+          "Color bars",
+          "Skin tones",
+          "Landscape colors",
+          "Color wheel",
+          "Saturation (red)",
+          "Dark gradient",
+          "Checkerboard",
+          "Purple gradient"
+        ],
         "name": "Image Quality",
         "shortDesc": "Check color reproduction with 10 test patterns and custom images",
         "description": "Test color reproduction with rainbow spectrum, grayscale, color bars, skin tones and 10 other patterns, plus custom image upload.",
@@ -13890,6 +14132,7 @@
         ]
       },
       "calibration": {
+        "safeArea": "{n}% safe area",
         "name": "Calibration",
         "shortDesc": "Adjust screen position with grid, color bars, and safe areas",
         "description": "Use crosshair grid, 8-color bars, and safe area guides to precisely calibrate your monitor's position and aspect ratio.",
@@ -13901,6 +14144,10 @@
         ]
       },
       "pixelFix": {
+        "warningTitle": "Photosensitivity warning",
+        "warningBody": "This test flashes many colors very rapidly. Do not run it if you or your family have a history of photosensitive epilepsy or seizures, or if you feel dizzy or have a headache. Avoid looking at the screen while it runs and press Esc (X on mobile) immediately if you feel unwell.",
+        "confirm": "I understand, start",
+        "cancel": "Cancel",
         "name": "Pixel Fix",
         "shortDesc": "Attempt to fix stuck pixels with rapid color flashing",
         "description": "Apply rapid random RGB pixel flashing to stimulate stuck pixels and attempt recovery. Drag to reposition and resize the fix box.",
@@ -13914,6 +14161,16 @@
       }
     },
     "guide": {
+      "used": {
+        "title": "Checking a new or used device",
+        "items": [
+          "For in-person used deals, open this page on the seller's laptop or phone and run the Quick Check",
+          "Check dead pixels on black, white, red, green and blue (wipe dust to tell it apart)",
+          "Focus on burn-in for OLED phones/TVs and on backlight bleed/uniformity for LCD monitors",
+          "If the refresh rate is lower than advertised (e.g. 144Hz), raise it in the cable/graphics settings and measure again",
+          "Save the result image or share the link as evidence for returns or disputes"
+        ]
+      },
       "title": "User Guide",
       "preparation": {
         "title": "Test Preparation",
@@ -20434,8 +20691,174 @@
     }
   },
   "interiorCalc": {
+    "pyeong": " pyeong",
+    "areaFmt": "{m2}㎡ ({py} pyeong)",
+    "roomN": "Room {n}",
+    "roomNames": {
+      "living": "Living room",
+      "master": "Master bedroom",
+      "room2": "Bedroom 2",
+      "room3": "Bedroom 3",
+      "kitchen": "Kitchen",
+      "bath": "Bathroom",
+      "bath2": "Bathroom 2",
+      "room": "Room"
+    },
+    "presets": {
+      "title": "Quick start",
+      "oneRoom": "Studio",
+      "apt24": "24-pyeong apt",
+      "apt32": "32-pyeong apt",
+      "note": "Room layouts and sizes are estimates for a typical floor plan. Replace them with measured values for accuracy. (24 pyeong ≈ 59㎡ net, 32 pyeong ≈ 84㎡ net)"
+    },
+    "rooms": {
+      "title": "Rooms",
+      "count": "{n} rooms"
+    },
+    "inputMode": "Input",
+    "mode": {
+      "dim": "W × L",
+      "pyeong": "Pyeong"
+    },
+    "pyeongInput": "Floor area (pyeong)",
+    "pyeongNote": "When entering pyeong, the wall perimeter is estimated assuming a 1.25:1 rectangle.",
+    "openings": "Doors & windows (deducted from walls)",
+    "doorW": "Door width (m)",
+    "doorH": "Door height (m)",
+    "winW": "Window width (m)",
+    "winH": "Window height (m)",
+    "wallCalc": "Walls {gross}㎡ − openings {minus}㎡ = {net}㎡ to cover",
+    "finish": {
+      "wall": "Wall",
+      "floor": "Floor",
+      "ceil": "Ceiling",
+      "wallpaper": "Wallpaper",
+      "paint": "Paint",
+      "tile": "Tile",
+      "none": "None",
+      "vinyl": "Vinyl sheet",
+      "laminate": "Laminate"
+    },
+    "materials": "Material specs & prices",
+    "tabs": {
+      "paper": "Wallpaper",
+      "paint": "Paint",
+      "floor": "Flooring",
+      "tile": "Tile",
+      "trim": "Baseboard & molding"
+    },
+    "paper": {
+      "kind": {
+        "silk": "Silk (vinyl)",
+        "wideHapji": "Wide paper",
+        "hapji": "Narrow paper",
+        "custom": "Custom"
+      },
+      "specNote": "Typical sizes (vary by product): silk 1.06×15.6m, wide paper 0.93×17.75m — each roll covers about 16.5㎡ of wall. Narrow paper 0.53×12.5m.",
+      "width": "Roll width (m)",
+      "length": "Roll length (m)",
+      "repeat": "Pattern repeat (cm)",
+      "repeatHelp": "With a pattern repeat, each drop is cut in repeat units to match the pattern, so more rolls are needed. Use 0 for plain paper. Drop length = ceiling height + 10cm trim.",
+      "loss": "Extra (%)",
+      "price": "Price per roll (₩)"
+    },
+    "paint": {
+      "coverage": "Coverage (㎡/L per coat)",
+      "coverageHelp": "Interior water-based paint covers about 8–12㎡ per liter per coat. Check the label.",
+      "coats": "Coats",
+      "coatsN": "{n}",
+      "loss": "Extra (%)",
+      "canPrice": "{size}L can price (₩)",
+      "canNote": "With all 18L/4L/1L prices entered, the cheapest combo is chosen; otherwise larger cans are assumed cheaper per liter and the least-waste combo is picked."
+    },
+    "floor": {
+      "lamTitle": "Laminate flooring",
+      "lamBox": "Coverage per box (㎡)",
+      "lamLoss": "Waste (%)",
+      "lamPrice": "Price per box (₩)",
+      "lamNote": "A box typically covers about 1 pyeong (3.3㎡). Check the box label.",
+      "vinylTitle": "Vinyl sheet",
+      "vinylWidth": "Sheet width",
+      "widthN": "{n}m wide",
+      "vinylPrice": "Price per meter (₩)",
+      "vinylNote": "Usually 1.8m (1.83m) wide, some 2m. Sold by the running meter. The cheaper direction is used with 10cm extra per strip."
+    },
+    "tile": {
+      "size": "Tile size",
+      "w": "Width (mm)",
+      "h": "Height (mm)",
+      "perBox": "Tiles per box",
+      "price": "Price per box (₩)",
+      "grout": "Grout (mm)",
+      "loss": "Waste",
+      "note": "Use 10%+ for small bathrooms or large tiles with many cuts, about 5% for large plain floors. Tiles per box are sample values and vary by product."
+    },
+    "trim": {
+      "on": "Include",
+      "off": "Exclude",
+      "price": "Price per piece (₩)",
+      "stick": "Piece length (m)",
+      "note": "Baseboard = room perimeter minus door widths; crown molding = ceiling perimeter. Tiled-wall rooms (bathrooms) are excluded; 10% extra for cuts."
+    },
+    "items": {
+      "paper": "{kind} wallpaper",
+      "paint": "Paint",
+      "vinyl": "Vinyl sheet",
+      "laminate": "Laminate",
+      "wallTile": "Wall tile",
+      "floorTile": "Floor tile",
+      "baseboard": "Baseboard",
+      "molding": "Crown molding"
+    },
+    "units": {
+      "roll": "{n} rolls",
+      "m": "{n} m",
+      "box": "{n} boxes",
+      "piece": "{n} pcs",
+      "stick": "{n} pcs",
+      "can": "{size}L×{n}"
+    },
+    "detail": {
+      "paper": "{w}×{len}m · {area}㎡",
+      "paint": "{liters}L needed · {area}㎡ × {coats} coats",
+      "vinyl": "{w}m wide · {area}㎡",
+      "laminate": "{box}㎡/box · {area}㎡",
+      "tile": "{w}×{h}mm · {area}㎡",
+      "trim": "{len}m · {stick}m pieces"
+    },
+    "hero": {
+      "label": "Materials for {n} rooms · {py} pyeong floor",
+      "total": "Total material cost",
+      "partial": "Only materials with prices are included",
+      "noPrice": "Enter material prices to get the total cost",
+      "empty": "No finishes selected"
+    },
+    "list": {
+      "title": "Shopping list",
+      "copy": "Copy list",
+      "copied": "Copied",
+      "header": "[Interior materials shopping list]",
+      "areas": "Floor {floor}㎡ · Walls {wall}㎡ · Ceiling {ceil}㎡"
+    },
+    "areas": {
+      "floor": "Floor",
+      "wall": "Walls (net)",
+      "ceiling": "Ceiling"
+    },
+    "share": {
+      "label": "Materials for {n} rooms · {py} pyeong"
+    },
+    "invalidRoll": "A wallpaper drop (height + trim + pattern repeat) is longer than the roll. Check the roll size or ceiling height.",
+    "guideLimitTitle": "Method & limitations",
+    "guideLimitItems": [
+      "Wallpaper drops = net wall area ÷ (roll width × height), then divided by drops per roll. Short pieces above doors/windows are assumed to come from offcuts.",
+      "Rolls are assumed to carry over between rooms (summed, then rounded up). Opening a new roll per room needs a bit more.",
+      "Ceiling wallpaper is assumed to run across the short side without pattern matching.",
+      "Sizes, coverage and box counts are typical values. Check product labels and contractor quotes before buying.",
+      "Entryway, hallway, balcony and closet interiors are not included — add them as rooms if needed."
+    ],
     "title": "Interior Area Calculator",
-    "description": "Enter room dimensions to automatically calculate floor, wall, and ceiling area plus paint, wallpaper, and tile quantities and costs.",
+    "description": "Enter room dimensions or pyeong to get wallpaper rolls, paint cans, laminate boxes, vinyl meters, tile counts, baseboards and total material cost. Supports door/window deductions, pattern repeat, waste rates and whole-home totals.",
     "addRoom": "Add Room",
     "removeRoom": "Remove Room",
     "roomName": "Room Name",
@@ -20443,12 +20866,12 @@
     "dimensions": "Room Dimensions",
     "width": "Width (m)",
     "length": "Length (m)",
-    "height": "Height (m)",
+    "height": "Ceiling height (m)",
     "deductions": "Deductions",
-    "doors": "Number of Doors",
-    "windows": "Number of Windows",
-    "customDeduction": "Other Deductions (m²)",
-    "customDeductionHelp": "A/C units, built-in wardrobes, etc.",
+    "doors": "Doors",
+    "windows": "Windows",
+    "customDeduction": "Other deduction (㎡)",
+    "customDeductionHelp": "Built-in closets, feature walls, etc. not being papered",
     "paintCalc": "Paint Calculator",
     "paintCoverage": "Coverage (m²/L)",
     "paintCoats": "Number of Coats",
@@ -20479,7 +20902,7 @@
     "rolls": "rolls",
     "tiles": "tiles",
     "won": "₩",
-    "sqm": "m²",
+    "sqm": "㎡",
     "coats1": "1 coat",
     "coats2": "2 coats",
     "coats3": "3 coats",
@@ -20489,19 +20912,19 @@
     "summaryTitle": "Overall Summary",
     "noRooms": "Add a room to get started",
     "guideTitle": "User Guide",
-    "guideBasicTitle": "Basic Calculations",
+    "guideBasicTitle": "How to use",
     "guideBasicItems": [
-      "Enter width, length, and height in meters.",
-      "Floor area = width × length; Wall area = 2 × (width + length) × height.",
-      "Doors (0.9×2.1m) and windows (1.5×1.2m) are automatically deducted from wall area.",
-      "Use the Add Room button to calculate multiple rooms at once."
+      "Pick a quick-start layout (studio, 24- or 32-pyeong apartment), then open each room to enter measured sizes.",
+      "For each room enter W × L or pyeong, ceiling height (typically 2.3m in Korean apartments), and door/window counts and sizes.",
+      "Choose wall/floor/ceiling finishes per room; materials are totaled for the whole home.",
+      "Enter prices to get the total cost, then copy the shopping list or share a link."
     ],
-    "guideMaterialTitle": "Material Calculation Tips",
+    "guideMaterialTitle": "Material rules",
     "guideMaterialItems": [
-      "Paint: Average Korean apartment coverage is 10–12 m²/L; 2 coats is standard.",
-      "Wallpaper: Standard Korean roll width 0.53m, length 10m. Pattern repeats increase waste.",
-      "Tiles: Default grout gap is 2–3mm. A 10% wastage margin is applied automatically for cuts.",
-      "Standard Korean apartment ceiling height is 2.3–2.4m."
+      "Silk and wide paper rolls nominally cover about 16.5㎡ of wall, but cutting drops wastes some, so you need more than area alone suggests.",
+      "Paint liters = area × coats ÷ coverage. Two coats is typical; buy a mix of 18L, 4L and 1L cans.",
+      "Laminate is sold by the box (≈3.3㎡), vinyl sheet by the meter from 1.8m-wide rolls.",
+      "Tiles = area × (1 + waste) ÷ (tile + grout) area. Waste is usually 5–10%."
     ]
   },
   "investmentCalculator": {
@@ -31942,51 +32365,184 @@
     }
   },
   "stockCalculator": {
+    "title": "Stock Return Calculator",
+    "subtitle": "Net profit after fees and securities transaction tax, break-even sell price, averaging down, and US stock capital gains tax",
+    "won": " KRW",
+    "sharesUnit": " sh",
+    "empty": "Enter a buy price and quantity to see results",
+    "save": "Save",
+    "saved": "Saved",
+    "tabs": {
+      "trade": "Profit / Loss",
+      "avg": "Average Price",
+      "target": "Target Price",
+      "us": "US Stocks"
+    },
+    "market": {
+      "label": "Market",
+      "kospi": "KOSPI",
+      "kosdaq": "KOSDAQ",
+      "konex": "KONEX",
+      "etf": "Domestic ETF",
+      "rate": "Tax on sale {rate}% (sales from 2026)"
+    },
+    "fields": {
+      "buy": "Buy price (per share)",
+      "sell": "Sell price (per share)",
+      "qty": "Quantity",
+      "fee": "Commission rate",
+      "feeHint": "Enter your broker's online rate. 0.015% is only an example; whether exchange fees are included varies by broker"
+    },
+    "trade": {
+      "hero": "Net return (after fees & tax)",
+      "profit": "Net profit {amount} KRW",
+      "gross": "Gross return {pct} · Trading costs {cost} KRW"
+    },
+    "breakeven": {
+      "title": "Break-even sell price",
+      "desc": "Sell at or above this price to avoid a loss after fees and tax ({pct} vs buy price; {tick} KRW with tick size)"
+    },
+    "rows": {
+      "buyAmount": "Buy amount",
+      "buyFee": "Buy commission",
+      "sellAmount": "Sell amount",
+      "sellFee": "Sell commission",
+      "txTax": "Securities transaction tax",
+      "farmTax": "Special tax for rural development",
+      "proceeds": "Cash after sale",
+      "profit": "Net P/L (incl. buy commission)",
+      "totalCost": "Total trading costs"
+    },
+    "target": {
+      "pct": "Target net return",
+      "gain": "Gain",
+      "loss": "Stop loss",
+      "hero": "Sell price needed for {pct} net",
+      "heroSub": "Exactly {price} KRW ({up} vs buy) · Selling at the tick price nets {profit} KRW",
+      "table": "Sell price by return",
+      "colPct": "Net return",
+      "colPrice": "Sell price (tick)",
+      "colChange": "Price change",
+      "colProfit": "Net P/L (KRW)",
+      "be": "Break-even",
+      "note": "Based on net return after commission and transaction tax; prices are rounded up to KRX tick sizes."
+    },
+    "avg": {
+      "lots": "Purchases",
+      "lotN": "#{n}",
+      "lotPrice": "Purchase {n} price",
+      "lotQty": "Purchase {n} quantity",
+      "lotCount": "{n} purchases",
+      "totalQty": "Total shares",
+      "add": "Add purchase",
+      "remove": "Remove",
+      "cur": "Current price",
+      "targetAvg": "Target average",
+      "hero": "Average cost per share",
+      "heroSub": "{qty} shares · {amount} KRW invested",
+      "needTitle": "To bring your average to {avg} KRW at the current price",
+      "need": "Buy {add} more shares",
+      "needShort": "+{add} sh → {avg} KRW",
+      "needSub": "Cost {amount} KRW · New average {avg} KRW · {qty} shares total",
+      "unreachable": "This average can't be reached at the current price. Averaging down needs current < target < average; averaging up needs average < target < current.",
+      "evalAmount": "Market value at current price",
+      "evalPnl": "Unrealized P/L",
+      "recover": "Rise needed to break even",
+      "note": "Average cost excludes commissions, as in most broker apps. For averaging up, the maximum quantity that keeps the average at or below the target is shown."
+    },
+    "us": {
+      "buy": "Buy price (USD)",
+      "sell": "Sell price (USD)",
+      "buyFx": "Buy FX rate",
+      "sellFx": "Sell FX rate",
+      "fxHint": "Tax uses the base exchange rate on each settlement date, which may differ from your preferential conversion rate",
+      "feeHint": "Overseas online commission (0.25% is an example). Promotional rates vary by broker",
+      "otherGain": "Other foreign stock P/L this year",
+      "otherGainHint": "Foreign stock gains are netted for the year and {amount} KRW is deducted before tax",
+      "otherProfit": "Gain",
+      "otherLoss": "Loss",
+      "hero": "After-tax KRW return (FX, fees, capital gains tax)",
+      "netLine": "After-tax profit {amount} KRW",
+      "heroSub": "USD return {usd} · Pre-tax KRW return {pre}",
+      "usdPct": "USD return",
+      "fx": "FX rate",
+      "buyKrw": "Buy amount (KRW)",
+      "sellKrw": "Sell amount (KRW)",
+      "fees": "Commissions",
+      "gain": "Capital gain",
+      "priceGain": "From price change",
+      "fxGain": "From FX change",
+      "tax": "Extra capital gains tax from this trade",
+      "net": "After-tax P/L",
+      "breakeven": "Break-even sell price (at sell FX)",
+      "taxNote": "Annual tax base {base} KRW × 22% (20% + 2% local) = {total} KRW. File and pay yourself in May of the following year."
+    },
+    "share": {
+      "hide": "Hide amounts and quantity on the share card",
+      "trade": "Net return after fees & tax",
+      "target": "Target sell price for {pct} net",
+      "avg": "My average cost",
+      "us": "US stock after-tax KRW return"
+    },
+    "notes": {
+      "title": "Assumptions",
+      "items": [
+        "Securities transaction tax (sales from Jan 1, 2026): KOSPI 0.05% + rural development tax 0.15% = 0.20%, KOSDAQ 0.20%, KONEX 0.10%. Domestic ETFs are exempt.",
+        "Commissions and taxes are truncated below 1 KRW. Brokers may round differently (e.g. below 10 KRW), so results can differ by a few won.",
+        "Gains on Korean listed stocks are not taxed unless you are a major shareholder. Major-shareholder tax and dividend tax are not calculated.",
+        "Foreign stock capital gains tax: annual gains netted, 2.5M KRW deducted, 22% (incl. local tax). Commissions are deductible; KRW conversion uses the settlement-date base rate.",
+        "KRX tick sizes (since 2023-01-25): under 2,000: 1; under 5,000: 5; under 20,000: 10; under 50,000: 50; under 200,000: 100; under 500,000: 500; above: 1,000 KRW."
+      ],
+      "disclaimer": "This is a calculator, not investment advice. Check your broker's trade confirmations and the NTS filing rules for actual fees and taxes."
+    },
     "guide": {
       "title": "Stock Investment Guide",
       "whatIs": {
         "title": "What is the Stock Calculator?",
-        "description": "A tool that accurately calculates brokerage fees, taxes, and realized profit/loss for stock trades. Enter buy and sell prices to see commissions, transaction tax, after-tax returns, and break-even price. Supports analysis for various investment styles."
+        "description": "Calculates what you actually keep from Korean and US stock trades after broker commissions and the securities transaction tax (0.20% on KOSPI/KOSDAQ in 2026). It also shows the break-even sell price, the sell price needed for a target return, average cost and how many shares to buy when averaging down, and FX gains plus capital gains tax (22%, 2.5M KRW deduction) for US stocks."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "1. Enter buy information: price per share, quantity, and commission rate.",
-          "2. Enter sell information: target selling price and quantity.",
-          "3. Click Calculate to see total amounts, commissions, transaction tax, and realized profit/loss.",
-          "4. The break-even price (BEP) is automatically calculated."
+          "1. Profit/Loss tab: choose the market (KOSPI, KOSDAQ, ETF) and enter buy price, sell price, quantity and commission to see net return and break-even price.",
+          "2. Target Price tab: enter a target net return (or stop-loss) to get the required sell price, rounded to the KRX tick size.",
+          "3. Average Price tab: enter each purchase to get the average cost and how many shares to buy at the current price to reach a target average.",
+          "4. US Stocks tab: enter USD prices and buy/sell FX rates to split price gain and FX gain and see the after-tax KRW result.",
+          "5. Inputs are stored in the URL for sharing; the share card can hide amounts and quantities."
         ]
       },
       "tips": {
         "title": "Key Investment Tips",
         "items": [
-          "Fees and taxes have a bigger impact than expected. Frequent trading accumulates costs — always check your break-even.",
-          "Compare PER against industry average. PBR below 1x indicates undervaluation. ROE above 15% is favorable.",
-          "Diversify across 5–10 stocks; avoid investing more than 20% in a single stock.",
-          "Set stop-loss rules in advance: -5 to -10% from buy price to prevent large losses.",
-          "For volatile stocks, use dollar-cost averaging (DCA) to lower average buy price.",
-          "Emotional trading (FOMO, panic selling) is the most common failure. Stick to your plan.",
-          "Long-term investing (1+ year) incurs less in fees/taxes and benefits from compound growth."
+          "Use the actual commission rate from your broker's fee page. Promotional rates may add separate exchange fees.",
+          "If you trade often, check the break-even price first: the 0.20% tax on every KOSPI/KOSDAQ sale means you need roughly 0.2–0.25% above your buy price.",
+          "Domestic ETFs have no transaction tax on sale, so switching the market to ETF lowers the break-even price.",
+          "A US stock can lose in USD but gain in KRW if the dollar rises, which can still be taxable. Check the FX gain line.",
+          "Foreign stock gains are netted over the year, so enter other realized foreign stock P/L to see this trade's real tax."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Securities transaction tax vs capital gains tax?",
-            "a": "Transaction tax is auto-levied at 0.20% of sell amount (KOSPI). Capital gains tax applies to major shareholders (₩1B+) or foreign stock sales. Most retail investors only pay transaction tax."
+            "q": "What is the securities transaction tax in 2026?",
+            "a": "For sales from Jan 1, 2026: KOSPI 0.05% + rural development tax 0.15% = 0.20%, KOSDAQ 0.20%, KONEX 0.10% (KOSPI/KOSDAQ were 0.15% in 2025). Domestic ETFs are exempt."
+          },
+          {
+            "q": "Transaction tax vs capital gains tax?",
+            "a": "Transaction tax is charged on every sale regardless of profit. Korean listed stock gains are taxed only for major shareholders; foreign stock gains are netted annually, 2.5M KRW is deducted and 22% (incl. local tax) is filed and paid the following May."
           },
           {
             "q": "What are typical commission rates?",
-            "a": "Online trades typically range from 0.015% to 0.025%. Some brokerages offer lifetime zero-commission promotions."
+            "a": "They vary by broker, account type and promotion. Domestic online trades are often around 0.01–0.015%, US stocks around 0.07–0.25%. The defaults are examples; enter your own rate."
           },
           {
-            "q": "Fundamental vs technical analysis?",
-            "a": "Fundamental analysis is essential for long-term value investing. Technical analysis is useful for short-term timing. Combining both is most effective."
+            "q": "How is the averaging-down quantity calculated?",
+            "a": "Solving (avg × qty + current × x) ÷ (qty + x) = target gives x = qty × (avg − target) ÷ (target − current). It only works when the current price is below the target average."
           },
           {
-            "q": "ETFs or individual stocks for beginners?",
-            "a": "ETFs offer diversified exposure without individual analysis and lower costs. Consider individual stocks after gaining experience."
+            "q": "Why does my broker statement differ by a few won?",
+            "a": "Brokers round fees and taxes differently (below 1 or 10 KRW), and split fills are rounded per fill."
           }
         ]
       }

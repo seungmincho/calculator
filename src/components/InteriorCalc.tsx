@@ -1,692 +1,489 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
-import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { Plus, Trash2, ChevronDown, ChevronUp, Copy, Check } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
+import { toPyeong } from '@/utils/pyeong'
+import {
+  PRESETS, DEFAULT_SETTINGS, MAX_ROOMS, room as makeRoom, areas, calculate, encodeState, decodeState, paperSize,
+  type Room, type Settings, type Line, type TileSpec, type PaperKind, type WallFinish, type FloorFinish, type CeilFinish,
+} from '@/utils/interior'
 
-interface Room {
-  id: string
-  name: string
-  width: number
-  length: number
-  height: number
-  doors: number
-  windows: number
-  customDeduction: number
-}
+type PresetKey = keyof typeof PRESETS
+type Tab = 'paper' | 'paint' | 'floor' | 'tile' | 'trim'
 
-interface MaterialSettings {
-  // Paint
-  paintCoverage: number
-  paintCoats: number
-  paintPrice: number
-  // Wallpaper
-  rollWidth: number
-  rollLength: number
-  patternRepeat: number
-  // Tile
-  tileWidth: number
-  tileHeight: number
-  gapWidth: number
-  tilePrice: number
-}
+const TILE_SIZES: { w: number; h: number; perBox: number }[] = [
+  { w: 200, h: 200, perBox: 25 }, { w: 300, h: 300, perBox: 11 }, { w: 250, h: 400, perBox: 10 },
+  { w: 300, h: 600, perBox: 8 }, { w: 600, h: 600, perBox: 4 }, { w: 600, h: 1200, perBox: 2 },
+]
 
-interface RoomResult {
-  id: string
-  name: string
-  floorArea: number
-  wallArea: number
-  ceilingArea: number
-  deductionArea: number
-  netWallArea: number
-  paintNeeded: number
-  paintCost: number
-  wallpaperRolls: number
-  wallpaperCost: number
-  tilesNeeded: number
-  tileCost: number
-}
-
-const DOOR_AREA = 0.9 * 2.1   // 1.89 m²
-const WINDOW_AREA = 1.5 * 1.2 // 1.8 m²
-const WASTAGE = 1.1            // 10% wastage factor
-
-function generateId() {
-  return Math.random().toString(36).slice(2, 9)
-}
-
-function createDefaultRoom(index: number): Room {
-  return {
-    id: generateId(),
-    name: `방 ${index}`,
-    width: 4.5,
-    length: 3.6,
-    height: 2.4,
-    doors: 1,
-    windows: 1,
-    customDeduction: 0,
-  }
-}
-
-function calculateRoom(room: Room, settings: MaterialSettings): RoomResult {
-  const floorArea = room.width * room.length
-  const wallArea = 2 * (room.width + room.length) * room.height
-  const ceilingArea = room.width * room.length
-
-  const deductionArea =
-    room.doors * DOOR_AREA +
-    room.windows * WINDOW_AREA +
-    room.customDeduction
-  const netWallArea = Math.max(0, wallArea - deductionArea)
-
-  // Paint: total surface = walls + ceiling, apply wastage
-  const paintSurface = (netWallArea + ceilingArea) * WASTAGE
-  const paintNeeded = (paintSurface * settings.paintCoats) / settings.paintCoverage
-  const paintCost = settings.paintPrice > 0 ? paintNeeded * settings.paintPrice : 0
-
-  // Wallpaper: effective roll area per roll (subtract pattern repeat from each strip)
-  const effectiveRollArea =
-    settings.rollWidth *
-    Math.max(0.1, settings.rollLength - settings.patternRepeat)
-  const wallpaperRolls =
-    effectiveRollArea > 0
-      ? Math.ceil((netWallArea * WASTAGE) / effectiveRollArea)
-      : 0
-  const rollPrice = settings.paintPrice > 0 ? 0 : 0 // wallpaper price not separately tracked in material settings
-
-  // Tile: tile area including gap
-  const tileWidthM = (settings.tileWidth + settings.gapWidth / 10) / 100
-  const tileHeightM = (settings.tileHeight + settings.gapWidth / 10) / 100
-  const tileAreaM2 = tileWidthM * tileHeightM
-  const tilesNeeded =
-    tileAreaM2 > 0
-      ? Math.ceil((floorArea * WASTAGE) / tileAreaM2)
-      : 0
-  const tileCost = settings.tilePrice > 0 ? tilesNeeded * settings.tilePrice : 0
-
-  // Wallpaper cost: no separate price field in settings, cost = 0 if no price
-  void rollPrice
-
-  return {
-    id: room.id,
-    name: room.name,
-    floorArea,
-    wallArea,
-    ceilingArea,
-    deductionArea,
-    netWallArea,
-    paintNeeded,
-    paintCost,
-    wallpaperRolls,
-    wallpaperCost: 0, // separate cost field; user reads rolls and multiplies
-    tilesNeeded,
-    tileCost,
-  }
-}
-
-const inputCls =
-  'w-full px-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm'
-
+const seg = (on: boolean) =>
+  `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 const labelCls = 'block text-xs font-medium text-sub mb-1'
+const fieldCls = 'ui-field w-full px-3 py-2 text-sm'
 
-function fmt(n: number, decimals = 2): string {
-  return n.toLocaleString('ko-KR', {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  })
+const f1 = (n: number) => n.toLocaleString('ko-KR', { maximumFractionDigits: 1 })
+const f2 = (n: number) => n.toLocaleString('ko-KR', { maximumFractionDigits: 2 })
+const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+const num = (v: string) => { const n = parseFloat(v); return Number.isFinite(n) && n >= 0 ? n : 0 }
+
+function Num({ label, value, onChange, step = 0.1, help, id }: { label: string; value: number; onChange: (n: number) => void; step?: number; help?: string; id: string }) {
+  return (
+    <div>
+      <label htmlFor={id} className={labelCls}>{label}</label>
+      <input id={id} type="number" inputMode="decimal" min={0} step={step} value={value}
+        onChange={(e) => onChange(num(e.target.value))} className={fieldCls} />
+      {help && <p className="text-xs text-muted mt-1">{help}</p>}
+    </div>
+  )
 }
 
-function fmtInt(n: number): string {
-  return Math.ceil(n).toLocaleString('ko-KR')
-}
-
-function fmtWon(n: number): string {
-  return Math.round(n).toLocaleString('ko-KR')
+function Seg<T extends string | number>({ options, value, onChange, label }: { options: { v: T; label: string }[]; value: T; onChange: (v: T) => void; label: string }) {
+  return (
+    <div role="group" aria-label={label} className="flex flex-wrap gap-1.5">
+      {options.map((o) => (
+        <button key={String(o.v)} type="button" aria-pressed={value === o.v} onClick={() => onChange(o.v)} className={seg(value === o.v)}>{o.label}</button>
+      ))}
+    </div>
+  )
 }
 
 export default function InteriorCalc() {
   const t = useTranslations('interiorCalc')
+  const searchParams = useSearchParams()
 
-  const [rooms, setRooms] = useState<Room[]>([createDefaultRoom(1)])
-  const [settings, setSettings] = useState<MaterialSettings>({
-    paintCoverage: 10,
-    paintCoats: 2,
-    paintPrice: 15000,
-    rollWidth: 0.53,
-    rollLength: 10,
-    patternRepeat: 0,
-    tileWidth: 30,
-    tileHeight: 30,
-    gapWidth: 3,
-    tilePrice: 800,
-  })
-  const [expandedRooms, setExpandedRooms] = useState<Set<string>>(
-    new Set([rooms[0]?.id])
-  )
+  const presetRooms = useCallback((k: PresetKey) => PRESETS[k].map((r) => ({ ...r, name: t(`roomNames.${r.name}`) })), [t])
+  const [rooms, setRooms] = useState<Room[]>(() => presetRooms('apt24'))
+  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS)
+  const [open, setOpen] = useState<number>(-1)
+  const [tab, setTab] = useState<Tab>('paper')
+  const [copied, setCopied] = useState(false)
+  const ready = useRef(false)
 
-  const addRoom = useCallback(() => {
-    const newRoom = createDefaultRoom(rooms.length + 1)
-    setRooms((prev) => [...prev, newRoom])
-    setExpandedRooms((prev) => new Set([...prev, newRoom.id]))
-  }, [rooms.length])
+  // URL → 상태 (한 번)
+  useEffect(() => {
+    if (ready.current) return
+    const st = decodeState(searchParams.get('s'))
+    if (st) { setRooms(st.rooms); setSettings(st.settings) }
+    ready.current = true
+  }, [searchParams])
 
-  const removeRoom = useCallback((id: string) => {
-    setRooms((prev) => prev.filter((r) => r.id !== id))
-    setExpandedRooms((prev) => {
-      const next = new Set(prev)
-      next.delete(id)
-      return next
-    })
-  }, [])
+  const encoded = useMemo(() => encodeState(rooms, settings), [rooms, settings])
+  useEffect(() => {
+    if (!ready.current) return
+    window.history.replaceState(null, '', `${window.location.pathname}?s=${encoded}`)
+  }, [encoded])
 
-  const updateRoom = useCallback((id: string, field: keyof Room, value: string | number) => {
-    setRooms((prev) =>
-      prev.map((r) =>
-        r.id === id
-          ? { ...r, [field]: typeof value === 'string' && field !== 'name' ? parseFloat(value) || 0 : value }
-          : r
-      )
-    )
-  }, [])
+  const res = useMemo(() => calculate(rooms, settings), [rooms, settings])
 
-  const toggleRoom = useCallback((id: string) => {
-    setExpandedRooms((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) {
-        next.delete(id)
-      } else {
-        next.add(id)
+  const setS = <K extends keyof Settings>(k: K, v: Settings[K]) => setSettings((p) => ({ ...p, [k]: v }))
+  const setTile = (k: 'wallTile' | 'floorTile', patch: Partial<TileSpec>) => setSettings((p) => ({ ...p, [k]: { ...p[k], ...patch } }))
+  const setRoom = (i: number, patch: Partial<Room>) => setRooms((p) => p.map((r, j) => (j === i ? { ...r, ...patch } : r)))
+  const addRoom = () => {
+    if (rooms.length >= MAX_ROOMS) return
+    setRooms((p) => [...p, makeRoom(t('roomN', { n: p.length + 1 }), 3.3, 3.0)])
+    setOpen(rooms.length)
+  }
+  const removeRoom = (i: number) => { setRooms((p) => p.filter((_, j) => j !== i)); setOpen(-1) }
+  const applyPreset = (k: PresetKey) => { setRooms(presetRooms(k)); setOpen(-1) }
+
+  const pct = (x: number) => Math.round(x * 1000) / 10
+  const { w: rollW, len: rollLen } = paperSize(settings)
+  const roomName = (r: Room, i: number) => r.name.trim() || t('roomN', { n: i + 1 })
+
+  // ── 자재 한 줄 표시 ──
+  const itemName = (l: Line) => (l.key === 'paper' ? t('items.paper', { kind: t(`paper.kind.${settings.paper}`) }) : t(`items.${l.key}`))
+  const qtyText = (l: Line): string => {
+    switch (l.key) {
+      case 'paper': return Number.isFinite(l.qty) ? t('units.roll', { n: l.qty }) : '-'
+      case 'paint': return (l.cans ?? []).map((c) => t('units.can', { size: c.size, n: c.count })).join(' + ')
+      case 'vinyl': return t('units.m', { n: f1(l.qty) })
+      case 'laminate': return t('units.box', { n: l.qty })
+      case 'wallTile': case 'floorTile': return t('units.piece', { n: l.qty.toLocaleString('ko-KR') })
+      default: return t('units.stick', { n: l.qty })
+    }
+  }
+  const detailText = (l: Line): string => {
+    switch (l.key) {
+      case 'paper': return t('detail.paper', { w: rollW, len: rollLen, area: f1(l.area) })
+      case 'paint': return t('detail.paint', { liters: f1(l.liters ?? 0), area: f1(l.area), coats: settings.coats })
+      case 'vinyl': return t('detail.vinyl', { w: settings.vinylW, area: f1(l.area) })
+      case 'laminate': return t('detail.laminate', { box: settings.lamBox, area: f1(l.area) })
+      case 'wallTile': case 'floorTile': {
+        const s = settings[l.key]
+        return `${t('detail.tile', { w: s.w, h: s.h, area: f1(l.area) })}${l.boxes ? ` · ${t('units.box', { n: l.boxes })}` : ''}`
       }
-      return next
-    })
-  }, [])
+      default: return t('detail.trim', { len: f1(l.area), stick: settings.stickLen })
+    }
+  }
 
-  const updateSettings = useCallback((field: keyof MaterialSettings, value: string) => {
-    setSettings((prev) => ({ ...prev, [field]: parseFloat(value) || 0 }))
-  }, [])
+  const floorPy = f1(toPyeong(res.floor))
+  const badRoll = res.lines.some((l) => l.key === 'paper' && !Number.isFinite(l.qty))
+  const heroValue = res.cost > 0 ? `${won(res.cost)}${t('won')}` : res.lines[0] ? `${itemName(res.lines[0])} ${qtyText(res.lines[0])}` : t('hero.empty')
 
-  const results = useMemo<RoomResult[]>(
-    () => rooms.map((r) => calculateRoom(r, settings)),
-    [rooms, settings]
-  )
+  const shoppingList = useMemo(() => [
+    t('list.header'),
+    t('list.areas', { floor: f1(res.floor), wall: f1(res.wallNet), ceil: f1(res.ceiling) }),
+    '',
+    ...res.lines.map((l) => `- ${itemName(l)}: ${qtyText(l)} (${detailText(l)})${l.cost > 0 ? ` — ${won(l.cost)}${t('won')}` : ''}`),
+    ...(res.cost > 0 ? ['', `${t('hero.total')}: ${won(res.cost)}${t('won')}${res.partial ? ` (${t('hero.partial')})` : ''}`] : []),
+  ].join('\n'), [res, settings, t]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const totals = useMemo(() => {
-    return results.reduce(
-      (acc, r) => ({
-        floorArea: acc.floorArea + r.floorArea,
-        netWallArea: acc.netWallArea + r.netWallArea,
-        ceilingArea: acc.ceilingArea + r.ceilingArea,
-        paintNeeded: acc.paintNeeded + r.paintNeeded,
-        paintCost: acc.paintCost + r.paintCost,
-        wallpaperRolls: acc.wallpaperRolls + r.wallpaperRolls,
-        tilesNeeded: acc.tilesNeeded + r.tilesNeeded,
-        tileCost: acc.tileCost + r.tileCost,
-      }),
-      {
-        floorArea: 0,
-        netWallArea: 0,
-        ceilingArea: 0,
-        paintNeeded: 0,
-        paintCost: 0,
-        wallpaperRolls: 0,
-        tilesNeeded: 0,
-        tileCost: 0,
+  const copyList = useCallback(async () => {
+    try {
+      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(shoppingList)
+      else {
+        const ta = document.createElement('textarea')
+        ta.value = shoppingList; ta.style.position = 'fixed'; ta.style.left = '-999999px'
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta)
       }
-    )
-  }, [results])
+    } catch { /* 권한 없음 */ }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }, [shoppingList])
 
-  const coatOptions = [
-    { value: 1, label: t('coats1') },
-    { value: 2, label: t('coats2') },
-    { value: 3, label: t('coats3') },
-  ]
+  const wallOpts: { v: WallFinish; label: string }[] = (['wallpaper', 'paint', 'tile', 'none'] as const).map((v) => ({ v, label: t(`finish.${v}`) }))
+  const floorOpts: { v: FloorFinish; label: string }[] = (['laminate', 'vinyl', 'tile', 'none'] as const).map((v) => ({ v, label: t(`finish.${v}`) }))
+  const ceilOpts: { v: CeilFinish; label: string }[] = (['wallpaper', 'paint', 'none'] as const).map((v) => ({ v, label: t(`finish.${v}`) }))
+
+  // ── 결과 패널 ──
+  const results = (
+    <div className="space-y-4 lg:sticky lg:top-20">
+      <div className="ui-hero p-6">
+        <p className="text-sm text-white/70">{t('hero.label', { n: rooms.length, py: floorPy })}</p>
+        <p className="text-3xl sm:text-4xl font-bold tabular-nums mt-1 break-keep">{heroValue}</p>
+        <p className="text-sm text-white/70 mt-2">
+          {res.cost > 0 ? (res.partial ? t('hero.partial') : t('hero.total')) : t('hero.noPrice')}
+        </p>
+        {res.lines.length > 0 && (
+          <div className="grid grid-cols-2 gap-2 mt-5">
+            {res.lines.map((l) => (
+              <div key={l.key} className="rounded-xl bg-white/15 px-3 py-2.5">
+                <p className="text-xs text-white/70">{itemName(l)}</p>
+                <p className="text-base font-bold tabular-nums">{qtyText(l)}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      {badRoll && <p className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('invalidRoll')}</p>}
+
+      <div className="ui-card p-6">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <h2 className="text-base font-semibold text-fg">{t('list.title')}</h2>
+          <button type="button" onClick={copyList} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-soft hover:bg-subtle text-body">
+            {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+            {copied ? t('list.copied') : t('list.copy')}
+          </button>
+        </div>
+        {res.lines.length === 0 ? (
+          <p className="text-sm text-muted">{t('hero.empty')}</p>
+        ) : (
+          <ul className="divide-y divide-line">
+            {res.lines.map((l) => (
+              <li key={l.key} className="py-3 flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-fg">{itemName(l)}</p>
+                  <p className="text-xs text-muted mt-0.5">{detailText(l)}</p>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="text-sm font-bold text-fg tabular-nums">{qtyText(l)}</p>
+                  {l.cost > 0 && <p className="text-xs text-sub tabular-nums mt-0.5">{won(l.cost)}{t('won')}</p>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+        <dl className="mt-4 bg-subtle rounded-2xl p-4 grid grid-cols-3 gap-2 text-center">
+          {([['floor', res.floor], ['wall', res.wallNet], ['ceiling', res.ceiling]] as const).map(([k, v]) => (
+            <div key={k}>
+              <dt className="text-xs text-muted">{t(`areas.${k}`)}</dt>
+              <dd className="text-sm font-semibold text-fg tabular-nums">{f1(v)}{t('sqm')}</dd>
+              <dd className="text-xs text-muted tabular-nums">{f1(toPyeong(v))}{t('pyeong')}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <ShareResult
+        card={{
+          tool: t('title'),
+          label: t('share.label', { n: rooms.length, py: floorPy }),
+          headline: heroValue,
+          rows: res.lines.slice(0, 5).map((l) => ({ label: itemName(l), value: qtyText(l) })),
+        }}
+        text={shoppingList}
+        fileName="interior-materials"
+      />
+    </div>
+  )
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left: Material Settings */}
-        <div className="lg:col-span-1 space-y-6">
-          {/* Paint */}
-          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <h2 className="font-semibold text-fg text-base flex items-center gap-2">
-              {t('paintCalc')}
-            </h2>
+      <div className="grid lg:grid-cols-5 gap-6 lg:gap-8">
+        <div className="lg:col-span-2 lg:order-2">{results}</div>
+
+        <div className="lg:col-span-3 lg:order-1 space-y-6">
+          {/* 방 목록 */}
+          <div className="ui-card p-6 space-y-4">
             <div>
-              <label className={labelCls}>{t('paintCoverage')}</label>
-              <input
-                type="number"
-                min="1"
-                max="30"
-                step="0.5"
-                value={settings.paintCoverage}
-                onChange={(e) => updateSettings('paintCoverage', e.target.value)}
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label className={labelCls}>{t('paintCoats')}</label>
-              <select
-                value={settings.paintCoats}
-                onChange={(e) => updateSettings('paintCoats', e.target.value)}
-                className={inputCls}
-              >
-                {coatOptions.map((o) => (
-                  <option key={o.value} value={o.value}>{o.label}</option>
+              <p className="text-sm font-medium text-body mb-2">{t('presets.title')}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {(Object.keys(PRESETS) as PresetKey[]).map((k) => (
+                  <button key={k} type="button" onClick={() => applyPreset(k)} className="ui-btn-soft px-3 py-1.5 text-sm">{t(`presets.${k}`)}</button>
                 ))}
-              </select>
-            </div>
-            <div>
-              <label className={labelCls}>{t('paintPrice')}</label>
-              <input
-                type="number"
-                min="0"
-                step="1000"
-                value={settings.paintPrice}
-                onChange={(e) => updateSettings('paintPrice', e.target.value)}
-                className={inputCls}
-              />
-            </div>
-          </div>
-
-          {/* Wallpaper */}
-          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <h2 className="font-semibold text-fg text-base flex items-center gap-2">
-              {t('wallpaperCalc')}
-            </h2>
-            <div>
-              <label className={labelCls}>{t('rollWidth')}</label>
-              <input
-                type="number"
-                min="0.1"
-                max="2"
-                step="0.01"
-                value={settings.rollWidth}
-                onChange={(e) => updateSettings('rollWidth', e.target.value)}
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label className={labelCls}>{t('rollLength')}</label>
-              <input
-                type="number"
-                min="1"
-                max="50"
-                step="0.5"
-                value={settings.rollLength}
-                onChange={(e) => updateSettings('rollLength', e.target.value)}
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label className={labelCls}>{t('patternRepeat')}</label>
-              <input
-                type="number"
-                min="0"
-                max="0.5"
-                step="0.05"
-                value={settings.patternRepeat}
-                onChange={(e) => updateSettings('patternRepeat', e.target.value)}
-                className={inputCls}
-              />
-            </div>
-          </div>
-
-          {/* Tile */}
-          <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
-            <h2 className="font-semibold text-fg text-base flex items-center gap-2">
-              {t('tileCalc')}
-            </h2>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className={labelCls}>{t('tileWidth')}</label>
-                <input
-                  type="number"
-                  min="5"
-                  max="200"
-                  step="5"
-                  value={settings.tileWidth}
-                  onChange={(e) => updateSettings('tileWidth', e.target.value)}
-                  className={inputCls}
-                />
               </div>
-              <div>
-                <label className={labelCls}>{t('tileHeight')}</label>
-                <input
-                  type="number"
-                  min="5"
-                  max="200"
-                  step="5"
-                  value={settings.tileHeight}
-                  onChange={(e) => updateSettings('tileHeight', e.target.value)}
-                  className={inputCls}
-                />
-              </div>
+              <p className="text-xs text-muted mt-2">{t('presets.note')}</p>
             </div>
-            <div>
-              <label className={labelCls}>{t('gapWidth')}</label>
-              <input
-                type="number"
-                min="0"
-                max="20"
-                step="0.5"
-                value={settings.gapWidth}
-                onChange={(e) => updateSettings('gapWidth', e.target.value)}
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label className={labelCls}>{t('tilePrice')}</label>
-              <input
-                type="number"
-                min="0"
-                step="100"
-                value={settings.tilePrice}
-                onChange={(e) => updateSettings('tilePrice', e.target.value)}
-                className={inputCls}
-              />
-            </div>
-          </div>
-        </div>
 
-        {/* Right: Rooms + Results */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Room list */}
-          {rooms.map((room, idx) => {
-            const result = results.find((r) => r.id === room.id)
-            const isExpanded = expandedRooms.has(room.id)
-            return (
-              <div key={room.id} className={`${glassCard} ${glassInset} overflow-hidden`}>
-                {/* Room header */}
-                <div
-                  className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-750 select-none"
-                  onClick={() => toggleRoom(room.id)}
-                  role="button"
-                  aria-expanded={isExpanded}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="w-7 h-7 rounded-full bg-soft text-sub flex items-center justify-center text-sm font-bold">
-                      {idx + 1}
-                    </span>
-                    <span className="font-semibold text-fg">
-                      {room.name || `${t('room')} ${idx + 1}`}
-                    </span>
-                    {result && (
-                      <span className="text-xs text-muted">
-                        {fmt(result.floorArea)} {t('sqm')}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {rooms.length > 1 && (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); removeRoom(room.id) }}
-                        className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 rounded-lg transition-colors"
-                        aria-label={t('removeRoom')}
-                      >
-                        <Trash2 size={15} />
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-semibold text-fg">{t('rooms.title')}</h2>
+              <span className="text-sm text-muted">{t('rooms.count', { n: rooms.length })}</span>
+            </div>
+
+            <ul className="space-y-2">
+              {rooms.map((r, i) => {
+                const a = areas(r)
+                const isOpen = open === i
+                return (
+                  <li key={i} className="border border-line rounded-2xl overflow-hidden">
+                    <div className="flex items-center gap-2 px-4 py-3">
+                      <button type="button" onClick={() => setOpen(isOpen ? -1 : i)} aria-expanded={isOpen}
+                        className="flex-1 min-w-0 flex items-center justify-between gap-2 text-left">
+                        <span className="min-w-0">
+                          <span className="block font-medium text-fg truncate">{roomName(r, i)}</span>
+                          <span className="block text-xs text-muted truncate">
+                            {t('areaFmt', { m2: f1(a.floor), py: f1(toPyeong(a.floor)) })} · {t('finish.wall')} {t(`finish.${r.wall}`)} · {t('finish.floor')} {t(`finish.${r.floor}`)}
+                          </span>
+                        </span>
+                        {isOpen ? <ChevronUp className="w-4 h-4 text-faint shrink-0" /> : <ChevronDown className="w-4 h-4 text-faint shrink-0" />}
                       </button>
-                    )}
-                    {isExpanded ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
-                  </div>
-                </div>
-
-                {isExpanded && (
-                  <div className="px-5 pb-5 space-y-5 border-t border-line pt-4">
-                    {/* Room name */}
-                    <div>
-                      <label className={labelCls}>{t('roomName')}</label>
-                      <input
-                        type="text"
-                        placeholder={t('roomNamePlaceholder')}
-                        value={room.name}
-                        onChange={(e) => updateRoom(room.id, 'name', e.target.value)}
-                        className={inputCls}
-                      />
+                      {rooms.length > 1 && (
+                        <button type="button" onClick={() => removeRoom(i)} aria-label={t('removeRoom')}
+                          className="p-1.5 text-faint hover:text-red-600 rounded-lg shrink-0">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
                     </div>
 
-                    {/* Dimensions */}
-                    <div>
-                      <p className="text-xs font-semibold text-body mb-2">{t('dimensions')}</p>
-                      <div className="grid grid-cols-3 gap-3">
-                        <div>
-                          <label className={labelCls}>{t('width')}</label>
-                          <input
-                            type="number"
-                            min="0.1"
-                            step="0.1"
-                            value={room.width}
-                            onChange={(e) => updateRoom(room.id, 'width', e.target.value)}
-                            className={inputCls}
-                          />
-                        </div>
-                        <div>
-                          <label className={labelCls}>{t('length')}</label>
-                          <input
-                            type="number"
-                            min="0.1"
-                            step="0.1"
-                            value={room.length}
-                            onChange={(e) => updateRoom(room.id, 'length', e.target.value)}
-                            className={inputCls}
-                          />
-                        </div>
-                        <div>
-                          <label className={labelCls}>{t('height')}</label>
-                          <input
-                            type="number"
-                            min="1"
-                            max="10"
-                            step="0.1"
-                            value={room.height}
-                            onChange={(e) => updateRoom(room.id, 'height', e.target.value)}
-                            className={inputCls}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Deductions */}
-                    <div>
-                      <p className="text-xs font-semibold text-body mb-2">{t('deductions')}</p>
-                      <div className="grid grid-cols-3 gap-3">
-                        <div>
-                          <label className={labelCls}>{t('doors')}</label>
-                          <input
-                            type="number"
-                            min="0"
-                            max="10"
-                            step="1"
-                            value={room.doors}
-                            onChange={(e) => updateRoom(room.id, 'doors', e.target.value)}
-                            className={inputCls}
-                          />
-                        </div>
-                        <div>
-                          <label className={labelCls}>{t('windows')}</label>
-                          <input
-                            type="number"
-                            min="0"
-                            max="20"
-                            step="1"
-                            value={room.windows}
-                            onChange={(e) => updateRoom(room.id, 'windows', e.target.value)}
-                            className={inputCls}
-                          />
-                        </div>
-                        <div>
-                          <label className={labelCls}>{t('customDeduction')}</label>
-                          <input
-                            type="number"
-                            min="0"
-                            step="0.1"
-                            value={room.customDeduction}
-                            onChange={(e) => updateRoom(room.id, 'customDeduction', e.target.value)}
-                            className={inputCls}
-                          />
-                        </div>
-                      </div>
-                      <p className="text-xs text-faint mt-1">{t('customDeductionHelp')}</p>
-                    </div>
-
-                    {/* Room result */}
-                    {result && (
-                      <div className="bg-subtle rounded-xl p-4 space-y-3">
-                        <p className="text-xs font-semibold text-orange-700 dark:text-orange-400 uppercase tracking-wide">{t('results')}</p>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-sub">{t('totalFloorArea')}</span>
-                            <span className="font-semibold text-fg">{fmt(result.floorArea)} {t('sqm')}</span>
+                    {isOpen && (
+                      <div className="px-4 pb-4 pt-3 space-y-4 border-t border-line">
+                        <div className="grid sm:grid-cols-2 gap-3">
+                          <div>
+                            <label htmlFor={`rn${i}`} className={labelCls}>{t('roomName')}</label>
+                            <input id={`rn${i}`} type="text" maxLength={20} value={r.name} placeholder={t('roomNamePlaceholder')}
+                              onChange={(e) => setRoom(i, { name: e.target.value })} className={fieldCls} />
                           </div>
-                          <div className="flex justify-between">
-                            <span className="text-sub">{t('totalWallArea')}</span>
-                            <span className="font-semibold text-fg">{fmt(result.wallArea)} {t('sqm')}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sub">{t('totalCeilingArea')}</span>
-                            <span className="font-semibold text-fg">{fmt(result.ceilingArea)} {t('sqm')}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sub">{t('deductionArea')}</span>
-                            <span className="font-semibold text-red-600 dark:text-red-400">-{fmt(result.deductionArea)} {t('sqm')}</span>
-                          </div>
-                          <div className="flex justify-between sm:col-span-2">
-                            <span className="text-sub">{t('netWallArea')}</span>
-                            <span className="font-semibold text-sub">{fmt(result.netWallArea)} {t('sqm')}</span>
+                          <div>
+                            <p className={labelCls}>{t('inputMode')}</p>
+                            <Seg label={t('inputMode')} value={r.mode} onChange={(v) => setRoom(i, { mode: v })}
+                              options={[{ v: 'dim', label: t('mode.dim') }, { v: 'pyeong', label: t('mode.pyeong') }]} />
                           </div>
                         </div>
 
-                        <hr className="border-line" />
-
-                        {/* Paint result */}
-                        <div className="space-y-1 text-sm">
-                          <p className="text-xs font-medium text-muted">{t('paintCalc')}</p>
-                          <div className="flex justify-between">
-                            <span className="text-sub">{t('paintNeeded')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
-                            <span className="font-semibold text-fg">{fmt(result.paintNeeded, 1)} {t('liters')}</span>
-                          </div>
-                          {settings.paintPrice > 0 && (
-                            <div className="flex justify-between">
-                              <span className="text-sub">{t('paintCost')}</span>
-                              <span className="font-semibold text-blue-600 dark:text-blue-400">₩{fmtWon(result.paintCost)}</span>
+                        <div className="grid grid-cols-3 gap-3">
+                          {r.mode === 'dim' ? (
+                            <>
+                              <Num id={`w${i}`} label={t('width')} value={r.w} onChange={(v) => setRoom(i, { w: v })} />
+                              <Num id={`l${i}`} label={t('length')} value={r.l} onChange={(v) => setRoom(i, { l: v })} />
+                            </>
+                          ) : (
+                            <div className="col-span-2">
+                              <Num id={`p${i}`} label={t('pyeongInput')} value={r.pyeong} step={0.5} onChange={(v) => setRoom(i, { pyeong: v })} help={t('pyeongNote')} />
                             </div>
                           )}
+                          <Num id={`h${i}`} label={t('height')} value={r.h} onChange={(v) => setRoom(i, { h: v })} />
                         </div>
 
-                        {/* Wallpaper result */}
-                        <div className="space-y-1 text-sm">
-                          <p className="text-xs font-medium text-muted">{t('wallpaperCalc')}</p>
-                          <div className="flex justify-between">
-                            <span className="text-sub">{t('wallpaperRolls')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
-                            <span className="font-semibold text-fg">{fmtInt(result.wallpaperRolls)} {t('rolls')}</span>
+                        <div>
+                          <p className="text-sm font-medium text-body mb-2">{t('openings')}</p>
+                          <div className="grid grid-cols-3 gap-3">
+                            <Num id={`d${i}`} label={t('doors')} value={r.doors} step={1} onChange={(v) => setRoom(i, { doors: Math.round(v) })} />
+                            <Num id={`dw${i}`} label={t('doorW')} value={r.doorW} onChange={(v) => setRoom(i, { doorW: v })} />
+                            <Num id={`dh${i}`} label={t('doorH')} value={r.doorH} onChange={(v) => setRoom(i, { doorH: v })} />
+                            <Num id={`n${i}`} label={t('windows')} value={r.wins} step={1} onChange={(v) => setRoom(i, { wins: Math.round(v) })} />
+                            <Num id={`nw${i}`} label={t('winW')} value={r.winW} onChange={(v) => setRoom(i, { winW: v })} />
+                            <Num id={`nh${i}`} label={t('winH')} value={r.winH} onChange={(v) => setRoom(i, { winH: v })} />
                           </div>
+                          <div className="mt-3">
+                            <Num id={`x${i}`} label={t('customDeduction')} value={r.extra} onChange={(v) => setRoom(i, { extra: v })} help={t('customDeductionHelp')} />
+                          </div>
+                          <p className="text-xs text-muted mt-2">
+                            {t('wallCalc', { gross: f1(a.wallGross), minus: f1(a.openings), net: f1(a.wallNet) })}
+                          </p>
                         </div>
 
-                        {/* Tile result */}
-                        <div className="space-y-1 text-sm">
-                          <p className="text-xs font-medium text-muted">{t('tileCalc')}</p>
-                          <div className="flex justify-between">
-                            <span className="text-sub">{t('tilesNeeded')} <span className="text-xs text-gray-400">({t('wastage')})</span></span>
-                            <span className="font-semibold text-fg">{fmtInt(result.tilesNeeded)} {t('tiles')}</span>
-                          </div>
-                          {settings.tilePrice > 0 && (
-                            <div className="flex justify-between">
-                              <span className="text-sub">{t('tileCost')}</span>
-                              <span className="font-semibold text-blue-600 dark:text-blue-400">₩{fmtWon(result.tileCost)}</span>
+                        <div className="space-y-3">
+                          {([['wall', wallOpts], ['floor', floorOpts], ['ceil', ceilOpts]] as const).map(([k, opts]) => (
+                            <div key={k} className="flex flex-wrap items-center gap-2">
+                              <span className="w-10 text-sm text-sub">{t(`finish.${k}`)}</span>
+                              <Seg label={t(`finish.${k}`)} value={r[k] as string} onChange={(v) => setRoom(i, { [k]: v } as Partial<Room>)}
+                                options={opts as { v: string; label: string }[]} />
                             </div>
-                          )}
+                          ))}
                         </div>
                       </div>
                     )}
+                  </li>
+                )
+              })}
+            </ul>
+
+            <button type="button" onClick={addRoom} disabled={rooms.length >= MAX_ROOMS}
+              className="w-full ui-btn-soft py-3 text-sm disabled:opacity-50">
+              <Plus className="w-4 h-4" />
+              {t('addRoom')}
+            </button>
+          </div>
+
+          {/* 자재 규격·가격 */}
+          <div className="ui-card p-6 space-y-4">
+            <h2 className="text-base font-semibold text-fg">{t('materials')}</h2>
+            <Seg label={t('materials')} value={tab} onChange={setTab}
+              options={(['paper', 'paint', 'floor', 'tile', 'trim'] as const).map((v) => ({ v, label: t(`tabs.${v}`) }))} />
+
+            {tab === 'paper' && (
+              <div className="space-y-4">
+                <Seg label={t('tabs.paper')} value={settings.paper} onChange={(v: PaperKind) => setS('paper', v)}
+                  options={(['silk', 'wideHapji', 'hapji', 'custom'] as const).map((v) => ({ v, label: t(`paper.kind.${v}`) }))} />
+                <p className="text-xs text-muted">{t('paper.specNote')}</p>
+                {settings.paper === 'custom' && (
+                  <div className="grid grid-cols-2 gap-3">
+                    <Num id="pw" label={t('paper.width')} value={settings.paperW} step={0.01} onChange={(v) => setS('paperW', v)} />
+                    <Num id="pl" label={t('paper.length')} value={settings.paperLen} step={0.5} onChange={(v) => setS('paperLen', v)} />
                   </div>
                 )}
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <Num id="rep" label={t('paper.repeat')} value={Math.round(settings.repeat * 1000) / 10} step={1} onChange={(v) => setS('repeat', v / 100)} />
+                  <Num id="ploss" label={t('paper.loss')} value={pct(settings.paperLoss)} step={1} onChange={(v) => setS('paperLoss', v / 100)} />
+                  <Num id="pp" label={t('paper.price')} value={settings.paperPrice} step={1000} onChange={(v) => setS('paperPrice', v)} />
+                </div>
+                <p className="text-xs text-muted">{t('paper.repeatHelp')}</p>
               </div>
-            )
-          })}
+            )}
 
-          {/* Add room button */}
-          <button
-            onClick={addRoom}
-            className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-line rounded-xl text-orange-600 dark:text-orange-400 hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors font-medium text-sm"
-          >
-            <Plus size={18} />
-            {t('addRoom')}
-          </button>
-
-          {/* Summary */}
-          {rooms.length > 1 && (
-            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
-              <h2 className="font-bold text-lg mb-4">{t('summaryTitle')} ({rooms.length} {t('totalRooms')})</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <div className="bg-white/20 rounded-lg p-3 text-center">
-                  <p className="text-xs opacity-80">{t('totalFloorArea')}</p>
-                  <p className="text-xl font-bold mt-1">{fmt(totals.floorArea)}</p>
-                  <p className="text-xs opacity-80">{t('sqm')}</p>
-                </div>
-                <div className="bg-white/20 rounded-lg p-3 text-center">
-                  <p className="text-xs opacity-80">{t('netWallArea')}</p>
-                  <p className="text-xl font-bold mt-1">{fmt(totals.netWallArea)}</p>
-                  <p className="text-xs opacity-80">{t('sqm')}</p>
-                </div>
-                <div className="bg-white/20 rounded-lg p-3 text-center">
-                  <p className="text-xs opacity-80">{t('paintNeeded')}</p>
-                  <p className="text-xl font-bold mt-1">{fmt(totals.paintNeeded, 1)}</p>
-                  <p className="text-xs opacity-80">{t('liters')}</p>
-                </div>
-                <div className="bg-white/20 rounded-lg p-3 text-center">
-                  <p className="text-xs opacity-80">{t('wallpaperRolls')}</p>
-                  <p className="text-xl font-bold mt-1">{fmtInt(totals.wallpaperRolls)}</p>
-                  <p className="text-xs opacity-80">{t('rolls')}</p>
-                </div>
-                <div className="bg-white/20 rounded-lg p-3 text-center">
-                  <p className="text-xs opacity-80">{t('tilesNeeded')}</p>
-                  <p className="text-xl font-bold mt-1">{fmtInt(totals.tilesNeeded)}</p>
-                  <p className="text-xs opacity-80">{t('tiles')}</p>
-                </div>
-                {settings.paintPrice > 0 && (
-                  <div className="bg-white/20 rounded-lg p-3 text-center">
-                    <p className="text-xs opacity-80">{t('paintCost')}</p>
-                    <p className="text-xl font-bold mt-1">₩{fmtWon(totals.paintCost)}</p>
+            {tab === 'paint' && (
+              <div className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <Num id="cov" label={t('paint.coverage')} value={settings.coverage} step={0.5} onChange={(v) => setS('coverage', v)} help={t('paint.coverageHelp')} />
+                  <div>
+                    <p className={labelCls}>{t('paint.coats')}</p>
+                    <Seg label={t('paint.coats')} value={settings.coats} onChange={(v) => setS('coats', v)}
+                      options={[1, 2, 3].map((v) => ({ v, label: t('paint.coatsN', { n: v }) }))} />
                   </div>
-                )}
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  <Num id="c18" label={t('paint.canPrice', { size: 18 })} value={settings.can18} step={1000} onChange={(v) => setS('can18', v)} />
+                  <Num id="c4" label={t('paint.canPrice', { size: 4 })} value={settings.can4} step={1000} onChange={(v) => setS('can4', v)} />
+                  <Num id="c1" label={t('paint.canPrice', { size: 1 })} value={settings.can1} step={1000} onChange={(v) => setS('can1', v)} />
+                </div>
+                <Num id="paloss" label={t('paint.loss')} value={pct(settings.paintLoss)} step={1} onChange={(v) => setS('paintLoss', v / 100)} />
+                <p className="text-xs text-muted">{t('paint.canNote')}</p>
               </div>
-            </div>
-          )}
+            )}
+
+            {tab === 'floor' && (
+              <div className="space-y-5">
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold text-fg">{t('floor.lamTitle')}</h3>
+                  <div className="grid grid-cols-3 gap-3">
+                    <Num id="lb" label={t('floor.lamBox')} value={settings.lamBox} step={0.01} onChange={(v) => setS('lamBox', v)} />
+                    <Num id="ll" label={t('floor.lamLoss')} value={pct(settings.lamLoss)} step={1} onChange={(v) => setS('lamLoss', v / 100)} />
+                    <Num id="lp" label={t('floor.lamPrice')} value={settings.lamPrice} step={1000} onChange={(v) => setS('lamPrice', v)} />
+                  </div>
+                  <p className="text-xs text-muted">{t('floor.lamNote')}</p>
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold text-fg">{t('floor.vinylTitle')}</h3>
+                  <Seg label={t('floor.vinylWidth')} value={settings.vinylW} onChange={(v) => setS('vinylW', v)}
+                    options={[1.8, 2].map((v) => ({ v, label: t('floor.widthN', { n: v }) }))} />
+                  <Num id="vp" label={t('floor.vinylPrice')} value={settings.vinylPrice} step={1000} onChange={(v) => setS('vinylPrice', v)} />
+                  <p className="text-xs text-muted">{t('floor.vinylNote')}</p>
+                </div>
+              </div>
+            )}
+
+            {tab === 'tile' && (
+              <div className="space-y-5">
+                {(['wallTile', 'floorTile'] as const).map((k) => {
+                  const s = settings[k]
+                  const sizeKey = `${s.w}x${s.h}`
+                  return (
+                    <div key={k} className="space-y-3">
+                      <h3 className="text-sm font-semibold text-fg">{t(`items.${k}`)}</h3>
+                      <div role="group" aria-label={t('tile.size')} className="flex flex-wrap gap-1.5">
+                        {TILE_SIZES.map((z) => (
+                          <button key={`${z.w}x${z.h}`} type="button" aria-pressed={sizeKey === `${z.w}x${z.h}`}
+                            onClick={() => setTile(k, { w: z.w, h: z.h, perBox: z.perBox })} className={seg(sizeKey === `${z.w}x${z.h}`)}>
+                            {z.w}×{z.h}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <Num id={`${k}w`} label={t('tile.w')} value={s.w} step={10} onChange={(v) => setTile(k, { w: v })} />
+                        <Num id={`${k}h`} label={t('tile.h')} value={s.h} step={10} onChange={(v) => setTile(k, { h: v })} />
+                        <Num id={`${k}b`} label={t('tile.perBox')} value={s.perBox} step={1} onChange={(v) => setTile(k, { perBox: Math.round(v) })} />
+                        <Num id={`${k}p`} label={t('tile.price')} value={s.price} step={1000} onChange={(v) => setTile(k, { price: v })} />
+                      </div>
+                    </div>
+                  )
+                })}
+                <div className="grid grid-cols-2 gap-3">
+                  <Num id="grout" label={t('tile.grout')} value={settings.grout} step={0.5} onChange={(v) => setS('grout', v)} />
+                  <div>
+                    <p className={labelCls}>{t('tile.loss')}</p>
+                    <Seg label={t('tile.loss')} value={pct(settings.tileLoss)} onChange={(v) => setS('tileLoss', v / 100)}
+                      options={[5, 7, 10, 15].map((v) => ({ v, label: `${v}%` }))} />
+                  </div>
+                </div>
+                <p className="text-xs text-muted">{t('tile.note')}</p>
+              </div>
+            )}
+
+            {tab === 'trim' && (
+              <div className="space-y-4">
+                {(['baseboard', 'molding'] as const).map((k) => (
+                  <div key={k} className="flex flex-wrap items-end gap-3">
+                    <div>
+                      <p className={labelCls}>{t(`items.${k}`)}</p>
+                      <Seg label={t(`items.${k}`)} value={settings[k] ? 'on' : 'off'} onChange={(v) => setS(k, v === 'on')}
+                        options={[{ v: 'on', label: t('trim.on') }, { v: 'off', label: t('trim.off') }]} />
+                    </div>
+                    <div className="flex-1 min-w-[8rem]">
+                      <Num id={`${k}p`} label={t('trim.price')} value={settings[k === 'baseboard' ? 'baseboardPrice' : 'moldingPrice']} step={500}
+                        onChange={(v) => setS(k === 'baseboard' ? 'baseboardPrice' : 'moldingPrice', v)} />
+                    </div>
+                  </div>
+                ))}
+                <Num id="stick" label={t('trim.stick')} value={settings.stickLen} step={0.1} onChange={(v) => setS('stickLen', v)} />
+                <p className="text-xs text-muted">{t('trim.note')}</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Guide */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
+      {/* 가이드 */}
+      <div className="ui-card p-6">
         <h2 className="text-xl font-semibold text-fg mb-6">{t('guideTitle')}</h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <h3 className="font-semibold text-body mb-3">{t('guideBasicTitle')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guideBasicItems') as string[]).map((item: string, i: number) => (
-                <li key={i} className="flex gap-2 text-sm text-sub">
-                  <span className="text-orange-500 font-bold mt-0.5 flex-shrink-0">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-body mb-3">{t('guideMaterialTitle')}</h3>
-            <ul className="space-y-2">
-              {(t.raw('guideMaterialItems') as string[]).map((item: string, i: number) => (
-                <li key={i} className="flex gap-2 text-sm text-sub">
-                  <span className="text-orange-500 font-bold mt-0.5 flex-shrink-0">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {(['guideBasic', 'guideMaterial', 'guideLimit'] as const).map((g) => (
+            <div key={g}>
+              <h3 className="font-semibold text-body mb-3">{t(`${g}Title`)}</h3>
+              <ul className="space-y-2 list-disc pl-4 marker:text-faint">
+                {(t.raw(`${g}Items`) as string[]).map((item, i) => (
+                  <li key={i} className="text-sm text-sub">{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </div>
